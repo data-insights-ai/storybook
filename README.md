@@ -16,10 +16,35 @@ Opens on port 4500.
 ```bash
 pnpm typecheck
 pnpm test
+pnpm build
 pnpm build-storybook
 ```
 
-`pnpm test` runs every story in a browser. The static build is written to `dist/storybook`.
+`pnpm test` runs every story in a browser. `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
+
+## Use a released version
+
+A tag `v0.1.0` publishes `@data-insights-ai/ui@0.1.0` to GitHub Packages. The tag and `version` in `package.json` are the same number. Projects pin that number.
+
+In the app’s `.npmrc`:
+
+```
+@data-insights-ai:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}
+```
+
+`NODE_AUTH_TOKEN` is a GitHub token with `read:packages`.
+
+```bash
+pnpm add @data-insights-ai/ui@0.1.0
+```
+
+```tsx
+import "@data-insights-ai/ui/styles.css";
+import { Button } from "@data-insights-ai/ui";
+```
+
+The app supplies React 18.3 or newer. Strings are props. `data-theme="dark"` on a parent switches the semantic tokens.
 
 ## How it is put together
 

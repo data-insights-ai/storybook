@@ -36,6 +36,10 @@ The datAInsights brand book is the source for colour, type, and the mark.
 - Storybook’s Get started checklist, the menu guide, and the “what’s new” notification are off in `.storybook/main.ts` (`sidebarOnboardingChecklist`, `menuOnboardingChecklist`, `disableWhatsNewNotifications`).
 - Buttons, fields, and tables stay native elements until a control needs roving focus or a popup.
 
+## Release
+
+`version` in `package.json` and the git tag are the same number: `0.1.0` is the tag `v0.1.0`. Pushing that tag publishes `@data-insights-ai/ui` to GitHub Packages. Do not publish from `main` without a tag. The installable build is `pnpm build`, written to `dist/lib`. Storybook output stays in `dist/storybook` and is not part of the package.
+
 ## Checks
 
 Visible text meets WCAG AA. Status is a word plus a mark, not colour alone. An icon-only button has an accessible name. Focus is visible: navy on ivory, gold on the navy sidebar.

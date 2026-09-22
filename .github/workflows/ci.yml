@@ -4,21 +4,69 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
-          version: 11
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+          node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm typecheck
       - run: pnpm test
+      - run: pnpm build
+      - run: |
+          node --input-type=module <<'EOF'
+          import { existsSync, readFileSync } from "node:fs";
+          for (const file of ["dist/lib/index.js", "dist/lib/styles.css", "dist/lib/index.d.ts"]) {
+            if (!existsSync(file)) {
+              console.error("missing " + file);
+              process.exit(1);
+            }
+          }
+          const types = readFileSync("dist/lib/index.d.ts", "utf8");
+          if (!types.includes("Button")) {
+            console.error("package types do not export Button");
+            process.exit(1);
+          }
+          EOF
       - run: pnpm build-storybook
+
+  publish:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://npm.pkg.github.com
+          scope: "@data-insights-ai"
+      - run: pnpm install --frozen-lockfile
+      - run: |
+          node --input-type=module <<'EOF'
+          import { readFileSync } from "node:fs";
+          const version = JSON.parse(readFileSync("package.json", "utf8")).version;
+          const tag = process.env.GITHUB_REF.slice("refs/tags/v".length);
+          if (tag !== version) {
+            console.error("Tag v" + tag + " does not match package.json " + version);
+            process.exit(1);
+          }
+          EOF
+      - run: pnpm publish --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
