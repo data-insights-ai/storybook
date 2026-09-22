@@ -11,7 +11,7 @@ pnpm install
 pnpm storybook
 ```
 
-Opens on port 4500.
+Opens on port 4500. While it is running, agents can read the component catalogue at `http://127.0.0.1:4500/mcp`.
 
 ```bash
 pnpm typecheck
@@ -24,7 +24,7 @@ pnpm build-storybook
 
 ## Use a released version
 
-A tag `v0.1.0` publishes `@data-insights-ai/ui@0.1.0` to GitHub Packages. The tag and `version` in `package.json` are the same number. Projects pin that number.
+A tag `v0.1.0` publishes `@data-insights-ai/ui@0.1.0` to GitHub Packages and uploads that Storybook to `https://storybook.data-insights.ai`. The tag and `version` in `package.json` are the same number. Projects pin that number.
 
 In the app’s `.npmrc`:
 

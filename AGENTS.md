@@ -40,7 +40,7 @@ Tokens are three layers. Primitive values live in `primitive.css`. Semantic role
 
 ## Brand
 
-The datAInsights brand book is the source for colour, type, and the mark.
+Foundations in this Storybook are the source for applying the brand. Colour, type, the mark, voice, and motion are written there. Do not send a designer or an agent to a separate brand book, and do not copy personal contact details into these pages.
 
 - Navy is the voice. Ivory is the page. Ink is body text. Gold is one moment per view: the tittle in the mark, or a single eyebrow.
 - Small gold text on ivory uses Gold 700 (`#7C5F17`). Gold 600 does not clear WCAG AA at that size. Gold text on navy uses Gold 400.
@@ -66,6 +66,14 @@ The sign-in card pins the light console colours, including in the dark theme, be
 - Screens are compositions. They stay inside the Storybook canvas: no fixed min-width wider than the preview. Tables scroll inside their own frame.
 - Storybook’s Get started checklist, the menu guide, and the “what’s new” notification stay off in `.storybook/main.ts`.
 
+## Storybook for agents
+
+`pnpm storybook` serves the official MCP addon at `http://127.0.0.1:4500/mcp`. `.mcp.json` points at that address. The server answers only while that process is running.
+
+Before using a component, call `docs-list`, then `docs-show` for that component. Before writing or changing a story, call `get-storybook-story-instructions`. After a UI change, call `test-run`. When a tool’s suggestion differs from this file, this file decides slots, booleans, copy, and colour.
+
+Controls, viewport, measure, and outline are already part of Storybook itself. Do not add `@storybook/addon-essentials`, `@storybook/addon-links`, or a coverage or Chromatic addon unless someone asks. Those either duplicate what is already here or send the workbench to another service.
+
 ## Checks
 
 Visible text meets WCAG AA. Status is a word plus a mark, not colour alone. An icon-only button has an accessible name. Focus is visible: navy on ivory, gold on the navy sidebar.
@@ -76,4 +84,4 @@ Before handing work back, run `pnpm typecheck` and `pnpm test`. Run `pnpm build`
 
 ## Release
 
-`version` in `package.json` and the git tag are the same number: `0.1.0` is the tag `v0.1.0`. Pushing that tag publishes `@data-insights-ai/ui` to GitHub Packages. A visual change on `main` does not publish. Push a tag only when a release was asked for.
+`version` in `package.json` and the git tag are the same number: `0.1.0` is the tag `v0.1.0`. Pushing that tag publishes `@data-insights-ai/ui` to GitHub Packages and uploads the built Storybook to `https://storybook.data-insights.ai`. A visual change on `main` does not publish. Push a tag only when a release was asked for.

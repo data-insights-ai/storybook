@@ -39,6 +39,13 @@ jobs:
           }
           EOF
       - run: pnpm build-storybook
+      - uses: actions/upload-artifact@v7
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        with:
+          name: storybook
+          path: dist/storybook
+          if-no-files-found: error
+          retention-days: 1
 
   publish:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
@@ -70,3 +77,34 @@ jobs:
       - run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: [test, publish]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: storybook
+          path: dist/storybook
+      - run: test -f dist/storybook/index.html
+      - name: Validate required secrets
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          if [ -z "$FTP_SERVER" ] || [ -z "$FTP_USERNAME" ] || [ -z "$FTP_PASSWORD" ]; then
+            echo "FTP_SERVER, FTP_USERNAME, and FTP_PASSWORD must be set on this repository."
+            exit 1
+          fi
+      - name: Upload to Hetzner
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftps
+          local-dir: ./dist/storybook/
+          server-dir: storybook.data-insights.ai/public/
