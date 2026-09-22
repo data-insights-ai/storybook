@@ -7,7 +7,6 @@ import dts from "unplugin-dts/vite";
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-  base: "./",
   plugins: [
     react(),
     dts({
@@ -17,16 +16,24 @@ export default defineConfig({
   build: {
     outDir: "dist/lib",
     emptyOutDir: true,
-    assetsInlineLimit: 0,
-    cssCodeSplit: false,
+    cssCodeSplit: true,
+    modulePreload: false,
+    sourcemap: false,
     lib: {
       entry: path.join(dirname, "src/index.ts"),
       formats: ["es"],
       fileName: "index",
-      cssFileName: "styles",
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react/jsx-runtime"],
+      external(id) {
+        return id.endsWith(".css") || id === "react" || id === "react-dom" || id.startsWith("react/") || id === "lucide-react";
+      },
+      output: {
+        preserveModules: true,
+        preserveModulesRoot: "src",
+        entryFileNames: "[name].js",
+        assetFileNames: "assets/[name][extname]",
+      },
     },
   },
 });

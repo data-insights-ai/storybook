@@ -14,9 +14,9 @@ logo files in this repository. Written permission from datAInsights GmbH
 is required before any of that use.
 
 Dependencies installed from the lockfile keep their own licences. Those
-licences are not changed by this file. IBM Plex and Sansation are used
-through the fontsource packages and remain under the licences those
-packages carry. Lucide icons remain under their own licence.
+licences are not changed by this file. The woff2 files published with
+the package are Sansation and IBM Plex, shipped under the SIL Open Font
+License, Version 1.1. Lucide icons remain under their own licence.
 
 The people, companies, and addresses in the stories are fictional
 placeholders.

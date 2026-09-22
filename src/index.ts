@@ -1,5 +1,3 @@
-import "./styles.css";
-
 export { Badge } from "./components/Badge";
 export { Bars } from "./components/Bars";
 export { Button } from "./components/Button";

@@ -165,6 +165,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      lucide-react:
+        specifier: ^0.544.0
+        version: 0.544.0(react@19.3.0)
     devDependencies:
       '@fontsource/ibm-plex-mono':
         specifier: ^5.2.7
@@ -208,9 +212,6 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^4.1.11
         version: 4.1.11(@vitest/browser@4.1.11)(vitest@4.1.11)
-      lucide-react:
-        specifier: ^0.544.0
-        version: 0.544.0(react@19.3.0)
       playwright:
         specifier: ^1.63.0
         version: 1.63.0

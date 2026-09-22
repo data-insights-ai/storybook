@@ -36,7 +36,7 @@ In the app’s `.npmrc`:
 `NODE_AUTH_TOKEN` is a GitHub token with `read:packages`.
 
 ```bash
-pnpm add @data-insights-ai/ui@0.1.0
+pnpm add @data-insights-ai/ui@0.1.1
 ```
 
 ```tsx
@@ -44,7 +44,7 @@ import "@data-insights-ai/ui/styles.css";
 import { Button } from "@data-insights-ai/ui";
 ```
 
-The app supplies React 18.3 or newer. Strings are props. `data-theme="dark"` on a parent switches the semantic tokens.
+Import the stylesheet once. It carries the tokens, the base rules, and the woff2 faces. Importing a component pulls in that component and its own stylesheet, and leaves the unused components out. The app supplies React 18.3 or newer. Strings are props. `data-theme="dark"` on a parent switches the semantic tokens.
 
 ## How it is put together
 

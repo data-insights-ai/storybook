@@ -1,12 +1,12 @@
 {
   "name": "@data-insights-ai/ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "datAInsights component workbench. All rights reserved.",
   "type": "module",
+  "module": "./dist/lib/index.js",
   "packageManager": "pnpm@12.5.1",
   "sideEffects": [
-    "**/*.css",
-    "./dist/lib/index.js"
+    "**/*.css"
   ],
   "exports": {
     ".": {
@@ -29,11 +29,14 @@
   },
   "scripts": {
     "storybook": "storybook dev -p 4500",
-    "build": "vite build --config vite.lib.config.ts && node scripts/drop-woff.mjs",
+    "build": "vite build --config vite.lib.config.ts && node scripts/build-styles.mjs && node scripts/check-treeshake.mjs",
     "build-storybook": "storybook build --output-dir dist/storybook",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --project=storybook",
     "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "lucide-react": "^0.544.0"
   },
   "peerDependencies": {
     "react": ">=18.3",
@@ -43,7 +46,6 @@
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/ibm-plex-sans": "^5.2.8",
     "@fontsource/sansation": "^5.2.2",
-    "lucide-react": "^0.544.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "@storybook/addon-a11y": "^10.5.10",
