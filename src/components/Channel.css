@@ -1,0 +1,51 @@
+@layer components {
+  .di-channel {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--di-border);
+    border-radius: 10px;
+    background: var(--di-bg-page);
+  }
+
+  .di-channel header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-family: var(--di-font-code);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--di-text-muted);
+  }
+
+  .di-channel-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    font-size: 14px;
+    font-weight: var(--di-weight-medium);
+    overflow-wrap: anywhere;
+  }
+
+  .di-channel-value svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    color: var(--di-text-muted);
+  }
+
+  .di-channel-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 10px;
+    font-family: var(--di-font-code);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--di-text-muted);
+  }
+}

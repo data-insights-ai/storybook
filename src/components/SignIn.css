@@ -1,0 +1,168 @@
+@layer components {
+  .di-login {
+    position: relative;
+    flex: 1;
+    display: grid;
+    place-items: center;
+    min-height: 100%;
+    overflow: hidden;
+    background: #071428;
+  }
+
+  .di-login-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .di-login-stack {
+    position: relative;
+    z-index: 1;
+    width: min(440px, calc(100% - 48px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .di-login-kicker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: #05112b;
+    color: #f7f4ec;
+    font-family: var(--di-font-code);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .di-login-kicker span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .di-login-card {
+    /* The card stays the light console, including in the dark theme.
+       It sits on a painted navy field. */
+    --di-text: #0e1528;
+    --di-text-muted: #5a5348;
+    --di-bg-surface: #fbf8f1;
+    --di-bg-page: #f7f4ec;
+    --di-border: #e0dbd1;
+    --di-border-strong: #8a8172;
+    --di-fill-strong: #0a1f44;
+    --di-fill-strong-hover: #122e5e;
+    --di-text-on-strong: #f7f4ec;
+    --di-button-primary-bg: #0a1f44;
+    --di-button-primary-fg: #f7f4ec;
+    --di-button-primary-bg-hover: #122e5e;
+    --di-field-bg: #fbf8f1;
+    --di-field-border: #8a8172;
+    --di-focus: #0a1f44;
+    --di-status-ok-fg: #186d41;
+    --di-status-danger-fg: #ab2e37;
+    width: 100%;
+    padding: 22px 22px 16px;
+    border-radius: 18px;
+    border: 1px solid #ffffff;
+    background: #fbf8f1;
+    color: #0e1528;
+    box-shadow: 0 24px 50px -28px rgba(5, 17, 43, 0.65);
+  }
+
+  .di-login-brand {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .di-login-mark {
+    width: 42px;
+    height: 42px;
+    padding: 7px;
+    border-radius: 10px;
+    background: #05112b;
+  }
+
+  .di-login-mark img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .di-chip-lite {
+    height: 22px;
+    padding: 0 8px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--di-radius-pill);
+    background: #f2f5fa;
+    color: #0a1f44;
+    font-family: var(--di-font-code);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .di-login-card h1 {
+    margin-top: 16px;
+    font-family: var(--di-font-display);
+    font-size: 34px;
+    font-weight: var(--di-weight-bold);
+    letter-spacing: var(--di-tracking-tight);
+    line-height: 1;
+    color: #0a1f44;
+  }
+
+  .di-login-kicker-soft {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--di-text-muted);
+  }
+
+  .di-login-card .di-lede {
+    margin-top: 8px;
+    color: #0a1f44;
+  }
+
+  .di-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .di-login-card .di-btn {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  .di-login-restrict {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--di-border);
+    font-size: 12px;
+    color: var(--di-text-muted);
+  }
+
+  .di-login-foot {
+    margin: 0;
+    padding: 6px 12px;
+    border-radius: var(--di-radius-pill);
+    background: #05112b;
+    color: #f7f4ec;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+}

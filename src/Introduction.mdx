@@ -1,0 +1,31 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Introduction" />
+
+# datAInsights
+
+Component workbench for the datAInsights brand. Colour, type, and the mark come from the brand book. The screens are composed examples of the console frame. They do not belong to one product.
+
+## Tokens
+
+Three layers.
+
+- **Primitive** — the brand-book values, plus a separate status ramp for operational state. No component names a primitive colour, typeface, or radius.
+- **Semantic** — what a thing is for: page, surface, text, fill, focus, sidebar, status. Light is the console as drawn. Dark remaps the same roles.
+- **Component** — slots such as `--di-button-primary-bg`. One control can be restyled without touching the others.
+
+Gold is the scarce mark: the tittle in the symbol, and the single page eyebrow. Status (running, paused, failed) uses green, amber, and red so a screen full of rows does not spend the gold.
+
+Navy text on ivory clears AAA. Gold 600 does not clear AA for small text on ivory, so eyebrows and other small gold type use Gold 700 (`#7C5F17`). On navy, gold type uses Gold 400.
+
+## Type
+
+Sansation for display and figures. IBM Plex Sans for the interface. IBM Plex Mono for identifiers, timestamps, and eyebrows. The brand scale (72px headlines) is for editorial surfaces. The console uses the same families at a denser size, because an operator page is not a cover.
+
+## Controls
+
+Buttons, fields, tables, and navigation are native elements. A headless widget library is worth adding when a control needs it — a combobox, a menu, a dialog — and not before.
+
+Sample copy is English. Strings are props, so a product can pass another language. Icons and other elements are slots, not controls.
+
+Sample people are placeholders. Their addresses are `@data-insights.ai`.

@@ -1,0 +1,12 @@
+@layer components {
+  .di-card {
+    background: var(--di-card-bg);
+    border: 1px solid var(--di-card-border);
+    border-radius: var(--di-card-radius);
+    min-width: 0;
+  }
+
+  .di-card-pad {
+    padding: 16px 18px;
+  }
+}

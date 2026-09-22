@@ -1,0 +1,31 @@
+@layer components {
+  .di-badge {
+    min-width: 22px;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: var(--di-radius-pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--di-font-code);
+    font-size: 10px;
+    font-weight: var(--di-weight-medium);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .di-badge-neutral {
+    background: var(--di-badge-neutral-bg);
+    color: var(--di-badge-neutral-fg);
+  }
+
+  .di-badge-alert {
+    background: var(--di-badge-alert-bg);
+    color: var(--di-badge-alert-fg);
+  }
+
+  .di-badge-gold {
+    background: var(--di-badge-gold-bg);
+    color: var(--di-badge-gold-fg);
+  }
+}

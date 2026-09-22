@@ -1,0 +1,58 @@
+@layer components {
+  .di-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 22px;
+    padding: 0 8px 0 7px;
+    border-radius: var(--di-pill-radius);
+    font-family: var(--di-font-ui);
+    font-size: 12px;
+    font-weight: var(--di-weight-medium);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .di-pill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .di-pill-ok {
+    background: var(--di-status-ok-bg);
+    color: var(--di-status-ok-fg);
+  }
+
+  .di-pill-ok .di-pill-dot {
+    background: var(--di-status-ok-dot);
+  }
+
+  .di-pill-warn {
+    background: var(--di-status-warn-bg);
+    color: var(--di-status-warn-fg);
+  }
+
+  .di-pill-warn .di-pill-dot {
+    background: var(--di-status-warn-dot);
+  }
+
+  .di-pill-danger {
+    background: var(--di-status-danger-bg);
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-pill-danger .di-pill-dot {
+    background: var(--di-status-danger-dot);
+  }
+
+  .di-pill-neutral {
+    background: var(--di-status-neutral-bg);
+    color: var(--di-status-neutral-fg);
+  }
+
+  .di-pill-neutral .di-pill-dot {
+    background: var(--di-status-neutral-dot);
+  }
+}

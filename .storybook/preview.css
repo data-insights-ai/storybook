@@ -1,0 +1,14 @@
+body,
+.docs-story,
+.sb-show-main {
+  background: var(--di-bg-page, #f7f4ec);
+  color: var(--di-text, #0e1528);
+}
+
+.docblock-code-toggle:focus-visible,
+.docblock-argstable button:focus-visible,
+.sb-bar button:focus-visible,
+.sb-bar a:focus-visible {
+  outline: revert;
+  outline-offset: revert;
+}

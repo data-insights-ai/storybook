@@ -1,0 +1,20 @@
+/* Per-component slots. A screen can restyle one control without editing it. */
+
+@layer tokens {
+  :root {
+    --di-button-radius: var(--di-radius-control);
+    --di-button-primary-bg: var(--di-fill-strong);
+    --di-button-primary-fg: var(--di-text-on-strong);
+    --di-button-primary-bg-hover: var(--di-fill-strong-hover);
+
+    --di-field-bg: var(--di-bg-surface);
+    --di-field-border: var(--di-border-strong);
+    --di-field-radius: var(--di-radius-control);
+
+    --di-card-bg: var(--di-bg-surface);
+    --di-card-border: var(--di-border);
+    --di-card-radius: var(--di-radius-surface);
+
+    --di-pill-radius: var(--di-radius-pill);
+  }
+}

@@ -1,0 +1,31 @@
+@layer components {
+  .di-bars-block {
+    min-width: 0;
+  }
+
+  .di-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 72px;
+  }
+
+  .di-bars span {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    background: var(--di-navy-100);
+  }
+
+  .di-bars span.is-today {
+    background: var(--di-navy-900);
+  }
+
+  .di-bar-caption {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--di-text-muted);
+  }
+}

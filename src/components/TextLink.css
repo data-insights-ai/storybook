@@ -1,0 +1,14 @@
+@layer components {
+  .di-textlink {
+    border: 0;
+    background: none;
+    padding: 0;
+    color: var(--di-status-ok-fg);
+    font-size: 12px;
+    font-weight: var(--di-weight-medium);
+  }
+
+  .di-textlink.is-quiet {
+    color: var(--di-status-danger-fg);
+  }
+}

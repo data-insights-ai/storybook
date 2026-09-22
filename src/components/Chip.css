@@ -1,0 +1,37 @@
+@layer components {
+  .di-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 32px;
+    padding: 0 8px 0 12px;
+    border-radius: var(--di-radius-pill);
+    border: 1px solid var(--di-border-strong);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    font-size: var(--di-font-size-200);
+    white-space: nowrap;
+  }
+
+  .di-chip-remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--di-text-muted);
+  }
+
+  .di-chip-remove:hover {
+    background: var(--di-bg-subtle);
+    color: var(--di-text);
+  }
+
+  .di-chip-remove svg {
+    width: 13px;
+    height: 13px;
+  }
+}

@@ -1,0 +1,31 @@
+@layer components {
+  .di-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    flex: none;
+  }
+
+  .di-tile svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .di-tile-neutral {
+    background: var(--di-tile-bg);
+    color: var(--di-tile-fg);
+  }
+
+  .di-tile-inverse {
+    background: var(--di-tile-inverse-bg);
+    color: var(--di-tile-inverse-fg);
+  }
+
+  .di-tile-ok {
+    background: var(--di-status-ok-bg);
+    color: var(--di-status-ok-fg);
+  }
+}

@@ -1,0 +1,86 @@
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background: var(--di-bg-page);
+    color: var(--di-text);
+    font-family: var(--di-font-body);
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-regular);
+    line-height: var(--di-leading-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+
+  button,
+  input {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  img,
+  svg {
+    display: block;
+  }
+
+  :focus {
+    outline: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--di-gold-100);
+    color: var(--di-navy-900);
+  }
+
+  .di-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .di-quiet {
+    font-size: 12px;
+    color: var(--di-text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}

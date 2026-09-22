@@ -1,0 +1,22 @@
+Copyright © 2026 datAInsights GmbH
+
+All rights reserved.
+
+This repository is public so the datAInsights brand and its component
+workbench can be read. Making the files public does not grant a licence
+to use them.
+
+Except for the third-party notices below, you may not copy, modify,
+distribute, sublicense, sell, or use the source, the design, the tokens,
+the component interfaces, or the brand assets in another product or
+publication. The brand assets include the mark, the wordmark, and the
+logo files in this repository. Written permission from datAInsights GmbH
+is required before any of that use.
+
+Dependencies installed from the lockfile keep their own licences. Those
+licences are not changed by this file. IBM Plex and Sansation are used
+through the fontsource packages and remain under the licences those
+packages carry. Lucide icons remain under their own licence.
+
+The people, companies, and addresses in the stories are fictional
+placeholders.

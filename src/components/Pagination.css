@@ -1,0 +1,38 @@
+@layer components {
+  .di-pages {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .di-page-btn,
+  .di-page-current {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--di-radius-s);
+    border: 1px solid var(--di-border);
+    background: var(--di-bg-surface);
+    font-family: var(--di-font-ui);
+    font-size: 13px;
+  }
+
+  .di-page-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .di-page-btn:disabled {
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .di-page-current {
+    background: var(--di-fill-strong);
+    color: var(--di-text-on-strong);
+    border-color: transparent;
+    font-weight: var(--di-weight-medium);
+  }
+}

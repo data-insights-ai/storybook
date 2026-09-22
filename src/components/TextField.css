@@ -1,0 +1,42 @@
+@layer components {
+  .di-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .di-field-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .di-field-label {
+    font-size: var(--di-font-size-300);
+    font-weight: var(--di-weight-medium);
+    color: var(--di-text);
+  }
+
+  .di-input {
+    height: 40px;
+    width: 100%;
+    border-radius: var(--di-field-radius);
+    border: 1px solid var(--di-field-border);
+    background: var(--di-field-bg);
+    color: var(--di-text);
+    padding: 0 12px;
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-300);
+  }
+
+  .di-input::placeholder {
+    color: var(--di-text-muted);
+  }
+
+  .di-field-hint {
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-muted);
+  }
+}

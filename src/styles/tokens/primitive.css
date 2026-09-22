@@ -1,0 +1,87 @@
+/*
+ * Primitive tokens. Raw values, no job.
+ *
+ * Colour, type and radius here are the brand book.
+ * Components do not
+ * name these. They bind to semantic roles, so a theme can remap intent
+ * without a hunt through component files.
+ *
+ * The status hues are not brand colours. The book has four: navy, gold,
+ * ivory, ink. Green, amber and red exist only to name an operational
+ * state, and they stay off the gold.
+ */
+
+@layer tokens {
+  :root {
+    --di-navy-950: #05112b;
+    --di-navy-900: #0a1f44;
+    --di-navy-800: #122e5e;
+    --di-navy-700: #1d4280;
+    --di-navy-100: #e6ecf5;
+    --di-navy-50: #f2f5fa;
+
+    --di-gold-700: #7c5f17;
+    --di-gold-600: #a6811f;
+    --di-gold-500: #c9a24a;
+    --di-gold-400: #d9b86b;
+    --di-gold-100: #f2e5c3;
+    --di-gold-50: #faf3df;
+
+    --di-ivory: #f7f4ec;
+    --di-paper: #fbf8f1;
+    --di-ink: #0e1528;
+
+    /*
+     * Status hues are the console screenshot colours, held at or above
+     * 5:1. Running #186d41 is 5.04:1 on its wash and 5.79:1 on ivory.
+     * Failed #ab2e37 is 5.17:1 on its wash and 6.01:1 on ivory.
+     * Paused is the gold ramp: Gold 700 is 5.45:1 on ivory.
+     */
+    --di-ok-700: #186d41;
+    --di-ok-100: #e0e7dc;
+    --di-danger-700: #ab2e37;
+    --di-danger-100: #f1e0db;
+
+    --di-font-display: "Sansation", "Helvetica Neue", Arial, sans-serif;
+    --di-font-sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --di-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --di-font-size-100: 0.6875rem;
+    --di-font-size-200: 0.8125rem;
+    --di-font-size-300: 0.875rem;
+    --di-font-size-400: 1rem;
+    --di-font-size-500: 1.25rem;
+    --di-font-size-600: 1.75rem;
+    --di-font-size-700: 2.125rem;
+
+    --di-weight-regular: 400;
+    --di-weight-medium: 500;
+    --di-weight-semibold: 600;
+    --di-weight-bold: 700;
+
+    --di-leading-tight: 1.05;
+    --di-leading-snug: 1.35;
+    --di-leading-body: 1.55;
+
+    --di-tracking-tight: -0.025em;
+    --di-tracking-ui: 0.01em;
+    --di-tracking-eyebrow: 0.16em;
+
+    --di-radius-s: 6px;
+    --di-radius-m: 8px;
+    --di-radius-l: 12px;
+    --di-radius-xl: 22px;
+
+    --di-space-1: 4px;
+    --di-space-2: 8px;
+    --di-space-3: 12px;
+    --di-space-4: 16px;
+    --di-space-5: 24px;
+    --di-space-6: 32px;
+    --di-space-7: 48px;
+
+    /* Brand book: motion under 240ms, ease-out, one thing at a time. */
+    --di-duration: 180ms;
+    --di-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}

@@ -1,0 +1,31 @@
+@layer components {
+  .di-session {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  .di-session-copy {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .di-session-name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: var(--di-font-display);
+    font-size: 20px;
+    font-weight: var(--di-weight-bold);
+    letter-spacing: var(--di-tracking-tight);
+  }
+
+  .di-session-detail {
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--di-text-muted);
+  }
+}

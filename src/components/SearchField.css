@@ -1,0 +1,34 @@
+@layer components {
+  .di-search {
+    position: relative;
+    flex: 1;
+    min-width: 180px;
+  }
+
+  .di-search svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    width: 15px;
+    height: 15px;
+    transform: translateY(-50%);
+    color: var(--di-text-muted);
+    pointer-events: none;
+  }
+
+  .di-search-input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px 0 34px;
+    border-radius: var(--di-field-radius);
+    border: 1px solid var(--di-border);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-200);
+  }
+
+  .di-search-input::placeholder {
+    color: var(--di-text-muted);
+  }
+}

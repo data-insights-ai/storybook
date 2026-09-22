@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 138" role="img" aria-label="datAInsights">
+  <g transform="translate(-27 -23)" stroke="#05112b" stroke-width="5.7" fill="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10">
+    <polyline points="86.5 30.6 32 62.1 32 124.9 86.5 156.4"/>
+    <polyline points="115.1 156.4 169.6 124.9 169.6 62.1 115.1 30.6"/>
+    <line x1="136.4" y1="73.2" x2="136.4" y2="120.1"/>
+    <polyline points="51.5 116.6 79.9 63.5 107.8 116.6"/>
+  </g>
+  <g transform="translate(-27 -23)">
+    <circle cx="51.5" cy="119.6" r="7.9" fill="#05112b"/>
+    <circle cx="108.4" cy="119.6" r="7.9" fill="#05112b"/>
+    <circle cx="136.4" cy="119.6" r="7.9" fill="#05112b"/>
+    <circle cx="136.4" cy="61.3" r="7.9" fill="#c9a24a"/>
+  </g>
+</svg>
