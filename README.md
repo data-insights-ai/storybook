@@ -36,7 +36,7 @@ In the app’s `.npmrc`:
 `NODE_AUTH_TOKEN` is a GitHub token with `read:packages`.
 
 ```bash
-pnpm add @data-insights-ai/ui@0.1.1
+pnpm add @data-insights-ai/ui@0.1.2
 ```
 
 ```tsx
