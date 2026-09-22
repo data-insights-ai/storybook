@@ -3,6 +3,7 @@ name: CI
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -40,7 +41,7 @@ jobs:
           EOF
       - run: pnpm build-storybook
       - uses: actions/upload-artifact@v7
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
         with:
           name: storybook
           path: dist/storybook
@@ -79,7 +80,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: |
+      always() &&
+      needs.test.result == 'success' &&
+      (needs.publish.result == 'success' || needs.publish.result == 'skipped') &&
+      (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')))
     needs: [test, publish]
     runs-on: ubuntu-latest
     steps:
@@ -106,5 +111,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           protocol: ftps
+          security: loose
+          timeout: 120000
           local-dir: ./dist/storybook/
           server-dir: storybook.data-insights.ai/public/
