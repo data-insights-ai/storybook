@@ -115,3 +115,10 @@ jobs:
           timeout: 120000
           local-dir: ./dist/storybook/
           server-dir: storybook.data-insights.ai/public/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .env
+            **/*.md
+            **/README.md
