@@ -1,30 +1,71 @@
 import { Meta } from "@storybook/addon-docs/blocks";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../components/DataTable";
+import { Page, Section } from "./guide/Guide";
+import { CompareChart, RangeChart, SeriesChart } from "./guide/BrandCharts";
+import { IconSet, Motion, Motifs } from "./guide/Specimens";
 
 <Meta title="Foundations/Practice" />
 
-# How the brand behaves in a screen.
+<Page
+  eyebrow="Motifs and marks"
+  title="The vocabulary of proof."
+  lede="A small set of recurring forms. Use them sparingly, and always for the meaning they carry."
+>
+  <Motifs />
 
-## Motifs
+  <Section eyebrow="Charts" title="Charts that earn their ink." lede="Every chart is an argument. Show the axis. Name the source. Mark what is estimated. Gold is the single value the eye should land on.">
+    <div className="di-charts">
+      <figure>
+        <figcaption>Line · series</figcaption>
+        <SeriesChart />
+        <p>One series in navy. One value in gold. Estimated values use the dashed tail.</p>
+      </figure>
+      <figure>
+        <figcaption>Bar · compare</figcaption>
+        <CompareChart />
+        <p>When we are the story, we are the gold bar. Others go grey. No extra colours.</p>
+      </figure>
+      <figure>
+        <figcaption>Table · with receipts</figcaption>
+        <DataTable caption="Metrics with their sources">
+          <TableHead>
+            <TableColumn>Metric</TableColumn>
+            <TableColumn>Value</TableColumn>
+            <TableColumn>Source</TableColumn>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>Grounded answers</TableCell>
+              <TableCell>74%</TableCell>
+              <TableCell>log-2026-Q3</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Replay latency</TableCell>
+              <TableCell>180 ms</TableCell>
+              <TableCell>bench-v4.2</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Audit coverage</TableCell>
+              <TableCell><em>est.</em> 92%</TableCell>
+              <TableCell>internal</TableCell>
+            </TableRow>
+          </TableBody>
+        </DataTable>
+        <p>Every row carries its source. Estimates are marked <em>est.</em> — never hidden.</p>
+      </figure>
+      <figure>
+        <figcaption>Range · uncertainty</figcaption>
+        <RangeChart />
+        <p>Confidence is drawn, not claimed. Band for range, solid line for median.</p>
+      </figure>
+    </div>
+  </Section>
 
-Use a form for the meaning it carries.
+  <Section eyebrow="Icons" title="Restrained, and literal." lede="One stroke weight. One grid. Geometric, never illustrative. An icon labels an action. It does not decorate. 24 by 24, 1.5px stroke, round caps, 2px corners. Navy on a warm surface. Gold only when the state is active or cited.">
+    <IconSet />
+  </Section>
 
-- Brackets mark a temporal interval. They are not a decorative frame.
-- A graph is a few nodes and edges, about seven at most, for an evidence chain.
-- The truth-tittle is one gold dot per view. It is not repeated beside itself.
-- A timestamp is ISO-8601, `YYYY-MM-DD`, in IBM Plex Mono. Small gold type is Gold 700 (`#7C5F17`). Gold 600 does not clear AA at that size.
-- The section mark `§` is for a numbered legal clause.
-- A hairline is 1px at 12% ink, and it divides. It is not decoration.
-
-## Charts
-
-A chart is an argument. Show the axis. Name the source. Mark an estimate. Navy carries the series. Gold is the one value the eye should land on. A dashed tail is an estimate. Other series, when we are the story, are grey. A range is a band. The solid line is the median. Every row that states a number carries its source, and an estimate is labelled `est.`
-
-## Icons
-
-Icons label an action. They are geometric, on a 24×24 grid, with a 1.5px stroke, round caps, and a 2px corner. The stroke is navy on a warm surface. Gold is only the active or cited state. Lucide is the set we use, at that weight.
-
-## Motion
-
-Move something because it changed: a value, a loaded source, a cited claim. If a cut will do, use a cut.
-
-Transitions sit between 120ms and 240ms, on `--di-ease`, which is an ease-out. No spring, no overshoot, no bounce. One thing moves at a time. A bracket arrives in a frame or two. It does not glide in.
+  <Section eyebrow="Motion" title="Motion is a verb, not a mood." lede="We move a thing because it has moved. If it can be a cut, it is a cut.">
+    <Motion />
+  </Section>
+</Page>

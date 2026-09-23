@@ -26,7 +26,15 @@ export default defineConfig({
     },
     rollupOptions: {
       external(id) {
-        return id.endsWith(".css") || id === "react" || id === "react-dom" || id.startsWith("react/") || id === "lucide-react";
+        return (
+          id.endsWith(".css") ||
+          id === "react" ||
+          id === "react-dom" ||
+          id.startsWith("react/") ||
+          id === "lucide-react" ||
+          id === "recharts" ||
+          id.startsWith("recharts/")
+        );
       },
       output: {
         preserveModules: true,

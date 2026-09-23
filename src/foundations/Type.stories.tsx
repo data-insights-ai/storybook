@@ -63,7 +63,7 @@ function Scale() {
         Three voices.
       </h1>
       <p className="di-lede">
-        Sansation sets the display. IBM Plex Sans carries the interface. IBM Plex Mono stamps identifiers, timestamps and the one eyebrow on a page. The console uses the same families as the brand book, at a denser size than a cover.
+        Five steps, each with a reason. Sansation carries H1 at 72–104, H2 at 40–50, and H3 at 24–30. IBM Plex Sans is the body, 16–19. IBM Plex Mono at 11–12, in Gold 700, is the one eyebrow. The console uses the same families, a step denser than a cover.
       </p>
       <div className="di-type-sample" style={{ marginTop: 24 }}>
         {rows.map((row) => (

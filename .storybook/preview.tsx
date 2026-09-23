@@ -34,7 +34,7 @@ const preview: Preview = {
         order: [
           "Introduction",
           "Foundations",
-          ["Essence", "Voice", "Color", "Type", "Logo", "Mark", "Practice"],
+          ["Essence", "Voice", "Color", "Type", "Logo", "Mark", "Practice", "Surfaces"],
           "Components",
           "Patterns",
           "Screens",

@@ -39,6 +39,10 @@
     cursor: pointer;
   }
 
+  svg.lucide {
+    stroke-width: 1.5px;
+  }
+
   img,
   svg {
     display: block;

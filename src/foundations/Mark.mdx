@@ -1,29 +1,62 @@
 import { Meta } from "@storybook/addon-docs/blocks";
+import logo from "../assets/logo.svg";
+import logoInverse from "../assets/logo-inverse.svg";
+import logoMono from "../assets/logo-mono.svg";
+import mark from "../assets/mark.svg";
+import { ClearSpace, Lockup, Lockups, Mark, Marks, Page, Rule, Rules, Section } from "./guide/Guide";
+import { Cobrand, Misuse } from "./guide/Specimens";
 
 <Meta title="Foundations/Mark" />
 
-# The mark, then the name.
+<Page
+  eyebrow="The mark"
+  title="Every piece means something."
+  lede="The brackets are a temporal interval, the window in which a claim holds. The peak is an A, and the simplest graph. The stem is the I. One node is gold. That tittle is verified truth, and a view gets only one."
+>
+  <Marks>
+    <Mark mark="[ ]">Brackets mark the interval. They are not a decorative frame.</Mark>
+    <Mark mark="/ \">Two edges meet at a peak. That is the A.</Mark>
+    <Mark mark="I">A single stem. Upright, and unornamented.</Mark>
+    <Mark mark="•">Nodes are the feet of the graph.</Mark>
+    <Mark mark="•" tone="gold">The gold tittle is the one moment of verified truth.</Mark>
+  </Marks>
 
-The Logo story shows the lockups. These are the rules that go with them.
+  <Section eyebrow="Lockups" title="Four variants. Four contexts." lede="The primary lockup is the default. The others exist for a substrate where it cannot live.">
+    <Lockups>
+      <Lockup title="Primary" detail="Ivory, paper, and white. Digital and print.">
+        <img src={logo} alt="datAInsights primary lockup" />
+      </Lockup>
+      <Lockup title="Inverse" detail="Navy only. Never on gold, and never on a photograph." tone="dark">
+        <img src={logoInverse} alt="datAInsights inverse lockup" />
+      </Lockup>
+      <Lockup title="Monochrome" detail="Single-ink print, embossing, and merchandise. The gold tittle becomes navy.">
+        <img src={logoMono} alt="datAInsights monochrome lockup" />
+      </Lockup>
+      <Lockup title="Mark only" detail="A favicon, an avatar, or an app tile. The name is set nearby.">
+        <img className="is-mark" src={mark} alt="datAInsights mark" />
+      </Lockup>
+    </Lockups>
+  </Section>
 
-The brackets are a temporal interval, `[t0, t1]`, the window in which a claim holds. The peak is an A, and the simplest graph. The stem is the I. The nodes are the feet of the graph. One of them is gold. That tittle is verified truth, and there is only one of them in a view.
+  <Section
+    eyebrow="Clear space"
+    title="Give the mark room to breathe."
+    lede="X is the height of the mark’s cap. Keep at least 1X of empty space on all four sides. The gold squares are that 1X, drawn at this scale."
+  >
+    <ClearSpace />
+  </Section>
 
-## Which lockup
+  <Section eyebrow="Misuse" title="Six things never to do." lede="The logo is one unit. Each of these breaks the meaning.">
+    <Misuse />
+  </Section>
 
-The primary lockup is the default, on ivory or paper. Inverse is for navy 900 or navy 950, never for gold and never for a photograph. Monochrome is for single-ink print, embossing, and merchandise; the gold tittle becomes navy. The mark alone is for a favicon, an avatar, or an app tile, and the name is set nearby.
-
-## Clear space and size
-
-X is the cap height of the mark. Keep at least 1X of empty space on all four sides.
-
-The wordmark is at least 20px tall on screen and 10mm tall in print. The mark alone is at least 16px, or 6mm in print.
-
-## What we do not do
-
-Scale the logo uniformly. Leave its colours as navy and gold, or the inverse pair. Keep it horizontal, flat, and on a solid ivory or navy field.
-
-Do not stretch it, skew it, recolour it, rotate it, or add a shadow. Do not place it on gold, or on a busy photograph.
-
-## Next to another mark
-
-Give both marks equal optical height, not the same bounding box. Separate them with a vertical rule, and leave one cap-height of clear space on either side of that rule. They share a baseline. In a strip of three or more, use the monochrome logo. Leave the other brand in its own colours. A photograph is not a background for the pair.
+  <Section eyebrow="Beside another mark" title="Next to another mark, we hold our line.">
+    <Cobrand />
+    <Rules>
+      <Rule>Match optical height, not the bounding box. Do not shrink our mark to fit a taller wordmark.</Rule>
+      <Rule>The separator is a vertical rule. Not an ampersand, a slash, a plus, or a multiplication sign.</Rule>
+      <Rule>In a strip of three or more, use the monochrome logo. Leave the other brand in its own colours.</Rule>
+      <Rule>Order the marks alphabetically, or by the date of the announcement. A photograph is not a background.</Rule>
+    </Rules>
+  </Section>
+</Page>

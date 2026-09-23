@@ -1,0 +1,112 @@
+@layer components {
+  .di-chart {
+    width: 100%;
+    height: 240px;
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: 11px;
+  }
+
+  .di-chart .recharts-cartesian-axis-tick text {
+    fill: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: 11px;
+  }
+
+  .di-chart .recharts-cartesian-grid line,
+  .di-chart .recharts-cartesian-axis-line,
+  .di-chart .recharts-curve.recharts-tooltip-cursor {
+    stroke: var(--di-rule);
+  }
+
+  .di-chart .recharts-rectangle.recharts-tooltip-cursor {
+    fill: var(--di-chart-band);
+    stroke: none;
+  }
+
+  .di-chart .recharts-surface:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-chart .recharts-layer:focus {
+    outline: none;
+  }
+
+  .di-chart-tip {
+    min-width: 148px;
+    padding: 8px 10px;
+    border: 1px solid var(--di-rule);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    font-family: var(--di-font-ui);
+    font-size: 12px;
+  }
+
+  .di-chart-tip-label {
+    margin: 0 0 6px;
+    font-family: var(--di-font-code);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--di-text-muted);
+  }
+
+  .di-chart-tip ul,
+  .di-chart-legend {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-chart-tip ul {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .di-chart-tip li {
+    display: grid;
+    grid-template-columns: 8px 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .di-chart-tip i,
+  .di-chart-legend i {
+    width: 8px;
+    height: 8px;
+  }
+
+  .di-chart-tip b {
+    font-family: var(--di-font-code);
+    font-weight: var(--di-weight-medium);
+  }
+
+  .di-chart-legend {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 4px 4px 0;
+    color: var(--di-text-muted);
+    font-family: var(--di-font-ui);
+    font-size: 12px;
+  }
+
+  .di-chart-legend li {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .di-chart-legend i.is-dashed {
+    width: 16px;
+    height: 0;
+    border-top: 1.6px dashed var(--di-chart-series);
+    background: none;
+  }
+
+  .di-chart-legend svg {
+    width: 12px;
+    height: 12px;
+  }
+}

@@ -23,6 +23,12 @@
 
     --di-border: #e0dbd1;
     --di-border-strong: #8a8172;
+    --di-rule: rgba(14, 21, 40, 0.12);
+    --di-chart-series: var(--di-navy-900);
+    --di-chart-accent: var(--di-gold-500);
+    --di-chart-muted: rgba(10, 31, 68, 0.28);
+    --di-chart-muted-strong: rgba(10, 31, 68, 0.48);
+    --di-chart-band: rgba(10, 31, 68, 0.14);
 
     --di-fill-strong: var(--di-navy-900);
     --di-fill-strong-hover: var(--di-navy-800);
@@ -95,6 +101,12 @@
 
     --di-border: #2c4268;
     --di-border-strong: #5c7094;
+    --di-rule: rgba(247, 244, 236, 0.12);
+    --di-chart-series: var(--di-ivory);
+    --di-chart-accent: var(--di-gold-400);
+    --di-chart-muted: rgba(247, 244, 236, 0.28);
+    --di-chart-muted-strong: rgba(247, 244, 236, 0.48);
+    --di-chart-band: rgba(247, 244, 236, 0.16);
 
     --di-fill-strong: var(--di-gold-500);
     --di-fill-strong-hover: var(--di-gold-400);

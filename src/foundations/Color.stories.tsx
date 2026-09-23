@@ -30,6 +30,7 @@ const families = [
       ["Ivory", "#F7F4EC", "#0a1f44", "Page. Warm, not white."],
       ["Paper", "#FBF8F1", "#0a1f44", "Cards and fields."],
       ["Ink", "#0E1528", "#f7f4ec", "Body text on light."],
+      ["Rule", "rgba(14, 21, 40, 0.12)", "#0a1f44", "Hairline dividers only. Never a fill."],
     ],
   },
 ];
@@ -38,6 +39,14 @@ const status = [
   ["Running", "#186D41", "#E0E7DC"],
   ["Paused", "#7C5F17", "#FAF3DF"],
   ["Failed", "#AB2E37", "#F1E0DB"],
+];
+
+const chartRoles = [
+  ["Series", "--di-chart-series", "var(--di-chart-series)", "The recorded line."],
+  ["Accent", "--di-chart-accent", "var(--di-chart-accent)", "The one value."],
+  ["Muted", "--di-chart-muted", "var(--di-chart-muted)", "A comparison bar."],
+  ["Strong", "--di-chart-muted-strong", "var(--di-chart-muted-strong)", "A second comparison, still grey."],
+  ["Band", "--di-chart-band", "var(--di-chart-band)", "The range around a median."],
 ];
 
 function Board() {
@@ -71,12 +80,13 @@ function Board() {
             <h2>
               {family.name} <span>/ {family.role}</span>
             </h2>
-            {family.swatches.map(([name, hex, ink]) => (
+            {family.swatches.map(([name, hex, ink, role]) => (
               <div key={name} className="di-swatch" style={{ background: hex, color: ink }}>
                 <b>
                   {name}
-                  <small>{hex}</small>
+                  <small>{name === "Rule" ? "Ink · 12%" : hex}</small>
                 </b>
+                <span>{role}</span>
               </div>
             ))}
           </section>
@@ -95,6 +105,23 @@ function Board() {
             </div>
           ))}
         </div>
+      </section>
+      <section>
+        <h2 className="di-block-title">Chart roles</h2>
+        <p className="di-lede">
+          Charts use the same navy and gold. Series is the line. Accent is the single value the eye should land on. Muted bars are everyone else. The band is a range, not a claim.
+        </p>
+        <ul className="di-chart-roles">
+          {chartRoles.map(([name, token, color, role]) => (
+            <li key={name}>
+              <i style={{ background: color }} />
+              <b>
+                {name} <small>{token}</small>
+              </b>
+              <span>{role}</span>
+            </li>
+          ))}
+        </ul>
       </section>
     </div>
   );

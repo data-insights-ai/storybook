@@ -31,6 +31,8 @@ Sample people use invented names. Their email addresses are `name@data-insights.
 | Colour, type, radius | `src/styles/tokens` |
 | A control’s look | that component’s CSS, using semantic `--di-*` tokens |
 | A new reusable control | `src/components`, a story beside it, an export from `src/index.ts` |
+| A chart | `Chart` wraps one Recharts chart. `ChartConfig` names each series and sets its colour; `Chart` exposes that colour as `--color-<key>`. `ChartTooltip` and `ChartLegend` read the same config. Colours are `--di-chart-series`, `--di-chart-accent` (one value), `--di-chart-muted`, and `--di-chart-band`. Do not draw a one-off SVG chart. |
+| An icon | `Icon`, with one Lucide icon as its child. Import that icon by name from `lucide-react` (`import { Search } from "lucide-react"`). `Icon` does not import the set, so the app keeps only the icons it renders. Do not import `lucide-react`’s `icons` namespace, and do not add a `name` prop that maps to every icon. |
 | A console example | `src/screens`, composed from components |
 | Storybook chrome (checklist, theme, test wrapper) | `.storybook` |
 
@@ -42,7 +44,7 @@ Tokens are three layers. Primitive values live in `primitive.css`. Semantic role
 
 Foundations in this Storybook are the source for applying the brand. Colour, type, the mark, voice, and motion are written there. Do not send a designer or an agent to a separate brand book, and do not copy personal contact details into these pages.
 
-- Navy is the voice. Ivory is the page. Ink is body text. Gold is one moment per view: the tittle in the mark, or a single eyebrow.
+- Navy is the voice. Ivory is the page. Ink is body text. Gold is one moment per view: the tittle in the mark, or a single eyebrow. Rule is ink at 12% (`--di-rule`): a hairline only, never a fill.
 - Small gold text on ivory uses Gold 700 (`#7C5F17`). Gold 600 does not clear WCAG AA at that size. Gold text on navy uses Gold 400.
 - Paused uses the gold ramp (Gold 700 `#7C5F17` on ivory, Gold 400 on navy). Running is `#186D41` on wash `#E0E7DC`. Failed is `#AB2E37` on wash `#F1E0DB`. Those are the console hues, and each word stays above 5:1. Keep this set. A second yellow, or a generic traffic-light green or red, breaks the console.
 - Sansation is display and figures. IBM Plex Sans is the interface. IBM Plex Mono is identifiers, timestamps, and eyebrows.

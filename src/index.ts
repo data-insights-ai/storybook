@@ -2,6 +2,8 @@ export { Badge } from "./components/Badge";
 export { Bars } from "./components/Bars";
 export { Button } from "./components/Button";
 export { Card } from "./components/Card";
+export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/Chart";
+export type { ChartConfig } from "./components/Chart";
 export { Channel } from "./components/Channel";
 export { Chip } from "./components/Chip";
 export {
@@ -16,6 +18,7 @@ export {
   TableRow,
 } from "./components/DataTable";
 export { PageHeader, SectionTitle } from "./components/Heading";
+export { Icon } from "./components/Icon";
 export { IconTile } from "./components/IconTile";
 export { Actions, Grid, Numbered, Stack, Toolbar, ToolbarEnd } from "./components/Layout";
 export { KeyValue, KeyValues, Metric } from "./components/Metric";
