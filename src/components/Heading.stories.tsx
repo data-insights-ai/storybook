@@ -3,7 +3,7 @@ import { PageHeader } from "./Heading";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
-  title: "Components/PageHeader",
+  title: "Blocks/PageHeader",
   component: PageHeader,
   tags: ["autodocs"],
   args: {

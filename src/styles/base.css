@@ -25,18 +25,25 @@
   h1,
   h2,
   h3,
+  h4,
   p {
     margin: 0;
   }
 
   button,
-  input {
+  input,
+  select,
+  textarea {
     font: inherit;
     color: inherit;
   }
 
   button {
     cursor: pointer;
+  }
+
+  table {
+    border-collapse: collapse;
   }
 
   svg.lucide {
@@ -52,6 +59,12 @@
     outline: none;
   }
 
+  /*
+   * Navy on paper, gold on the night sheet and the navy rail. The
+   * prototype rang the focus in seal gold throughout; gold on paper
+   * measures 2.1:1, under the 3:1 a focus indicator has to clear, so
+   * the ring follows the ground it sits on.
+   */
   :focus-visible {
     outline: 2px solid var(--di-focus);
     outline-offset: 2px;
@@ -75,8 +88,27 @@
   }
 
   .di-quiet {
-    font-size: 12px;
+    font-size: var(--di-font-size-300);
     color: var(--di-text-muted);
+  }
+
+  /* Identifiers, timestamps and measured values run in the mono track. */
+  .di-mono {
+    font-family: var(--di-font-code);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * The one ornament in the system: an 8px tick scale. It closes a
+   * header, or any block that reports a measured value.
+   */
+  .di-tick-rule {
+    height: 5px;
+    background-image: var(--di-tick);
+  }
+
+  .di-tick-rule-thin {
+    height: 3px;
   }
 
   @media (prefers-reduced-motion: reduce) {

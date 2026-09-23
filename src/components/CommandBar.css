@@ -1,0 +1,168 @@
+@layer components {
+  .di-command {
+    width: min(560px, 100%);
+    overflow: hidden;
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+    box-shadow: var(--di-shadow-plane);
+  }
+
+  .di-command-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 46px;
+    padding: 0 13px;
+    border-bottom: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+  }
+
+  .di-command-icon {
+    width: 18px;
+    height: 18px;
+    flex: none;
+    color: var(--di-text-muted);
+  }
+
+  .di-command-field {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--di-text);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-500);
+    outline: none;
+  }
+
+  .di-command-field::placeholder {
+    color: var(--di-text-subtle);
+  }
+
+  .di-command-list {
+    max-height: 320px;
+    padding: 6px;
+    overflow-y: auto;
+  }
+
+  .di-command-group + .di-command-group {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-command-group-label {
+    padding: 5px 8px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-text-subtle);
+  }
+
+  .di-command-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: var(--di-h-comfort);
+    padding: 0 8px;
+    border: 0;
+    border-radius: var(--di-radius-micro);
+    background: transparent;
+    color: var(--di-text);
+    font-size: var(--di-font-size-400);
+    text-align: left;
+  }
+
+  .di-command-row:hover,
+  .di-command-row.is-active {
+    background: var(--di-bg-page);
+  }
+
+  .di-command-row-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    flex: none;
+    color: var(--di-text-muted);
+  }
+
+  .di-command-row-icon > svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .di-command-row-label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .di-command-row-meta {
+    flex: none;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-subtle);
+  }
+
+  .di-command-foot {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 8px 13px;
+    border-top: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-subtle);
+  }
+
+  .di-command-privacy {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
+    color: var(--di-text-muted);
+  }
+
+  .di-command-privacy > svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  .di-command-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 22px;
+    padding: 0 9px;
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-pill);
+    background: var(--di-bg-surface);
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .di-command-chip.is-active {
+    border-color: var(--di-text);
+    background: var(--di-bg-page);
+    color: var(--di-text);
+  }
+
+  /* Proposed, not chosen: the ring's edge rather than the register's. */
+  .di-command-chip.is-suggested {
+    border-color: var(--di-ai-ring);
+    background: var(--di-ai-surface);
+    color: var(--di-ai-ink);
+  }
+}

@@ -1,0 +1,49 @@
+@layer components {
+  .di-seal-specimen {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: var(--di-space-4);
+    margin: var(--di-space-5) 0;
+  }
+
+  .di-seal-specimen-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--di-space-3);
+    padding: var(--di-space-4);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+  }
+
+  .di-seal-specimen-item > span {
+    margin-top: 3px;
+  }
+
+  .di-seal-specimen-name {
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-semibold);
+    color: var(--di-text);
+  }
+
+  .di-seal-specimen-value {
+    margin-top: 3px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
+
+  .di-seal-specimen-note {
+    margin-top: 7px;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-subtle);
+  }
+
+  .di-index-specimen {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: var(--di-space-5) 0;
+  }
+}

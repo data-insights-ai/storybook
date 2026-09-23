@@ -1,13 +1,22 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
-  title: "Components/StatusPill",
+  title: "Primitives/StatusPill",
   component: StatusPill,
   tags: ["autodocs"],
-  args: { children: "Active", tone: "ok", dot: true },
+  args: {
+    tone: "ok",
+    dot: true,
+    children: "running",
+  },
   argTypes: {
-    tone: { control: "radio", options: ["ok", "warn", "danger", "neutral"] },
+    tone: {
+      control: "radio",
+      options: ["ok", "warn", "danger", "recorded", "neutral", "ai"],
+    },
+    dot: { control: "boolean" },
     children: { control: "text" },
   },
 } satisfies Meta<typeof StatusPill>;
@@ -15,29 +24,68 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Running: Story = {};
+export const Running: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("running")).toBeVisible();
+  },
+};
 
+/** Paused runs on the gold ramp, never on a second yellow. */
 export const Paused: Story = {
-  args: { tone: "warn", children: "Paused" },
+  args: { tone: "warn", children: "paused" },
 };
 
 export const Failed: Story = {
-  args: { tone: "danger", children: "High" },
+  args: { tone: "danger", children: "failed" },
+};
+
+/** A fact the register holds, rather than a state a machine is in. */
+export const Recorded: Story = {
+  args: { tone: "recorded", children: "sealed" },
 };
 
 export const Neutral: Story = {
-  args: { tone: "neutral", children: "Person" },
+  args: { tone: "neutral", children: "queued" },
 };
 
-export const Set: StoryObj = {
+/** A model's claim: the hollow ring, never a filled dot. */
+export const Inferred: Story = {
+  args: { tone: "ai", children: "ai insight" },
+};
+
+/** Without the dot, where a column of pills already reads as one channel. */
+export const WithoutDot: Story = {
+  args: { dot: false, children: "running" },
+};
+
+/** The whole set. Every word clears 5:1 on its own wash. */
+export const AllTones: Story = {
+  parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-      <StatusPill tone="ok">Active</StatusPill>
-      <StatusPill tone="ok">Online</StatusPill>
-      <StatusPill tone="warn">Paused</StatusPill>
-      <StatusPill tone="warn">On request</StatusPill>
-      <StatusPill tone="danger">High</StatusPill>
-      <StatusPill tone="neutral">Medium</StatusPill>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <StatusPill tone="ok">running</StatusPill>
+      <StatusPill tone="warn">paused</StatusPill>
+      <StatusPill tone="danger">failed</StatusPill>
+      <StatusPill tone="recorded">sealed</StatusPill>
+      <StatusPill tone="neutral">queued</StatusPill>
+      <StatusPill tone="ai">ai insight</StatusPill>
+    </div>
+  ),
+};
+
+/** The same six on the night sheet, each still above 5:1 on its wash. */
+export const NightSheet: Story = {
+  globals: { theme: "dark" },
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <StatusPill tone="ok">running</StatusPill>
+      <StatusPill tone="warn">paused</StatusPill>
+      <StatusPill tone="danger">failed</StatusPill>
+      <StatusPill tone="recorded">sealed</StatusPill>
+      <StatusPill tone="neutral">queued</StatusPill>
+      <StatusPill tone="ai">ai insight</StatusPill>
     </div>
   ),
 };

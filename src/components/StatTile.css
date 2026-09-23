@@ -1,0 +1,158 @@
+@layer components {
+  .di-stat-tile {
+    display: flex;
+    overflow: hidden;
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+  }
+
+  .di-stat-tile.is-danger {
+    border-color: var(--di-status-danger-border);
+  }
+
+  .di-stat-tile-index {
+    display: flex;
+    justify-content: center;
+    width: var(--di-index-col-sm);
+    flex: none;
+    padding-top: 12px;
+    border-right: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+  }
+
+  .di-stat-tile.is-danger .di-stat-tile-index {
+    border-right-color: var(--di-status-danger-border);
+    background: var(--di-status-danger-bg);
+  }
+
+  .di-stat-tile-ordinal {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+  }
+
+  .di-stat-tile.is-danger .di-stat-tile-ordinal {
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-stat-tile-body {
+    flex: 1;
+    min-width: 0;
+    padding: 11px 14px 13px;
+  }
+
+  .di-stat-tile-label {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-text-subtle);
+  }
+
+  /* The measurement, in the mono track so a column of them stays still. */
+  .di-stat-tile-value {
+    margin-top: 6px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-700);
+    font-weight: var(--di-weight-medium);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: var(--di-tracking-tight);
+    line-height: var(--di-leading-tight);
+    color: var(--di-text);
+  }
+
+  .di-stat-tile.is-danger .di-stat-tile-value {
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-stat-tile-value.is-compact {
+    font-size: var(--di-font-size-600);
+  }
+
+  .di-stat-tile-delta {
+    margin-top: 5px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .di-stat-tile-delta.is-ok {
+    color: var(--di-status-ok-fg);
+  }
+
+  .di-stat-tile-delta.is-warn {
+    color: var(--di-status-warn-fg);
+  }
+
+  .di-stat-tile-delta.is-danger {
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-stat-tile-body .di-tick-rule {
+    margin-top: 11px;
+  }
+
+  .di-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+
+  .di-distribution-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--di-space-3);
+    margin-bottom: 5px;
+  }
+
+  .di-distribution-label {
+    font-size: var(--di-font-size-300);
+    color: var(--di-text);
+  }
+
+  .di-distribution-value {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-muted);
+  }
+
+  .di-distribution-track {
+    height: 6px;
+    border-radius: 2px;
+    background: var(--di-bg-subtle);
+  }
+
+  .di-distribution-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--di-chart-series);
+  }
+
+  .di-distribution-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--di-space-3);
+    padding-top: 10px;
+    border-top: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-distribution-total-label {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-text-subtle);
+  }
+
+  .di-distribution-total-value {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text);
+  }
+}

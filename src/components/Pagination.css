@@ -2,26 +2,44 @@
   .di-pages {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
   }
 
-  .di-page-btn,
-  .di-page-current {
-    width: 28px;
-    height: 28px;
+  .di-page-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--di-radius-s);
-    border: 1px solid var(--di-border);
-    background: var(--di-bg-surface);
-    font-family: var(--di-font-ui);
-    font-size: 13px;
+    min-width: 26px;
+    height: 26px;
+    padding: 0 6px;
+    border: 1px solid transparent;
+    border-radius: var(--di-radius-micro);
+    background: transparent;
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    transition: background-color var(--di-duration) var(--di-ease),
+      border-color var(--di-duration) var(--di-ease),
+      color var(--di-duration) var(--di-ease);
   }
 
-  .di-page-btn svg {
-    width: 14px;
-    height: 14px;
+  .di-page-btn > svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .di-page-btn:hover:not(:disabled) {
+    border-color: var(--di-border);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+  }
+
+  .di-page-btn.is-current {
+    border-color: var(--di-fill-strong);
+    background: var(--di-fill-strong);
+    color: var(--di-text-on-strong);
   }
 
   .di-page-btn:disabled {
@@ -30,9 +48,11 @@
   }
 
   .di-page-current {
-    background: var(--di-fill-strong);
-    color: var(--di-text-on-strong);
-    border-color: transparent;
-    font-weight: var(--di-weight-medium);
+    min-width: 26px;
+    text-align: center;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text);
   }
 }

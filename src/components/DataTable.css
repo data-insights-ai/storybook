@@ -1,90 +1,150 @@
 @layer components {
   .di-table-wrap {
-    border: 1px solid var(--di-border);
+    overflow: hidden;
+    border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
+    background: var(--di-table-bg);
+  }
+
+  .di-table-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-2);
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+  }
+
+  /* The table scrolls inside its own frame; the page does not. */
+  .di-table-scroll {
     overflow-x: auto;
-    max-width: 100%;
   }
 
   .di-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: var(--di-font-size-300);
+    font-size: var(--di-font-size-400);
   }
 
   .di-table th {
-    padding: 10px 14px;
+    height: 32px;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--di-border);
+    background: var(--di-bg-page);
     text-align: left;
     font-family: var(--di-font-code);
-    font-size: 10px;
+    font-size: var(--di-font-size-200);
     font-weight: var(--di-weight-medium);
-    letter-spacing: 0.12em;
+    letter-spacing: var(--di-tracking-eyebrow);
     text-transform: uppercase;
     color: var(--di-text-muted);
-    background: var(--di-bg-subtle);
-    border-bottom: 1px solid var(--di-border);
+    white-space: nowrap;
+  }
+
+  .di-table th.is-sorted {
+    color: var(--di-text);
+  }
+
+  .di-table-sort {
+    margin-left: 4px;
   }
 
   .di-table td {
-    padding: 12px 14px;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--di-border);
+    height: var(--di-table-row-height);
+    padding: 0 12px;
+    border-bottom: 1px solid var(--di-table-rule);
     color: var(--di-text);
+    vertical-align: middle;
   }
 
   .di-table tbody tr:last-child td {
     border-bottom: 0;
   }
 
+  .di-table tbody tr:hover td {
+    background: var(--di-bg-row-hover);
+  }
+
+  .di-table tbody tr.is-active td {
+    background: var(--di-bg-page);
+  }
+
+  /* The ordinal column: the row's handle, never its content. */
+  .di-table-index {
+    width: var(--di-index-col);
+    padding: 0 !important;
+    border-right: 1px solid var(--di-table-rule);
+    background: var(--di-bg-page);
+    text-align: center;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+  }
+
+  .di-table tbody tr.is-danger .di-table-index {
+    background: var(--di-status-danger-bg);
+    color: var(--di-status-danger-fg);
+  }
+
   .di-table .is-end {
     text-align: right;
-  }
-
-  .di-cell {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-  }
-
-  .di-cell-primary {
-    font-weight: var(--di-weight-medium);
-    line-height: 1.3;
-  }
-
-  .di-cell-secondary {
-    font-size: 12px;
-    color: var(--di-text-muted);
-    line-height: 1.35;
-  }
-
-  .di-cell-lead {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .di-cell-icon {
-    display: inline-flex;
-    margin-top: 2px;
-    color: var(--di-text-muted);
-  }
-
-  .di-cell-icon svg {
-    width: 15px;
-    height: 15px;
   }
 
   .di-table-foot {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding: 10px 14px;
+    gap: var(--di-space-3);
+    padding: 9px 12px;
     border-top: 1px solid var(--di-border);
-    background: var(--di-bg-subtle);
+    background: var(--di-bg-page);
+    font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
+  }
+
+  .di-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  .di-cell-primary {
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-cell-secondary {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-subtle);
+  }
+
+  .di-cell-lead {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-2);
+    min-width: 0;
+  }
+
+  .di-cell-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex: none;
+    border-radius: var(--di-radius-micro);
+    background: var(--di-bg-subtle);
+    color: var(--di-text-muted);
+  }
+
+  .di-cell-icon > svg {
+    width: 14px;
+    height: 14px;
   }
 }

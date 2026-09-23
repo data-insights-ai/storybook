@@ -164,11 +164,11 @@ export function CoverageScreen() {
             </Chip>
           ) : null}
           <ToolbarEnd>
-            <Button variant="secondary" size="sm">
+            <Button variant="secondary" size="dense">
               <SlidersHorizontal aria-hidden />
               Filter
             </Button>
-            <Button variant="secondary" size="sm">
+            <Button variant="secondary" size="dense">
               <Download aria-hidden />
               Export
             </Button>
@@ -189,6 +189,7 @@ export function CoverageScreen() {
                 label="Source list pages"
                 previousLabel="Previous page"
                 nextLabel="Next page"
+                pageLabel="Page"
               />
             </>
           }

@@ -1,0 +1,109 @@
+@layer components {
+  .di-living {
+    overflow: hidden;
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+  }
+
+  .di-living-head {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-2);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-living-title {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-semibold);
+    letter-spacing: var(--di-tracking-tight);
+    color: var(--di-text);
+  }
+
+  .di-living-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: none;
+  }
+
+  .di-living-body {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--di-space-4);
+    padding: 14px;
+  }
+
+  /*
+   * The insight sits on the page ground, a step below the sheet: it is
+   * quieter than the measurement it is commenting on.
+   */
+  .di-living-insight {
+    padding: 12px 14px;
+    border-top: 1px solid var(--di-ai-ring);
+    background: var(--di-ai-surface);
+  }
+
+  .di-living-insight-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+  }
+
+  .di-living-insight-copy {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .di-living-insight-body {
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-living-insight-basis {
+    margin-top: 4px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    line-height: var(--di-leading-snug);
+    color: var(--di-ai-ink);
+  }
+
+  .di-living-insight-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 11px;
+    padding-left: 16px;
+  }
+
+  .di-sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 54px;
+    min-width: 120px;
+  }
+
+  .di-sparkline-bar {
+    width: 7px;
+    flex: none;
+    border-radius: 1px;
+  }
+
+  .di-sparkline-bar.is-muted {
+    background: var(--di-chart-muted);
+  }
+
+  .di-sparkline-bar.is-ink {
+    background: var(--di-chart-series);
+  }
+
+  .di-sparkline-bar.is-danger {
+    background: var(--di-status-danger-dot);
+  }
+}

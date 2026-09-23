@@ -35,7 +35,7 @@ export function Motifs() {
     <div className="di-motifs">
       <figure>
         <svg viewBox="0 0 120 80" aria-hidden>
-          <text x="60" y="58" textAnchor="middle" fontFamily="Sansation, sans-serif" fontWeight="400" fontSize="56" fill="#0a1f44">
+          <text x="60" y="58" textAnchor="middle" fontFamily="Space Grotesk, sans-serif" fontWeight="400" fontSize="56" fill="#0a1f44">
             [ ]
           </text>
         </svg>
@@ -73,18 +73,18 @@ export function Motifs() {
       <figure>
         <svg viewBox="0 0 120 80" aria-hidden>
           <line x1="10" y1="40" x2="110" y2="40" stroke="#c9a24a" strokeWidth="1" strokeDasharray="2 4" />
-          <text x="18" y="35" fontFamily="IBM Plex Mono, monospace" fontSize="9" letterSpacing="0.18em" fill="#a6811f">
+          <text x="18" y="35" fontFamily="JetBrains Mono, monospace" fontSize="9" letterSpacing="0.18em" fill="#a6811f">
             2027-08-02
           </text>
         </svg>
         <figcaption>
           <strong>Timestamps</strong>
-          <span>Always ISO-8601 (YYYY-MM-DD). Always in IBM Plex Mono. Always gold-600 for temporal metadata.</span>
+          <span>Always ISO-8601 (YYYY-MM-DD). Always in JetBrains Mono. Always gold-600 for temporal metadata.</span>
         </figcaption>
       </figure>
       <figure>
         <svg viewBox="0 0 120 80" aria-hidden>
-          <text x="60" y="56" textAnchor="middle" fontFamily="Sansation, sans-serif" fontWeight="500" fontSize="48" fill="#a6811f">
+          <text x="60" y="56" textAnchor="middle" fontFamily="Space Grotesk, sans-serif" fontWeight="500" fontSize="48" fill="#a6811f">
             §
           </text>
         </svg>

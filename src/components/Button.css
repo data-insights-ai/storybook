@@ -3,79 +3,155 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    border-radius: var(--di-button-radius);
+    gap: 7px;
+    height: var(--di-button-height);
+    padding: 0 14px;
     border: 1px solid transparent;
+    border-radius: var(--di-button-radius);
     font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-medium);
     letter-spacing: var(--di-tracking-ui);
     line-height: 1;
     white-space: nowrap;
-    background: transparent;
-    transition:
-      background-color var(--di-duration) var(--di-ease),
+    transition: background-color var(--di-duration) var(--di-ease),
       border-color var(--di-duration) var(--di-ease),
       color var(--di-duration) var(--di-ease);
   }
 
-  .di-btn svg {
-    width: 15px;
-    height: 15px;
+  .di-btn > svg {
+    width: 16px;
+    height: 16px;
     flex: none;
   }
 
-  .di-btn-md {
-    height: 38px;
-    padding: 0 16px;
+  .di-btn-dense {
+    height: var(--di-h-dense);
+    padding: 0 11px;
     font-size: var(--di-font-size-300);
   }
 
-  .di-btn-sm {
-    height: 30px;
-    padding: 0 10px;
-    font-size: var(--di-font-size-200);
+  .di-btn-md {
+    height: var(--di-h-ctl);
   }
 
+  .di-btn-comfort {
+    height: var(--di-h-comfort);
+    padding: 0 16px;
+    font-size: var(--di-font-size-500);
+  }
+
+  .di-btn-icon {
+    width: var(--di-h-ctl);
+    padding: 0;
+  }
+
+  .di-btn-icon.di-btn-dense {
+    width: var(--di-h-dense);
+  }
+
+  .di-btn-icon.di-btn-comfort {
+    width: var(--di-h-comfort);
+  }
+
+  /* The one filled control on the sheet. */
   .di-btn-primary {
+    border-color: var(--di-button-primary-bg);
     background: var(--di-button-primary-bg);
     color: var(--di-button-primary-fg);
   }
 
   .di-btn-primary:hover:not(:disabled) {
+    border-color: var(--di-button-primary-bg-hover);
     background: var(--di-button-primary-bg-hover);
   }
 
   .di-btn-secondary {
-    background: var(--di-bg-surface);
+    border-color: var(--di-button-secondary-border);
+    background: var(--di-button-secondary-bg);
     color: var(--di-text);
-    border-color: var(--di-border-strong);
   }
 
   .di-btn-secondary:hover:not(:disabled) {
-    background: var(--di-bg-subtle);
+    border-color: var(--di-text);
+    background: var(--di-bg-page);
   }
 
   .di-btn-ghost {
-    color: var(--di-text-muted);
+    border-color: transparent;
+    background: transparent;
+    color: var(--di-text);
+    text-decoration: underline;
+    text-decoration-color: var(--di-seal);
+    text-underline-offset: 3px;
   }
 
   .di-btn-ghost:hover:not(:disabled) {
-    color: var(--di-text);
     background: var(--di-bg-subtle);
   }
 
+  /*
+   * Destructive reads as a normal control until it is hovered. A red
+   * fill sitting in a toolbar invites the press it is trying to guard.
+   */
   .di-btn-danger {
+    border-color: var(--di-button-secondary-border);
+    background: var(--di-button-secondary-bg);
     color: var(--di-status-danger-fg);
   }
 
   .di-btn-danger:hover:not(:disabled) {
+    border-color: var(--di-status-danger-dot);
     background: var(--di-status-danger-bg);
+  }
+
+  /* Seals a record: gold, and the only gold control in daylight. */
+  .di-btn-seal {
+    border-color: var(--di-seal-border);
+    background: var(--di-seal-bg);
+    color: var(--di-seal-ink);
+  }
+
+  .di-btn-seal:hover:not(:disabled) {
+    border-color: var(--di-seal);
+  }
+
+  /* Acts on a model's proposal, so it carries the ring's edge. */
+  .di-btn-ai {
+    border-color: var(--di-ai-ring);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+  }
+
+  .di-btn-ai:hover:not(:disabled) {
+    background: var(--di-ai-surface);
   }
 
   .di-btn:disabled {
     cursor: not-allowed;
+    border-color: var(--di-border);
     background: var(--di-bg-disabled);
     color: var(--di-text-disabled);
-    border-color: transparent;
+    text-decoration: none;
+  }
+
+  .di-btn-loading {
+    cursor: progress;
+  }
+
+  .di-btn-spinner {
+    width: 11px;
+    height: 11px;
+    flex: none;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: var(--di-radius-pill);
+    animation: di-btn-spin 700ms linear infinite;
+  }
+
+  @keyframes di-btn-spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 }

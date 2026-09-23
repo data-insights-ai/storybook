@@ -42,29 +42,57 @@ Tokens are three layers. Primitive values live in `primitive.css`. Semantic role
 
 ## Brand
 
-Foundations in this Storybook are the source for applying the brand. Colour, type, the mark, voice, and motion are written there. Do not send a designer or an agent to a separate brand book, and do not copy personal contact details into these pages.
+Foundations in this Storybook are the source for applying the brand. Colour, type, the mark, voice, motion, and the Register rules are written there. Do not send a designer or an agent to a separate brand book, and do not copy personal contact details into these pages.
 
-- Navy is the voice. Ivory is the page. Ink is body text. Gold is one moment per view: the tittle in the mark, or a single eyebrow. Rule is ink at 12% (`--di-rule`): a hairline only, never a fill.
-- Small gold text on ivory uses Gold 700 (`#7C5F17`). Gold 600 does not clear WCAG AA at that size. Gold text on navy uses Gold 400.
-- Paused uses the gold ramp (Gold 700 `#7C5F17` on ivory, Gold 400 on navy). Running is `#186D41` on wash `#E0E7DC`. Failed is `#AB2E37` on wash `#F1E0DB`. Those are the console hues, and each word stays above 5:1. Keep this set. A second yellow, or a generic traffic-light green or red, breaks the console.
-- Sansation is display and figures. IBM Plex Sans is the interface. IBM Plex Mono is identifiers, timestamps, and eyebrows.
-- The console uses those families at a denser size than the editorial scale in the brand book.
-- Motion stays under 240ms, ease-out, one change at a time.
+The system is the **Register**: the surface is a record, not a dashboard. Everything below follows from that.
 
-The sign-in card pins the light console colours, including in the dark theme, because it sits on the navy painting. Text on that painting (the kicker, the footer) has its own solid navy background. Text on the dotted canvas (the window title) has a solid background too. Contrast has to be measurable.
+- Warm paper (`--di-paper` `#F4F1E8`) is the page. Sheet (`#FCFBF7`) is a panel, a field, a card. Grid (`#FFFFFF`) is the one cold surface, for a table only. Rule (`#DCD5C3`) is a hairline, never a fill.
+- Navy (`#0A1F44`) is the ink **and** the action. There is no invented accent: the one filled control on a sheet is navy, so it is never unclear which button commits. After dark the fill turns gold, because navy cannot act against a navy ground. That is the only exception.
+- Gold means sealed, not important. A filled dot (`--di-seal` `#C9A24A`) is a value that was recorded and can be verified. A hollow ring (`--di-ai-ring` `#A6811F`) is a value a model inferred, with nothing vouching for it. No mark means nothing is on record. The mark is never the only channel: the word beside it carries the meaning too.
+- Small gold text on paper uses Seal ink (`#7A5C0E`). Gold 500 and Gold 600 are marks, not type — Gold 600 on paper does not clear AA at small sizes, and on ivory it needs `#061631` rather than navy to clear it. Gold text on navy uses Gold 400.
+- Status is verified `#155230` on wash `#E7EFE5`, anomaly `#6E4708` on `#F7EDD5`, critical `#8A1B1B` on `#F8E6E2`, recorded `#0A1F44` on `#E6E9F0`. Anomaly runs on the gold ramp rather than inventing a second yellow. Each word stays above 5:1. Keep this set; a generic traffic-light green or red breaks the register.
+- Space Grotesk is everything a person reads as prose. JetBrains Mono is everything a machine wrote: identifiers, hashes, timestamps, measured values, and § marks. Which track a string sits in states where it came from. Figures are tabular.
+- Radii are moderate: 4px micro-controls, 6px buttons and selects, 8px panels. Control heights are 28 / 32 / 36px, and 32 is the standard.
+- Depth is drawn with a 1px rule. Only a detached plane — a menu, a modal, a toast — gets a shadow, and a technical one. No blur behind text: a mono value behind frosted glass has no measurable contrast.
+- The one ornament is the 8px tick rule (`.di-tick-rule`), and it only closes a block that reports a measurement.
+- Motion stays under 240ms, ease-out, one change at a time. A modal fades and settles one step (`@starting-style` plus `allow-discrete`, so it animates out as well as in), a drawer arrives from its own edge, a menu drops 4px, a toast rises 10px. Nothing scales and fades at once, and `prefers-reduced-motion` drops all of it in `base.css`.
+- A toast runs on navy, not on paper: it is the system reporting back, not another entry on the sheet. It re-points its own tokens so a `Button` in the action slot reads on that ground.
+
+Every panel, table, drawer, notice and empty state carries a 38px index column (`--di-index-col`) holding an ordinal, a letter or a § mark. It is the system's fingerprint. A drawer keeps the ordinal of the row it opened from. A failure keeps its ordinal, tinted.
+
+Focus is navy on paper and gold on the night sheet and the navy rail. The prototype rang every focus in seal gold; gold on paper measures 2.1:1, under the 3:1 a focus indicator has to clear, so the ring follows its ground instead.
+
+Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first. What follows is a receipt carrying an audit id (`Toast`), never an undo.
+
+The sign-in card pins the daylight colours, including in the dark theme, because it sits on a navy sheet either way. Text on that sheet (the footer) has its own solid navy background. Text on the dotted canvas (the window title) has a solid background too. Contrast has to be measurable.
 
 ## Stories and components
 
+Every component lives in `src/components`; the story `title` decides where it lands in the sidebar, and there are five groups:
+
+- `Primitives/` — one element that composes nothing else from the system: Button, Badge, StatusPill, Chip, Icon, IconTile, Seal, TextLink.
+- `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl.
+- `Blocks/` — composes primitives and forms: Panel, DataTable, Notice, Toast, Modal, Drawer, Menu, Tabs, EmptyState, StatTile, LivingCard, CommandBar, SignIn and the rest.
+- `Patterns/` — a whole arrangement: AppShell, Layout.
+- `Screens/` — a console example, composed from the above.
+
+A Drawer belongs in `Blocks/` because it contains Buttons and StatusPills; a Button belongs in `Primitives/` because it contains nothing. When a component grows to hold another one, move its title.
+
+`.storybook/preview.tsx` sorts those groups in that order and everything inside them alphabetically **by title, not by file name** — `Choice.stories.tsx` is titled `Forms/Checkbox`. Stories inside one file keep the order the file declares. Storybook reads that comparator out of the file and evaluates it on its own, so it has to be plain JavaScript with no type annotations and no references to anything outside it.
+
+Anything with a transition gets a story that runs it: `Blocks/Toast` → Arriving, `Blocks/Modal` → Transition, `Blocks/Drawer` → Transition, `Blocks/Waiting` → Resolving and Counting. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
+
 - Every visible string is a prop. Storybook stories are written in English. A product passes its own language in from outside. Components ship with no baked-in language.
 - A React node (an icon, an action, table rows and cells) is a child slot, filled in the story `render`, with `control: false`. `PageHeader` puts trailing content in `children`. `SectionTitle` puts the trailing text in `children`. `Notice` uses `NoticeIcon`, `NoticeTitle`, `NoticeBody`, and `NoticeAction`. `Button` takes the icon as its first child. `TextField` puts the label-side slot in `children`. `CellLead` takes a `CellIcon` child.
-- `DataTable` does not take a `rows` array. The caller maps its own data into `TableHead`, `TableBody`, `TableRow`, and `TableCell`. The table supplies the frame, the caption, and an optional footer slot.
+- `DataTable` does not take a `rows` array. The caller maps its own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, and `TableCell`. The table supplies the frame, the caption, an optional toolbar and an optional footer slot. Its scroll container is a named, focusable region, because a scrollable area has to be reachable from the keyboard.
 - `Pagination` is controlled. The caller owns `page` and which rows are visible. Previous and next call `onPageChange` with the next page.
 - String props stay on `args`, so Controls can change the copy.
 - A boolean prop is always `true` or `false` in `args`. An unset boolean shows “Set boolean” instead of a toggle. Use the component’s real default: `dot: true`, `padded: true`, `disabled: false`.
 - Helper text is a string, default `""`. An unset node becomes an object control, and Edit then breaks the field.
 - A select or radio (`variant`, `size`, `tone`, `type`) has one option chosen in `args`. Use the component’s real default: `variant: "primary"`, `size: "md"`, `tone: "neutral"` or `"info"`, `type: "button"` or `"text"`.
 - Event listeners (`onRemove`, `onClick`, and any other `on…` prop) stay callback props. `.storybook/preview.tsx` excludes `/^on[A-Z].*/` from Controls and records the calls as actions. A play function that asserts the call passes `fn()` from `storybook/test`.
-- Buttons, fields, and tables stay native elements. Add a headless library when a control needs roving focus or a popup (a menu, listbox, combobox, or dialog), and not before.
+- Buttons, fields, and tables stay native elements, including the select, the checkbox, the radio and the segmented control. `Modal` is a native `<dialog>`, so focus is trapped and the page behind goes inert; `Menu` and `Tabs` implement roving focus directly. No headless library is installed — add one only if a control needs more than that.
+- `Switch` is a `role="switch"` button, not a checkbox: it reports the state of the system, not of a form. It is controlled, because a switch commits as it moves.
 - Screens are compositions. They stay inside the Storybook canvas: no fixed min-width wider than the preview. Tables scroll inside their own frame.
 - Storybook’s Get started checklist, the menu guide, and the “what’s new” notification stay off in `.storybook/main.ts`.
 

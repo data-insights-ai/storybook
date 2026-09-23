@@ -3,7 +3,7 @@ import { Stat, StatRow } from "./Stat";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
-  title: "Patterns/Stat",
+  title: "Blocks/Stat",
   component: Stat,
   args: { label: "Active entries", value: "08", suffix: " / 08" },
 } satisfies Meta<typeof Stat>;

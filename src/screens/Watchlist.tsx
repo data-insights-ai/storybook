@@ -193,10 +193,10 @@ export function WatchlistScreen() {
                   </TableCell>
                   <TableCell align="end">
                     <Actions>
-                      <Button size="sm" variant="secondary">
+                      <Button size="dense" variant="secondary">
                         Pause
                       </Button>
-                      <Button size="sm" variant="danger" aria-label={`Remove ${row.name}`}>
+                      <Button size="dense" variant="danger" aria-label={`Remove ${row.name}`}>
                         Remove
                       </Button>
                     </Actions>

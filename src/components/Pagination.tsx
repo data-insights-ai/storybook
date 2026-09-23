@@ -1,9 +1,13 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cx } from "../cx";
 import "./Pagination.css";
 
 /**
  * Controlled. The caller owns `page` because it also owns which rows are
- * visible. Previous and next call `onPageChange` with the next page.
+ * visible. Every control calls `onPageChange` with the page it wants.
+ *
+ * The numbers are buttons, not links: they change what this view shows
+ * rather than navigating away from it.
  */
 export function Pagination({
   page,
@@ -12,14 +16,23 @@ export function Pagination({
   label,
   previousLabel,
   nextLabel,
+  pageLabel,
+  numbered = true,
 }: {
   page: number;
   pages: number;
   onPageChange: (page: number) => void;
+  /** Names the whole control, e.g. "Register pages". */
   label: string;
   previousLabel: string;
   nextLabel: string;
+  /** Prefixes each number for a screen reader, e.g. "Page". */
+  pageLabel: string;
+  /** Off leaves only the arrows and the current page. */
+  numbered?: boolean;
 }) {
+  const numbers = Array.from({ length: pages }, (_, i) => i + 1);
+
   return (
     <nav className="di-pages" aria-label={label}>
       <button
@@ -31,9 +44,24 @@ export function Pagination({
       >
         <ChevronLeft aria-hidden />
       </button>
-      <span className="di-page-current" aria-current="page">
-        {page}
-      </span>
+      {numbered ? (
+        numbers.map((n) => (
+          <button
+            key={n}
+            type="button"
+            className={cx("di-page-btn", "di-page-num", n === page && "is-current")}
+            aria-label={`${pageLabel} ${n}`}
+            aria-current={n === page ? "page" : undefined}
+            onClick={() => onPageChange(n)}
+          >
+            {n}
+          </button>
+        ))
+      ) : (
+        <span className="di-page-current" aria-current="page">
+          {page}
+        </span>
+      )}
       <button
         type="button"
         className="di-page-btn"

@@ -11,14 +11,14 @@ const docsTheme = create({
   brandUrl: "https://www.data-insights.ai",
   brandImage: "./mark.svg",
   colorPrimary: "#0a1f44",
-  colorSecondary: "#7c5f17",
-  appBg: "#f7f4ec",
-  appContentBg: "#fbf8f1",
-  appBorderColor: "#e0dbd1",
-  textColor: "#0e1528",
-  textMutedColor: "#5a5348",
-  fontBase: '"IBM Plex Sans", "Helvetica Neue", sans-serif',
-  fontCode: '"IBM Plex Mono", ui-monospace, monospace',
+  colorSecondary: "#7a5c0e",
+  appBg: "#f4f1e8",
+  appContentBg: "#fcfbf7",
+  appBorderColor: "#dcd5c3",
+  textColor: "#0a1f44",
+  textMutedColor: "#4a5570",
+  fontBase: '"Space Grotesk", "Helvetica Neue", sans-serif',
+  fontCode: '"JetBrains Mono", ui-monospace, monospace',
 });
 
 const preview: Preview = {
@@ -30,15 +30,62 @@ const preview: Preview = {
       codePanel: true,
     },
     options: {
-      storySort: {
-        order: [
+      /*
+       * The sections run in a fixed order, and Foundations keeps its curated
+       * one because those pages are meant to be read top to bottom. The rest
+       * sort alphabetically by title rather than by file name: Choice.stories
+       * is titled Checkbox and Heading.stories is PageHeader, so file order
+       * puts both in the wrong place.
+       *
+       * Storybook reads this function out of the file and evaluates it on its
+       * own, so it has to be plain JavaScript and carry its own lists —
+       * a type annotation or an outer reference breaks the indexer.
+       */
+      storySort: (a, b) => {
+        const sections = [
           "Introduction",
           "Foundations",
-          ["Essence", "Voice", "Color", "Type", "Logo", "Mark", "Practice", "Surfaces"],
-          "Components",
+          "Primitives",
+          "Forms",
+          "Blocks",
           "Patterns",
           "Screens",
-        ],
+        ];
+        const foundations = [
+          "Essence",
+          "Register",
+          "Adoption",
+          "Voice",
+          "Color",
+          "Type",
+          "Logo",
+          "Mark",
+          "Practice",
+          "Surfaces",
+        ];
+        // Listed items sort in list order; anything unlisted falls to the end.
+        const rank = (list, value) => {
+          const index = list.indexOf(value);
+          return index === -1 ? list.length : index;
+        };
+
+        // Equal titles compare as 0, so the stories inside one component keep
+        // the order their file declares.
+        if (a.title === b.title) return 0;
+
+        const [aSection, aName = ""] = a.title.split("/");
+        const [bSection, bName = ""] = b.title.split("/");
+
+        const section = rank(sections, aSection) - rank(sections, bSection);
+        if (section !== 0) return section;
+        if (aSection !== bSection) return aSection.localeCompare(bSection, "en");
+
+        if (aSection === "Foundations") {
+          const curated = rank(foundations, aName) - rank(foundations, bName);
+          if (curated !== 0) return curated;
+        }
+
+        return a.title.localeCompare(b.title, "en", { numeric: true, sensitivity: "base" });
       },
     },
     a11y: { test: "error" },

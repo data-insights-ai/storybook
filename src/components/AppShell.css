@@ -93,10 +93,25 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    width: calc(100% - 4px);
     margin: 0 2px;
     padding: 8px;
+    border: 1px solid var(--di-sidebar-edge);
     border-radius: 10px;
     background: var(--di-sidebar-raised);
+    color: inherit;
+    text-align: left;
+  }
+
+  .di-operator:hover {
+    border-color: rgba(247, 244, 236, 0.22);
+  }
+
+  .di-operator-caret {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    color: var(--di-sidebar-muted);
   }
 
   .di-avatar {
@@ -132,14 +147,6 @@
     color: var(--di-sidebar-muted);
   }
 
-  .di-operator-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--di-status-ok-on-navy);
-    flex: none;
-  }
-
   .di-nav {
     display: flex;
     flex-direction: column;
@@ -165,8 +172,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    gap: 9px;
     padding: 8px 10px;
     border: 0;
     border-radius: 8px;
@@ -189,6 +195,27 @@
   .di-nav-code {
     font-size: 10px;
     color: var(--di-sidebar-muted);
+  }
+
+  .di-nav-icon {
+    display: flex;
+    flex: none;
+    color: var(--di-sidebar-muted);
+  }
+
+  .di-nav-icon > svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .di-nav-btn[aria-current="page"] .di-nav-icon {
+    color: var(--di-sidebar-fg);
+  }
+
+  /* The label takes the slack, so badges and seals line up down the rail. */
+  .di-nav-text {
+    flex: 1;
+    min-width: 0;
   }
 
   .di-sidebar-foot {
@@ -292,26 +319,9 @@
     background: var(--di-bg-surface);
   }
 
-  .di-sealed svg,
-  .di-account svg {
+  .di-sealed svg {
     width: 14px;
     height: 14px;
-  }
-
-  .di-account {
-    width: 34px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 1px solid transparent;
-    background: var(--di-navy-900);
-    color: var(--di-ivory);
-  }
-
-  :root[data-theme="dark"] .di-account {
-    border-color: var(--di-border-strong);
   }
 
   .di-demo-banner {

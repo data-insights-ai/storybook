@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { CompareChart, RangeChart, SeriesChart } from "../foundations/guide/BrandCharts";
 
 const meta = {
-  title: "Components/Chart",
+  title: "Blocks/Chart",
   parameters: { layout: "padded" },
 } satisfies Meta;
 

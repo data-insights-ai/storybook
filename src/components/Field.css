@@ -1,0 +1,91 @@
+@layer components {
+  /* Label above, control, then one line under it. Never help and error together. */
+  .di-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .di-field-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--di-space-3);
+  }
+
+  .di-field-label {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-weight: var(--di-weight-medium);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-text-muted);
+  }
+
+  .di-field-hint {
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-subtle);
+  }
+
+  .di-field-error {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-field-error > svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+  }
+
+  /* A resolved value under the field, vouched for by the seal. */
+  .di-field-seal {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-muted);
+  }
+
+  .di-control {
+    width: 100%;
+    height: var(--di-field-height);
+    padding: 0 10px;
+    border: 1px solid var(--di-field-border);
+    border-radius: var(--di-field-radius);
+    background: var(--di-field-bg);
+    color: var(--di-text);
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-400);
+    transition: border-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-control::placeholder {
+    color: var(--di-text-subtle);
+  }
+
+  .di-control:hover:not(:disabled) {
+    border-color: var(--di-border-strong);
+  }
+
+  .di-control-mono {
+    font-family: var(--di-font-code);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .di-control:disabled {
+    cursor: not-allowed;
+    background: var(--di-bg-disabled);
+    color: var(--di-text-disabled);
+  }
+
+  .di-control[aria-invalid="true"] {
+    border-color: var(--di-status-danger-dot);
+  }
+}

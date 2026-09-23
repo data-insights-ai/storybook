@@ -1,0 +1,72 @@
+@layer components {
+  .di-seal-mark {
+    display: block;
+    flex: none;
+    border-radius: var(--di-radius-pill);
+  }
+
+  .di-seal-mark-sealed {
+    background: var(--di-seal);
+  }
+
+  /* A claim, not a fact: the ring is open where the seal is filled. */
+  .di-seal-mark-inferred {
+    background: transparent;
+    border: 1.5px solid var(--di-ai-ring);
+  }
+
+  .di-seal-mark-absent {
+    background: transparent;
+    border: 1px solid var(--di-border-strong);
+  }
+
+  .di-seal {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-space-2);
+    color: var(--di-text);
+  }
+
+  .di-seal-text {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .di-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--di-space-3);
+  }
+
+  .di-mark-label {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-weight: var(--di-weight-medium);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-accent-text);
+    white-space: nowrap;
+  }
+
+  .di-mark-rule {
+    height: 1px;
+    flex: 1;
+    background: var(--di-rule);
+  }
+
+  .di-kbd {
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
+    padding: 0 5px;
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-micro);
+    background: var(--di-bg-page);
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    line-height: 1;
+  }
+}

@@ -1,16 +1,21 @@
 import { useState, type ReactNode } from "react";
-import { CircleUser, RefreshCw, ShieldCheck } from "lucide-react";
+import { ChevronsUpDown, RefreshCw, ShieldCheck } from "lucide-react";
 import logoInverse from "../assets/logo-inverse.svg";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
+import { SealMark } from "./Seal";
 import "./AppShell.css";
 
 export type NavItem = {
   id: string;
   label: string;
+  /** A lucide icon. One family, one weight, no fills. */
+  icon?: ReactNode;
   code?: string;
   badge?: string;
   badgeTone?: "neutral" | "alert" | "gold";
+  /** The gold dot: this section holds something sealed. */
+  sealed?: boolean;
 };
 
 export type ConsoleChrome = {
@@ -27,10 +32,15 @@ export type ConsoleChrome = {
   demoBanner: string;
   refresh: string;
   sealed: string;
+  sealedMark: string;
   runtime: string;
   version: string;
 };
 
+/**
+ * The canvas and the window. The dotted ground is what a console sits
+ * on in these stories; a product renders the window alone, full-bleed.
+ */
 export function ConsoleFrame({
   title,
   lang,
@@ -54,6 +64,11 @@ export function ConsoleFrame({
   );
 }
 
+/**
+ * Rail, topbar, workpane. The navy rail is the one place the brand
+ * colour fills a surface, and it is fixed: navigation that hides itself
+ * cannot be audited.
+ */
 export function Console({
   title,
   crumb,
@@ -83,20 +98,15 @@ export function Console({
           </div>
         </div>
 
-        <div className="di-operator">
-          <span className="di-avatar" aria-hidden>
-            {chrome.operator.initials}
-          </span>
-          <span className="di-operator-text">
-            <span className="di-operator-name">{chrome.operator.name}</span>
-            <span className="di-operator-role">{chrome.operator.role}</span>
-          </span>
-          <span className="di-operator-dot" aria-hidden />
-        </div>
-
         <nav className="di-nav" aria-label={chrome.navLabel}>
           {chrome.groups.map((group) => (
-            <NavGroup key={group.label} label={group.label} items={group.items} active={active} />
+            <NavGroup
+              key={group.label}
+              label={group.label}
+              items={group.items}
+              active={active}
+              sealedMark={chrome.sealedMark}
+            />
           ))}
         </nav>
 
@@ -104,6 +114,17 @@ export function Console({
           <span>{chrome.runtime}</span>
           <span>{chrome.version}</span>
         </div>
+
+        <button type="button" className="di-operator" aria-label={chrome.accountLabel}>
+          <span className="di-avatar" aria-hidden>
+            {chrome.operator.initials}
+          </span>
+          <span className="di-operator-text">
+            <span className="di-operator-name">{chrome.operator.name}</span>
+            <span className="di-operator-role">{chrome.operator.role}</span>
+          </span>
+          <ChevronsUpDown className="di-operator-caret" aria-hidden />
+        </button>
       </aside>
 
       <div className="di-main">
@@ -126,7 +147,7 @@ export function Console({
               <span className="di-demo-dot" aria-hidden />
               {demo ? chrome.demoOn : chrome.demoOff}
             </button>
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="dense">
               <RefreshCw aria-hidden />
               {chrome.refresh}
             </Button>
@@ -134,9 +155,6 @@ export function Console({
               <ShieldCheck aria-hidden />
               {chrome.sealed}
             </span>
-            <button type="button" className="di-account" aria-label={chrome.accountLabel}>
-              <CircleUser aria-hidden />
-            </button>
           </div>
         </header>
         {demo ? (
@@ -152,7 +170,17 @@ export function Console({
   );
 }
 
-function NavGroup({ label, items, active }: { label: string; items: NavItem[]; active: string }) {
+function NavGroup({
+  label,
+  items,
+  active,
+  sealedMark,
+}: {
+  label: string;
+  items: NavItem[];
+  active: string;
+  sealedMark: string;
+}) {
   const labelId = `nav-${label.toLowerCase()}`;
   return (
     <div className="di-nav-group">
@@ -163,12 +191,19 @@ function NavGroup({ label, items, active }: { label: string; items: NavItem[]; a
         {items.map((item) => (
           <li key={item.id}>
             <button type="button" className="di-nav-btn" aria-current={item.id === active ? "page" : undefined}>
-              <span>{item.label}</span>
+              {item.icon ? <span className="di-nav-icon">{item.icon}</span> : null}
+              <span className="di-nav-text">{item.label}</span>
               {item.badge ? (
                 <Badge tone={item.badgeTone}>{item.badge}</Badge>
-              ) : (
+              ) : item.code ? (
                 <span className="di-nav-code">{item.code}</span>
-              )}
+              ) : null}
+              {item.sealed ? (
+                <>
+                  <SealMark state="sealed" />
+                  <span className="di-sr">{sealedMark}</span>
+                </>
+              ) : null}
             </button>
           </li>
         ))}

@@ -1,76 +1,135 @@
 /*
  * Primitive tokens. Raw values, no job.
  *
- * Colour, type and radius here are the brand book.
- * Components do not
- * name these. They bind to semantic roles, so a theme can remap intent
+ * These are the Register palette: warm paper as the ground, navy as ink
+ * and as action, gold reserved for the seal. Components do not name
+ * these. They bind to semantic roles, so a theme can remap intent
  * without a hunt through component files.
  *
- * The status hues are not brand colours. The book has four: navy, gold,
- * ivory, ink. Green, amber and red exist only to name an operational
- * state, and they stay off the gold.
+ * The status hues are not brand colours. They exist only to name an
+ * operational state, and they stay off the gold.
  */
 
 @layer tokens {
   :root {
-    --di-navy-950: #05112b;
+    /*
+     * Paper. The warm ground is the system's first tell: a record, not
+     * a dashboard. Sheet is a panel, grid is the one cold surface, kept
+     * for dense fields of mono values.
+     */
+    --di-paper: #f4f1e8;
+    --di-sheet: #fcfbf7;
+    --di-grid: #ffffff;
+    --di-sunken: #eae5d7;
+    --di-wash: #fbf9f2;
+    --di-ivory: #f7f4ec;
+
+    /* Rules. Four weights, from hairline to the tick scale. */
+    --di-rule-100: #efebe0;
+    --di-rule-300: #dcd5c3;
+    --di-rule-400: #c3b9a2;
+    --di-rule-500: #bfb49b;
+
+    /*
+     * Navy is the ink and the only filled control on paper. There is no
+     * invented accent: what writes is what acts.
+     */
+    --di-navy-950: #061631;
     --di-navy-900: #0a1f44;
     --di-navy-800: #122e5e;
     --di-navy-700: #1d4280;
-    --di-navy-100: #e6ecf5;
+    --di-navy-600: #4a5570;
+    --di-navy-500: #5b6478;
+    --di-navy-200: #c1c8d8;
+    --di-navy-100: #e6e9f0;
     --di-navy-50: #f2f5fa;
-
-    --di-gold-700: #7c5f17;
-    --di-gold-600: #a6811f;
-    --di-gold-500: #c9a24a;
-    --di-gold-400: #d9b86b;
-    --di-gold-100: #f2e5c3;
-    --di-gold-50: #faf3df;
-
-    --di-ivory: #f7f4ec;
-    --di-paper: #fbf8f1;
-    --di-ink: #0e1528;
+    --di-ink: #0a1f44;
 
     /*
-     * Status hues are the console screenshot colours, held at or above
-     * 5:1. Running #186d41 is 5.04:1 on its wash and 5.79:1 on ivory.
-     * Failed #ab2e37 is 5.17:1 on its wash and 6.01:1 on ivory.
-     * Paused is the gold ramp: Gold 700 is 5.45:1 on ivory.
+     * Gold means sealed. Gold 500 is the mark, Gold 600 the hollow ring
+     * a model's claim gets, Gold 700 the only gold that may be read as
+     * text on paper. Gold never fills a surface in daylight.
      */
-    --di-ok-700: #186d41;
-    --di-ok-100: #e0e7dc;
-    --di-danger-700: #ab2e37;
-    --di-danger-100: #f1e0db;
+    --di-gold-700: #7a5c0e;
+    --di-gold-600: #a6811f;
+    --di-gold-500: #c9a24a;
+    --di-gold-400: #d9b45e;
+    --di-gold-200: #e3d0a2;
+    --di-gold-100: #f7edd5;
+    --di-gold-50: #fbf6e8;
 
-    --di-font-display: "Sansation", "Helvetica Neue", Arial, sans-serif;
-    --di-font-sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --di-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    /*
+     * Status. Each word clears 5:1 on its own wash and on paper. Keep
+     * this set: a second yellow, or a generic traffic-light green or
+     * red, breaks the register.
+     */
+    --di-ok-800: #155230;
+    --di-ok-700: #1c6b3c;
+    --di-ok-200: #c2d6be;
+    --di-ok-100: #e7efe5;
+    --di-warn-800: #6e4708;
+    --di-warn-700: #8a5a0a;
+    --di-warn-200: #e3d0a2;
+    --di-warn-100: #f7edd5;
+    --di-danger-800: #8a1b1b;
+    --di-danger-700: #9e2020;
+    --di-danger-200: #e5c2b9;
+    --di-danger-100: #f8e6e2;
 
-    --di-font-size-100: 0.6875rem;
-    --di-font-size-200: 0.8125rem;
-    --di-font-size-300: 0.875rem;
-    --di-font-size-400: 1rem;
-    --di-font-size-500: 1.25rem;
-    --di-font-size-600: 1.75rem;
-    --di-font-size-700: 2.125rem;
+    /*
+     * The night sheet. Navy can no longer act as the accent on a navy
+     * ground, so gold fills the committing control. That is the single
+     * exception to the gold rule, and it exists only after dark.
+     */
+    --di-night-950: #071229;
+    --di-night-900: #0c1b37;
+    --di-night-800: #1b2f56;
+    --di-night-700: #2a4373;
+    --di-night-600: #3a5185;
+    --di-night-300: #a8b6d2;
+    --di-night-100: #f2f5fb;
+    --di-night-paper: #f2f0e6;
+    --di-night-gold-ink: #241a02;
+    --di-night-ok-900: #0e2a1a;
+    --di-night-ok-700: #235939;
+    --di-night-ok-300: #6edb97;
+    --di-night-danger-900: #2e1414;
+    --di-night-danger-700: #5e2323;
+    --di-night-danger-300: #ff9b9b;
+
+    --di-font-display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    --di-font-sans: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --di-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* A console scale: 13px is the body, the mono track runs beneath it. */
+    --di-font-size-100: 0.625rem;
+    --di-font-size-200: 0.6875rem;
+    --di-font-size-300: 0.75rem;
+    --di-font-size-400: 0.8125rem;
+    --di-font-size-500: 1rem;
+    --di-font-size-600: 1.25rem;
+    --di-font-size-700: 1.75rem;
+    --di-font-size-800: 2.125rem;
 
     --di-weight-regular: 400;
     --di-weight-medium: 500;
     --di-weight-semibold: 600;
     --di-weight-bold: 700;
 
-    --di-leading-tight: 1.05;
+    --di-leading-tight: 1.1;
     --di-leading-snug: 1.35;
-    --di-leading-body: 1.55;
+    --di-leading-body: 1.5;
 
-    --di-tracking-tight: -0.025em;
+    --di-tracking-tight: -0.015em;
     --di-tracking-ui: 0.01em;
-    --di-tracking-eyebrow: 0.16em;
+    --di-tracking-mono: 0.04em;
+    --di-tracking-eyebrow: 0.12em;
 
-    --di-radius-s: 6px;
-    --di-radius-m: 8px;
-    --di-radius-l: 12px;
-    --di-radius-xl: 22px;
+    /* Moderate, not round: 4px micro, 6px control, 8px panel. */
+    --di-radius-s: 4px;
+    --di-radius-m: 6px;
+    --di-radius-l: 8px;
+    --di-radius-xl: 12px;
 
     --di-space-1: 4px;
     --di-space-2: 8px;
@@ -80,8 +139,15 @@
     --di-space-6: 32px;
     --di-space-7: 48px;
 
-    /* Brand book: motion under 240ms, ease-out, one thing at a time. */
-    --di-duration: 180ms;
+    /* Control heights. The console runs dense; 32px is the standard. */
+    --di-h-dense: 28px;
+    --di-h-ctl: 32px;
+    --di-h-comfort: 36px;
+    --di-h-row: 40px;
+
+    /* Motion stays under 240ms, ease-out, one change at a time. */
+    --di-duration: 120ms;
+    --di-duration-slow: 200ms;
     --di-ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
 }

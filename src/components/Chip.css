@@ -2,35 +2,56 @@
   .di-chip {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    height: 32px;
-    padding: 0 8px 0 12px;
-    border-radius: var(--di-radius-pill);
-    border: 1px solid var(--di-border-strong);
+    gap: 5px;
+    height: var(--di-h-dense);
+    padding: 0 10px;
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
-    color: var(--di-text);
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
+    line-height: 1;
     white-space: nowrap;
+  }
+
+  .di-chip > svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+  }
+
+  .di-chip-button:hover {
+    border-color: var(--di-text);
+    color: var(--di-text);
+  }
+
+  /* Set: the navy edge says this one is narrowing the register. */
+  .di-chip.is-active {
+    border-color: var(--di-text);
+    background: var(--di-bg-page);
+    color: var(--di-text);
   }
 
   .di-chip-remove {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    margin-right: -3px;
     border: 0;
-    border-radius: 50%;
+    border-radius: var(--di-radius-micro);
     background: transparent;
-    color: var(--di-text-muted);
+    color: inherit;
   }
 
   .di-chip-remove:hover {
     background: var(--di-bg-subtle);
-    color: var(--di-text);
   }
 
-  .di-chip-remove svg {
+  .di-chip-remove > svg {
     width: 13px;
     height: 13px;
   }

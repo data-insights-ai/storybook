@@ -2,25 +2,34 @@
   .di-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    height: 22px;
-    padding: 0 8px 0 7px;
+    gap: 5px;
+    height: var(--di-pill-height);
+    padding: 0 8px;
+    border: 1px solid transparent;
     border-radius: var(--di-pill-radius);
-    font-family: var(--di-font-ui);
-    font-size: 12px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
     font-weight: var(--di-weight-medium);
+    letter-spacing: var(--di-tracking-mono);
     line-height: 1;
     white-space: nowrap;
   }
 
   .di-pill-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+    flex: none;
+    border-radius: var(--di-radius-pill);
     background: currentColor;
   }
 
+  .di-pill-ring {
+    background: transparent;
+    border: 1.5px solid var(--di-ai-ring);
+  }
+
   .di-pill-ok {
+    border-color: var(--di-status-ok-border);
     background: var(--di-status-ok-bg);
     color: var(--di-status-ok-fg);
   }
@@ -30,6 +39,7 @@
   }
 
   .di-pill-warn {
+    border-color: var(--di-status-warn-border);
     background: var(--di-status-warn-bg);
     color: var(--di-status-warn-fg);
   }
@@ -39,6 +49,7 @@
   }
 
   .di-pill-danger {
+    border-color: var(--di-status-danger-border);
     background: var(--di-status-danger-bg);
     color: var(--di-status-danger-fg);
   }
@@ -47,12 +58,29 @@
     background: var(--di-status-danger-dot);
   }
 
+  .di-pill-recorded {
+    border-color: var(--di-status-recorded-border);
+    background: var(--di-status-recorded-bg);
+    color: var(--di-status-recorded-fg);
+  }
+
+  .di-pill-recorded .di-pill-dot {
+    background: var(--di-status-recorded-dot);
+  }
+
   .di-pill-neutral {
+    border-color: var(--di-status-neutral-border);
     background: var(--di-status-neutral-bg);
     color: var(--di-status-neutral-fg);
   }
 
   .di-pill-neutral .di-pill-dot {
     background: var(--di-status-neutral-dot);
+  }
+
+  .di-pill-ai {
+    border-color: var(--di-seal-border);
+    background: var(--di-ai-surface);
+    color: var(--di-ai-ink);
   }
 }

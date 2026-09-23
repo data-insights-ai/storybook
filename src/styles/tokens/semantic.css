@@ -1,7 +1,10 @@
 /*
  * Semantic tokens. Intent, not appearance.
- * Light is the console as drawn. Dark remaps the same roles so a
- * component never branches on the theme.
+ *
+ * Daylight is the register as drawn: paper ground, navy ink, gold seal.
+ * The night sheet remaps the same roles so a component never branches
+ * on the theme. Gold fills the committing control after dark because
+ * navy cannot act as an accent on a navy ground.
  */
 
 @layer tokens {
@@ -9,77 +12,125 @@
   :root[data-theme="light"] {
     color-scheme: light;
 
-    --di-bg-page: var(--di-ivory);
-    --di-bg-surface: var(--di-paper);
-    --di-bg-subtle: #f3efe6;
-    --di-bg-disabled: #ebe6dc;
-    --di-canvas: #e6e1d4;
-    --di-canvas-dot: rgba(14, 21, 40, 0.28);
+    --di-bg-page: var(--di-paper);
+    --di-bg-surface: var(--di-sheet);
+    --di-bg-grid: var(--di-grid);
+    --di-bg-subtle: var(--di-sunken);
+    --di-bg-row-hover: var(--di-wash);
+    --di-bg-disabled: var(--di-sunken);
+    --di-canvas: var(--di-sunken);
+    --di-canvas-dot: rgba(10, 31, 68, 0.22);
 
     --di-text: var(--di-ink);
-    --di-text-muted: #5a5348;
-    --di-text-disabled: #6f675c;
-    --di-text-on-strong: var(--di-ivory);
+    --di-text-press: var(--di-navy-950);
+    --di-text-muted: var(--di-navy-600);
+    --di-text-subtle: var(--di-navy-500);
+    --di-text-disabled: #6e6a5e;
+    --di-text-on-strong: #ffffff;
 
-    --di-border: #e0dbd1;
-    --di-border-strong: #8a8172;
-    --di-rule: rgba(14, 21, 40, 0.12);
-    --di-chart-series: var(--di-navy-900);
+    --di-border: var(--di-rule-300);
+    --di-border-strong: var(--di-rule-500);
+    --di-border-input: var(--di-rule-400);
+    --di-rule: var(--di-rule-300);
+    --di-rule-hairline: var(--di-rule-100);
+
+    /*
+     * The one ornament: an 8px tick scale. It closes a header or any
+     * block that reports a measured value.
+     */
+    --di-tick: repeating-linear-gradient(
+      to right,
+      var(--di-rule-500) 0 1px,
+      transparent 1px 8px
+    );
+
+    --di-chart-series: var(--di-ink);
     --di-chart-accent: var(--di-gold-500);
-    --di-chart-muted: rgba(10, 31, 68, 0.28);
-    --di-chart-muted-strong: rgba(10, 31, 68, 0.48);
-    --di-chart-band: rgba(10, 31, 68, 0.14);
+    --di-chart-baseline: var(--di-border-input);
+    --di-chart-muted: var(--di-rule-300);
+    --di-chart-muted-strong: var(--di-rule-500);
+    --di-chart-band: rgba(10, 31, 68, 0.1);
 
-    --di-fill-strong: var(--di-navy-900);
-    --di-fill-strong-hover: var(--di-navy-800);
-    --di-focus: var(--di-navy-900);
+    --di-fill-strong: var(--di-ink);
+    --di-fill-strong-hover: var(--di-navy-950);
+    --di-focus: var(--di-ink);
+    --di-focus-halo: rgba(10, 31, 68, 0.18);
 
     --di-accent: var(--di-gold-500);
     --di-accent-text: var(--di-gold-700);
 
-    --di-sidebar-bg: var(--di-navy-950);
-    --di-sidebar-fg: #f4f0e6;
-    --di-sidebar-muted: #b7b1a4;
-    --di-sidebar-active: #16305a;
-    --di-sidebar-edge: transparent;
+    /* The seal. A filled dot is recorded and verifiable. */
+    --di-seal: var(--di-gold-500);
+    --di-seal-ink: var(--di-gold-700);
+    --di-seal-bg: var(--di-gold-100);
+    --di-seal-border: var(--di-gold-200);
+    /* The hollow ring. A model inferred it; nothing has been sealed. */
+    --di-ai-ring: var(--di-gold-600);
+    --di-ai-surface: var(--di-gold-50);
+    --di-ai-ink: var(--di-warn-800);
+
+    --di-index-col: 38px;
+    --di-index-col-sm: 26px;
+
+    --di-sidebar-bg: var(--di-navy-900);
+    --di-sidebar-raised: var(--di-navy-800);
+    --di-sidebar-fg: var(--di-night-paper);
+    --di-sidebar-muted: #93a1bd;
+    --di-sidebar-active: var(--di-navy-800);
+    --di-sidebar-edge: rgba(242, 240, 230, 0.12);
     --di-sidebar-focus: var(--di-gold-400);
 
-    --di-status-ok-fg: var(--di-ok-700);
+    --di-status-ok-fg: var(--di-ok-800);
     --di-status-ok-bg: var(--di-ok-100);
+    --di-status-ok-border: var(--di-ok-200);
     --di-status-ok-dot: var(--di-ok-700);
     --di-status-ok-on-navy: #9dc8ae;
-    --di-status-warn-fg: var(--di-gold-700);
-    --di-status-warn-bg: var(--di-gold-50);
-    --di-status-warn-dot: var(--di-gold-700);
-    --di-status-danger-fg: var(--di-danger-700);
+    --di-status-warn-fg: var(--di-warn-800);
+    --di-status-warn-bg: var(--di-warn-100);
+    --di-status-warn-border: var(--di-gold-200);
+    --di-status-warn-dot: var(--di-warn-700);
+    --di-status-danger-fg: var(--di-danger-800);
     --di-status-danger-bg: var(--di-danger-100);
+    --di-status-danger-border: var(--di-danger-200);
     --di-status-danger-dot: var(--di-danger-700);
-    --di-status-neutral-fg: #3d465c;
-    --di-status-neutral-bg: var(--di-navy-50);
-    --di-status-neutral-dot: #5c6b82;
+    --di-status-recorded-fg: var(--di-ink);
+    --di-status-recorded-bg: var(--di-navy-100);
+    --di-status-recorded-border: var(--di-navy-200);
+    --di-status-recorded-dot: var(--di-ink);
+    --di-status-neutral-fg: var(--di-navy-600);
+    --di-status-neutral-bg: var(--di-sunken);
+    --di-status-neutral-border: var(--di-rule-300);
+    --di-status-neutral-dot: var(--di-navy-500);
 
     --di-font-body: var(--di-font-sans);
     --di-font-ui: var(--di-font-sans);
     --di-font-code: var(--di-font-mono);
 
     --di-radius-control: var(--di-radius-m);
+    --di-radius-micro: var(--di-radius-s);
     --di-radius-surface: var(--di-radius-l);
     --di-radius-container: var(--di-radius-xl);
     --di-radius-pill: 999px;
 
-    --di-shadow-window: 0 1px 2px rgba(14, 21, 40, 0.05),
-      0 30px 60px -32px rgba(14, 21, 40, 0.55);
+    /*
+     * Depth is drawn, not blurred. Only a detached plane — a menu, a
+     * modal, a toast — earns a shadow, and it stays a technical one.
+     */
+    --di-shadow-plane: 0 2px 4px rgba(10, 31, 68, 0.06),
+      0 10px 24px rgba(10, 31, 68, 0.08);
+    --di-shadow-window: 0 1px 2px rgba(10, 31, 68, 0.05),
+      0 30px 60px -32px rgba(10, 31, 68, 0.45);
+    --di-scrim: rgba(10, 31, 68, 0.62);
 
-    --di-tile-bg: var(--di-navy-50);
-    --di-tile-fg: var(--di-navy-900);
-    --di-tile-inverse-bg: var(--di-navy-900);
-    --di-tile-inverse-fg: var(--di-ivory);
-    --di-sidebar-raised: #0c1c38;
+    --di-tile-bg: var(--di-navy-100);
+    --di-tile-fg: var(--di-ink);
+    --di-tile-inverse-bg: var(--di-ink);
+    --di-tile-inverse-fg: var(--di-sheet);
 
-    --di-badge-neutral-bg: #1c355f;
-    --di-badge-neutral-fg: #f4f0e6;
+    --di-badge-neutral-bg: var(--di-navy-800);
+    --di-badge-neutral-fg: var(--di-night-paper);
     --di-badge-alert-bg: #5c1d2a;
-    --di-badge-alert-fg: #f7f4ec;
+    --di-badge-alert-fg: var(--di-sheet);
     --di-badge-gold-bg: #3a3118;
     --di-badge-gold-fg: #e4c98a;
   }
@@ -87,64 +138,102 @@
   :root[data-theme="dark"] {
     color-scheme: dark;
 
-    --di-bg-page: var(--di-navy-950);
-    --di-bg-surface: #0c2248;
-    --di-bg-subtle: #122e5e;
-    --di-bg-disabled: #16325c;
+    --di-bg-page: var(--di-night-950);
+    --di-bg-surface: var(--di-night-900);
+    --di-bg-grid: var(--di-night-900);
+    --di-bg-subtle: var(--di-night-800);
+    --di-bg-row-hover: var(--di-night-800);
+    --di-bg-disabled: var(--di-night-800);
     --di-canvas: #030914;
-    --di-canvas-dot: rgba(247, 244, 236, 0.18);
+    --di-canvas-dot: rgba(242, 245, 251, 0.16);
 
-    --di-text: var(--di-ivory);
-    --di-text-muted: #c8c3b6;
-    --di-text-disabled: #9a9488;
-    --di-text-on-strong: var(--di-navy-950);
+    --di-text: var(--di-night-100);
+    --di-text-press: #ffffff;
+    --di-text-muted: var(--di-night-300);
+    --di-text-subtle: var(--di-night-300);
+    --di-text-disabled: #7b89a6;
+    --di-text-on-strong: var(--di-night-gold-ink);
 
-    --di-border: #2c4268;
-    --di-border-strong: #5c7094;
-    --di-rule: rgba(247, 244, 236, 0.12);
-    --di-chart-series: var(--di-ivory);
+    --di-border: var(--di-night-700);
+    --di-border-strong: var(--di-night-600);
+    --di-border-input: var(--di-night-700);
+    --di-rule: var(--di-night-800);
+    --di-rule-hairline: var(--di-night-800);
+
+    --di-tick: repeating-linear-gradient(
+      to right,
+      var(--di-night-700) 0 1px,
+      transparent 1px 8px
+    );
+
+    --di-chart-series: var(--di-night-100);
     --di-chart-accent: var(--di-gold-400);
-    --di-chart-muted: rgba(247, 244, 236, 0.28);
-    --di-chart-muted-strong: rgba(247, 244, 236, 0.48);
-    --di-chart-band: rgba(247, 244, 236, 0.16);
+    --di-chart-baseline: var(--di-night-700);
+    --di-chart-muted: var(--di-night-800);
+    --di-chart-muted-strong: var(--di-night-600);
+    --di-chart-band: rgba(242, 245, 251, 0.12);
 
+    /* After dark, gold is the fill. Navy has nothing left to act against. */
     --di-fill-strong: var(--di-gold-500);
     --di-fill-strong-hover: var(--di-gold-400);
     --di-focus: var(--di-gold-400);
+    --di-focus-halo: rgba(217, 180, 94, 0.28);
 
     --di-accent: var(--di-gold-400);
     --di-accent-text: var(--di-gold-400);
 
+    --di-seal: var(--di-gold-500);
+    --di-seal-ink: var(--di-gold-400);
+    --di-seal-bg: #33280f;
+    --di-seal-border: #5a4718;
+    --di-ai-ring: var(--di-gold-400);
+    --di-ai-surface: #241d0c;
+    --di-ai-ink: var(--di-gold-400);
+
     --di-sidebar-bg: #030914;
-    --di-sidebar-fg: #f4f0e6;
-    --di-sidebar-muted: #b7b1a4;
-    --di-sidebar-active: #16305a;
-    --di-sidebar-edge: rgba(247, 244, 236, 0.08);
+    --di-sidebar-raised: var(--di-night-900);
+    --di-sidebar-fg: var(--di-night-paper);
+    --di-sidebar-muted: var(--di-night-300);
+    --di-sidebar-active: var(--di-night-800);
+    --di-sidebar-edge: rgba(242, 240, 230, 0.08);
     --di-sidebar-focus: var(--di-gold-400);
 
-    --di-status-ok-fg: #8fc9a8;
-    --di-status-ok-bg: #0a2931;
-    --di-status-ok-dot: #8fc9a8;
+    --di-status-ok-fg: var(--di-night-ok-300);
+    --di-status-ok-bg: var(--di-night-ok-900);
+    --di-status-ok-border: var(--di-night-ok-700);
+    --di-status-ok-dot: var(--di-night-ok-300);
+    --di-status-ok-on-navy: var(--di-night-ok-300);
     --di-status-warn-fg: var(--di-gold-400);
-    --di-status-warn-bg: #272c35;
+    --di-status-warn-bg: #2b2413;
+    --di-status-warn-border: #574a24;
     --di-status-warn-dot: var(--di-gold-400);
-    --di-status-danger-fg: #e7b7ba;
-    --di-status-danger-bg: #26172d;
-    --di-status-danger-dot: #e7b7ba;
-    --di-status-neutral-fg: #d5dbe8;
-    --di-status-neutral-bg: #1a3054;
-    --di-status-neutral-dot: #9aafc8;
+    --di-status-danger-fg: var(--di-night-danger-300);
+    --di-status-danger-bg: var(--di-night-danger-900);
+    --di-status-danger-border: var(--di-night-danger-700);
+    --di-status-danger-dot: var(--di-night-danger-300);
+    --di-status-recorded-fg: var(--di-night-100);
+    --di-status-recorded-bg: var(--di-night-800);
+    --di-status-recorded-border: var(--di-night-700);
+    --di-status-recorded-dot: var(--di-night-300);
+    --di-status-neutral-fg: var(--di-night-300);
+    --di-status-neutral-bg: var(--di-night-800);
+    --di-status-neutral-border: var(--di-night-700);
+    --di-status-neutral-dot: var(--di-night-300);
 
+    --di-shadow-plane: 0 2px 4px rgba(0, 0, 0, 0.4),
+      0 10px 24px rgba(0, 0, 0, 0.45);
     --di-shadow-window: 0 30px 60px -28px rgba(0, 0, 0, 0.7);
+    --di-scrim: rgba(3, 9, 20, 0.72);
 
-    --di-tile-bg: var(--di-navy-800);
-    --di-tile-fg: var(--di-ivory);
-    --di-sidebar-raised: #071428;
+    --di-tile-bg: var(--di-night-800);
+    --di-tile-fg: var(--di-night-100);
+    --di-tile-inverse-bg: var(--di-gold-500);
+    --di-tile-inverse-fg: var(--di-night-gold-ink);
 
-    --di-badge-neutral-bg: #243e6e;
-    --di-badge-neutral-fg: #f4f0e6;
+    --di-badge-neutral-bg: var(--di-night-700);
+    --di-badge-neutral-fg: var(--di-night-paper);
     --di-badge-alert-bg: #6e2a38;
-    --di-badge-alert-fg: #f7f4ec;
+    --di-badge-alert-fg: var(--di-night-100);
     --di-badge-gold-bg: #4a3d1c;
     --di-badge-gold-fg: #f0d48a;
   }

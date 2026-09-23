@@ -3,18 +3,32 @@
 @layer tokens {
   :root {
     --di-button-radius: var(--di-radius-control);
+    --di-button-height: var(--di-h-ctl);
     --di-button-primary-bg: var(--di-fill-strong);
     --di-button-primary-fg: var(--di-text-on-strong);
     --di-button-primary-bg-hover: var(--di-fill-strong-hover);
+    --di-button-secondary-bg: var(--di-bg-surface);
+    --di-button-secondary-border: var(--di-border-input);
 
     --di-field-bg: var(--di-bg-surface);
-    --di-field-border: var(--di-border-strong);
-    --di-field-radius: var(--di-radius-control);
+    --di-field-border: var(--di-border-input);
+    --di-field-radius: var(--di-radius-micro);
+    --di-field-height: var(--di-h-ctl);
+
+    --di-panel-bg: var(--di-bg-surface);
+    --di-panel-border: var(--di-border);
+    --di-panel-radius: var(--di-radius-surface);
+    --di-panel-index-bg: var(--di-bg-page);
 
     --di-card-bg: var(--di-bg-surface);
     --di-card-border: var(--di-border);
     --di-card-radius: var(--di-radius-surface);
 
+    --di-table-bg: var(--di-bg-grid);
+    --di-table-row-height: var(--di-h-row);
+    --di-table-rule: var(--di-rule-hairline);
+
     --di-pill-radius: var(--di-radius-pill);
+    --di-pill-height: 20px;
   }
 }

@@ -1,55 +1,80 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import "./foundations.css";
 
+const SANS = '"Space Grotesk", "Helvetica Neue", sans-serif';
+const MONO = '"JetBrains Mono", ui-monospace, monospace';
+
 const rows = [
   {
-    meta: "Display · Sansation 700",
+    meta: "Display · Space Grotesk 600",
     sample: "Provable AI.",
     style: {
-      fontFamily: '"Sansation", "Helvetica Neue", sans-serif',
-      fontWeight: 700,
+      fontFamily: SANS,
+      fontWeight: 600,
       fontSize: 48,
-      letterSpacing: "-0.025em",
-      lineHeight: 1,
-    },
-  },
-  {
-    meta: "Section · Sansation 700",
-    sample: "Watched identities",
-    style: {
-      fontFamily: '"Sansation", "Helvetica Neue", sans-serif',
-      fontWeight: 700,
-      fontSize: 32,
-      letterSpacing: "-0.025em",
+      letterSpacing: "-0.015em",
       lineHeight: 1.05,
     },
   },
   {
-    meta: "Body · IBM Plex Sans 400",
-    sample: "Every answer is grounded in a temporal knowledge graph, and every graph edge carries a timestamp.",
+    meta: "Section · Space Grotesk 600",
+    sample: "Watched identities",
     style: {
-      fontFamily: '"IBM Plex Sans", "Helvetica Neue", sans-serif',
+      fontFamily: SANS,
+      fontWeight: 600,
+      fontSize: 28,
+      letterSpacing: "-0.015em",
+      lineHeight: 1.1,
+    },
+  },
+  {
+    meta: "Body · Space Grotesk 400",
+    sample:
+      "Every answer is grounded in a temporal knowledge graph, and every graph edge carries a timestamp.",
+    style: {
+      fontFamily: SANS,
       fontSize: 16,
       lineHeight: 1.55,
     },
   },
   {
-    meta: "UI · IBM Plex Sans 500",
+    meta: "Interface · Space Grotesk 500",
     sample: "Add entry",
     style: {
-      fontFamily: '"IBM Plex Sans", "Helvetica Neue", sans-serif',
+      fontFamily: SANS,
       fontWeight: 500,
-      fontSize: 14,
+      fontSize: 13,
     },
   },
   {
-    meta: "Evidence · IBM Plex Mono 500",
-    sample: "TKG · NODE #2412 · 2026-09-22",
+    meta: "Measurement · JetBrains Mono 500",
+    sample: "4,182",
     style: {
-      fontFamily: '"IBM Plex Mono", ui-monospace, monospace',
+      fontFamily: MONO,
       fontWeight: 500,
-      fontSize: 12,
-      letterSpacing: "0.16em",
+      fontSize: 28,
+      fontVariantNumeric: "tabular-nums" as const,
+      letterSpacing: "-0.015em",
+      lineHeight: 1.1,
+    },
+  },
+  {
+    meta: "Identifier · JetBrains Mono 400",
+    sample: "a4f9c21e · 2026-09-18T09:12:04Z",
+    style: {
+      fontFamily: MONO,
+      fontSize: 13,
+      fontVariantNumeric: "tabular-nums" as const,
+    },
+  },
+  {
+    meta: "Section mark · JetBrains Mono 500",
+    sample: "§ 04 — COVERAGE",
+    style: {
+      fontFamily: MONO,
+      fontWeight: 500,
+      fontSize: 11,
+      letterSpacing: "0.12em",
       textTransform: "uppercase" as const,
       color: "var(--di-accent-text)",
     },
@@ -60,10 +85,13 @@ function Scale() {
   return (
     <div style={{ maxWidth: 880 }}>
       <h1 className="di-block-title" style={{ fontSize: 32 }}>
-        Three voices.
+        Two families, two jobs.
       </h1>
       <p className="di-lede">
-        Five steps, each with a reason. Sansation carries H1 at 72–104, H2 at 40–50, and H3 at 24–30. IBM Plex Sans is the body, 16–19. IBM Plex Mono at 11–12, in Gold 700, is the one eyebrow. The console uses the same families, a step denser than a cover.
+        Space Grotesk is everything a person reads as prose: headings, body copy, the labels on controls.
+        JetBrains Mono is everything a machine wrote — identifiers, hashes, timestamps, measured values,
+        and the § marks that number a screen. The split is not a texture. Tabular figures run down the mono
+        track so a column of readings does not jitter as it updates.
       </p>
       <div className="di-type-sample" style={{ marginTop: 24 }}>
         {rows.map((row) => (
@@ -77,10 +105,61 @@ function Scale() {
   );
 }
 
+function Track() {
+  return (
+    <div style={{ maxWidth: 880 }}>
+      <h1 className="di-block-title" style={{ fontSize: 32 }}>
+        The mono track.
+      </h1>
+      <p className="di-lede">
+        Which track a string sits in is a statement about where it came from. If a person wrote it, it is
+        Space Grotesk. If the system recorded it, it is JetBrains Mono — and it is then something that can
+        be cited.
+      </p>
+      <div className="di-type-sample" style={{ marginTop: 24 }}>
+        <div className="di-type-row">
+          <div className="di-type-meta">Prose</div>
+          <div style={{ fontFamily: SANS, fontSize: 13 }}>
+            The source was paused after four consecutive rate limits.
+          </div>
+        </div>
+        <div className="di-type-row">
+          <div className="di-type-meta">Record</div>
+          <div style={{ fontFamily: MONO, fontSize: 13, fontVariantNumeric: "tabular-nums" }}>
+            feed.example.io · paused 2026-09-23T08:47:11Z · 429 ×4
+          </div>
+        </div>
+        <div className="di-type-row">
+          <div className="di-type-meta">Figures, tabular</div>
+          <div
+            style={{
+              fontFamily: MONO,
+              fontSize: 15,
+              fontVariantNumeric: "tabular-nums",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <span>1,842</span>
+            <span>1,109</span>
+            <span>744</span>
+            <span>487</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const meta = { title: "Foundations/Type" } satisfies Meta;
 export default meta;
 
 export const ScaleStory: StoryObj = {
   name: "Scale",
   render: () => <Scale />,
+};
+
+export const TrackStory: StoryObj = {
+  name: "Track",
+  render: () => <Track />,
 };

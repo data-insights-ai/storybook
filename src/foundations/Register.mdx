@@ -1,0 +1,101 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Page, Pull, Rule, Rules, Section, Verdict, Verdicts } from "./guide/Guide";
+import { SealSpecimen, IndexSpecimen } from "./guide/RegisterSpecimens";
+
+<Meta title="Foundations/Register" />
+
+<Page
+  eyebrow="The system"
+  title="The surface is a register, not a dashboard."
+  lede="Everything else on this page follows from that one sentence. A dashboard shows you numbers. A register records them, states who recorded them, and lets you check. The four moves below are what make the difference visible."
+>
+  <Section eyebrow="One" title="Warm paper, not cool grey.">
+    <p>
+      A cool grey canvas with a blue accent is what every tool in this field looks like. Paper
+      (`#F4F1E8`) reads as a record before a single word is parsed, and no competitor in the space
+      has it. That is the whole reason it is here.
+    </p>
+    <p>
+      The one cold surface is the grid behind a table. It is white so a dense field of mono values
+      reads as an extract lifted out of the record, rather than as more of the page.
+    </p>
+  </Section>
+
+  <Section eyebrow="Two" title="Navy is the ink and the action.">
+    <Pull>What writes is what commits.</Pull>
+    <p>
+      There is no invented accent colour. Body text is navy; the one filled control on a sheet is
+      navy. An operator never has to ask which button commits, because only one of them is solid.
+    </p>
+    <p>
+      After dark that breaks down — navy cannot act against a navy ground — so the fill turns gold.
+      That is the single exception in the system, and it exists only in the night sheet.
+    </p>
+  </Section>
+
+  <Section eyebrow="Three" title="Gold means sealed. It does not mean important.">
+    <SealSpecimen />
+    <Rules>
+      <Rule>A filled gold dot: the value is recorded and can be verified.</Rule>
+      <Rule>A hollow gold ring: a model inferred it, and nothing has vouched for it yet.</Rule>
+      <Rule>No mark: nothing is on record. An absence is a statement, so it gets a shape.</Rule>
+      <Rule>The mark never carries the meaning alone. The word beside it does.</Rule>
+    </Rules>
+    <p>
+      This is what makes the AI marking systemic instead of decorative. A claim and a fact are drawn
+      from the same gold, in two shapes that cannot be mistaken for each other — and the less certain
+      one is the *less* decorated one. No gradient, no glow, no sparkle.
+    </p>
+  </Section>
+
+  <Section eyebrow="Four" title="Every panel has an index column.">
+    <IndexSpecimen />
+    <p>
+      Thirty-eight pixels down the left of every panel, table and drawer, holding an ordinal, a
+      letter or a § mark. It costs real space and it is the system's fingerprint: it is what turns a
+      card into an entry, and it gives a row a handle an operator can say out loud.
+    </p>
+    <p>
+      A drawer keeps the ordinal of the row it opened from, so the row and its detail are visibly the
+      same object. A failure keeps its ordinal too, tinted — a failed run is still something the
+      register recorded.
+    </p>
+  </Section>
+
+  <Section eyebrow="Five" title="Ask, then act, then record.">
+    <p>
+      Nothing a model proposes runs before an operator agrees to it. The confirmation states the
+      basis, the scope and whether the action can be reversed, and it offers the explanation before
+      the action rather than after it.
+    </p>
+    <p>
+      What follows the action is a receipt, not a way back: it reports what happened and carries the
+      audit id of the confirmation that authorised it. Undo-first was considered and refused —
+      revoking, erasing and sealing cannot be quietly reversed, and a toast that implies they can is
+      a lie about the record.
+    </p>
+    <Verdicts>
+      <Verdict result="pass" note="Basis, scope and reversibility, before the action.">
+        “Merge entry 07 into entry 03? Basis: same manifest hash. Scope: 2 entries. Reversible: yes,
+        until the next seal.”
+      </Verdict>
+      <Verdict result="fail" note="The scope is hidden and the reversal is implied.">
+        “Merged 2 entries. Undo”
+      </Verdict>
+    </Verdicts>
+  </Section>
+
+  <Section eyebrow="Six" title="One ornament, and it measures something.">
+    <p>
+      The 8px tick scale closes a header or a block that reports a measurement. It is the only
+      decorative mark in the system, and it earns its place by looking like an instrument rather than
+      a flourish. Everything else is a hairline.
+    </p>
+    <Rules>
+      <Rule>Depth is drawn with a 1px rule, not with a shadow.</Rule>
+      <Rule>Only a detached plane — a menu, a modal, a toast — gets a shadow, and a technical one.</Rule>
+      <Rule>No blur behind text. A mono value behind frosted glass has no measurable contrast.</Rule>
+      <Rule>Motion stays under 240ms, ease-out, one change at a time.</Rule>
+    </Rules>
+  </Section>
+</Page>

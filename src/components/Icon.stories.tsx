@@ -32,7 +32,7 @@ import { Icon } from "./Icon";
 import { IconSet } from "../foundations/guide/IconSet";
 
 const meta = {
-  title: "Components/Icon",
+  title: "Primitives/Icon",
   component: Icon,
   args: {
     size: 24,

@@ -1,0 +1,22 @@
+@layer components {
+  .di-select {
+    position: relative;
+    display: flex;
+  }
+
+  .di-select-control {
+    appearance: none;
+    padding-right: 30px;
+  }
+
+  .di-select-caret {
+    position: absolute;
+    top: 50%;
+    right: 9px;
+    width: 16px;
+    height: 16px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--di-text-muted);
+  }
+}

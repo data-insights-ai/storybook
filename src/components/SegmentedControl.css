@@ -1,0 +1,42 @@
+@layer components {
+  .di-segmented {
+    display: inline-flex;
+    padding: 2px;
+    margin: 0;
+    border: 1px solid var(--di-border-input);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-subtle);
+  }
+
+  .di-segment {
+    display: inline-flex;
+    align-items: center;
+    height: 24px;
+    padding: 0 11px;
+    border-radius: var(--di-radius-micro);
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--di-duration) var(--di-ease),
+      color var(--di-duration) var(--di-ease);
+  }
+
+  .di-segment.is-active {
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    box-shadow: 0 1px 1px rgba(10, 31, 68, 0.08);
+  }
+
+  .di-segment:has(:focus-visible) {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-segmented:disabled .di-segment {
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
+}

@@ -44,7 +44,7 @@ export function SettingsScreen() {
               </IconTile>
             }
             action={
-              <Button variant="secondary" size="sm">
+              <Button variant="secondary" size="dense">
                 <LogOut aria-hidden />
                 Sign out
               </Button>

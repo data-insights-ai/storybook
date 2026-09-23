@@ -1,0 +1,150 @@
+@layer components {
+  .di-modal {
+    width: min(480px, calc(100vw - 32px));
+    padding: 0;
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    box-shadow: var(--di-shadow-plane);
+  }
+
+  /*
+   * It fades and settles down one step. `allow-discrete` lets the native
+   * dialog animate out as well as in, so closing is seen rather than cut.
+   */
+  .di-modal {
+    opacity: 0;
+    translate: 0 -8px;
+    transition: opacity var(--di-duration-slow) var(--di-ease),
+      translate var(--di-duration-slow) var(--di-ease),
+      overlay var(--di-duration-slow) allow-discrete,
+      display var(--di-duration-slow) allow-discrete;
+  }
+
+  .di-modal[open] {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @starting-style {
+    .di-modal[open] {
+      opacity: 0;
+      translate: 0 -8px;
+    }
+  }
+
+  /* Solid, never blurred: the record behind stays a record. */
+  .di-modal::backdrop {
+    background: var(--di-scrim);
+    opacity: 0;
+    transition: opacity var(--di-duration-slow) var(--di-ease),
+      overlay var(--di-duration-slow) allow-discrete,
+      display var(--di-duration-slow) allow-discrete;
+  }
+
+  .di-modal[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .di-modal[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  .di-modal-frame {
+    display: flex;
+  }
+
+  .di-modal-icon {
+    display: flex;
+    justify-content: center;
+    width: var(--di-index-col);
+    flex: none;
+    padding-top: 18px;
+    border-right: 1px solid var(--di-border);
+    background: var(--di-status-warn-bg);
+    color: var(--di-status-warn-fg);
+  }
+
+  .di-modal-icon > svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .di-modal-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .di-modal-content {
+    padding: 18px;
+  }
+
+  .di-modal-eyebrow {
+    margin-bottom: 7px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-modal-title {
+    font-size: var(--di-font-size-500);
+    font-weight: var(--di-weight-semibold);
+    letter-spacing: var(--di-tracking-tight);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-modal-text {
+    margin-top: 7px;
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-body);
+    color: var(--di-text-muted);
+  }
+
+  .di-facts {
+    margin: 14px 0 0;
+    border-top: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-fact {
+    display: flex;
+    align-items: baseline;
+    gap: var(--di-space-3);
+    padding: 7px 0;
+    border-bottom: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-fact-label {
+    width: 96px;
+    flex: none;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-text-subtle);
+  }
+
+  .di-fact-value {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text);
+  }
+
+  .di-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--di-space-2);
+    padding: 11px 18px;
+    border-top: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+  }
+}

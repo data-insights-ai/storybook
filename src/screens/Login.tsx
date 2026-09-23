@@ -11,7 +11,6 @@ export function LoginScreen() {
       <SignIn
         kicker="datAInsights"
         version="v1.0"
-        badge="Intern"
         eyebrow="Workspace"
         title="Sign in"
         lede="Sign in to open the workspace."
