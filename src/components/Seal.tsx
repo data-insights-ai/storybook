@@ -60,9 +60,6 @@ export function SealValue({
  * proposed. No gradient, no glow, no sparkle: the least certain output
  * in the system is never the most decorated one.
  */
-export function RingDot({ size = 7, className }: { size?: number; className?: string }) {
-  return <SealMark state="inferred" size={size} className={className} />;
-}
 
 /**
  * The one ornament: an 8px tick scale. It closes a header, or any block

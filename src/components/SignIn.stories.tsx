@@ -85,7 +85,8 @@ export const Rejected: Story = {
         label="Password"
         type="password"
         autoComplete="current-password"
-        error="That key was not accepted. Two attempts remain."
+        hint="That key was not accepted. Two attempts remain."
+        hintTone="error"
       >
         <TextLink quiet={true}>Forgot password?</TextLink>
       </TextField>

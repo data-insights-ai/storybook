@@ -2,10 +2,10 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "./Button";
-import { Drawer } from "./Drawer";
-import { Fact, FactList } from "./Modal";
+import { Drawer, DrawerFooter } from "./Drawer";
 import { SealValue } from "./Seal";
 import { StatusPill } from "./StatusPill";
+import { Fact, FactList } from "./FactList";
 
 const meta = {
   title: "Blocks/Drawer",
@@ -27,7 +27,7 @@ const meta = {
     titleId: { control: "text" },
     closeLabel: { control: "text" },
     children: { control: false },
-    footer: { control: false },
+
   },
 } satisfies Meta<typeof Drawer>;
 
@@ -63,24 +63,7 @@ export const Default: Story = {
 /** With the actions this record allows, under its own rule. */
 export const WithActions: Story = {
   render: (args) => (
-    <Drawer
-      {...args}
-      footer={
-        <>
-          <Button variant="primary" size="dense">
-            Resume
-          </Button>
-          <Button variant="secondary" size="dense">
-            Open log
-          </Button>
-          <span style={{ marginLeft: "auto" }}>
-            <Button variant="danger" size="dense">
-              Revoke
-            </Button>
-          </span>
-        </>
-      }
-    >
+    <Drawer {...args}>
       <FactList>
         <Fact label="Kind">Feed</Fact>
         <Fact label="Manifest">
@@ -91,6 +74,19 @@ export const WithActions: Story = {
         <Fact label="Paused at">08:47:11Z</Fact>
         <Fact label="Reason">Rate limit from the upstream host</Fact>
       </FactList>
+      <DrawerFooter>
+        <Button variant="primary" size="dense">
+          Resume
+        </Button>
+        <Button variant="secondary" size="dense">
+          Open log
+        </Button>
+        <span style={{ marginLeft: "auto" }}>
+          <Button variant="danger" size="dense">
+            Revoke
+          </Button>
+        </span>
+      </DrawerFooter>
     </Drawer>
   ),
 };
@@ -99,14 +95,7 @@ export const WithActions: Story = {
 export const Failed: Story = {
   args: { index: "04", title: "archive.example.com" },
   render: (args) => (
-    <Drawer
-      {...args}
-      footer={
-        <Button variant="primary" size="dense">
-          Retry ingest
-        </Button>
-      }
-    >
+    <Drawer {...args}>
       <FactList>
         <Fact label="Kind">Archive</Fact>
         <Fact label="Manifest">
@@ -118,6 +107,11 @@ export const Failed: Story = {
         <Fact label="Reason">Connection reset after 2 of 14 batches</Fact>
         <Fact label="Written">Nothing</Fact>
       </FactList>
+      <DrawerFooter>
+        <Button variant="primary" size="dense">
+          Retry ingest
+        </Button>
+      </DrawerFooter>
     </Drawer>
   ),
 };

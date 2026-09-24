@@ -17,8 +17,8 @@ export function EmptyState({
   body,
   mono = false,
   tone = "default",
-  action,
   className,
+  children,
 }: {
   index: string;
   eyebrow: string;
@@ -28,8 +28,9 @@ export function EmptyState({
   mono?: boolean;
   /** `danger` is a failure, not an absence: a boundary the system hit. */
   tone?: "default" | "danger";
-  action?: ReactNode;
   className?: string;
+  /** Holds one `EmptyStateAction`. An absence offers exactly one way out. */
+  children?: ReactNode;
 }) {
   return (
     <div className={cx("di-empty", tone === "danger" && "is-danger", className)}>
@@ -40,8 +41,13 @@ export function EmptyState({
         <p className="di-empty-eyebrow">{eyebrow}</p>
         <p className="di-empty-title">{title}</p>
         <p className={cx("di-empty-text", mono && "di-mono")}>{body}</p>
-        {action === undefined ? null : <div className="di-empty-action">{action}</div>}
+        {children}
       </div>
     </div>
   );
+}
+
+/** The one way out of an empty state. Never two. */
+export function EmptyStateAction({ children }: { children: ReactNode }) {
+  return <div className="di-empty-action">{children}</div>;
 }

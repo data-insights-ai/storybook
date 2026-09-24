@@ -1,21 +1,20 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
-import { AlertCircle } from "lucide-react";
 import { cx } from "../cx";
-import { SealMark } from "./Seal";
+import { FieldHint, type HintTone } from "./FieldHint";
 import "./Field.css";
 import "./TextField.css";
 
 /**
- * Label above, control, then one line beneath it. An error replaces the
- * hint rather than stacking under it, so the field never argues with
- * itself. A sealed hint is a resolved value the register can vouch for.
+ * Label above, control, then one line beneath it. There is only ever one
+ * such line, so the field cannot argue with itself: `hint` is the text
+ * and `hintTone` is what it means — help, a sealed value, or an error
+ * that also marks the control invalid.
  */
 export function TextField({
   id,
   label,
   hint = "",
-  error = "",
-  sealHint = "",
+  hintTone = "neutral",
   mono = false,
   className,
   disabled = false,
@@ -26,12 +25,10 @@ export function TextField({
 }: {
   id: string;
   label: string;
-  /** Helper text under the field. Empty means no hint. */
+  /** The line under the field. Empty means none. */
   hint?: string;
-  /** Replaces the hint and marks the control invalid. Empty means valid. */
-  error?: string;
-  /** A resolved value under the field, carrying the seal. Empty means none. */
-  sealHint?: string;
+  /** What that line is. `error` also marks the control invalid. */
+  hintTone?: HintTone;
   /** Identifiers, hashes and timestamps are typed in the mono track. */
   mono?: boolean;
   /** Slot beside the label, for example a “Forgot password?” link. */
@@ -40,8 +37,7 @@ export function TextField({
   readOnly?: boolean;
   required?: boolean;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "children">) {
-  const invalid = error !== "";
-  const describedBy = invalid ? `${id}-error` : hint !== "" ? `${id}-hint` : undefined;
+  const invalid = hint !== "" && hintTone === "error";
 
   return (
     <div className={cx("di-field", className)}>
@@ -58,24 +54,12 @@ export function TextField({
         readOnly={readOnly}
         required={required}
         aria-invalid={invalid || undefined}
-        aria-describedby={describedBy}
+        aria-describedby={hint === "" ? undefined : `${id}-hint`}
         {...props}
       />
-      {invalid ? (
-        <div className="di-field-error" id={`${id}-error`}>
-          <AlertCircle aria-hidden />
-          <span>{error}</span>
-        </div>
-      ) : sealHint !== "" ? (
-        <div className="di-field-seal">
-          <SealMark state="sealed" />
-          <span>{sealHint}</span>
-        </div>
-      ) : hint !== "" ? (
-        <div className="di-field-hint" id={`${id}-hint`}>
-          {hint}
-        </div>
-      ) : null}
+      <FieldHint id={`${id}-hint`} tone={hintTone}>
+        {hint}
+      </FieldHint>
     </div>
   );
 }

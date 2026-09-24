@@ -3,20 +3,19 @@ import { Globe, MoreVertical, Radar, Search, Settings2, ShieldCheck, Timer } fro
 import { Console } from "../components/AppShell";
 import { Button } from "../components/Button";
 import { CommandBar, CommandGroup, CommandRow } from "../components/CommandBar";
-import { PageHeader, SectionTitle } from "../components/Heading";
-import {
-  ConfidenceField,
-  ConfirmPanel,
-  ExplainPanel,
-  ExplainRow,
-  PrivacyBadge,
-} from "../components/Inference";
+import { PageHeader } from "../components/Heading";
+import { ConfidenceField } from "../components/ConfidenceField";
+import { ConfirmActions, ConfirmPanel } from "../components/ConfirmPanel";
+import { ExplainPanel, ExplainRow } from "../components/ExplainPanel";
+import { PrivacyBadge } from "../components/PrivacyBadge";
 import { Grid, Stack } from "../components/Layout";
-import { LivingBody, LivingCard, LivingInsight, Sparkline } from "../components/LivingCard";
+import { LivingActions, LivingBody, LivingCard, LivingInsight } from "../components/LivingCard";
 import { Panel } from "../components/Panel";
 import { StatTile } from "../components/StatTile";
-import { Toast } from "../components/Toast";
+import { Toast, ToastAction } from "../components/Toast";
 import { sampleChrome } from "../sample/chrome";
+import { SectionTitle } from "../components/SectionTitle";
+import { Sparkline } from "../components/Sparkline";
 
 const bars = [
   { percent: 38 },
@@ -53,21 +52,19 @@ export function InferenceScreen() {
         />
 
         <SectionTitle title="The claim, in place" lede="Inside the card it concerns, never floating over it">
-          <PrivacyBadge tone="local" icon={<ShieldCheck aria-hidden />}>
+          <PrivacyBadge tone="local">
+            <ShieldCheck aria-hidden />
             local processing
           </PrivacyBadge>
         </SectionTitle>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 16, alignItems: "start" }}>
-          <LivingCard
-            title="Unsealed entries"
-            insightLabel="ai insight"
-            actions={
+          <LivingCard title="Unsealed entries" insightLabel="ai insight">
+            <LivingActions>
               <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
                 <MoreVertical aria-hidden />
               </Button>
-            }
-          >
+            </LivingActions>
             <LivingBody>
               <StatTile
                 index="03"
@@ -85,20 +82,17 @@ export function InferenceScreen() {
             <LivingInsight
               body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog."
               basis="inferred from 3 sources · confidence 0.88"
-              actions={
-                <>
-                  <Button variant="ai" size="dense">
-                    Review the proposal
-                  </Button>
-                  <Button variant="secondary" size="dense">
-                    Open the source
-                  </Button>
-                  <Button variant="ghost" size="dense">
-                    Dismiss
-                  </Button>
-                </>
-              }
-            />
+            >
+              <Button variant="ai" size="dense">
+                Review the proposal
+              </Button>
+              <Button variant="secondary" size="dense">
+                Open the source
+              </Button>
+              <Button variant="ghost" size="dense">
+                Dismiss
+              </Button>
+            </LivingInsight>
           </LivingCard>
 
           <ConfirmPanel
@@ -106,20 +100,18 @@ export function InferenceScreen() {
             question="Resume feed.example.io?"
             whyLabel="why was this proposed?"
             onWhy={() => undefined}
-            actions={
-              <>
-                <Button variant="secondary" size="dense">
-                  Cancel
-                </Button>
-                <Button variant="ai" size="dense">
-                  Resume
-                </Button>
-              </>
-            }
           >
             <ExplainRow label="Basis">1,284 entries queued behind one paused host</ExplainRow>
             <ExplainRow label="Scope">1 source · WS-01</ExplainRow>
             <ExplainRow label="Reversible">Yes, the source can be paused again</ExplainRow>
+            <ConfirmActions>
+              <Button variant="secondary" size="dense">
+                Cancel
+              </Button>
+              <Button variant="ai" size="dense">
+                Resume
+              </Button>
+            </ConfirmActions>
           </ConfirmPanel>
         </div>
 
@@ -136,19 +128,12 @@ export function InferenceScreen() {
             privacyNote="local processing"
           >
             <CommandGroup label="Records">
-              <CommandRow
-                icon={<Radar aria-hidden />}
-                label="feed.example.io"
-                meta="03 · paused"
-                active={true}
-                onSelect={() => undefined}
-              />
-              <CommandRow
-                icon={<Radar aria-hidden />}
-                label="beta.example.dev"
-                meta="11 · paused"
-                onSelect={() => undefined}
-              />
+              <CommandRow label="feed.example.io" meta="03 · paused" active={true} onSelect={() => undefined}>
+                <Radar aria-hidden />
+              </CommandRow>
+              <CommandRow label="beta.example.dev" meta="11 · paused" onSelect={() => undefined}>
+                <Radar aria-hidden />
+              </CommandRow>
             </CommandGroup>
             <CommandGroup label="Answer">
               <CommandRow
@@ -159,8 +144,12 @@ export function InferenceScreen() {
               />
             </CommandGroup>
             <CommandGroup label="Go to">
-              <CommandRow icon={<Search aria-hidden />} label="Coverage" meta="G then C" onSelect={() => undefined} />
-              <CommandRow icon={<Settings2 aria-hidden />} label="Settings" meta="G then S" onSelect={() => undefined} />
+              <CommandRow label="Coverage" meta="G then C" onSelect={() => undefined}>
+                <Search aria-hidden />
+              </CommandRow>
+              <CommandRow label="Settings" meta="G then S" onSelect={() => undefined}>
+                <Settings2 aria-hidden />
+              </CommandRow>
             </CommandGroup>
           </CommandBar>
 
@@ -182,13 +171,16 @@ export function InferenceScreen() {
 
             <Panel index="§" title="Where a query goes" meta="§ 12.4">
               <Grid>
-                <PrivacyBadge tone="local" icon={<ShieldCheck aria-hidden />}>
+                <PrivacyBadge tone="local">
+                  <ShieldCheck aria-hidden />
                   local processing
                 </PrivacyBadge>
-                <PrivacyBadge tone="external" icon={<Globe aria-hidden />}>
+                <PrivacyBadge tone="external">
+                  <Globe aria-hidden />
                   model · eu-central
                 </PrivacyBadge>
-                <PrivacyBadge tone="retention" icon={<Timer aria-hidden />}>
+                <PrivacyBadge tone="retention">
+                  <Timer aria-hidden />
                   retained 30 days
                 </PrivacyBadge>
               </Grid>
@@ -229,12 +221,13 @@ export function InferenceScreen() {
             auditId="audit c18b70d4"
             onDismiss={() => setReceipt(false)}
             dismissLabel="Dismiss this receipt"
-            action={
+          >
+            <ToastAction>
               <Button variant="secondary" size="dense">
                 Open record
               </Button>
-            }
-          />
+            </ToastAction>
+          </Toast>
         ) : null}
       </Stack>
     </Console>

@@ -31,14 +31,23 @@ type Story = StoryObj<typeof meta>;
 export const Unselected: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const radio = canvas.getByLabelText("30 days");
-    await userEvent.click(radio);
-    await expect(radio).toBeChecked();
+    await expect(canvas.getByLabelText("30 days")).not.toBeChecked();
   },
 };
 
 export const Selected: Story = {
   args: { defaultChecked: true },
+};
+
+/** The click, kept out of the two stories named for a resting state. */
+export const Selecting: Story = {
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const radio = canvas.getByLabelText("30 days");
+    await userEvent.click(radio);
+    await expect(radio).toBeChecked();
+    await expect(args.onChange).toHaveBeenCalled();
+  },
 };
 
 export const WithDescription: Story = {

@@ -4,7 +4,14 @@ import { expect, within } from "storybook/test";
 import { Button } from "./Button";
 import { Icon } from "./Icon";
 import { IconTile } from "./IconTile";
-import { RecordCard, RecordLine } from "./RecordCard";
+import {
+  RecordCard,
+  RecordFooter,
+  RecordLine,
+  RecordLines,
+  RecordMark,
+  RecordStatus,
+} from "./RecordCard";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
@@ -14,16 +21,11 @@ const meta = {
   args: {
     title: "Registry sources",
     count: "1,842 entries",
-    mark: null,
-    status: null,
     children: null,
   },
   argTypes: {
     title: { control: "text" },
     count: { control: "text" },
-    mark: { control: false },
-    status: { control: false },
-    footer: { control: false },
     children: { control: false },
   },
   decorators: [
@@ -39,19 +41,27 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const mark = (
-  <IconTile tone="inverse">
-    <Icon size={16} label="Sources">
-      <Boxes aria-hidden />
-    </Icon>
-  </IconTile>
+  <RecordMark>
+    <IconTile tone="inverse">
+      <Icon size={16} label="Sources">
+        <Boxes aria-hidden />
+      </Icon>
+    </IconTile>
+  </RecordMark>
 );
 
 export const Default: Story = {
   render: (args) => (
-    <RecordCard {...args} mark={mark} status={<StatusPill tone="ok">running</StatusPill>}>
-      <RecordLine primary="registry.example.org" detail="09:12:04Z" />
-      <RecordLine primary="mirror.example.net" detail="09:11:52Z" />
-      <RecordLine primary="index.example.dev" detail="09:09:38Z" />
+    <RecordCard {...args}>
+      {mark}
+      <RecordStatus>
+        <StatusPill tone="ok">running</StatusPill>
+      </RecordStatus>
+      <RecordLines>
+        <RecordLine primary="registry.example.org" detail="09:12:04Z" />
+        <RecordLine primary="mirror.example.net" detail="09:11:52Z" />
+        <RecordLine primary="index.example.dev" detail="09:09:38Z" />
+      </RecordLines>
     </RecordCard>
   ),
   play: async ({ canvasElement }) => {
@@ -63,19 +73,21 @@ export const Default: Story = {
 /** With a way into the full register. */
 export const WithFooter: Story = {
   render: (args) => (
-    <RecordCard
-      {...args}
-      mark={mark}
-      status={<StatusPill tone="warn">1 paused</StatusPill>}
-      footer={
+    <RecordCard {...args}>
+      {mark}
+      <RecordStatus>
+        <StatusPill tone="warn">1 paused</StatusPill>
+      </RecordStatus>
+      <RecordLines>
+        <RecordLine primary="registry.example.org" detail="09:12:04Z" />
+        <RecordLine primary="feed.example.io" detail="paused 08:47Z" />
+        <RecordLine primary="index.example.dev" detail="09:09:38Z" />
+      </RecordLines>
+      <RecordFooter>
         <Button variant="ghost" size="dense">
           Open the register
         </Button>
-      }
-    >
-      <RecordLine primary="registry.example.org" detail="09:12:04Z" />
-      <RecordLine primary="feed.example.io" detail="paused 08:47Z" />
-      <RecordLine primary="index.example.dev" detail="09:09:38Z" />
+      </RecordFooter>
     </RecordCard>
   ),
 };
@@ -84,8 +96,14 @@ export const WithFooter: Story = {
 export const SingleLine: Story = {
   args: { title: "Archive sources", count: "487 entries" },
   render: (args) => (
-    <RecordCard {...args} mark={mark} status={<StatusPill tone="danger">failed</StatusPill>}>
-      <RecordLine primary="archive.example.com" detail="failed 08:44Z" />
+    <RecordCard {...args}>
+      {mark}
+      <RecordStatus>
+        <StatusPill tone="danger">failed</StatusPill>
+      </RecordStatus>
+      <RecordLines>
+        <RecordLine primary="archive.example.com" detail="failed 08:44Z" />
+      </RecordLines>
     </RecordCard>
   ),
 };

@@ -23,15 +23,16 @@ import {
   DataTable,
   TableBody,
   TableCell,
+  TableFooter,
   TableColumn,
   TableHead,
   TableRow,
 } from "../components/DataTable";
-import { SectionTitle } from "../components/Heading";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import { Pagination } from "../components/Pagination";
 import { SearchField } from "../components/SearchField";
 import { StatusPill, type StatusTone } from "../components/StatusPill";
+import { SectionTitle } from "../components/SectionTitle";
 
 type Source = {
   id: string;
@@ -175,25 +176,21 @@ export function CoverageScreen() {
           </ToolbarEnd>
         </Toolbar>
 
-        <DataTable
-          caption="Connected sources"
-          footer={
-            <>
-              <span>
-                {start + 1}–{start + visible.length} of {sources.length} sources
-              </span>
-              <Pagination
-                page={page}
-                pages={pages}
-                onPageChange={setPage}
-                label="Source list pages"
-                previousLabel="Previous page"
-                nextLabel="Next page"
-                pageLabel="Page"
-              />
-            </>
-          }
-        >
+        <DataTable caption="Connected sources">
+          <TableFooter>
+            <span>
+              {start + 1}–{start + visible.length} of {sources.length} sources
+            </span>
+            <Pagination
+              page={page}
+              pages={pages}
+              onPageChange={setPage}
+              label="Source list pages"
+              previousLabel="Previous page"
+              nextLabel="Next page"
+              pageLabel="Page"
+            />
+          </TableFooter>
           <TableHead>
             <TableColumn>Source / platform</TableColumn>
             <TableColumn>Type / method</TableColumn>

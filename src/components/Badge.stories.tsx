@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Badge, VersionTag } from "./Badge";
+import { Badge } from "./Badge";
 
 const meta = {
   title: "Primitives/Badge",
@@ -43,17 +43,6 @@ export const AllTones: Story = {
       <Badge tone="neutral">08</Badge>
       <Badge tone="alert">03</Badge>
       <Badge tone="gold">06</Badge>
-    </div>
-  ),
-};
-
-/** A version or a short hash: it names a thing, it does not report a state. */
-export const Version: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div style={{ display: "flex", gap: 8 }}>
-      <VersionTag>v4.18.2</VersionTag>
-      <VersionTag>build 7f3a99e</VersionTag>
     </div>
   ),
 };

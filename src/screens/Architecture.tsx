@@ -10,12 +10,14 @@ import {
 import { Button } from "../components/Button";
 import { Console } from "../components/AppShell";
 import { sampleChrome } from "../sample/chrome";
-import { PageHeader, SectionTitle } from "../components/Heading";
+import { PageHeader } from "../components/Heading";
 import { Grid, Numbered, Stack } from "../components/Layout";
-import { KeyValue, KeyValues, Metric } from "../components/Metric";
-import { Stage, StageTrack } from "../components/Stage";
+import { Metric } from "../components/Metric";
+import { Stage, StageIcon, StageTrack } from "../components/Stage";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import { StatusPill } from "../components/StatusPill";
+import { KeyValue, KeyValues } from "../components/KeyValues";
+import { SectionTitle } from "../components/SectionTitle";
 
 const stages = [
   {
@@ -108,7 +110,7 @@ export function ArchitectureScreen() {
                 foot={stage.foot}
                 current={stage.current}
               >
-                {stage.icon}
+                <StageIcon>{stage.icon}</StageIcon>
               </Stage>
             ))}
           </StageTrack>

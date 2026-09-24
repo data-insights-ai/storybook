@@ -3,14 +3,14 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AlertTriangle } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "./Button";
+import { Fact, FactList } from "./FactList";
 import {
-  Fact,
-  FactList,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalFrame,
+  ModalIcon,
   ModalTitle,
 } from "./Modal";
 import { TextField } from "./TextField";
@@ -42,7 +42,10 @@ type Story = StoryObj<typeof meta>;
 export const Confirm: Story = {
   render: (args) => (
     <Modal {...args}>
-      <ModalFrame icon={<AlertTriangle aria-hidden />}>
+      <ModalFrame>
+        <ModalIcon>
+          <AlertTriangle aria-hidden />
+        </ModalIcon>
         <ModalContent>
           <ModalTitle id="modal-title" eyebrow="Irreversible">
             Revoke four sources?
@@ -76,7 +79,10 @@ export const Confirm: Story = {
 export const TypeToConfirm: Story = {
   render: (args) => (
     <Modal {...args}>
-      <ModalFrame icon={<AlertTriangle aria-hidden />}>
+      <ModalFrame>
+        <ModalIcon>
+          <AlertTriangle aria-hidden />
+        </ModalIcon>
         <ModalContent>
           <ModalTitle id="modal-title" eyebrow="Irreversible">
             Erase the workspace record?
@@ -136,7 +142,10 @@ export const Closed: Story = {
           Revoke sources
         </Button>
         <Modal {...args} open={open} onClose={() => setOpen(false)}>
-          <ModalFrame icon={<AlertTriangle aria-hidden />}>
+          <ModalFrame>
+            <ModalIcon>
+              <AlertTriangle aria-hidden />
+            </ModalIcon>
             <ModalContent>
               <ModalTitle id="modal-title" eyebrow="Irreversible">
                 Revoke four sources?
@@ -157,12 +166,8 @@ export const Closed: Story = {
     );
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
-    await userEvent.click(canvas.getByRole("button", { name: "Revoke sources" }));
-    await waitFor(() =>
-      expect(body.getByRole("dialog", { name: "Revoke four sources?" })).toBeVisible(),
-    );
+    await expect(body.queryByRole("dialog")).toBeNull();
   },
 };
 
@@ -183,7 +188,10 @@ export const Transition: Story = {
           Revoke sources
         </Button>
         <Modal {...args} open={open} onClose={() => setOpen(false)} labelledBy="modal-title">
-          <ModalFrame icon={<AlertTriangle aria-hidden />}>
+          <ModalFrame>
+            <ModalIcon>
+              <AlertTriangle aria-hidden />
+            </ModalIcon>
             <ModalContent>
               <ModalTitle id="modal-title" eyebrow="Irreversible">
                 Revoke four sources?

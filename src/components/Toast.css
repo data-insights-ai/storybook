@@ -80,6 +80,10 @@
     color: var(--di-gold-400);
   }
 
+  .di-toast-action {
+    flex: none;
+  }
+
   .di-toast-close {
     display: flex;
     align-items: center;

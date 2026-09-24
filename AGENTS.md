@@ -55,7 +55,7 @@ The system is the **Register**: the surface is a record, not a dashboard. Everyt
 - Radii are moderate: 4px micro-controls, 6px buttons and selects, 8px panels. Control heights are 28 / 32 / 36px, and 32 is the standard.
 - Depth is drawn with a 1px rule. Only a detached plane — a menu, a modal, a toast — gets a shadow, and a technical one. No blur behind text: a mono value behind frosted glass has no measurable contrast.
 - The one ornament is the 8px tick rule (`.di-tick-rule`), and it only closes a block that reports a measurement.
-- Motion stays under 240ms, ease-out, one change at a time. A modal fades and settles one step (`@starting-style` plus `allow-discrete`, so it animates out as well as in), a drawer arrives from its own edge, a menu drops 4px, a toast rises 10px. Nothing scales and fades at once, and `prefers-reduced-motion` drops all of it in `base.css`.
+- Motion stays under 240ms, ease-out, one change at a time. A waiting indicator is the exception and loops until the wait ends: `Spinner` turns, `SkeletonTable`'s bars breathe on opacity, staggered by row. Even there nothing sweeps — a gradient travelling over a register is the one loading animation every other tool in this field already uses. A modal fades and settles one step (`@starting-style` plus `allow-discrete`, so it animates out as well as in), a drawer arrives from its own edge, a menu drops 4px, a toast rises 10px. Nothing scales and fades at once, and `prefers-reduced-motion` drops all of it in `base.css`.
 - A toast runs on navy, not on paper: it is the system reporting back, not another entry on the sheet. It re-points its own tokens so a `Button` in the action slot reads on that ground.
 
 Every panel, table, drawer, notice and empty state carries a 38px index column (`--di-index-col`) holding an ordinal, a letter or a § mark. It is the system's fingerprint. A drawer keeps the ordinal of the row it opened from. A failure keeps its ordinal, tinted.
@@ -70,21 +70,45 @@ The sign-in card pins the daylight colours, including in the dark theme, because
 
 Every component lives in `src/components`; the story `title` decides where it lands in the sidebar, and there are five groups:
 
-- `Primitives/` — one element that composes nothing else from the system: Button, Badge, StatusPill, Chip, Icon, IconTile, Seal, TextLink.
-- `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl.
-- `Blocks/` — composes primitives and forms: Panel, DataTable, Notice, Toast, Modal, Drawer, Menu, Tabs, EmptyState, StatTile, LivingCard, CommandBar, SignIn and the rest.
+- `Primitives/` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it. Button, Badge, StatusPill, Chip, Icon, IconTile, Seal, Eyebrow, Kbd, TickRule, TextLink, VersionTag, KeyValues, Bars, Sparkline, Distribution, Pagination, Breadcrumb, Stepper, Tooltip, Waiting/{Progress,Skeleton,Spinner}.
+- `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl, FieldHint.
+- `Blocks/` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, FactList, Drawer, Menu, Tabs, EmptyState, StatTile, Metric, LivingCard, CommandBar, SignIn and the rest.
 - `Patterns/` — a whole arrangement: AppShell, Layout.
 - `Screens/` — a console example, composed from the above.
+
+The test is one question: **can another component go inside it?** `KeyValues` holds `KeyValue`, and `KeyValue` takes two strings — nothing else fits, so it is a Primitive. `Stat` looks just as small, but its `children` holds a `StatusPill` on the Watchlist screen, so it is a Block. `Pagination` and `SkeletonTable` are bulky and still Primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
+
+One sidebar entry is one component, and **one module is one component**. An independent component does not share a file with another one: `pnpm build` emits a module per file, so `Breadcrumb` living in `Tabs.tsx` means a product importing a breadcrumb also ships `Tabs` and `Stepper`. Where several are one family they get a folder rather than one merged entry (`Primitives/Waiting/Progress`, `/Skeleton`, `/Spinner`; `Blocks/Inference/Explain`, `/Confirm`, `/Confidence`, `/Privacy`; `Patterns/Layout/Stack`, `/Grid`, `/Numbered`, `/Toolbar`).
+
+A sub-component that only exists inside its parent — `TableCell`, `NoticeTitle`, `PanelFooter`, `ModalIcon` — stays in the parent's file and the parent's entry. The test is whether anything else imports it: `FactList` sat in `Modal.tsx` until the Register screen used it inside a `Drawer`, which is the moment it stopped being Modal's.
+
+Every export in `src/index.ts` appears in a story. An export with no story is in the package and invisible to the designer. A story meta's `component` is the component that story renders: three components under one meta make the Docs page and Show code describe the wrong one.
+
+There is one name per thing. `RingDot` was an alias for `<SealMark state="inferred" />`; two names for one mark is the same failure as two props for one line of hint text.
 
 A Drawer belongs in `Blocks/` because it contains Buttons and StatusPills; a Button belongs in `Primitives/` because it contains nothing. When a component grows to hold another one, move its title.
 
 `.storybook/preview.tsx` sorts those groups in that order and everything inside them alphabetically **by title, not by file name** — `Choice.stories.tsx` is titled `Forms/Checkbox`. Stories inside one file keep the order the file declares. Storybook reads that comparator out of the file and evaluates it on its own, so it has to be plain JavaScript with no type annotations and no references to anything outside it.
 
-Anything with a transition gets a story that runs it: `Blocks/Toast` → Arriving, `Blocks/Modal` → Transition, `Blocks/Drawer` → Transition, `Blocks/Waiting` → Resolving and Counting. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
+Anything with a transition gets a story that runs it: `Blocks/Toast` → Arriving, `Blocks/Modal` → Transition, `Blocks/Drawer` → Transition, `Primitives/Waiting/Skeleton` → Resolving, `Primitives/Waiting/Progress` → Counting. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
+
+### The one API rule
+
+Ask what can go in. **Only ever text → a `string` prop. Anything that can hold a component → a slot.** No prop is typed `ReactNode`; that type is the sign the decision was never made.
+
+A slot is a named sub-component written as a child, `<Parent><ParentSlot>`: `NoticeIcon`, `PanelFooter`, `TableToolbar`, `ChannelValue`, `SessionMark`, `ToastAction`, `ConfirmActions`. React has no `<slot>`, so the frame places its slots with CSS grid areas and the caller may write them in any order. Two frames cannot: `DataTable` (a `<div>` is invalid inside `<table>`) and `ModalFrame` pick their slots out of `children` by type, and each says so in a comment.
+
+Where a component takes exactly one leading node, that node is the first child and there is no slot for it — `Button`, `CommandRow`, `PrivacyBadge`, `Icon`. `TextField` puts the label-side slot in plain `children`, because the field has only one.
+
+Two `ReactNode`s survive on purpose, and only these two. `NavItem.icon` is a field on the `ConsoleChrome` data a product hands the shell, not a slot on a component. `Menu`'s `trigger` is a render prop, because the menu has to put its own `aria-expanded` and ref onto a button the caller owns. Anything else typed `ReactNode` is a decision that was skipped.
+
+A variant is one union prop, never a family of booleans or a second prop that can contradict the first: `hintTone`, not `hint` plus `error` plus `sealHint`; `layout`, not `inline` plus `split`. A field says one thing at a time, so `TextField` and `Select` take one `hint` string and one `hintTone` of `neutral | sealed | error`, and `error` also sets `aria-invalid`.
+
+A control mark centres on the **first line** of its label — never on the whole block, never on the label's top edge. `--di-choice-line` is that line, and `Checkbox`, `Radio` and `Switch` all bind to it. `Switch` defaults to `layout="inline"`, the checkbox's geometry; `layout="row"` is the settings column, and the distance it opens is that column, not slack.
 
 - Every visible string is a prop. Storybook stories are written in English. A product passes its own language in from outside. Components ship with no baked-in language.
-- A React node (an icon, an action, table rows and cells) is a child slot, filled in the story `render`, with `control: false`. `PageHeader` puts trailing content in `children`. `SectionTitle` puts the trailing text in `children`. `Notice` uses `NoticeIcon`, `NoticeTitle`, `NoticeBody`, and `NoticeAction`. `Button` takes the icon as its first child. `TextField` puts the label-side slot in `children`. `CellLead` takes a `CellIcon` child.
-- `DataTable` does not take a `rows` array. The caller maps its own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, and `TableCell`. The table supplies the frame, the caption, an optional toolbar and an optional footer slot. Its scroll container is a named, focusable region, because a scrollable area has to be reachable from the keyboard.
+- A slot is filled in the story `render`, with `control: false`.
+- `DataTable` does not take a `rows` array. The caller maps its own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, and `TableCell`. The table supplies the frame and the caption; `TableToolbar` and `TableFooter` are slots the caller writes as children. Its scroll container is a named, focusable region, because a scrollable area has to be reachable from the keyboard.
 - `Pagination` is controlled. The caller owns `page` and which rows are visible. Previous and next call `onPageChange` with the next page.
 - String props stay on `args`, so Controls can change the copy.
 - A boolean prop is always `true` or `false` in `args`. An unset boolean shows “Set boolean” instead of a toggle. Use the component’s real default: `dot: true`, `padded: true`, `disabled: false`.

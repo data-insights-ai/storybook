@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MoreVertical } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "./Button";
-import { Menu, MenuDivider, MenuItem, Tooltip } from "./Menu";
+import { Menu, MenuDivider, MenuItem } from "./Menu";
 
 const meta = {
   title: "Blocks/Menu",
@@ -63,10 +63,6 @@ export const Closed: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.queryByRole("menu")).toBeNull();
-    await userEvent.click(canvas.getByRole("button", { name: "Actions for entry 04" }));
-    await waitFor(() =>
-      expect(canvas.getByRole("menu", { name: "Actions for entry 04" })).toBeVisible(),
-    );
   },
 };
 
@@ -85,18 +81,22 @@ export const Open: Story = {
   },
 };
 
+/**
+ * The trigger owns the state and the menu reports the change back, so
+ * this is the story that ends open rather than the one named for it.
+ */
+export const Opening: Story = {
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Actions for entry 04" }));
+    await expect(args.onOpenChange).toHaveBeenCalledWith(true);
+    await waitFor(() =>
+      expect(canvas.getByRole("menu", { name: "Actions for entry 04" })).toBeVisible(),
+    );
+  },
+};
+
 /** A model proposed one of these, so it wears the ring. */
 export const WithInferredItem: Story = {
   args: { open: true },
-};
-
-/** A short label for a control that has none. Never the only place a fact lives. */
-export const Tooltips: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div style={{ display: "flex", gap: 10 }}>
-      <Tooltip>sealed 09:12:04Z</Tooltip>
-      <Tooltip>⌘K</Tooltip>
-    </div>
-  ),
 };

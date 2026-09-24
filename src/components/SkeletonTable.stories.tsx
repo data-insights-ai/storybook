@@ -12,106 +12,43 @@ import {
   TableRow,
 } from "./DataTable";
 import { SealValue } from "./Seal";
+import { SkeletonTable } from "./SkeletonTable";
 import { StatusPill } from "./StatusPill";
-import { Progress, SkeletonTable, Spinner } from "./Waiting";
 
 const meta = {
-  title: "Blocks/Waiting",
-  component: Progress,
+  title: "Primitives/Waiting/Skeleton",
+  component: SkeletonTable,
   tags: ["autodocs"],
-  args: {
-    id: "ingest",
-    label: "Ingesting sources",
-    count: "1,284 of 4,000",
-    value: 32,
-    max: 100,
-  },
+  args: { rows: 5, label: "Loading the register" },
   argTypes: {
-    id: { control: "text" },
+    rows: { control: { type: "number" } },
     label: { control: "text" },
-    count: { control: "text" },
-    value: { control: { type: "range", min: 0, max: 100 } },
-    max: { control: { type: "number" } },
   },
-} satisfies Meta<typeof Progress>;
+} satisfies Meta<typeof SkeletonTable>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Waiting is always counted. An endless bar tells an operator nothing. */
-export const Counted: Story = {
-  decorators: [
-    (Story) => (
-      <div style={{ maxWidth: 380 }}>
-        <Story />
-      </div>
-    ),
-  ],
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByText("1,284 of 4,000")).toBeVisible();
-  },
-};
-
-export const JustStarted: Story = {
-  args: { value: 2, count: "84 of 4,000" },
-  decorators: [
-    (Story) => (
-      <div style={{ maxWidth: 380 }}>
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const NearlyDone: Story = {
-  args: { value: 96, count: "3,842 of 4,000" },
-  decorators: [
-    (Story) => (
-      <div style={{ maxWidth: 380 }}>
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const Complete: Story = {
-  args: { value: 100, count: "4,000 of 4,000", label: "Ingest complete" },
-  decorators: [
-    (Story) => (
-      <div style={{ maxWidth: 380 }}>
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-/** The real grid with its rules drawn, bars for the values. No shimmer. */
-export const Skeleton: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => <SkeletonTable rows={5} label="Loading the register" />,
+/**
+ * The real grid with its rules drawn, bars for the values. The bars
+ * breathe and the frame holds still, so the motion is confined to what
+ * is not on record yet. No shimmer sweep.
+ */
+export const Loading: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Loading the register")).toBeInTheDocument();
   },
 };
 
-export const SkeletonShort: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => <SkeletonTable rows={2} label="Loading the register" />,
+export const Short: Story = {
+  args: { rows: 2 },
 };
 
-/** For a wait too short to count. It still carries a word. */
-export const Turning: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-      <Spinner label="verifying manifest" />
-      <Spinner label="resolving hosts" />
-    </div>
-  ),
+/** Tall enough to read the stagger: the wait runs down the grid. */
+export const Long: Story = {
+  args: { rows: 12 },
 };
-
 
 /**
  * The wait resolving. The skeleton is the real grid with its rules and its
@@ -183,55 +120,6 @@ export const Resolving: Story = {
             </TableBody>
           </DataTable>
         )}
-      </div>
-    );
-  },
-};
-
-/**
- * A counted wait actually counting. The bar and the number move together,
- * because the bar alone does not say how much is left.
- */
-export const Counting: Story = {
-  parameters: { controls: { disable: true } },
-  render: function Render() {
-    const total = 4000;
-    const [done, setDone] = useState(0);
-    const timer = useRef<ReturnType<typeof setInterval>>(undefined);
-
-    const run = useCallback(() => {
-      setDone(0);
-      clearInterval(timer.current);
-      timer.current = setInterval(() => {
-        setDone((value) => {
-          const next = value + 137;
-          if (next >= total) {
-            clearInterval(timer.current);
-            return total;
-          }
-          return next;
-        });
-      }, 90);
-    }, []);
-
-    useEffect(() => {
-      run();
-      return () => clearInterval(timer.current);
-    }, [run]);
-
-    return (
-      <div style={{ display: "flex", flexDirection: "column", gap: 14, maxWidth: 380 }}>
-        <Progress
-          id="counting"
-          label={done === total ? "Ingest complete" : "Ingesting sources"}
-          count={`${done.toLocaleString("en")} of ${total.toLocaleString("en")}`}
-          value={(done / total) * 100}
-        />
-        <div>
-          <Button variant="secondary" size="dense" onClick={run}>
-            Run again
-          </Button>
-        </div>
       </div>
     );
   },

@@ -1,18 +1,21 @@
 import type { ReactNode, SelectHTMLAttributes } from "react";
 import { ChevronDown } from "lucide-react";
 import { cx } from "../cx";
+import { FieldHint, type HintTone } from "./FieldHint";
 import "./Field.css";
 import "./Select.css";
 
 /**
  * A native select. The caller maps its own data into `option` children,
  * so the control never owns a list it cannot see.
+ *
+ * The line under it follows `TextField`: one `hint`, one `hintTone`.
  */
 export function Select({
   id,
   label,
   hint = "",
-  error = "",
+  hintTone = "neutral",
   mono = true,
   className,
   disabled = false,
@@ -22,16 +25,17 @@ export function Select({
 }: {
   id: string;
   label: string;
+  /** The line under the field. Empty means none. */
   hint?: string;
-  error?: string;
+  /** What that line is. `error` also marks the control invalid. */
+  hintTone?: HintTone;
   /** A select usually holds an identifier or a range, so mono is the default. */
   mono?: boolean;
   disabled?: boolean;
   required?: boolean;
   children: ReactNode;
 } & Omit<SelectHTMLAttributes<HTMLSelectElement>, "children">) {
-  const invalid = error !== "";
-  const describedBy = invalid ? `${id}-error` : hint !== "" ? `${id}-hint` : undefined;
+  const invalid = hint !== "" && hintTone === "error";
 
   return (
     <div className={cx("di-field", className)}>
@@ -45,22 +49,16 @@ export function Select({
           disabled={disabled}
           required={required}
           aria-invalid={invalid || undefined}
-          aria-describedby={describedBy}
+          aria-describedby={hint === "" ? undefined : `${id}-hint`}
           {...props}
         >
           {children}
         </select>
         <ChevronDown className="di-select-caret" aria-hidden />
       </div>
-      {invalid ? (
-        <div className="di-field-error" id={`${id}-error`}>
-          <span>{error}</span>
-        </div>
-      ) : hint !== "" ? (
-        <div className="di-field-hint" id={`${id}-hint`}>
-          {hint}
-        </div>
-      ) : null}
+      <FieldHint id={`${id}-hint`} tone={hintTone}>
+        {hint}
+      </FieldHint>
     </div>
   );
 }

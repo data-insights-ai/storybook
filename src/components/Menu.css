@@ -58,19 +58,4 @@
     margin: 4px 0;
     background: var(--di-rule-hairline);
   }
-
-  .di-tooltip {
-    display: inline-flex;
-    align-items: center;
-    height: 22px;
-    padding: 0 8px;
-    border: 1px solid var(--di-navy-800);
-    border-radius: var(--di-radius-micro);
-    background: var(--di-navy-900);
-    color: var(--di-night-paper);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    line-height: 1;
-    white-space: nowrap;
-  }
 }

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../cx";
 import "./DataTable.css";
 
@@ -13,26 +13,36 @@ import "./DataTable.css";
  */
 export function DataTable({
   caption,
-  toolbar,
-  footer,
   indexed = true,
   className,
   children,
 }: {
   /** The accessible name. Always present, visually hidden. */
   caption: string;
-  /** A filter row above the grid, inside the same frame. */
-  toolbar?: ReactNode;
-  /** A slot under the grid: a count, a pagination control. */
-  footer?: ReactNode;
   /** The ordinal column. Off for a table that is not a register extract. */
   indexed?: boolean;
   className?: string;
+  /** `TableToolbar`, the grid's `TableHead` and `TableBody`, and `TableFooter`. */
   children: ReactNode;
 }) {
+  /*
+   * The one slot that cannot be placed by CSS: a `<div>` is not allowed
+   * inside a `<table>`, so the frame has to pull the toolbar and the
+   * footer out of the children and render them around the grid itself.
+   */
+  const toolbar: ReactNode[] = [];
+  const grid: ReactNode[] = [];
+  const foot: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) return void grid.push(child);
+    if (child.type === TableToolbar) return void toolbar.push(child);
+    if (child.type === TableFooter) return void foot.push(child);
+    grid.push(child);
+  });
+
   return (
     <div className={cx("di-table-wrap", className)}>
-      {toolbar === undefined ? null : <div className="di-table-toolbar">{toolbar}</div>}
+      {toolbar}
       {/*
         The frame scrolls, not the page. A scrollable region has to be
         reachable from the keyboard, so it takes a tab stop and a name.
@@ -40,12 +50,22 @@ export function DataTable({
       <div className="di-table-scroll" tabIndex={0} role="region" aria-label={caption}>
         <table className={cx("di-table", indexed && "is-indexed")}>
           <caption className="di-sr">{caption}</caption>
-          {children}
+          {grid}
         </table>
       </div>
-      {footer === undefined ? null : <div className="di-table-foot">{footer}</div>}
+      {foot}
     </div>
   );
+}
+
+/** A filter row above the grid, inside the same frame. */
+export function TableToolbar({ children }: { children: ReactNode }) {
+  return <div className="di-table-toolbar">{children}</div>;
+}
+
+/** Under the grid: a count, a pagination control. */
+export function TableFooter({ children }: { children: ReactNode }) {
+  return <div className="di-table-foot">{children}</div>;
 }
 
 export function TableHead({ children }: { children: ReactNode }) {
@@ -129,11 +149,12 @@ export function TableCell({
   );
 }
 
-export function CellStack({ primary, secondary }: { primary: ReactNode; secondary?: ReactNode }) {
+/** Two lines in one cell: the value, and what qualifies it. Both text. */
+export function CellStack({ primary, secondary = "" }: { primary: string; secondary?: string }) {
   return (
     <span className="di-cell">
       <span className="di-cell-primary">{primary}</span>
-      {secondary ? <span className="di-cell-secondary">{secondary}</span> : null}
+      {secondary === "" ? null : <span className="di-cell-secondary">{secondary}</span>}
     </span>
   );
 }

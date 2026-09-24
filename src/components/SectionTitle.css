@@ -1,0 +1,35 @@
+@layer components {
+  .di-section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .di-section-title h2 {
+    font-family: var(--di-font-display);
+    font-weight: var(--di-weight-bold);
+    letter-spacing: var(--di-tracking-tight);
+    color: var(--di-text);
+    line-height: var(--di-leading-tight);
+    font-size: 22px;
+  }
+
+  .di-section-title p {
+    margin-top: 8px;
+    max-width: 62ch;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  .di-section-meta {
+    font-family: var(--di-font-code);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--di-text-muted);
+    white-space: nowrap;
+  }
+}

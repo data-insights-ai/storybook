@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { TabPanel, Tabs } from "./Tabs";
@@ -25,7 +25,10 @@ const meta = {
     items: { control: false },
   },
   render: function Render(args) {
+    // The strip is controlled, so the story holds the state the caller
+    // would. `value` stays an arg, so the Controls field keeps working.
     const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
     return (
       <div>
         <Tabs
@@ -48,10 +51,25 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("tab", { name: "Record" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+  },
+};
+
+/** Choosing a view. The strip reports it; the caller decides what shows. */
+export const Selecting: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("tab", { name: /Sources/ }));
     await expect(args.onChange).toHaveBeenCalledWith("sources");
+    await expect(canvas.getByRole("tab", { name: /Sources/ })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   },
 };
 

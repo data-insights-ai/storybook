@@ -1,0 +1,60 @@
+@layer components {
+  .di-confidence {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .di-confidence-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: var(--di-h-ctl);
+    padding: 0 10px;
+    border: 1px solid var(--di-ai-ring);
+    border-radius: var(--di-field-radius);
+    background: var(--di-bg-surface);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-400);
+    color: var(--di-text);
+  }
+
+  .di-confidence-track {
+    height: 2px;
+    background: var(--di-bg-subtle);
+  }
+
+  .di-confidence-fill {
+    height: 100%;
+    background: var(--di-status-ok-dot);
+  }
+
+  .di-confidence.is-review .di-confidence-fill {
+    background: var(--di-status-warn-dot);
+  }
+
+  .di-confidence-foot {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 9px;
+    border-radius: var(--di-radius-micro);
+    background: var(--di-bg-page);
+  }
+
+  .di-confidence.is-review .di-confidence-foot {
+    background: var(--di-status-warn-bg);
+  }
+
+  .di-confidence-label {
+    flex: 1;
+    min-width: 0;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-muted);
+  }
+
+  .di-confidence.is-review .di-confidence-label {
+    color: var(--di-status-warn-fg);
+  }
+}

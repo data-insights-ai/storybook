@@ -1,0 +1,29 @@
+@layer components {
+  .di-spinner-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .di-spinner {
+    width: 14px;
+    height: 14px;
+    flex: none;
+    border: 2px solid var(--di-border-strong);
+    border-top-color: var(--di-fill-strong);
+    border-radius: var(--di-radius-pill);
+    animation: di-spinner-turn 700ms linear infinite;
+  }
+
+  @keyframes di-spinner-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .di-spinner-label {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
+}

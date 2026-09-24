@@ -16,8 +16,8 @@ export function Toast({
   auditId = "",
   onDismiss,
   dismissLabel,
-  action,
   className,
+  children,
 }: {
   title: string;
   body: string;
@@ -25,10 +25,10 @@ export function Toast({
   auditId?: string;
   onDismiss: () => void;
   dismissLabel: string;
-  /** A trailing control, for example “View record”. */
-  action?: ReactNode;
   /** Takes `is-leaving` while the caller plays the exit before unmounting. */
   className?: string;
+  /** Holds one `ToastAction`, for example “View record”. */
+  children?: ReactNode;
 }) {
   return (
     <div className={cx("di-toast", className)} role="status">
@@ -38,10 +38,15 @@ export function Toast({
         <p className="di-toast-body">{body}</p>
         {auditId === "" ? null : <p className="di-toast-audit">{auditId}</p>}
       </div>
-      {action}
+      {children}
       <button type="button" className="di-toast-close" aria-label={dismissLabel} onClick={onDismiss}>
         <X aria-hidden />
       </button>
     </div>
   );
+}
+
+/** The trailing control on a receipt. Never an undo — a reversal is its own action. */
+export function ToastAction({ children }: { children: ReactNode }) {
+  return <div className="di-toast-action">{children}</div>;
 }

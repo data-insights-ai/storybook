@@ -22,16 +22,3 @@ export function Metric({
     </Card>
   );
 }
-
-export function KeyValue({ term, value }: { term: string; value: string }) {
-  return (
-    <>
-      <dt>{term}</dt>
-      <dd>{value}</dd>
-    </>
-  );
-}
-
-export function KeyValues({ children }: { children: ReactNode }) {
-  return <dl className="di-kv">{children}</dl>;
-}

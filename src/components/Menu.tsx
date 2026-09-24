@@ -1,6 +1,6 @@
 import { useCallback, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { cx } from "../cx";
-import { RingDot } from "./Seal";
+import { SealMark } from "./Seal";
 import "./Menu.css";
 
 /**
@@ -112,7 +112,7 @@ export function MenuItem({
       className={cx("di-menu-item", tone === "danger" && "is-danger")}
       onClick={onSelect}
     >
-      {inferred ? <RingDot size={6} /> : null}
+      {inferred ? <SealMark state="inferred" size={6} /> : null}
       {children}
     </button>
   );
@@ -120,12 +120,4 @@ export function MenuItem({
 
 export function MenuDivider() {
   return <div className="di-menu-divider" role="separator" />;
-}
-
-/**
- * A short label for a control that has none. It is never the only place
- * a fact lives: a tooltip that holds the scope of an action is a bug.
- */
-export function Tooltip({ children }: { children: ReactNode }) {
-  return <span className="di-tooltip" role="tooltip">{children}</span>;
 }

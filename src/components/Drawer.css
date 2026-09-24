@@ -100,6 +100,8 @@
 
   .di-drawer-content {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     padding: 4px 14px 14px;
   }
 
@@ -108,10 +110,16 @@
     border-top: 0;
   }
 
+  /*
+   * Written as a child of the content, so it reaches back out through the
+   * pane's padding to sit on the drawer's own edges.
+   */
   .di-drawer-footer {
     display: flex;
     align-items: center;
     gap: var(--di-space-2);
+    margin: 14px -14px -14px;
+    margin-top: auto;
     padding: 11px 14px;
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);

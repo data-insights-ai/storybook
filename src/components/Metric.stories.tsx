@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { KeyValue, KeyValues, Metric } from "./Metric";
+import { Metric } from "./Metric";
+import { KeyValue, KeyValues } from "./KeyValues";
 
 const meta = {
   title: "Blocks/Metric",

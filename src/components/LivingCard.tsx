@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../cx";
-import { RingDot } from "./Seal";
+import { SealMark } from "./Seal";
 import { StatusPill } from "./StatusPill";
 import "./LivingCard.css";
 
@@ -15,16 +15,14 @@ import "./LivingCard.css";
 export function LivingCard({
   title,
   insightLabel,
-  actions,
   className,
   children,
 }: {
   title: string;
   /** The pill naming what the banner is, e.g. "ai insight". */
   insightLabel: string;
-  /** The card's own controls, at the top right. */
-  actions?: ReactNode;
   className?: string;
+  /** `LivingActions`, then `LivingBody` and `LivingInsight`. */
   children: ReactNode;
 }) {
   return (
@@ -32,11 +30,15 @@ export function LivingCard({
       <div className="di-living-head">
         <span className="di-living-title">{title}</span>
         <StatusPill tone="ai">{insightLabel}</StatusPill>
-        {actions === undefined ? null : <div className="di-living-actions">{actions}</div>}
       </div>
       {children}
     </div>
   );
+}
+
+/** The card's own controls, at the top right. */
+export function LivingActions({ children }: { children: ReactNode }) {
+  return <div className="di-living-actions">{children}</div>;
 }
 
 export function LivingBody({ children }: { children: ReactNode }) {
@@ -51,49 +53,24 @@ export function LivingBody({ children }: { children: ReactNode }) {
 export function LivingInsight({
   body,
   basis,
-  actions,
+  children,
 }: {
   body: string;
   /** Where the claim comes from, in the mono track. */
   basis: string;
-  actions: ReactNode;
+  /** The actions an operator may take on the claim. Each confirms first. */
+  children?: ReactNode;
 }) {
   return (
     <div className="di-living-insight">
       <div className="di-living-insight-row">
-        <RingDot size={7} />
+        <SealMark state="inferred" size={7} />
         <div className="di-living-insight-copy">
           <p className="di-living-insight-body">{body}</p>
           <p className="di-living-insight-basis">{basis}</p>
         </div>
       </div>
-      <div className="di-living-insight-actions">{actions}</div>
-    </div>
-  );
-}
-
-/**
- * A bare column chart for a card. `label` describes the shape in words,
- * because a row of bars with no axis is not readable as data.
- */
-export function Sparkline({
-  bars,
-  label,
-  className,
-}: {
-  bars: { percent: number; tone?: "muted" | "ink" | "danger" }[];
-  label: string;
-  className?: string;
-}) {
-  return (
-    <div className={cx("di-sparkline", className)} role="img" aria-label={label}>
-      {bars.map((bar, i) => (
-        <div
-          key={i}
-          className={cx("di-sparkline-bar", `is-${bar.tone ?? "muted"}`)}
-          style={{ height: `${bar.percent}%` }}
-        />
-      ))}
+      <div className="di-living-insight-actions">{children}</div>
     </div>
   );
 }

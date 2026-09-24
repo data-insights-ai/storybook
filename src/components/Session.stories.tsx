@@ -4,7 +4,7 @@ import { expect, within } from "storybook/test";
 import { Button } from "./Button";
 import { Icon } from "./Icon";
 import { IconTile } from "./IconTile";
-import { Session } from "./Session";
+import { Session, SessionAction, SessionMark, SessionTag } from "./Session";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
@@ -14,14 +14,12 @@ const meta = {
   args: {
     name: "MacBook Pro · Vienna",
     detail: "Last seen 09:12:04Z · 10.4.2.18",
-    mark: null,
-    action: null,
+    children: null,
   },
   argTypes: {
-    name: { control: false },
+    name: { control: "text" },
     detail: { control: "text" },
-    mark: { control: false },
-    action: { control: false },
+    children: { control: false },
   },
   decorators: [
     (Story) => (
@@ -38,21 +36,18 @@ type Story = StoryObj<typeof meta>;
 /** The session the operator is reading this on. */
 export const Current: Story = {
   render: (args) => (
-    <Session
-      {...args}
-      mark={
+    <Session {...args}>
+      <SessionMark>
         <IconTile tone="inverse">
           <Icon size={16} label="Laptop">
             <Laptop aria-hidden />
           </Icon>
         </IconTile>
-      }
-      name={
-        <>
-          MacBook Pro · Vienna <StatusPill tone="ok">this device</StatusPill>
-        </>
-      }
-    />
+      </SessionMark>
+      <SessionTag>
+        <StatusPill tone="ok">this device</StatusPill>
+      </SessionTag>
+    </Session>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -64,21 +59,20 @@ export const Current: Story = {
 export const Other: Story = {
   args: { name: "iPhone · Graz", detail: "Last seen 2026-09-21T18:40:11Z · 10.4.9.71" },
   render: (args) => (
-    <Session
-      {...args}
-      mark={
+    <Session {...args}>
+      <SessionMark>
         <IconTile>
           <Icon size={16} label="Phone">
             <Smartphone aria-hidden />
           </Icon>
         </IconTile>
-      }
-      action={
+      </SessionMark>
+      <SessionAction>
         <Button variant="danger" size="dense">
           End session
         </Button>
-      }
-    />
+      </SessionAction>
+    </Session>
   ),
 };
 
@@ -88,37 +82,32 @@ export const List: Story = {
   decorators: [],
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 440 }}>
-      <Session
-        mark={
+      <Session name="MacBook Pro · Vienna" detail="Last seen 09:12:04Z · 10.4.2.18">
+        <SessionMark>
           <IconTile tone="inverse">
             <Icon size={16} label="Laptop">
               <Laptop aria-hidden />
             </Icon>
           </IconTile>
-        }
-        name={
-          <>
-            MacBook Pro · Vienna <StatusPill tone="ok">this device</StatusPill>
-          </>
-        }
-        detail="Last seen 09:12:04Z · 10.4.2.18"
-      />
-      <Session
-        mark={
+        </SessionMark>
+        <SessionTag>
+          <StatusPill tone="ok">this device</StatusPill>
+        </SessionTag>
+      </Session>
+      <Session name="iPhone · Graz" detail="Last seen 2026-09-21T18:40:11Z · 10.4.9.71">
+        <SessionMark>
           <IconTile>
             <Icon size={16} label="Phone">
               <Smartphone aria-hidden />
             </Icon>
           </IconTile>
-        }
-        name="iPhone · Graz"
-        detail="Last seen 2026-09-21T18:40:11Z · 10.4.9.71"
-        action={
+        </SessionMark>
+        <SessionAction>
           <Button variant="danger" size="dense">
             End session
           </Button>
-        }
-      />
+        </SessionAction>
+      </Session>
     </div>
   ),
 };

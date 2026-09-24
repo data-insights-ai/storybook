@@ -29,14 +29,23 @@ type Story = StoryObj<typeof meta>;
 export const Unchecked: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const box = canvas.getByLabelText("Seal on ingest");
-    await userEvent.click(box);
-    await expect(box).toBeChecked();
+    await expect(canvas.getByLabelText("Seal on ingest")).not.toBeChecked();
   },
 };
 
 export const Checked: Story = {
   args: { defaultChecked: true },
+};
+
+/** The click, kept out of the two stories named for a resting state. */
+export const Checking: Story = {
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    const box = canvas.getByLabelText("Seal on ingest");
+    await userEvent.click(box);
+    await expect(box).toBeChecked();
+    await expect(args.onChange).toHaveBeenCalled();
+  },
 };
 
 export const WithDescription: Story = {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowRight, FileSearch, Radar, Settings2 } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
-import { CommandBar, CommandGroup, CommandRow } from "./CommandBar";
+import { CommandBar, CommandChip, CommandGroup, CommandRow } from "./CommandBar";
 
 const meta = {
   title: "Blocks/CommandBar",
@@ -47,22 +47,41 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const goTo = (
+  <CommandGroup label="Go to">
+    <CommandRow label="Overview" meta="G then O" onSelect={fn()}>
+      <FileSearch aria-hidden />
+    </CommandRow>
+    <CommandRow label="Watchlist" meta="G then W" onSelect={fn()}>
+      <Radar aria-hidden />
+    </CommandRow>
+    <CommandRow label="Settings" meta="G then S" onSelect={fn()}>
+      <Settings2 aria-hidden />
+    </CommandRow>
+  </CommandGroup>
+);
+
 /** Empty: the bar offers where to go before it is asked anything. */
 export const Empty: Story = {
-  args: {
-    children: (
-      <CommandGroup label="Go to">
-        <CommandRow icon={<FileSearch aria-hidden />} label="Overview" meta="G then O" onSelect={fn()} />
-        <CommandRow icon={<Radar aria-hidden />} label="Watchlist" meta="G then W" onSelect={fn()} />
-        <CommandRow icon={<Settings2 aria-hidden />} label="Settings" meta="G then S" onSelect={fn()} />
-      </CommandGroup>
-    ),
-  },
+  args: { children: goTo },
   play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText("Navigate, search or ask")).toHaveValue("");
+  },
+};
+
+/**
+ * Being asked something. The query is reported to the caller, which is
+ * what decides the rows — here they stay as they were.
+ */
+export const Typing: Story = {
+  args: { children: goTo },
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const input = canvas.getByLabelText("Navigate, search or ask");
     await userEvent.type(input, "feed");
     await expect(input).toHaveValue("feed");
+    await expect(args.onValueChange).toHaveBeenCalled();
   },
 };
 
@@ -76,8 +95,12 @@ export const WithResults: Story = {
     children: (
       <>
         <CommandGroup label="Records">
-          <CommandRow icon={<Radar aria-hidden />} label="feed.example.io" meta="03 · paused" active={true} onSelect={fn()} />
-          <CommandRow icon={<Radar aria-hidden />} label="beta.example.dev" meta="11 · paused" onSelect={fn()} />
+          <CommandRow label="feed.example.io" meta="03 · paused" active={true} onSelect={fn()}>
+            <Radar aria-hidden />
+          </CommandRow>
+          <CommandRow label="beta.example.dev" meta="11 · paused" onSelect={fn()}>
+            <Radar aria-hidden />
+          </CommandRow>
         </CommandGroup>
         <CommandGroup label="Answer">
           <CommandRow
@@ -88,7 +111,9 @@ export const WithResults: Story = {
           />
         </CommandGroup>
         <CommandGroup label="Commands">
-          <CommandRow icon={<ArrowRight aria-hidden />} label="Resume all paused sources" meta="⌘⏎" onSelect={fn()} />
+          <CommandRow label="Resume all paused sources" meta="⌘⏎" onSelect={fn()}>
+            <ArrowRight aria-hidden />
+          </CommandRow>
         </CommandGroup>
       </>
     ),
@@ -123,4 +148,23 @@ export const External: Story = {
       </CommandGroup>
     ),
   },
+};
+
+/**
+ * The scopes the bar is searching within. A suggested scope came from a
+ * model, so it carries the hollow ring rather than a filled mark.
+ */
+export const Scopes: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <CommandChip tone="active">workspace: WS-01</CommandChip>
+      <CommandChip tone="default" onSelect={fn()}>
+        state: paused
+      </CommandChip>
+      <CommandChip tone="suggested" onSelect={fn()}>
+        sealed before 2026-09-01
+      </CommandChip>
+    </div>
+  ),
 };

@@ -3,15 +3,16 @@ import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Console } from "../components/AppShell";
 import { sampleChrome } from "../sample/chrome";
-import { PageHeader, SectionTitle } from "../components/Heading";
+import { PageHeader } from "../components/Heading";
 import { Grid, Numbered, Stack } from "../components/Layout";
 import { Metric } from "../components/Metric";
 import { Bars } from "../components/Bars";
-import { Channel } from "../components/Channel";
-import { Session } from "../components/Session";
+import { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "../components/Channel";
+import { Session, SessionAction, SessionMark, SessionTag } from "../components/Session";
 import { IconTile } from "../components/IconTile";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import { StatusPill } from "../components/StatusPill";
+import { SectionTitle } from "../components/SectionTitle";
 
 const days = [46, 62, 70, 80, 58, 90, 84, 76, 88, 64, 72, 86, 91, 77, 69, 95, 100, 82, 74, 88, 93, 70, 81, 96, 85, 78, 90, 87, 73, 92];
 
@@ -28,28 +29,24 @@ export function SettingsScreen() {
 
       <Stack>
         <Numbered index="01">
-          <Session
-            name={
-              <>
-                Nora Feld
-                <StatusPill tone="neutral" dot={false}>
-                  Administrator
-                </StatusPill>
-              </>
-            }
-            detail="nora.feld@data-insights.ai · Valid until 22 Sep 2026"
-            mark={
+          <Session name="Nora Feld" detail="nora.feld@data-insights.ai · Valid until 22 Sep 2026">
+            <SessionMark>
               <IconTile tone="inverse">
                 <span aria-hidden>NF</span>
               </IconTile>
-            }
-            action={
+            </SessionMark>
+            <SessionTag>
+              <StatusPill tone="neutral" dot={false}>
+                Administrator
+              </StatusPill>
+            </SessionTag>
+            <SessionAction>
               <Button variant="secondary" size="dense">
                 <LogOut aria-hidden />
                 Sign out
               </Button>
-            }
-          />
+            </SessionAction>
+          </Session>
           <Notice>
             <NoticeText>
               <NoticeBody>Two-factor authentication active · hardware token confirmed</NoticeBody>
@@ -65,31 +62,31 @@ export function SettingsScreen() {
             Synced
           </SectionTitle>
           <Grid min="240px">
-            <Channel
-              title="Email notifications"
-              status={<StatusPill tone="ok">Enabled</StatusPill>}
-              value={
-                <>
-                  <Mail aria-hidden />
-                  n****@data-insights.ai
-                </>
-              }
-            >
-              <span>Routing: primary inbox</span>
-              <span>TLS 1.3 encrypted</span>
+            <Channel title="Email notifications">
+              <ChannelStatus>
+                <StatusPill tone="ok">Enabled</StatusPill>
+              </ChannelStatus>
+              <ChannelValue>
+                <Mail aria-hidden />
+                n****@data-insights.ai
+              </ChannelValue>
+              <ChannelSpecs>
+                <span>Routing: primary inbox</span>
+                <span>TLS 1.3 encrypted</span>
+              </ChannelSpecs>
             </Channel>
-            <Channel
-              title="Webhook"
-              status={<StatusPill tone="ok">Enabled</StatusPill>}
-              value={
-                <>
-                  <Webhook aria-hidden />
-                  https://hooks.data-insights.ai/events
-                </>
-              }
-            >
-              <span>Format: JSON</span>
-              <span>HMAC-SHA256 signed</span>
+            <Channel title="Webhook">
+              <ChannelStatus>
+                <StatusPill tone="ok">Enabled</StatusPill>
+              </ChannelStatus>
+              <ChannelValue>
+                <Webhook aria-hidden />
+                https://hooks.data-insights.ai/events
+              </ChannelValue>
+              <ChannelSpecs>
+                <span>Format: JSON</span>
+                <span>HMAC-SHA256 signed</span>
+              </ChannelSpecs>
             </Channel>
           </Grid>
 

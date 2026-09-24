@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Distribution, StatTile } from "./StatTile";
+import { StatTile } from "./StatTile";
 
 const meta = {
   title: "Blocks/StatTile",
@@ -87,26 +87,6 @@ export const Row: Story = {
       <StatTile index="02" label="Coverage" value="86.4%" delta="down 2.1 points" deltaTone="warn" ruled={true} />
       <StatTile index="03" label="Unsealed" value="1,284" delta="up 940" deltaTone="danger" tone="danger" ruled={true} />
       <StatTile index="04" label="Sources" value="24" delta="" ruled={true} />
-    </div>
-  ),
-};
-
-/** A ranked breakdown. Each row states its own value beside the bar. */
-export const Breakdown: Story = {
-  parameters: { controls: { disable: true } },
-  decorators: [],
-  render: () => (
-    <div style={{ maxWidth: 360 }}>
-      <Distribution
-        rows={[
-          { label: "Registry", value: "1,842", percent: 44 },
-          { label: "Mirror", value: "1,109", percent: 27 },
-          { label: "Feed", value: "744", percent: 18 },
-          { label: "Archive", value: "487", percent: 11 },
-        ]}
-        totalLabel="Total"
-        totalValue="4,182"
-      />
     </div>
   ),
 };

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "./Button";
-import { Panel } from "./Panel";
+import { Panel, PanelFooter, PanelNote } from "./Panel";
 import { SealValue } from "./Seal";
 import { StatusPill } from "./StatusPill";
 
@@ -30,7 +30,7 @@ const meta = {
     meta: { control: "text" },
     padded: { control: "boolean" },
     children: { control: "text" },
-    footer: { control: false },
+
   },
 } satisfies Meta<typeof Panel>;
 
@@ -92,19 +92,16 @@ export const WithFooter: Story = {
     children: "The signing key for this workspace expires on 2026-09-29.",
   },
   render: (args) => (
-    <Panel
-      {...args}
-      footer={
-        <>
-          <StatusPill tone="warn">expiring</StatusPill>
-          <span style={{ marginLeft: "auto" }}>
-            <Button variant="seal" size="dense">
-              Rotate now
-            </Button>
-          </span>
-        </>
-      }
-    />
+    <Panel {...args}>
+      <PanelFooter>
+        <StatusPill tone="warn">expiring</StatusPill>
+        <span style={{ marginLeft: "auto" }}>
+          <Button variant="seal" size="dense">
+            Rotate now
+          </Button>
+        </span>
+      </PanelFooter>
+    </Panel>
   ),
 };
 
@@ -116,6 +113,22 @@ export const WithSealedValue: Story = {
       <SealValue state="sealed" stateLabel="Sealed">
         a4f9c21e · 2026-09-18T09:12:04Z
       </SealValue>
+    </Panel>
+  ),
+};
+
+/**
+ * The quiet line under a panel's content: the caveat, the unit, the
+ * thing the numbers above do not say. It is never where a fact lives.
+ */
+export const WithNote: Story = {
+  args: { index: "04", title: "Coverage", meta: "last 24h" },
+  render: (args) => (
+    <Panel {...args}>
+      <SealValue state="sealed" stateLabel="Sealed">
+        86.4%
+      </SealValue>
+      <PanelNote>Measured against sealed entries only. Unsealed drafts are not counted.</PanelNote>
     </Panel>
   ),
 };

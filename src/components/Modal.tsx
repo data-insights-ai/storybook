@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { Children, isValidElement, useEffect, useRef, type ReactNode } from "react";
 import "./Modal.css";
 
 /**
@@ -37,14 +37,28 @@ export function Modal({
   );
 }
 
-/** Icon column, then the content: the modal keeps the register's shape. */
-export function ModalFrame({ icon, children }: { icon?: ReactNode; children: ReactNode }) {
+/**
+ * Icon column, then the content: the modal keeps the register's shape.
+ * A leading `ModalIcon` fills the column; everything else is the body.
+ */
+export function ModalFrame({ children }: { children: ReactNode }) {
+  const icon: ReactNode[] = [];
+  const body: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === ModalIcon) icon.push(child);
+    else body.push(child);
+  });
   return (
     <div className="di-modal-frame">
-      {icon === undefined ? null : <div className="di-modal-icon">{icon}</div>}
-      <div className="di-modal-body">{children}</div>
+      {icon}
+      <div className="di-modal-body">{body}</div>
     </div>
   );
+}
+
+/** The mark in the modal's index column. */
+export function ModalIcon({ children }: { children: ReactNode }) {
+  return <div className="di-modal-icon">{children}</div>;
 }
 
 export function ModalContent({ children }: { children: ReactNode }) {
@@ -65,24 +79,6 @@ export function ModalTitle({ id, eyebrow, children }: { id: string; eyebrow?: st
 export function ModalBody({ children }: { children: ReactNode }) {
   return <p className="di-modal-text">{children}</p>;
 }
-
-/**
- * What the action will touch, stated before it runs. Scope and
- * reversibility belong here, not in a tooltip.
- */
-export function FactList({ children }: { children: ReactNode }) {
-  return <dl className="di-facts">{children}</dl>;
-}
-
-export function Fact({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <div className="di-fact">
-      <dt className="di-fact-label">{label}</dt>
-      <dd className="di-fact-value">{children}</dd>
-    </div>
-  );
-}
-
 export function ModalFooter({ children }: { children: ReactNode }) {
   return <div className="di-modal-footer">{children}</div>;
 }

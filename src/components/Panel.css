@@ -88,18 +88,28 @@
   }
 
   .di-panel-content {
+    --di-panel-pad: var(--di-space-4);
     flex: 1;
-    padding: var(--di-space-4);
+    display: flex;
+    flex-direction: column;
+    padding: var(--di-panel-pad);
   }
 
   .di-panel-content-flush {
-    padding: 0;
+    --di-panel-pad: 0px;
   }
 
+  /*
+   * The footer is written as a child, so it has to reach back out through
+   * the content padding to sit on the panel's own edges. When the panel is
+   * flush the padding is zero and these margins come to nothing.
+   */
   .di-panel-footer {
     display: flex;
     align-items: center;
     gap: var(--di-space-2);
+    margin: var(--di-panel-pad) calc(-1 * var(--di-panel-pad)) calc(-1 * var(--di-panel-pad));
+    margin-top: auto;
     padding: 9px 14px;
     border-top: 1px solid var(--di-rule-hairline);
     background: var(--di-bg-page);

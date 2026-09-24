@@ -4,7 +4,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Pagination } from "./Pagination";
 
 const meta = {
-  title: "Blocks/Pagination",
+  title: "Primitives/Pagination",
   component: Pagination,
   tags: ["autodocs"],
   args: {
@@ -46,11 +46,9 @@ type Story = StoryObj<typeof meta>;
 
 /** On the first page, Previous is unavailable. */
 export const FirstPage: Story = {
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { name: "Previous page" })).toBeDisabled();
-    await userEvent.click(canvas.getByRole("button", { name: "Next page" }));
-    await expect(args.onPageChange).toHaveBeenCalledWith(2);
   },
 };
 
@@ -64,6 +62,19 @@ export const LastPage: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { name: "Next page" })).toBeDisabled();
+  },
+};
+
+/**
+ * Turning a page. The control is controlled: next reports the page it
+ * wants and the caller is what moves the register on.
+ */
+export const Turning: Story = {
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Next page" }));
+    await expect(args.onPageChange).toHaveBeenCalledWith(2);
+    await expect(canvas.getByRole("button", { name: "Previous page" })).toBeEnabled();
   },
 };
 

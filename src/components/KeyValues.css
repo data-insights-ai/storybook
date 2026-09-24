@@ -1,0 +1,19 @@
+@layer components {
+  .di-kv {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 6px 12px;
+    margin: 12px 0 0;
+    font-size: 13px;
+  }
+
+  .di-kv dt {
+    color: var(--di-text-muted);
+  }
+
+  .di-kv dd {
+    margin: 0;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}

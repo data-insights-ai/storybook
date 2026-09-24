@@ -2,11 +2,18 @@ import { Building2, Globe, Mail, Plus, ShieldCheck, UserRound } from "lucide-rea
 import { Button } from "../components/Button";
 import { Console } from "../components/AppShell";
 import { sampleChrome } from "../sample/chrome";
-import { PageHeader, SectionTitle } from "../components/Heading";
+import { PageHeader } from "../components/Heading";
 import { IconTile } from "../components/IconTile";
 import { Grid, Stack, Actions } from "../components/Layout";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
-import { RecordCard, RecordLine } from "../components/RecordCard";
+import {
+  RecordCard,
+  RecordFooter,
+  RecordLine,
+  RecordLines,
+  RecordMark,
+  RecordStatus,
+} from "../components/RecordCard";
 import { Stat, StatRow } from "../components/Stat";
 import { StatusPill } from "../components/StatusPill";
 import { TextLink } from "../components/TextLink";
@@ -15,10 +22,12 @@ import {
   DataTable,
   TableBody,
   TableCell,
+  TableFooter,
   TableColumn,
   TableHead,
   TableRow,
 } from "../components/DataTable";
+import { SectionTitle } from "../components/SectionTitle";
 
 type Identity = {
   id: string;
@@ -59,81 +68,77 @@ export function WatchlistScreen() {
 
       <Stack>
         <Grid min="200px">
-          <RecordCard
-            title="People"
-            count="4 entries watched"
-            mark={
+          <RecordCard title="People" count="4 entries watched">
+            <RecordMark>
               <IconTile>
                 <UserRound aria-hidden />
               </IconTile>
-            }
-            status={<StatusPill tone="ok">Active</StatusPill>}
-            footer={
-              <>
-                <span>Status: Active</span>
-                <TextLink>Valid</TextLink>
-              </>
-            }
-          >
-            <RecordLine primary="Nora Feld" detail="Primary name" />
-            <RecordLine primary="Dr. Nora Feld" detail="With academic title" />
-            <RecordLine primary="Nora Feld-Kranz" detail="Double name" />
-            <RecordLine primary="N. Feld" detail="Short form" />
+            </RecordMark>
+            <RecordStatus>
+              <StatusPill tone="ok">Active</StatusPill>
+            </RecordStatus>
+            <RecordLines>
+              <RecordLine primary="Nora Feld" detail="Primary name" />
+              <RecordLine primary="Dr. Nora Feld" detail="With academic title" />
+              <RecordLine primary="Nora Feld-Kranz" detail="Double name" />
+              <RecordLine primary="N. Feld" detail="Short form" />
+            </RecordLines>
+            <RecordFooter>
+              <span>Status: Active</span>
+              <TextLink>Valid</TextLink>
+            </RecordFooter>
           </RecordCard>
-          <RecordCard
-            title="Companies"
-            count="2 entries watched"
-            mark={
+          <RecordCard title="Companies" count="2 entries watched">
+            <RecordMark>
               <IconTile>
                 <Building2 aria-hidden />
               </IconTile>
-            }
-            status={<StatusPill tone="ok">Active</StatusPill>}
-            footer={
-              <>
-                <span>Status: Active</span>
-                <TextLink>Valid</TextLink>
-              </>
-            }
-          >
-            <RecordLine primary="Harthaus GmbH" detail="Full registered name" />
-            <RecordLine primary="Harthaus" detail="Short form" />
+            </RecordMark>
+            <RecordStatus>
+              <StatusPill tone="ok">Active</StatusPill>
+            </RecordStatus>
+            <RecordLines>
+              <RecordLine primary="Harthaus GmbH" detail="Full registered name" />
+              <RecordLine primary="Harthaus" detail="Short form" />
+            </RecordLines>
+            <RecordFooter>
+              <span>Status: Active</span>
+              <TextLink>Valid</TextLink>
+            </RecordFooter>
           </RecordCard>
-          <RecordCard
-            title="Domains"
-            count="1 entry watched"
-            mark={
+          <RecordCard title="Domains" count="1 entry watched">
+            <RecordMark>
               <IconTile>
                 <Globe aria-hidden />
               </IconTile>
-            }
-            status={<StatusPill tone="ok">Active</StatusPill>}
-            footer={
-              <>
-                <span>Status: Active</span>
-                <TextLink>Valid</TextLink>
-              </>
-            }
-          >
-            <RecordLine primary="harthaus.example" detail="Primary domain" />
+            </RecordMark>
+            <RecordStatus>
+              <StatusPill tone="ok">Active</StatusPill>
+            </RecordStatus>
+            <RecordLines>
+              <RecordLine primary="harthaus.example" detail="Primary domain" />
+            </RecordLines>
+            <RecordFooter>
+              <span>Status: Active</span>
+              <TextLink>Valid</TextLink>
+            </RecordFooter>
           </RecordCard>
-          <RecordCard
-            title="Email addresses"
-            count="1 entry watched"
-            mark={
+          <RecordCard title="Email addresses" count="1 entry watched">
+            <RecordMark>
               <IconTile>
                 <Mail aria-hidden />
               </IconTile>
-            }
-            status={<StatusPill tone="ok">Active</StatusPill>}
-            footer={
-              <>
-                <span>Status: Active</span>
-                <TextLink>Valid</TextLink>
-              </>
-            }
-          >
-            <RecordLine primary="nora.feld@data-insights.ai" detail="Verified mailbox" />
+            </RecordMark>
+            <RecordStatus>
+              <StatusPill tone="ok">Active</StatusPill>
+            </RecordStatus>
+            <RecordLines>
+              <RecordLine primary="nora.feld@data-insights.ai" detail="Verified mailbox" />
+            </RecordLines>
+            <RecordFooter>
+              <span>Status: Active</span>
+              <TextLink>Valid</TextLink>
+            </RecordFooter>
           </RecordCard>
         </Grid>
 
@@ -160,15 +165,11 @@ export function WatchlistScreen() {
           >
             8 entries active
           </SectionTitle>
-          <DataTable
-            caption="Active watch rules"
-            footer={
-              <>
-                <span>8 of 8 entries active · Last sync 5 minutes ago</span>
-                <StatusPill tone="ok">Live monitoring active</StatusPill>
-              </>
-            }
-          >
+          <DataTable caption="Active watch rules">
+            <TableFooter>
+              <span>8 of 8 entries active · Last sync 5 minutes ago</span>
+              <StatusPill tone="ok">Live monitoring active</StatusPill>
+            </TableFooter>
             <TableHead>
               <TableColumn>Identity / query</TableColumn>
               <TableColumn>Category</TableColumn>

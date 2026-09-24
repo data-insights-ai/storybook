@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "./Button";
-import { Toast } from "./Toast";
+import { Toast, ToastAction } from "./Toast";
 
 const meta = {
   title: "Blocks/Toast",
@@ -14,13 +14,14 @@ const meta = {
     auditId: "audit 7f3a99e0",
     dismissLabel: "Dismiss this receipt",
     onDismiss: fn(),
+    children: null,
   },
   argTypes: {
     title: { control: "text" },
     body: { control: "text" },
     auditId: { control: "text" },
     dismissLabel: { control: "text" },
-    action: { control: false },
+    children: { control: false },
   },
 } satisfies Meta<typeof Toast>;
 
@@ -49,14 +50,13 @@ export const WithoutAudit: Story = {
 /** A way to the record, never a way back out of the action. */
 export const WithAction: Story = {
   render: (args) => (
-    <Toast
-      {...args}
-      action={
+    <Toast {...args}>
+      <ToastAction>
         <Button variant="secondary" size="dense">
           Open record
         </Button>
-      }
-    />
+      </ToastAction>
+    </Toast>
   ),
 };
 

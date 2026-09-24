@@ -18,7 +18,6 @@ export function Drawer({
   titleId,
   onClose,
   closeLabel,
-  footer,
   children,
 }: {
   /** The ordinal of the row this drawer belongs to. */
@@ -29,7 +28,7 @@ export function Drawer({
   titleId: string;
   onClose: () => void;
   closeLabel: string;
-  footer?: ReactNode;
+  /** The detail, and one `DrawerFooter` if the pane carries controls. */
   children: ReactNode;
 }) {
   return (
@@ -51,8 +50,12 @@ export function Drawer({
           </button>
         </div>
         <div className="di-drawer-content">{children}</div>
-        {footer === undefined ? null : <div className="di-drawer-footer">{footer}</div>}
       </div>
     </aside>
   );
+}
+
+/** The controls at the foot of the pane. */
+export function DrawerFooter({ children }: { children: ReactNode }) {
+  return <div className="di-drawer-footer">{children}</div>;
 }

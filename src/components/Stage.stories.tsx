@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileCheck2, Link2, Radio, Stamp } from "lucide-react";
 import { expect, within } from "storybook/test";
-import { Stage, StageTrack } from "./Stage";
+import { Stage, StageIcon, StageTrack } from "./Stage";
 
 const meta = {
   title: "Blocks/Stage",
@@ -40,7 +40,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <Stage {...args}>
-      <Link2 aria-hidden />
+      <StageIcon>
+        <Link2 aria-hidden />
+      </StageIcon>
     </Stage>
   ),
   play: async ({ canvasElement }) => {
@@ -54,7 +56,9 @@ export const Current: Story = {
   args: { current: true, step: "03", title: "Seal", body: "Every entry gets a hash and a timestamp.", foot: "≈ 4 seconds" },
   render: (args) => (
     <Stage {...args}>
-      <Stamp aria-hidden />
+      <StageIcon>
+        <Stamp aria-hidden />
+      </StageIcon>
     </Stage>
   ),
 };
@@ -73,16 +77,24 @@ export const Track: Story = {
   render: () => (
     <StageTrack>
       <Stage step="01" title="Connect" body="A source is named, reached and checked for a manifest." foot="≈ 30 seconds">
-        <Link2 aria-hidden />
+        <StageIcon>
+          <Link2 aria-hidden />
+        </StageIcon>
       </Stage>
       <Stage step="02" title="Ingest" body="Entries land in the register, unsealed and not yet citable." foot="continuous">
-        <Radio aria-hidden />
+        <StageIcon>
+          <Radio aria-hidden />
+        </StageIcon>
       </Stage>
       <Stage step="03" title="Seal" body="Every entry gets a hash and a timestamp." foot="≈ 4 seconds" current={true}>
-        <Stamp aria-hidden />
+        <StageIcon>
+          <Stamp aria-hidden />
+        </StageIcon>
       </Stage>
       <Stage step="04" title="Publish" body="The sealed extract can be cited and verified offline." foot="on request">
-        <FileCheck2 aria-hidden />
+        <StageIcon>
+          <FileCheck2 aria-hidden />
+        </StageIcon>
       </Stage>
     </StageTrack>
   ),

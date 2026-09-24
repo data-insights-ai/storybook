@@ -106,38 +106,6 @@
     color: var(--di-text-muted);
   }
 
-  .di-facts {
-    margin: 14px 0 0;
-    border-top: 1px solid var(--di-rule-hairline);
-  }
-
-  .di-fact {
-    display: flex;
-    align-items: baseline;
-    gap: var(--di-space-3);
-    padding: 7px 0;
-    border-bottom: 1px solid var(--di-rule-hairline);
-  }
-
-  .di-fact-label {
-    width: 96px;
-    flex: none;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--di-text-subtle);
-  }
-
-  .di-fact-value {
-    flex: 1;
-    min-width: 0;
-    margin: 0;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-300);
-    color: var(--di-text);
-  }
-
   .di-modal-footer {
     display: flex;
     align-items: center;

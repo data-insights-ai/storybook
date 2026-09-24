@@ -22,31 +22,36 @@
     color: var(--di-text-muted);
   }
 
+  /*
+   * One line under a control, in three tones. A field says one thing at a
+   * time, so an error is this line reading differently — never a second
+   * line stacked under the help it contradicts.
+   */
   .di-field-hint {
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-subtle);
   }
 
-  .di-field-error {
+  .di-field-hint.is-error,
+  .di-field-hint.is-sealed {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: var(--di-font-size-300);
-    line-height: var(--di-leading-snug);
+  }
+
+  .di-field-hint.is-error {
     color: var(--di-status-danger-fg);
   }
 
-  .di-field-error > svg {
+  .di-field-hint.is-error > svg {
     width: 14px;
     height: 14px;
     flex: none;
   }
 
   /* A resolved value under the field, vouched for by the seal. */
-  .di-field-seal {
-    display: flex;
-    align-items: center;
+  .di-field-hint.is-sealed {
     gap: 6px;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);

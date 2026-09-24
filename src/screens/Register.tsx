@@ -18,16 +18,17 @@ import {
   DataTable,
   TableBody,
   TableCell,
+  TableFooter,
   TableColumn,
   TableHead,
   TableIndex,
   TableRow,
+  TableToolbar,
 } from "../components/DataTable";
-import { Drawer } from "../components/Drawer";
+import { Drawer, DrawerFooter } from "../components/Drawer";
 import { PageHeader } from "../components/Heading";
 import { Grid, Stack } from "../components/Layout";
 import { Menu, MenuDivider, MenuItem } from "../components/Menu";
-import { Fact, FactList } from "../components/Modal";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import { Pagination } from "../components/Pagination";
 import { SealValue } from "../components/Seal";
@@ -35,6 +36,7 @@ import { SearchField } from "../components/SearchField";
 import { StatTile } from "../components/StatTile";
 import { StatusPill } from "../components/StatusPill";
 import { sampleChrome } from "../sample/chrome";
+import { Fact, FactList } from "../components/FactList";
 
 type Source = {
   ordinal: string;
@@ -114,66 +116,60 @@ export function RegisterScreen() {
 
         <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <DataTable
-              caption="Sources on record"
-              toolbar={
-                <>
-                  <div style={{ width: 240 }}>
-                    <SearchField
-                      id="register-search"
-                      label="Search the register"
-                      placeholder="host, hash or operator"
-                      dense={true}
-                      shortcut="⌘K"
-                    />
-                  </div>
-                  <Chip active={true} removeLabel="Remove the workspace filter">
-                    workspace: WS-01
-                  </Chip>
-                  <Chip active={false} removeLabel="Add a state filter">
-                    <Plus aria-hidden />
-                    state
-                  </Chip>
-                  <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-                    <Button variant="secondary" size="dense">
-                      <Download aria-hidden />
-                      Export
-                    </Button>
-                    <Menu
-                      open={menu}
-                      onOpenChange={setMenu}
-                      label="Register actions"
-                      trigger={(props) => (
-                        <Button {...props} variant="secondary" size="dense" iconOnly={true} aria-label="Register actions">
-                          <MoreVertical aria-hidden />
-                        </Button>
-                      )}
-                    >
-                      <MenuItem onSelect={() => setMenu(false)}>Seal the register now</MenuItem>
-                      <MenuItem onSelect={() => setMenu(false)}>Verify every manifest</MenuItem>
-                      <MenuDivider />
-                      <MenuItem onSelect={() => setMenu(false)} tone="danger">
-                        Revoke stale sources
-                      </MenuItem>
-                    </Menu>
-                  </span>
-                </>
-              }
-              footer={
-                <>
-                  <span>1–6 of 24 sources</span>
-                  <Pagination
-                    page={page}
-                    pages={4}
-                    onPageChange={setPage}
-                    label="Register pages"
-                    previousLabel="Previous page"
-                    nextLabel="Next page"
-                    pageLabel="Page"
+            <DataTable caption="Sources on record">
+              <TableToolbar>
+                <div style={{ width: 240 }}>
+                  <SearchField
+                    id="register-search"
+                    label="Search the register"
+                    placeholder="host, hash or operator"
+                    dense={true}
+                    shortcut="⌘K"
                   />
-                </>
-              }
-            >
+                </div>
+                <Chip active={true} removeLabel="Remove the workspace filter">
+                  workspace: WS-01
+                </Chip>
+                <Chip active={false} removeLabel="Add a state filter">
+                  <Plus aria-hidden />
+                  state
+                </Chip>
+                <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
+                  <Button variant="secondary" size="dense">
+                    <Download aria-hidden />
+                    Export
+                  </Button>
+                  <Menu
+                    open={menu}
+                    onOpenChange={setMenu}
+                    label="Register actions"
+                    trigger={(props) => (
+                      <Button {...props} variant="secondary" size="dense" iconOnly={true} aria-label="Register actions">
+                        <MoreVertical aria-hidden />
+                      </Button>
+                    )}
+                  >
+                    <MenuItem onSelect={() => setMenu(false)}>Seal the register now</MenuItem>
+                    <MenuItem onSelect={() => setMenu(false)}>Verify every manifest</MenuItem>
+                    <MenuDivider />
+                    <MenuItem onSelect={() => setMenu(false)} tone="danger">
+                      Revoke stale sources
+                    </MenuItem>
+                  </Menu>
+                </span>
+              </TableToolbar>
+              <TableFooter>
+                <span>1–6 of 24 sources</span>
+                <Pagination
+                  page={page}
+                  pages={4}
+                  onPageChange={setPage}
+                  label="Register pages"
+                  previousLabel="Previous page"
+                  nextLabel="Next page"
+                  pageLabel="Page"
+                />
+              </TableFooter>
               <TableHead>
                 <TableColumn index={true}>Ordinal</TableColumn>
                 <TableColumn sort="ascending">Host</TableColumn>
@@ -229,16 +225,6 @@ export function RegisterScreen() {
               titleId="register-drawer-title"
               onClose={() => setOpen(null)}
               closeLabel={`Close the detail for ${selected.host}`}
-              footer={
-                <>
-                  <Button variant="primary" size="dense">
-                    {selected.state === "ok" ? "Seal now" : "Resume"}
-                  </Button>
-                  <Button variant="secondary" size="dense">
-                    Open log
-                  </Button>
-                </>
-              }
             >
               <FactList>
                 <Fact label="Kind">{selected.kind}</Fact>
@@ -257,6 +243,14 @@ export function RegisterScreen() {
                 </Fact>
                 <Fact label="Reason">{selected.reason}</Fact>
               </FactList>
+              <DrawerFooter>
+                <Button variant="primary" size="dense">
+                  {selected.state === "ok" ? "Seal now" : "Resume"}
+                </Button>
+                <Button variant="secondary" size="dense">
+                  Open log
+                </Button>
+              </DrawerFooter>
             </Drawer>
           ) : null}
         </div>

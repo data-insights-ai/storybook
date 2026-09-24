@@ -10,7 +10,7 @@ const meta = {
     id: "window",
     label: "Window",
     hint: "",
-    error: "",
+    hintTone: "neutral",
     mono: true,
     disabled: false,
     children: null,
@@ -21,7 +21,7 @@ const meta = {
     id: { control: "text" },
     label: { control: "text" },
     hint: { control: "text" },
-    error: { control: "text" },
+    hintTone: { control: "radio", options: ["neutral", "sealed", "error"] },
     mono: { control: "boolean" },
     disabled: { control: "boolean" },
     required: { control: "boolean" },
@@ -43,6 +43,14 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText("Window")).toHaveValue("24h");
+  },
+};
+
+/** Choosing another window. The native select does the work. */
+export const Choosing: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
     const select = canvas.getByLabelText("Window");
     await userEvent.selectOptions(select, "7d");
     await expect(select).toHaveValue("7d");
@@ -54,7 +62,7 @@ export const WithHint: Story = {
 };
 
 export const WithError: Story = {
-  args: { error: "This window holds no sealed entries." },
+  args: { hint: "This window holds no sealed entries.", hintTone: "error" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByLabelText("Window")).toHaveAttribute("aria-invalid", "true");

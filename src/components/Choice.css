@@ -3,15 +3,28 @@
     display: flex;
     align-items: flex-start;
     gap: 9px;
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-snug);
   }
 
+  /*
+   * The control column is exactly one line of label tall and centres the
+   * mark inside it. That is the whole alignment rule: the square sits on
+   * the middle of the first line, never on its head. A description below
+   * adds height to the text, not to this column, so it does not move.
+   */
   .di-choice-control {
+    display: flex;
+    align-items: center;
+    height: var(--di-choice-line);
+    flex: none;
+  }
+
+  .di-choice-mark {
     position: relative;
     display: block;
-    width: 16px;
-    height: 16px;
-    flex: none;
-    margin-top: 2px;
+    width: var(--di-choice-mark);
+    height: var(--di-choice-mark);
   }
 
   /* The input stays; the square on top of it is paint. */

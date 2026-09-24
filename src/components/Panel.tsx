@@ -18,23 +18,21 @@ export function Panel({
   tone = "sheet",
   title,
   meta,
-  footer,
   padded = true,
   className,
   children,
 }: {
   /** The ordinal, letter or § mark in the index column. Omit for a panel with no index. */
-  index?: ReactNode;
+  index?: string;
   indexSize?: "md" | "sm";
   indexTone?: "neutral" | "danger";
   /** The hairline running down from the mark. Off for a short tile. */
   indexRule?: boolean;
   /** `grid` drops to the one cold surface, for a dense field of mono values. */
   tone?: "sheet" | "grid";
-  title?: ReactNode;
+  title?: string;
   /** Trailing header text: a count, a timestamp, a version. */
-  meta?: ReactNode;
-  footer?: ReactNode;
+  meta?: string;
   /** Off when the child draws to the panel's edge, such as a table. */
   padded?: boolean;
   className?: string;
@@ -56,10 +54,14 @@ export function Panel({
           </div>
         )}
         <div className={cx("di-panel-content", !padded && "di-panel-content-flush")}>{children}</div>
-        {footer === undefined ? null : <div className="di-panel-footer">{footer}</div>}
       </div>
     </div>
   );
+}
+
+/** The ruled strip under a panel's content: controls, a count, a source. */
+export function PanelFooter({ children }: { children: ReactNode }) {
+  return <div className="di-panel-footer">{children}</div>;
 }
 
 /**

@@ -1,0 +1,70 @@
+@layer components {
+  .di-skeleton {
+    overflow: hidden;
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-grid);
+  }
+
+  .di-skeleton-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: var(--di-table-row-height);
+    border-bottom: 1px solid var(--di-table-rule);
+  }
+
+  .di-skeleton-row.is-header {
+    height: 32px;
+    border-bottom-color: var(--di-border);
+    background: var(--di-bg-page);
+  }
+
+  .di-skeleton-row:last-child {
+    border-bottom: 0;
+  }
+
+  .di-skeleton-index {
+    width: var(--di-index-col);
+    height: 100%;
+    flex: none;
+    border-right: 1px solid var(--di-table-rule);
+    background: var(--di-bg-page);
+  }
+
+  /*
+   * The bars breathe; the rules, the index column and the header ground
+   * hold still. What moves is exactly what is not on record yet.
+   *
+   * Opacity only — nothing scales, and nothing sweeps across the surface.
+   * A loop is symmetric, so it takes ease-in-out rather than the system's
+   * ease-out, which is for a change that happens once and settles.
+   *
+   * `prefers-reduced-motion` drops this in base.css, and the bars come to
+   * rest at full opacity, which is the state they are drawn in.
+   */
+  .di-skeleton-bar {
+    height: 9px;
+    border-radius: 2px;
+    background: var(--di-bg-subtle);
+    animation: di-skeleton-breathe var(--di-skeleton-breath) ease-in-out infinite;
+    animation-delay: calc(var(--di-skeleton-row, 0) * var(--di-skeleton-stagger));
+  }
+
+  @keyframes di-skeleton-breathe {
+    50% {
+      opacity: var(--di-skeleton-rest);
+    }
+  }
+
+  .di-skeleton-bar.is-header {
+    height: 7px;
+    background: var(--di-border);
+  }
+
+  .di-skeleton-bar.is-trailing {
+    width: 54px;
+    margin-left: auto;
+    margin-right: 12px;
+  }
+}

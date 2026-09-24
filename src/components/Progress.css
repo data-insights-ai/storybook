@@ -1,0 +1,51 @@
+@layer components {
+  .di-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .di-progress-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--di-space-3);
+    margin-bottom: 7px;
+  }
+
+  .di-progress-label {
+    font-size: var(--di-font-size-400);
+    color: var(--di-text);
+  }
+
+  .di-progress-count {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-muted);
+  }
+
+  .di-progress-bar {
+    appearance: none;
+    display: block;
+    width: 100%;
+    height: 5px;
+    border: 0;
+    border-radius: var(--di-radius-pill);
+    background: var(--di-bg-subtle);
+    overflow: hidden;
+  }
+
+  .di-progress-bar::-webkit-progress-bar {
+    background: var(--di-bg-subtle);
+  }
+
+  .di-progress-bar::-webkit-progress-value {
+    background: var(--di-fill-strong);
+    transition: width var(--di-duration-slow) var(--di-ease);
+  }
+
+  .di-progress-bar::-moz-progress-bar {
+    background: var(--di-fill-strong);
+  }
+}

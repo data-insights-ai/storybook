@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Search, ShieldCheck } from "lucide-react";
 import { cx } from "../cx";
-import { Kbd, RingDot } from "./Seal";
+import { Kbd, SealMark } from "./Seal";
 import "./CommandBar.css";
 
 /**
@@ -81,7 +81,7 @@ export function CommandChip({
 }) {
   const body = (
     <>
-      {tone === "suggested" ? <RingDot size={6} /> : null}
+      {tone === "suggested" ? <SealMark state="inferred" size={6} /> : null}
       {children}
     </>
   );
@@ -109,20 +109,22 @@ export function CommandGroup({ label, children }: { label: string; children: Rea
  * a model proposed this, and it has not been sealed.
  */
 export function CommandRow({
-  icon,
   label,
   meta,
   active = false,
   inferred = false,
   onSelect,
+  children,
 }: {
-  icon?: ReactNode;
-  label: ReactNode;
+  /** What the row offers, in one line. */
+  label: string;
   /** The trailing note: a shortcut, a count, a source. */
   meta: string;
   active?: boolean;
   inferred?: boolean;
   onSelect: () => void;
+  /** The leading icon, as `Button` takes it. Ignored when `inferred`. */
+  children?: ReactNode;
 }) {
   return (
     <button
@@ -130,7 +132,7 @@ export function CommandRow({
       className={cx("di-command-row", active && "is-active")}
       onClick={onSelect}
     >
-      <span className="di-command-row-icon">{inferred ? <RingDot size={7} /> : icon}</span>
+      <span className="di-command-row-icon">{inferred ? <SealMark state="inferred" size={7} /> : children}</span>
       <span className="di-command-row-label">{label}</span>
       <span className="di-command-row-meta">{meta}</span>
     </button>

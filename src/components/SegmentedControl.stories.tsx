@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { SegmentedControl } from "./SegmentedControl";
@@ -27,7 +27,10 @@ const meta = {
     options: { control: false },
   },
   render: function Render(args) {
+    // Controlled, so the story holds the state the caller would. `value`
+    // stays an arg, so the Controls field keeps working.
     const [value, setValue] = useState(args.value);
+    useEffect(() => setValue(args.value), [args.value]);
     return (
       <SegmentedControl
         {...args}
@@ -45,10 +48,19 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText("dense")).toBeChecked();
+  },
+};
+
+/** Moving the segment. It commits as it moves, like a switch. */
+export const Selecting: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByLabelText("comfort"));
     await expect(args.onChange).toHaveBeenCalledWith("comfort");
+    await expect(canvas.getByLabelText("comfort")).toBeChecked();
   },
 };
 

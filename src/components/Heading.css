@@ -22,21 +22,16 @@
     color: var(--di-accent-text);
   }
 
-  .di-page-head h1,
-  .di-section-title h2 {
+  .di-page-head h1 {
     font-family: var(--di-font-display);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
     color: var(--di-text);
     line-height: var(--di-leading-tight);
-  }
-
-  .di-page-head h1 {
     font-size: var(--di-font-size-700);
   }
 
-  .di-lede,
-  .di-section-title p {
+  .di-lede {
     margin-top: 8px;
     max-width: 62ch;
     font-size: var(--di-font-size-300);
@@ -46,26 +41,5 @@
 
   .di-page-aside {
     flex: none;
-  }
-
-  .di-section-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 16px;
-    margin-bottom: 14px;
-  }
-
-  .di-section-title h2 {
-    font-size: 22px;
-  }
-
-  .di-section-meta {
-    font-family: var(--di-font-code);
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--di-text-muted);
-    white-space: nowrap;
   }
 }

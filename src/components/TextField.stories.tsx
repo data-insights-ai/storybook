@@ -11,8 +11,7 @@ const meta = {
     id: "source",
     label: "Source",
     hint: "",
-    error: "",
-    sealHint: "",
+    hintTone: "neutral",
     mono: false,
     placeholder: "registry.example.org",
     disabled: false,
@@ -23,8 +22,7 @@ const meta = {
     id: { control: "text" },
     label: { control: "text" },
     hint: { control: "text" },
-    error: { control: "text" },
-    sealHint: { control: "text" },
+    hintTone: { control: "radio", options: ["neutral", "sealed", "error"] },
     mono: { control: "boolean" },
     placeholder: { control: "text" },
     disabled: { control: "boolean" },
@@ -50,11 +48,15 @@ export const WithHint: Story = {
   args: { hint: "A host name, without a scheme or a path." },
 };
 
-/** The error replaces the hint. The field never argues with itself. */
+/**
+ * There is one line under the field, and `hintTone` says what it is. An
+ * error is that line reading differently, so the field can never argue
+ * with itself by showing help and an error at once.
+ */
 export const WithError: Story = {
   args: {
-    error: "This host did not resolve.",
-    hint: "A host name, without a scheme or a path.",
+    hint: "This host did not resolve.",
+    hintTone: "error",
     defaultValue: "registry.exmaple.org",
   },
   play: async ({ canvasElement }) => {
@@ -72,7 +74,8 @@ export const WithSealedHint: Story = {
     label: "Manifest",
     mono: true,
     defaultValue: "a4f9c21e",
-    sealHint: "resolved 2026-09-18T09:12:04Z",
+    hint: "resolved 2026-09-18T09:12:04Z",
+    hintTone: "sealed",
     placeholder: "",
   },
 };
@@ -115,8 +118,21 @@ export const AllStates: Story = {
     <div style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 340 }}>
       <TextField id="s1" label="Default" placeholder="registry.example.org" />
       <TextField id="s2" label="With hint" hint="A host name, without a scheme." />
-      <TextField id="s3" label="Sealed" mono={true} defaultValue="a4f9c21e" sealHint="resolved 09:12:04Z" />
-      <TextField id="s4" label="Invalid" error="This host did not resolve." defaultValue="registry.exmaple.org" />
+      <TextField
+        id="s3"
+        label="Sealed"
+        mono={true}
+        defaultValue="a4f9c21e"
+        hint="resolved 09:12:04Z"
+        hintTone="sealed"
+      />
+      <TextField
+        id="s4"
+        label="Invalid"
+        hint="This host did not resolve."
+        hintTone="error"
+        defaultValue="registry.exmaple.org"
+      />
       <TextField id="s5" label="Disabled" disabled={true} defaultValue="registry.example.org" />
     </div>
   ),

@@ -1,8 +1,20 @@
 @layer components {
+  /*
+   * Mark and state on one row, then the heading, the lines, and the
+   * footer. The slots are placed by grid, so the caller writes them in
+   * whatever order reads best.
+   */
   .di-record {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "mark status"
+      "heading heading"
+      "lines lines"
+      "footer footer";
+    /* The lines take the slack, so the footer stays on the bottom rule. */
+    grid-template-rows: auto auto 1fr auto;
+    gap: 12px 8px;
     height: 100%;
     min-width: 0;
     padding: 14px 14px 12px;
@@ -11,8 +23,28 @@
     background: var(--di-bg-surface);
   }
 
-  .di-record header,
-  .di-record footer {
+  .di-record-mark {
+    grid-area: mark;
+    display: flex;
+    align-items: center;
+  }
+
+  .di-record-status {
+    grid-area: status;
+    justify-self: end;
+    align-self: center;
+  }
+
+  .di-record-heading {
+    grid-area: heading;
+  }
+
+  .di-record-list {
+    grid-area: lines;
+  }
+
+  .di-record-footer {
+    grid-area: footer;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -29,7 +61,7 @@
 
   .di-record-count,
   .di-record-list span,
-  .di-record footer {
+  .di-record-footer {
     font-size: 12px;
     color: var(--di-text-muted);
   }
@@ -54,8 +86,7 @@
     font-size: 13px;
   }
 
-  .di-record footer {
-    margin-top: auto;
+  .di-record-footer {
     padding-top: 10px;
     border-top: 1px solid var(--di-border);
   }

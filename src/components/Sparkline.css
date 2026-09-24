@@ -1,0 +1,27 @@
+@layer components {
+  .di-sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 54px;
+    min-width: 120px;
+  }
+
+  .di-sparkline-bar {
+    width: 7px;
+    flex: none;
+    border-radius: 1px;
+  }
+
+  .di-sparkline-bar.is-muted {
+    background: var(--di-chart-muted);
+  }
+
+  .di-sparkline-bar.is-ink {
+    background: var(--di-chart-series);
+  }
+
+  .di-sparkline-bar.is-danger {
+    background: var(--di-status-danger-dot);
+  }
+}

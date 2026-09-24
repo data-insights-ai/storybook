@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MoreVertical } from "lucide-react";
 import { expect, fn, within } from "storybook/test";
 import { Button } from "./Button";
-import { LivingBody, LivingCard, LivingInsight, Sparkline } from "./LivingCard";
+import { LivingActions, LivingBody, LivingCard, LivingInsight } from "./LivingCard";
 import { StatTile } from "./StatTile";
+import { Sparkline } from "./Sparkline";
 
 const bars = [
   { percent: 38 },
@@ -28,7 +29,6 @@ const meta = {
   argTypes: {
     title: { control: "text" },
     insightLabel: { control: "text" },
-    actions: { control: false },
     children: { control: false },
   },
   decorators: [
@@ -49,14 +49,12 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   render: (args) => (
-    <LivingCard
-      {...args}
-      actions={
+    <LivingCard {...args}>
+      <LivingActions>
         <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
           <MoreVertical aria-hidden />
         </Button>
-      }
-    >
+      </LivingActions>
       <LivingBody>
         <StatTile index="03" label="Unsealed" value="1,284" delta="up 940 since 08:00Z" deltaTone="danger" compact={true} />
         <Sparkline bars={bars} label="Unsealed entries over the last eight hours, rising sharply in the last two." />
@@ -64,20 +62,17 @@ export const Default: Story = {
       <LivingInsight
         body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog."
         basis="inferred from 3 sources · confidence 0.88"
-        actions={
-          <>
-            <Button variant="ai" size="dense">
-              Review the proposal
-            </Button>
-            <Button variant="secondary" size="dense">
-              Open the source
-            </Button>
-            <Button variant="ghost" size="dense">
-              Dismiss
-            </Button>
-          </>
-        }
-      />
+      >
+        <Button variant="ai" size="dense">
+          Review the proposal
+        </Button>
+        <Button variant="secondary" size="dense">
+          Open the source
+        </Button>
+        <Button variant="ghost" size="dense">
+          Dismiss
+        </Button>
+      </LivingInsight>
     </LivingCard>
   ),
   play: async ({ canvasElement }) => {
@@ -110,12 +105,11 @@ export const OneAction: Story = {
       <LivingInsight
         body="Four archive sources stopped reporting at 08:44Z."
         basis="inferred from 1 source · confidence 0.71"
-        actions={
-          <Button variant="ai" size="dense" onClick={fn()}>
-            Review the proposal
-          </Button>
-        }
-      />
+      >
+        <Button variant="ai" size="dense" onClick={fn()}>
+          Review the proposal
+        </Button>
+      </LivingInsight>
     </LivingCard>
   ),
 };

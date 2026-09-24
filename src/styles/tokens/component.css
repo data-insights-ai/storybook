@@ -28,6 +28,17 @@
     --di-table-row-height: var(--di-h-row);
     --di-table-rule: var(--di-rule-hairline);
 
+    /* One line of label text. A control mark centres on it, so a
+       single-line choice reads as centred and a described one does not. */
+    --di-choice-line: calc(var(--di-font-size-400) * var(--di-leading-snug));
+    --di-choice-mark: 16px;
+
+    /* A waiting bar breathes rather than sweeping. One cycle, and how
+       far apart two rows start, so a screen can retune the wait. */
+    --di-skeleton-breath: 1400ms;
+    --di-skeleton-stagger: 90ms;
+    --di-skeleton-rest: 0.38;
+
     --di-pill-radius: var(--di-radius-pill);
     --di-pill-height: 20px;
   }

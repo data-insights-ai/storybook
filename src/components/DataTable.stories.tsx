@@ -11,10 +11,12 @@ import {
   DataTable,
   TableBody,
   TableCell,
+  TableFooter,
   TableColumn,
   TableHead,
   TableIndex,
   TableRow,
+  TableToolbar,
 } from "./DataTable";
 import { Pagination } from "./Pagination";
 import { SearchField } from "./SearchField";
@@ -52,8 +54,6 @@ const meta = {
     caption: { control: "text" },
     indexed: { control: "boolean" },
     children: { control: false },
-    toolbar: { control: false },
-    footer: { control: false },
   },
 } satisfies Meta<typeof DataTable>;
 
@@ -121,23 +121,19 @@ export const Default: Story = {
 /** A filter row above the grid, inside the same frame. */
 export const WithToolbar: Story = {
   render: (args) => (
-    <DataTable
-      {...args}
-      toolbar={
-        <>
-          <div style={{ width: 240 }}>
-            <SearchField id="table-search" label="Search sources" placeholder="host or hash" dense={true} />
-          </div>
-          <Chip active={true} removeLabel="Remove the state filter">
-            state: running
-          </Chip>
-          <Chip active={false} removeLabel="Add a kind filter">
-            <Plus aria-hidden />
-            kind
-          </Chip>
-        </>
-      }
-    >
+    <DataTable {...args}>
+      <TableToolbar>
+        <div style={{ width: 240 }}>
+          <SearchField id="table-search" label="Search sources" placeholder="host or hash" dense={true} />
+        </div>
+        <Chip active={true} removeLabel="Remove the state filter">
+          state: running
+        </Chip>
+        <Chip active={false} removeLabel="Add a kind filter">
+          <Plus aria-hidden />
+          kind
+        </Chip>
+      </TableToolbar>
       <Rows />
     </DataTable>
   ),
@@ -148,24 +144,20 @@ export const WithFooter: Story = {
   render: function Render(args) {
     const [page, setPage] = useState(1);
     return (
-      <DataTable
-        {...args}
-        footer={
-          <>
-            <span>1–5 of 24 sources</span>
-            <Pagination
-              page={page}
-              pages={5}
-              onPageChange={setPage}
-              label="Source pages"
-              previousLabel="Previous page"
-              nextLabel="Next page"
-              pageLabel="Page"
-            />
-          </>
-        }
-      >
+      <DataTable {...args}>
         <Rows />
+        <TableFooter>
+          <span>1–5 of 24 sources</span>
+          <Pagination
+            page={page}
+            pages={5}
+            onPageChange={setPage}
+            label="Source pages"
+            previousLabel="Previous page"
+            nextLabel="Next page"
+            pageLabel="Page"
+          />
+        </TableFooter>
       </DataTable>
     );
   },
@@ -220,7 +212,10 @@ export const SingleRow: Story = {
 export const NoRows: Story = {
   args: { caption: "Sources on record" },
   render: (args) => (
-    <DataTable {...args} footer={<span>0 of 0 sources</span>}>
+    <DataTable {...args}>
+      <TableFooter>
+        <span>0 of 0 sources</span>
+      </TableFooter>
       <TableHead>
         <TableColumn index={true}>Ordinal</TableColumn>
         <TableColumn>Host</TableColumn>

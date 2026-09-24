@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "./Button";
-import { EmptyState } from "./EmptyState";
+import { EmptyState, EmptyStateAction } from "./EmptyState";
 
 const meta = {
   title: "Blocks/EmptyState",
@@ -14,6 +14,7 @@ const meta = {
     body: "The register holds 24 sources. None of them is paused in the last 24 hours.",
     mono: false,
     tone: "default",
+    children: null,
   },
   argTypes: {
     index: { control: "text" },
@@ -22,7 +23,7 @@ const meta = {
     body: { control: "text" },
     mono: { control: "boolean" },
     tone: { control: "radio", options: ["default", "danger"] },
-    action: { control: false },
+    children: { control: false },
   },
 } satisfies Meta<typeof EmptyState>;
 
@@ -32,14 +33,13 @@ type Story = StoryObj<typeof meta>;
 /** Zero results: the register has entries, this filter found none. */
 export const NoResults: Story = {
   render: (args) => (
-    <EmptyState
-      {...args}
-      action={
+    <EmptyState {...args}>
+      <EmptyStateAction>
         <Button variant="secondary" size="dense">
           Clear filters
         </Button>
-      }
-    />
+      </EmptyStateAction>
+    </EmptyState>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -56,14 +56,13 @@ export const NotConfigured: Story = {
     body: "Connect a source to start a register. Nothing is sealed until the first entry lands.",
   },
   render: (args) => (
-    <EmptyState
-      {...args}
-      action={
+    <EmptyState {...args}>
+      <EmptyStateAction>
         <Button variant="primary" size="dense">
           Connect a source
         </Button>
-      }
-    />
+      </EmptyStateAction>
+    </EmptyState>
   ),
 };
 
@@ -74,14 +73,13 @@ export const MonoBody: Story = {
     body: "host:*.example.io AND state:paused AND seen>2026-09-22T09:00:00Z",
   },
   render: (args) => (
-    <EmptyState
-      {...args}
-      action={
+    <EmptyState {...args}>
+      <EmptyStateAction>
         <Button variant="secondary" size="dense">
           Edit query
         </Button>
-      }
-    />
+      </EmptyStateAction>
+    </EmptyState>
   ),
 };
 
@@ -95,14 +93,13 @@ export const Failure: Story = {
     body: "The seal store did not answer within 30 seconds. Nothing was written and nothing was lost.",
   },
   render: (args) => (
-    <EmptyState
-      {...args}
-      action={
+    <EmptyState {...args}>
+      <EmptyStateAction>
         <Button variant="primary" size="dense">
           Retry
         </Button>
-      }
-    />
+      </EmptyStateAction>
+    </EmptyState>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

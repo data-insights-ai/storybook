@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Stepper } from "./Tabs";
+import { Stepper } from "./Stepper";
 
 const meta = {
-  title: "Blocks/Stepper",
+  title: "Primitives/Stepper",
   component: Stepper,
   tags: ["autodocs"],
   args: {

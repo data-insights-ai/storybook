@@ -1,5 +1,17 @@
 @layer components {
+  /*
+   * The title line and the status share one row. The status is a slot, so
+   * it can be written anywhere in the markup and is placed here by grid —
+   * a slot is positioned by the frame, not by the order it was authored.
+   */
   .di-channel {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "head status"
+      "value value"
+      "specs specs";
+    align-items: center;
     min-width: 0;
     padding: 12px;
     border: 1px solid var(--di-border);
@@ -7,9 +19,18 @@
     background: var(--di-bg-page);
   }
 
-  .di-channel header {
+  .di-channel-head {
+    grid-area: head;
+  }
+
+  .di-channel-status {
+    grid-area: status;
+    justify-self: end;
+  }
+
+  .di-channel-head,
+  .di-channel-status {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 8px;
     margin-bottom: 10px;
@@ -20,7 +41,13 @@
     color: var(--di-text-muted);
   }
 
+  .di-channel-title {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .di-channel-value {
+    grid-area: value;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -38,6 +65,7 @@
   }
 
   .di-channel-specs {
+    grid-area: specs;
     display: flex;
     flex-wrap: wrap;
     gap: 8px 18px;

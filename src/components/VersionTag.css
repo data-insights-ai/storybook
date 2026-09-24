@@ -1,0 +1,17 @@
+@layer components {
+  .di-version-tag {
+    display: inline-flex;
+    align-items: center;
+    height: var(--di-pill-height);
+    padding: 0 8px;
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-pill-radius);
+    background: var(--di-bg-subtle);
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-weight: var(--di-weight-medium);
+    letter-spacing: var(--di-tracking-mono);
+    line-height: 1;
+  }
+}

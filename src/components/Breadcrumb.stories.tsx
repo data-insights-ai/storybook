@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Breadcrumb } from "./Tabs";
+import { Breadcrumb } from "./Breadcrumb";
 
 const meta = {
-  title: "Blocks/Breadcrumb",
+  title: "Primitives/Breadcrumb",
   component: Breadcrumb,
   tags: ["autodocs"],
   args: {
