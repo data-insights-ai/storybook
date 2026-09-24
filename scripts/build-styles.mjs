@@ -44,9 +44,26 @@ copyFileSync(require.resolve("@fontsource/ibm-plex-sans/LICENSE"), join(fontDir,
 const componentDir = join(outDir, "components");
 mkdirSync(componentDir, { recursive: true });
 let sheets = 0;
+/*
+ * Each component stylesheet carries the @layer order itself. The order is
+ * fixed by the FIRST @layer statement a document sees, and a component sheet
+ * opens with `@layer components {`. A consumer that loads Button.css before
+ * styles.css - or a bundler that concatenates them that way - would otherwise
+ * register `components` first and leave `base` outranking it, so base.css's
+ * `button { color: inherit }` would beat `.di-btn-primary`'s colour and the
+ * label would go navy on navy. Repeating the statement is idempotent: naming
+ * an existing layer never reorders it. This also keeps a tree-shaken product
+ * that ships one component correct, since it never loads styles.css.
+ */
+const layerOrder = readFileSync("src/styles.css", "utf8").match(/^@layer[^;]*;/m)?.[0];
+if (!layerOrder) {
+  console.error("src/styles.css no longer opens with an @layer order statement");
+  process.exit(1);
+}
 for (const file of readdirSync("src/components")) {
   if (!file.endsWith(".css")) continue;
-  copyFileSync(join("src/components", file), join(componentDir, file));
+  const sheet = readFileSync(join("src/components", file), "utf8");
+  writeFileSync(join(componentDir, file), `${layerOrder}\n${sheet}`);
   sheets += 1;
 }
 console.log(`styles.css ${css.length} bytes, ${seen.size} woff2 files, ${sheets} component stylesheets`);

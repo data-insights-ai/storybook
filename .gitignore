@@ -9,3 +9,11 @@ playwright-report
 .env
 .env.*
 !.env.example
+
+# design-sync
+.ds-sync/
+ds-bundle/
+.design-sync/sb-reference/
+.design-sync/learnings/
+.design-sync/.cache/
+.design-sync/node_modules

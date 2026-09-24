@@ -1,0 +1,73 @@
+{
+  "projectId": "50fa49a6-04d7-435a-8d5c-567ff7cc04e7",
+  "shape": "storybook",
+  "pkg": "@data-insights-ai/ui",
+  "globalName": "DataInsightsUI",
+  "storybookConfigDir": ".storybook",
+  "storybookStatic": ".design-sync/sb-reference",
+  "buildCmd": "pnpm build",
+  "entry": "dist/lib/index.js",
+  "titleMap": {
+    "Confidence": "ConfidenceField",
+    "Confirm": "ConfirmPanel",
+    "Explain": "ExplainPanel",
+    "Privacy": "PrivacyBadge",
+    "Seal": "SealValue",
+    "Skeleton": "SkeletonTable",
+    "AppShell": "Console",
+    "Adoption": null,
+    "Color": null,
+    "Logo": null,
+    "Type": null,
+    "Architecture": null,
+    "Coverage": null,
+    "Inference": null,
+    "Login": null,
+    "Register": null,
+    "Settings": null,
+    "Watchlist": null
+  },
+  "cssEntry": "dist/lib/styles.css",
+  "overrides": {
+    "Modal": {
+      "cardMode": "single",
+      "primaryStory": "Confirm",
+      "skip": [
+        "blocks-modal--confirm",
+        "blocks-modal--type-to-confirm",
+        "blocks-modal--plain"
+      ]
+    },
+    "Session": {
+      "cardMode": "column"
+    },
+    "Tabs": {
+      "cardMode": "column"
+    },
+    "FieldHint": {
+      "skip": [
+        "forms-fieldhint--empty"
+      ]
+    },
+    "Button": {
+      "skip": [
+        "primitives-button--night-sheet"
+      ]
+    },
+    "StatusPill": {
+      "skip": [
+        "primitives-statuspill--night-sheet"
+      ]
+    },
+    "Chart": {
+      "cardMode": "column"
+    }
+  },
+  "extraEntries": [
+    "recharts"
+  ],
+  "readmeHeader": ".design-sync/conventions.md",
+  "guidelinesGlob": [
+    "src/foundations/*.mdx"
+  ]
+}

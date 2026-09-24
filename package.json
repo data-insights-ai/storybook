@@ -4,6 +4,7 @@
   "description": "datAInsights component workbench. All rights reserved.",
   "type": "module",
   "module": "./dist/lib/index.js",
+  "types": "./dist/lib/index.d.ts",
   "packageManager": "pnpm@12.5.1",
   "sideEffects": [
     "**/*.css"
