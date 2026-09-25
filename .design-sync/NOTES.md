@@ -335,6 +335,60 @@ oracle. Everything else uses generated previews.
   `--di-tile-inverse-fg: var(--di-sheet)`), so it is NOT the cascade-layer bug.
   Deliberately not papered over with an owned preview. Worth a designer's look.
 
+## Re-sync 2026-09-25 — what changed and what to watch
+
+This sync followed a large API and token refactor. Everything below is new
+since 2026-09-24.
+
+- **`pnpm build` now runs `pnpm lint:tokens` FIRST.** That is `cfg.buildCmd`, so
+  a token violation anywhere in `src` fails the converter's build stage before
+  esbuild ever runs. If a future sync dies in `stages.build` with a list of
+  `space` / `radius` / `type` / `colour` / `layer` / `api` problems, that is the
+  design-system lint, not the converter. Fix the values; do not bypass it.
+- **The space scale was renamed and is now value-named:** `--di-space-2 4 6 8 12
+  16 24 32 48` (`--di-space-12` is 12px). The old positional `--di-space-1…-7`
+  names are gone. 156 spacing values across 51 files moved onto the ramp.
+- **Nine string props became slots**, and five components now pick slots out of
+  `children` by type (the `ModalFrame` pattern): `PanelMeta`, `StageFooter`,
+  `ExplainFooter`, `MetricNote`, `RecordCount`, `SessionDetail`,
+  `StatTileDelta`, `LivingBasis`, `SignInVersion`. All nine verified `match`
+  against storybook this sync.
+- **Prop vocabulary was unified.** `tone` now means status only; what is not a
+  status got its own name (`surface` on Panel, `scope` on PrivacyBadge, `state`
+  on CommandChip, `level` on ConfidenceField, `variant` on IconTile). Values
+  `ai`→`inferred`, `gold`→`seal`, `info`/`default`→`neutral`, Sparkline
+  `ink`→`series`. Every rename verified against the storybook render.
+- **`--di-accent`, `--di-font-display` and `--di-font-body` were deleted** as
+  duplicate names. New `--di-inverse-*` roles (bg / raised / border / text /
+  muted / seal) exist for surfaces sitting on navy — Toast, Tooltip, SignIn and
+  the current Stage all bind to them now instead of hand-mixed hexes.
+- **`titleMap` gained `Scale: null` and `Decisions: null`; `Adoption` was
+  removed** (that page was renamed to Decisions). Without those two nulls the
+  new Foundations pages get scanned as components.
+- **Foundations/Scale and Foundations/Decisions are `.tsx`, so `guidelinesGlob`
+  cannot carry them** — same limitation as Color/Type/Logo. Their content is
+  hand-copied into `.design-sync/conventions.md` under "The dimensional ramps"
+  and "What this system refuses". **If those pages change, that header goes
+  stale.** Re-validate on every sync touching foundations.
+- **The conventions header's type table was found stale this sync** and
+  corrected: it documented Body 16px/weight 600 when `base.css` sets 13px and
+  every heading ships 700. It had been transcribed from a `Type.stories.tsx`
+  that was itself wrong. Both are fixed; the table now names the token for each
+  step. This is the exact failure the 2026-09-24 notes warned about — the header
+  is hand-authored and does not regenerate.
+- **Still unresolved (third sync running):** `IconTile/Inverse` renders a navy
+  tile with no visible glyph, identically on both sides. Faithful sync, real
+  design bug. Worth a designer's look.
+- **`Chart` now prints `[PORTAL?]`** suggesting `cardMode: "single"`. Ignore it:
+  `gridOverflow` measured `null`, nothing escapes its cells, and the Recharts
+  tooltip only renders on hover so a static capture never shows it. `cardMode:
+  "column"` stays — switching to `single` would drop three of the four chart
+  stories from the card.
+- **`Chart` stories were rewritten to compose `Chart` directly** rather than
+  rendering `foundations/guide/BrandCharts`. The library's own stories no longer
+  depend on unexported foundations helpers. All four graded `match`, which also
+  re-confirms `cfg.extraEntries: ["recharts"]` is still load-bearing.
+
 ## Foundations — added after the first upload (same day)
 
 The first upload shipped **no Foundations content at all**, which the designer
