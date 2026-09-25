@@ -1,14 +1,14 @@
 @layer components {
   .di-facts {
-    margin: 14px 0 0;
+    margin: var(--di-space-12) 0 0;
     border-top: 1px solid var(--di-rule-hairline);
   }
 
   .di-fact {
     display: flex;
     align-items: baseline;
-    gap: var(--di-space-3);
-    padding: 7px 0;
+    gap: var(--di-space-12);
+    padding: var(--di-space-6) 0;
     border-bottom: 1px solid var(--di-rule-hairline);
   }
 

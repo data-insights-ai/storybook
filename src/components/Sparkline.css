@@ -2,7 +2,7 @@
   .di-sparkline {
     display: flex;
     align-items: flex-end;
-    gap: 3px;
+    gap: var(--di-space-2);
     height: 54px;
     min-width: 120px;
   }
@@ -10,7 +10,7 @@
   .di-sparkline-bar {
     width: 7px;
     flex: none;
-    border-radius: 1px;
+    border-radius: var(--di-radius-micro);
   }
 
   .di-sparkline-bar.is-muted {

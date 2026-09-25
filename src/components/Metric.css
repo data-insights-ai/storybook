@@ -1,16 +1,16 @@
 @layer components {
   .di-metric-label {
     font-family: var(--di-font-code);
-    font-size: 10px;
+    font-size: var(--di-font-size-100);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--di-text-muted);
   }
 
   .di-metric-figure {
-    margin: 8px 0 2px;
+    margin: var(--di-space-8) 0 var(--di-space-2);
     font-family: var(--di-font-ui);
-    font-size: 34px;
+    font-size: var(--di-font-size-800);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
     line-height: 1;
@@ -18,7 +18,7 @@
   }
 
   .di-metric-note {
-    font-size: 12px;
+    font-size: var(--di-font-size-300);
     color: var(--di-text-muted);
   }
 }

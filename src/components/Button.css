@@ -3,9 +3,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: var(--di-space-6);
     height: var(--di-button-height);
-    padding: 0 14px;
+    padding: 0 var(--di-space-12);
     border: 1px solid transparent;
     border-radius: var(--di-button-radius);
     font-family: var(--di-font-ui);
@@ -27,7 +27,7 @@
 
   .di-btn-dense {
     height: var(--di-h-dense);
-    padding: 0 11px;
+    padding: 0 var(--di-space-12);
     font-size: var(--di-font-size-300);
   }
 
@@ -37,7 +37,7 @@
 
   .di-btn-comfort {
     height: var(--di-h-comfort);
-    padding: 0 16px;
+    padding: 0 var(--di-space-16);
     font-size: var(--di-font-size-500);
   }
 

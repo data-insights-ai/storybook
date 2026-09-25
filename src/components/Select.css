@@ -6,7 +6,7 @@
 
   .di-select-control {
     appearance: none;
-    padding-right: 30px;
+    padding-right: var(--di-space-32);
   }
 
   .di-select-caret {

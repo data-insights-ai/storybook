@@ -5,20 +5,20 @@
    * so a Button placed in the action slot reads correctly on that ground.
    */
   .di-toast {
-    --di-text: #ffffff;
-    --di-text-muted: #b8c4dc;
-    --di-bg-subtle: #16294d;
+    --di-text: var(--di-inverse-text);
+    --di-text-muted: var(--di-inverse-muted);
+    --di-bg-subtle: var(--di-inverse-raised);
     --di-button-secondary-bg: transparent;
     --di-button-secondary-border: var(--di-seal);
-    --di-focus: var(--di-gold-400);
+    --di-focus: var(--di-inverse-seal);
 
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: var(--di-space-12);
     max-width: 480px;
-    padding: 11px 13px;
+    padding: var(--di-space-12) var(--di-space-12);
     border-radius: var(--di-radius-surface);
-    background: var(--di-ink);
+    background: var(--di-inverse-bg);
     box-shadow: var(--di-shadow-plane);
     animation: di-toast-in var(--di-duration-slow) var(--di-ease) both;
   }
@@ -50,7 +50,7 @@
   .di-toast-seal {
     flex: none;
     align-self: flex-start;
-    margin-top: 7px;
+    margin-top: var(--di-space-6);
   }
 
   .di-toast-copy {
@@ -62,22 +62,22 @@
     font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-semibold);
     line-height: var(--di-leading-snug);
-    color: #ffffff;
+    color: var(--di-inverse-text);
   }
 
   .di-toast-body {
-    margin-top: 2px;
+    margin-top: var(--di-space-2);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     line-height: var(--di-leading-snug);
-    color: #b8c4dc;
+    color: var(--di-inverse-muted);
   }
 
   .di-toast-audit {
-    margin-top: 4px;
+    margin-top: var(--di-space-4);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
-    color: var(--di-gold-400);
+    color: var(--di-inverse-seal);
   }
 
   .di-toast-action {
@@ -95,12 +95,12 @@
     border: 0;
     border-radius: var(--di-radius-micro);
     background: transparent;
-    color: #b8c4dc;
+    color: var(--di-inverse-muted);
   }
 
   .di-toast-close:hover {
-    background: #16294d;
-    color: #ffffff;
+    background: var(--di-inverse-raised);
+    color: var(--di-inverse-text);
   }
 
   .di-toast-close > svg {

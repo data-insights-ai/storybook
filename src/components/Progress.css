@@ -2,15 +2,15 @@
   .di-progress {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--di-space-6);
   }
 
   .di-progress-row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--di-space-3);
-    margin-bottom: 7px;
+    gap: var(--di-space-12);
+    margin-bottom: var(--di-space-6);
   }
 
   .di-progress-label {

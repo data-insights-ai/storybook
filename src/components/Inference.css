@@ -14,8 +14,8 @@
   .di-confirm-head {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 9px 13px;
+    gap: var(--di-space-8);
+    padding: var(--di-space-8) var(--di-space-12);
     border-bottom: 1px solid var(--di-rule-hairline);
     background: var(--di-ai-surface);
   }
@@ -33,14 +33,14 @@
   }
 
   .di-explain .di-explain-rows {
-    padding: 4px 13px 10px;
+    padding: var(--di-space-4) var(--di-space-12) var(--di-space-8);
   }
 
   .di-explain-row {
     display: flex;
     align-items: baseline;
-    gap: var(--di-space-3);
-    padding: 6px 0;
+    gap: var(--di-space-12);
+    padding: var(--di-space-6) 0;
     border-bottom: 1px solid var(--di-rule-hairline);
   }
 
@@ -74,7 +74,7 @@
   }
 
   .di-explain-foot {
-    padding: 9px 13px;
+    padding: var(--di-space-8) var(--di-space-12);
     border-top: 1px solid var(--di-rule-hairline);
     background: var(--di-bg-page);
     font-size: var(--di-font-size-300);

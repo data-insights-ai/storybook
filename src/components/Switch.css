@@ -8,7 +8,7 @@
 
   /* Control first, one gap, then the title — the checkbox's geometry. */
   .di-switch-row.is-inline {
-    gap: 9px;
+    gap: var(--di-space-8);
   }
 
   /*
@@ -18,7 +18,7 @@
    */
   .di-switch-row.is-row {
     justify-content: space-between;
-    gap: var(--di-space-4);
+    gap: var(--di-space-16);
   }
 
   /*
@@ -36,7 +36,7 @@
   .di-switch-text {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--di-space-2);
     min-width: 0;
   }
 

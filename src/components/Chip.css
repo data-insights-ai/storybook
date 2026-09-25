@@ -2,9 +2,9 @@
   .di-chip {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: var(--di-space-4);
     height: var(--di-h-dense);
-    padding: 0 10px;
+    padding: 0 var(--di-space-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
@@ -40,7 +40,7 @@
     width: 16px;
     height: 16px;
     padding: 0;
-    margin-right: -3px;
+    margin-right: -var(--di-space-2);
     border: 0;
     border-radius: var(--di-radius-micro);
     background: transparent;

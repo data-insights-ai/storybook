@@ -2,8 +2,8 @@
   .di-stat-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 18px;
-    padding: 12px 14px;
+    gap: var(--di-space-16);
+    padding: var(--di-space-12) var(--di-space-12);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
@@ -11,16 +11,16 @@
 
   .di-stat-label {
     font-family: var(--di-font-code);
-    font-size: 10px;
+    font-size: var(--di-font-size-100);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--di-text-muted);
   }
 
   .di-stat-value {
-    margin-top: 4px;
+    margin-top: var(--di-space-4);
     font-family: var(--di-font-ui);
-    font-size: 28px;
+    font-size: var(--di-font-size-700);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
     line-height: 1;
@@ -29,6 +29,6 @@
 
   .di-stat-value span {
     color: var(--di-text-muted);
-    font-size: 16px;
+    font-size: var(--di-font-size-500);
   }
 }

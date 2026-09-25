@@ -13,9 +13,9 @@
       "specs specs";
     align-items: center;
     min-width: 0;
-    padding: 12px;
+    padding: var(--di-space-12);
     border: 1px solid var(--di-border);
-    border-radius: 10px;
+    border-radius: var(--di-radius-surface);
     background: var(--di-bg-page);
   }
 
@@ -32,10 +32,10 @@
   .di-channel-status {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
+    gap: var(--di-space-8);
+    margin-bottom: var(--di-space-8);
     font-family: var(--di-font-code);
-    font-size: 10px;
+    font-size: var(--di-font-size-100);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--di-text-muted);
@@ -50,9 +50,9 @@
     grid-area: value;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--di-space-8);
     min-width: 0;
-    font-size: 14px;
+    font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-medium);
     overflow-wrap: anywhere;
   }
@@ -68,10 +68,10 @@
     grid-area: specs;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 18px;
-    margin-top: 10px;
+    gap: var(--di-space-8) var(--di-space-16);
+    margin-top: var(--di-space-8);
     font-family: var(--di-font-code);
-    font-size: 10px;
+    font-size: var(--di-font-size-100);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--di-text-muted);

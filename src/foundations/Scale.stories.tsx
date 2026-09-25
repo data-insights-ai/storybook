@@ -11,13 +11,15 @@ import "./foundations.css";
  */
 
 const space = [
-  { token: "--di-space-1", px: 4, use: "Icon to label. A mark to its word." },
-  { token: "--di-space-2", px: 8, use: "Inside a control. Between two buttons." },
-  { token: "--di-space-3", px: 12, use: "A panel's padding. Rows in a list." },
-  { token: "--di-space-4", px: 16, use: "Between blocks inside a panel." },
-  { token: "--di-space-5", px: 24, use: "Between panels." },
-  { token: "--di-space-6", px: 32, use: "Between sections of a screen." },
-  { token: "--di-space-7", px: 48, use: "Between the parts of a brand page." },
+  { token: "--di-space-2", px: 2, use: "An optical nudge. A mark off a baseline." },
+  { token: "--di-space-4", px: 4, use: "A mark to its word: the seal dot, a pill, a chip." },
+  { token: "--di-space-6", px: 6, use: "Inside a dense control — the 28px tier." },
+  { token: "--di-space-8", px: 8, use: "Inside a standard control. Between two buttons." },
+  { token: "--di-space-12", px: 12, use: "A panel header, a table cell, a card's inset." },
+  { token: "--di-space-16", px: 16, use: "Panel content. Between blocks inside a panel." },
+  { token: "--di-space-24", px: 24, use: "Between panels." },
+  { token: "--di-space-32", px: 32, use: "Between sections of a screen." },
+  { token: "--di-space-48", px: 48, use: "Between the parts of a brand page." },
 ];
 
 const radius = [
@@ -71,22 +73,21 @@ export const Dimensions: StoryObj = {
       <Section
         eyebrow="Space"
         title="Doubling, then widening."
-        lede="4, 8, 12, 16, 24, 32, 48. A gap, a padding or a margin should land on one of them; a value between two steps is a decision nobody made. New work holds to this. The components do not yet — see the note below, which is measured rather than asserted."
+        lede="2, 4, 6, 8, 12, 16, 24, 32, 48. Fine at the bottom, coarse at the top, because that is where the density is — a 28px control cannot be padded on a 4px grid. Tokens are named by value, so `--di-space-12` is 12px and a wrong number shows up in the diff rather than hiding behind an index."
       >
         <Ramp
           rows={space}
           draw={(px) => <i className="di-ramp-bar" style={{ width: px }} />}
         />
         <Verdicts>
-          <Verdict result="fail" note="Measured across src/components/*.css. 190 of 284 spacing values sit between two steps, in 51 of 57 files.">
-            The components are on this scale about a third of the time. The same idea — the inset of
-            a surface — is 11px in a panel header, 12px in a notice, 13px in a drawer row, 14px in a
-            card, 16px in panel content and 18px in a modal.
+          <Verdict result="fail" note="Before: 190 of 284 spacing values sat between two steps, across 51 of 57 files.">
+            The same idea — the inset of a surface — was 11px in a panel header, 12px in a notice,
+            13px in a drawer row, 14px in a card, 16px in panel content and 18px in a modal. Eleven
+            answers to one question, because there was no value to copy and no check to fail.
           </Verdict>
-          <Verdict result="pass" note="What the number is for.">
-            It is stated because a foundation that quietly disagreed with the build would be the
-            more expensive kind of wrong. Retrofitting moves roughly 190 declarations and shifts the
-            density of every screen, so it is a decision to take deliberately, not a tidy-up.
+          <Verdict result="pass" note="After: every gap, padding and margin in src is a --di-space-* token. `pnpm lint:tokens` fails on the next one that is not.">
+            156 values moved, most by one or two pixels. The ramp is only worth stating if
+            something enforces it — a page a person has to remember is not a rule, it is a wish.
           </Verdict>
         </Verdicts>
       </Section>
@@ -94,7 +95,7 @@ export const Dimensions: StoryObj = {
       <Section
         eyebrow="Radius"
         title="Moderate. Nothing is a lozenge."
-        lede="The smaller the control, the tighter the corner — a field is 4px and the panel holding it is 8px, so the field reads as set into the sheet rather than floating on it. Only a pill is fully round, and only because it is a mark. Four corners are still hand-set and off the ramp: 10px in AppShell, Channel and Stage, and 3px on the checkbox."
+        lede="The smaller the control, the tighter the corner — a field is 4px and the panel holding it is 8px, so the field reads as set into the sheet rather than floating on it. Only a pill is fully round, and only because it is a mark. No corner is hand-set any more; the lint refuses a raw radius."
       >
         <Ramp
           rows={radius}

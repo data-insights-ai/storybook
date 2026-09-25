@@ -2,9 +2,9 @@
   .di-privacy {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: var(--di-space-4);
     height: var(--di-pill-height);
-    padding: 0 8px;
+    padding: 0 var(--di-space-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-pill-radius);
     font-family: var(--di-font-code);

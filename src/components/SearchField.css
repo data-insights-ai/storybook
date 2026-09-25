@@ -2,9 +2,9 @@
   .di-search {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--di-space-8);
     height: var(--di-field-height);
-    padding: 0 9px;
+    padding: 0 var(--di-space-8);
     border: 1px solid var(--di-field-border);
     border-radius: var(--di-field-radius);
     background: var(--di-field-bg);

@@ -7,6 +7,6 @@
   }
 
   .di-card-pad {
-    padding: 16px 18px;
+    padding: var(--di-space-16) var(--di-space-16);
   }
 }

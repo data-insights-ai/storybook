@@ -62,7 +62,7 @@
     justify-content: center;
     width: var(--di-index-col);
     flex: none;
-    padding-top: 18px;
+    padding-top: var(--di-space-16);
     border-right: 1px solid var(--di-border);
     background: var(--di-status-warn-bg);
     color: var(--di-status-warn-fg);
@@ -79,11 +79,11 @@
   }
 
   .di-modal-content {
-    padding: 18px;
+    padding: var(--di-space-16);
   }
 
   .di-modal-eyebrow {
-    margin-bottom: 7px;
+    margin-bottom: var(--di-space-6);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     letter-spacing: var(--di-tracking-eyebrow);
@@ -100,7 +100,7 @@
   }
 
   .di-modal-text {
-    margin-top: 7px;
+    margin-top: var(--di-space-6);
     font-size: var(--di-font-size-400);
     line-height: var(--di-leading-body);
     color: var(--di-text-muted);
@@ -111,15 +111,15 @@
    * inline margin on a wrapper div in the story; the frame owns the spacing.
    */
   .di-modal-content > .di-field {
-    margin-top: var(--di-space-4);
+    margin-top: var(--di-space-16);
   }
 
   .di-modal-footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--di-space-2);
-    padding: 11px 18px;
+    gap: var(--di-space-8);
+    padding: var(--di-space-12) var(--di-space-16);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }

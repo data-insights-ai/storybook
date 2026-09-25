@@ -3,11 +3,11 @@
     display: inline-flex;
     align-items: center;
     height: 22px;
-    padding: 0 8px;
-    border: 1px solid var(--di-navy-800);
+    padding: 0 var(--di-space-8);
+    border: 1px solid var(--di-inverse-border);
     border-radius: var(--di-radius-micro);
-    background: var(--di-navy-900);
-    color: var(--di-night-paper);
+    background: var(--di-inverse-bg);
+    color: var(--di-inverse-text);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     line-height: 1;

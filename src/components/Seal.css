@@ -23,7 +23,7 @@
   .di-seal {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-2);
+    gap: var(--di-space-8);
     color: var(--di-text);
   }
 
@@ -36,8 +36,8 @@
   .di-mark {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: var(--di-space-3);
+    gap: var(--di-space-8);
+    margin-bottom: var(--di-space-12);
   }
 
   .di-mark-label {
@@ -60,7 +60,7 @@
     display: inline-flex;
     align-items: center;
     height: 18px;
-    padding: 0 5px;
+    padding: 0 var(--di-space-4);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-page);

@@ -3,14 +3,14 @@
   .di-field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--di-space-6);
   }
 
   .di-field-row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--di-space-3);
+    gap: var(--di-space-12);
   }
 
   .di-field-label {
@@ -37,7 +37,7 @@
   .di-field-hint.is-sealed {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: var(--di-space-4);
   }
 
   .di-field-hint.is-error {
@@ -52,7 +52,7 @@
 
   /* A resolved value under the field, vouched for by the seal. */
   .di-field-hint.is-sealed {
-    gap: 6px;
+    gap: var(--di-space-6);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
@@ -61,7 +61,7 @@
   .di-control {
     width: 100%;
     height: var(--di-field-height);
-    padding: 0 10px;
+    padding: 0 var(--di-space-8);
     border: 1px solid var(--di-field-border);
     border-radius: var(--di-field-radius);
     background: var(--di-field-bg);

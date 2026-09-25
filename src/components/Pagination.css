@@ -2,7 +2,7 @@
   .di-pages {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
+    gap: var(--di-space-2);
   }
 
   .di-page-btn {
@@ -11,7 +11,7 @@
     justify-content: center;
     min-width: 26px;
     height: 26px;
-    padding: 0 6px;
+    padding: 0 var(--di-space-6);
     border: 1px solid transparent;
     border-radius: var(--di-radius-micro);
     background: transparent;

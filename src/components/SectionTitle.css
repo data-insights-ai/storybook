@@ -3,8 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: var(--di-space-4);
-    margin-bottom: var(--di-space-3);
+    gap: var(--di-space-16);
+    margin-bottom: var(--di-space-12);
   }
 
   .di-section-title h2 {
@@ -17,7 +17,7 @@
   }
 
   .di-section-title p {
-    margin-top: var(--di-space-2);
+    margin-top: var(--di-space-8);
     max-width: 62ch;
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);

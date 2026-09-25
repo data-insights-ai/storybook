@@ -2,15 +2,15 @@
   .di-confidence {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--di-space-6);
   }
 
   .di-confidence-value {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--di-space-8);
     min-height: var(--di-h-ctl);
-    padding: 0 10px;
+    padding: 0 var(--di-space-8);
     border: 1px solid var(--di-ai-ring);
     border-radius: var(--di-field-radius);
     background: var(--di-bg-surface);
@@ -36,8 +36,8 @@
   .di-confidence-foot {
     display: flex;
     align-items: center;
-    gap: 7px;
-    padding: 6px 9px;
+    gap: var(--di-space-6);
+    padding: var(--di-space-6) var(--di-space-8);
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-page);
   }

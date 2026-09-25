@@ -13,7 +13,7 @@
     justify-content: center;
     width: var(--di-index-col);
     flex: none;
-    padding-top: 13px;
+    padding-top: var(--di-space-12);
     border-right: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
@@ -29,8 +29,8 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--di-space-4);
-    padding: 12px 14px;
+    gap: var(--di-space-16);
+    padding: var(--di-space-12) var(--di-space-12);
   }
 
   .di-notice-title {
@@ -42,7 +42,7 @@
   }
 
   .di-notice-body {
-    margin-top: 3px;
+    margin-top: var(--di-space-2);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);

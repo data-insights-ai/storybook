@@ -16,7 +16,7 @@
     justify-content: center;
     width: var(--di-index-col);
     flex: none;
-    padding-top: 24px;
+    padding-top: var(--di-space-24);
     border-right: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
@@ -40,11 +40,11 @@
   .di-empty-body {
     flex: 1;
     min-width: 0;
-    padding: 24px 18px;
+    padding: var(--di-space-24) var(--di-space-16);
   }
 
   .di-empty-eyebrow {
-    margin-bottom: 9px;
+    margin-bottom: var(--di-space-8);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     letter-spacing: var(--di-tracking-eyebrow);
@@ -57,7 +57,7 @@
   }
 
   .di-empty-title {
-    margin-bottom: 6px;
+    margin-bottom: var(--di-space-6);
     font-size: var(--di-font-size-500);
     font-weight: var(--di-weight-semibold);
     letter-spacing: var(--di-tracking-tight);
@@ -76,6 +76,6 @@
   }
 
   .di-empty-action {
-    margin-top: var(--di-space-4);
+    margin-top: var(--di-space-16);
   }
 }

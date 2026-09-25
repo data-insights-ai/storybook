@@ -140,13 +140,37 @@ Build a screen from the components that exist. When something is missing, **add 
 
 This holds outside the repo too. The design system synced to claude.ai/design carries only what `src/index.ts` exports, so a control that never became a component cannot be designed with; it gets approximated, and the approximation cannot ship. If a design needs something that is not here, that is a request for a component, not a licence to improvise one.
 
+## Keeping to the system
+
+`pnpm lint:tokens` is the check. It reads `src` and fails on five things, each of which the codebase had already done:
+
+| Rule | What fails |
+| --- | --- |
+| `space` | A `gap`, `padding` or `margin` that is not a `--di-space-*` token. The ramp is 2, 4, 6, 8, 12, 16, 24, 32, 48, named by value. |
+| `radius` | A hand-set `border-radius`. Use `--di-radius-micro` \| `-control` \| `-surface` \| `-container` \| `-pill`. |
+| `type` | A raw `font-size` in px. Use a `--di-font-size-*` step. |
+| `colour` | A hex literal in a component. It is correct in daylight and wrong on the night sheet, because the token flips and a hex cannot. |
+| `layer` | A component binding to a primitive. A primitive has no dark counterpart; bind to a semantic role, or define a local `--di-*` from it where a surface re-points its own roles, as `Toast` and the current `Stage` do. |
+| `api` | A prop typed `ReactNode` in `src/components` other than `children`, `NavItem.icon` or `Menu.trigger`. |
+
+`pnpm build` runs it first, so drift cannot reach the package. `pnpm check` is typecheck, lint and test together.
+
+An exception has to say why, in a comment the lint reads:
+
+```css
+/* di-lint-allow-file layer: the sign-in card pins the daylight palette in
+ * both themes, because it sits on a navy sheet either way. */
+```
+
+`di-lint-allow <rule>: <reason>` covers the block it sits above; `di-lint-allow-file <rule>: <reason>` at the top covers the file. Two files use it: `SignIn.css`, which must not follow the theme, and the Foundations specimen stylesheets, which show literal brand colours because that is what they are showing. A rule with no stated reason is drift with a comment on it.
+
 ## Checks
 
 Visible text meets WCAG AA. Status is a word plus a mark, not colour alone. An icon-only button has an accessible name. Focus is visible: navy on ivory, gold on the navy sidebar.
 
 A screen has one `main` and one `h1`. Component stories get that wrapper from `.storybook/preview.tsx` when the story does not render its own heading. `pnpm test` fails on axe violations. The Accessibility panel also counts inconclusive results, so a gradient or a dotted background behind text still counts as a failure to fix in the markup.
 
-Before handing work back, run `pnpm typecheck` and `pnpm test`. Run `pnpm build` when a public component or `src/index.ts` changed.
+Before handing work back, run `pnpm check` — typecheck, `lint:tokens` and the story tests. Run `pnpm build` when a public component or `src/index.ts` changed.
 
 ## Release
 

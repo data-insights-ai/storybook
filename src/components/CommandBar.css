@@ -11,9 +11,9 @@
   .di-command-input {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--di-space-8);
     height: 46px;
-    padding: 0 13px;
+    padding: 0 var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
@@ -44,18 +44,18 @@
 
   .di-command-list {
     max-height: 320px;
-    padding: 6px;
+    padding: var(--di-space-6);
     overflow-y: auto;
   }
 
   .di-command-group + .di-command-group {
-    margin-top: 6px;
-    padding-top: 6px;
+    margin-top: var(--di-space-6);
+    padding-top: var(--di-space-6);
     border-top: 1px solid var(--di-rule-hairline);
   }
 
   .di-command-group-label {
-    padding: 5px 8px;
+    padding: var(--di-space-4) var(--di-space-8);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     letter-spacing: var(--di-tracking-eyebrow);
@@ -66,10 +66,10 @@
   .di-command-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--di-space-8);
     width: 100%;
     height: var(--di-h-comfort);
-    padding: 0 8px;
+    padding: 0 var(--di-space-8);
     border: 0;
     border-radius: var(--di-radius-micro);
     background: transparent;
@@ -115,8 +115,8 @@
   .di-command-foot {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 8px 13px;
+    gap: var(--di-space-12);
+    padding: var(--di-space-8) var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
     font-family: var(--di-font-code);
@@ -127,7 +127,7 @@
   .di-command-privacy {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: var(--di-space-4);
     margin-left: auto;
     color: var(--di-text-muted);
   }
@@ -140,9 +140,9 @@
   .di-command-chip {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: var(--di-space-4);
     height: 22px;
-    padding: 0 9px;
+    padding: 0 var(--di-space-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-surface);

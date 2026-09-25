@@ -10,7 +10,7 @@
     right: 0;
     z-index: 20;
     min-width: 188px;
-    padding: 4px;
+    padding: var(--di-space-4);
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
@@ -28,10 +28,10 @@
   .di-menu-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--di-space-8);
     width: 100%;
     height: var(--di-h-dense);
-    padding: 0 9px;
+    padding: 0 var(--di-space-8);
     border: 0;
     border-radius: var(--di-radius-micro);
     background: transparent;
@@ -55,7 +55,7 @@
 
   .di-menu-divider {
     height: 1px;
-    margin: 4px 0;
+    margin: var(--di-space-4) 0;
     background: var(--di-rule-hairline);
   }
 }

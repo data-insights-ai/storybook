@@ -9,8 +9,8 @@
   .di-table-toolbar {
     display: flex;
     align-items: center;
-    gap: var(--di-space-2);
-    padding: 9px 12px;
+    gap: var(--di-space-8);
+    padding: var(--di-space-8) var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
@@ -28,7 +28,7 @@
 
   .di-table th {
     height: 32px;
-    padding: 0 12px;
+    padding: 0 var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-bg-page);
     text-align: left;
@@ -46,12 +46,12 @@
   }
 
   .di-table-sort {
-    margin-left: 4px;
+    margin-left: var(--di-space-4);
   }
 
   .di-table td {
     height: var(--di-table-row-height);
-    padding: 0 12px;
+    padding: 0 var(--di-space-12);
     border-bottom: 1px solid var(--di-table-rule);
     color: var(--di-text);
     vertical-align: middle;
@@ -95,8 +95,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-3);
-    padding: 9px 12px;
+    gap: var(--di-space-12);
+    padding: var(--di-space-8) var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
     font-family: var(--di-font-code);
@@ -107,7 +107,7 @@
   .di-cell {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: var(--di-space-2);
     min-width: 0;
   }
 
@@ -127,7 +127,7 @@
   .di-cell-lead {
     display: flex;
     align-items: center;
-    gap: var(--di-space-2);
+    gap: var(--di-space-8);
     min-width: 0;
   }
 

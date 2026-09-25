@@ -1,17 +1,17 @@
 @layer components {
   .di-tabs {
     display: flex;
-    gap: 2px;
+    gap: var(--di-space-2);
     border-bottom: 1px solid var(--di-border);
   }
 
   .di-tab {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--di-space-6);
     height: var(--di-h-comfort);
-    padding: 0 12px;
-    margin-bottom: -1px;
+    padding: 0 var(--di-space-12);
+    margin-bottom: -var(--di-space-2);
     border: 0;
     border-bottom: 2px solid transparent;
     background: transparent;
@@ -43,7 +43,7 @@
     justify-content: center;
     min-width: 17px;
     height: 17px;
-    padding: 0 5px;
+    padding: 0 var(--di-space-4);
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-subtle);
     color: var(--di-text-muted);
@@ -53,6 +53,6 @@
   }
 
   .di-tabpanel {
-    padding-top: var(--di-space-4);
+    padding-top: var(--di-space-16);
   }
 }

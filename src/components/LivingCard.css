@@ -9,8 +9,8 @@
   .di-living-head {
     display: flex;
     align-items: center;
-    gap: var(--di-space-2);
-    padding: 10px 14px;
+    gap: var(--di-space-8);
+    padding: var(--di-space-8) var(--di-space-12);
     border-bottom: 1px solid var(--di-rule-hairline);
   }
 
@@ -26,7 +26,7 @@
   .di-living-actions {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--di-space-4);
     flex: none;
   }
 
@@ -34,8 +34,8 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: var(--di-space-4);
-    padding: 14px;
+    gap: var(--di-space-16);
+    padding: var(--di-space-12);
   }
 
   /*
@@ -43,7 +43,7 @@
    * quieter than the measurement it is commenting on.
    */
   .di-living-insight {
-    padding: 12px 14px;
+    padding: var(--di-space-12) var(--di-space-12);
     border-top: 1px solid var(--di-ai-ring);
     background: var(--di-ai-surface);
   }
@@ -51,7 +51,7 @@
   .di-living-insight-row {
     display: flex;
     align-items: flex-start;
-    gap: 9px;
+    gap: var(--di-space-8);
   }
 
   .di-living-insight-copy {
@@ -66,7 +66,7 @@
   }
 
   .di-living-insight-basis {
-    margin-top: 4px;
+    margin-top: var(--di-space-4);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     line-height: var(--di-leading-snug);
@@ -76,8 +76,8 @@
   .di-living-insight-actions {
     display: flex;
     align-items: center;
-    gap: 6px;
-    margin-top: 11px;
-    padding-left: 16px;
+    gap: var(--di-space-6);
+    margin-top: var(--di-space-12);
+    padding-left: var(--di-space-16);
   }
 }

@@ -1,7 +1,7 @@
 @layer components {
   .di-segmented {
     display: inline-flex;
-    padding: 2px;
+    padding: var(--di-space-2);
     margin: 0;
     border: 1px solid var(--di-border-input);
     border-radius: var(--di-radius-control);
@@ -12,7 +12,7 @@
     display: inline-flex;
     align-items: center;
     height: 24px;
-    padding: 0 11px;
+    padding: 0 var(--di-space-12);
     border-radius: var(--di-radius-micro);
     color: var(--di-text-muted);
     font-family: var(--di-font-code);

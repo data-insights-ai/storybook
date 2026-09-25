@@ -2,7 +2,7 @@
   .di-spinner-row {
     display: inline-flex;
     align-items: center;
-    gap: 9px;
+    gap: var(--di-space-8);
   }
 
   .di-spinner {

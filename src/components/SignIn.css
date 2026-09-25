@@ -1,3 +1,9 @@
+/*
+ * di-lint-allow-file layer: the sign-in card pins the daylight palette in both
+ * themes, because it sits on a navy sheet either way. That is the one
+ * surface which must not follow the theme, so it names primitives
+ * deliberately rather than binding to roles that would flip under it.
+ */
 @layer components {
   /* A solid navy sheet. No gradient, no blur: contrast has to be measurable. */
   .di-login {
@@ -8,14 +14,14 @@
     align-self: stretch;
     width: 100%;
     min-height: 100%;
-    padding: 48px 16px;
+    padding: var(--di-space-48) var(--di-space-16);
     background: var(--di-navy-900);
   }
 
   .di-login-stack {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: var(--di-space-12);
     width: 100%;
     max-width: 396px;
   }
@@ -24,7 +30,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: var(--di-space-12);
   }
 
   .di-login-logo {
@@ -47,7 +53,7 @@
     --di-text: var(--di-ink);
     --di-text-muted: var(--di-navy-600);
     --di-text-subtle: var(--di-navy-500);
-    --di-text-on-strong: #ffffff;
+    --di-text-on-strong: var(--di-inverse-text);
     --di-bg-surface: var(--di-sheet);
     --di-bg-page: var(--di-paper);
     --di-bg-subtle: var(--di-sunken);
@@ -63,7 +69,7 @@
     --di-field-border: var(--di-rule-400);
     --di-button-primary-bg: var(--di-ink);
     --di-button-primary-bg-hover: var(--di-navy-950);
-    --di-button-primary-fg: #ffffff;
+    --di-button-primary-fg: var(--di-inverse-text);
     --di-button-secondary-bg: var(--di-sheet);
     --di-button-secondary-border: var(--di-rule-400);
     --di-status-danger-fg: var(--di-danger-800);
@@ -87,7 +93,7 @@
     align-items: center;
     width: var(--di-index-col);
     flex: none;
-    padding: 26px 0 18px;
+    padding: var(--di-space-24) 0 var(--di-space-16);
     border-right: 1px solid var(--di-rule-300);
     background: var(--di-paper);
   }
@@ -95,14 +101,14 @@
   .di-login-index-rule {
     width: 1px;
     flex: 1;
-    margin-top: 10px;
+    margin-top: var(--di-space-8);
     background: var(--di-rule-300);
   }
 
   .di-login-body {
     flex: 1;
     min-width: 0;
-    padding: 24px 22px 20px;
+    padding: var(--di-space-24) var(--di-space-24) var(--di-space-16);
   }
 
   .di-login-eyebrow {
@@ -114,7 +120,7 @@
   }
 
   .di-login-title {
-    margin-top: 8px;
+    margin-top: var(--di-space-8);
     font-size: var(--di-font-size-600);
     font-weight: var(--di-weight-semibold);
     letter-spacing: var(--di-tracking-tight);
@@ -123,7 +129,7 @@
   }
 
   .di-login-lede {
-    margin-top: 6px;
+    margin-top: var(--di-space-6);
     font-size: var(--di-font-size-400);
     line-height: var(--di-leading-body);
     color: var(--di-navy-600);
@@ -132,8 +138,8 @@
   .di-login-form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    margin: 20px 0 18px;
+    gap: var(--di-space-12);
+    margin: var(--di-space-16) 0 var(--di-space-16);
   }
 
   .di-login-form .di-btn {
@@ -141,7 +147,7 @@
   }
 
   .di-login-restrict {
-    margin-top: 11px;
+    margin-top: var(--di-space-12);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     line-height: var(--di-leading-snug);
@@ -152,14 +158,14 @@
   .di-login-foot {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: var(--di-space-6);
     flex-wrap: wrap;
-    padding: 6px 9px;
+    padding: var(--di-space-6) var(--di-space-8);
     border-radius: var(--di-radius-micro);
     background: var(--di-navy-950);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
-    color: #b9c4d8;
+    color: var(--di-inverse-muted);
   }
 
   .di-login-foot-sep {

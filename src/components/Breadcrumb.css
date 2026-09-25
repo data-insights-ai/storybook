@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: var(--di-space-6);
     padding: 0;
     margin: 0;
     list-style: none;
@@ -12,7 +12,7 @@
   .di-breadcrumb-item {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--di-space-6);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
   }

@@ -116,7 +116,7 @@ function Board() {
         title="Four states, and the word always carries the meaning."
         lede="The dot is a second channel, never the only one. Anomaly runs on the gold ramp rather than inventing a second yellow. Each word sits on a wash that keeps it above 5:1."
       >
-        <div style={{ display: "flex", gap: "var(--di-space-3)", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "var(--di-space-12)", flexWrap: "wrap" }}>
           {status.map(([name, fg, bg]) => (
             <div key={name} className="di-swatch" style={{ background: bg, color: fg, minWidth: 160 }}>
               <b>{name}</b>

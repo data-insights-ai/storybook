@@ -14,10 +14,10 @@
       "footer footer";
     /* The lines take the slack, so the footer stays on the bottom rule. */
     grid-template-rows: auto auto 1fr auto;
-    gap: 12px 8px;
+    gap: var(--di-space-12) var(--di-space-8);
     height: 100%;
     min-width: 0;
-    padding: 14px 14px 12px;
+    padding: var(--di-space-12) var(--di-space-12) var(--di-space-12);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
@@ -48,12 +48,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--di-space-8);
   }
 
   .di-record h2 {
     font-family: var(--di-font-ui);
-    font-size: 18px;
+    font-size: var(--di-font-size-600);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
     line-height: 1.15;
@@ -62,7 +62,7 @@
   .di-record-count,
   .di-record-list span,
   .di-record-footer {
-    font-size: 12px;
+    font-size: var(--di-font-size-300);
     color: var(--di-text-muted);
   }
 
@@ -72,22 +72,22 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--di-space-8);
   }
 
   .di-record-list li {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: var(--di-space-2);
   }
 
   .di-record-list strong {
     font-weight: var(--di-weight-medium);
-    font-size: 13px;
+    font-size: var(--di-font-size-400);
   }
 
   .di-record-footer {
-    padding-top: 10px;
+    padding-top: var(--di-space-8);
     border-top: 1px solid var(--di-border);
   }
 }

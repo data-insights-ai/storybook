@@ -2,9 +2,9 @@
   .di-kv {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 6px 12px;
-    margin: 12px 0 0;
-    font-size: 13px;
+    gap: var(--di-space-6) var(--di-space-12);
+    margin: var(--di-space-12) 0 0;
+    font-size: var(--di-font-size-400);
   }
 
   .di-kv dt {

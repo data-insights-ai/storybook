@@ -1,10 +1,10 @@
 @layer components {
   .di-confirm-body {
-    padding: 13px 13px 6px;
+    padding: var(--di-space-12) var(--di-space-12) var(--di-space-6);
   }
 
   .di-confirm-question {
-    margin-bottom: 10px;
+    margin-bottom: var(--di-space-8);
     font-size: var(--di-font-size-500);
     font-weight: var(--di-weight-semibold);
     letter-spacing: var(--di-tracking-tight);
@@ -15,8 +15,8 @@
   .di-confirm-foot {
     display: flex;
     align-items: center;
-    gap: var(--di-space-3);
-    padding: 10px 13px;
+    gap: var(--di-space-12);
+    padding: var(--di-space-8) var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
@@ -40,7 +40,7 @@
   .di-confirm-actions {
     display: flex;
     align-items: center;
-    gap: var(--di-space-2);
+    gap: var(--di-space-8);
     margin-left: auto;
   }
 }

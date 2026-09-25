@@ -3,8 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    gap: 24px;
-    margin-bottom: 22px;
+    gap: var(--di-space-24);
+    margin-bottom: var(--di-space-24);
   }
 
   .di-page-copy {
@@ -13,9 +13,9 @@
   }
 
   .di-eyebrow {
-    margin-bottom: 8px;
+    margin-bottom: var(--di-space-8);
     font-family: var(--di-font-code);
-    font-size: 11px;
+    font-size: var(--di-font-size-200);
     font-weight: var(--di-weight-medium);
     letter-spacing: var(--di-tracking-eyebrow);
     text-transform: uppercase;
@@ -32,7 +32,7 @@
   }
 
   .di-lede {
-    margin-top: 8px;
+    margin-top: var(--di-space-8);
     max-width: 62ch;
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);

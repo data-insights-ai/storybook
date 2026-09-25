@@ -2,7 +2,7 @@
   .di-field textarea.di-control {
     height: auto;
     min-height: 76px;
-    padding: 8px 10px;
+    padding: var(--di-space-8) var(--di-space-8);
     line-height: var(--di-leading-snug);
     resize: vertical;
   }

@@ -18,7 +18,7 @@
     align-items: center;
     width: var(--di-index-col);
     flex: none;
-    padding: 15px 0;
+    padding: var(--di-space-16) 0;
     border-right: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
@@ -33,7 +33,7 @@
   .di-drawer-index-rule {
     width: 1px;
     flex: 1;
-    margin-top: var(--di-space-2);
+    margin-top: var(--di-space-8);
     background: var(--di-rule);
   }
 
@@ -47,8 +47,8 @@
   .di-drawer-header {
     display: flex;
     align-items: flex-start;
-    gap: var(--di-space-3);
-    padding: 13px 14px;
+    gap: var(--di-space-12);
+    padding: var(--di-space-12) var(--di-space-12);
     border-bottom: 1px solid var(--di-rule-hairline);
   }
 
@@ -66,7 +66,7 @@
   }
 
   .di-drawer-title {
-    margin-top: 4px;
+    margin-top: var(--di-space-4);
     font-size: var(--di-font-size-500);
     font-weight: var(--di-weight-semibold);
     letter-spacing: var(--di-tracking-tight);
@@ -102,7 +102,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 4px 14px 14px;
+    padding: var(--di-space-4) var(--di-space-12) var(--di-space-12);
   }
 
   .di-drawer-content .di-facts {
@@ -117,10 +117,10 @@
   .di-drawer-footer {
     display: flex;
     align-items: center;
-    gap: var(--di-space-2);
-    margin: 14px -14px -14px;
+    gap: var(--di-space-8);
+    margin: var(--di-space-12) -var(--di-space-12) -var(--di-space-12);
     margin-top: auto;
-    padding: 11px 14px;
+    padding: var(--di-space-12) var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }

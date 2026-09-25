@@ -9,7 +9,7 @@
   .di-skeleton-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--di-space-12);
     height: var(--di-table-row-height);
     border-bottom: 1px solid var(--di-table-rule);
   }
@@ -45,7 +45,7 @@
    */
   .di-skeleton-bar {
     height: 9px;
-    border-radius: 2px;
+    border-radius: var(--di-radius-micro);
     background: var(--di-bg-subtle);
     animation: di-skeleton-breathe var(--di-skeleton-breath) ease-in-out infinite;
     animation-delay: calc(var(--di-skeleton-row, 0) * var(--di-skeleton-stagger));
@@ -65,6 +65,6 @@
   .di-skeleton-bar.is-trailing {
     width: 54px;
     margin-left: auto;
-    margin-right: 12px;
+    margin-right: var(--di-space-12);
   }
 }

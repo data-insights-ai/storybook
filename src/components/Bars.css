@@ -6,26 +6,26 @@
   .di-bars {
     display: flex;
     align-items: flex-end;
-    gap: 4px;
+    gap: var(--di-space-4);
     height: 72px;
   }
 
   .di-bars span {
     flex: 1;
-    border-radius: 2px 2px 0 0;
-    background: var(--di-navy-100);
+    border-radius: var(--di-radius-micro) var(--di-radius-micro) 0 0;
+    background: var(--di-chart-muted);
   }
 
   .di-bars span.is-today {
-    background: var(--di-navy-900);
+    background: var(--di-chart-series);
   }
 
   .di-bar-caption {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
-    margin-top: 6px;
-    font-size: 11px;
+    gap: var(--di-space-8);
+    margin-top: var(--di-space-6);
+    font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
   }
 }

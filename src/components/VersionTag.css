@@ -3,7 +3,7 @@
     display: inline-flex;
     align-items: center;
     height: var(--di-pill-height);
-    padding: 0 8px;
+    padding: 0 var(--di-space-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-pill-radius);
     background: var(--di-bg-subtle);

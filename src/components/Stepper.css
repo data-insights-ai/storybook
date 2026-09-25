@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: var(--di-space-8);
     padding: 0;
     margin: 0;
     list-style: none;
@@ -12,13 +12,13 @@
   .di-step {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--di-space-8);
   }
 
   .di-step-connector {
     width: 22px;
     height: 1px;
-    margin-right: 2px;
+    margin-right: var(--di-space-2);
     background: var(--di-border);
   }
 
@@ -41,7 +41,7 @@
   .di-step-bullet.is-done {
     border-color: var(--di-seal);
     background: var(--di-seal);
-    color: var(--di-gold-700);
+    color: var(--di-seal-ink);
   }
 
   .di-step-bullet.is-current {

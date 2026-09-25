@@ -4,13 +4,13 @@
     height: 240px;
     color: var(--di-text-muted);
     font-family: var(--di-font-code);
-    font-size: 11px;
+    font-size: var(--di-font-size-200);
   }
 
   .di-chart .recharts-cartesian-axis-tick text {
     fill: var(--di-text-muted);
     font-family: var(--di-font-code);
-    font-size: 11px;
+    font-size: var(--di-font-size-200);
   }
 
   .di-chart .recharts-cartesian-grid line,
@@ -35,18 +35,18 @@
 
   .di-chart-tip {
     min-width: 148px;
-    padding: 8px 10px;
+    padding: var(--di-space-8) var(--di-space-8);
     border: 1px solid var(--di-rule);
     background: var(--di-bg-surface);
     color: var(--di-text);
     font-family: var(--di-font-ui);
-    font-size: 12px;
+    font-size: var(--di-font-size-300);
   }
 
   .di-chart-tip-label {
-    margin: 0 0 6px;
+    margin: 0 0 var(--di-space-6);
     font-family: var(--di-font-code);
-    font-size: 10px;
+    font-size: var(--di-font-size-100);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--di-text-muted);
@@ -62,13 +62,13 @@
 
   .di-chart-tip ul {
     flex-direction: column;
-    gap: 4px;
+    gap: var(--di-space-4);
   }
 
   .di-chart-tip li {
     display: grid;
     grid-template-columns: 8px 1fr auto;
-    gap: 8px;
+    gap: var(--di-space-8);
     align-items: center;
   }
 
@@ -85,17 +85,17 @@
 
   .di-chart-legend {
     flex-wrap: wrap;
-    gap: 8px 16px;
-    padding: 4px 4px 0;
+    gap: var(--di-space-8) var(--di-space-16);
+    padding: var(--di-space-4) var(--di-space-4) 0;
     color: var(--di-text-muted);
     font-family: var(--di-font-ui);
-    font-size: 12px;
+    font-size: var(--di-font-size-300);
   }
 
   .di-chart-legend li {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--di-space-6);
   }
 
   .di-chart-legend i.is-dashed {

@@ -71,6 +71,20 @@
     --di-ai-surface: var(--di-gold-50);
     --di-ai-ink: var(--di-warn-800);
 
+    /*
+     * An inverted surface: the toast, the tooltip, the sign-in footer, the
+     * rail. A component on navy re-points its own roles from these rather
+     * than typing a hex — three of them were doing that, with #ffffff,
+     * #b8c4dc and #b9c4d8 all meaning "muted on navy".
+     */
+    --di-inverse-bg: var(--di-ink);
+    --di-inverse-raised: var(--di-navy-800);
+    --di-inverse-border: var(--di-navy-800);
+    --di-inverse-text: #ffffff;
+    --di-inverse-muted: var(--di-night-300);
+    /* Gold read against that ground. Seal ink is gold 700 and unreadable here. */
+    --di-inverse-seal: var(--di-gold-400);
+
     --di-index-col: 38px;
     --di-index-col-sm: 26px;
 
@@ -192,6 +206,13 @@
     --di-ai-ring: var(--di-gold-400);
     --di-ai-surface: #241d0c;
     --di-ai-ink: var(--di-gold-400);
+
+    --di-inverse-bg: var(--di-night-800);
+    --di-inverse-raised: var(--di-night-700);
+    --di-inverse-border: var(--di-night-700);
+    --di-inverse-text: #ffffff;
+    --di-inverse-muted: var(--di-night-300);
+    --di-inverse-seal: var(--di-gold-400);
 
     --di-sidebar-bg: #030914;
     --di-sidebar-raised: var(--di-night-900);

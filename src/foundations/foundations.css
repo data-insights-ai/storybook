@@ -1,19 +1,25 @@
+/*
+ * di-lint-allow-file layer: these are brand specimens, not product surfaces.
+ * A mock of the navy slide, the inverse lockup stage and the "don't use a
+ * photograph" swatch have to name the literal brand colour — that is what
+ * they are showing. Everything a component renders binds to a role.
+ */
 @layer components {
   .di-decision-reason {
     display: block;
     max-width: 46ch;
-    padding: var(--di-space-2) 0;
+    padding: var(--di-space-8) 0;
     line-height: var(--di-leading-snug);
   }
 
   .di-swatches {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--di-space-6);
+    gap: var(--di-space-32);
   }
 
   .di-swatch-col h2 {
-    margin-bottom: var(--di-space-2);
+    margin-bottom: var(--di-space-8);
     font-family: var(--di-font-ui);
     font-size: var(--di-font-size-600);
     letter-spacing: var(--di-tracking-tight);
@@ -30,9 +36,9 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    gap: var(--di-space-1);
+    gap: var(--di-space-4);
     min-height: 92px;
-    padding: var(--di-space-3) var(--di-space-4);
+    padding: var(--di-space-12) var(--di-space-16);
     border-bottom: 1px solid var(--di-border);
   }
 
@@ -40,7 +46,7 @@
   .di-swatch small {
     display: flex;
     justify-content: space-between;
-    gap: var(--di-space-2);
+    gap: var(--di-space-8);
     font-weight: var(--di-weight-medium);
   }
 
@@ -59,8 +65,8 @@
   .di-chart-roles {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: var(--di-space-4) var(--di-space-4);
-    margin: var(--di-space-4) 0 0;
+    gap: var(--di-space-16) var(--di-space-16);
+    margin: var(--di-space-16) 0 0;
     padding: 0;
     list-style: none;
   }
@@ -68,7 +74,7 @@
   .di-chart-roles li {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-2);
+    gap: var(--di-space-8);
   }
 
   .di-chart-roles i {
@@ -80,7 +86,7 @@
   .di-chart-roles b {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--di-space-2);
     font-family: var(--di-font-ui);
     font-size: var(--di-font-size-500);
     font-weight: var(--di-weight-medium);
@@ -105,9 +111,9 @@
   .di-ratio {
     display: flex;
     height: 72px;
-    margin: var(--di-space-2) 0 var(--di-space-6);
+    margin: var(--di-space-8) 0 var(--di-space-32);
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: var(--di-radius-surface);
     border: 1px solid var(--di-border);
   }
 
@@ -115,7 +121,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 var(--di-space-4);
+    padding: 0 var(--di-space-16);
     font-size: var(--di-font-size-400);
   }
 
@@ -127,22 +133,22 @@
   .di-type-sample {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-space-16);
   }
 
   .di-type-row {
     display: grid;
     grid-template-columns: 210px 1fr;
-    gap: var(--di-space-4);
+    gap: var(--di-space-16);
     align-items: baseline;
-    padding-bottom: var(--di-space-3);
+    padding-bottom: var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
   }
 
   .di-type-meta {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--di-space-2);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     letter-spacing: var(--di-tracking-mono);
@@ -158,7 +164,7 @@
   .di-logo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--di-space-4);
+    gap: var(--di-space-16);
   }
 
   .di-logo-cell {
@@ -174,7 +180,7 @@
   .di-logo-stage {
     display: grid;
     place-items: center;
-    padding: var(--di-space-5);
+    padding: var(--di-space-24);
   }
 
   .di-logo-stage img {
@@ -194,8 +200,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: var(--di-space-2);
-    padding: var(--di-space-4);
+    gap: var(--di-space-8);
+    padding: var(--di-space-16);
     border-left: 1px solid var(--di-border);
   }
 
@@ -222,9 +228,9 @@
   .di-ramp li {
     display: grid;
     grid-template-columns: 190px 56px 120px 1fr;
-    gap: var(--di-space-4);
+    gap: var(--di-space-16);
     align-items: center;
-    padding: var(--di-space-3) 0;
+    padding: var(--di-space-12) 0;
     border-bottom: 1px solid var(--di-rule);
   }
 

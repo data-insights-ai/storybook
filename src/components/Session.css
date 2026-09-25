@@ -9,7 +9,7 @@
     grid-template-columns: auto 1fr auto auto;
     grid-template-areas: "mark copy tag action";
     align-items: center;
-    gap: 14px;
+    gap: var(--di-space-12);
     min-width: 0;
   }
 
@@ -32,14 +32,14 @@
 
   .di-session-name {
     font-family: var(--di-font-ui);
-    font-size: 20px;
+    font-size: var(--di-font-size-600);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
   }
 
   .di-session-detail {
-    margin-top: 2px;
-    font-size: 13px;
+    margin-top: var(--di-space-2);
+    font-size: var(--di-font-size-400);
     color: var(--di-text-muted);
   }
 }

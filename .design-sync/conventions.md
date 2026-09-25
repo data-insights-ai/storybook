@@ -24,6 +24,8 @@ Build from the components in this system. **If something you need is missing, sa
 
 There is no utility-class system. Style your own layout glue with `var(--di-*)`; never hand-write a `di-*` class, those belong to the components.
 
+**Every dimension is a token too.** Spacing is `--di-space-2|4|6|8|12|16|24|32|48`, named by value; radius is `--di-radius-micro|control|surface|container|pill`; type is `--di-font-size-100`…`-1000`. `pnpm lint:tokens` fails on a raw px in `gap`, `padding`, `margin`, `border-radius` or `font-size`, and on a component binding to a primitive.
+
 **Never write a raw colour.** No `#0A1F44`, no `rgb()`, no named colours — only `var(--di-*)`. This is not housekeeping: navy is both the ink and the action, and **after dark the action fill turns gold**. A hardcoded navy is correct in daylight and *invisible on the night sheet*, because navy cannot act against a navy ground. The token flips; a hex literal cannot.
 
 | Need | Tokens |

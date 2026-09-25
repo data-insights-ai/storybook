@@ -138,13 +138,26 @@
     --di-radius-l: 8px;
     --di-radius-xl: 12px;
 
-    --di-space-1: 4px;
-    --di-space-2: 8px;
-    --di-space-3: 12px;
-    --di-space-4: 16px;
-    --di-space-5: 24px;
-    --di-space-6: 32px;
-    --di-space-7: 48px;
+    /*
+     * Space. Named by value, so `--di-space-12` is 12px and a wrong number
+     * is visible in the diff rather than behind an index.
+     *
+     * Fine at the bottom, coarse at the top, because that is where the
+     * density is: a 28px control cannot be padded on a 4px grid, and the
+     * radius ramp already steps 4/6/8 for the same reason. Above 16 the
+     * steps widen, because nothing between two sections needs that
+     * precision. Anything not on this ramp is drift — `pnpm lint:tokens`
+     * fails on it.
+     */
+    --di-space-2: 2px;
+    --di-space-4: 4px;
+    --di-space-6: 6px;
+    --di-space-8: 8px;
+    --di-space-12: 12px;
+    --di-space-16: 16px;
+    --di-space-24: 24px;
+    --di-space-32: 32px;
+    --di-space-48: 48px;
 
     /* Control heights. The console runs dense; 32px is the standard. */
     --di-h-dense: 28px;
