@@ -158,11 +158,11 @@ export const Scopes: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-      <CommandChip tone="active">workspace: WS-01</CommandChip>
-      <CommandChip tone="default" onSelect={fn()}>
+      <CommandChip state="active">workspace: WS-01</CommandChip>
+      <CommandChip state="available" onSelect={fn()}>
         state: paused
       </CommandChip>
-      <CommandChip tone="suggested" onSelect={fn()}>
+      <CommandChip state="suggested" onSelect={fn()}>
         sealed before 2026-09-01
       </CommandChip>
     </div>

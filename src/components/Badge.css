@@ -24,8 +24,8 @@
     color: var(--di-badge-alert-fg);
   }
 
-  .di-badge-gold {
-    background: var(--di-badge-gold-bg);
-    color: var(--di-badge-gold-fg);
+  .di-badge-seal {
+    background: var(--di-badge-seal-bg);
+    color: var(--di-badge-seal-fg);
   }
 }

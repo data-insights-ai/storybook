@@ -106,7 +106,7 @@ function Ledger() {
         </TableHead>
         <TableBody>
           {ledger.map((row, i) => (
-            <TableRow key={row.trend} tone={row.verdict === "refused" ? "danger" : "default"}>
+            <TableRow key={row.trend} tone={row.verdict === "refused" ? "danger" : "neutral"}>
               <TableIndex>{String(i + 1).padStart(2, "0")}</TableIndex>
               <TableCell>{row.trend}</TableCell>
               <TableCell>

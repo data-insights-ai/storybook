@@ -6,6 +6,7 @@ import { Icon } from "./Icon";
 import { IconTile } from "./IconTile";
 import {
   RecordCard,
+  RecordCount,
   RecordFooter,
   RecordLine,
   RecordLines,
@@ -20,12 +21,10 @@ const meta = {
   tags: ["autodocs"],
   args: {
     title: "Registry sources",
-    count: "1,842 entries",
     children: null,
   },
   argTypes: {
     title: { control: "text" },
-    count: { control: "text" },
     children: { control: false },
   },
   decorators: [
@@ -42,7 +41,7 @@ type Story = StoryObj<typeof meta>;
 
 const mark = (
   <RecordMark>
-    <IconTile tone="inverse">
+    <IconTile variant="inverse">
       <Icon size={16} label="Sources">
         <Boxes aria-hidden />
       </Icon>
@@ -53,6 +52,7 @@ const mark = (
 export const Default: Story = {
   render: (args) => (
     <RecordCard {...args}>
+      <RecordCount>1,842 entries</RecordCount>
       {mark}
       <RecordStatus>
         <StatusPill tone="ok">running</StatusPill>
@@ -74,6 +74,7 @@ export const Default: Story = {
 export const WithFooter: Story = {
   render: (args) => (
     <RecordCard {...args}>
+      <RecordCount>1,842 entries</RecordCount>
       {mark}
       <RecordStatus>
         <StatusPill tone="warn">1 paused</StatusPill>
@@ -94,9 +95,10 @@ export const WithFooter: Story = {
 
 /** One line. The card holds its shape for a short record. */
 export const SingleLine: Story = {
-  args: { title: "Archive sources", count: "487 entries" },
+  args: { title: "Archive sources" },
   render: (args) => (
     <RecordCard {...args}>
+      <RecordCount>487 entries</RecordCount>
       {mark}
       <RecordStatus>
         <StatusPill tone="danger">failed</StatusPill>

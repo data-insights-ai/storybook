@@ -95,12 +95,12 @@ export function Menu({
 
 export function MenuItem({
   onSelect,
-  tone = "default",
+  tone = "neutral",
   inferred = false,
   children,
 }: {
   onSelect: () => void;
-  tone?: "default" | "danger";
+  tone?: "neutral" | "danger";
   /** A model proposed this one, so it carries the hollow ring. */
   inferred?: boolean;
   children: ReactNode;

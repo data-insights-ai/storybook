@@ -12,7 +12,7 @@ export function Badge({
   tone = "neutral",
 }: {
   children: ReactNode;
-  tone?: "neutral" | "alert" | "gold";
+  tone?: "neutral" | "alert" | "seal";
 }) {
   return <span className={cx("di-badge", `di-badge-${tone}`)}>{children}</span>;
 }

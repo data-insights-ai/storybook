@@ -9,7 +9,7 @@ const meta = {
   component: Notice,
   tags: ["autodocs"],
   args: {
-    tone: "info",
+    tone: "neutral",
     children: null,
   },
   argTypes: {
@@ -21,8 +21,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Info_: Story = {
-  name: "Info",
+export const Neutral: Story = {
+  name: "Neutral",
   render: (args) => (
     <Notice {...args}>
       <NoticeIcon>

@@ -106,6 +106,14 @@
     color: var(--di-text-muted);
   }
 
+  /*
+   * A field in the content sits a step below the facts above it. It was an
+   * inline margin on a wrapper div in the story; the frame owns the spacing.
+   */
+  .di-modal-content > .di-field {
+    margin-top: var(--di-space-4);
+  }
+
   .di-modal-footer {
     display: flex;
     align-items: center;

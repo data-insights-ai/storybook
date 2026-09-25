@@ -8,6 +8,7 @@ import { Grid, Stack, Actions } from "../components/Layout";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import {
   RecordCard,
+  RecordCount,
   RecordFooter,
   RecordLine,
   RecordLines,
@@ -68,7 +69,8 @@ export function WatchlistScreen() {
 
       <Stack>
         <Grid min="200px">
-          <RecordCard title="People" count="4 entries watched">
+          <RecordCard title="People">
+            <RecordCount>4 entries watched</RecordCount>
             <RecordMark>
               <IconTile>
                 <UserRound aria-hidden />
@@ -88,7 +90,8 @@ export function WatchlistScreen() {
               <TextLink>Valid</TextLink>
             </RecordFooter>
           </RecordCard>
-          <RecordCard title="Companies" count="2 entries watched">
+          <RecordCard title="Companies">
+            <RecordCount>2 entries watched</RecordCount>
             <RecordMark>
               <IconTile>
                 <Building2 aria-hidden />
@@ -106,7 +109,8 @@ export function WatchlistScreen() {
               <TextLink>Valid</TextLink>
             </RecordFooter>
           </RecordCard>
-          <RecordCard title="Domains" count="1 entry watched">
+          <RecordCard title="Domains">
+            <RecordCount>1 entry watched</RecordCount>
             <RecordMark>
               <IconTile>
                 <Globe aria-hidden />
@@ -123,7 +127,8 @@ export function WatchlistScreen() {
               <TextLink>Valid</TextLink>
             </RecordFooter>
           </RecordCard>
-          <RecordCard title="Email addresses" count="1 entry watched">
+          <RecordCard title="Email addresses">
+            <RecordCount>1 entry watched</RecordCount>
             <RecordMark>
               <IconTile>
                 <Mail aria-hidden />

@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MoreVertical } from "lucide-react";
 import { expect, fn, within } from "storybook/test";
 import { Button } from "./Button";
-import { LivingActions, LivingBody, LivingCard, LivingInsight } from "./LivingCard";
-import { StatTile } from "./StatTile";
+import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./LivingCard";
+import { StatTile, StatTileDelta } from "./StatTile";
 import { Sparkline } from "./Sparkline";
 
 const bars = [
@@ -13,7 +13,7 @@ const bars = [
   { percent: 52 },
   { percent: 49 },
   { percent: 61 },
-  { percent: 74, tone: "ink" as const },
+  { percent: 74, tone: "series" as const },
   { percent: 96, tone: "danger" as const },
 ];
 
@@ -56,14 +56,15 @@ export const Default: Story = {
         </Button>
       </LivingActions>
       <LivingBody>
-        <StatTile index="03" label="Unsealed" value="1,284" delta="up 940 since 08:00Z" deltaTone="danger" compact={true} />
-        <Sparkline bars={bars} label="Unsealed entries over the last eight hours, rising sharply in the last two." />
+        <StatTile index="03" label="Unsealed" value="1,284" compact={true}>
+          <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
+          <Sparkline bars={bars} label="Unsealed entries over the last eight hours, rising sharply in the last two." />
+        </StatTile>
       </LivingBody>
       <LivingInsight
-        body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog."
-        basis="inferred from 3 sources · confidence 0.88"
-      >
-        <Button variant="ai" size="dense">
+        body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
+        <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
+        <Button variant="inferred" size="dense">
           Review the proposal
         </Button>
         <Button variant="secondary" size="dense">
@@ -87,8 +88,10 @@ export const WithoutInsight: Story = {
   render: (args) => (
     <LivingCard {...args} insightLabel="no insight">
       <LivingBody>
-        <StatTile index="03" label="Unsealed" value="84" delta="steady" compact={true} />
-        <Sparkline bars={bars.map((bar) => ({ percent: bar.percent }))} label="Unsealed entries, flat over the last eight hours." />
+        <StatTile index="03" label="Unsealed" value="84" compact={true}>
+          <StatTileDelta>steady</StatTileDelta>
+          <Sparkline bars={bars.map((bar) => ({ percent: bar.percent }))} label="Unsealed entries, flat over the last eight hours." />
+        </StatTile>
       </LivingBody>
     </LivingCard>
   ),
@@ -99,14 +102,15 @@ export const OneAction: Story = {
   render: (args) => (
     <LivingCard {...args} title="Coverage">
       <LivingBody>
-        <StatTile index="02" label="Coverage" value="86.4%" delta="down 2.1 points" deltaTone="warn" compact={true} />
-        <Sparkline bars={bars} label="Coverage over the last eight hours, falling in the last two." />
+        <StatTile index="02" label="Coverage" value="86.4%" compact={true}>
+          <StatTileDelta tone="warn">down 2.1 points</StatTileDelta>
+          <Sparkline bars={bars} label="Coverage over the last eight hours, falling in the last two." />
+        </StatTile>
       </LivingBody>
       <LivingInsight
-        body="Four archive sources stopped reporting at 08:44Z."
-        basis="inferred from 1 source · confidence 0.71"
-      >
-        <Button variant="ai" size="dense" onClick={fn()}>
+        body="Four archive sources stopped reporting at 08:44Z.">
+        <LivingBasis>inferred from 1 source · confidence 0.71</LivingBasis>
+        <Button variant="inferred" size="dense" onClick={fn()}>
           Review the proposal
         </Button>
       </LivingInsight>

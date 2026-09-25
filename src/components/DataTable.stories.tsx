@@ -60,7 +60,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Rows({ rows = sources, active = "" }: { rows?: Source[]; active?: string }) {
+/*
+ * The rows, abbreviated to one tag for the variants below, whose subject is
+ * the toolbar, the footer or the active state rather than the composition.
+ * `Default` writes the same tree out in full, because Show code prints a
+ * helper as `<SourceRows />` and that is the one snippet which has to teach
+ * this table's only API rule: the caller maps its own data into the frame.
+ */
+function SourceRows({ rows = sources, active = "" }: { rows?: Source[]; active?: string }) {
   return (
     <>
       <TableHead>
@@ -76,7 +83,7 @@ function Rows({ rows = sources, active = "" }: { rows?: Source[]; active?: strin
           <TableRow
             key={row.ordinal}
             active={row.ordinal === active}
-            tone={row.state === "danger" ? "danger" : "default"}
+            tone={row.state === "danger" ? "danger" : "neutral"}
           >
             <TableIndex>{row.ordinal}</TableIndex>
             <TableCell>
@@ -104,11 +111,54 @@ function Rows({ rows = sources, active = "" }: { rows?: Source[]; active?: strin
   );
 }
 
-/** The register extract: ordinals down the left, mono values across. */
+/**
+ * The register extract: ordinals down the left, mono values across.
+ *
+ * Written out in full rather than through the helper the variants use, so
+ * Show code carries the composition itself. There is no `rows` prop, so
+ * this mapping is the API.
+ */
 export const Default: Story = {
   render: (args) => (
     <DataTable {...args}>
-      <Rows />
+      <TableHead>
+        <TableColumn index={true}>Ordinal</TableColumn>
+        <TableColumn sort="ascending">Host</TableColumn>
+        <TableColumn>Kind</TableColumn>
+        <TableColumn>Manifest</TableColumn>
+        <TableColumn align="end">Last seen</TableColumn>
+        <TableColumn align="end">State</TableColumn>
+      </TableHead>
+      <TableBody>
+        {sources.map((row) => (
+          <TableRow key={row.ordinal} tone={row.state === "danger" ? "danger" : "neutral"}>
+            <TableIndex>{row.ordinal}</TableIndex>
+            <TableCell>
+              <CellLead>
+                <CellIcon>
+                  {row.kind === "Registry" ? <Server aria-hidden /> : <Globe aria-hidden />}
+                </CellIcon>
+                <CellStack primary={row.host} secondary={`WS-01 · ${row.kind.toLowerCase()}`} />
+              </CellLead>
+            </TableCell>
+            <TableCell>{row.kind}</TableCell>
+            <TableCell>
+              <SealValue
+                state={row.state === "danger" ? "absent" : "sealed"}
+                stateLabel={row.state === "danger" ? "Not recorded" : "Sealed"}
+              >
+                {row.hash}
+              </SealValue>
+            </TableCell>
+            <TableCell align="end" mono={true}>
+              {row.seen}
+            </TableCell>
+            <TableCell align="end">
+              <StatusPill tone={row.state}>{row.stateLabel}</StatusPill>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
     </DataTable>
   ),
   play: async ({ canvasElement }) => {
@@ -134,7 +184,7 @@ export const WithToolbar: Story = {
           kind
         </Chip>
       </TableToolbar>
-      <Rows />
+      <SourceRows />
     </DataTable>
   ),
 };
@@ -145,7 +195,7 @@ export const WithFooter: Story = {
     const [page, setPage] = useState(1);
     return (
       <DataTable {...args}>
-        <Rows />
+        <SourceRows />
         <TableFooter>
           <span>1–5 of 24 sources</span>
           <Pagination
@@ -167,7 +217,7 @@ export const WithFooter: Story = {
 export const ActiveRow: Story = {
   render: (args) => (
     <DataTable {...args}>
-      <Rows active="03" />
+      <SourceRows active="03" />
     </DataTable>
   ),
 };
@@ -203,7 +253,7 @@ export const Unindexed: Story = {
 export const SingleRow: Story = {
   render: (args) => (
     <DataTable {...args}>
-      <Rows rows={sources.slice(0, 1)} />
+      <SourceRows rows={sources.slice(0, 1)} />
     </DataTable>
   ),
 };

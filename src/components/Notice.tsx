@@ -10,10 +10,10 @@ import "./Notice.css";
  * `danger` takes `role="alert"` so it is announced when it appears.
  */
 export function Notice({
-  tone = "info",
+  tone = "neutral",
   children,
 }: {
-  tone?: "info" | "ok" | "warn" | "danger";
+  tone?: "neutral" | "ok" | "warn" | "danger";
   children?: ReactNode;
 }) {
   return (

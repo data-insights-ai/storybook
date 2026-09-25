@@ -39,13 +39,13 @@
   }
 
   .di-stage p,
-  .di-stage footer {
+  .di-stage-footer {
     font-size: 12px;
     line-height: 1.4;
     color: var(--di-text-muted);
   }
 
-  .di-stage footer {
+  .di-stage-footer {
     margin-top: auto;
   }
 
@@ -59,20 +59,21 @@
     height: 16px;
   }
 
+  /*
+   * A current stage runs on navy, so it re-points its own tokens the way
+   * Toast does rather than colouring three element selectors. Whatever the
+   * foot slot holds — a Spinner, a SealValue, a StatusPill — then reads on
+   * that ground instead of inheriting paper colours that measure 2:1
+   * against it.
+   */
   .di-stage.is-current {
+    --di-text: var(--di-ivory);
+    --di-text-muted: var(--di-night-300);
+    --di-focus: var(--di-gold-400);
+
     background: var(--di-navy-900);
     border-color: var(--di-navy-900);
-    color: var(--di-ivory);
-  }
-
-  .di-stage.is-current header,
-  .di-stage.is-current p,
-  .di-stage.is-current footer {
-    color: #d9d3c6;
-  }
-
-  .di-stage.is-current h3 {
-    color: var(--di-ivory);
+    color: var(--di-text);
   }
 
   .di-stage.is-current .di-stage-icon {

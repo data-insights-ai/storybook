@@ -1,4 +1,4 @@
-import { Panel } from "../../components/Panel";
+import { Panel, PanelMeta } from "../../components/Panel";
 import { SealMark } from "../../components/Seal";
 import "./RegisterSpecimens.css";
 
@@ -43,13 +43,16 @@ export function SealSpecimen() {
 export function IndexSpecimen() {
   return (
     <div className="di-index-specimen">
-      <Panel index="01" title="Source" meta="sealed 09:12Z">
+      <Panel index="01" title="Source">
+        <PanelMeta>sealed 09:12Z</PanelMeta>
         An ordinal: the row's handle, and what an operator says out loud.
       </Panel>
-      <Panel index="§" title="Coverage" meta="§ 04">
+      <Panel index="§" title="Coverage">
+        <PanelMeta>§ 04</PanelMeta>
         A section mark, the same one the marketing site uses.
       </Panel>
-      <Panel index="!!" indexTone="danger" title="Ingest run" meta="failed 08:44Z">
+      <Panel index="!!" indexTone="danger" title="Ingest run">
+        <PanelMeta>failed 08:44Z</PanelMeta>
         A failure keeps its column, tinted. It is still a record.
       </Panel>
     </div>

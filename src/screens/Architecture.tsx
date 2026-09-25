@@ -12,8 +12,8 @@ import { Console } from "../components/AppShell";
 import { sampleChrome } from "../sample/chrome";
 import { PageHeader } from "../components/Heading";
 import { Grid, Numbered, Stack } from "../components/Layout";
-import { Metric } from "../components/Metric";
-import { Stage, StageIcon, StageTrack } from "../components/Stage";
+import { Metric, MetricNote } from "../components/Metric";
+import { Stage, StageFooter, StageIcon, StageTrack } from "../components/Stage";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import { StatusPill } from "../components/StatusPill";
 import { KeyValue, KeyValues } from "../components/KeyValues";
@@ -107,10 +107,10 @@ export function ArchitectureScreen() {
                 step={stage.step}
                 title={stage.title}
                 body={stage.body}
-                foot={stage.foot}
                 current={stage.current}
               >
                 <StageIcon>{stage.icon}</StageIcon>
+                <StageFooter>{stage.foot}</StageFooter>
               </Stage>
             ))}
           </StageTrack>
@@ -129,21 +129,24 @@ export function ArchitectureScreen() {
             Updated: today, 08:37 CEST
           </SectionTitle>
           <Grid min="220px">
-            <Metric label="API and service status" figure="Version 4.18" note="Node 22 LTS">
+            <Metric label="API and service status" figure="Version 4.18">
+              <MetricNote>Node 22 LTS</MetricNote>
               <KeyValues>
                 <KeyValue term="Uptime" value="99.98%" />
                 <KeyValue term="Protocol" value="HTTPS / TLS 1.3" />
                 <KeyValue term="Cluster" value="West-1 · active" />
               </KeyValues>
             </Metric>
-            <Metric label="Indexing and queue" figure="0 waiting" note="No backlog">
+            <Metric label="Indexing and queue" figure="0 waiting">
+              <MetricNote>No backlog</MetricNote>
               <KeyValues>
                 <KeyValue term="Events today" value="19 processed" />
                 <KeyValue term="Queue status" value="Optimal" />
                 <KeyValue term="Sync" value="No errors" />
               </KeyValues>
             </Metric>
-            <Metric label="Latency and performance" figure="Response 2 ms" note="Normal (12%)">
+            <Metric label="Latency and performance" figure="Response 2 ms">
+              <MetricNote>Normal (12%)</MetricNote>
               <KeyValues>
                 <KeyValue term="Memory" value="1.4 GB / 8 GB" />
                 <KeyValue term="State" value="Stable" />

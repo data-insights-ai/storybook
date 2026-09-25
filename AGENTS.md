@@ -102,7 +102,11 @@ Where a component takes exactly one leading node, that node is the first child a
 
 Two `ReactNode`s survive on purpose, and only these two. `NavItem.icon` is a field on the `ConsoleChrome` data a product hands the shell, not a slot on a component. `Menu`'s `trigger` is a render prop, because the menu has to put its own `aria-expanded` and ref onto a button the caller owns. Anything else typed `ReactNode` is a decision that was skipped.
 
-A variant is one union prop, never a family of booleans or a second prop that can contradict the first: `hintTone`, not `hint` plus `error` plus `sealHint`; `layout`, not `inline` plus `split`. A field says one thing at a time, so `TextField` and `Select` take one `hint` string and one `hintTone` of `neutral | sealed | error`, and `error` also sets `aria-invalid`.
+A variant is one union prop, never a family of booleans or a second prop that can contradict the first: `hintTone`, not `hint` plus `error` plus `sealHint`; `layout`, not `inline` plus `split`.
+
+`tone` names one axis and one only: status on the shared ramp, `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. What is not a status carries its own name — `surface` on `Panel`, `scope` on `PrivacyBadge`, `state` on `CommandChip`, `level` on `ConfidenceField`, `variant` on `Button` and `IconTile`. `neutral` is the word for “nothing special”; `default` and `info` were two more words for it and are gone. The hollow ring is `inferred` wherever it appears, never `ai`, and gold as a value is `seal` — a public prop does not name a colour.
+
+A line that reports a measured value is a slot, not a string. A count, a timestamp, a version, a delta, a caveat or a basis arrives sealed, in the mono track, or with a state beside it, and a `string` can carry none of that: `PanelMeta`, `StageFooter`, `ExplainFooter`, `MetricNote`, `RecordCount`, `SessionDetail`, `StatTileDelta`, `LivingBasis`, `SignInVersion`. Prose a person reads — `title`, `label`, `caption`, `legend`, `body` and every `*Label` accessible name — stays a string. A field says one thing at a time, so `TextField` and `Select` take one `hint` string and one `hintTone` of `neutral | sealed | error`, and `error` also sets `aria-invalid`.
 
 A control mark centres on the **first line** of its label — never on the whole block, never on the label's top edge. `--di-choice-line` is that line, and `Checkbox`, `Radio` and `Switch` all bind to it. `Switch` defaults to `layout="inline"`, the checkbox's geometry; `layout="row"` is the settings column, and the distance it opens is that column, not slack.
 
@@ -113,7 +117,7 @@ A control mark centres on the **first line** of its label — never on the whole
 - String props stay on `args`, so Controls can change the copy.
 - A boolean prop is always `true` or `false` in `args`. An unset boolean shows “Set boolean” instead of a toggle. Use the component’s real default: `dot: true`, `padded: true`, `disabled: false`.
 - Helper text is a string, default `""`. An unset node becomes an object control, and Edit then breaks the field.
-- A select or radio (`variant`, `size`, `tone`, `type`) has one option chosen in `args`. Use the component’s real default: `variant: "primary"`, `size: "md"`, `tone: "neutral"` or `"info"`, `type: "button"` or `"text"`.
+- A select or radio (`variant`, `size`, `tone`, `type`) has one option chosen in `args`. Use the component’s real default: `variant: "primary"`, `size: "md"`, `tone: "neutral"`, `type: "button"` or `"text"`.
 - Event listeners (`onRemove`, `onClick`, and any other `on…` prop) stay callback props. `.storybook/preview.tsx` excludes `/^on[A-Z].*/` from Controls and records the calls as actions. A play function that asserts the call passes `fn()` from `storybook/test`.
 - Buttons, fields, and tables stay native elements, including the select, the checkbox, the radio and the segmented control. `Modal` is a native `<dialog>`, so focus is trapped and the page behind goes inert; `Menu` and `Tabs` implement roving focus directly. No headless library is installed — add one only if a control needs more than that.
 - `Switch` is a `role="switch"` button, not a checkbox: it reports the state of the system, not of a form. It is controlled, because a switch commits as it moves.

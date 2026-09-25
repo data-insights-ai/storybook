@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "./Button";
-import { Panel, PanelFooter, PanelNote } from "./Panel";
+import { Panel, PanelFooter, PanelMeta, PanelNote } from "./Panel";
 import { SealValue } from "./Seal";
 import { StatusPill } from "./StatusPill";
 
@@ -14,9 +14,8 @@ const meta = {
     indexSize: "md",
     indexTone: "neutral",
     indexRule: true,
-    tone: "sheet",
+    surface: "sheet",
     title: "Source register",
-    meta: "updated 09:12Z",
     padded: true,
     children: "A panel holds one thing the register knows about.",
   },
@@ -25,12 +24,10 @@ const meta = {
     indexSize: { control: "radio", options: ["md", "sm"] },
     indexTone: { control: "radio", options: ["neutral", "danger"] },
     indexRule: { control: "boolean" },
-    tone: { control: "radio", options: ["sheet", "grid"] },
+    surface: { control: "radio", options: ["sheet", "grid"] },
     title: { control: "text" },
-    meta: { control: "text" },
     padded: { control: "boolean" },
     children: { control: "text" },
-
   },
 } satisfies Meta<typeof Panel>;
 
@@ -45,14 +42,48 @@ export const Default: Story = {
   },
 };
 
+/**
+ * The header's trailing line is a slot, so what a panel reports about
+ * itself can carry the seal and the mono track. A string could not.
+ */
+export const WithMeta: Story = {
+  args: { children: null },
+  render: (args) => (
+    <Panel {...args}>
+      <PanelMeta>
+        <SealValue stateLabel="Sealed">09:12:04Z</SealValue>
+      </PanelMeta>
+      A panel holds one thing the register knows about.
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("09:12:04Z")).toBeVisible();
+  },
+};
+
+/** A state, rather than a measurement, in the same slot. */
+export const MetaStatus: Story = {
+  name: "Meta status",
+  args: { index: "04", title: "Ingest run", indexTone: "danger", children: null },
+  render: (args) => (
+    <Panel {...args}>
+      <PanelMeta>
+        <StatusPill tone="danger">failed</StatusPill>
+      </PanelMeta>
+      The run stopped after four consecutive rate limits.
+    </Panel>
+  ),
+};
+
 /** The § mark from the section numbering, in place of an ordinal. */
 export const SectionMark: Story = {
-  args: { index: "§", title: "Coverage", meta: "§ 04" },
+  args: { index: "§", title: "Coverage" },
 };
 
 /** The cold surface. For a dense field of mono values only. */
 export const Grid: Story = {
-  args: { tone: "grid", title: "Extract", meta: "412 rows" },
+  args: { surface: "grid", title: "Extract" },
 };
 
 /** A short tile: no rule, because there is no height for it to run down. */
@@ -62,7 +93,6 @@ export const Tile: Story = {
     indexSize: "sm",
     indexRule: false,
     title: undefined,
-    meta: undefined,
     children: "Four sources ingested since the last seal.",
   },
 };
@@ -73,14 +103,13 @@ export const Failed: Story = {
     index: "07",
     indexTone: "danger",
     title: "Ingest run",
-    meta: "failed 08:44Z",
     children: "Connection reset by the upstream host after 2 of 14 batches.",
   },
 };
 
 /** No index at all, for a panel that is not part of a register. */
 export const WithoutIndex: Story = {
-  args: { index: undefined, title: "Notes", meta: undefined },
+  args: { index: undefined, title: "Notes" },
 };
 
 /** Header and footer, with the body drawn to the panel's own edge. */
@@ -88,7 +117,6 @@ export const WithFooter: Story = {
   args: {
     index: "02",
     title: "Key rotation",
-    meta: "due in 6 days",
     children: "The signing key for this workspace expires on 2026-09-29.",
   },
   render: (args) => (
@@ -107,7 +135,7 @@ export const WithFooter: Story = {
 
 /** What a panel holds in practice: a measured value under its seal. */
 export const WithSealedValue: Story = {
-  args: { index: "03", title: "Manifest", meta: "sealed" },
+  args: { index: "03", title: "Manifest" },
   render: (args) => (
     <Panel {...args}>
       <SealValue state="sealed" stateLabel="Sealed">
@@ -122,7 +150,7 @@ export const WithSealedValue: Story = {
  * thing the numbers above do not say. It is never where a fact lives.
  */
 export const WithNote: Story = {
-  args: { index: "04", title: "Coverage", meta: "last 24h" },
+  args: { index: "04", title: "Coverage" },
   render: (args) => (
     <Panel {...args}>
       <SealValue state="sealed" stateLabel="Sealed">

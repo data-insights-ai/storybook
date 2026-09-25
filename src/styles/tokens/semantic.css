@@ -131,8 +131,8 @@
     --di-badge-neutral-fg: var(--di-night-paper);
     --di-badge-alert-bg: #5c1d2a;
     --di-badge-alert-fg: var(--di-sheet);
-    --di-badge-gold-bg: #3a3118;
-    --di-badge-gold-fg: #e4c98a;
+    --di-badge-seal-bg: #3a3118;
+    --di-badge-seal-fg: #e4c98a;
   }
 
   :root[data-theme="dark"] {
@@ -234,7 +234,7 @@
     --di-badge-neutral-fg: var(--di-night-paper);
     --di-badge-alert-bg: #6e2a38;
     --di-badge-alert-fg: var(--di-night-100);
-    --di-badge-gold-bg: #4a3d1c;
-    --di-badge-gold-fg: #f0d48a;
+    --di-badge-seal-bg: #4a3d1c;
+    --di-badge-seal-fg: #f0d48a;
   }
 }

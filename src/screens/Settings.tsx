@@ -5,10 +5,10 @@ import { Console } from "../components/AppShell";
 import { sampleChrome } from "../sample/chrome";
 import { PageHeader } from "../components/Heading";
 import { Grid, Numbered, Stack } from "../components/Layout";
-import { Metric } from "../components/Metric";
+import { Metric, MetricNote } from "../components/Metric";
 import { Bars } from "../components/Bars";
 import { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "../components/Channel";
-import { Session, SessionAction, SessionMark, SessionTag } from "../components/Session";
+import { Session, SessionDetail, SessionAction, SessionMark, SessionTag } from "../components/Session";
 import { IconTile } from "../components/IconTile";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import { StatusPill } from "../components/StatusPill";
@@ -29,9 +29,10 @@ export function SettingsScreen() {
 
       <Stack>
         <Numbered index="01">
-          <Session name="Nora Feld" detail="nora.feld@data-insights.ai · Valid until 22 Sep 2026">
+          <Session name="Nora Feld">
+<SessionDetail>nora.feld@data-insights.ai · Valid until 22 Sep 2026</SessionDetail>
             <SessionMark>
-              <IconTile tone="inverse">
+              <IconTile variant="inverse">
                 <span aria-hidden>NF</span>
               </IconTile>
             </SessionMark>
@@ -115,11 +116,12 @@ export function SettingsScreen() {
 
         <Card>
           <Grid min="220px">
-            <Metric
-              label="Notification availability"
-              figure="99.98%"
-              note="Availability of the notification service over the last 30 days, across every configured channel."
-            />
+            <Metric label="Notification availability" figure="99.98%">
+              <MetricNote>
+                Availability of the notification service over the last 30 days, across every
+                configured channel.
+              </MetricNote>
+            </Metric>
             <Bars
               values={days}
               highlight={16}

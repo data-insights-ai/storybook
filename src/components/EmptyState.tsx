@@ -16,7 +16,7 @@ export function EmptyState({
   title,
   body,
   mono = false,
-  tone = "default",
+  tone = "neutral",
   className,
   children,
 }: {
@@ -27,7 +27,7 @@ export function EmptyState({
   /** The body is a query or a path rather than a sentence. */
   mono?: boolean;
   /** `danger` is a failure, not an absence: a boundary the system hit. */
-  tone?: "default" | "danger";
+  tone?: "neutral" | "danger";
   className?: string;
   /** Holds one `EmptyStateAction`. An absence offers exactly one way out. */
   children?: ReactNode;

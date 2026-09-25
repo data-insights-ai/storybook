@@ -119,12 +119,12 @@ export function TableBody({ children }: { children: ReactNode }) {
 export function TableRow({
   children,
   active = false,
-  tone = "default",
+  tone = "neutral",
 }: {
   children: ReactNode;
   active?: boolean;
   /** `danger` tints the ordinal, for a row that failed. */
-  tone?: "default" | "danger";
+  tone?: "neutral" | "danger";
 }) {
   return <tr className={cx(active && "is-active", tone === "danger" && "is-danger")}>{children}</tr>;
 }

@@ -71,25 +71,26 @@ export function CommandBar({
  * suggested scope came from a model, so it carries the ring.
  */
 export function CommandChip({
-  tone = "default",
+  state = "available",
   onSelect,
   children,
 }: {
-  tone?: "active" | "default" | "suggested";
+  /** Whether the scope is applied, offered or merely available. */
+  state?: "active" | "available" | "suggested";
   onSelect?: () => void;
   children: ReactNode;
 }) {
   const body = (
     <>
-      {tone === "suggested" ? <SealMark state="inferred" size={6} /> : null}
+      {state === "suggested" ? <SealMark state="inferred" size={6} /> : null}
       {children}
     </>
   );
   if (!onSelect) {
-    return <span className={cx("di-command-chip", `is-${tone}`)}>{body}</span>;
+    return <span className={cx("di-command-chip", `is-${state}`)}>{body}</span>;
   }
   return (
-    <button type="button" className={cx("di-command-chip", `is-${tone}`)} onClick={onSelect}>
+    <button type="button" className={cx("di-command-chip", `is-${state}`)} onClick={onSelect}>
       {body}
     </button>
   );

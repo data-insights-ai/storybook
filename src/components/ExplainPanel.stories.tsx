@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { ExplainPanel, ExplainRow } from "./ExplainPanel";
+import { SealValue } from "./Seal";
+import { ExplainFooter, ExplainPanel, ExplainRow } from "./ExplainPanel";
 
 const meta = {
   title: "Blocks/Inference/Explain",
@@ -8,12 +9,10 @@ const meta = {
   tags: ["autodocs"],
   args: {
     heading: "Why this was proposed",
-    footer: "This does not account for sources added in the last hour.",
     children: null,
   },
   argTypes: {
     heading: { control: "text" },
-    footer: { control: "text" },
     children: { control: false },
   },
 } satisfies Meta<typeof ExplainPanel>;
@@ -34,6 +33,7 @@ export const Explain: Story = {
       <ExplainRow label="Ignored" ignored={true}>
         unsealed drafts
       </ExplainRow>
+      <ExplainFooter>This does not account for sources added in the last hour.</ExplainFooter>
     </ExplainPanel>
   ),
   play: async ({ canvasElement }) => {
@@ -44,12 +44,15 @@ export const Explain: Story = {
 
 /** Nothing ignored: the model used every input it had. */
 export const Complete: Story = {
-  args: { footer: "Every available input was used." },
   render: (args) => (
     <ExplainPanel {...args}>
       <ExplainRow label="Matched on">manifest hash</ExplainRow>
       <ExplainRow label="Sources">3 of 3</ExplainRow>
       <ExplainRow label="Confidence">0.99</ExplainRow>
+      <ExplainFooter>
+        Every available input was used, up to{" "}
+        <SealValue stateLabel="Sealed">2026-09-23T09:12:04Z</SealValue>
+      </ExplainFooter>
     </ExplainPanel>
   ),
 };

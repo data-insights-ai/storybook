@@ -30,7 +30,7 @@ export {
 export { Distribution } from "./components/Distribution";
 export { Drawer, DrawerFooter } from "./components/Drawer";
 export { EmptyState, EmptyStateAction } from "./components/EmptyState";
-export { ExplainPanel, ExplainRow } from "./components/ExplainPanel";
+export { ExplainFooter, ExplainPanel, ExplainRow } from "./components/ExplainPanel";
 export { Fact, FactList } from "./components/FactList";
 export { FieldHint } from "./components/FieldHint";
 export type { HintTone } from "./components/FieldHint";
@@ -39,9 +39,9 @@ export { Icon } from "./components/Icon";
 export { IconTile } from "./components/IconTile";
 export { KeyValue, KeyValues } from "./components/KeyValues";
 export { Actions, Grid, Numbered, Stack, Toolbar, ToolbarEnd } from "./components/Layout";
-export { LivingActions, LivingBody, LivingCard, LivingInsight } from "./components/LivingCard";
+export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/LivingCard";
 export { Menu, MenuDivider, MenuItem } from "./components/Menu";
-export { Metric } from "./components/Metric";
+export { Metric, MetricNote } from "./components/Metric";
 export {
   Modal,
   ModalBody,
@@ -60,11 +60,12 @@ export {
   NoticeTitle,
 } from "./components/Notice";
 export { Pagination } from "./components/Pagination";
-export { Panel, PanelFooter, PanelNote } from "./components/Panel";
+export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/Panel";
 export { PrivacyBadge } from "./components/PrivacyBadge";
 export { Progress } from "./components/Progress";
 export {
   RecordCard,
+  RecordCount,
   RecordFooter,
   RecordLine,
   RecordLines,
@@ -77,14 +78,14 @@ export { SearchField } from "./components/SearchField";
 export { SectionTitle } from "./components/SectionTitle";
 export { SegmentedControl } from "./components/SegmentedControl";
 export { Select } from "./components/Select";
-export { Session, SessionAction, SessionMark, SessionTag } from "./components/Session";
-export { SignIn } from "./components/SignIn";
+export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/Session";
+export { SignIn, SignInVersion } from "./components/SignIn";
 export { SkeletonTable } from "./components/SkeletonTable";
 export { Sparkline } from "./components/Sparkline";
 export { Spinner } from "./components/Spinner";
-export { Stage, StageIcon, StageTrack } from "./components/Stage";
+export { Stage, StageFooter, StageIcon, StageTrack } from "./components/Stage";
 export { Stat, StatRow } from "./components/Stat";
-export { StatTile } from "./components/StatTile";
+export { StatTile, StatTileDelta } from "./components/StatTile";
 export { StatusPill } from "./components/StatusPill";
 export { Stepper } from "./components/Stepper";
 export { Switch } from "./components/Switch";

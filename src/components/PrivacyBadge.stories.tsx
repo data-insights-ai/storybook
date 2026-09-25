@@ -7,9 +7,9 @@ const meta = {
   title: "Blocks/Inference/Privacy",
   component: PrivacyBadge,
   tags: ["autodocs"],
-  args: { tone: "local", children: null },
+  args: { scope: "local", children: null },
   argTypes: {
-    tone: { control: "radio", options: ["local", "external", "retention"] },
+    scope: { control: "radio", options: ["local", "external", "retention"] },
     children: { control: false },
   },
 } satisfies Meta<typeof PrivacyBadge>;
@@ -36,15 +36,15 @@ export const Every: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-      <PrivacyBadge tone="local">
+      <PrivacyBadge scope="local">
         <ShieldCheck aria-hidden />
         local processing
       </PrivacyBadge>
-      <PrivacyBadge tone="external">
+      <PrivacyBadge scope="external">
         <Globe aria-hidden />
         model · eu-central
       </PrivacyBadge>
-      <PrivacyBadge tone="retention">
+      <PrivacyBadge scope="retention">
         <Timer aria-hidden />
         retained 30 days
       </PrivacyBadge>

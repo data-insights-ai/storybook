@@ -15,7 +15,7 @@ export function ConfidenceField({
   label,
   confidence,
   confidenceLabel,
-  tone = "high",
+  level = "high",
   whyLabel = "",
   onWhy,
   className,
@@ -27,8 +27,12 @@ export function ConfidenceField({
   confidence: number;
   /** The reading in words, e.g. "0.94 · matched on 3 of 4 inputs". */
   confidenceLabel: string;
-  /** `review` is below the threshold this field trusts. */
-  tone?: "high" | "review";
+/**
+   * Which side of the threshold the reading fell on. The caller owns the
+   * threshold: the field draws and announces `confidence`, it does not
+   * decide what counts as high.
+   */
+  level?: "high" | "review";
   whyLabel?: string;
   onWhy?: () => void;
   className?: string;
@@ -36,7 +40,7 @@ export function ConfidenceField({
 }) {
   const percent = Math.round(confidence * 100);
   return (
-    <div className={cx("di-confidence", `is-${tone}`, className)}>
+    <div className={cx("di-confidence", `is-${level}`, className)}>
       <label className="di-field-label" htmlFor={id}>
         {label}
       </label>

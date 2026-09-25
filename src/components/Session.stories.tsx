@@ -4,7 +4,8 @@ import { expect, within } from "storybook/test";
 import { Button } from "./Button";
 import { Icon } from "./Icon";
 import { IconTile } from "./IconTile";
-import { Session, SessionAction, SessionMark, SessionTag } from "./Session";
+import { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./Session";
+import { SealValue } from "./Seal";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
@@ -13,12 +14,10 @@ const meta = {
   tags: ["autodocs"],
   args: {
     name: "MacBook Pro · Vienna",
-    detail: "Last seen 09:12:04Z · 10.4.2.18",
     children: null,
   },
   argTypes: {
     name: { control: "text" },
-    detail: { control: "text" },
     children: { control: false },
   },
   decorators: [
@@ -37,8 +36,11 @@ type Story = StoryObj<typeof meta>;
 export const Current: Story = {
   render: (args) => (
     <Session {...args}>
+      <SessionDetail>
+        Last seen <SealValue stateLabel="Sealed">09:12:04Z</SealValue> · 10.4.2.18
+      </SessionDetail>
       <SessionMark>
-        <IconTile tone="inverse">
+        <IconTile variant="inverse">
           <Icon size={16} label="Laptop">
             <Laptop aria-hidden />
           </Icon>
@@ -57,9 +59,10 @@ export const Current: Story = {
 
 /** Another session, with the way to end it. */
 export const Other: Story = {
-  args: { name: "iPhone · Graz", detail: "Last seen 2026-09-21T18:40:11Z · 10.4.9.71" },
+  args: { name: "iPhone · Graz" },
   render: (args) => (
     <Session {...args}>
+      <SessionDetail>Last seen 2026-09-21T18:40:11Z · 10.4.9.71</SessionDetail>
       <SessionMark>
         <IconTile>
           <Icon size={16} label="Phone">
@@ -82,9 +85,10 @@ export const List: Story = {
   decorators: [],
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 440 }}>
-      <Session name="MacBook Pro · Vienna" detail="Last seen 09:12:04Z · 10.4.2.18">
+      <Session name="MacBook Pro · Vienna">
+        <SessionDetail>Last seen 09:12:04Z · 10.4.2.18</SessionDetail>
         <SessionMark>
-          <IconTile tone="inverse">
+          <IconTile variant="inverse">
             <Icon size={16} label="Laptop">
               <Laptop aria-hidden />
             </Icon>
@@ -94,7 +98,8 @@ export const List: Story = {
           <StatusPill tone="ok">this device</StatusPill>
         </SessionTag>
       </Session>
-      <Session name="iPhone · Graz" detail="Last seen 2026-09-21T18:40:11Z · 10.4.9.71">
+      <Session name="iPhone · Graz">
+        <SessionDetail>Last seen 2026-09-21T18:40:11Z · 10.4.9.71</SessionDetail>
         <SessionMark>
           <IconTile>
             <Icon size={16} label="Phone">

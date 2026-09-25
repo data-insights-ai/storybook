@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../cx";
 import { SealMark } from "./Seal";
 import { StatusPill } from "./StatusPill";
@@ -29,7 +29,7 @@ export function LivingCard({
     <div className={cx("di-living", className)}>
       <div className="di-living-head">
         <span className="di-living-title">{title}</span>
-        <StatusPill tone="ai">{insightLabel}</StatusPill>
+        <StatusPill tone="inferred">{insightLabel}</StatusPill>
       </div>
       {children}
     </div>
@@ -52,25 +52,38 @@ export function LivingBody({ children }: { children: ReactNode }) {
  */
 export function LivingInsight({
   body,
-  basis,
   children,
 }: {
   body: string;
-  /** Where the claim comes from, in the mono track. */
-  basis: string;
-  /** The actions an operator may take on the claim. Each confirms first. */
+  /** One `LivingBasis`, then the actions an operator may take. */
   children?: ReactNode;
 }) {
+  /* `LivingBasis` sits under the claim; everything else is an action. */
+  const basis: ReactNode[] = [];
+  const actions: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === LivingBasis) basis.push(child);
+    else actions.push(child);
+  });
   return (
     <div className="di-living-insight">
       <div className="di-living-insight-row">
         <SealMark state="inferred" size={7} />
         <div className="di-living-insight-copy">
           <p className="di-living-insight-body">{body}</p>
-          <p className="di-living-insight-basis">{basis}</p>
+          {basis}
         </div>
       </div>
-      <div className="di-living-insight-actions">{children}</div>
+      <div className="di-living-insight-actions">{actions}</div>
     </div>
   );
+}
+
+/**
+ * Where the claim comes from. A slot, not a string: a basis names the
+ * sources and the confidence it rests on, and those are values the
+ * library draws — a `SealValue`, a count — not prose.
+ */
+export function LivingBasis({ children }: { children: ReactNode }) {
+  return <p className="di-living-insight-basis">{children}</p>;
 }

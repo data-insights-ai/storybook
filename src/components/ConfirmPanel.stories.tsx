@@ -40,7 +40,7 @@ export const Reversible: Story = {
         <Button variant="secondary" size="dense">
           Cancel
         </Button>
-        <Button variant="ai" size="dense">
+        <Button variant="inferred" size="dense">
           Merge
         </Button>
       </ConfirmActions>

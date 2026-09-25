@@ -63,7 +63,7 @@ export const Seal: Story = {
 
 /** Acts on a model's proposal, so it carries the ring's edge. */
 export const Inferred: Story = {
-  args: { variant: "ai", children: "Accept suggestion" },
+  args: { variant: "inferred", children: "Accept suggestion" },
 };
 
 export const Dense: Story = {
@@ -131,7 +131,7 @@ export const AllVariants: Story = {
       <Button variant="ghost">Refresh</Button>
       <Button variant="danger">Revoke key</Button>
       <Button variant="seal">Seal entry</Button>
-      <Button variant="ai">Accept suggestion</Button>
+      <Button variant="inferred">Accept suggestion</Button>
       <Button variant="primary" loading={true}>
         Sealing
       </Button>
@@ -157,7 +157,7 @@ export const NightSheet: Story = {
       <Button variant="ghost">Refresh</Button>
       <Button variant="danger">Revoke key</Button>
       <Button variant="seal">Seal entry</Button>
-      <Button variant="ai">Accept suggestion</Button>
+      <Button variant="inferred">Accept suggestion</Button>
       <Button variant="secondary" disabled={true}>
         Unavailable
       </Button>

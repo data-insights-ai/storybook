@@ -13,7 +13,7 @@ const meta = {
     title: "No source matches this filter.",
     body: "The register holds 24 sources. None of them is paused in the last 24 hours.",
     mono: false,
-    tone: "default",
+    tone: "neutral",
     children: null,
   },
   argTypes: {

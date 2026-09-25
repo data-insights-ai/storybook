@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LockKeyhole } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "./Button";
-import { SignIn } from "./SignIn";
+import { SignIn, SignInVersion } from "./SignIn";
 import { TextField } from "./TextField";
+import { VersionTag } from "./VersionTag";
 import { TextLink } from "./TextLink";
 
 const meta = {
@@ -13,7 +14,6 @@ const meta = {
   parameters: { layout: "fullscreen" },
   args: {
     kicker: "datAInsights",
-    version: "v4.18.2",
     eyebrow: "Sealed workspace",
     title: "Sign in",
     lede: "The register opens once the key is verified.",
@@ -31,7 +31,6 @@ const meta = {
   ],
   argTypes: {
     kicker: { control: "text" },
-    version: { control: "text" },
     eyebrow: { control: "text" },
     title: { control: "text" },
     lede: { control: "text" },
@@ -48,6 +47,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <SignIn {...args}>
+      <SignInVersion>
+        <VersionTag>v4.18.2</VersionTag>
+      </SignInVersion>
       <TextField
         id="login-user"
         label="Email or username"
@@ -74,6 +76,9 @@ export const Default: Story = {
 export const Rejected: Story = {
   render: (args) => (
     <SignIn {...args}>
+      <SignInVersion>
+        <VersionTag>v4.18.2</VersionTag>
+      </SignInVersion>
       <TextField
         id="login-user-2"
         label="Email or username"
@@ -106,6 +111,9 @@ export const Rejected: Story = {
 export const Verifying: Story = {
   render: (args) => (
     <SignIn {...args}>
+      <SignInVersion>
+        <VersionTag>v4.18.2</VersionTag>
+      </SignInVersion>
       <TextField
         id="login-user-3"
         label="Email or username"
@@ -136,6 +144,9 @@ export const SecondFactor: Story = {
   },
   render: (args) => (
     <SignIn {...args}>
+      <SignInVersion>
+        <VersionTag>v4.18.2</VersionTag>
+      </SignInVersion>
       <TextField
         id="login-otp"
         label="Six-digit code"

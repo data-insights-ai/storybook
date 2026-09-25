@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from "react";
 import { cx } from "../cx";
 import "./Button.css";
 
-type Variant = "primary" | "secondary" | "ghost" | "danger" | "seal" | "ai";
+type Variant = "primary" | "secondary" | "ghost" | "danger" | "seal" | "inferred";
 type Size = "dense" | "md" | "comfort";
 
 /**

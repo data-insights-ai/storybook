@@ -17,7 +17,7 @@
     background: var(--di-chart-muted);
   }
 
-  .di-sparkline-bar.is-ink {
+  .di-sparkline-bar.is-series {
     background: var(--di-chart-series);
   }
 

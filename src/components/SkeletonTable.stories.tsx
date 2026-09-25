@@ -101,7 +101,7 @@ export const Resolving: Story = {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <TableRow key={row.ordinal} tone={row.state === "danger" ? "danger" : "default"}>
+                <TableRow key={row.ordinal} tone={row.state === "danger" ? "danger" : "neutral"}>
                   <TableIndex>{row.ordinal}</TableIndex>
                   <TableCell>{row.host}</TableCell>
                   <TableCell>

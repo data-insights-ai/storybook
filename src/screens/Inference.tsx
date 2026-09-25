@@ -6,12 +6,12 @@ import { CommandBar, CommandGroup, CommandRow } from "../components/CommandBar";
 import { PageHeader } from "../components/Heading";
 import { ConfidenceField } from "../components/ConfidenceField";
 import { ConfirmActions, ConfirmPanel } from "../components/ConfirmPanel";
-import { ExplainPanel, ExplainRow } from "../components/ExplainPanel";
+import { ExplainFooter, ExplainPanel, ExplainRow } from "../components/ExplainPanel";
 import { PrivacyBadge } from "../components/PrivacyBadge";
 import { Grid, Stack } from "../components/Layout";
-import { LivingActions, LivingBody, LivingCard, LivingInsight } from "../components/LivingCard";
-import { Panel } from "../components/Panel";
-import { StatTile } from "../components/StatTile";
+import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "../components/LivingCard";
+import { Panel, PanelMeta } from "../components/Panel";
+import { StatTile, StatTileDelta } from "../components/StatTile";
 import { Toast, ToastAction } from "../components/Toast";
 import { sampleChrome } from "../sample/chrome";
 import { SectionTitle } from "../components/SectionTitle";
@@ -24,7 +24,7 @@ const bars = [
   { percent: 52 },
   { percent: 49 },
   { percent: 61 },
-  { percent: 74, tone: "ink" as const },
+  { percent: 74, tone: "series" as const },
   { percent: 96, tone: "danger" as const },
 ];
 
@@ -52,7 +52,7 @@ export function InferenceScreen() {
         />
 
         <SectionTitle title="The claim, in place" lede="Inside the card it concerns, never floating over it">
-          <PrivacyBadge tone="local">
+          <PrivacyBadge scope="local">
             <ShieldCheck aria-hidden />
             local processing
           </PrivacyBadge>
@@ -66,24 +66,18 @@ export function InferenceScreen() {
               </Button>
             </LivingActions>
             <LivingBody>
-              <StatTile
-                index="03"
-                label="Unsealed"
-                value="1,284"
-                delta="up 940 since 08:00Z"
-                deltaTone="danger"
-                compact={true}
-              />
-              <Sparkline
-                bars={bars}
-                label="Unsealed entries over the last eight hours, rising sharply in the last two."
-              />
+              <StatTile index="03" label="Unsealed" value="1,284" compact={true}>
+                <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
+                <Sparkline
+                  bars={bars}
+                  label="Unsealed entries over the last eight hours, rising sharply in the last two."
+                />
+              </StatTile>
             </LivingBody>
             <LivingInsight
-              body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog."
-              basis="inferred from 3 sources · confidence 0.88"
-            >
-              <Button variant="ai" size="dense">
+              body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
+              <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
+              <Button variant="inferred" size="dense">
                 Review the proposal
               </Button>
               <Button variant="secondary" size="dense">
@@ -108,7 +102,7 @@ export function InferenceScreen() {
               <Button variant="secondary" size="dense">
                 Cancel
               </Button>
-              <Button variant="ai" size="dense">
+              <Button variant="inferred" size="dense">
                 Resume
               </Button>
             </ConfirmActions>
@@ -154,10 +148,7 @@ export function InferenceScreen() {
           </CommandBar>
 
           <Stack>
-            <ExplainPanel
-              heading="Why this was proposed"
-              footer="This does not account for sources added in the last hour."
-            >
+            <ExplainPanel heading="Why this was proposed">
               <ExplainRow label="Matched on">host, manifest prefix, queue depth</ExplainRow>
               <ExplainRow label="Window">2026-09-22 → 2026-09-23</ExplainRow>
               <ExplainRow label="Confidence">0.88</ExplainRow>
@@ -167,19 +158,23 @@ export function InferenceScreen() {
               <ExplainRow label="Ignored" ignored={true}>
                 unsealed drafts
               </ExplainRow>
+              <ExplainFooter>
+                This does not account for sources added in the last hour.
+              </ExplainFooter>
             </ExplainPanel>
 
-            <Panel index="§" title="Where a query goes" meta="§ 12.4">
+            <Panel index="§" title="Where a query goes">
+              <PanelMeta>§ 12.4</PanelMeta>
               <Grid>
-                <PrivacyBadge tone="local">
+                <PrivacyBadge scope="local">
                   <ShieldCheck aria-hidden />
                   local processing
                 </PrivacyBadge>
-                <PrivacyBadge tone="external">
+                <PrivacyBadge scope="external">
                   <Globe aria-hidden />
                   model · eu-central
                 </PrivacyBadge>
-                <PrivacyBadge tone="retention">
+                <PrivacyBadge scope="retention">
                   <Timer aria-hidden />
                   retained 30 days
                 </PrivacyBadge>
@@ -204,7 +199,7 @@ export function InferenceScreen() {
           <ConfidenceField
             id="screen-c-review"
             label="Resolved host"
-            tone="review"
+            level="review"
             confidence={0.42}
             confidenceLabel="0.42 · below the threshold, review before sealing"
             whyLabel="why?"

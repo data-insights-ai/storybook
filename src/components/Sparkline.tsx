@@ -10,7 +10,7 @@ export function Sparkline({
   label,
   className,
 }: {
-  bars: { percent: number; tone?: "muted" | "ink" | "danger" }[];
+  bars: { percent: number; tone?: "muted" | "series" | "danger" }[];
   label: string;
   className?: string;
 }) {

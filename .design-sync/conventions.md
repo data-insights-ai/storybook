@@ -55,6 +55,8 @@ Rules that make output look native rather than approximate:
 
 - **Only ever text → a `string` prop. Anything that can hold a component → a slot.** A slot is a named sub-component written as a child, in any order: `<Panel><PanelFooter>…</PanelFooter></Panel>`, `<Notice><NoticeIcon/>…`, `<Toast><ToastAction>…`.
 - **A variant is one union prop**, never a family of booleans: `hint` + `hintTone` (`neutral | sealed | error`), `layout`, `tone`, `size`.
+- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `scope` (`PrivacyBadge`), `state` (`CommandChip`), `level` (`ConfidenceField`), `variant` (`Button`, `IconTile`). `neutral` is the word for "nothing special" — never `default`, never `info`.
+- **One name per thing.** The hollow ring is `inferred` everywhere: `SealMark`, `StatusPill`, `Button`. Never `ai`. Gold as a value is `seal`, never `gold` — a public prop does not name a colour.
 - **Every visible string is a prop.** Nothing has baked-in language.
 - **`DataTable` takes no `rows` array.** Map your own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, `TableCell`; `TableToolbar` and `TableFooter` are slots.
 - **`Pagination` and `Switch` are controlled** — you own `page` / `checked`.
@@ -117,7 +119,8 @@ Read the real files before styling: `styles.css` and its `@import` closure carry
 ### A build
 
 ```jsx
-<Panel title="Source register" index="01" tone="grid">
+<Panel title="Source register" index="01" surface="grid">
+  <PanelMeta><SealValue stateLabel="Sealed">09:12:04Z</SealValue></PanelMeta>
   <DataTable caption="Sources" indexed={true}>
     <TableHead>
       <TableColumn index={true}>Ordinal</TableColumn>
@@ -153,3 +156,5 @@ Read the real files before styling: `styles.css` and its `@import` closure carry
 ```
 
 `TableHead` holds `TableColumn` (props: `index`, `sort`, `align`) — there is no `as="th"`. `TableRow` takes `active` and `tone`; `TableCell` takes `align` and `mono`. A cell's lead is `CellLead` + `CellIcon` + `CellStack`.
+
+**A line that reports a measured value is a slot, not a string.** A count, a timestamp, a version, a delta, a caveat or a basis routinely arrives sealed, in the mono track, or with a state beside it, and a `string` prop can carry none of that. These are the slots: `PanelMeta`, `StageFooter`, `ExplainFooter`, `MetricNote`, `RecordCount`, `SessionDetail`, `StatTileDelta`, `LivingBasis`, `SignInVersion`. Text a person reads as prose — `title`, `label`, `caption`, `legend`, `body`, and every `*Label` accessible name — stays a string prop.

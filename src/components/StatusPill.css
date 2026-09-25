@@ -78,7 +78,7 @@
     background: var(--di-status-neutral-dot);
   }
 
-  .di-pill-ai {
+  .di-pill-inferred {
     border-color: var(--di-seal-border);
     background: var(--di-ai-surface);
     color: var(--di-ai-ink);

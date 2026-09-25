@@ -4,10 +4,11 @@ import "./IconTile.css";
 
 export function IconTile({
   children,
-  tone = "neutral",
+  variant = "neutral",
 }: {
   children: ReactNode;
-  tone?: "neutral" | "inverse" | "ok";
+  /** Which of the three tile looks. */
+  variant?: "neutral" | "inverse" | "ok";
 }) {
-  return <span className={cx("di-tile", `di-tile-${tone}`)}>{children}</span>;
+  return <span className={cx("di-tile", `di-tile-${variant}`)}>{children}</span>;
 }

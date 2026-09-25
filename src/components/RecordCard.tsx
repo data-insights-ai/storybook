@@ -1,32 +1,46 @@
-import type { ReactNode } from "react";
+import { Children, isValidElement, type ReactNode } from "react";
 import "./RecordCard.css";
 
 /**
  * A record as a card: the mark and the state above, the title and its
  * count, then the lines that make it up.
  *
- * `title` and `count` are text, so they are props. The mark, the state
- * pill and the footer can each hold a component, so they are slots.
+ * `title` is read as text, so it stays a prop. Everything else — the
+ * mark, the state pill, the count and the footer — can hold a component,
+ * so each is a slot.
  */
 export function RecordCard({
   title,
-  count,
   children,
 }: {
   title: string;
-  /** How much the record holds, in words. */
-  count: string;
+  /** A `RecordCount`, `RecordMark`, `RecordStatus`, `RecordLines`, `RecordFooter`. */
   children?: ReactNode;
 }) {
+  /* `RecordCount` sits beside the title, above the rest. Picked by type. */
+  const count: ReactNode[] = [];
+  const body: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === RecordCount) count.push(child);
+    else body.push(child);
+  });
   return (
     <article className="di-record">
       <div className="di-record-heading">
         <h2>{title}</h2>
-        <p className="di-record-count">{count}</p>
+        {count}
       </div>
-      {children}
+      {body}
     </article>
   );
+}
+
+/**
+ * How much the record holds, beside its title. A slot: a count is a
+ * measured value, and it routinely arrives sealed or with a state.
+ */
+export function RecordCount({ children }: { children: ReactNode }) {
+  return <p className="di-record-count">{children}</p>;
 }
 
 /** The seal, icon or ordinal at the top left. */

@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileCheck2, Link2, Radio, Stamp } from "lucide-react";
 import { expect, within } from "storybook/test";
-import { Stage, StageIcon, StageTrack } from "./Stage";
+import { SealValue } from "./Seal";
+import { Spinner } from "./Spinner";
+import { Stage, StageFooter, StageIcon, StageTrack } from "./Stage";
 
 const meta = {
   title: "Blocks/Stage",
@@ -11,14 +13,12 @@ const meta = {
     step: "01",
     title: "Connect",
     body: "A source is named, reached and checked for a manifest.",
-    foot: "≈ 30 seconds",
     current: false,
   },
   argTypes: {
     step: { control: "text" },
     title: { control: "text" },
     body: { control: "text" },
-    foot: { control: "text" },
     current: { control: "boolean" },
     children: { control: false },
   },
@@ -43,6 +43,7 @@ export const Default: Story = {
       <StageIcon>
         <Link2 aria-hidden />
       </StageIcon>
+      <StageFooter>≈ 30 seconds</StageFooter>
     </Stage>
   ),
   play: async ({ canvasElement }) => {
@@ -51,14 +52,36 @@ export const Default: Story = {
   },
 };
 
-/** The stage the record is in now. */
+/**
+ * The stage the record is in now. The closing line is a slot, so the step
+ * that is running can say so with a `Spinner` instead of a frozen string.
+ */
 export const Current: Story = {
-  args: { current: true, step: "03", title: "Seal", body: "Every entry gets a hash and a timestamp.", foot: "≈ 4 seconds" },
+  args: { current: true, step: "03", title: "Seal", body: "Every entry gets a hash and a timestamp." },
   render: (args) => (
     <Stage {...args}>
       <StageIcon>
         <Stamp aria-hidden />
       </StageIcon>
+      <StageFooter>
+        <Spinner label="sealing" />
+      </StageFooter>
+    </Stage>
+  ),
+};
+
+/** A step that finished reports the value it recorded, sealed. */
+export const SealedFoot: Story = {
+  name: "Sealed foot",
+  args: { step: "03", title: "Seal", body: "Every entry gets a hash and a timestamp." },
+  render: (args) => (
+    <Stage {...args}>
+      <StageIcon>
+        <Stamp aria-hidden />
+      </StageIcon>
+      <StageFooter>
+        <SealValue stateLabel="Sealed">a4f9c21e</SealValue>
+      </StageFooter>
     </Stage>
   ),
 };
@@ -76,25 +99,29 @@ export const Track: Story = {
   ],
   render: () => (
     <StageTrack>
-      <Stage step="01" title="Connect" body="A source is named, reached and checked for a manifest." foot="≈ 30 seconds">
+      <Stage step="01" title="Connect" body="A source is named, reached and checked for a manifest.">
         <StageIcon>
           <Link2 aria-hidden />
         </StageIcon>
+        <StageFooter>≈ 30 seconds</StageFooter>
       </Stage>
-      <Stage step="02" title="Ingest" body="Entries land in the register, unsealed and not yet citable." foot="continuous">
+      <Stage step="02" title="Ingest" body="Entries land in the register, unsealed and not yet citable.">
         <StageIcon>
           <Radio aria-hidden />
         </StageIcon>
+        <StageFooter>continuous</StageFooter>
       </Stage>
-      <Stage step="03" title="Seal" body="Every entry gets a hash and a timestamp." foot="≈ 4 seconds" current={true}>
+      <Stage step="03" title="Seal" body="Every entry gets a hash and a timestamp." current={true}>
         <StageIcon>
           <Stamp aria-hidden />
         </StageIcon>
+        <StageFooter>≈ 4 seconds</StageFooter>
       </Stage>
-      <Stage step="04" title="Publish" body="The sealed extract can be cited and verified offline." foot="on request">
+      <Stage step="04" title="Publish" body="The sealed extract can be cited and verified offline.">
         <StageIcon>
           <FileCheck2 aria-hidden />
         </StageIcon>
+        <StageFooter>on request</StageFooter>
       </Stage>
     </StageTrack>
   ),

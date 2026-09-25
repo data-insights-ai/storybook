@@ -9,7 +9,7 @@ const bars = [
   { percent: 52 },
   { percent: 49 },
   { percent: 61 },
-  { percent: 74, tone: "ink" as const },
+  { percent: 74, tone: "series" as const },
   { percent: 96, tone: "danger" as const },
 ];
 

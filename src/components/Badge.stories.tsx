@@ -31,9 +31,9 @@ export const Alert: Story = {
   args: { tone: "alert", children: "03" },
 };
 
-/** Gold: something in this section is sealed. */
-export const Gold: Story = {
-  args: { tone: "gold", children: "06" },
+/** Seal: something in this section is sealed. */
+export const Seal: Story = {
+  args: { tone: "seal", children: "06" },
 };
 
 export const AllTones: Story = {
@@ -42,7 +42,7 @@ export const AllTones: Story = {
     <div style={{ display: "flex", gap: 8, padding: 12, background: "var(--di-navy-900)", borderRadius: 8 }}>
       <Badge tone="neutral">08</Badge>
       <Badge tone="alert">03</Badge>
-      <Badge tone="gold">06</Badge>
+      <Badge tone="seal">06</Badge>
     </div>
   ),
 };

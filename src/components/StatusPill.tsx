@@ -6,7 +6,7 @@ import "./StatusPill.css";
  * `recorded` is a fact the register holds. `ai` is a model's claim and
  * carries the hollow ring instead of a dot, so the two never read alike.
  */
-export type StatusTone = "ok" | "warn" | "danger" | "recorded" | "neutral" | "ai";
+export type StatusTone = "ok" | "warn" | "danger" | "recorded" | "neutral" | "inferred";
 
 /**
  * Machine state, set lowercase in the mono track: reported, not
@@ -24,7 +24,7 @@ export function StatusPill({
 }) {
   return (
     <span className={cx("di-pill", `di-pill-${tone}`)}>
-      {dot ? <span className={cx("di-pill-dot", tone === "ai" && "di-pill-ring")} aria-hidden /> : null}
+      {dot ? <span className={cx("di-pill-dot", tone === "inferred" && "di-pill-ring")} aria-hidden /> : null}
       {children}
     </span>
   );

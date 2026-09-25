@@ -51,8 +51,10 @@ export function Chart({
 }: {
   /** Accessible name for the chart. */
   label: string;
+  /** One entry per series key, read back by the marks as `--color-<key>`. */
   config: ChartConfig;
   className?: string;
+  /** One Recharts chart, such as a `ComposedChart`, and its marks. */
   children: ComponentProps<typeof ResponsiveContainer>["children"];
 }) {
   const chartId = `di-chart-${useId().replace(/:/g, "")}`;

@@ -33,7 +33,7 @@ import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle }
 import { Pagination } from "../components/Pagination";
 import { SealValue } from "../components/Seal";
 import { SearchField } from "../components/SearchField";
-import { StatTile } from "../components/StatTile";
+import { StatTile, StatTileDelta } from "../components/StatTile";
 import { StatusPill } from "../components/StatusPill";
 import { sampleChrome } from "../sample/chrome";
 import { Fact, FactList } from "../components/FactList";
@@ -108,10 +108,18 @@ export function RegisterScreen() {
         </Notice>
 
         <Grid>
-          <StatTile index="01" label="Entries sealed" value="4,182" delta="+112 since 09:00Z" ruled={true} />
-          <StatTile index="02" label="Coverage" value="86.4%" delta="down 2.1 points" deltaTone="warn" ruled={true} />
-          <StatTile index="03" label="Unsealed" value="1,284" delta="up 940 since 08:00Z" deltaTone="danger" tone="danger" ruled={true} />
-          <StatTile index="04" label="Sources" value="24" delta="4 paused, 1 failed" deltaTone="warn" ruled={true} />
+          <StatTile index="01" label="Entries sealed" value="4,182" ruled={true}>
+            <StatTileDelta>+112 since 09:00Z</StatTileDelta>
+          </StatTile>
+          <StatTile index="02" label="Coverage" value="86.4%" ruled={true}>
+            <StatTileDelta tone="warn">down 2.1 points</StatTileDelta>
+          </StatTile>
+          <StatTile index="03" label="Unsealed" value="1,284" tone="danger" ruled={true}>
+            <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
+          </StatTile>
+          <StatTile index="04" label="Sources" value="24" ruled={true}>
+            <StatTileDelta tone="warn">4 paused, 1 failed</StatTileDelta>
+          </StatTile>
         </Grid>
 
         <div style={{ display: "flex", alignItems: "flex-start", gap: 16 }}>
@@ -183,7 +191,7 @@ export function RegisterScreen() {
                   <TableRow
                     key={source.ordinal}
                     active={source.ordinal === open}
-                    tone={source.state === "danger" ? "danger" : "default"}
+                    tone={source.state === "danger" ? "danger" : "neutral"}
                   >
                     <TableIndex>{source.ordinal}</TableIndex>
                     <TableCell>

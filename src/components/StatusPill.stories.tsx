@@ -51,7 +51,7 @@ export const Neutral: Story = {
 
 /** A model's claim: the hollow ring, never a filled dot. */
 export const Inferred: Story = {
-  args: { tone: "ai", children: "ai insight" },
+  args: { tone: "inferred", children: "ai insight" },
 };
 
 /** Without the dot, where a column of pills already reads as one channel. */
@@ -69,7 +69,7 @@ export const AllTones: Story = {
       <StatusPill tone="danger">failed</StatusPill>
       <StatusPill tone="recorded">sealed</StatusPill>
       <StatusPill tone="neutral">queued</StatusPill>
-      <StatusPill tone="ai">ai insight</StatusPill>
+      <StatusPill tone="inferred">ai insight</StatusPill>
     </div>
   ),
 };
@@ -85,7 +85,7 @@ export const NightSheet: Story = {
       <StatusPill tone="danger">failed</StatusPill>
       <StatusPill tone="recorded">sealed</StatusPill>
       <StatusPill tone="neutral">queued</StatusPill>
-      <StatusPill tone="ai">ai insight</StatusPill>
+      <StatusPill tone="inferred">ai insight</StatusPill>
     </div>
   ),
 };

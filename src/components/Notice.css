@@ -53,7 +53,7 @@
     align-self: center;
   }
 
-  .di-notice-info .di-notice-icon {
+  .di-notice-neutral .di-notice-icon {
     color: var(--di-text-muted);
   }
 

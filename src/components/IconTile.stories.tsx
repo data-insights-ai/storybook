@@ -9,11 +9,11 @@ const meta = {
   component: IconTile,
   tags: ["autodocs"],
   args: {
-    tone: "neutral",
+    variant: "neutral",
     children: null,
   },
   argTypes: {
-    tone: { control: "radio", options: ["neutral", "inverse", "ok"] },
+    variant: { control: "radio", options: ["neutral", "inverse", "ok"] },
     children: { control: false },
   },
 } satisfies Meta<typeof IconTile>;
@@ -37,7 +37,7 @@ export const Neutral: Story = {
 
 /** Navy fill, for the one tile a view is actually about. */
 export const Inverse: Story = {
-  args: { tone: "inverse" },
+  args: { variant: "inverse" },
   render: (args) => (
     <IconTile {...args}>
       <Icon size={16} label="Registry">
@@ -48,7 +48,7 @@ export const Inverse: Story = {
 };
 
 export const Ok: Story = {
-  args: { tone: "ok" },
+  args: { variant: "ok" },
   render: (args) => (
     <IconTile {...args}>
       <Icon size={16} label="Verified">
@@ -62,17 +62,17 @@ export const AllTones: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: "flex", gap: 10 }}>
-      <IconTile tone="neutral">
+      <IconTile variant="neutral">
         <Icon size={16} label="Sources">
           <Boxes aria-hidden />
         </Icon>
       </IconTile>
-      <IconTile tone="inverse">
+      <IconTile variant="inverse">
         <Icon size={16} label="Registry">
           <Server aria-hidden />
         </Icon>
       </IconTile>
-      <IconTile tone="ok">
+      <IconTile variant="ok">
         <Icon size={16} label="Verified">
           <CheckCircle2 aria-hidden />
         </Icon>

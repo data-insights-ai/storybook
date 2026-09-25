@@ -13,7 +13,7 @@ export type NavItem = {
   icon?: ReactNode;
   code?: string;
   badge?: string;
-  badgeTone?: "neutral" | "alert" | "gold";
+  badgeTone?: "neutral" | "alert" | "seal";
   /** The gold dot: this section holds something sealed. */
   sealed?: boolean;
 };

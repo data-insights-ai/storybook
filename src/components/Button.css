@@ -117,13 +117,13 @@
   }
 
   /* Acts on a model's proposal, so it carries the ring's edge. */
-  .di-btn-ai {
+  .di-btn-inferred {
     border-color: var(--di-ai-ring);
     background: var(--di-bg-surface);
     color: var(--di-text);
   }
 
-  .di-btn-ai:hover:not(:disabled) {
+  .di-btn-inferred:hover:not(:disabled) {
     background: var(--di-ai-surface);
   }
 

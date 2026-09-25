@@ -38,7 +38,7 @@ export const sampleChrome: ConsoleChrome = {
           label: "Coverage",
           icon: createElement(Activity),
           badge: "06",
-          badgeTone: "gold",
+          badgeTone: "seal",
           sealed: true,
         },
       ],
