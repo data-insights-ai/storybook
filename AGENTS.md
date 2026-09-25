@@ -38,11 +38,13 @@ Sample people use invented names. Their email addresses are `name@data-insights.
 
 `pnpm build` writes the package to `dist/lib` as one module per component, so an app can tree-shake. `sideEffects` lists CSS only. `pnpm build-storybook` writes the static site to `dist/storybook`. Both directories are gitignored. A component that is not exported from `src/index.ts` is absent from the package a product installs. Do not fold the components back into a single JavaScript file, and do not inline the font files into the stylesheet.
 
+There is one name per value in the token files too. `--di-accent` was an alias of `--di-seal`, and `--di-font-display` and `--di-font-body` were second and third names for `--di-font-ui`; all three are gone. Type runs `--di-font-size-100`…`-1000`, and the top two steps are the display tier the brand pages use — a product screen never goes above `--di-font-size-700`.
+
 Tokens are three layers. Primitive values live in `primitive.css`. Semantic roles (`--di-text`, `--di-bg-page`, status, sidebar) live in `semantic.css`, with a dark remap under `[data-theme="dark"]`. Component slots such as `--di-button-primary-bg` live in `component.css`. A component binds to a semantic or component token. It does not name a primitive colour, typeface, or radius.
 
 ## Brand
 
-Foundations in this Storybook are the source for applying the brand. Colour, type, the mark, voice, motion, and the Register rules are written there. Do not send a designer or an agent to a separate brand book, and do not copy personal contact details into these pages.
+Foundations in this Storybook are the source for applying the brand. Colour, type, scale (space, radius, control height, the index column), the mark, voice, motion, the Register rules and the decision record behind them are written there. Do not send a designer or an agent to a separate brand book, and do not copy personal contact details into these pages.
 
 The system is the **Register**: the surface is a record, not a dashboard. Everything below follows from that.
 
@@ -52,10 +54,10 @@ The system is the **Register**: the surface is a record, not a dashboard. Everyt
 - Small gold text on paper uses Seal ink (`#7A5C0E`). Gold 500 and Gold 600 are marks, not type — Gold 600 on paper does not clear AA at small sizes, and on ivory it needs `#061631` rather than navy to clear it. Gold text on navy uses Gold 400.
 - Status is verified `#155230` on wash `#E7EFE5`, anomaly `#6E4708` on `#F7EDD5`, critical `#8A1B1B` on `#F8E6E2`, recorded `#0A1F44` on `#E6E9F0`. Anomaly runs on the gold ramp rather than inventing a second yellow. Each word stays above 5:1. Keep this set; a generic traffic-light green or red breaks the register.
 - Space Grotesk is everything a person reads as prose. JetBrains Mono is everything a machine wrote: identifiers, hashes, timestamps, measured values, and § marks. Which track a string sits in states where it came from. Figures are tabular.
-- Radii are moderate: 4px micro-controls, 6px buttons and selects, 8px panels. Control heights are 28 / 32 / 36px, and 32 is the standard.
+- Radii are moderate: 4px for anything that takes a value (fields, selects, checkboxes), 6px buttons, 8px panels, 12px a frame holding panels. Control heights are 28 / 32 / 36px, and 32 is the standard. Space is `--di-space-1`…`-7`: 4, 8, 12, 16, 24, 32, 48. `Foundations/Scale` draws all three ramps.
 - Depth is drawn with a 1px rule. Only a detached plane — a menu, a modal, a toast — gets a shadow, and a technical one. No blur behind text: a mono value behind frosted glass has no measurable contrast.
 - The one ornament is the 8px tick rule (`.di-tick-rule`), and it only closes a block that reports a measurement.
-- Motion stays under 240ms, ease-out, one change at a time. A waiting indicator is the exception and loops until the wait ends: `Spinner` turns, `SkeletonTable`'s bars breathe on opacity, staggered by row. Even there nothing sweeps — a gradient travelling over a register is the one loading animation every other tool in this field already uses. A modal fades and settles one step (`@starting-style` plus `allow-discrete`, so it animates out as well as in), a drawer arrives from its own edge, a menu drops 4px, a toast rises 10px. Nothing scales and fades at once, and `prefers-reduced-motion` drops all of it in `base.css`.
+- Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time. A waiting indicator is the exception and loops until the wait ends: `Spinner` turns, `SkeletonTable`'s bars breathe on opacity, staggered by row. Even there nothing sweeps — a gradient travelling over a register is the one loading animation every other tool in this field already uses. A modal fades and settles one step (`@starting-style` plus `allow-discrete`, so it animates out as well as in), a drawer arrives from its own edge, a menu drops 4px, a toast rises 10px. Nothing scales and fades at once, and `prefers-reduced-motion` drops all of it in `base.css`.
 - A toast runs on navy, not on paper: it is the system reporting back, not another entry on the sheet. It re-points its own tokens so a `Button` in the action slot reads on that ground.
 
 Every panel, table, drawer, notice and empty state carries a 38px index column (`--di-index-col`) holding an ordinal, a letter or a § mark. It is the system's fingerprint. A drawer keeps the ordinal of the row it opened from. A failure keeps its ordinal, tinted.

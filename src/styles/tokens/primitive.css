@@ -97,7 +97,7 @@
     --di-night-danger-700: #5e2323;
     --di-night-danger-300: #ff9b9b;
 
-    --di-font-display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+    /* Two families. --di-font-display was a third name for this one. */
     --di-font-sans: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --di-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -110,6 +110,13 @@
     --di-font-size-600: 1.25rem;
     --di-font-size-700: 1.75rem;
     --di-font-size-800: 2.125rem;
+    /*
+     * The display tier. The console never goes here; the brand pages do,
+     * and they were setting 40-64px by hand. A tier the system owns beats
+     * a clamp invented in a stylesheet nothing else can see.
+     */
+    --di-font-size-900: 2.75rem;
+    --di-font-size-1000: 3.5rem;
 
     --di-weight-regular: 400;
     --di-weight-medium: 500;

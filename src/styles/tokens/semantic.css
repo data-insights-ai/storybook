@@ -56,10 +56,12 @@
     --di-focus: var(--di-ink);
     --di-focus-halo: rgba(10, 31, 68, 0.18);
 
-    --di-accent: var(--di-gold-500);
-    --di-accent-text: var(--di-gold-700);
-
-    /* The seal. A filled dot is recorded and verifiable. */
+    /*
+     * The seal. A filled dot is recorded and verifiable. There is no
+     * `--di-accent`: it was an alias of exactly these two values, and a
+     * token named "accent" contradicts the one rule the palette has —
+     * gold means sealed, not important.
+     */
     --di-seal: var(--di-gold-500);
     --di-seal-ink: var(--di-gold-700);
     --di-seal-bg: var(--di-gold-100);
@@ -102,7 +104,11 @@
     --di-status-neutral-border: var(--di-rule-300);
     --di-status-neutral-dot: var(--di-navy-500);
 
-    --di-font-body: var(--di-font-sans);
+    /*
+     * Two roles, because there are two families and the split is the
+     * point: --di-font-ui is what a person reads, --di-font-code is what a
+     * machine wrote. --di-font-body was a second name for the first.
+     */
     --di-font-ui: var(--di-font-sans);
     --di-font-code: var(--di-font-mono);
 
@@ -178,9 +184,6 @@
     --di-fill-strong-hover: var(--di-gold-400);
     --di-focus: var(--di-gold-400);
     --di-focus-halo: rgba(217, 180, 94, 0.28);
-
-    --di-accent: var(--di-gold-400);
-    --di-accent-text: var(--di-gold-400);
 
     --di-seal: var(--di-gold-500);
     --di-seal-ink: var(--di-gold-400);

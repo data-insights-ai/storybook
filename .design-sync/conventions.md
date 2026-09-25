@@ -49,7 +49,7 @@ Rules that make output look native rather than approximate:
 - **`--di-font-mono` (JetBrains Mono) is for anything a machine wrote**: identifiers, hashes, timestamps, measured values, `§` marks. Prose is `--di-font-sans`. Which track a string sits in says where it came from.
 - **Depth is a 1px rule.** Only a detached plane — menu, modal, toast — gets a shadow (`--di-shadow-plane`). No blur behind text.
 - **Every panel, table, drawer, notice and empty state carries a 38px index column** (`--di-index-col`) holding an ordinal, a letter or a `§`. A drawer keeps the ordinal of the row it opened from; a failure keeps its ordinal, tinted.
-- Motion stays under 240ms, ease-out, one change at a time.
+- Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
 
 ### API shape
 

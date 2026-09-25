@@ -19,11 +19,11 @@
     font-weight: var(--di-weight-medium);
     letter-spacing: var(--di-tracking-eyebrow);
     text-transform: uppercase;
-    color: var(--di-accent-text);
+    color: var(--di-seal-ink);
   }
 
   .di-page-head h1 {
-    font-family: var(--di-font-display);
+    font-family: var(--di-font-ui);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
     color: var(--di-text);

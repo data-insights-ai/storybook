@@ -9,7 +9,7 @@
 
   .di-metric-figure {
     margin: 8px 0 2px;
-    font-family: var(--di-font-display);
+    font-family: var(--di-font-ui);
     font-size: 34px;
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);

@@ -35,7 +35,7 @@ function CitedMark(props: DotItemDotProps) {
           x={point.cx + 8}
           y={point.cy - 18}
           fill="var(--di-text)"
-          fontFamily="var(--di-font-display)"
+          fontFamily="var(--di-font-ui)"
           fontSize={12}
           fontWeight={700}
         >
@@ -168,7 +168,7 @@ function edgeLabel(name: string, dy: number) {
         x={x}
         y={y + dy}
         textAnchor="end"
-        fill="var(--di-accent-text)"
+        fill="var(--di-seal-ink)"
         fontFamily="var(--di-font-code)"
         fontSize={11}
         letterSpacing="0.08em"

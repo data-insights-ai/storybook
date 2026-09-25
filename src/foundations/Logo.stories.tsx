@@ -5,6 +5,7 @@ import logoInverse from "../assets/logo-inverse.svg";
 import logoMono from "../assets/logo-mono.svg";
 import mark from "../assets/mark.svg";
 import markInverse from "../assets/mark-inverse.svg";
+import { Page, Section } from "./guide/Guide";
 import "./foundations.css";
 
 const cells = [
@@ -17,14 +18,17 @@ const cells = [
 
 function Lockups() {
   return (
-    <div style={{ maxWidth: 960 }}>
-      <h1 className="di-block-title" style={{ fontSize: 32 }}>
-        The mark, then the name.
-      </h1>
-      <p className="di-lede">
-        Brackets hold a temporal interval. The nodes are an evidence chain. One of them is gold. That dot is the scarcest mark in the system.
-      </p>
-      <div className="di-logo-grid" style={{ marginTop: 20 }}>
+    <Page
+      eyebrow="The mark"
+      title="The mark, then the name."
+      lede="Brackets hold a temporal interval. The nodes are an evidence chain. One of them is gold. That dot is the scarcest mark in the system."
+    >
+      <Section
+        eyebrow="Lockups"
+        title="Five files, and nothing else."
+        lede="Each is a fixed asset. A lockup is never rebuilt from the mark and a typeface — see Foundations/Mark for the misuses."
+      >
+      <div className="di-logo-grid">
         {cells.map((cell) => (
           <article key={cell.title} className="di-logo-cell">
             <div className={cx("di-logo-stage", cell.dark && "is-dark", cell.mark && "is-mark")}>
@@ -37,7 +41,8 @@ function Lockups() {
           </article>
         ))}
       </div>
-    </div>
+      </Section>
+    </Page>
   );
 }
 

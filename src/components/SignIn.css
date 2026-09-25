@@ -33,7 +33,7 @@
   }
 
   .di-login-version {
-    font-family: var(--di-font-mono);
+    font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     letter-spacing: var(--di-tracking-mono);
     color: var(--di-gold-400);
@@ -106,7 +106,7 @@
   }
 
   .di-login-eyebrow {
-    font-family: var(--di-font-mono);
+    font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     letter-spacing: var(--di-tracking-eyebrow);
     text-transform: uppercase;
@@ -142,7 +142,7 @@
 
   .di-login-restrict {
     margin-top: 11px;
-    font-family: var(--di-font-mono);
+    font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     line-height: var(--di-leading-snug);
     color: var(--di-navy-600);
@@ -157,7 +157,7 @@
     padding: 6px 9px;
     border-radius: var(--di-radius-micro);
     background: var(--di-navy-950);
-    font-family: var(--di-font-mono);
+    font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: #b9c4d8;
   }

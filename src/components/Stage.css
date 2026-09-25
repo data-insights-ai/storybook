@@ -31,7 +31,7 @@
   }
 
   .di-stage h3 {
-    font-family: var(--di-font-display);
+    font-family: var(--di-font-ui);
     font-size: 16px;
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);

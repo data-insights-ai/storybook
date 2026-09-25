@@ -51,17 +51,22 @@ const preview: Preview = {
           "Patterns",
           "Screens",
         ];
+        // Read top to bottom: what the system is, then what it is made of,
+        // then how it is applied, and last the reasoning behind all of it.
+        // "Decisions" argues about other products rather than specifying
+        // this one, so it no longer sits third, ahead of colour and type.
         const foundations = [
           "Essence",
           "Register",
-          "Adoption",
           "Voice",
           "Color",
           "Type",
+          "Scale",
           "Logo",
           "Mark",
           "Practice",
           "Surfaces",
+          "Decisions",
         ];
         // Listed items sort in list order; anything unlisted falls to the end.
         const rank = (list, value) => {

@@ -14,7 +14,7 @@
   body {
     background: var(--di-bg-page);
     color: var(--di-text);
-    font-family: var(--di-font-body);
+    font-family: var(--di-font-ui);
     font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-regular);
     line-height: var(--di-leading-body);

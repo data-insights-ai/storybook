@@ -24,7 +24,7 @@
   }
 
   .di-icon.is-cited {
-    color: var(--di-accent-text);
+    color: var(--di-seal-ink);
   }
 
   .di-icon-catalog {
@@ -48,7 +48,7 @@
   }
 
   .di-icon-catalog strong {
-    font-family: var(--di-font-display);
+    font-family: var(--di-font-ui);
     font-size: 15px;
     font-weight: var(--di-weight-medium);
     letter-spacing: -0.01em;
