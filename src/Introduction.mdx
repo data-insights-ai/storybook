@@ -1,33 +1,66 @@
 import { Meta } from "@storybook/addon-docs/blocks";
+import { Fact, Facts, Page, Rule, Rules, Section } from "./foundations/guide/Guide";
 
 <Meta title="Introduction" />
 
-# datAInsights
+<Page
+  eyebrow="Workbench"
+  title="The surface is a register, not a dashboard."
+  lede="This is the component library for the datAInsights brand, and the place a designer reviews it. It is not a product: nothing here names one, and the screens are examples a product could be assembled from rather than screens that ship. Everything a product installs is what `src/index.ts` exports — a control that never became a component cannot be designed with."
+>
+  <Facts>
+    <Fact term="What it is">A library, its stories, and the brand reference they are built from.</Fact>
+    <Fact term="What it is not">A product, a prototype, or a second brand book.</Fact>
+    <Fact term="Read first">Foundations, top to bottom. It holds the reasoning.</Fact>
+    <Fact term="Before handing back">`pnpm check` — typecheck, token lint, story tests.</Fact>
+  </Facts>
 
-Component workbench for the datAInsights brand. Foundations are the brand reference for building: colour, type, the mark, voice, and motion. The screens are composed examples of the console frame. They do not belong to one product.
+  <Section
+    eyebrow="The sidebar"
+    title="Five groups, sorted by one question."
+    lede="Can another component go inside it? That is the whole test, and size is not the axis."
+  >
+    <Rules>
+      <Rule>**Foundations** — colour, type, scale, the mark, voice, motion, the Register rules, and the decision record behind them.</Rule>
+      <Rule>**Primitives** — a leaf. It renders the text and marks it was handed, and nothing else fits inside.</Rule>
+      <Rule>**Forms** — a labelled control.</Rule>
+      <Rule>**Blocks** — it holds something: it composes other components, or exposes a slot for them.</Rule>
+      <Rule>**Patterns** — a whole arrangement: the shell, the layout primitives.</Rule>
+      <Rule>**Screens** — a console example, composed from all of the above.</Rule>
+    </Rules>
+  </Section>
 
-## Tokens
+  <Section
+    eyebrow="The one API rule"
+    title="Only ever text is a prop. Anything that can hold a component is a slot."
+    lede="A slot is a named sub-component written as a child — `PanelMeta`, `StageFooter`, `ToastAction`. No prop is typed `ReactNode`; that type is the sign the decision was never made."
+  >
+    <Rules>
+      <Rule>A line that reports a measured value is a slot. A count, a timestamp, a version or a delta arrives sealed or in the mono track, and a string can carry neither.</Rule>
+      <Rule>A variant is one union prop, never a family of booleans. `tone` means status on the shared ramp and nothing else; what is not a status gets its own name.</Rule>
+      <Rule>Every visible string is a prop, in English. A product passes its own language in from outside.</Rule>
+      <Rule>Buttons, fields and tables stay native elements. A headless library is worth adding when a control needs more than that, and not before.</Rule>
+    </Rules>
+  </Section>
 
-Three layers.
+  <Section
+    eyebrow="How it stays consistent"
+    title="Three token layers, four ramps, and a check that fails."
+    lede="Primitive values have no job. Semantic roles say what a thing is for and carry the dark remap. Component slots let one control be restyled without touching the others. A component binds to the second or third layer, never the first."
+  >
+    <Rules>
+      <Rule>Space, radius, type and control height are ramps, not opinions. `Foundations/Scale` draws all of them.</Rule>
+      <Rule>`pnpm lint:tokens` fails on a raw pixel, a hex literal in a component, or a component naming a primitive. `pnpm build` runs it first, so drift cannot reach the package.</Rule>
+      <Rule>An exception states its reason in a comment the lint reads. A silent exemption is drift; a written one is a decision.</Rule>
+      <Rule>Visible text meets AA. Status is a word plus a mark, never colour alone. `pnpm test` fails on an axe violation.</Rule>
+    </Rules>
+  </Section>
 
-- **Primitive** — the brand-book values, plus a separate status ramp for operational state. No component names a primitive colour, typeface, or radius.
-- **Semantic** — what a thing is for: page, surface, text, fill, focus, sidebar, status. Light is the console as drawn. Dark remaps the same roles.
-- **Component** — slots such as `--di-button-primary-bg`. One control can be restyled without touching the others.
-
-Warm paper (`#F4F1E8`) is the ground; navy (`#0A1F44`) is the ink and, in daylight, the only thing that fills a control. There is no invented accent, so what writes is what commits. After dark the fill turns gold, because navy cannot act against a navy ground — that is the single exception.
-
-Gold is the scarce mark and it carries meaning, not emphasis. A **filled dot** means the value is recorded and verifiable. A **hollow ring** means a model inferred it and nothing has vouched for it yet. Status (verified, anomaly, critical, recorded) has its own washes so a screen full of rows never spends the gold.
-
-Small gold text on paper uses Seal ink (`#7A5C0E`); the seal colour itself (`#C9A24A`) is a mark, never type. On navy, gold type uses Gold 400.
-
-## Type
-
-Space Grotesk is everything a person reads as prose. JetBrains Mono is everything a machine wrote: identifiers, hashes, timestamps, measured values, and the § marks that number a screen. Which track a string sits in is a statement about where it came from, not a texture. Figures are tabular, so a column of readings does not jitter as it updates.
-
-## Controls
-
-Buttons, fields, tables, and navigation are native elements. A headless widget library is worth adding when a control needs it — a combobox, a menu, a dialog — and not before.
-
-Sample copy is English. Strings are props, so a product can pass another language. Icons and other elements are slots, not controls.
-
-Sample people are placeholders. Their addresses are `@data-insights.ai`.
+  <Section eyebrow="Sample content" title="Everything in these stories is invented.">
+    <p>
+      Sample people are placeholders and their addresses are `@data-insights.ai`. Hosts, hashes and
+      timestamps are made up. The repository is public, so nothing here names a real person, a
+      customer, or an unreleased project.
+    </p>
+  </Section>
+</Page>
