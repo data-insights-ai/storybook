@@ -33,12 +33,14 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | Surfaces | `--di-bg-page` (warm paper, the page), `--di-bg-surface` (a panel/field/card), `--di-bg-grid` (white — tables only), `--di-bg-subtle` |
 | Ink | `--di-text`, `--di-text-muted`, `--di-text-subtle`, `--di-text-disabled`, `--di-text-on-strong` |
 | Lines | `--di-rule`, `--di-rule-hairline`, `--di-border`, `--di-border-strong` |
-| Space | `--di-space-1` … `--di-space-7` |
-| Radius | `--di-radius-micro` (4), `--di-radius-control` (6), `--di-radius-surface` (8) |
-| Type | `--di-font-sans`, `--di-font-mono`, `--di-font-size-100` … `-800`, `--di-weight-regular/medium/semibold/bold` |
+| Space | `--di-space-2 4 6 8 12 16 24 32 48` — named by value, so `--di-space-12` is 12px |
+| Radius | `--di-radius-micro` (4), `--di-radius-control` (6), `--di-radius-surface` (8), `--di-radius-container` (12), `--di-radius-pill` |
+| Type | `--di-font-ui`, `--di-font-code`, `--di-font-size-100` … `-1000`, `--di-weight-regular/medium/semibold/bold` |
 | Status | `--di-status-{ok,warn,danger,recorded,neutral}-{bg,fg,border,dot}` |
 | Record marks | `--di-seal`, `--di-seal-ink`, `--di-ai-ring`, `--di-ai-ink` |
-| Motion | `--di-duration`, `--di-duration-slow`, `--di-ease` |
+| Motion | `--di-duration` (120ms), `--di-duration-slow` (200ms), `--di-ease` |
+| Control height | `--di-h-dense` (28), `--di-h-ctl` (32, the standard), `--di-h-comfort` (36), `--di-h-row` (40) |
+| On navy | `--di-inverse-bg`, `-raised`, `-border`, `-text`, `-muted`, `-seal` — a surface sitting on navy re-points its roles from these |
 
 Rules that make output look native rather than approximate:
 
@@ -48,7 +50,7 @@ Rules that make output look native rather than approximate:
 - **Focus follows its ground**, and this is a mistake the system already made once: `--di-focus` is navy on paper and Gold 400 after dark, and `--di-sidebar-focus` is gold on the navy rail. Do not ring focus in seal gold on paper — it measures **2.1:1**, under the **3:1** a focus indicator has to clear. Never remove a focus indicator.
 - **Anomaly runs on the gold ramp.** Do not introduce a second yellow, or a generic traffic-light green or red — the four status pairs above are the whole set.
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
-- **`--di-font-mono` (JetBrains Mono) is for anything a machine wrote**: identifiers, hashes, timestamps, measured values, `§` marks. Prose is `--di-font-sans`. Which track a string sits in says where it came from.
+- **`--di-font-code` (JetBrains Mono) is for anything a machine wrote**: identifiers, hashes, timestamps, measured values, `§` marks. Prose is `--di-font-ui`. Which track a string sits in says where it came from.
 - **Depth is a 1px rule.** Only a detached plane — menu, modal, toast — gets a shadow (`--di-shadow-plane`). No blur behind text.
 - **Every panel, table, drawer, notice and empty state carries a 38px index column** (`--di-index-col`) holding an ordinal, a letter or a `§`. A drawer keeps the ordinal of the row it opened from; a failure keeps its ordinal, tinted.
 - Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
@@ -81,21 +83,75 @@ These rules are enforced in the repository, not merely requested: `pnpm test` fa
 
 ### The type scale
 
-Seven roles. Size and weight are fixed; nothing else is a heading.
+Every step is a token. The console lives in the bottom four; Display and Title
+exist for the brand pages, and a product screen never goes above `-700`.
 
-| Role | Face | Size | Weight | Tracking |
-| --- | --- | --- | --- | --- |
-| Display | Space Grotesk | 48px | 600 | −0.015em |
-| Section | Space Grotesk | 28px | 600 | −0.015em |
-| Body | Space Grotesk | 16px | 400 | — |
-| Interface | Space Grotesk | 13px | 500 | — |
-| Measurement | JetBrains Mono | 28px | 500 | −0.015em |
-| Identifier | JetBrains Mono | 13px | 400 | — |
-| Section mark (`§`) | JetBrains Mono | 11px | 500 | 0.12em, uppercase |
+| Role | Token | Face | Size | Weight | Where |
+| --- | --- | --- | --- | --- | --- |
+| Display | `--di-font-size-1000` | Space Grotesk | 56px | 700 | Brand page title |
+| Title | `--di-font-size-800` | Space Grotesk | 34px | 700 | Brand page section |
+| Page | `--di-font-size-700` | Space Grotesk | 28px | 700 | `PageHeader` |
+| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `SectionTitle`, `Metric` figure |
+| Lede | `--di-font-size-500` | Space Grotesk | 16px | 400 | Brand page lede |
+| **Body** | `--di-font-size-400` | Space Grotesk | **13px** | 400 | The console body — `base.css` |
+| Interface | `--di-font-size-400` | Space Grotesk | 13px | 500 | Control labels |
+| Meta | `--di-font-size-300` | Space Grotesk | 12px | 400 | Screen lede, field hints |
+| Measurement | `--di-font-size-700` | JetBrains Mono | 28px | 500 | `StatTile` figure |
+| Identifier | `--di-font-size-400` | JetBrains Mono | 13px | 400 | Hashes, timestamps |
+| Section mark (`§`) | `--di-font-size-200` | JetBrains Mono | 11px | 500 | `--di-tracking-eyebrow`, uppercase, Seal ink |
+
+Figures are tabular throughout, so a column of readings does not jitter as it
+updates.
+
+### The dimensional ramps
+
+`Foundations/Scale` draws these. It is a rendered page, not markdown, so it
+cannot ship as a guideline — this is the copy of it, and it is checked by
+`pnpm lint:tokens`, which fails on any value off these ramps.
+
+**Space** — 2, 4, 6, 8, 12, 16, 24, 32, 48. Fine at the bottom, coarse at the
+top, because that is where the density is: a 28px control cannot be padded on a
+4px grid. 4 is a mark to its word; 6 is inside a dense control; 8 is inside a
+standard one; 12 is a panel header or a table cell; 16 is panel content; 24 is
+between panels; 32 between sections.
+
+**Radius** — the smaller the control, the tighter the corner. A field is 4px and
+the panel holding it is 8px, so the field reads as set *into* the sheet rather
+than floating on it. Only a pill is fully round, and only because it is a mark.
+
+**Control height** — 32px is the standard and covers every form control unless
+told otherwise. 28 is a toolbar control, a chip, a menu item. 36 is a lone
+primary action, the command bar, the tab strip. 40 is a table row.
+
+**The index column** — 38px (`--di-index-col`), or 26px (`--di-index-col-sm`)
+where the block is too short to give up the full width. It is carried by
+`Panel`, `DataTable`, `Drawer`, `Notice`, `EmptyState`, `Modal`, `SignIn`,
+`StatTile` and `SkeletonTable`. `Card`, `Toast`, `Stage`, `Session` and `Metric`
+carry none — they report, they are not entries.
+
+### What this system refuses
+
+`Foundations/Decisions` is the record, with a reason on every line. The short
+version, because a generator that does not know these will reach for them:
+
+- **No undo-first.** Every action is confirmed *before* it runs, stating basis,
+  scope and reversibility. What follows is a receipt carrying an audit id
+  (`Toast`), never a way back.
+- **No glassmorphism or backdrop blur.** A mono value behind frosted glass has
+  no measurable contrast.
+- **No gradient edges, glow, pulse or sparkle glyphs.** The least verifiable
+  output cannot be the most decorated one.
+- **No navigation that hides or reorders itself.** The rail is fixed, in the
+  order the product declares.
+- **An AI control is marked by a hollow ring and a gold hairline**, never by a
+  gradient or a sparkle — the unsealed thing is the *less* decorated one.
+- **Micro-interaction is a colour change on buttons**, 120ms, ease-out. No lift,
+  no scale, no press. Never on a table row: forty thousand rows have to hold
+  still.
 
 ### The mark
 
-Four variants, each with one context: **Primary** (navy on ivory or paper — the default lockup), **Inverse** (ivory on navy — sidebar, cover, dark fields), **Monochrome** (one colour, when the pair cannot be printed), **Mark only** (the symbol, when the name is already in the sentence).
+Five fixed assets, each with one context: **Primary** (navy on ivory or paper — the default lockup), **Inverse** (ivory on navy — sidebar, cover, dark fields), **Monochrome** (one colour, when the pair cannot be printed), **Mark only** (the symbol, when the name is already in the sentence) and **Mark, inverse** (the same symbol on navy; the gold node is the tittle). A lockup is never rebuilt from the mark and a typeface.
 
 Minimum sizes: **20px** height digital (UI, web, small cards), **10mm** in print (letterheads, cards), **16px / 6mm** for the mark alone (favicons, avatars).
 

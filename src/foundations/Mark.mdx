@@ -3,6 +3,7 @@ import logo from "../assets/logo.svg";
 import logoInverse from "../assets/logo-inverse.svg";
 import logoMono from "../assets/logo-mono.svg";
 import mark from "../assets/mark.svg";
+import markInverse from "../assets/mark-inverse.svg";
 import { ClearSpace, Lockup, Lockups, Mark, Marks, Page, Rule, Rules, Section } from "./guide/Guide";
 import { Cobrand, Misuse } from "./guide/Specimens";
 
@@ -21,7 +22,7 @@ import { Cobrand, Misuse } from "./guide/Specimens";
     <Mark mark="•" tone="gold">The gold tittle is the one moment of verified truth.</Mark>
   </Marks>
 
-  <Section eyebrow="Lockups" title="Four variants. Four contexts." lede="The primary lockup is the default. The others exist for a substrate where it cannot live.">
+  <Section eyebrow="Lockups" title="Five variants. Five contexts." lede="The primary lockup is the default. The others exist for a substrate where it cannot live. Each is a fixed asset — a lockup is never rebuilt from the mark and a typeface.">
     <Lockups>
       <Lockup title="Primary" detail="Ivory, paper, and white. Digital and print.">
         <img src={logo} alt="datAInsights primary lockup" />
@@ -34,6 +35,9 @@ import { Cobrand, Misuse } from "./guide/Specimens";
       </Lockup>
       <Lockup title="Mark only" detail="A favicon, an avatar, or an app tile. The name is set nearby.">
         <img className="is-mark" src={mark} alt="datAInsights mark" />
+      </Lockup>
+      <Lockup title="Mark, inverse" detail="The same symbol on navy. The gold node is the tittle." tone="dark">
+        <img className="is-mark" src={markInverse} alt="datAInsights mark, inverse" />
       </Lockup>
     </Lockups>
   </Section>
