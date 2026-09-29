@@ -14,6 +14,7 @@
     letter-spacing: var(--di-tracking-ui);
     line-height: 1;
     white-space: nowrap;
+    text-decoration: none;
     transition: background-color var(--di-duration) var(--di-ease),
       border-color var(--di-duration) var(--di-ease),
       color var(--di-duration) var(--di-ease);
@@ -61,7 +62,7 @@
     color: var(--di-button-primary-fg);
   }
 
-  .di-btn-primary:hover:not(:disabled) {
+  .di-btn-primary:hover:not(:disabled, [aria-disabled="true"]) {
     border-color: var(--di-button-primary-bg-hover);
     background: var(--di-button-primary-bg-hover);
   }
@@ -72,7 +73,7 @@
     color: var(--di-text);
   }
 
-  .di-btn-secondary:hover:not(:disabled) {
+  .di-btn-secondary:hover:not(:disabled, [aria-disabled="true"]) {
     border-color: var(--di-text);
     background: var(--di-bg-page);
   }
@@ -86,7 +87,7 @@
     text-underline-offset: 3px;
   }
 
-  .di-btn-ghost:hover:not(:disabled) {
+  .di-btn-ghost:hover:not(:disabled, [aria-disabled="true"]) {
     background: var(--di-bg-subtle);
   }
 
@@ -100,7 +101,7 @@
     color: var(--di-status-danger-fg);
   }
 
-  .di-btn-danger:hover:not(:disabled) {
+  .di-btn-danger:hover:not(:disabled, [aria-disabled="true"]) {
     border-color: var(--di-status-danger-dot);
     background: var(--di-status-danger-bg);
   }
@@ -112,7 +113,7 @@
     color: var(--di-seal-ink);
   }
 
-  .di-btn-seal:hover:not(:disabled) {
+  .di-btn-seal:hover:not(:disabled, [aria-disabled="true"]) {
     border-color: var(--di-seal);
   }
 
@@ -123,11 +124,12 @@
     color: var(--di-text);
   }
 
-  .di-btn-inferred:hover:not(:disabled) {
+  .di-btn-inferred:hover:not(:disabled, [aria-disabled="true"]) {
     background: var(--di-ai-surface);
   }
 
-  .di-btn:disabled {
+  .di-btn:disabled,
+  .di-btn[aria-disabled="true"] {
     cursor: not-allowed;
     border-color: var(--di-border);
     background: var(--di-bg-disabled);

@@ -21,7 +21,7 @@ const meta = {
     children: { control: "text" },
     variant: {
       control: "radio",
-      options: ["primary", "secondary", "ghost", "danger", "seal", "ai"],
+      options: ["primary", "secondary", "ghost", "danger", "seal", "inferred"],
     },
     size: { control: "radio", options: ["dense", "md", "comfort"] },
     type: { control: "radio", options: ["button", "submit", "reset"] },
@@ -114,6 +114,42 @@ export const Disabled: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { name: "Unavailable" })).toBeDisabled();
+  },
+};
+
+/**
+ * An `href` makes it an `<a>`: same control, and the browser's own
+ * navigation — open in a new tab, copy the address, a real status bar.
+ */
+export const Link: Story = {
+  args: { children: "Open record" },
+  parameters: { controls: { disable: true } },
+  render: ({ children }) => (
+    <Button href="#/register/0148" variant="secondary">
+      {children}
+    </Button>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const link = canvas.getByRole("link", { name: "Open record" });
+    await expect(link).toHaveAttribute("href", "#/register/0148");
+  },
+};
+
+/** A blocked link drops its `href`, so there is nothing left to follow. */
+export const LinkDisabled: Story = {
+  args: { children: "Unavailable" },
+  parameters: { controls: { disable: true } },
+  render: ({ children }) => (
+    <Button href="#/register/0148" variant="secondary" disabled={true}>
+      {children}
+    </Button>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const link = canvas.getByText("Unavailable");
+    await expect(link).toHaveAttribute("aria-disabled", "true");
+    await expect(link).not.toHaveAttribute("href");
   },
 };
 
