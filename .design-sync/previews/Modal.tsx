@@ -61,3 +61,21 @@ export const Transition = /* Transition */ compose(S, "Transition");
  * logged only, never a failure.
  */
 export const Confirm = /* Confirm */ compose(S, "Confirm");
+
+/*
+ * `Plain` and `TypeToConfirm` are skipped for the same capture reason, and were
+ * missing from the design system entirely — not just from the card, but from
+ * the module, so `?story=` could not reach them and `Modal.prompt.md` listed
+ * neither. They are two distinct usage patterns a design agent needs:
+ *
+ *   Plain          — no icon column, for a modal that is not warning about
+ *                    anything (an export confirmation, say).
+ *   TypeToConfirm  — the most dangerous actions ask the operator to type the
+ *                    thing back; the commit arms only on an exact match.
+ *
+ * Re-exporting them restores both to the module and to the generated usage
+ * reference. The card still renders `primaryStory` alone (cardMode "single"),
+ * which is correct: a top-layer <dialog> would paint over sibling cells.
+ */
+export const Plain = /* Plain */ compose(S, "Plain");
+export const TypeToConfirm = /* TypeToConfirm */ compose(S, "TypeToConfirm");

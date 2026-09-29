@@ -335,6 +335,53 @@ oracle. Everything else uses generated previews.
   `--di-tile-inverse-fg: var(--di-sheet)`), so it is NOT the cascade-layer bug.
   Deliberately not papered over with an owned preview. Worth a designer's look.
 
+## [GENERAL] `cfg.skip` removes a story from the DESIGN SYSTEM, not just the oracle
+
+Found by the designer, who noticed the Modal card showed one state while
+storybook has five. Two separate things were going on, and only one was
+intended.
+
+**Intended:** `cardMode: "single"` means the CARD renders one story. That is
+correct for Modal — a native `<dialog>` opened with `showModal()` sits in the
+browser's top layer and would paint over every sibling cell. The card is for
+humans browsing the picker; one representative modal is the right choice.
+
+**Not intended:** a story in `cfg.overrides.<Name>.skip` is dropped from the
+generated wrapper entirely, so it is absent from `_preview/<Name>.js`, cannot be
+reached with `?story=`, and — the part that actually matters — **gets no section
+in `<Name>.prompt.md`, which is the design agent's usage reference.** `Modal`
+was shipping without `Plain` (no icon column) and `TypeToConfirm` (type the name
+back to arm the commit): two distinct patterns the agent had no example of.
+
+The fix is the one this repo already used for `Confirm`: re-export them from the
+owned `.design-sync/previews/Modal.tsx`. The skip still applies to the compare
+oracle (which genuinely cannot photograph a top-layer dialog — the root measures
+0px on both sides), while the module, the card's `?story=` and the generated
+prompt.md all get the story back. Verified: all five Modal states are now
+renderable and documented.
+
+**Audit any time skips change.** Enumerate what each card can actually render by
+evaluating `_preview/*.js` and reading the PascalCase function keys off
+`__dsPreview` — that is exactly what the card's own script does. Note it is a
+top-level `var`, so in a Node `vm` it lands on the context object, not on
+`ctx.window`. Comparing that against `sb-reference/index.json` (NOT against
+`.stories-map.json`, which already excludes skips — that baseline hides the very
+gap you are looking for) gives the true picture.
+
+**Audited 2026-09-25:** 273 storybook stories belong to synced components; 5 are
+not renderable, all deliberate — `Button/Night Sheet` and `StatusPill/Night
+Sheet` (they set `globals: {theme:"dark"}`, a storybook global the static
+preview harness cannot apply, so they would render light-on-navy),
+`FieldHint/Empty` (renders nothing by design), and Modal's two, now restored.
+Every other component documents every variant it can render.
+
+**Known cosmetic limitation:** `<Name>.prompt.md`'s one-line
+`Variants (see <Name>.html): …` header is generated from the non-skipped story
+roster, so for Modal it still reads "Closed, Transition" even though the file
+carries `### Plain` and `### TypeToConfirm` example sections below it. The
+substantive content is complete; fixing the header line would need a lib fork,
+which is not worth it.
+
 ## Re-sync 2026-09-25 — what changed and what to watch
 
 This sync followed a large API and token refactor. Everything below is new

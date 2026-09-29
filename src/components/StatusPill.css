@@ -21,6 +21,8 @@
     flex: none;
     border-radius: var(--di-radius-pill);
     background: currentColor;
+    position: relative;
+    top: -0.5px; /* optical centre on the uppercase mono label */
   }
 
   .di-pill-ring {
