@@ -526,3 +526,67 @@ story-coverage test fails when a component has no story, a Stop hook runs
 lint/typecheck/test, CI refuses PRs deleting story files without a label) and
 ends with a definition-of-done checklist. This repo enforces less mechanically —
 `pnpm test` + axe, and the treeshake check in `pnpm build`.
+
+## Re-sync 2026-09-29 — Button gained an anchor; a union that did not survive the converter
+
+Two commits since the last sync: `fc16840` (StatusPill dot nudge) and
+`6bdcc11` (`Button` renders an `<a>` when given an `href`). Package `0.1.8`.
+
+- **`[GENERAL]` A discriminated-union props type is flattened to its FIRST
+  member by the `.d.ts` extractor, silently.** `Button`'s props are
+  `ButtonProps | LinkProps`, where the button branch carries `href?: never`
+  and the link branch `href: string`. `dist/lib/components/Button.d.ts` holds
+  the whole union correctly, but `lib/dts.mjs` calls
+  `type.getApparentType().getProperties()` on the union and emitted **only**
+  `href?: never` — telling the design agent the exact opposite of the new
+  capability, in both `Button.d.ts` and `Button.prompt.md`. Nothing warned:
+  no `[DTS_PARSE]`, no `[DTS_STYLE_SYSTEM]`, and the compare loop cannot see
+  it because the *renders* were perfect. Caught only by reading the uploaded
+  `.d.ts` back after the first upload.
+  **Fixed with `cfg.dtsPropsFor.Button`** — the documented remedy for a type
+  the extractor cannot flatten — carrying a hand-written body that documents
+  both branches. **That body is hand-authored and does not regenerate: if
+  `Button`'s props change, it goes stale silently.** Same failure class as the
+  conventions header.
+  **Check any component whose props are a union, not an intersection.** Today
+  `Button` is the only one; `grep -l "Props | .*Props" dist/lib/components/*.d.ts`
+  finds them. Read the emitted `.d.ts` back, do not assume.
+- **The driver's default story cap is 6, not the 12 the 2026-09-25 notes
+  assume.** `Button` now has 15 stories and the driver captured
+  `first 6 of 15` — which silently excluded `Link` and `Link Disabled`, the
+  only two stories this sync existed to verify. Re-ran
+  `compare.mjs --components Button,StatusPill --max-stories 15`. **On any sync
+  that adds stories to a component with more than 6, pass `--max-stories`
+  explicitly or the new work is never photographed.**
+- **A CSS-only change to a component does not mark it `changed`.** `fc16840`
+  edited `StatusPill.css` only; the diff keys on `sourceKeys` (jsx/d.ts/
+  prompt.md), so `StatusPill` landed in `unchanged` and its grade would have
+  carried forward with nobody ever looking at the designer's adjustment. The
+  styling genuinely does re-ship (`upload.styling: true`), so the DESIGN is
+  correct either way — it is the VERIFICATION that silently skips. Forced a
+  recapture (`--force`) and re-graded all 8 stories; the 0.5px dot lift is in
+  `_ds_bundle.css` and renders identically on both sides at 8x.
+- **`Button/Primary` is `close`, and newly so**: its play function clicks the
+  button, so storybook photographs it focused. Ordinary play-function
+  signature, same as `Radio/Selecting` and `Menu/Open`.
+- **Verified the base `text-decoration: none`** added for the anchor does not
+  kill `Ghost`'s gold underline — checked at 3x on both sides, because that
+  was the one variant the new base rule could have broken.
+- **Conventions header gained a `Button href` rule.** Without it the design
+  agent reads a Button that cannot navigate and hand-rolls an anchor, which is
+  the "compose, never invent" failure the header exists to prevent. The type
+  table was re-validated against `primitive.css` and `base.css` this run and
+  is still accurate (13px body, the ten steps) — no drift since 2026-09-25.
+- **Canary** (`reference_drift`, explained: the reference storybook went
+  355 → 357 entries because of the two new stories) picked Chart, Radio, Icon,
+  Menu, ConfidenceField. All five confirm their recorded grades.
+- Known-triaged warnings unchanged: `[EXPORT_COLLISION] recharts … Tooltip`
+  only. Render check ran full, 64/64 clean. `IconTile/Inverse` still renders a
+  navy tile with no visible glyph, identically on both sides — fourth sync
+  carrying this. Still worth a designer's look.
+- **The `/design-sync` skill was not installed in this session.** The staged
+  `.ds-sync/` scripts and `.design-sync/` inputs were enough to run §7 end to
+  end, and `scriptsSha` still matched the anchor (`c0730d65e41fa758`), so the
+  staged converter was the same vintage that produced the last upload — no
+  pipeline churn. §7 step 1 says to re-copy the scripts from the skill first;
+  that step could not run, and did not need to.

@@ -64,6 +64,7 @@ Rules that make output look native rather than approximate:
 - **Every visible string is a prop.** Nothing has baked-in language.
 - **`DataTable` takes no `rows` array.** Map your own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, `TableCell`; `TableToolbar` and `TableFooter` are slots.
 - **`Pagination` and `Switch` are controlled** — you own `page` / `checked`.
+- **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. A blocked link (`disabled` or `loading`) drops its `href` and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined in-text control and stays a `<button>` — it is for acting, not for going somewhere.
 - **`Icon` takes one Lucide icon as its child**: `<Icon label="Search"><Search aria-hidden /></Icon>`.
 - **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-accent`, `--di-chart-muted`, `--di-chart-band`.
 - Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first.
