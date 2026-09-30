@@ -6,13 +6,19 @@ The system is a **Register**: the surface is a record, not a dashboard. Everythi
 
 There is no theme provider and no React context. Components read CSS custom properties from `:root`, so they are styled the moment `styles.css` is loaded. Do not wrap the tree in anything.
 
-Light is the bare `:root` default. Dark is a remap under `:root[data-theme="dark"]`, so it is set **on the document root only**:
+Light is the bare `:root` default. Dark is a remap under `[data-theme="dark"]`. **Theme the document root** — that is what a product does:
 
 ```jsx
 document.documentElement.dataset.theme = "dark";   // or remove it for daylight
 ```
 
-It cannot be scoped to a subtree. Component slots such as `--di-button-primary-bg` resolve through semantic tokens at `:root`, so `<div data-theme="dark">` styles nothing. There is no dark island; theme the page or not at all.
+A region can also carry a theme, and the token layers resolve correctly inside it: every semantic role and every component slot is re-declared wherever `data-theme` is set. A region has to paint its own ground, because the surface is a choice the region makes and the ink is not:
+
+```jsx
+<div data-theme="dark" style={{ background: "var(--di-bg-page)" }}>…</div>
+```
+
+This exists so a page can show both themes at once — `Foundations/Color` puts the night sheet beside daylight with it. For a product, prefer the document root: a half-dark screen is not a register. And it is not the way to put a **dark surface on a light page** — that is what `--di-inverse-*` is for (Toast, Tooltip, Stage, SignIn) and `--di-sidebar-*` for the rail. Those mean "a plane sitting on navy, in either theme"; a themed region means "the register after dark". Different things.
 
 ### Compose, never invent
 
@@ -24,7 +30,7 @@ Build from the components in this system. **If something you need is missing, sa
 
 There is no utility-class system. Style your own layout glue with `var(--di-*)`; never hand-write a `di-*` class, those belong to the components.
 
-**Every dimension is a token too.** Spacing is `--di-space-2|4|6|8|12|16|24|32|48`, named by value; radius is `--di-radius-micro|control|surface|container|pill`; type is `--di-font-size-100`…`-1000`. `pnpm lint:tokens` fails on a raw px in `gap`, `padding`, `margin`, `border-radius` or `font-size`, and on a component binding to a primitive.
+**Every dimension is a token too.** Spacing is `--di-space-2|4|6|8|12|16|24|32|48|64|96`, named by value; radius is `--di-radius-micro|control|surface|container|pill`; type is `--di-font-size-100`…`-1000`. `pnpm lint:tokens` fails on a raw px in `gap`, `padding`, `margin`, `border-radius` or `font-size`, and on a component binding to a primitive.
 
 **Never write a raw colour.** No `#0A1F44`, no `rgb()`, no named colours — only `var(--di-*)`. This is not housekeeping: navy is both the ink and the action, and **after dark the action fill turns gold**. A hardcoded navy is correct in daylight and *invisible on the night sheet*, because navy cannot act against a navy ground. The token flips; a hex literal cannot.
 
@@ -33,7 +39,7 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | Surfaces | `--di-bg-page` (warm paper, the page), `--di-bg-surface` (a panel/field/card), `--di-bg-grid` (white — tables only), `--di-bg-subtle` |
 | Ink | `--di-text`, `--di-text-muted`, `--di-text-subtle`, `--di-text-disabled`, `--di-text-on-strong` |
 | Lines | `--di-rule`, `--di-rule-hairline`, `--di-border`, `--di-border-strong` |
-| Space | `--di-space-2 4 6 8 12 16 24 32 48` — named by value, so `--di-space-12` is 12px |
+| Space | `--di-space-2 4 6 8 12 16 24 32 48 64 96` — named by value, so `--di-space-12` is 12px |
 | Radius | `--di-radius-micro` (4), `--di-radius-control` (6), `--di-radius-surface` (8), `--di-radius-container` (12), `--di-radius-pill` |
 | Type | `--di-font-ui`, `--di-font-code`, `--di-font-size-100` … `-1000`, `--di-weight-regular/medium/semibold/bold` |
 | Status | `--di-status-{ok,warn,danger,recorded,neutral}-{bg,fg,border,dot}` |
@@ -59,7 +65,7 @@ Rules that make output look native rather than approximate:
 
 - **Only ever text → a `string` prop. Anything that can hold a component → a slot.** A slot is a named sub-component written as a child, in any order: `<Panel><PanelFooter>…</PanelFooter></Panel>`, `<Notice><NoticeIcon/>…`, `<Toast><ToastAction>…`.
 - **A variant is one union prop**, never a family of booleans: `hint` + `hintTone` (`neutral | sealed | error`), `layout`, `tone`, `size`.
-- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `scope` (`PrivacyBadge`), `state` (`CommandChip`), `level` (`ConfidenceField`), `variant` (`Button`, `IconTile`). `neutral` is the word for "nothing special" — never `default`, never `info`.
+- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `scope` (`PrivacyBadge`), `state` (`CommandChip`), `level` (`ConfidenceField`), `variant` (`Button`, `IconTile`, `Eyebrow`), `tier` (`PageHeader`, `SectionTitle`), `layout` (`FactList`, `Switch`), `labelTrack` (`TextField`, `Select`), `size` (`Button`, `Notice`), `gap` (`Stack`). `neutral` is the word for "nothing special" — never `default`, never `info`.
 - **One name per thing.** The hollow ring is `inferred` everywhere: `SealMark`, `StatusPill`, `Button`. Never `ai`. Gold as a value is `seal`, never `gold` — a public prop does not name a colour.
 - **Every visible string is a prop.** Nothing has baked-in language.
 - **`DataTable` takes no `rows` array.** Map your own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, `TableCell`; `TableToolbar` and `TableFooter` are slots.
@@ -84,22 +90,29 @@ These rules are enforced in the repository, not merely requested: `pnpm test` fa
 
 ### The type scale
 
-Every step is a token. The console lives in the bottom four; Display and Title
-exist for the brand pages, and a product screen never goes above `-700`.
+Every step is a token. A **console** screen lives in the bottom of the ramp and
+never goes above `-700`; the top two steps are the display tier the brand pages
+use, and nothing else.
 
 | Role | Token | Face | Size | Weight | Where |
 | --- | --- | --- | --- | --- | --- |
 | Display | `--di-font-size-1000` | Space Grotesk | 56px | 700 | Brand page title |
 | Title | `--di-font-size-800` | Space Grotesk | 34px | 700 | Brand page section |
-| Page | `--di-font-size-700` | Space Grotesk | 28px | 700 | `PageHeader` |
-| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `SectionTitle`, `Metric` figure |
-| Lede | `--di-font-size-500` | Space Grotesk | 16px | 400 | Brand page lede |
+| Page | `--di-font-size-700` | Space Grotesk | 28px | 700 | `PageHeader tier="console"` |
+| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `SectionTitle tier="console"`, `Metric` figure |
+| Brand lede | `--di-font-size-550` | Space Grotesk | 18px | 400 | `PageHeader tier="brand"` lede |
+| Lede | `--di-font-size-500` | Space Grotesk | 16px | 400 | Section lede, a stated fact |
 | **Body** | `--di-font-size-400` | Space Grotesk | **13px** | 400 | The console body — `base.css` |
 | Interface | `--di-font-size-400` | Space Grotesk | 13px | 500 | Control labels |
 | Meta | `--di-font-size-300` | Space Grotesk | 12px | 400 | Screen lede, field hints |
 | Measurement | `--di-font-size-700` | JetBrains Mono | 28px | 500 | `StatTile` figure |
-| Identifier | `--di-font-size-400` | JetBrains Mono | 13px | 400 | Hashes, timestamps |
-| Section mark (`§`) | `--di-font-size-200` | JetBrains Mono | 11px | 500 | `--di-tracking-eyebrow`, uppercase, Seal ink |
+| Identifier | `--di-font-size-400` | JetBrains Mono | 13px | 400 | Identifiers, hashes, timestamps |
+| Section mark (`§`) | `--di-font-size-200` | JetBrains Mono | 11px | 500 | `Eyebrow` — `--di-tracking-eyebrow`, uppercase, Seal ink |
+| Micro | `--di-font-size-100` | JetBrains Mono | 10px | 500 | `Kbd`, tile ordinal |
+
+`-550` is the ramp's one interpolated step, and it is the reason the brand tier
+reads: 16 to 20 is where prose hierarchy lives, and with nothing between them a
+page lede, a section lede and a card heading all landed on 16.
 
 Figures are tabular throughout, so a column of readings does not jitter as it
 updates.
@@ -110,11 +123,13 @@ updates.
 cannot ship as a guideline — this is the copy of it, and it is checked by
 `pnpm lint:tokens`, which fails on any value off these ramps.
 
-**Space** — 2, 4, 6, 8, 12, 16, 24, 32, 48. Fine at the bottom, coarse at the
-top, because that is where the density is: a 28px control cannot be padded on a
-4px grid. 4 is a mark to its word; 6 is inside a dense control; 8 is inside a
-standard one; 12 is a panel header or a table cell; 16 is panel content; 24 is
-between panels; 32 between sections.
+**Space** — 2, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96. Fine at the bottom, coarse
+at the top, because that is where the density is: a 28px control cannot be padded
+on a 4px grid. 4 is a mark to its word; 6 is inside a dense control; 8 is inside
+a standard one; 12 is a panel header or a table cell; 16 is panel content; 24 is
+between panels; 32 between sections. The last two steps are the brand tier, the
+way the top two type steps are: 48 separates the parts of a brand page, 64 and 96
+separate the parts from each other, and **a console screen stops at 48**.
 
 **Radius** — the smaller the control, the tighter the corner. A field is 4px and
 the panel holding it is 8px, so the field reads as set *into* the sheet rather
@@ -175,6 +190,34 @@ Read the real files before styling: `styles.css` and its `@import` closure carry
 
 `guidelines/` carries the brand's own foundation documents — the Register rules, the essence, the voice, the mark, the surfaces and the practice. **Read them before composing a whole screen**: they hold the reasoning behind everything above, which is what keeps output on-brand rather than merely on-token. They are the source; where this header and a guideline disagree, the guideline wins.
 
+### A brand page
+
+The same library, at the display tier. There is **no parallel set of brand
+components** — `PageHeader` and `SectionTitle` each carry a `tier`, and `brand`
+is the other value.
+
+- **`tier="brand"`** sets the title on the top of the ramp and measures it to
+  16ch (`PageHeader`) or 22ch (`SectionTitle`), with the lede at
+  `--di-font-size-550` / `-500`. It carries **no bottom margin**: a brand page's
+  rhythm belongs to the `Stack` around it.
+- **`Stack gap={48}`, `{64}`, `{96}`** is that rhythm. 48 separates the parts of
+  a page, 64 and 96 separate the parts from each other. A console screen stops at
+  48.
+- **`FactList layout="grid"`** for a band of terms; **`PullQuote`** for the page's
+  one sentence of rhetoric (no attribution — a pull quote with a byline is a
+  testimonial); **`Grid`** for a two-column band; **`Notice size="comfort"`** for
+  a notice a reader meets at reading distance.
+- **`labelTrack="prose"`** on `TextField` and `Select`, where a person is filling
+  a form in for themselves rather than reading a record.
+- **`Eyebrow`** has two variants and they are not interchangeable. `sealed` is the
+  § mark beside the seal with a rule to the edge, and there is **one per view**.
+  `plain` is the label alone and repeats down a page — it is what `PageHeader` and
+  `SectionTitle` render from their `eyebrow` string. A page that repeated the
+  sealed one would be claiming a seal per heading.
+
+`src/foundations/guide/Guide.tsx` renders the Foundations pages from exactly
+these components and nothing else, which is what keeps the tier honest.
+
 ### A build
 
 ```jsx
@@ -204,8 +247,8 @@ Read the real files before styling: `styles.css` and its `@import` closure carry
     </TableBody>
   </DataTable>
   <PanelFooter>
-    <div style={{ display: "flex", gap: "var(--di-space-3)", alignItems: "center" }}>
-      <span style={{ fontFamily: "var(--di-font-mono)", fontSize: "var(--di-font-size-200)", color: "var(--di-text-muted)" }}>
+    <div style={{ display: "flex", gap: "var(--di-space-8)", alignItems: "center" }}>
+      <span style={{ fontFamily: "var(--di-font-code)", fontSize: "var(--di-font-size-200)", color: "var(--di-text-muted)" }}>
         1–5 of 24
       </span>
       <Button variant="primary">Seal entry</Button>

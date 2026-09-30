@@ -1,32 +1,434 @@
 # design-sync notes
 
-Repo: datAInsights Storybook (public: https://github.com/data-insights-ai/storybook)
+Repo: datAInsights Storybook, public — https://github.com/data-insights-ai/storybook
 Target project: "datAInsights Register" (`50fa49a6-04d7-435a-8d5c-567ff7cc04e7`)
+Package: `@data-insights-ai/ui`. pnpm (`pnpm@12.5.1`, node >=22.12.0),
+`pnpm i --frozen-lockfile`.
 
-## Run 2026-09-24 (first completed sync)
+Read in order: **Load-bearing**, then **Tool limitations**, then **Stale by
+design**. The run log at the bottom is history, not instruction.
 
-- A previous run on 2026-09-23 aborted mid-flight. It left an **un-anchored**
-  project (30 components, no `_ds_sync.json`) and empty local scaffolding
-  (`.ds-sync/`, `ds-bundle/`). User chose to re-adopt that project rather than
-  create a fresh one, so this run takes the **atomic** upload path.
-- The uploaded state predated commit `07bdc3c` ("slot-based component API"):
-  `SealValue` no longer exists (now `Primitives/Seal`), and Bars, Breadcrumb,
-  Pagination and Stepper moved from Blocks to Primitives. The end-of-run
-  reconciliation must delete those stale paths.
-- `.ds-sync/` and `ds-bundle/` were **not** gitignored. Added, because this
-  repo is public and both hold build output.
-- Package manager is pnpm (`pnpm@12.5.1`, `engines.node >=22.12.0`).
-  Install with `pnpm i --frozen-lockfile`.
+## Load-bearing in `src` — remove any of these and the package breaks
 
-## Environment quirk: pnpm 12.5.1 native binary
+These three are real packaging fixes the sync found. They matter to products
+installing the package, not just to the converter.
 
-`pnpm i` failed with `Failed to switch pnpm to v12.5.1 ... Unknown system error -8`.
-Cause: pnpm 12 ships a **native binary** installed by a build script. In
-`~/Library/pnpm/.tools/pnpm/12.5.1/` that script had been skipped, so
-`node_modules/pnpm/pnpm` was still the shebang-less `sh` placeholder — and macOS
-returns ENOEXEC (-8) when a program spawns that path directly.
+- **`package.json` top-level `"types": "./dist/lib/index.d.ts"`.** The converter
+  reads `pkgJson.types`/`typings`, then probes `dist/` for a *direct* `.d.ts`,
+  which `dist/lib/*` does not satisfy — so without it it falls back to the repo
+  root, enumerates **0 exports**, and reports a misleading `[TITLE_UNMAPPED] 64`.
+  There is no config knob for the types root. It also makes the package visible
+  to `moduleResolution: node` consumers.
+- **`scripts/build-styles.mjs` prepends `@layer tokens, base, components,
+  overrides;` to every `dist/lib/components/*.css`.** Layer order is fixed by the
+  **first** `@layer` statement a document sees. Each component sheet opens with
+  `@layer components {`, so if the order statement only lives in `src/styles.css`,
+  a document that loads component CSS first registers `components` first and
+  appends `tokens`/`base`/`overrides` *after* it — inverting the cascade.
+  `base.css` has `button { color: inherit }`, which then beats
+  `.di-btn-primary { color: … }`: every component renders with the wrong text
+  colour, most visibly a navy label on the navy Primary fill. Layers trump
+  specificity, so nothing in the component sheet can win.
+  This hits **production**, not only the sync: `sideEffects` means a product
+  importing only `Button` never loads `styles.css`. Storybook hides it because
+  `preview.tsx` imports `src/styles.css` first. The build fails if the statement
+  disappears from `src/styles.css`, so the two cannot drift.
+  Do not try to fix this from `cfg.cssEntry` — the converter always *appends*
+  it after the bundled CSS, so it can never reach the front from there.
+- **`FieldHint.tsx` does `import "./Field.css"`.** `.di-field-hint` is defined in
+  `Field.css`, which only TextField / Select / SearchField / ConfidenceField
+  import, so a product tree-shaking `FieldHint` shipped it unstyled.
+  Audited once: it was the only one. A naive scan also flags DataTable, Notice
+  (`di-mono`) and Seal (`di-tick-rule`) — false positives, those classes live in
+  `base.css`, which always ships. Scan `src/components/*.css` only.
 
-Fix (idempotent, safe to re-run):
+`cfg.buildCmd` is `pnpm build`, which runs `pnpm lint:tokens` **first**. A sync
+dying in `stages.build` with a list of `space` / `radius` / `type` / `colour` /
+`layer` / `api` problems is the design-system lint, not the converter. Fix the
+values.
+
+## Load-bearing in `config.json`
+
+- **`cssEntry: "dist/lib/styles.css"`** — the flattened sheet (`@font-face` +
+  primitive/semantic/component + base) written by `scripts/build-styles.mjs`.
+  Without it the bundle ships component CSS only: `[TOKENS_MISSING]` for 136
+  `--di-*` vars, `[RENDER_THIN]` on IconTile and Sparkline, no fonts.
+- **`extraEntries: ["recharts"]`** — merges recharts into `window.DataInsightsUI`
+  so a story's direct `recharts` imports shim to the same instance `Chart.tsx`
+  uses. Without it there are **two copies**: recharts identifies children by
+  type, so `ResponsiveContainer` from the bundle does not recognise children
+  built by the preview's copy and renders **nothing, silently** — no page error,
+  no `[RENDER]` failure, and the render check still passes because the wrapper
+  and its aria-label mount at the right size. Only the `<svg>` is missing.
+  Measured when it was found: `_preview/Chart.js` was **1,010,288 bytes** with the
+  second copy and **16,764** with `extraEntries` set. The direct importer was
+  `src/foundations/guide/BrandCharts.tsx`.
+  Expected warning, do **not** act on it: `[EXPORT_COLLISION] recharts exports
+  1 name(s) the main package also exports: Tooltip`. The DS `Tooltip` wins,
+  which is right — no story imports recharts' `Tooltip`. Do **not** apply the
+  suggested `cfg.storyImports.bundle: ["recharts"]`; that recreates the
+  duplicate and blanks every chart again. Re-check if a story ever imports
+  `Tooltip` or `Legend` from recharts.
+  *Generalises:* any package the DS uses internally **and** a story imports
+  directly needs this, or the duplicate instance breaks anything inspecting
+  child component types.
+- **`titleMap` keys are title SEGMENTS, not full titles**, and the card group is
+  the segment *before* the matched one — `Blocks/Inference/Confirm` → export
+  `ConfirmPanel`, group `inference`. Renames: Confidence→ConfidenceField,
+  Confirm→ConfirmPanel, Explain→ExplainPanel, Privacy→PrivacyBadge,
+  Seal→SealValue, Skeleton→SkeletonTable, AppShell→Console.
+  `null` excludes: `Foundations/*` (Color, Type, Logo, Scale, Decisions — doc
+  pages with no component) and `Screens/*` (Architecture, Coverage, Inference,
+  Login, Register, Settings, Watchlist). **A new Foundations page needs a new
+  null**, or it gets scanned as a component.
+- **`guidelinesGlob: ["src/foundations/*.mdx"]`** — the converter's defaults
+  (`docs/*.md`, `docs/guides/**`, `guides/**`) match nothing here, which is why
+  `guidelines/` came out empty and silent on the first upload. The six MDX brand
+  documents (Essence, Register, Voice, Mark, Surfaces, Practice) are **docs**-type
+  entries in storybook's `index.json`; the roster scan filters to **story**-type
+  entries, so they were invisible to every earlier step.
+  Paths keep the `src/foundations/` prefix (repo-relative to the package dir).
+  Cosmetic; `index.md` links them correctly.
+- **`dtsPropsFor.Button`** — see the union note under Tool limitations.
+- **`readmeHeader: ".design-sync/conventions.md"`** — the design agent's header.
+- **`overrides`** — five left, reasons under Tool limitations: `Modal` single
+  card + `primaryStory: Confirm`; `Session` / `Tabs` / `Chart` column cards;
+  `FieldHint/Empty` skipped. The `Button` and `StatusPill` entries are **gone** —
+  their NightSheet stories render a themed region now and photograph cleanly.
+
+**Screens are not synced.** `src/screens/*` are real components but are not
+exported from `src/index.ts`, so they are not in the bundle. Adding them would
+mean `extraEntries` pointing at TS source, which bundles a second copy of every
+component they import — the recharts trap again. Think carefully first.
+
+## Tool limitations, and what was done about each
+
+### Preview decorators are not bundled — and that is fine here
+
+`! preview decorator bundle failed: No loader is configured for ".woff2"`.
+`.storybook/preview.tsx` imports `src/styles.css` → fontsource CSS → `.woff2`,
+and the decorator bundler hardcodes `loader: {'.js':'jsx','.json':'json'}`
+without reading `cfg.storyImports.loaders`. No config knob reaches it.
+
+No `cfg.provider` is set, deliberately. The decorators provide only
+`withThemeByDataAttribute` setting `data-theme="light"` — unnecessary, since
+light is the bare `:root` default — and a `<main>` + visually-hidden `<h1>`
+wrapper (`StoryCanvas`), which is storybook a11y scaffolding and must **not**
+ship to designs. There is no provider to distill: theming is a CSS attribute,
+not React context.
+
+### Dark theme was root-only; both NightSheet stories were skipped for it
+
+**Fixed 2026-09-30.** Kept here because the reasoning is the reasoning for the
+whole token layer, and because the same failure will recur anywhere a token is
+declared at one scope and read at another.
+
+`Button/NightSheet` and `StatusPill/NightSheet` carried
+`globals: { theme: "dark" }`. With decorators unbundled (above) the global was
+dropped and both rendered in daylight — a navy primary fill where the point is
+that after dark the fill turns gold.
+
+A wrapper could not fix it, and the reason is the rule to remember: **a custom
+property is substituted on the element that DECLARES it.** `component.css`
+declared all 29 slots at `:root`, so `--di-button-primary-bg` resolved to navy
+there and inherited down as a literal colour; re-pointing `--di-fill-strong` on a
+descendant could never reach it. Measured at the time: the ground went dark
+(`rgb(7,18,41)`) while the primary button stayed navy and the secondary went
+near-white-on-near-white.
+
+**What changed.** Three selectors: `semantic.css`'s two theme blocks dropped the
+`:root` prefix, and `component.css` became `:root, [data-theme]`. Fourteen of the
+29 slots read a role the night sheet remaps, and those fourteen are read by seven
+stylesheets — Button, Card, DataTable, Field, SearchField, Panel, SkeletonTable.
+Everything else binds to semantic roles directly and already inherited correctly.
+
+A fourth change was needed and is the same bug one layer up: `base.css` sets
+`body { color: var(--di-text) }`, which resolves at `body`, so a region inherited
+the OUTER ink as a literal and its own `--di-text` was never read — navy prose on
+the night sheet, in 186 of 302 stories. `base.css` now carries
+`[data-theme] { color: var(--di-text) }`. Ink is not optional; the **surface** is
+left to the author, so a region can sit on page, surface or nothing.
+
+**Verified**, against the static Storybook build, not by reasoning:
+- All three whole-document cases (no attribute / `light` / `dark`) compute
+  identically before and after. The page-level contract did not move.
+- All 302 stories re-rendered inside a painted dark region: **1** element lost
+  contrast, a *disabled* control inside `SignIn`, and it computes identically
+  under `html[data-theme="dark"]` — pre-existing, not from this change. See Open.
+- Both NightSheet stories now render the region themselves and are **no longer
+  skipped**, so the compare oracle photographs the dark contract every sync
+  instead of prose asserting it.
+
+**A region is not the way to put a dark surface on a light page.** That is
+`--di-inverse-*` (AppShell, SignIn, Stage, Toast, Tooltip) and `--di-sidebar-*`
+for the rail, and they mean something different: "a plane sitting on navy, in
+either theme" versus "the register after dark". `--di-inverse-bg` is navy in
+daylight and night-800 after dark; the night sheet's surface is neither. The
+three mechanisms do not overlap. `Toast.css` also keeps its local re-pointing,
+which now looks like the general case rather than a workaround.
+
+### A top-layer `<dialog>` cannot be photographed on either side
+
+`Modal` is a native `<dialog>` opened with `showModal()`, so its content is in
+the browser's top layer. The harness screenshots the story **root**, and a
+top-layer dialog leaves that root **0px** tall — measured: the dialog renders at
+296.6px with all its copy while the root reports height 0. Identical in
+storybook and in the preview, so compare reports `sb-error` on both. A capture
+limitation, not a fidelity defect, and not a reason to change the component.
+
+`cardMode: "single"` is separate and *intended*: a top-layer dialog would paint
+over every sibling cell, so the card shows one representative modal.
+
+The Modal card is verified instead by `package-validate.mjs`'s render check,
+which reads geometry and text rather than a root screenshot and sees the full
+297px modal. **If Modal's card regresses, the compare loop will NOT catch it —
+check `.render-check.json`.**
+
+### `skip` removes a story from the DESIGN SYSTEM, not just the oracle
+
+Found by the designer, who noticed the Modal card showed one state while
+storybook has five. A story in `overrides.<Name>.skip` is dropped from the
+generated wrapper entirely: absent from `_preview/<Name>.js`, unreachable with
+`?story=`, and — the part that matters — **it gets no section in
+`<Name>.prompt.md`, the design agent's usage reference.** `Modal` was shipping
+without `Plain` (no icon column) and `TypeToConfirm` (type the name back to arm
+the commit): two distinct patterns the agent had no example of.
+
+The fix is `.design-sync/previews/Modal.tsx`, which re-exports the three skipped
+stories. The skip still applies to the oracle; the module, `?story=` and the
+generated prompt.md get them back.
+
+**Audit whenever skips change.** Evaluate `_preview/*.js` and read the
+PascalCase keys off `__dsPreview` — that is what the card's own script does.
+Note it is a top-level `var`, so in a Node `vm` it lands on the context object,
+not on `ctx.window`. Compare against `sb-reference/index.json`, **not**
+`.stories-map.json`, which already excludes skips and hides the very gap you are
+looking for.
+
+Audited 2026-09-25: of 273 storybook stories belonging to synced components, 5
+were not renderable and all 5 were deliberate — the two NightSheet stories,
+`FieldHint/Empty` (renders nothing by design, and it landed as `roots[0]`,
+tripping the validator's `rootEmpty` check), and Modal's two, restored by the
+owned preview. **Since 2026-09-30 the two NightSheet stories render, so the count
+is 1**: `FieldHint/Empty`. Re-run the audit on the next sync.
+
+Known cosmetic limitation: `<Name>.prompt.md`'s one-line
+`Variants (see <Name>.html): …` header is generated from the non-skipped roster,
+so Modal's still reads "Closed, Transition" even though the file carries
+`### Plain` and `### TypeToConfirm` sections below it. Content is complete;
+fixing the header would need a lib fork.
+
+### Play-function stories are systematically `close`, and that is correct
+
+Storybook runs `play` before photographing; compiled previews **never** run it.
+So any story whose `play` clicks, types, selects or focuses is captured by
+storybook post-interaction and by the preview at rest.
+
+Signature, so later waves do not chase it as a styling defect: identical element
+geometry on both sides plus a navy `#0A1F44` ring-shaped pixel surplus on the
+storybook side only. Measured on `Chip/Active` (392 navy px vs 282, same 132×28
+bbox) and `Chip/Available` (45 px of outset ring the preview lacks).
+
+Grade `close` with the cause named. Do **not** hard-code the interaction result
+into an owned preview — the resting render is what a design agent actually gets,
+so faking it destroys the fidelity being verified. If one ever must grade
+`match`, the only sound route is `skip`.
+
+### A discriminated-union props type is flattened to its FIRST member, silently
+
+`Button`'s props are `ButtonProps | LinkProps`, where the button branch carries
+`href?: never` and the link branch `href: string`.
+`dist/lib/components/Button.d.ts` holds the union correctly, but `lib/dts.mjs`
+calls `type.getApparentType().getProperties()` on it and emitted **only**
+`href?: never` — telling the design agent the exact opposite of the capability,
+in both `Button.d.ts` and `Button.prompt.md`. Nothing warned: no `[DTS_PARSE]`,
+no `[DTS_STYLE_SYSTEM]`, and compare cannot see it because the renders were
+perfect. Caught only by reading the uploaded `.d.ts` back.
+
+Worked around with `cfg.dtsPropsFor.Button`, the documented remedy. **Check any
+component whose props are a union rather than an intersection:**
+`grep -l "Props | .*Props" dist/lib/components/*.d.ts`. Today `Button` is the
+only one. Read the emitted `.d.ts` back; do not assume.
+
+### Two ways a sync silently fails to *verify* something
+
+- **The driver's default story cap is 6.** `Button` has 16 stories and the driver
+  captured `first 6 of 15` — silently excluding `Link` and `Link Disabled`, the
+  only two stories that sync existed to verify. On any sync touching a component
+  with more than 6 stories, pass `--max-stories` explicitly. Counts drift, so
+  compute them rather than trusting a list:
+  `for f in src/components/*.stories.tsx; do echo "$(grep -c '^export const ' $f) $f"; done | sort -rn`
+  The cap is part of the capture key: changing it re-captures and clears grades
+  even for components whose story set is unchanged.
+- **A CSS-only change does not mark a component `changed`.** The diff keys on
+  `sourceKeys` (jsx / d.ts / prompt.md), so a commit editing only
+  `StatusPill.css` landed in `unchanged` and its grade would have carried
+  forward with nobody looking at the designer's adjustment. The styling does
+  re-ship (`upload.styling: true`), so the DESIGN is correct either way — it is
+  the VERIFICATION that skips. Force a recapture.
+
+### Expected noise — do not chase
+
+- **The preview card page is white.** That is card chrome. A rendered *design*
+  gets `background: #F4F1E8` and Space Grotesk from `styles.css`'s import
+  closure — measured. It is why every sheet shows paper on the storybook side
+  and white on the preview side.
+- **Storybook's own static build cannot load the brand mark.** `Console/Chrome`
+  and all four `SignIn` stories show a broken image on the **storybook** side;
+  the package inlines the SVG as a `data:` URI while the storybook build emits a
+  separate asset whose relative URL 404s in the capture context. The preview is
+  the correct side — do not "fix" it.
+- **`Icon` reflows to a different column count** in the preview's narrower
+  container. Same icons, same styling. Framing.
+- **`Chart` prints `[PORTAL?]`** suggesting `cardMode: "single"`. Ignore:
+  `gridOverflow` measured `null`, and the Recharts tooltip only renders on hover
+  so a static capture never shows it. `column` stays — `single` would drop three
+  of the four chart stories from the card.
+- **`Progress/Counting` is `close`** — a live JS counter the two panels cannot be
+  captured at the same frame of.
+- **A full `compare.mjs` run always `[SPOT_CHECK]`s two random carried-forward
+  components** and reports them `needs-grade`. Designed pipeline check, not a
+  regression. Confirm the two sheets and re-record; do not loop, do not `--force`.
+- **Mark and label components are 20–30px tall** and unreadable at contact-sheet
+  scale. Judge them from `_screenshots/compare/raw/*__{sb,ds}.png` recomposed and
+  zoomed; confirm token values by decoding the PNG and counting pixels per
+  colour. A 1px repeating gradient (the 8px tick rule) shows as broken clumps on
+  a downscaled sheet — moire, not a bug.
+- Known-triaged warnings: `[EXPORT_COLLISION] recharts … Tooltip`, and nothing
+  else.
+
+## Stale by design — three hand-authored files that never regenerate
+
+Each has already gone stale at least once. Re-validate all three on any sync.
+
+1. **`conventions.md`** — the design agent's header. The four specimen pages
+   (Color, Type, Logo, Scale, Decisions) are rendered React, not markdown, so
+   `guidelinesGlob` cannot carry them and their content is transcribed by hand.
+   Shipping raw MDX has the same gap: the prose ships, but `<Misuse />`,
+   `<ClearSpace />`, `<Cobrand />` and the specimen components reach a reader as
+   bare tags, which is why the misuse rules and size minimums are copied in.
+   Re-check against `guide/Specimens.tsx`, `guide/Guide.tsx`, `primitive.css` and
+   `base.css`.
+   *Caught stale twice:* 2026-09-25, a type table claiming Body 16px/weight 600
+   when `base.css` sets 13px and headings ship 700 — transcribed from a
+   `Type.stories.tsx` that was itself wrong. 2026-09-30, a code sample using
+   `--di-space-3` (a name the value-named ramp deleted) and `--di-font-mono` (a
+   primitive the same document forbids binding to), a space ramp missing 64 and
+   96, a type table missing `-550`, and no mention of the brand tier at all.
+2. **`cfg.dtsPropsFor.Button`** — a hand-written props body. If `Button`'s props
+   change it goes stale silently, and the silence is the whole problem: nothing
+   in the pipeline compares it to the real `.d.ts`.
+3. **`.design-sync/previews/Modal.tsx`** — the only owned preview. Everything
+   else uses generated previews. It re-exports the three skipped stories and
+   must gain any story `Modal` adds.
+
+## Open, outside the sync
+
+**`IconTile/Inverse` — fixed 2026-09-30, after four syncs carrying it.** The
+tokens were always right; `Icon.css` declared `color: var(--di-text)` on
+`.di-icon`, and an explicit declaration outranks an inherited one, so the tile's
+ivory ink never reached the glyph: navy on navy. The declaration is gone — an
+icon takes the ink of its ground, which is what `color` inheriting already does.
+Measured after: inverse 15.69:1, neutral 13.37:1.
+It also silently mis-drew the **`ok`** tile, whose glyph was navy rather than
+`--di-status-ok-fg`; that is now status green at 7.84:1. Two visible changes for
+the designer, both corrections.
+
+**`SignIn`'s daylight pin is incomplete — `--di-text-disabled` leaks.** A disabled
+control on the sign-in card takes the night sheet's disabled ink while the card
+stays daylight (2.87:1 on `SignIn/Verifying`). Identical under
+`html[data-theme="dark"]` and inside a region, so it is pre-existing and was not
+introduced by the theme-region work; a disabled control is also outside the WCAG
+contrast minimum. Completing the pin needs a **new primitive**: daylight
+`--di-text-disabled` is the bare hex `#6e6a5e`, nothing on the ramp matches it,
+and `lint:tokens` correctly refuses a hex in a component. Naming it is a ramp
+decision, so it was left alone. One line in `.di-login-card` once the primitive
+exists.
+
+## Guidance split
+
+`AGENTS.md` is for agents working in the repo; `.design-sync/conventions.md` is
+for the design agent. Same split as `~/code/frontend-template`. Note that
+repo's **"don't invent components"** rule lives only in its `CLAUDE.md`, so its
+design agent is never told — a gap that matters more here, because the
+claude.ai/design agent *cannot* create a component and will improvise markup
+that cannot ship.
+
+Not ported from frontend-template, if wanted later: mechanical enforcement
+(ESLint banning raw hex, a test failing when a component has no story, a Stop
+hook running lint/typecheck/test, CI refusing PRs that delete story files) and a
+definition-of-done checklist. This repo enforces less: `pnpm test` + axe,
+`lint:tokens`, and the treeshake check in `pnpm build`.
+
+## Run log
+
+**2026-09-23 — aborted mid-flight.** Left an un-anchored project (30 components,
+no `_ds_sync.json`) and empty `.ds-sync/` + `ds-bundle/` scaffolding, neither
+gitignored — added, since this repo is public and both hold build output.
+
+**2026-09-24 — first completed sync.** Re-adopted the aborted project rather than
+creating a fresh one, so this took the atomic upload path. The uploaded state
+predated `07bdc3c` ("slot-based component API"), so reconciliation deleted
+`SealValue` and the four components that moved from Blocks to Primitives.
+64 components, 261 stories: **239 match, 22 close, 0 mismatch.** Validate exited
+0, 64/64 previews clean. Uploaded 335 files, deleted 20 stale paths. Every
+`close` is a play-function story except `Progress/Counting`.
+Foundations shipped only after the designer caught that the first upload
+contained none — `guidelinesGlob` for the six MDX documents, hand-transcription
+for the four rendered specimen pages.
+
+**2026-09-25 — after a large API and token refactor.** Space scale renamed to
+value-named `--di-space-2 4 6 8 12 16 24 32 48` (156 values across 51 files).
+Nine string props became slots (`PanelMeta`, `StageFooter`, `ExplainFooter`,
+`MetricNote`, `RecordCount`, `SessionDetail`, `StatTileDelta`, `LivingBasis`,
+`SignInVersion`), all verified `match`. `tone` narrowed to status only;
+`ai`→`inferred`, `gold`→`seal`, `info`/`default`→`neutral`, Sparkline
+`ink`→`series`. `--di-accent`, `--di-font-display`, `--di-font-body` deleted as
+duplicate names; `--di-inverse-*` roles added for surfaces on navy.
+`Chart`'s stories were rewritten to compose `Chart` directly rather than
+rendering `foundations/guide/BrandCharts`, so the library's own stories no longer
+depend on unexported foundations helpers; all four still graded `match`, which
+re-confirms `extraEntries`.
+`titleMap` gained `Scale: null` and `Decisions: null`. `conventions.md` gained
+the ramps, the refusals, the focus rule, "Compose, never invent" and "Exploring
+a variation"; its type table was found stale and fixed.
+
+**2026-09-29 — Button gained an anchor.** Two commits (`fc16840` StatusPill dot
+nudge, `6bdcc11` Button `href`), package `0.1.8`. The union-flattening bug and
+the default-cap-of-6 bug were both found here and are documented above.
+`Button/Primary` became `close` (its play function clicks). Verified the new base
+`text-decoration: none` does not kill `Ghost`'s gold underline. Canary picked
+Chart, Radio, Icon, Menu, ConfidenceField; all five confirmed. `reference_drift`
+explained: 355 → 357 entries from the two new stories.
+The `/design-sync` skill was not installed; the staged `.ds-sync/` scripts ran
+§7 end to end and `scriptsSha` still matched the anchor (`c0730d65e41fa758`), so
+no pipeline churn.
+
+**2026-09-30 — theme regions and two real bugs (not yet uploaded).** The token
+layers learned to re-resolve inside a `data-theme` region (see Tool limitations),
+which retired the `Button` and `StatusPill` overrides and let
+`Foundations/Color`'s "After dark" section render live tokens instead of six
+hand-copied hex literals. `IconTile/Inverse` was diagnosed and fixed after four
+syncs (see Open). Both NightSheet stories now render their own region and dropped
+`globals: { theme: "dark" }`, so they no longer depend on a decorator the preview
+harness cannot bundle. **Re-capture `Button`, `StatusPill`, `IconTile` and the
+seven slot-reading components** — Card, DataTable, Field, SearchField, Panel,
+SkeletonTable, Button — on the next sync; `Icon.css` changed, which is a CSS-only
+change and therefore will NOT mark them `changed` (see above), so force it.
+
+**Not yet synced.** `b6da02e` ("Add a brand tier to the library") adds `PullQuote`
+as a new component and extends `PageHeader` / `SectionTitle` with `tier`,
+`Eyebrow` with `variant`, `FactList` with `layout="grid"`, `Notice` with
+`size="comfort"`, `TextField` / `Select` with `labelTrack="prose"`, and `Stack`
+with `gap` 64 / 96. `conventions.md` has been updated for it; nothing is
+uploaded. Story counts moved, so pass `--max-stories 16`.
+
+## Appendix: pnpm 12.5.1 native binary
+
+`pnpm i` failing with `Failed to switch pnpm to v12.5.1 … Unknown system error -8`
+means the native binary pnpm 12 installs via a build script was skipped, leaving
+`node_modules/pnpm/pnpm` as a shebang-less `sh` placeholder — macOS returns
+ENOEXEC (-8) when a program spawns that path directly. Idempotent fix:
 
 ```sh
 P=~/Library/pnpm/.tools/pnpm/12.5.1/node_modules/pnpm
@@ -34,559 +436,4 @@ node $P/bin/pnpm.mjs --version   # fetches the @pnpm/exe.<target> package
 node $P/install.js               # relinks the native binary over the placeholder
 ```
 
-Afterwards `file $P/pnpm` reports `Mach-O 64-bit executable arm64` and the
-version switch works.
-
-## Converter setup (what made the build clean)
-
-- **`package.json` had no top-level `types`** — only `exports["."].types`. The
-  converter's `findTypesRoot` reads `pkgJson.types`/`typings` (then probes
-  `dist/` for a *direct* `.d.ts`, which `dist/lib/*` doesn't satisfy), so it fell
-  back to the repo root, found no entry, and enumerated **0 exports** — which
-  surfaced misleadingly as `[TITLE_UNMAPPED] 64`. Added
-  `"types": "./dist/lib/index.d.ts"`. This is also a genuine packaging fix:
-  without it the package is invisible to `moduleResolution: node` consumers.
-  There is no config knob for the types root — do not remove the field.
-- **`cfg.cssEntry: "dist/lib/styles.css"`** is essential. Without it the bundle
-  shipped component CSS only: no token layers, no base, no fonts →
-  `[TOKENS_MISSING]` for 136 `--di-*` vars and `[RENDER_THIN]` on IconTile and
-  Sparkline. `dist/lib/styles.css` (written by `scripts/build-styles.mjs`) is the
-  flattened stylesheet: `@font-face` + primitive/semantic/component + base.
-  Setting it fixed all of those at once.
-- **`cfg.titleMap` keys are title SEGMENTS, not full titles**, and the card group
-  is the segment *before* the matched one — so `Blocks/Inference/Confirm` →
-  export `ConfirmPanel`, group `inference`. Renames needed: Confidence→
-  ConfidenceField, Confirm→ConfirmPanel, Explain→ExplainPanel, Privacy→
-  PrivacyBadge, Seal→SealValue, Skeleton→SkeletonTable, AppShell→Console.
-- **Excluded via `titleMap: null`**: `Foundations/*` (Adoption, Color, Logo,
-  Type — doc pages with no component) and `Screens/*` (Architecture, Coverage,
-  Inference, Login, Register, Settings, Watchlist). The screens are real
-  components under `src/screens/` but are deliberately **not** exported from
-  `src/index.ts`, so they are not in the bundle. See Re-sync risks.
-- **`cfg.overrides`**: Modal `cardMode: "single"` + `primaryStory: "Confirm"`
-  (fixed/portal stories escape their grid cells); Session and Tabs
-  `cardMode: "column"` (stories wider than a grid cell); FieldHint
-  `skip: ["forms-fieldhint--empty"]` — that story renders nothing *by design*
-  ("Empty text renders nothing at all"), and it landed as `roots[0]`, tripping
-  the validator's `rootEmpty` check. Skipping it is cosmetic only; the API is
-  still documented in the `.d.ts` and `.prompt.md`.
-
-## Decorators are NOT bundled — and that is fine here
-
-`! preview decorator bundle failed: No loader is configured for ".woff2"` —
-`.storybook/preview.tsx` imports `../src/styles.css`, which `@import`s fontsource
-CSS, which references `.woff2`. The decorator bundler hardcodes
-`loader: {'.js':'jsx','.json':'json'}` and does **not** read
-`cfg.storyImports.loaders`, so no config knob reaches it.
-
-No `cfg.provider` is set, deliberately — the decorators provide only:
-1. `withThemeByDataAttribute` setting `data-theme="light"`. This DS defines light
-   as the bare `:root` default and remaps dark under `[data-theme="dark"]`, so
-   the light previews need no attribute at all.
-2. A `<main>` + visually-hidden `<h1>` wrapper (`StoryCanvas`). That is storybook
-   a11y scaffolding and must **not** ship to designs.
-
-There is no provider component in this DS to distill — theming is a CSS
-attribute, not React context. Confirm this by eye in the compare loop rather
-than assuming it.
-
-## [GENERAL] Cascade-layer order — a real bug in the published package
-
-**Symptom.** Every component rendered with the wrong text colour. Most visibly
-`Button` Primary: the navy fill was right but the label was navy-on-navy and
-therefore invisible. Measured `color` was `rgb(10,31,68)` on *all six* Button
-variants — Danger should be `#8A1B1B`, Seal `#7A5C0E`.
-
-**Root cause.** CSS cascade-layer order is fixed by the **first** `@layer`
-statement a document sees. Each component stylesheet opens with
-`@layer components {`, while the order statement
-`@layer tokens, base, components, overrides;` lived only at the top of
-`src/styles.css`. In the sync bundle the component CSS is concatenated first, so
-`components` registered first and `tokens`/`base`/`overrides` were appended
-*after* it — inverting the cascade. `src/styles/base.css` has
-`button, … { font: inherit; color: inherit; }`; with `base` now outranking
-`components`, that reset beat `.di-btn-primary { color: … }`. Layers trump
-specificity, so nothing in the component sheet could win.
-
-**This is not only a sync artifact.** `dist/lib/components/*.css` is what
-products consume, and `sideEffects`/tree-shaking means a product importing only
-`Button` never loads `styles.css` at all — so it would hit the same inverted
-cascade in production. Storybook hid it because `.storybook/preview.tsx` imports
-`src/styles.css` first.
-
-**Fix.** `scripts/build-styles.mjs` now prepends the order statement to every
-component stylesheet as it emits `dist/lib/components/*.css`, reading it from
-`src/styles.css` so the two can't drift (it fails the build if that statement
-disappears). Repeating a `@layer` statement is idempotent — naming an existing
-layer never reorders it.
-
-**Do not "fix" this in design-sync config.** The converter always *appends*
-`cfg.cssEntry` after the bundled CSS (`package-build.mjs`: "appended — bundle
-already had CSS"), so the order statement can never reach the front from there.
-It has to come from the component sheets themselves.
-
-## [GENERAL] Dark theme cannot render as a local island — both NightSheet stories are skipped
-
-`Primitives/Button` and `Primitives/StatusPill` each have a `NightSheet` story
-carrying `globals: { theme: "dark" }`. Storybook turns that into
-`data-theme="dark"` on `<html>` via `withThemeByDataAttribute`. The preview
-decorators are not bundled here (see the decorator note above), so the global is
-dropped and the story renders in daylight — showing a navy primary fill where
-the whole point is that **after dark the fill turns gold**
-(`--di-fill-strong: var(--di-gold-500)`, semantic.css:177).
-
-**Why it can't be fixed with a wrapper.** The dark palette is scoped
-`:root[data-theme="dark"]`, and `component.css` maps component slots through
-semantic ones (`--di-button-primary-bg: var(--di-fill-strong)`) **at `:root`**.
-A custom property's computed value is substituted on the element that declares
-it, so those component tokens lock to the daylight values at `:root`.
-Re-pointing semantic tokens on a descendant `<div>` therefore cannot reach them.
-This was tried and measured: the ground went dark (`rgb(7,18,41)`) while the
-primary button stayed navy and the secondary went near-white-on-near-white.
-Dark mode in this DS is a document-root contract, by design.
-
-**Why not set it on `<html>` from the story.** A component card is ONE document
-with ONE React root holding every story cell, so that would darken all of them.
-
-**Why not set it only under `?story=`.** Compare captures per story, so that
-would grade `match` while shipping a card that is still wrong — gaming the
-oracle. Rejected deliberately.
-
-**What was done instead.** Both stories are skipped from the cards
-(`cfg.overrides.Button.skip`, `cfg.overrides.StatusPill.skip`). The dark-mode
-contract is documented in `.design-sync/conventions.md`, which is where it
-actually reaches the design agent. If a future sync wants these cards back, the
-only sound route is rendering that story into an iframe with its own document.
-
-## [GENERAL] recharts must ride the bundle global — `cfg.extraEntries: ["recharts"]`
-
-**Symptom.** Every `Blocks/Chart` story rendered an empty cell. No page errors,
-no `[RENDER]` failure — the card even passed the render check, because the
-`ChartConfig` `<style>` block and the `.di-chart` wrapper (with its aria-label)
-mounted at the correct 560×240. Only the chart itself was missing: no `<svg>`.
-
-**Root cause.** Two copies of recharts. `Chart.tsx` renders
-`<ResponsiveContainer>` and ships inside `_ds_bundle.js`, while the story's
-helper `src/foundations/guide/BrandCharts.tsx` imports `Area, Bar,
-CartesianGrid, Cell, ComposedChart, Line, XAxis, YAxis` from `recharts`
-directly. Preview compiles bundle the story module's own imports, so recharts
-was bundled a second time into `_preview/Chart.js` (**1,010,288 bytes**).
-recharts identifies its children by type, so `ResponsiveContainer` from the
-bundle's copy did not recognise children built by the preview's copy and
-rendered nothing — silently, which is why no check caught it.
-
-**Fix.** `cfg.extraEntries: ["recharts"]` merges recharts into
-`window.DataInsightsUI`, so the story's imports shim to the same instance the DS
-bundle uses. `_preview/Chart.js` fell to **16,764 bytes** and the charts draw.
-
-**Expected warning, do not "fix" it.** The build now prints
-`[EXPORT_COLLISION] recharts exports 1 name(s) the main package also exports:
-Tooltip`. The DS's own `Tooltip` primitive wins, which is correct here: no story
-imports recharts' `Tooltip` (the only recharts imports in `src/` are Area, Bar,
-CartesianGrid, Cell, ComposedChart, Line, XAxis, YAxis, plus two type-only
-imports). Do **not** apply the suggested `cfg.storyImports.bundle: ["recharts"]`
-— that re-creates the duplicate instance and blanks every chart again. Re-check
-this if a story ever starts importing `Tooltip` or `Legend` from recharts.
-
-**Generalises:** any package the DS uses internally *and* a story imports
-directly needs the same treatment, or the duplicate instance breaks anything
-that inspects child component types.
-
-## Solo phase results (verified before fan-out)
-
-Graded exhaustively from images: Button (13 stories), Chart (4), DataTable (7),
-Icon (3), Modal (2). All `match` except `Modal/Transition` (`close`, see below).
-
-- Fonts are real on both sides (Space Grotesk + JetBrains Mono ship as woff2 via
-  `cfg.cssEntry`); no `[FONT_MISSING]`. DataTable is the canary — its mono
-  hashes and timestamps render in JetBrains Mono in both panels.
-- A **rendered design** gets `background: #F4F1E8` (warm paper) and Space
-  Grotesk from `styles.css`'s import closure — measured. The preview CARD page
-  is white; that is card chrome, not a token failure, and it is why every sheet
-  shows paper on the storybook side and white on the preview side. Ignore it.
-- `Icon` reflows to a different column count in the preview (narrower
-  container). Same icons, same styling — framing, graded `match`.
-- `Modal/Transition` is `close`: storybook runs the story's play function and
-  catches the opening backdrop; compiled previews never run play, so the preview
-  shows the resting trigger button. Forcing `open` would photograph blank (top
-  layer, root 0px).
-
-## [GENERAL] Play-function stories are systematically `close`, and that is correct
-
-Storybook runs a story's `play` function before photographing; compiled previews
-**never** run `play`. So any story whose `play` clicks, types, selects or focuses
-is photographed by storybook in its post-interaction state and by the preview in
-its resting state.
-
-**Signature** (learn it, so later waves don't chase it as a styling defect):
-identical element geometry on both sides, plus a navy `#0A1F44` ring-shaped
-pixel surplus on the storybook side only. Measured on `Chip/Active` (392 navy px
-vs 282, same 132×28 bbox) and `Chip/Available` (45 px of outset ring the preview
-lacks).
-
-Confirmed on: `Modal/Transition`, `Checkbox/Checking`, `Radio/Selecting`,
-`Switch/Toggling`, `SegmentedControl/Selecting`, `Chip/Active`, `Chip/Available`,
-`SearchField/Default`, `TextField/Default`, `Select/Choosing`.
-
-Grade `close` with the cause named. Do **not** hard-code the interaction result
-into an owned preview: the resting render is what a design agent actually gets
-from the component, so faking it would destroy the fidelity being verified. If
-one ever must grade `match`, the only sound route is `cfg.overrides.<Name>.skip`.
-
-## [GENERAL] FieldHint shipped unstyled — third real packaging bug, now fixed
-
-`src/components/FieldHint.tsx` rendered `.di-field-hint` but imported **no
-stylesheet**. That class is defined in `src/components/Field.css`, which only
-TextField / Select / SearchField / ConfidenceField import. `dist/lib/components/
-FieldHint.js` therefore had no CSS import at all, so a product tree-shaking
-`FieldHint` out of `@data-insights-ai/ui` shipped it completely unstyled.
-
-The compare oracle caught it because the **storybook side was the broken one**:
-vite code-splits `Field.css` into a chunk the `Forms/FieldHint` story never
-loads, while the preview loads the flattened `dist/lib/styles.css` and rendered
-correctly. A preview that renders BETTER than the reference is still a finding.
-
-Fixed: `src/components/FieldHint.tsx` now does `import "./Field.css";`.
-
-**Audit result — it was the only one.** Every `src/components/*.tsx` was checked
-for a side-effect import of the sheet defining each `di-*` class it renders. A
-naive scan also flags DataTable, Notice (`di-mono`) and Seal (`di-tick-rule`),
-but those are **false positives**: both classes are defined in
-`src/styles/base.css`, which always ships via `styles.css`. Only scan
-`src/components/*.css` and you will chase three ghosts.
-
-## `[STORY_CAP]` — orchestrator decision for this sync
-
-compare captures at most 6 stories per component by default. These exceed it, so
-their tail stories are captured and graded only when the cap is raised:
-Checkbox(7) Radio(7) Select(7) Switch(8) TextField(10) StatusPill(8, 1 skipped)
-Panel(9) StatTile(7). Button was captured at 14 in the solo phase.
-**This sync raises the cap for those components** — `TextField/AllStates` alone
-exercises five field states, and the user asked for a full high-fidelity sync.
-The cap is not part of the grade contract, so existing verdicts survive.
-
-## Reading sheets for small components
-
-Mark/label components are 20–30px tall and unreadable at contact-sheet scale.
-Judge them from the raw PNGs (`_screenshots/compare/raw/*__sb.png` / `*__ds.png`)
-recomposed side by side and zoomed; confirm exact token values by decoding the
-PNG and counting pixels per colour. Also: a 1px repeating gradient (the 8px tick
-rule) shows as broken clumps on a downscaled sheet — pure moire, not a bug.
-
-## Result of this sync (2026-09-24)
-
-64 components, 261 stories graded: **239 match, 22 close, 0 mismatch.** Validate
-exited 0 with 64/64 previews rendering cleanly. Uploaded 335 files to
-`datAInsights Register` and deleted 20 stale paths left by the aborted run
-(the four components that moved from `blocks/` to `primitives/` in `07bdc3c`,
-plus orphaned `tokens/*` — this build ships tokens inside `_ds_bundle.css`,
-reachable through `styles.css`'s `@import` closure).
-
-Every one of the 22 `close` verdicts is a play-function story (see the [GENERAL]
-section above) except `Progress/Counting`, which is a live JS counter the two
-panels cannot be captured at the same frame of.
-
-Only one owned preview exists: `.design-sync/previews/Modal.tsx`. It exists
-solely to keep `Confirm` on the Modal card after that story was skipped for the
-oracle. Everything else uses generated previews.
-
-## Re-sync risks — read this first next time
-
-- **`--max-stories 12` is this sync's cap and it is part of the capture key.**
-  Running a different cap re-captures and clears grades even for components whose
-  story set is unchanged. Keep passing `--max-stories 12` or expect a full
-  re-grade. Button is the only component with more (14): `All Variants` and
-  `Night Sheet` are outside the cap. `All Variants` was image-verified by hand in
-  the solo phase; `Night Sheet` is deliberately skipped.
-- **A full `compare.mjs` run always `[SPOT_CHECK]`s two random carried-forward
-  components** and reports them as `needs-grade`. That is the designed pipeline
-  check, not a regression. Confirm the two sheets and re-record; do not chase it
-  in a loop, and do not `--force`.
-- **The three source fixes this sync made are load-bearing.** If
-  `scripts/build-styles.mjs` stops prepending the `@layer` statement, every
-  component's text colour breaks again (invisible Primary button label). If
-  `package.json` loses top-level `types`, the converter enumerates 0 exports and
-  reports a misleading `[TITLE_UNMAPPED] 64`. If `FieldHint.tsx` loses
-  `import "./Field.css"`, it ships unstyled again.
-- **`cfg.extraEntries: ["recharts"]` must stay.** Removing it silently blanks
-  every chart with no error. The `[EXPORT_COLLISION]` warning it produces is
-  expected; do not apply the fix the warning suggests.
-- **Storybook's own static build cannot load the brand mark.** `Console/Chrome`
-  and all four `SignIn` stories show a broken image on the STORYBOOK side while
-  the preview renders it correctly (the package inlines the SVG as a
-  `data:image/svg+xml` URI; the storybook build emits it as a separate asset
-  whose relative URL 404s in the capture context). Graded `match` — the preview
-  is the correct side. Do not "fix" the preview.
-- **Screens are not synced.** `src/screens/*` are real components but are not
-  exported from `src/index.ts`, so they are not in the bundle. They are excluded
-  via `titleMap` nulls. Adding them would mean `cfg.extraEntries` pointing at TS
-  source, which would bundle a second copy of every component they import — the
-  same trap recharts fell into. Think carefully before doing it.
-- **Partially verified:** `Modal/{Confirm,Plain,TypeToConfirm}` are skipped for
-  the oracle because a top-layer `<dialog>` leaves the captured root 0px tall on
-  BOTH sides. The Modal card is verified instead by the validator's render check
-  (geometry + text), which reads the full 297px confirm modal. If Modal's card
-  ever regresses, the compare loop will NOT catch it — check `.render-check.json`.
-- **Known-triaged warnings** (do not chase): `[EXPORT_COLLISION] recharts …
-  Tooltip`. Nothing else warns.
-- **Unresolved, outside this sync:** `IconTile/Inverse` renders a navy tile with
-  no visible glyph, identically in storybook and the preview, so the sync is
-  faithful. Tokens look right (`--di-tile-inverse-bg: var(--di-ink)`,
-  `--di-tile-inverse-fg: var(--di-sheet)`), so it is NOT the cascade-layer bug.
-  Deliberately not papered over with an owned preview. Worth a designer's look.
-
-## [GENERAL] `cfg.skip` removes a story from the DESIGN SYSTEM, not just the oracle
-
-Found by the designer, who noticed the Modal card showed one state while
-storybook has five. Two separate things were going on, and only one was
-intended.
-
-**Intended:** `cardMode: "single"` means the CARD renders one story. That is
-correct for Modal — a native `<dialog>` opened with `showModal()` sits in the
-browser's top layer and would paint over every sibling cell. The card is for
-humans browsing the picker; one representative modal is the right choice.
-
-**Not intended:** a story in `cfg.overrides.<Name>.skip` is dropped from the
-generated wrapper entirely, so it is absent from `_preview/<Name>.js`, cannot be
-reached with `?story=`, and — the part that actually matters — **gets no section
-in `<Name>.prompt.md`, which is the design agent's usage reference.** `Modal`
-was shipping without `Plain` (no icon column) and `TypeToConfirm` (type the name
-back to arm the commit): two distinct patterns the agent had no example of.
-
-The fix is the one this repo already used for `Confirm`: re-export them from the
-owned `.design-sync/previews/Modal.tsx`. The skip still applies to the compare
-oracle (which genuinely cannot photograph a top-layer dialog — the root measures
-0px on both sides), while the module, the card's `?story=` and the generated
-prompt.md all get the story back. Verified: all five Modal states are now
-renderable and documented.
-
-**Audit any time skips change.** Enumerate what each card can actually render by
-evaluating `_preview/*.js` and reading the PascalCase function keys off
-`__dsPreview` — that is exactly what the card's own script does. Note it is a
-top-level `var`, so in a Node `vm` it lands on the context object, not on
-`ctx.window`. Comparing that against `sb-reference/index.json` (NOT against
-`.stories-map.json`, which already excludes skips — that baseline hides the very
-gap you are looking for) gives the true picture.
-
-**Audited 2026-09-25:** 273 storybook stories belong to synced components; 5 are
-not renderable, all deliberate — `Button/Night Sheet` and `StatusPill/Night
-Sheet` (they set `globals: {theme:"dark"}`, a storybook global the static
-preview harness cannot apply, so they would render light-on-navy),
-`FieldHint/Empty` (renders nothing by design), and Modal's two, now restored.
-Every other component documents every variant it can render.
-
-**Known cosmetic limitation:** `<Name>.prompt.md`'s one-line
-`Variants (see <Name>.html): …` header is generated from the non-skipped story
-roster, so for Modal it still reads "Closed, Transition" even though the file
-carries `### Plain` and `### TypeToConfirm` example sections below it. The
-substantive content is complete; fixing the header line would need a lib fork,
-which is not worth it.
-
-## Re-sync 2026-09-25 — what changed and what to watch
-
-This sync followed a large API and token refactor. Everything below is new
-since 2026-09-24.
-
-- **`pnpm build` now runs `pnpm lint:tokens` FIRST.** That is `cfg.buildCmd`, so
-  a token violation anywhere in `src` fails the converter's build stage before
-  esbuild ever runs. If a future sync dies in `stages.build` with a list of
-  `space` / `radius` / `type` / `colour` / `layer` / `api` problems, that is the
-  design-system lint, not the converter. Fix the values; do not bypass it.
-- **The space scale was renamed and is now value-named:** `--di-space-2 4 6 8 12
-  16 24 32 48` (`--di-space-12` is 12px). The old positional `--di-space-1…-7`
-  names are gone. 156 spacing values across 51 files moved onto the ramp.
-- **Nine string props became slots**, and five components now pick slots out of
-  `children` by type (the `ModalFrame` pattern): `PanelMeta`, `StageFooter`,
-  `ExplainFooter`, `MetricNote`, `RecordCount`, `SessionDetail`,
-  `StatTileDelta`, `LivingBasis`, `SignInVersion`. All nine verified `match`
-  against storybook this sync.
-- **Prop vocabulary was unified.** `tone` now means status only; what is not a
-  status got its own name (`surface` on Panel, `scope` on PrivacyBadge, `state`
-  on CommandChip, `level` on ConfidenceField, `variant` on IconTile). Values
-  `ai`→`inferred`, `gold`→`seal`, `info`/`default`→`neutral`, Sparkline
-  `ink`→`series`. Every rename verified against the storybook render.
-- **`--di-accent`, `--di-font-display` and `--di-font-body` were deleted** as
-  duplicate names. New `--di-inverse-*` roles (bg / raised / border / text /
-  muted / seal) exist for surfaces sitting on navy — Toast, Tooltip, SignIn and
-  the current Stage all bind to them now instead of hand-mixed hexes.
-- **`titleMap` gained `Scale: null` and `Decisions: null`; `Adoption` was
-  removed** (that page was renamed to Decisions). Without those two nulls the
-  new Foundations pages get scanned as components.
-- **Foundations/Scale and Foundations/Decisions are `.tsx`, so `guidelinesGlob`
-  cannot carry them** — same limitation as Color/Type/Logo. Their content is
-  hand-copied into `.design-sync/conventions.md` under "The dimensional ramps"
-  and "What this system refuses". **If those pages change, that header goes
-  stale.** Re-validate on every sync touching foundations.
-- **The conventions header's type table was found stale this sync** and
-  corrected: it documented Body 16px/weight 600 when `base.css` sets 13px and
-  every heading ships 700. It had been transcribed from a `Type.stories.tsx`
-  that was itself wrong. Both are fixed; the table now names the token for each
-  step. This is the exact failure the 2026-09-24 notes warned about — the header
-  is hand-authored and does not regenerate.
-- **Still unresolved (third sync running):** `IconTile/Inverse` renders a navy
-  tile with no visible glyph, identically on both sides. Faithful sync, real
-  design bug. Worth a designer's look.
-- **`Chart` now prints `[PORTAL?]`** suggesting `cardMode: "single"`. Ignore it:
-  `gridOverflow` measured `null`, nothing escapes its cells, and the Recharts
-  tooltip only renders on hover so a static capture never shows it. `cardMode:
-  "column"` stays — switching to `single` would drop three of the four chart
-  stories from the card.
-- **`Chart` stories were rewritten to compose `Chart` directly** rather than
-  rendering `foundations/guide/BrandCharts`. The library's own stories no longer
-  depend on unexported foundations helpers. All four graded `match`, which also
-  re-confirms `cfg.extraEntries: ["recharts"]` is still load-bearing.
-
-## Foundations — added after the first upload (same day)
-
-The first upload shipped **no Foundations content at all**, which the designer
-caught. Two separate misses:
-
-1. **Six MDX brand documents were never in the roster.** `Essence`, `Register`,
-   `Voice`, `Mark`, `Surfaces`, `Practice` are **docs**-type entries in
-   storybook's `index.json`, and the roster scan filtered to **story**-type
-   entries. They were invisible to every earlier step. Fixed with
-   `cfg.guidelinesGlob: ["src/foundations/*.mdx"]` — `emitGuidelines` copies them
-   to `guidelines/` with an `index.md`, and the generated README then emits
-   "Read these before composing larger layouts." The converter's DEFAULT globs
-   (`docs/*.md`, `docs/guides/**/*.md`, `guides/**/*.md`) match nothing in this
-   repo, which is why the directory came out empty and silent.
-2. **Four specimen pages** (`Color`, `Type`, `Logo`, `Adoption`) are excluded
-   from the component roster via `titleMap` nulls — correct, they have no
-   component — but their CONTENT was simply dropped. They are rendered React,
-   not markdown, so `guidelinesGlob` cannot carry them.
-
-**What was done about (2):** the concrete rules were written into
-`.design-sync/conventions.md` and validated against source:
-- the seven-role type scale (Display 48/600, Section 28/600, Body 16/400,
-  Interface 13/500, Measurement mono 28/500, Identifier mono 13/400, Section
-  mark mono 11/500 uppercase 0.12em) — verified against `Type.stories.tsx`
-- the four lockups, the minimum sizes (20px digital / 10mm print / 16px-6mm
-  mark) and the 1X clear-space rule — verified against `guide/Guide.tsx` and
-  `Mark.mdx`
-- the six misuse rules **with their reasons** — verified against
-  `guide/Specimens.tsx` (exactly six there)
-
-**Known limitation of shipping raw MDX:** the prose ships, but content rendered
-by components inside it does NOT. `<Misuse />`, `<ClearSpace />`, `<Cobrand />`
-and the specimen components appear to a reader as bare tags. That is exactly why
-the misuse rules and the size minimums were copied into the conventions header
-by hand. **If those specimen components change, the header goes stale** — it is
-hand-authored, not generated. Re-check it against `guide/Specimens.tsx` and
-`guide/Guide.tsx` on any sync that touches foundations.
-
-**Re-sync note:** `guidelinesGlob` is repo-relative to the package dir, so the
-emitted paths keep the `src/foundations/` prefix
-(`guidelines/src/foundations/Register.mdx`). That is cosmetic; `index.md` links
-them correctly.
-
-## Guardrails added after comparing with ~/code/frontend-template
-
-That repo splits guidance in two — `CLAUDE.md` (agents working in the repo,
-including an "Automation: what is enforced, not just asked" section and a
-definition-of-done checklist) and `.design-sync/conventions.md` (the design
-agent). This repo has the same split: `AGENTS.md` + `.design-sync/conventions.md`.
-
-Worth knowing: frontend-template's **"don't invent components"** rule lives in
-`CLAUDE.md` (rule 7 + "Prefer composing existing components over writing new
-markup"). Its `conventions.md` does **not** tell the design agent that — the
-only trace is a parenthetical in a code sample. So the gap existed in both
-projects. It matters more here because the claude.ai/design agent *cannot*
-create a component; when one is missing it improvises markup that cannot ship.
-
-Added to `conventions.md` (each value verified against source before writing):
-
-- **Compose, never invent**, plus an explicit note that `Screens/*` are not in
-  the bundle (they are not `src/index.ts` exports), so `RegisterScreen` and
-  friends are not available and must be composed.
-- **Never write a raw colour.** The reason is specific to this system: navy is
-  both ink and action and the action fill turns **gold** after dark, so a
-  hardcoded `#0A1F44` is right in daylight and invisible on the night sheet.
-- **Focus follows its ground** — `--di-focus` navy on paper / Gold 400 after
-  dark, `--di-sidebar-focus` gold on the navy rail — with the 2.1:1-vs-3:1 trap
-  spelled out. The header previously mentioned focus **zero times**, and
-  AGENTS.md:63 records that the prototype already made exactly this mistake.
-- **Gold is a mark, not type** (full rule, incl. `#061631` on ivory).
-- **No second yellow / no traffic-light green or red.**
-- **Timestamps 24h UTC with `Z`; ordinals zero-padded two digits.**
-- **Exploring a variation** — override token *values*, never component styling
-  or hex; keep names AND roles; name the changed tokens at handoff so
-  engineering can paste them into `src/styles/tokens/`. Modelled on
-  frontend-template's "Exploring a palette", adapted to this token set.
-- The rules are framed as **enforced** (`pnpm test` fails on axe), which is
-  true here and gives an agent a reason to comply rather than a preference.
-
-Added to `AGENTS.md`: a **"Compose, never invent"** section before Checks,
-stating that a missing control is a library addition (component + story +
-export), and that the synced design system carries only what `src/index.ts`
-exports — so a control that never became a component cannot be designed with.
-
-**Still not ported from frontend-template**, if you want it later: their
-`CLAUDE.md` enumerates enforcement (ESLint bans raw hex in components, a
-story-coverage test fails when a component has no story, a Stop hook runs
-lint/typecheck/test, CI refuses PRs deleting story files without a label) and
-ends with a definition-of-done checklist. This repo enforces less mechanically —
-`pnpm test` + axe, and the treeshake check in `pnpm build`.
-
-## Re-sync 2026-09-29 — Button gained an anchor; a union that did not survive the converter
-
-Two commits since the last sync: `fc16840` (StatusPill dot nudge) and
-`6bdcc11` (`Button` renders an `<a>` when given an `href`). Package `0.1.8`.
-
-- **`[GENERAL]` A discriminated-union props type is flattened to its FIRST
-  member by the `.d.ts` extractor, silently.** `Button`'s props are
-  `ButtonProps | LinkProps`, where the button branch carries `href?: never`
-  and the link branch `href: string`. `dist/lib/components/Button.d.ts` holds
-  the whole union correctly, but `lib/dts.mjs` calls
-  `type.getApparentType().getProperties()` on the union and emitted **only**
-  `href?: never` — telling the design agent the exact opposite of the new
-  capability, in both `Button.d.ts` and `Button.prompt.md`. Nothing warned:
-  no `[DTS_PARSE]`, no `[DTS_STYLE_SYSTEM]`, and the compare loop cannot see
-  it because the *renders* were perfect. Caught only by reading the uploaded
-  `.d.ts` back after the first upload.
-  **Fixed with `cfg.dtsPropsFor.Button`** — the documented remedy for a type
-  the extractor cannot flatten — carrying a hand-written body that documents
-  both branches. **That body is hand-authored and does not regenerate: if
-  `Button`'s props change, it goes stale silently.** Same failure class as the
-  conventions header.
-  **Check any component whose props are a union, not an intersection.** Today
-  `Button` is the only one; `grep -l "Props | .*Props" dist/lib/components/*.d.ts`
-  finds them. Read the emitted `.d.ts` back, do not assume.
-- **The driver's default story cap is 6, not the 12 the 2026-09-25 notes
-  assume.** `Button` now has 15 stories and the driver captured
-  `first 6 of 15` — which silently excluded `Link` and `Link Disabled`, the
-  only two stories this sync existed to verify. Re-ran
-  `compare.mjs --components Button,StatusPill --max-stories 15`. **On any sync
-  that adds stories to a component with more than 6, pass `--max-stories`
-  explicitly or the new work is never photographed.**
-- **A CSS-only change to a component does not mark it `changed`.** `fc16840`
-  edited `StatusPill.css` only; the diff keys on `sourceKeys` (jsx/d.ts/
-  prompt.md), so `StatusPill` landed in `unchanged` and its grade would have
-  carried forward with nobody ever looking at the designer's adjustment. The
-  styling genuinely does re-ship (`upload.styling: true`), so the DESIGN is
-  correct either way — it is the VERIFICATION that silently skips. Forced a
-  recapture (`--force`) and re-graded all 8 stories; the 0.5px dot lift is in
-  `_ds_bundle.css` and renders identically on both sides at 8x.
-- **`Button/Primary` is `close`, and newly so**: its play function clicks the
-  button, so storybook photographs it focused. Ordinary play-function
-  signature, same as `Radio/Selecting` and `Menu/Open`.
-- **Verified the base `text-decoration: none`** added for the anchor does not
-  kill `Ghost`'s gold underline — checked at 3x on both sides, because that
-  was the one variant the new base rule could have broken.
-- **Conventions header gained a `Button href` rule.** Without it the design
-  agent reads a Button that cannot navigate and hand-rolls an anchor, which is
-  the "compose, never invent" failure the header exists to prevent. The type
-  table was re-validated against `primitive.css` and `base.css` this run and
-  is still accurate (13px body, the ten steps) — no drift since 2026-09-25.
-- **Canary** (`reference_drift`, explained: the reference storybook went
-  355 → 357 entries because of the two new stories) picked Chart, Radio, Icon,
-  Menu, ConfidenceField. All five confirm their recorded grades.
-- Known-triaged warnings unchanged: `[EXPORT_COLLISION] recharts … Tooltip`
-  only. Render check ran full, 64/64 clean. `IconTile/Inverse` still renders a
-  navy tile with no visible glyph, identically on both sides — fourth sync
-  carrying this. Still worth a designer's look.
-- **The `/design-sync` skill was not installed in this session.** The staged
-  `.ds-sync/` scripts and `.design-sync/` inputs were enough to run §7 end to
-  end, and `scriptsSha` still matched the anchor (`c0730d65e41fa758`), so the
-  staged converter was the same vintage that produced the last upload — no
-  pipeline churn. §7 step 1 says to re-copy the scripts from the skill first;
-  that step could not run, and did not need to.
+`file $P/pnpm` should then report `Mach-O 64-bit executable arm64`.

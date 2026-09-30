@@ -76,10 +76,19 @@ export const AllTones: Story = {
 
 /** The same six on the night sheet, each still above 5:1 on its wash. */
 export const NightSheet: Story = {
-  globals: { theme: "dark" },
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+    <div
+      data-theme="dark"
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "var(--di-space-8)",
+        padding: "var(--di-space-16)",
+        borderRadius: "var(--di-radius-surface)",
+        background: "var(--di-bg-page)",
+      }}
+    >
       <StatusPill tone="ok">running</StatusPill>
       <StatusPill tone="warn">paused</StatusPill>
       <StatusPill tone="danger">failed</StatusPill>

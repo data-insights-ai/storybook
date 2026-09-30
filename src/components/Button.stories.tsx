@@ -178,13 +178,28 @@ export const AllVariants: Story = {
   ),
 };
 
-/** After dark the fill turns gold: navy has nothing left to act against. */
+/**
+ * After dark the fill turns gold: navy has nothing left to act against.
+ *
+ * The ground is a `data-theme="dark"` region rather than the whole canvas,
+ * so the night sheet can be shown beside daylight — and so this story is a
+ * render rather than a toolbar state.
+ */
 export const NightSheet: Story = {
   args: { children: "" },
-  globals: { theme: "dark" },
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+    <div
+      data-theme="dark"
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "var(--di-space-8)",
+        padding: "var(--di-space-16)",
+        borderRadius: "var(--di-radius-surface)",
+        background: "var(--di-bg-page)",
+      }}
+    >
       <Button variant="primary">
         <Check aria-hidden />
         Commit

@@ -22,6 +22,18 @@
     text-rendering: optimizeLegibility;
   }
 
+  /*
+   * A theme boundary has to re-apply the ink it re-points. `body` resolves
+   * `--di-text` where it is declared, so a region carrying `data-theme`
+   * inherits the OUTER ink as a literal colour and its own `--di-text` is
+   * never read — navy prose on the night sheet. The surface stays the
+   * author's choice (page, surface, or none, so a region can sit on the
+   * ground it means to); the ink never is.
+   */
+  [data-theme] {
+    color: var(--di-text);
+  }
+
   h1,
   h2,
   h3,

@@ -8,8 +8,16 @@
  */
 
 @layer tokens {
+  /*
+   * Not `:root[data-theme=…]`. A theme is a token boundary, not a document
+   * property: an element carrying `data-theme` re-declares these roles, and
+   * `component.css` re-declares its slots on the same selector, so a region
+   * resolves the whole layer from its own ground. A product still themes the
+   * document root; `Foundations/Color` uses a region to show the night sheet
+   * beside daylight, which it previously did with transcribed hex literals.
+   */
   :root,
-  :root[data-theme="light"] {
+  [data-theme="light"] {
     color-scheme: light;
 
     --di-bg-page: var(--di-paper);
@@ -155,7 +163,7 @@
     --di-badge-seal-fg: #e4c98a;
   }
 
-  :root[data-theme="dark"] {
+  [data-theme="dark"] {
     color-scheme: dark;
 
     --di-bg-page: var(--di-night-950);

@@ -1,7 +1,17 @@
 /* Per-component slots. A screen can restyle one control without editing it. */
 
 @layer tokens {
-  :root {
+  /*
+   * `[data-theme]` as well as `:root`, and it is load-bearing. A custom
+   * property is substituted on the element that DECLARES it, so a slot
+   * declared only at `:root` resolves to the daylight value there and
+   * inherits down as a literal colour — re-pointing `--di-fill-strong` on a
+   * descendant could never reach `--di-button-primary-bg`. Fourteen of these
+   * slots read a role the night sheet remaps; re-declaring them wherever a
+   * theme is set is what lets a themed region carry its own controls.
+   */
+  :root,
+  [data-theme] {
     --di-button-radius: var(--di-radius-control);
     --di-button-height: var(--di-h-ctl);
     --di-button-primary-bg: var(--di-fill-strong);

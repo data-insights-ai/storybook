@@ -50,16 +50,6 @@
         "forms-fieldhint--empty"
       ]
     },
-    "Button": {
-      "skip": [
-        "primitives-button--night-sheet"
-      ]
-    },
-    "StatusPill": {
-      "skip": [
-        "primitives-statuspill--night-sheet"
-      ]
-    },
     "Chart": {
       "cardMode": "column"
     }

@@ -45,17 +45,20 @@ const status = [
 ];
 
 /*
- * The night sheet. The page documented daylight only, while every
- * component ships a dark remap — so the one place a designer could check
- * what dark actually does was the components themselves.
+ * The night sheet, rendered from the tokens rather than transcribed from
+ * them. The section sits in a `data-theme="dark"` region, so each swatch
+ * paints `var(--di-*)` as the night sheet actually resolves it. The hex
+ * beside it is the documented value: it is a caption, not the fill, so a
+ * token moving under this page shows up as the swatch and its label
+ * disagreeing rather than as a page quietly displaying a retired colour.
  */
 const night = [
-  ["--di-bg-page", "#071229", "#f2f5fb", "The page, after dark."],
-  ["--di-bg-surface", "#0c1b37", "#f2f5fb", "A panel on that ground."],
-  ["--di-fill-strong", "#c9a24a", "#241a02", "The committing control. Gold, because navy cannot act on navy."],
-  ["--di-focus", "#d9b45e", "#241a02", "The focus ring follows its ground."],
-  ["--di-seal", "#c9a24a", "#241a02", "The seal does not move. A fact is a fact in either theme."],
-  ["--di-seal-ink", "#d9b45e", "#241a02", "Gold read as text on navy is Gold 400."],
+  ["--di-bg-page", "--di-text", "#071229", "The page, after dark."],
+  ["--di-bg-surface", "--di-text", "#0c1b37", "A panel on that ground."],
+  ["--di-fill-strong", "--di-text-on-strong", "#c9a24a", "The committing control. Gold, because navy cannot act on navy."],
+  ["--di-focus", "--di-text-on-strong", "#d9b45e", "The focus ring follows its ground."],
+  ["--di-seal", "--di-text-on-strong", "#c9a24a", "The seal does not move. A fact is a fact in either theme."],
+  ["--di-seal-ink", "--di-text-on-strong", "#d9b45e", "Gold read as text on navy is Gold 400."],
 ];
 
 const chartRoles = [
@@ -130,11 +133,11 @@ function Board() {
         title="One exception, and it is the fill."
         lede="Every role remaps, but only one reverses its meaning: navy cannot act as the accent against a navy ground, so the committing control turns gold. That is the single exception in the system, and it exists only on the night sheet."
       >
-        <div className="di-swatches">
+        <div className="di-swatches" data-theme="dark">
           <section className="di-swatch-col" style={{ gridColumn: "1 / -1" }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}>
-              {night.map(([name, hex, ink, role]) => (
-                <div key={name} className="di-swatch" style={{ background: hex, color: ink }}>
+              {night.map(([name, ink, hex, role]) => (
+                <div key={name} className="di-swatch" style={{ background: `var(${name})`, color: `var(${ink})` }}>
                   <b>
                     {name}
                     <small>{hex}</small>

@@ -1,10 +1,16 @@
 @layer components {
+  /*
+   * No `color` here. An icon takes the ink of the ground it sits on, and
+   * `color` inherits, so declaring one would override that ground — which
+   * is how `IconTile variant="inverse"` came to paint a navy glyph on its
+   * navy tile: the tile set the ivory ink and this rule beat it, because an
+   * explicit declaration always outranks an inherited value.
+   */
   .di-icon {
     display: inline-flex;
     flex: none;
     align-items: center;
     justify-content: center;
-    color: var(--di-text);
   }
 
   .di-icon-24 {
