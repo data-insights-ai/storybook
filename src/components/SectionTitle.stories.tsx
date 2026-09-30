@@ -8,13 +8,17 @@ const meta = {
   component: SectionTitle,
   tags: ["autodocs"],
   args: {
+    eyebrow: "",
     title: "Notification channels",
     lede: "Active endpoints for security events",
+    tier: "console",
     children: null,
   },
   argTypes: {
+    eyebrow: { control: "text" },
     title: { control: "text" },
     lede: { control: "text" },
+    tier: { control: "radio", options: ["console", "brand"] },
     children: { control: false },
   },
 } satisfies Meta<typeof SectionTitle>;
@@ -41,4 +45,26 @@ export const WithMeta: Story = {
       <StatusPill tone="ok">synced</StatusPill>
     </SectionTitle>
   ),
+};
+
+/**
+ * The plain eyebrow. It repeats down a page, unlike the sealed `Eyebrow`,
+ * which marks the one section on record.
+ */
+export const WithEyebrow: Story = {
+  args: { eyebrow: "§ 02 — Delivery" },
+};
+
+/**
+ * The display tier, which is what a brand page sets over every section:
+ * 28px up to 34, measured to 22ch, and no bottom margin — the stack owns
+ * the distance to the next section.
+ */
+export const Brand: Story = {
+  args: {
+    eyebrow: "Two",
+    title: "Navy is the ink and the action.",
+    lede: "There is no invented accent colour. Body text is navy; the one filled control on a sheet is navy.",
+    tier: "brand",
+  },
 };

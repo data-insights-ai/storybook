@@ -20,6 +20,8 @@ const space = [
   { token: "--di-space-24", px: 24, use: "Between panels." },
   { token: "--di-space-32", px: 32, use: "Between sections of a screen." },
   { token: "--di-space-48", px: 48, use: "Between the parts of a brand page." },
+  { token: "--di-space-64", px: 64, use: "Between the sections of a brand page. The brand tier starts here." },
+  { token: "--di-space-96", px: 96, use: "Between the parts of an argument. A console screen never reaches it." },
 ];
 
 const radius = [
@@ -73,7 +75,7 @@ export const Dimensions: StoryObj = {
       <Section
         eyebrow="Space"
         title="Doubling, then widening."
-        lede="2, 4, 6, 8, 12, 16, 24, 32, 48. Fine at the bottom, coarse at the top, because that is where the density is — a 28px control cannot be padded on a 4px grid. Tokens are named by value, so `--di-space-12` is 12px and a wrong number shows up in the diff rather than hiding behind an index."
+        lede="2, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96. Fine at the bottom, coarse at the top, because that is where the density is — a 28px control cannot be padded on a 4px grid. Tokens are named by value, so `--di-space-12` is 12px and a wrong number shows up in the diff rather than hiding behind an index."
       >
         <Ramp
           rows={space}
@@ -88,6 +90,12 @@ export const Dimensions: StoryObj = {
           <Verdict result="pass" note="After: every gap, padding and margin in src is a --di-space-* token. `pnpm lint:tokens` fails on the next one that is not.">
             156 values moved, most by one or two pixels. The ramp is only worth stating if
             something enforces it — a page a person has to remember is not a rule, it is a wish.
+          </Verdict>
+          <Verdict result="fail" note="The ramp stopped at 48. A page assembled from the package wrote calc(var(--di-space-48) * 2) in a local token to get past it.">
+            48 is the gap between the parts of a brand page. A brand page also has to separate
+            those parts from each other, and there was no step for it — so the answer lived in a
+            stylesheet the system cannot read. 64 and 96 close it, and they are the brand tier the
+            way the top two type steps are: a console screen stops at 48.
           </Verdict>
         </Verdicts>
       </Section>

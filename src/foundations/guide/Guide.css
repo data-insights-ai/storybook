@@ -13,99 +13,31 @@
   font-family: var(--di-font-ui);
 }
 
-.di-guide-head h1,
-.di-guide-section h2 {
-  margin: 0;
-  font-family: var(--di-font-ui);
-  font-weight: var(--di-weight-bold);
-  letter-spacing: var(--di-tracking-tight);
-  line-height: 1.02;
-  color: var(--di-fill-strong);
-  text-wrap: balance;
-}
-
-.di-guide-head h1 {
-  max-width: 16ch;
-  font-size: clamp(var(--di-font-size-800), 6vw, var(--di-font-size-1000));
-}
-
-.di-guide-section h2 {
-  max-width: 22ch;
-  font-size: clamp(var(--di-font-size-700), 3vw, var(--di-font-size-800));
-}
-
-.di-guide-eyebrow {
-  margin: 0 0 var(--di-space-12);
-  font-family: var(--di-font-code);
-  font-size: var(--di-font-size-200);
-  letter-spacing: var(--di-tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--di-seal-ink);
-}
-
-.di-guide-lede {
-  max-width: 58ch;
-  margin: var(--di-space-16) 0 0;
+/*
+ * The prose between the sections. A brand page reads at 16px over a 18px
+ * lede over the console's 13px, which is the hierarchy the band between
+ * 16 and 20 exists for. Inline code keeps the docs page's own styling: it
+ * carries an emotion class rather than a descendant selector, so it
+ * survives the opt-out above.
+ */
+.di-guide-section > p,
+.di-guide-section > em {
+  max-width: 68ch;
   font-size: var(--di-font-size-500);
-  line-height: 1.55;
-  color: var(--di-text-muted);
+  line-height: 1.6;
+  color: var(--di-text);
   text-wrap: pretty;
 }
 
-.di-guide-facts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 0;
-  border-top: 1px solid var(--di-rule);
-  border-left: 1px solid var(--di-rule);
-}
-
-.di-guide-fact {
-  display: flex;
-  flex-direction: column;
-  gap: var(--di-space-8);
-  min-height: 108px;
-  margin: 0;
-  padding: var(--di-space-16) var(--di-space-16) var(--di-space-16);
-  border-right: 1px solid var(--di-rule);
-  border-bottom: 1px solid var(--di-rule);
-  background: var(--di-bg-surface);
-}
-
-.di-guide-fact dt {
-  font-family: var(--di-font-code);
-  font-size: var(--di-font-size-100);
-  letter-spacing: var(--di-tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--di-seal-ink);
-}
-
-.di-guide-fact dd {
-  margin: 0;
-  font-family: var(--di-font-ui);
-  font-size: var(--di-font-size-600);
-  font-weight: var(--di-weight-bold);
-  letter-spacing: var(--di-tracking-tight);
-  line-height: 1.25;
-  color: var(--di-fill-strong);
-}
-
-.di-guide blockquote.di-guide-pull {
-  margin: 0;
-  max-width: 16em;
-  padding: var(--di-space-2) 0 var(--di-space-2) var(--di-space-24);
-  border: 0;
-  border-left: 1px solid var(--di-rule);
-  background: transparent;
-  quotes: none;
-  font-family: var(--di-font-ui);
-  font-size: clamp(var(--di-font-size-700), 4vw, var(--di-font-size-900));
+.di-guide-section > p em,
+.di-guide-section > em {
   font-style: italic;
-  font-weight: var(--di-weight-regular);
-  letter-spacing: var(--di-tracking-tight);
-  line-height: 1.15;
-  color: var(--di-fill-strong);
 }
+
+.di-guide-section > p strong {
+  font-weight: var(--di-weight-semibold);
+}
+
 
 .di-guide-section {
   display: flex;
@@ -924,7 +856,6 @@
 
 @media (max-width: 720px) {
   .di-charts,
-  .di-guide-facts,
   .di-guide-rewrite,
   .di-guide-columns,
   .di-guide-lockups,

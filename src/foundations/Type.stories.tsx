@@ -43,9 +43,15 @@ const prose: Row[] = [
     style: { fontFamily: SANS, fontWeight: 700, fontSize: "var(--di-font-size-600)", letterSpacing: TIGHT, lineHeight: 1.2 },
   },
   {
-    token: "--di-font-size-500 · 16 · 400",
-    note: "Brand page lede",
+    token: "--di-font-size-550 · 18 · 400",
+    note: "Brand page lede — the band's one interpolated step",
     sample: "Every answer is grounded in a temporal knowledge graph.",
+    style: { fontFamily: SANS, fontSize: "var(--di-font-size-550)", lineHeight: 1.55 },
+  },
+  {
+    token: "--di-font-size-500 · 16 · 400",
+    note: "Section lede, a stated fact",
+    sample: "Every claim is tied to its source, and every source has a timestamp.",
     style: { fontFamily: SANS, fontSize: "var(--di-font-size-500)", lineHeight: 1.55 },
   },
   {
@@ -126,7 +132,7 @@ export const ScaleStory: StoryObj = {
       <Section
         eyebrow="Prose"
         title="Space Grotesk."
-        lede="Nine steps, and the console lives in the bottom four. Display and Title exist for these brand pages; a product screen never goes above the PageHeader."
+        lede="Ten steps, and the console lives in the bottom four. Display and Title exist for these brand pages; a product screen never goes above the PageHeader. -550 is the ladder's one interpolated step: with nothing between 16 and 20, a page lede, a section lede and a card heading all landed on 16 and the hierarchy in that band went flat."
       >
         <Rows rows={prose} />
       </Section>

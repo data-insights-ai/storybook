@@ -32,6 +32,7 @@ export { Drawer, DrawerFooter } from "./components/Drawer";
 export { EmptyState, EmptyStateAction } from "./components/EmptyState";
 export { ExplainFooter, ExplainPanel, ExplainRow } from "./components/ExplainPanel";
 export { Fact, FactList } from "./components/FactList";
+export type { LabelTrack } from "./components/Field";
 export { FieldHint } from "./components/FieldHint";
 export type { HintTone } from "./components/FieldHint";
 export { PageHeader } from "./components/Heading";
@@ -63,6 +64,7 @@ export { Pagination } from "./components/Pagination";
 export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/Panel";
 export { PrivacyBadge } from "./components/PrivacyBadge";
 export { Progress } from "./components/Progress";
+export { PullQuote } from "./components/PullQuote";
 export {
   RecordCard,
   RecordCount,

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
+import { Stack } from "./Layout";
 import { TextField } from "./TextField";
 import { TextLink } from "./TextLink";
 
@@ -12,6 +13,7 @@ const meta = {
     label: "Source",
     hint: "",
     hintTone: "neutral",
+    labelTrack: "record",
     mono: false,
     placeholder: "registry.example.org",
     disabled: false,
@@ -23,6 +25,7 @@ const meta = {
     label: { control: "text" },
     hint: { control: "text" },
     hintTone: { control: "radio", options: ["neutral", "sealed", "error"] },
+    labelTrack: { control: "radio", options: ["record", "prose"] },
     mono: { control: "boolean" },
     placeholder: { control: "text" },
     disabled: { control: "boolean" },
@@ -136,4 +139,39 @@ export const AllStates: Story = {
       <TextField id="s5" label="Disabled" disabled={true} defaultValue="registry.example.org" />
     </div>
   ),
+};
+
+/**
+ * `prose` is the label for a form a person fills in for themselves — an
+ * account, a sign-up — where it is a sentence they read rather than the
+ * name of a column. Family, weight, case and size move together, because
+ * a 13px label still uppercase and still letterspaced is not a heavier
+ * console label, it is a broken one.
+ *
+ * The distance between two such fields is `Stack`'s, not the field's.
+ */
+export const ProseLabel: Story = {
+  name: "Prose label",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Stack gap={12}>
+      <TextField
+        id="account-name"
+        label="Full name"
+        labelTrack="prose"
+        placeholder="Nora Feld"
+      />
+      <TextField
+        id="account-email"
+        label="Work email"
+        labelTrack="prose"
+        hint="We only use this to send the receipt for a sealed run."
+        placeholder="nora.feld@data-insights.ai"
+      />
+    </Stack>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText("Work email")).toBeVisible();
+  },
 };

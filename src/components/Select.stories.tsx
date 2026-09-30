@@ -11,6 +11,7 @@ const meta = {
     label: "Window",
     hint: "",
     hintTone: "neutral",
+    labelTrack: "record",
     mono: true,
     disabled: false,
     children: null,
@@ -22,6 +23,7 @@ const meta = {
     label: { control: "text" },
     hint: { control: "text" },
     hintTone: { control: "radio", options: ["neutral", "sealed", "error"] },
+    labelTrack: { control: "radio", options: ["record", "prose"] },
     mono: { control: "boolean" },
     disabled: { control: "boolean" },
     required: { control: "boolean" },
@@ -91,4 +93,17 @@ export const Disabled: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByLabelText("Window")).toBeDisabled();
   },
+};
+
+/** The prose label, for a select on a form rather than over a register. */
+export const ProseLabel: Story = {
+  name: "Prose label",
+  args: { label: "How should we reach you?", labelTrack: "prose", mono: false, defaultValue: "email" },
+  render: (args) => (
+    <Select {...args}>
+      <option value="email">Email</option>
+      <option value="webhook">Webhook</option>
+      <option value="none">Nothing, I will check myself</option>
+    </Select>
+  ),
 };

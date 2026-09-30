@@ -1,8 +1,22 @@
 import type { ReactNode } from "react";
+import { PageHeader } from "../../components/Heading";
+import { SectionTitle } from "../../components/SectionTitle";
 import logo from "../../assets/logo.svg";
 import mark from "../../assets/mark.svg";
 import "./Guide.css";
 
+/*
+ * What is left in this file is specimen: a verdict table, a before/after
+ * rewrite, the lockup stages, the clear-space diagram. They document the
+ * brand and nothing outside Foundations renders them.
+ *
+ * The page shell and the section heading are not specimen. They were the
+ * marketing vocabulary drawn a second time, in a stylesheet no product can
+ * import — so a page assembled from the package could not reach them and
+ * had to approximate them. They are `PageHeader` and `SectionTitle` at
+ * `tier="brand"` now, and these two wrappers only supply the landmark and
+ * the measure.
+ */
 export function Page({
   eyebrow,
   title,
@@ -15,36 +29,27 @@ export function Page({
   children: ReactNode;
 }) {
   return (
-    <article className="di-guide">
-      <header className="di-guide-head">
-        <p className="di-guide-eyebrow">{eyebrow}</p>
-        <h1>{title}</h1>
-        {lede ? <p className="di-guide-lede">{lede}</p> : null}
-      </header>
+    /*
+     * `sb-unstyled` is Storybook's own opt-out from the docs page's
+     * typography, and a brand page needs it now that the header, the
+     * section heading, the stated facts and the pull quote are published
+     * components. Those live in `@layer components`, and the docs styles
+     * are unlayered — an unlayered declaration beats every layered one
+     * whatever its specificity, so without this the h1 came out at the
+     * docs theme's 32px and the pull quote in a grey blockquote with a
+     * blue rule. Opting out means this file owns the prose between the
+     * sections too, which is where it should have been: the brand pages'
+     * body copy was being sized by a Storybook theme.
+     */
+    <article className="di-guide sb-unstyled">
+      <PageHeader tier="brand" eyebrow={eyebrow} title={title} lede={lede} />
       {children}
     </article>
   );
 }
 
-export function Facts({ children }: { children: ReactNode }) {
-  return <dl className="di-guide-facts">{children}</dl>;
-}
-
-export function Fact({ term, children }: { term: string; children: ReactNode }) {
-  return (
-    <div className="di-guide-fact">
-      <dt>{term}</dt>
-      <dd>{children}</dd>
-    </div>
-  );
-}
-
-export function Pull({ children }: { children: ReactNode }) {
-  return <blockquote className="di-guide-pull">{children}</blockquote>;
-}
-
 export function Section({
-  eyebrow,
+  eyebrow = "",
   title,
   lede,
   children,
@@ -56,9 +61,7 @@ export function Section({
 }) {
   return (
     <section className="di-guide-section">
-      {eyebrow ? <p className="di-guide-eyebrow">{eyebrow}</p> : null}
-      <h2>{title}</h2>
-      {lede ? <p className="di-guide-lede">{lede}</p> : null}
+      <SectionTitle tier="brand" eyebrow={eyebrow} title={title} lede={lede} />
       {children}
     </section>
   );

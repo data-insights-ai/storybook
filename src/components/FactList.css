@@ -1,10 +1,22 @@
 @layer components {
-  .di-facts {
+  .di-fact-label {
+    font-family: var(--di-font-code);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+  }
+
+  .di-fact-value {
+    min-width: 0;
+    margin: 0;
+  }
+
+  /* The console list: a term column, then the value in the mono track. */
+  .di-facts-rows {
     margin: var(--di-space-12) 0 0;
     border-top: 1px solid var(--di-rule-hairline);
   }
 
-  .di-fact {
+  .di-facts-rows .di-fact {
     display: flex;
     align-items: baseline;
     gap: var(--di-space-12);
@@ -12,22 +24,62 @@
     border-bottom: 1px solid var(--di-rule-hairline);
   }
 
-  .di-fact-label {
+  .di-facts-rows .di-fact-label {
     width: 96px;
     flex: none;
-    font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
     color: var(--di-text-subtle);
   }
 
-  .di-fact-value {
+  .di-facts-rows .di-fact-value {
     flex: 1;
-    min-width: 0;
-    margin: 0;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
+    color: var(--di-text);
+  }
+
+  /*
+   * The brand grid. Columns wrap on their own rather than at a breakpoint,
+   * so the block never forces a page wider than the frame it is in; 360px
+   * is wide enough that a stated fact keeps two columns on a brand page and
+   * drops to one on a phone.
+   *
+   * The rule runs on the top and left of the grid and on the right and
+   * bottom of each cell, so the outer edge is drawn once and no interior
+   * line doubles.
+   */
+  .di-facts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
+    margin: 0;
+    border-top: 1px solid var(--di-rule);
+    border-left: 1px solid var(--di-rule);
+  }
+
+  .di-facts-grid .di-fact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-8);
+    min-height: 108px;
+    margin: 0;
+    padding: var(--di-space-16);
+    border-right: 1px solid var(--di-rule);
+    border-bottom: 1px solid var(--di-rule);
+    background: var(--di-bg-surface);
+  }
+
+  /* Small gold on paper is seal ink. Gold 500 is a mark, not type. */
+  .di-facts-grid .di-fact-label {
+    font-size: var(--di-font-size-100);
+    color: var(--di-seal-ink);
+  }
+
+  .di-facts-grid .di-fact-value {
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-600);
+    font-weight: var(--di-weight-bold);
+    letter-spacing: var(--di-tracking-tight);
+    line-height: 1.25;
     color: var(--di-text);
   }
 }

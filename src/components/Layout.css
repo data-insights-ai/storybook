@@ -6,6 +6,17 @@
     min-width: 0;
   }
 
+  /* One rule per step of the ramp, so the caller passes a value and
+     nothing has to translate it into a class name at runtime. */
+  .di-stack[data-gap="8"] { gap: var(--di-space-8); }
+  .di-stack[data-gap="12"] { gap: var(--di-space-12); }
+  .di-stack[data-gap="16"] { gap: var(--di-space-16); }
+  .di-stack[data-gap="24"] { gap: var(--di-space-24); }
+  .di-stack[data-gap="32"] { gap: var(--di-space-32); }
+  .di-stack[data-gap="48"] { gap: var(--di-space-48); }
+  .di-stack[data-gap="64"] { gap: var(--di-space-64); }
+  .di-stack[data-gap="96"] { gap: var(--di-space-96); }
+
   .di-grid {
     display: grid;
     gap: var(--di-space-12);

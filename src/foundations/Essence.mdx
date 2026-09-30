@@ -1,5 +1,7 @@
 import { Meta } from "@storybook/addon-docs/blocks";
-import { Fact, Facts, Page, Pull } from "./guide/Guide";
+import { Fact, FactList } from "../components/FactList";
+import { PullQuote } from "../components/PullQuote";
+import { Page } from "./guide/Guide";
 
 <Meta title="Foundations/Essence" />
 
@@ -8,13 +10,13 @@ import { Fact, Facts, Page, Pull } from "./guide/Guide";
   title="Provable AI for regulated decisions."
   lede="We build AI that shows its work. Every answer is grounded in a temporal knowledge graph, every claim is tied to its source, and every source has a timestamp."
 >
-  <Facts>
-    <Fact term="Promise">No guesses. Only traceable answers.</Fact>
-    <Fact term="Proof">Knowledge graphs. Timestamps. Replayable evidence.</Fact>
-    <Fact term="For">Government, finance, pharma, legal, infrastructure.</Fact>
-    <Fact term="Against">Black-box models. Hallucinations. “Trust us” AI.</Fact>
-    <Fact term="Feels like">A senior analyst. Methodical, cited, unhurried.</Fact>
-    <Fact term="Never feels like">A chatbot. A demo. A magic trick.</Fact>
-  </Facts>
-  <Pull>If you cannot cite it, we cannot say it.</Pull>
+  <FactList layout="grid">
+    <Fact label="Promise">No guesses. Only traceable answers.</Fact>
+    <Fact label="Proof">Knowledge graphs. Timestamps. Replayable evidence.</Fact>
+    <Fact label="For">Government, finance, pharma, legal, infrastructure.</Fact>
+    <Fact label="Against">Black-box models. Hallucinations. “Trust us” AI.</Fact>
+    <Fact label="Feels like">A senior analyst. Methodical, cited, unhurried.</Fact>
+    <Fact label="Never feels like">A chatbot. A demo. A magic trick.</Fact>
+  </FactList>
+  <PullQuote>If you cannot cite it, we cannot say it.</PullQuote>
 </Page>

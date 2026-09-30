@@ -1,0 +1,20 @@
+@layer components {
+  .di-pull {
+    max-width: 16em;
+    margin: 0;
+    padding: var(--di-space-2) 0 var(--di-space-2) var(--di-space-24);
+    border: 0;
+    border-left: 1px solid var(--di-rule);
+    background: transparent;
+    /* No glyphs: the rule already says this is lifted out of the page. */
+    quotes: none;
+    font-family: var(--di-font-ui);
+    font-size: clamp(var(--di-font-size-700), 4vw, var(--di-font-size-900));
+    font-style: italic;
+    font-weight: var(--di-weight-regular);
+    letter-spacing: var(--di-tracking-tight);
+    line-height: 1.15;
+    color: var(--di-text);
+    text-wrap: balance;
+  }
+}

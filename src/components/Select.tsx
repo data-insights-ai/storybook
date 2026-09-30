@@ -2,6 +2,7 @@ import type { ReactNode, SelectHTMLAttributes } from "react";
 import { ChevronDown } from "lucide-react";
 import { cx } from "../cx";
 import { FieldHint, type HintTone } from "./FieldHint";
+import type { LabelTrack } from "./Field";
 import "./Field.css";
 import "./Select.css";
 
@@ -16,6 +17,7 @@ export function Select({
   label,
   hint = "",
   hintTone = "neutral",
+  labelTrack = "record",
   mono = true,
   className,
   disabled = false,
@@ -29,6 +31,8 @@ export function Select({
   hint?: string;
   /** What that line is. `error` also marks the control invalid. */
   hintTone?: HintTone;
+  /** Which track the label runs in. `record` is the console, `prose` a form. */
+  labelTrack?: LabelTrack;
   /** A select usually holds an identifier or a range, so mono is the default. */
   mono?: boolean;
   disabled?: boolean;
@@ -39,7 +43,7 @@ export function Select({
 
   return (
     <div className={cx("di-field", className)}>
-      <label className="di-field-label" htmlFor={id}>
+      <label className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
         {label}
       </label>
       <div className="di-select">

@@ -107,6 +107,15 @@
     --di-font-size-300: 0.75rem;
     --di-font-size-400: 0.8125rem;
     --di-font-size-500: 1rem;
+    /*
+     * The ladder's one interpolated step, and the only one: 16 to 20 is
+     * where prose hierarchy lives on a brand page, and with nothing
+     * between them a lede, a body paragraph and a card heading all
+     * collapsed onto 16 — the tier below had to borrow -600 to read as a
+     * heading at all. 18px is that band's middle. A console screen never
+     * reaches it; the console body is -400.
+     */
+    --di-font-size-550: 1.125rem;
     --di-font-size-600: 1.25rem;
     --di-font-size-700: 1.75rem;
     --di-font-size-800: 2.125rem;
@@ -148,6 +157,13 @@
      * steps widen, because nothing between two sections needs that
      * precision. Anything not on this ramp is drift — `pnpm lint:tokens`
      * fails on it.
+     *
+     * The ramp used to stop at 48, which is the gap between the parts of a
+     * brand page. A brand page also has to separate the parts from each
+     * other, and 48 is not enough air for that: it was being written as
+     * `calc(var(--di-space-48) * 2)` in a stylesheet nothing else can see.
+     * 64 and 96 are the two steps above, and they belong to the brand tier
+     * the way --di-font-size-900 and -1000 do. A console screen stops at 48.
      */
     --di-space-2: 2px;
     --di-space-4: 4px;
@@ -158,6 +174,8 @@
     --di-space-24: 24px;
     --di-space-32: 32px;
     --di-space-48: 48px;
+    --di-space-64: 64px;
+    --di-space-96: 96px;
 
     /* Control heights. The console runs dense; 32px is the standard. */
     --di-h-dense: 28px;

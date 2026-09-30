@@ -4,22 +4,10 @@
     justify-content: space-between;
     align-items: flex-end;
     gap: var(--di-space-24);
-    margin-bottom: var(--di-space-24);
   }
 
   .di-page-copy {
     min-width: 0;
-    max-width: 680px;
-  }
-
-  .di-eyebrow {
-    margin-bottom: var(--di-space-8);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    font-weight: var(--di-weight-medium);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--di-seal-ink);
   }
 
   .di-page-head h1 {
@@ -27,19 +15,66 @@
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
     color: var(--di-text);
-    line-height: var(--di-leading-tight);
-    font-size: var(--di-font-size-700);
   }
 
   .di-lede {
-    margin-top: var(--di-space-8);
-    max-width: 62ch;
-    font-size: var(--di-font-size-300);
-    line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
+    text-wrap: pretty;
   }
 
   .di-page-aside {
     flex: none;
+  }
+
+  /* The console tier: 28px over a 12px lede, and the head owns the gap
+     to the first block under it. */
+  .di-page-head-console {
+    --di-eyebrow-gap: var(--di-space-8);
+    margin-bottom: var(--di-space-24);
+  }
+
+  .di-page-head-console .di-page-copy {
+    max-width: 680px;
+  }
+
+  .di-page-head-console h1 {
+    font-size: var(--di-font-size-700);
+    line-height: var(--di-leading-tight);
+  }
+
+  .di-page-head-console .di-lede {
+    margin-top: var(--di-space-8);
+    max-width: 62ch;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+  }
+
+  /*
+   * The brand tier. It carries no bottom margin: a brand page is a stack
+   * with its own rhythm — 48, 64 or 96 — and a header that also pushed
+   * would be adding a distance nobody asked for.
+   *
+   * The title is measured to 16ch and set at the top two steps of the
+   * ramp, which exist for exactly this and nothing else. The lede is 18px:
+   * with the band between 16 and 20 empty, a page lede, a section lede and
+   * a card heading all landed on 16 and the hierarchy went flat.
+   */
+  .di-page-head-brand {
+    --di-eyebrow-gap: var(--di-space-12);
+    align-items: flex-start;
+  }
+
+  .di-page-head-brand h1 {
+    max-width: 16ch;
+    font-size: clamp(var(--di-font-size-800), 6vw, var(--di-font-size-1000));
+    line-height: 1.02;
+    text-wrap: balance;
+  }
+
+  .di-page-head-brand .di-lede {
+    margin-top: var(--di-space-16);
+    max-width: 58ch;
+    font-size: var(--di-font-size-550);
+    line-height: 1.55;
   }
 }

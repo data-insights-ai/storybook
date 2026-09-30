@@ -1,5 +1,6 @@
 import { Meta } from "@storybook/addon-docs/blocks";
-import { Fact, Facts, Page, Rule, Rules, Section } from "./foundations/guide/Guide";
+import { Fact, FactList } from "./components/FactList";
+import { Page, Rule, Rules, Section } from "./foundations/guide/Guide";
 
 <Meta title="Introduction" />
 
@@ -8,12 +9,12 @@ import { Fact, Facts, Page, Rule, Rules, Section } from "./foundations/guide/Gui
   title="The surface is a register, not a dashboard."
   lede="This is the component library for the datAInsights brand, and the place a designer reviews it. It is not a product: nothing here names one, and the screens are examples a product could be assembled from rather than screens that ship. Everything a product installs is what `src/index.ts` exports — a control that never became a component cannot be designed with."
 >
-  <Facts>
-    <Fact term="What it is">A library, its stories, and the brand reference they are built from.</Fact>
-    <Fact term="What it is not">A product, a prototype, or a second brand book.</Fact>
-    <Fact term="Read first">Foundations, top to bottom. It holds the reasoning.</Fact>
-    <Fact term="Before handing back">`pnpm check` — typecheck, token lint, story tests.</Fact>
-  </Facts>
+  <FactList layout="grid">
+    <Fact label="What it is">A library, its stories, and the brand reference they are built from.</Fact>
+    <Fact label="What it is not">A product, a prototype, or a second brand book.</Fact>
+    <Fact label="Read first">Foundations, top to bottom. It holds the reasoning.</Fact>
+    <Fact label="Before handing back">`pnpm check` — typecheck, token lint, story tests.</Fact>
+  </FactList>
 
   <Section
     eyebrow="The sidebar"

@@ -10,6 +10,10 @@
     --di-button-secondary-bg: var(--di-bg-surface);
     --di-button-secondary-border: var(--di-border-input);
 
+    /* The distance from an eyebrow to the title under it. A head re-points
+       it rather than the eyebrow guessing which head it sits in. */
+    --di-eyebrow-gap: var(--di-space-12);
+
     --di-field-bg: var(--di-bg-surface);
     --di-field-border: var(--di-border-input);
     --di-field-radius: var(--di-radius-micro);

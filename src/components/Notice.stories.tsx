@@ -10,10 +10,12 @@ const meta = {
   tags: ["autodocs"],
   args: {
     tone: "neutral",
+    size: "md",
     children: null,
   },
   argTypes: {
-    tone: { control: "radio", options: ["info", "ok", "warn", "danger"] },
+    tone: { control: "radio", options: ["neutral", "ok", "warn", "danger"] },
+    size: { control: "radio", options: ["md", "comfort"] },
     children: { control: false },
   },
 } satisfies Meta<typeof Notice>;
@@ -145,4 +147,37 @@ export const TitleOnly: Story = {
       </NoticeText>
     </Notice>
   ),
+};
+
+/**
+ * `comfort` pads to 16 and lifts the title and body one step each. It is
+ * the notice on a brand page, where it reads as a paragraph of the page
+ * rather than a line in a register. The inset and the two type steps move
+ * together, which is why this is one prop and not three.
+ */
+export const Comfort: Story = {
+  args: { tone: "warn", size: "comfort" },
+  render: (args) => (
+    <Notice {...args}>
+      <NoticeIcon>
+        <AlertTriangle aria-hidden />
+      </NoticeIcon>
+      <NoticeText>
+        <div>
+          <NoticeTitle>Nothing a model proposes runs before an operator confirms it.</NoticeTitle>
+          <NoticeBody>
+            The confirmation states basis, scope and reversibility first, and what follows is a
+            receipt carrying an audit id.
+          </NoticeBody>
+        </div>
+        <NoticeAction>
+          <Button variant="secondary">Read the rule</Button>
+        </NoticeAction>
+      </NoticeText>
+    </Notice>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("note")).toBeVisible();
+  },
 };

@@ -6,10 +6,10 @@ const meta = {
   title: "Primitives/Eyebrow",
   component: Eyebrow,
   tags: ["autodocs"],
-  args: { children: "§ 04 — Coverage", dot: true },
+  args: { children: "§ 04 — Coverage", variant: "sealed" },
   argTypes: {
     children: { control: "text" },
-    dot: { control: "boolean" },
+    variant: { control: "radio", options: ["sealed", "plain"] },
   },
 } satisfies Meta<typeof Eyebrow>;
 
@@ -24,18 +24,23 @@ export const Sealed: Story = {
   },
 };
 
-/** Without the dot, where this section is not the one carrying the seal. */
-export const WithoutDot: Story = {
-  args: { children: "§ 05 — Sources", dot: false },
+/**
+ * The label alone. This is the one a brand page sets over every section,
+ * and the one `PageHeader` and `SectionTitle` render from their `eyebrow`
+ * string — a page that repeated the sealed variant would be claiming a
+ * seal per heading.
+ */
+export const Plain: Story = {
+  args: { children: "Brand essence", variant: "plain" },
 };
 
-/** A pair, which is how the rule between them actually reads. */
+/** The pair, which is how the rule and its absence actually read. */
 export const Pair: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ maxWidth: 440, display: "flex", flexDirection: "column", gap: 20 }}>
+    <div style={{ maxWidth: 440 }}>
       <Eyebrow>§ 04 — Coverage</Eyebrow>
-      <Eyebrow dot={false}>§ 05 — Sources</Eyebrow>
+      <Eyebrow variant="plain">§ 05 — Sources</Eyebrow>
     </div>
   ),
 };

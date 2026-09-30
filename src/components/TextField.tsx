@@ -1,6 +1,7 @@
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { cx } from "../cx";
 import { FieldHint, type HintTone } from "./FieldHint";
+import type { LabelTrack } from "./Field";
 import "./Field.css";
 import "./TextField.css";
 
@@ -15,6 +16,7 @@ export function TextField({
   label,
   hint = "",
   hintTone = "neutral",
+  labelTrack = "record",
   mono = false,
   className,
   disabled = false,
@@ -29,6 +31,12 @@ export function TextField({
   hint?: string;
   /** What that line is. `error` also marks the control invalid. */
   hintTone?: HintTone;
+  /**
+   * Which track the label runs in. `record` is the console's mono
+   * micro-caps; `prose` is the body step in ink, for a form a person
+   * fills in for themselves.
+   */
+  labelTrack?: LabelTrack;
   /** Identifiers, hashes and timestamps are typed in the mono track. */
   mono?: boolean;
   /** Slot beside the label, for example a “Forgot password?” link. */
@@ -42,7 +50,7 @@ export function TextField({
   return (
     <div className={cx("di-field", className)}>
       <div className="di-field-row">
-        <label className="di-field-label" htmlFor={id}>
+        <label className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
           {label}
         </label>
         {children}

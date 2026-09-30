@@ -19,7 +19,7 @@ import { join, relative } from "node:path";
 const ROOT = new URL("..", import.meta.url).pathname;
 const SRC = join(ROOT, "src");
 
-const SPACE = [2, 4, 6, 8, 12, 16, 24, 32, 48];
+const SPACE = [2, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96];
 const SPACE_PROPS = /\b(gap|row-gap|column-gap|padding|margin)(-(top|right|bottom|left|inline|block)(-(start|end))?)?$/;
 
 /* Primitive tokens a component may not bind to. A component names a role. */

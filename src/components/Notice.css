@@ -13,7 +13,7 @@
     justify-content: center;
     width: var(--di-index-col);
     flex: none;
-    padding-top: var(--di-space-12);
+    padding-top: var(--di-notice-pad);
     border-right: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
@@ -30,11 +30,11 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--di-space-16);
-    padding: var(--di-space-12) var(--di-space-12);
+    padding: var(--di-notice-pad) var(--di-notice-pad);
   }
 
   .di-notice-title {
-    font-size: var(--di-font-size-400);
+    font-size: var(--di-notice-title-size);
     font-weight: var(--di-weight-semibold);
     letter-spacing: var(--di-tracking-tight);
     line-height: var(--di-leading-snug);
@@ -43,9 +43,26 @@
 
   .di-notice-body {
     margin-top: var(--di-space-2);
-    font-size: var(--di-font-size-300);
+    font-size: var(--di-notice-body-size);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
+  }
+
+  /*
+   * The two densities. The inset and the two type steps move together —
+   * a notice padded to 16 with 13px copy in it reads as a mistake, not a
+   * variant, which is why this is one prop and not three.
+   */
+  .di-notice-md {
+    --di-notice-pad: var(--di-space-12);
+    --di-notice-title-size: var(--di-font-size-400);
+    --di-notice-body-size: var(--di-font-size-300);
+  }
+
+  .di-notice-comfort {
+    --di-notice-pad: var(--di-space-16);
+    --di-notice-title-size: var(--di-font-size-500);
+    --di-notice-body-size: var(--di-font-size-400);
   }
 
   .di-notice-action {
