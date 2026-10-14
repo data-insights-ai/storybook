@@ -31,7 +31,7 @@ Sample people use invented names. Their email addresses are `name@data-insights.
 | Colour, type, radius | `src/styles/tokens` |
 | A control’s look | that component’s CSS, using semantic `--di-*` tokens |
 | A new reusable control | `src/components`, a story beside it, an export from `src/index.ts` |
-| A chart | `Chart` wraps one Recharts chart. `ChartConfig` names each series and sets its colour; `Chart` exposes that colour as `--color-<key>`. `ChartTooltip` and `ChartLegend` read the same config. Colours are `--di-chart-series`, `--di-chart-accent` (one value), `--di-chart-muted`, and `--di-chart-band`. Do not draw a one-off SVG chart. |
+| A chart | `Chart` wraps one Recharts chart. `ChartConfig` names each series and sets its colour; `Chart` exposes that colour as `--color-<key>`. `ChartTooltip` and `ChartLegend` read the same config. Colours are `--di-chart-series`, `--di-chart-accent` (one value), `--di-chart-muted`, and `--di-chart-band`; an ordered status scale (low → warn → danger, a stacked severity, a meter's zones) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Do not draw a one-off SVG chart. |
 | An icon | `Icon`, with one Lucide icon as its child. Import that icon by name from `lucide-react` (`import { Search } from "lucide-react"`). `Icon` does not import the set, so the app keeps only the icons it renders. Do not import `lucide-react`’s `icons` namespace, and do not add a `name` prop that maps to every icon. |
 | A console example | `src/screens`, composed from components |
 | Storybook chrome (checklist, theme, test wrapper) | `.storybook` |
@@ -75,7 +75,7 @@ Every component lives in `src/components`; the story `title` decides where it la
 - `Primitives/` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it. Button, Badge, StatusPill, Chip, Icon, IconTile, Seal, Eyebrow, Kbd, TickRule, TextLink, VersionTag, KeyValues, PullQuote, Bars, Sparkline, Distribution, Pagination, Breadcrumb, Stepper, Tooltip, Waiting/{Progress,Skeleton,Spinner}.
 - `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl, FieldHint.
 - `Blocks/` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, FactList, Drawer, Menu, Tabs, EmptyState, StatTile, Metric, LivingCard, CommandBar, SignIn and the rest.
-- `Patterns/` — a whole arrangement: AppShell, Layout.
+- `Patterns/` — a whole arrangement: AppShell, Layout. A product renders `AppShell` full-bleed from its slots; `Console` is the same shell inside its Storybook window, with the sample chrome the screens share, and no product renders it.
 - `Screens/` — a console example, composed from the above.
 
 The test is one question: **can another component go inside it?** `KeyValues` holds `KeyValue`, and `KeyValue` takes two strings — nothing else fits, so it is a Primitive. `Stat` looks just as small, but its `children` holds a `StatusPill` on the Watchlist screen, so it is a Block. `Pagination` and `SkeletonTable` are bulky and still Primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
@@ -102,7 +102,7 @@ A slot is a named sub-component written as a child, `<Parent><ParentSlot>`: `Not
 
 Where a component takes exactly one leading node, that node is the first child and there is no slot for it — `Button`, `CommandRow`, `PrivacyBadge`, `Icon`. `TextField` puts the label-side slot in plain `children`, because the field has only one.
 
-Two `ReactNode`s survive on purpose, and only these two. `NavItem.icon` is a field on the `ConsoleChrome` data a product hands the shell, not a slot on a component. `Menu`'s `trigger` is a render prop, because the menu has to put its own `aria-expanded` and ref onto a button the caller owns. Anything else typed `ReactNode` is a decision that was skipped.
+Two `ReactNode`s survive on purpose, and only these two. `NavItem.icon` is a field on the `NavGroup` data a product hands `AppShellRail`, not a slot on a component. `Menu`'s `trigger` is a render prop, because the menu has to put its own `aria-expanded` and ref onto a button the caller owns. Anything else typed `ReactNode` is a decision that was skipped.
 
 A variant is one union prop, never a family of booleans or a second prop that can contradict the first: `hintTone`, not `hint` plus `error` plus `sealHint`; `layout`, not `inline` plus `split`.
 

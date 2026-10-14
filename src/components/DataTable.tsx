@@ -80,32 +80,56 @@ export function TableHead({ children }: { children: ReactNode }) {
  * `sort` is the column the register is currently ordered by. It shows an
  * arrow and sets `aria-sort`, so the order is announced and not only drawn.
  */
+/**
+ * A head cell. `sort` states the order the rows are in; `onSort` makes the
+ * header the control that changes it. The table never sorts: the caller
+ * owns the order, because it also owns which rows are loaded.
+ */
 export function TableColumn({
   children,
   align = "start",
   index = false,
   sort = "none",
+  onSort,
+  width = "auto",
 }: {
   children?: ReactNode;
   align?: "start" | "end";
+  /** `fill` hands this column whatever width the others leave — for a bar or a meter. */
+  width?: "auto" | "fill";
   /** The empty head cell above the ordinal column. */
   index?: boolean;
   sort?: "none" | "ascending" | "descending";
+  /** Called when the header is pressed. Present, the column offers itself as sortable. */
+  onSort?: () => void;
 }) {
   if (index) {
     return <th scope="col" className="di-table-index"><span className="di-sr">{children}</span></th>;
   }
+  // A sortable column that is not the sorted one still says so, quietly: a
+  // header that only reveals it is a control once pressed is a guess.
+  const mark = sort === "ascending" ? "↑" : sort === "descending" ? "↓" : onSort ? "↕" : null;
+  const arrow = mark ? (
+    <span className={cx("di-table-sort", sort === "none" && "is-idle")} aria-hidden>
+      {mark}
+    </span>
+  ) : null;
   return (
     <th
       scope="col"
-      className={cx(align === "end" && "is-end", sort !== "none" && "is-sorted")}
+      className={cx(align === "end" && "is-end", sort !== "none" && "is-sorted", width === "fill" && "is-fill")}
       aria-sort={sort === "none" ? undefined : sort}
     >
-      {children}
-      {sort === "none" ? null : (
-        <span className="di-table-sort" aria-hidden>
-          {sort === "ascending" ? "↑" : "↓"}
-        </span>
+      {onSort ? (
+        <button type="button" className="di-table-sort-btn" onClick={onSort}>
+          {children}
+          {arrow}
+        </button>
+      ) : (
+        <>
+          {children}
+          {arrow}
+        </>
       )}
     </th>
   );
@@ -115,18 +139,42 @@ export function TableBody({ children }: { children: ReactNode }) {
   return <tbody>{children}</tbody>;
 }
 
-/** `active` marks the row an open drawer or detail pane is showing. */
+/**
+ * `active` marks the row an open drawer or detail pane is showing.
+ *
+ * `onSelect` makes the whole row the pointer target for that pane. A row is
+ * not a control a keyboard can reach, so the row still carries one — a
+ * `TextLink` on its identifier — that selects it too; the row only widens
+ * where a pointer can press. A click on any control inside the row is left
+ * to that control.
+ */
 export function TableRow({
   children,
   active = false,
   tone = "neutral",
+  onSelect,
 }: {
   children: ReactNode;
   active?: boolean;
   /** `danger` tints the ordinal, for a row that failed. */
   tone?: "neutral" | "danger";
+  onSelect?: () => void;
 }) {
-  return <tr className={cx(active && "is-active", tone === "danger" && "is-danger")}>{children}</tr>;
+  return (
+    <tr
+      className={cx(active && "is-active", tone === "danger" && "is-danger", onSelect && "is-selectable")}
+      onClick={
+        onSelect
+          ? (event) => {
+              if ((event.target as Element).closest("a, button, input, select, textarea, label")) return;
+              onSelect();
+            }
+          : undefined
+      }
+    >
+      {children}
+    </tr>
+  );
 }
 
 /** The ordinal cell. Mono, quiet, and the row's handle in conversation. */

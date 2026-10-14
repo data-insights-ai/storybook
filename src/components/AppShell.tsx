@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { ChevronsUpDown, RefreshCw, ShieldCheck } from "lucide-react";
 import logoInverse from "../assets/logo-inverse.svg";
+import { cx } from "../cx";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { SealMark } from "./Seal";
@@ -9,6 +10,8 @@ import "./AppShell.css";
 export type NavItem = {
   id: string;
   label: string;
+  /** Where the item goes. With it the item is a link; without, an inert button. */
+  href?: string;
   /** A lucide icon. One family, one weight, no fills. */
   icon?: ReactNode;
   code?: string;
@@ -18,6 +21,8 @@ export type NavItem = {
   sealed?: boolean;
 };
 
+export type NavGroup = { label: string; items: NavItem[] };
+
 export type ConsoleChrome = {
   lang: string;
   workspace: string;
@@ -26,7 +31,7 @@ export type ConsoleChrome = {
   accountLabel: string;
   navLabel: string;
   skipLabel: string;
-  groups: { label: string; items: NavItem[] }[];
+  groups: NavGroup[];
   demoOff: string;
   demoOn: string;
   demoBanner: string;
@@ -38,8 +43,115 @@ export type ConsoleChrome = {
 };
 
 /**
+ * Rail, topbar, workpane, full-bleed: the shell a product renders.
+ *
+ * The navy rail is the one place the brand colour fills a surface, and it
+ * is fixed: navigation that hides itself cannot be audited. On a narrow
+ * screen it moves above the page rather than away.
+ *
+ * Every part is a slot: `AppShellRail` (with `AppShellFoot` inside it),
+ * then `AppShellMain` holding `AppShellBar` and `AppShellContent`. The
+ * shell draws no copy of its own; what the bar says is the product's.
+ */
+export function AppShell({ skipLabel, children }: { skipLabel: string; children: ReactNode }) {
+  return (
+    <div className="di-shell">
+      <a className="di-skip" href="#di-content">
+        {skipLabel}
+      </a>
+      {children}
+    </div>
+  );
+}
+
+/**
+ * The navy rail: the mark, the workspace, the sections. Its children sit
+ * at the foot — an `AppShellFoot`, an operator.
+ */
+export function AppShellRail({
+  workspace,
+  workspaceId,
+  navLabel,
+  groups,
+  active,
+  sealedMark = "",
+  children,
+}: {
+  workspace: string;
+  /** The instance, in the mono track beside the workspace. */
+  workspaceId: string;
+  navLabel: string;
+  groups: NavGroup[];
+  /** The `id` of the current section. */
+  active: string;
+  /** What a screen reader hears for an item's seal. Needed once any item is `sealed`. */
+  sealedMark?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <aside className="di-sidebar">
+      <div className="di-brand">
+        <img className="di-brand-logo" src={logoInverse} alt="datAInsights" />
+        <div className="di-brand-row">
+          <span className="di-brand-product">{workspace}</span>
+          <span className="di-instance">{workspaceId}</span>
+        </div>
+      </div>
+
+      <nav className="di-nav" aria-label={navLabel}>
+        {groups.map((group) => (
+          <RailGroup key={group.label} group={group} active={active} sealedMark={sealedMark} />
+        ))}
+      </nav>
+
+      {children}
+    </aside>
+  );
+}
+
+/** The rail's foot: the runtime and the version, in the mono track. */
+export function AppShellFoot({ children }: { children: ReactNode }) {
+  return <div className="di-sidebar-foot">{children}</div>;
+}
+
+/** The column beside the rail: the bar over the content. */
+export function AppShellMain({ children }: { children: ReactNode }) {
+  return <div className="di-main">{children}</div>;
+}
+
+/** The topbar: where you are on the left, an `AppShellBarEnd` on the right. */
+export function AppShellBar({ children }: { children: ReactNode }) {
+  return <header className="di-topbar">{children}</header>;
+}
+
+/** The bar's controls, pushed to its right end. */
+export function AppShellBarEnd({ children }: { children: ReactNode }) {
+  return <div className="di-top-actions">{children}</div>;
+}
+
+/**
+ * The page. The skip link lands here.
+ *
+ * `contained` stops widening at 1440px. `full` follows the window, for a
+ * console whose registers and charts use every column they are given.
+ */
+export function AppShellContent({
+  width = "contained",
+  children,
+}: {
+  width?: "contained" | "full";
+  children: ReactNode;
+}) {
+  return (
+    <main id="di-content" className={cx("di-content", width === "full" && "is-full")} tabIndex={-1}>
+      {children}
+    </main>
+  );
+}
+
+/**
  * The canvas and the window. The dotted ground is what a console sits
- * on in these stories; a product renders the window alone, full-bleed.
+ * on in these stories; a product renders `AppShell` alone, full-bleed.
  */
 export function ConsoleFrame({
   title,
@@ -65,9 +177,9 @@ export function ConsoleFrame({
 }
 
 /**
- * Rail, topbar, workpane. The navy rail is the one place the brand
- * colour fills a surface, and it is fixed: navigation that hides itself
- * cannot be audited.
+ * The shell inside its window, with the sample chrome the screens share:
+ * an operator, a demo-data switch, a refresh and the sealed mark. It is
+ * how these stories show a console; a product composes `AppShell` itself.
  */
 export function Console({
   title,
@@ -86,128 +198,118 @@ export function Console({
 
   return (
     <ConsoleFrame title={title} lang={chrome.lang}>
-      <a className="di-skip" href="#di-content">
-        {chrome.skipLabel}
-      </a>
-      <aside className="di-sidebar">
-        <div className="di-brand">
-          <img className="di-brand-logo" src={logoInverse} alt="datAInsights" />
-          <div className="di-brand-row">
-            <span className="di-brand-product">{chrome.workspace}</span>
-            <span className="di-instance">{chrome.workspaceId}</span>
-          </div>
-        </div>
-
-        <nav className="di-nav" aria-label={chrome.navLabel}>
-          {chrome.groups.map((group) => (
-            <NavGroup
-              key={group.label}
-              label={group.label}
-              items={group.items}
-              active={active}
-              sealedMark={chrome.sealedMark}
-            />
-          ))}
-        </nav>
-
-        <div className="di-sidebar-foot">
-          <span>{chrome.runtime}</span>
-          <span>{chrome.version}</span>
-        </div>
-
-        <button type="button" className="di-operator" aria-label={chrome.accountLabel}>
-          <span className="di-avatar" aria-hidden>
-            {chrome.operator.initials}
-          </span>
-          <span className="di-operator-text">
-            <span className="di-operator-name">{chrome.operator.name}</span>
-            <span className="di-operator-role">{chrome.operator.role}</span>
-          </span>
-          <ChevronsUpDown className="di-operator-caret" aria-hidden />
-        </button>
-      </aside>
-
-      <div className="di-main">
-        <header className="di-topbar">
-          <p className="di-crumb">
-            {crumb.map((part, index) => (
-              <span key={part} className="di-crumb-part">
-                {index > 0 ? <span className="di-crumb-sep">/</span> : null}
-                <span className={index === crumb.length - 1 ? "di-crumb-current" : undefined}>{part}</span>
-              </span>
-            ))}
-          </p>
-          <div className="di-top-actions">
-            <button
-              type="button"
-              className="di-demo"
-              aria-pressed={demo}
-              onClick={() => setDemo((value) => !value)}
-            >
-              <span className="di-demo-dot" aria-hidden />
-              {demo ? chrome.demoOn : chrome.demoOff}
-            </button>
-            <Button variant="ghost" size="dense">
-              <RefreshCw aria-hidden />
-              {chrome.refresh}
-            </Button>
-            <span className="di-sealed">
-              <ShieldCheck aria-hidden />
-              {chrome.sealed}
+      <AppShell skipLabel={chrome.skipLabel}>
+        <AppShellRail
+          workspace={chrome.workspace}
+          workspaceId={chrome.workspaceId}
+          navLabel={chrome.navLabel}
+          groups={chrome.groups}
+          active={active}
+          sealedMark={chrome.sealedMark}
+        >
+          <AppShellFoot>
+            <span>{chrome.runtime}</span>
+            <span>{chrome.version}</span>
+          </AppShellFoot>
+          <button type="button" className="di-operator" aria-label={chrome.accountLabel}>
+            <span className="di-avatar" aria-hidden>
+              {chrome.operator.initials}
             </span>
-          </div>
-        </header>
-        {demo ? (
-          <p className="di-demo-banner" role="status">
-            {chrome.demoBanner}
-          </p>
-        ) : null}
-        <main id="di-content" className="di-content" tabIndex={-1}>
-          {children}
-        </main>
-      </div>
+            <span className="di-operator-text">
+              <span className="di-operator-name">{chrome.operator.name}</span>
+              <span className="di-operator-role">{chrome.operator.role}</span>
+            </span>
+            <ChevronsUpDown className="di-operator-caret" aria-hidden />
+          </button>
+        </AppShellRail>
+
+        <AppShellMain>
+          <AppShellBar>
+            <p className="di-crumb">
+              {crumb.map((part, index) => (
+                <span key={part} className="di-crumb-part">
+                  {index > 0 ? <span className="di-crumb-sep">/</span> : null}
+                  <span className={index === crumb.length - 1 ? "di-crumb-current" : undefined}>{part}</span>
+                </span>
+              ))}
+            </p>
+            <AppShellBarEnd>
+              <button
+                type="button"
+                className="di-demo"
+                aria-pressed={demo}
+                onClick={() => setDemo((value) => !value)}
+              >
+                <span className="di-demo-dot" aria-hidden />
+                {demo ? chrome.demoOn : chrome.demoOff}
+              </button>
+              <Button variant="ghost" size="dense">
+                <RefreshCw aria-hidden />
+                {chrome.refresh}
+              </Button>
+              <span className="di-sealed">
+                <ShieldCheck aria-hidden />
+                {chrome.sealed}
+              </span>
+            </AppShellBarEnd>
+          </AppShellBar>
+          {demo ? (
+            <p className="di-demo-banner" role="status">
+              {chrome.demoBanner}
+            </p>
+          ) : null}
+          <AppShellContent>{children}</AppShellContent>
+        </AppShellMain>
+      </AppShell>
     </ConsoleFrame>
   );
 }
 
-function NavGroup({
-  label,
-  items,
-  active,
-  sealedMark,
-}: {
-  label: string;
-  items: NavItem[];
-  active: string;
-  sealedMark: string;
-}) {
-  const labelId = `nav-${label.toLowerCase()}`;
+function RailGroup({ group, active, sealedMark }: { group: NavGroup; active: string; sealedMark: string }) {
+  const labelId = `nav-${group.label.toLowerCase()}`;
   return (
     <div className="di-nav-group">
       <div className="di-nav-label" id={labelId}>
-        {label}
+        {group.label}
       </div>
       <ul className="di-nav-list" aria-labelledby={labelId}>
-        {items.map((item) => (
+        {group.items.map((item) => (
           <li key={item.id}>
-            <button type="button" className="di-nav-btn" aria-current={item.id === active ? "page" : undefined}>
-              {item.icon ? <span className="di-nav-icon">{item.icon}</span> : null}
-              <span className="di-nav-text">{item.label}</span>
-              {item.badge ? (
-                <Badge tone={item.badgeTone}>{item.badge}</Badge>
-              ) : item.code ? (
-                <span className="di-nav-code">{item.code}</span>
-              ) : null}
-              {item.sealed ? (
-                <>
-                  <SealMark state="sealed" />
-                  <span className="di-sr">{sealedMark}</span>
-                </>
-              ) : null}
-            </button>
+            <RailItem item={item} current={item.id === active} sealedMark={sealedMark} />
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function RailItem({ item, current, sealedMark }: { item: NavItem; current: boolean; sealedMark: string }) {
+  const body = (
+    <>
+      {item.icon ? <span className="di-nav-icon">{item.icon}</span> : null}
+      <span className="di-nav-text">{item.label}</span>
+      {item.badge ? (
+        <Badge tone={item.badgeTone}>{item.badge}</Badge>
+      ) : item.code ? (
+        <span className="di-nav-code">{item.code}</span>
+      ) : null}
+      {item.sealed ? (
+        <>
+          <SealMark state="sealed" />
+          <span className="di-sr">{sealedMark}</span>
+        </>
+      ) : null}
+    </>
+  );
+  const ariaCurrent = current ? "page" : undefined;
+
+  return item.href !== undefined ? (
+    <a className="di-nav-btn" href={item.href} aria-current={ariaCurrent}>
+      {body}
+    </a>
+  ) : (
+    <button type="button" className="di-nav-btn" aria-current={ariaCurrent}>
+      {body}
+    </button>
   );
 }

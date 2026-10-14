@@ -58,6 +58,15 @@
     --di-chart-muted: var(--di-rule-300);
     --di-chart-muted-strong: var(--di-rule-500);
     --di-chart-band: rgba(10, 31, 68, 0.1);
+    /*
+     * The status ramp as marks: series → warn → danger, ordered. The status
+     * dots are tuned as text companions and sit too close to each other to
+     * be told apart side by side in a stack, so a chart takes these instead
+     * (ΔE ≥ 15 between neighbours for normal and colour-blind vision, ≥ 3:1
+     * on the sheet).
+     */
+    --di-chart-warn: var(--di-gold-600);
+    --di-chart-danger: var(--di-danger-700);
 
     --di-fill-strong: var(--di-ink);
     --di-fill-strong-hover: var(--di-navy-950);
@@ -200,6 +209,8 @@
     --di-chart-muted: var(--di-night-800);
     --di-chart-muted-strong: var(--di-night-600);
     --di-chart-band: rgba(242, 245, 251, 0.12);
+    --di-chart-warn: var(--di-gold-400);
+    --di-chart-danger: var(--di-night-danger-500);
 
     /* After dark, gold is the fill. Navy has nothing left to act against. */
     --di-fill-strong: var(--di-gold-500);

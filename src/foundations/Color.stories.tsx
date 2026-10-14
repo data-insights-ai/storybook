@@ -67,6 +67,8 @@ const chartRoles = [
   ["Muted", "--di-chart-muted", "var(--di-chart-muted)", "A comparison bar."],
   ["Strong", "--di-chart-muted-strong", "var(--di-chart-muted-strong)", "A second comparison, still grey."],
   ["Band", "--di-chart-band", "var(--di-chart-band)", "The range around a median."],
+  ["Warn", "--di-chart-warn", "var(--di-chart-warn)", "The middle of an ordered status scale."],
+  ["Danger", "--di-chart-danger", "var(--di-chart-danger)", "The top of an ordered status scale."],
 ];
 
 function Board() {

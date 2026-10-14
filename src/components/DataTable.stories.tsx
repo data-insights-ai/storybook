@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Globe, Plus, Server } from "lucide-react";
-import { expect, within } from "storybook/test";
+import { expect, userEvent, within } from "storybook/test";
 import { Button } from "./Button";
 import { Chip } from "./Chip";
 import {
@@ -18,10 +18,12 @@ import {
   TableRow,
   TableToolbar,
 } from "./DataTable";
+import { LevelMeter } from "./LevelMeter";
 import { Pagination } from "./Pagination";
 import { SearchField } from "./SearchField";
 import { SealValue } from "./Seal";
 import { StatusPill } from "./StatusPill";
+import { TextLink } from "./TextLink";
 
 type Source = {
   ordinal: string;
@@ -247,6 +249,167 @@ export const Unindexed: Story = {
       </TableBody>
     </DataTable>
   ),
+};
+
+type SortKey = "host" | "seen";
+type SortOrder = "ascending" | "descending";
+
+/*
+ * The caller owns the order. In a product it is part of the query that
+ * fetches the page, so the server sorts every row rather than the slice
+ * in hand; here the five sample rows stand in for that query.
+ */
+function SortableSources({ caption, indexed }: { caption: string; indexed: boolean }) {
+  const [by, setBy] = useState<SortKey>("seen");
+  const [order, setOrder] = useState<SortOrder>("descending");
+  const sortOn = (key: SortKey) => () => {
+    setOrder(key === by && order === "descending" ? "ascending" : "descending");
+    setBy(key);
+  };
+  const rows = [...sources].sort((a, b) => a[by].localeCompare(b[by]) * (order === "ascending" ? 1 : -1));
+  const state = (key: SortKey) => (key === by ? order : "none");
+
+  return (
+    <DataTable caption={caption} indexed={indexed}>
+      <TableHead>
+        <TableColumn index={true}>Ordinal</TableColumn>
+        <TableColumn sort={state("host")} onSort={sortOn("host")}>
+          Host
+        </TableColumn>
+        <TableColumn>Kind</TableColumn>
+        <TableColumn align="end" sort={state("seen")} onSort={sortOn("seen")}>
+          Last seen
+        </TableColumn>
+      </TableHead>
+      <TableBody>
+        {rows.map((row) => (
+          <TableRow key={row.ordinal}>
+            <TableIndex>{row.ordinal}</TableIndex>
+            <TableCell>{row.host}</TableCell>
+            <TableCell>{row.kind}</TableCell>
+            <TableCell align="end" mono={true}>
+              {row.seen}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </DataTable>
+  );
+}
+
+/**
+ * `onSort` turns a header into the control that orders the rows. A sortable
+ * column that is not the sorted one carries a quiet ↕, so it reads as a
+ * control before it is pressed.
+ */
+export const Sortable: Story = {
+  render: (args) => <SortableSources caption={args.caption} indexed={args.indexed ?? true} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const host = canvas.getByRole("button", { name: "Host" });
+    const seen = canvas.getByRole("columnheader", { name: "Last seen" });
+    await expect(seen).toHaveAttribute("aria-sort", "descending");
+    await expect(host.closest("th")).not.toHaveAttribute("aria-sort");
+
+    await userEvent.click(host);
+    await expect(host.closest("th")).toHaveAttribute("aria-sort", "descending");
+    await expect(seen).not.toHaveAttribute("aria-sort");
+
+    await userEvent.click(host);
+    await expect(host.closest("th")).toHaveAttribute("aria-sort", "ascending");
+    await expect(canvas.getAllByRole("row")[1]).toHaveTextContent("archive.example.com");
+  },
+};
+
+/**
+ * `width="fill"` on one column hands it the width the others leave. Without
+ * it a wide table spreads the spare room over every column; a bar or a
+ * meter is the column that can use it.
+ */
+export const FillColumn: Story = {
+  args: { caption: "Load per source" },
+  render: (args) => (
+    <DataTable {...args}>
+      <TableHead>
+        <TableColumn index>No.</TableColumn>
+        <TableColumn>Host</TableColumn>
+        <TableColumn width="fill">Load</TableColumn>
+        <TableColumn align="end">Now</TableColumn>
+      </TableHead>
+      <TableBody>
+        {[
+          { host: "registry.example.org", load: 82 },
+          { host: "feed.example.io", load: 47 },
+          { host: "archive.example.com", load: 12 },
+        ].map((row, i) => (
+          <TableRow key={row.host}>
+            <TableIndex>{String(i + 1).padStart(2, "0")}</TableIndex>
+            <TableCell mono>{row.host}</TableCell>
+            <TableCell>
+              <LevelMeter label={`${row.host} load`} value={row.load} />
+            </TableCell>
+            <TableCell align="end" mono>
+              {row.load}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </DataTable>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const load = canvas.getByRole("columnheader", { name: "Load" });
+    const host = canvas.getByRole("columnheader", { name: "Host" });
+    await expect(load.getBoundingClientRect().width).toBeGreaterThan(host.getBoundingClientRect().width);
+    // The other columns keep their content on one line.
+    await expect(getComputedStyle(canvas.getByText("registry.example.org")).whiteSpace).toBe("nowrap");
+    // The ordinal column keeps its width rather than shrinking to the figures.
+    const index = canvasElement.querySelector("td.di-table-index")!;
+    await expect(index.getBoundingClientRect().width).toBeGreaterThanOrEqual(38);
+  },
+};
+
+function SelectableSources() {
+  const rows = ["registry.example.org", "feed.example.io", "archive.example.com"];
+  const [active, setActive] = useState(rows[0]);
+  return (
+    <DataTable caption="Sources on record">
+      <TableHead>
+        <TableColumn index>No.</TableColumn>
+        <TableColumn>Host</TableColumn>
+        <TableColumn>Kind</TableColumn>
+      </TableHead>
+      <TableBody>
+        {rows.map((host, i) => (
+          <TableRow key={host} active={host === active} onSelect={() => setActive(host)}>
+            <TableIndex>{String(i + 1).padStart(2, "0")}</TableIndex>
+            <TableCell mono>
+              <TextLink quiet aria-pressed={host === active} onClick={() => setActive(host)}>
+                {host}
+              </TextLink>
+            </TableCell>
+            <TableCell>Registry</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </DataTable>
+  );
+}
+
+/**
+ * `onSelect`: the whole row is the pointer target for the pane it opens.
+ * The identifier stays a control, because a keyboard cannot reach a row.
+ */
+export const SelectableRows: Story = {
+  render: () => <SelectableSources />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const row = canvas.getAllByRole("row")[3]!;
+    await userEvent.click(within(row).getByText("Registry"));
+    await expect(row).toHaveClass("is-active");
+    await expect(within(row).getByRole("button", { name: "archive.example.com" })).toHaveAttribute("aria-pressed", "true");
+    await expect(getComputedStyle(row).cursor).toBe("pointer");
+  },
 };
 
 /** One row. The frame does not change shape for a short register. */

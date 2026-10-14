@@ -43,6 +43,29 @@ export const WithStatus: Story = {
 };
 
 /**
+ * On a phone the trailing slot keeps its width and wraps beneath the
+ * title, rather than squeezing the title to one word a line.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <div style={{ maxWidth: 360 }}>
+      <PageHeader {...args}>
+        <StatusPill tone="ok" dot={true}>
+          Monitoring active
+        </StatusPill>
+      </PageHeader>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const title = canvas.getByRole("heading", { name: "Watched identities" });
+    const status = canvas.getByText("Monitoring active");
+    await expect(status.getBoundingClientRect().top).toBeGreaterThan(title.getBoundingClientRect().bottom);
+  },
+};
+
+/**
  * The display tier the brand pages use: 34px up to 56, measured to 16ch,
  * over an 18px lede. It carries no bottom margin, because the stack
  * around it owns a brand page's rhythm.

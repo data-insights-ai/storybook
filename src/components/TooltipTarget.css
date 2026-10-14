@@ -1,0 +1,22 @@
+@layer components {
+  /* Dotted, the way an abbreviation marks that it says more than it shows. */
+  .di-tooltip-target {
+    text-decoration: underline dotted;
+    text-decoration-color: var(--di-text-muted);
+    text-underline-offset: 3px;
+    cursor: help;
+  }
+
+  /* The top layer's defaults centre a popover on a bordered box; this one
+   * is placed by the target and draws nothing of its own. The padding is
+   * the gap to the term, kept inside the box so hover survives crossing it. */
+  .di-tooltip-target-popup {
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    padding: var(--di-space-4) 0;
+    border: 0;
+    background: none;
+    overflow: visible;
+  }
+}
