@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, within } from "storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, XAxis, YAxis } from "recharts";
-import { Chart, ChartLegend, ChartTooltip, type ChartConfig } from "./Chart";
+import { Chart, ChartLegend, ChartTooltip, ChartTooltipContent, type ChartConfig } from "./Chart";
 
 /*
  * The stories compose `Chart` directly rather than rendering a prepared
@@ -212,5 +212,52 @@ export const Legend: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Recorded")).toBeVisible();
     await expect(canvas.getByText("Estimate")).toBeVisible();
+  },
+};
+
+const runs = [
+  { day: "Mon", low: 4, high: 1, total: 5, note: "" },
+  { day: "Tue", low: 2, high: 6, total: 8, note: "Rotated keys · 14:20" },
+  { day: "Wed", low: 3, high: 0, total: 3, note: "" },
+];
+
+const runConfig = {
+  low: { label: "Low", color: "var(--di-chart-series)" },
+  high: { label: "High", color: "var(--di-chart-danger)" },
+} satisfies ChartConfig;
+
+/**
+ * `ChartTooltipContent details` adds lines under the series, read off the
+ * hovered datum: here a total and an event. They are ruled off and carry
+ * no swatch, so they never pass for a series.
+ */
+export const TooltipDetails: Story = {
+  args: { label: "Runs per day, with what happened", config: runConfig },
+  render: (args) => (
+    <Chart {...args}>
+      <ComposedChart data={runs} margin={{ top: 16, right: 12, bottom: 0, left: 0 }}>
+        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+        <XAxis dataKey="day" tickLine={false} axisLine={false} interval={0} />
+        <YAxis tickLine={false} axisLine={false} width={32} />
+        <ChartTooltip
+          defaultIndex={1}
+          content={
+            <ChartTooltipContent
+              details={(datum) => [
+                { label: "Total", value: String(datum.total) },
+                ...(datum.note ? [{ label: "Event", value: String(datum.note) }] : []),
+              ]}
+            />
+          }
+        />
+        <Bar dataKey="low" stackId="runs" fill="var(--color-low)" stroke="var(--di-bg-surface)" />
+        <Bar dataKey="high" stackId="runs" fill="var(--color-high)" stroke="var(--di-bg-surface)" />
+      </ComposedChart>
+    </Chart>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() => expect(canvas.getByText("Rotated keys · 14:20")).toBeVisible());
+    await expect(canvas.getByText("Total")).toBeVisible();
   },
 };

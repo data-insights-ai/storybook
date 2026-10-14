@@ -41,12 +41,50 @@
     white-space: nowrap;
   }
 
+  /*
+   * A table sizes columns to their content; a filling column takes the rest.
+   * Claiming 100% would squeeze the others to their narrowest and wrap an id
+   * at its hyphen, so beside a filling column every other cell keeps its line.
+   */
+  .di-table th.is-fill {
+    width: 100%;
+  }
+
+  .di-table:has(th.is-fill) :is(th, td) {
+    white-space: nowrap;
+  }
+
   .di-table th.is-sorted {
     color: var(--di-text);
   }
 
   .di-table-sort {
     margin-left: var(--di-space-4);
+  }
+
+  .di-table-sort.is-idle {
+    color: var(--di-text-disabled);
+  }
+
+  /* The header is the control, so it keeps the header's type and colour. */
+  .di-table-sort-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+    cursor: pointer;
+    transition: color var(--di-duration) var(--di-ease);
+  }
+
+  .di-table-sort-btn:hover {
+    color: var(--di-text);
+  }
+
+  .di-table-sort-btn:hover .di-table-sort.is-idle {
+    color: var(--di-text-muted);
   }
 
   .di-table td {
@@ -65,6 +103,10 @@
     background: var(--di-bg-row-hover);
   }
 
+  .di-table tbody tr.is-selectable {
+    cursor: pointer;
+  }
+
   .di-table tbody tr.is-active td {
     background: var(--di-bg-page);
   }
@@ -72,6 +114,8 @@
   /* The ordinal column: the row's handle, never its content. */
   .di-table-index {
     width: var(--di-index-col);
+    /* A filling column claims the rest; the index column still keeps its 38px. */
+    min-width: var(--di-index-col);
     padding: 0 !important;
     border-right: 1px solid var(--di-table-rule);
     background: var(--di-bg-page);

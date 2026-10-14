@@ -1,0 +1,120 @@
+@layer components {
+  /*
+   * Two tracks on one grid of segments, so the comparison lines up with the
+   * reading segment for segment. The count comes in as a custom property;
+   * the grid needs it as a number, not as markup.
+   */
+  .di-level {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    min-width: 160px;
+  }
+
+  .di-level-track {
+    display: grid;
+    grid-template-columns: repeat(var(--di-level-segments), minmax(0, 1fr));
+    gap: var(--di-space-2);
+    height: 16px;
+  }
+
+  .di-level-track.is-compare {
+    height: 6px;
+  }
+
+  /* Marks, not controls: square, so a run of segments reads as one scale. */
+  .di-level-seg {
+    border-radius: 0;
+    background: var(--di-bg-subtle);
+    transition: background var(--di-duration-slow) var(--di-ease);
+  }
+
+  .di-level-seg.is-on {
+    background: var(--di-chart-series);
+  }
+
+  .di-level-seg.is-on.is-warn {
+    background: var(--di-chart-warn);
+  }
+
+  .di-level-seg.is-on.is-danger {
+    background: var(--di-chart-danger);
+  }
+
+  .di-level-track.is-compare .di-level-seg.is-on {
+    background: var(--di-chart-muted-strong);
+  }
+
+  /* The scale: each figure stands at its own point, the ends flush with the track. */
+  .di-level-scale {
+    display: block;
+    min-width: 160px;
+  }
+
+  .di-level-ticks {
+    position: relative;
+    display: block;
+    height: 1lh;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--di-weight-regular);
+    color: var(--di-text-subtle);
+  }
+
+  .di-level-ticks > span {
+    position: absolute;
+    left: var(--di-level-at);
+    transform: translateX(-50%);
+  }
+
+  .di-level-ticks > span.is-start {
+    transform: none;
+  }
+
+  .di-level-ticks > span.is-end {
+    transform: translateX(-100%);
+  }
+
+  .di-level-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8) var(--di-space-16);
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-muted);
+  }
+
+  .di-level-key {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-space-6);
+  }
+
+  .di-level-swatches {
+    display: inline-flex;
+    gap: var(--di-space-2);
+  }
+
+  .di-level-swatches > span {
+    width: 8px;
+    height: 8px;
+    border-radius: 0;
+    background: var(--di-chart-series);
+  }
+
+  .di-level-swatches > span.is-warn {
+    background: var(--di-chart-warn);
+  }
+
+  .di-level-swatches > span.is-danger {
+    background: var(--di-chart-danger);
+  }
+
+  .di-level-swatch-compare {
+    width: 16px;
+    height: 4px;
+    border-radius: 0;
+    background: var(--di-chart-muted-strong);
+  }
+}

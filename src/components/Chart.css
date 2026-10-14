@@ -78,6 +78,13 @@
     height: 8px;
   }
 
+  /* Below the series, ruled off: what the point carries that is not a series. */
+  .di-chart-tip ul.di-chart-tip-details {
+    margin-top: var(--di-space-6);
+    padding-top: var(--di-space-6);
+    border-top: 1px solid var(--di-rule-hairline);
+  }
+
   .di-chart-tip b {
     font-family: var(--di-font-code);
     font-weight: var(--di-weight-medium);

@@ -96,7 +96,21 @@ export function ChartTooltip({
   );
 }
 
-export function ChartTooltipContent({ active, payload, label }: TipProps) {
+/** A line under the series in a tooltip: something the hovered point carries that is not a series. */
+export type ChartTooltipDetail = { label: string; value: string };
+
+/**
+ * The series at the hovered point, from `config`. `details` adds lines
+ * beneath them, read off the hovered datum — a total, a reading from
+ * another chart, an event — set apart by a rule so they never pass for a
+ * series. Pass it as `<ChartTooltip content={<ChartTooltipContent details={…} />} />`.
+ */
+export function ChartTooltipContent({
+  active,
+  payload,
+  label,
+  details,
+}: TipProps & { details?: (datum: Record<string, unknown>) => ChartTooltipDetail[] }) {
   const config = useChart();
   if (!active || !payload?.length) return null;
   const order = Object.keys(config);
@@ -109,6 +123,8 @@ export function ChartTooltipContent({ active, payload, label }: TipProps) {
   });
   rows.sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
   if (!rows.length) return null;
+  const datum = payload[0]?.payload;
+  const extra = details && datum && typeof datum === "object" ? details(datum as Record<string, unknown>) : [];
   return (
     <div className="di-chart-tip">
       {label != null && label !== "" ? <p className="di-chart-tip-label">{label}</p> : null}
@@ -121,6 +137,17 @@ export function ChartTooltipContent({ active, payload, label }: TipProps) {
           </li>
         ))}
       </ul>
+      {extra.length ? (
+        <ul className="di-chart-tip-details">
+          {extra.map((detail, i) => (
+            <li key={`${detail.label}-${i}`}>
+              <i aria-hidden="true" />
+              <span>{detail.label}</span>
+              <b>{detail.value}</b>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }

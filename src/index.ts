@@ -1,5 +1,15 @@
-export { Console, ConsoleFrame } from "./components/AppShell";
-export type { ConsoleChrome, NavItem } from "./components/AppShell";
+export {
+  AppShell,
+  AppShellBar,
+  AppShellBarEnd,
+  AppShellContent,
+  AppShellFoot,
+  AppShellMain,
+  AppShellRail,
+  Console,
+  ConsoleFrame,
+} from "./components/AppShell";
+export type { ConsoleChrome, NavGroup, NavItem } from "./components/AppShell";
 export { Badge } from "./components/Badge";
 export { Bars } from "./components/Bars";
 export { Breadcrumb } from "./components/Breadcrumb";
@@ -7,7 +17,7 @@ export { Button } from "./components/Button";
 export { Card } from "./components/Card";
 export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components/Channel";
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/Chart";
-export type { ChartConfig } from "./components/Chart";
+export type { ChartConfig, ChartTooltipDetail } from "./components/Chart";
 export { Checkbox, ChoiceGroup, Radio } from "./components/Choice";
 export { Chip } from "./components/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/CommandBar";
@@ -39,6 +49,8 @@ export { PageHeader } from "./components/Heading";
 export { Icon } from "./components/Icon";
 export { IconTile } from "./components/IconTile";
 export { KeyValue, KeyValues } from "./components/KeyValues";
+export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/LevelMeter";
+export type { LevelBands } from "./components/LevelMeter";
 export { Actions, Grid, Numbered, Stack, Toolbar, ToolbarEnd } from "./components/Layout";
 export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/LivingCard";
 export { Menu, MenuDivider, MenuItem } from "./components/Menu";
@@ -96,4 +108,5 @@ export { TextField } from "./components/TextField";
 export { TextLink } from "./components/TextLink";
 export { Toast, ToastAction } from "./components/Toast";
 export { Tooltip } from "./components/Tooltip";
+export { TooltipTarget } from "./components/TooltipTarget";
 export { VersionTag } from "./components/VersionTag";

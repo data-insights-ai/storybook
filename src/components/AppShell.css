@@ -42,8 +42,41 @@
     box-shadow: var(--di-shadow-window);
   }
 
+  /* In the window the shell fills the window, and nothing sticks: the
+     window does not scroll, the canvas around it does. */
+  .di-window > .di-shell {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .di-window .di-sidebar {
+    position: static;
+    height: auto;
+  }
+
+  .di-window .di-topbar {
+    position: static;
+  }
+
+  /*
+   * Full-bleed, a product's shell. The rail and the bar stay put while the
+   * page scrolls under the bar; the bar is opaque, not frosted, so the text
+   * passing beneath it keeps a contrast that can be measured.
+   */
+  .di-shell {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 100dvh;
+    background: var(--di-bg-page);
+  }
+
   .di-sidebar {
+    position: sticky;
+    top: 0;
     width: 248px;
+    height: 100dvh;
+    overflow-y: auto;
     flex: none;
     display: flex;
     flex-direction: column;
@@ -182,6 +215,7 @@
     font-size: 13.5px;
     font-weight: var(--di-weight-medium);
     text-align: left;
+    text-decoration: none;
   }
 
   .di-nav-btn:hover {
@@ -238,13 +272,18 @@
   }
 
   .di-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--di-space-16);
     min-height: 58px;
-    padding: 0 var(--di-space-16);
+    padding: var(--di-space-8) var(--di-space-16);
     border-bottom: 1px solid var(--di-border);
+    background: var(--di-bg-page);
   }
 
   .di-crumb {
@@ -275,8 +314,10 @@
 
   .di-top-actions {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--di-space-6);
+    margin-left: auto;
   }
 
   .di-demo,
@@ -332,10 +373,21 @@
     font-size: var(--di-font-size-200);
   }
 
+  /* Past 1440px the page stops widening; a table scrolls in its own frame. */
   .di-content {
     flex: 1;
+    width: 100%;
     min-width: 0;
+    max-width: 1440px;
     padding: var(--di-space-24) var(--di-space-24) var(--di-space-32);
+  }
+
+  .di-content.is-full {
+    max-width: none;
+  }
+
+  .di-content:focus {
+    outline: none;
   }
 
   .di-skip {
@@ -343,7 +395,7 @@
     width: 1px;
     height: 1px;
     padding: 0;
-    margin: -var(--di-space-2);
+    margin: calc(-1 * var(--di-space-2));
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
@@ -364,5 +416,39 @@
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
     color: var(--di-text);
+  }
+
+  /*
+   * A narrow screen. The rail moves above the page instead of away: it
+   * still names the workspace and every section, set in rows.
+   */
+  @media (max-width: 900px) {
+    .di-shell {
+      flex-direction: column;
+    }
+
+    .di-shell > .di-sidebar {
+      position: static;
+      width: auto;
+      height: auto;
+      gap: var(--di-space-12);
+      padding: var(--di-space-16);
+      border-right: 0;
+      border-bottom: 1px solid var(--di-sidebar-edge);
+    }
+
+    .di-shell .di-nav-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .di-shell .di-nav-btn {
+      width: auto;
+    }
+
+    .di-shell .di-topbar,
+    .di-shell .di-content {
+      padding-inline: var(--di-space-16);
+    }
   }
 }

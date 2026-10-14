@@ -1,12 +1,19 @@
 @layer components {
+  /*
+   * The trailing slot keeps its width and the copy gives way, until the
+   * copy would drop under 20rem: then the slot wraps beneath the title
+   * rather than squeezing it to a word a line on a phone.
+   */
   .di-page-head {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-end;
     gap: var(--di-space-24);
   }
 
   .di-page-copy {
+    flex: 1 1 20rem;
     min-width: 0;
   }
 

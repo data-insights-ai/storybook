@@ -46,6 +46,36 @@ export const Disabled: Story = {
   },
 };
 
+/**
+ * With an `href` it is an anchor: it navigates rather than acts, so it
+ * opens in a new tab and copies like any other link.
+ */
+export const Link: Story = {
+  args: { children: "Open the record" },
+  parameters: { controls: { disable: true } },
+  render: ({ children }) => <TextLink href="#/register/0148">{children}</TextLink>,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const link = canvas.getByRole("link", { name: "Open the record" });
+    await expect(link).toHaveAttribute("href", "#/register/0148");
+  },
+};
+
+/** A record id that opens its record: quiet, because a machine wrote it. */
+export const QuietLink: Story = {
+  args: { children: "REG-0148" },
+  parameters: { controls: { disable: true } },
+  render: ({ children }) => (
+    <TextLink href="#/register/0148" quiet={true}>
+      {children}
+    </TextLink>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("link", { name: "REG-0148" })).toHaveClass("is-quiet");
+  },
+};
+
 /** In a sentence, which is where it has to hold its own. */
 export const InProse: Story = {
   parameters: { controls: { disable: true } },
