@@ -48,7 +48,7 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 ## Context and repeated views
 
-Place persistent context controls in an `AppShellContext` directly inside `AppShellRail`. It appears below the brand and before navigation in both visual and keyboard order; `AppShellFoot` retains its footer position. The application owns selection state and authorization.
+Place persistent context controls in an `AppShellContext` directly inside `AppShellRail`. It appears below the brand and before navigation in both visual and keyboard order; `AppShellFoot` retains its footer position. The context is a dark token boundary, matching the rail even when the page is light, so composed controls resolve their own readable fills. The application owns selection state and authorization.
 
 When a page has more than one tab strip, give each `Tabs` and its `TabPanel` the same unique `idPrefix`. Item values are unique within each strip. The prefix scopes their accessible relationship; values are encoded safely for document IDs.
 

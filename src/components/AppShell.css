@@ -198,6 +198,16 @@
     border-bottom: 1px solid var(--di-sidebar-edge);
   }
 
+  .di-sidebar-context .di-menu-anchor {
+    display: flex;
+    min-width: 0;
+  }
+
+  .di-sidebar-context .di-menu {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
   .di-nav {
     display: flex;
     flex-direction: column;

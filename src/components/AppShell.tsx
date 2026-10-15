@@ -121,7 +121,9 @@ export function AppShellRail({
 
 /** Persistent context controls below the brand and before navigation. */
 export function AppShellContext({ children }: { children: ReactNode }) {
-  return <div className="di-sidebar-context">{children}</div>;
+  // The rail is dark in either page theme. Redeclare semantic and component
+  // tokens here: inherited component slots otherwise retain daylight fills.
+  return <div className="di-sidebar-context" data-theme="dark">{children}</div>;
 }
 
 /** The rail's foot: the runtime and the version, in the mono track. */
