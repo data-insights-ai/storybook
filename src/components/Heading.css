@@ -34,6 +34,8 @@
   }
 
   .di-page-title {
+    min-width: 0;
+    overflow-wrap: anywhere;
     grid-area: title;
     font-family: var(--di-font-ui);
     font-weight: var(--di-weight-bold);
@@ -42,6 +44,7 @@
   }
 
   .di-lede {
+    overflow-wrap: anywhere;
     grid-area: lede;
     color: var(--di-text-muted);
     text-wrap: pretty;

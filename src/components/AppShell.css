@@ -14,6 +14,9 @@
   }
 
   .di-window-title {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     position: relative;
     z-index: 1;
     display: flex;
@@ -26,6 +29,10 @@
     font-family: var(--di-font-ui);
     font-size: var(--di-font-size-300);
     color: var(--di-text-muted);
+  }
+
+  .di-window-title > svg {
+    flex: none;
   }
 
   .di-window {
@@ -72,6 +79,7 @@
   }
 
   .di-sidebar {
+    overflow-wrap: anywhere;
     position: sticky;
     top: 0;
     width: 248px;
@@ -120,6 +128,16 @@
   .di-instance {
     font-size: var(--di-font-size-100);
     color: var(--di-sidebar-muted);
+  }
+
+  .di-brand-product {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .di-instance {
+    min-width: 0;
+    max-width: 40%;
   }
 
   .di-operator {
@@ -300,6 +318,8 @@
   }
 
   .di-topbar {
+    min-width: 0;
+    overflow-wrap: anywhere;
     position: sticky;
     top: 0;
     z-index: 2;
@@ -314,7 +334,15 @@
     background: var(--di-bg-page);
   }
 
+  .di-topbar > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
   .di-crumb {
+    min-width: 0;
+    max-width: 100%;
+    flex-wrap: wrap;
     display: flex;
     align-items: center;
     gap: 0;
@@ -327,6 +355,8 @@
   }
 
   .di-crumb-part {
+    min-width: 0;
+    max-width: 100%;
     display: inline-flex;
     align-items: center;
   }
@@ -340,7 +370,30 @@
     color: var(--di-text);
   }
 
+  /* These controls may name the current context; preserve full labels on narrow
+     rails and wrapped header rows instead of letting nowrap widen the page. */
+  :is(.di-top-actions, .di-sidebar-context) .di-btn {
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    min-height: var(--di-h-ctl);
+    padding-block: var(--di-space-4);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    line-height: var(--di-leading-snug);
+  }
+
+  :is(.di-top-actions, .di-sidebar-context) .di-btn-dense {
+    min-height: var(--di-h-dense);
+  }
+
+  :is(.di-top-actions, .di-sidebar-context) .di-btn-comfort {
+    min-height: var(--di-h-comfort);
+  }
+
   .di-top-actions {
+    min-width: 0;
+    max-width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: center;

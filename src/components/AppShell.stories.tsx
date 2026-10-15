@@ -273,3 +273,92 @@ export const ContextLongChoices: Story = {
     await expect(menu.getBoundingClientRect().right).toBeLessThanOrEqual(canvas.getByRole("complementary").getBoundingClientRect().right);
   },
 };
+
+const reflowName = "Workspace".repeat(17);
+
+function LongNameShell({ theme }: { theme: "light" | "dark" }) {
+  const [open, setOpen] = useState(false);
+  return <div data-theme={theme}>
+    <AppShell skipLabel="Skip to content">
+      <AppShellRail workspace={reflowName} workspaceId="REG-01" navLabel="Sections" groups={[{ label: "Workspaces", items: [{ id: "current", label: reflowName, href: "#workspace" }] }]} active="current">
+        <AppShellContext>
+          <Menu open={open} onOpenChange={setOpen} label="Choose workspace" align="start" trigger={props => <Button {...props} variant="secondary">{reflowName}</Button>}>
+            <MenuGroup label="Example studio">
+              <MenuItem checked={true} onSelect={() => setOpen(false)}>{reflowName}</MenuItem>
+            </MenuGroup>
+          </Menu>
+        </AppShellContext>
+      </AppShellRail>
+      <AppShellMain>
+        <AppShellBar>
+          <Breadcrumb label="Breadcrumb" items={[{ label: "Example studio", href: "#organization" }, { label: reflowName, href: "#workspace" }, { label: reflowName + " settings" }]} />
+          <AppShellBarEnd>
+            <Button variant="secondary">{"Manage " + reflowName}</Button>
+            <Button variant="ghost">Sign out</Button>
+          </AppShellBarEnd>
+        </AppShellBar>
+        <AppShellContent>
+          <PageHeader eyebrow="Workspace" lede="Long names remain readable without hiding ancestors or page actions.">
+            <PageHeaderTitle>{reflowName}</PageHeaderTitle>
+          </PageHeader>
+        </AppShellContent>
+      </AppShellMain>
+    </AppShell>
+  </div>;
+}
+
+function narrowReflow(theme: "light" | "dark", width: number): Story {
+  return {
+    parameters: { viewport: { options: { reflow: { name: "Reflow", styles: { width: width + "px", height: "844px" }, type: "mobile" } } } },
+    globals: { viewport: { value: "reflow", isRotated: false } },
+    render: () => <LongNameShell theme={theme} />,
+    play: async ({ canvasElement }) => {
+      const canvas = within(canvasElement);
+      const doc = canvasElement.ownerDocument;
+      await expect(doc.defaultView!.innerWidth).toBe(width);
+      await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
+      const elements = canvasElement.querySelectorAll<HTMLElement>(".di-shell, .di-sidebar, .di-brand-row, .di-nav-text, .di-sidebar-context, .di-menu-anchor, .di-topbar, .di-top-actions, .di-breadcrumb, .di-breadcrumb-list, .di-breadcrumb-item, .di-breadcrumb-link, .di-breadcrumb-current, .di-page-title, .di-btn");
+      for (const element of elements) {
+        await expect(element.scrollWidth, element.className + " content fits").toBeLessThanOrEqual(element.clientWidth + 1);
+        await expect(element.getBoundingClientRect().right, element.className + " right edge").toBeLessThanOrEqual(width + 1);
+        await expect(element.getBoundingClientRect().left, element.className + " left edge").toBeGreaterThanOrEqual(-1);
+      }
+      const instance = canvasElement.querySelector<HTMLElement>(".di-instance")!;
+      await expect(instance.clientHeight).toBeLessThanOrEqual(Math.ceil(parseFloat(getComputedStyle(instance).lineHeight)) + 1);
+      const breadcrumb = within(canvas.getByRole("navigation", { name: "Breadcrumb" }));
+      const ancestor = breadcrumb.getByRole("link", { name: reflowName });
+      await expect(ancestor).toHaveAttribute("href", "#workspace");
+      ancestor.focus();
+      await expect(ancestor).toHaveFocus();
+      await expect(textContrast(ancestor)).toBeGreaterThanOrEqual(4.5);
+      await expect(breadcrumb.getByText(reflowName + " settings")).toHaveAttribute("aria-current", "page");
+    },
+  };
+}
+
+/** WCAG reflow at 320px, a phone at 390px, and a tablet at 768px. */
+export const ReflowSmall: Story = narrowReflow("light", 320);
+export const ReflowPhone: Story = narrowReflow("light", 390);
+export const ReflowTablet: Story = narrowReflow("light", 768);
+export const ReflowSmallNight: Story = narrowReflow("dark", 320);
+export const ReflowPhoneNight: Story = narrowReflow("dark", 390);
+export const ReflowTabletNight: Story = narrowReflow("dark", 768);
+
+
+/** The framed console's older crumb composition obeys the same reflow bounds. */
+export const ReflowConsole: Story = {
+  parameters: { viewport: { options: { reflow: { name: "Reflow", styles: { width: "390px", height: "844px" }, type: "mobile" } } } },
+  globals: { viewport: { value: "reflow", isRotated: false } },
+  render: () => <Console title={reflowName} crumb={["Example studio " + reflowName, reflowName]} active="overview" chrome={{ ...sampleChrome, workspace: reflowName, operator: { ...sampleChrome.operator, name: reflowName } }}>
+    <h1>Workspace overview</h1>
+  </Console>,
+  play: async ({ canvasElement }) => {
+    const doc = canvasElement.ownerDocument;
+    await expect(doc.defaultView!.innerWidth).toBe(390);
+    await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
+    await expect(canvasElement.querySelector(".di-window-title > svg")!.getBoundingClientRect().width).toBe(14);
+    for (const element of canvasElement.querySelectorAll<HTMLElement>(".di-canvas, .di-window-title, .di-window, .di-crumb, .di-crumb-part, .di-operator-name")) {
+      await expect(element.scrollWidth, element.className).toBeLessThanOrEqual(element.clientWidth + 1);
+    }
+  },
+};
