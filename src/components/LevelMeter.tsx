@@ -16,7 +16,7 @@ const lit = (value: number, max: number, segments: number) =>
  * ends in danger and a low one never leaves the series colour.
  *
  * `compare` adds a thin track beneath: the same scale at another point, in
- * the muted colour, so the eye reads the difference between two lengths
+ * the comparison colour (`--di-chart-compare`, cornflower), so the eye reads the difference between two lengths
  * rather than between two numbers. `null` draws the track empty, for a
  * point at which nothing was on record — that is not the same as zero.
  *

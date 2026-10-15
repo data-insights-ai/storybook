@@ -41,8 +41,10 @@
     background: var(--di-chart-danger);
   }
 
+  /* The comparison is cornflower: navy is the reading, cornflower what it is
+     measured against. Never a zone colour — the earlier point is not a status. */
   .di-level-track.is-compare .di-level-seg.is-on {
-    background: var(--di-chart-muted-strong);
+    background: var(--di-chart-compare);
   }
 
   /* The scale: each figure stands at its own point, the ends flush with the track. */
@@ -115,6 +117,6 @@
     width: 16px;
     height: 4px;
     border-radius: 0;
-    background: var(--di-chart-muted-strong);
+    background: var(--di-chart-compare);
   }
 }
