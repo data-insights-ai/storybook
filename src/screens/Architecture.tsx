@@ -10,14 +10,14 @@ import {
 import { Button } from "../components/Button";
 import { Console } from "../components/AppShell";
 import { sampleChrome } from "../sample/chrome";
-import { PageHeader } from "../components/Heading";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
 import { Grid, Numbered, Stack } from "../components/Layout";
 import { Metric, MetricNote } from "../components/Metric";
 import { Stage, StageFooter, StageIcon, StageTrack } from "../components/Stage";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import { StatusPill } from "../components/StatusPill";
 import { KeyValue, KeyValues } from "../components/KeyValues";
-import { SectionTitle } from "../components/SectionTitle";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/SectionTitle";
 
 const stages = [
   {
@@ -77,10 +77,12 @@ export function ArchitectureScreen() {
     >
       <PageHeader
         eyebrow="System overview / infrastructure and pipeline"
-        title="System architecture and data flow"
         lede="Intake, processing stages, and storage."
       >
-        <StatusPill tone="ok">All services ready</StatusPill>
+        <PageHeaderTitle>System architecture and data flow</PageHeaderTitle>
+        <PageHeaderAside>
+          <StatusPill tone="ok">All services ready</StatusPill>
+        </PageHeaderAside>
       </PageHeader>
 
       <Stack>
@@ -97,8 +99,9 @@ export function ArchitectureScreen() {
         </Notice>
 
         <Numbered index="01">
-          <SectionTitle title="Five-stage pipeline" lede="End-to-end data flow">
-            Sync active
+          <SectionTitle lede="End-to-end data flow">
+            <SectionTitleHeading>Five-stage pipeline</SectionTitleHeading>
+            <SectionTitleMeta>Sync active</SectionTitleMeta>
           </SectionTitle>
           <StageTrack>
             {stages.map((stage) => (
@@ -125,8 +128,9 @@ export function ArchitectureScreen() {
         </Numbered>
 
         <Numbered index="02">
-          <SectionTitle title="System status and performance" lede="Component monitoring">
-            Updated: today, 08:37 CEST
+          <SectionTitle lede="Component monitoring">
+            <SectionTitleHeading>System status and performance</SectionTitleHeading>
+            <SectionTitleMeta>Updated: today, 08:37 CEST</SectionTitleMeta>
           </SectionTitle>
           <Grid min="220px">
             <Metric label="API and service status" figure="Version 4.18">

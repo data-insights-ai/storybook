@@ -47,9 +47,9 @@ export function IndexSpecimen() {
         <PanelMeta>sealed 09:12Z</PanelMeta>
         An ordinal: the row's handle, and what an operator says out loud.
       </Panel>
-      <Panel index="§" title="Coverage">
-        <PanelMeta>§ 04</PanelMeta>
-        A section mark, the same one the marketing site uses.
+      <Panel index="C" title="Coverage">
+        <PanelMeta>4 sources</PanelMeta>
+        A letter, where the entries are kinds rather than a sequence.
       </Panel>
       <Panel index="!!" indexTone="danger" title="Ingest run">
         <PanelMeta>failed 08:44Z</PanelMeta>

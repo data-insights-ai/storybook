@@ -26,7 +26,7 @@ import {
   TableToolbar,
 } from "../components/DataTable";
 import { Drawer, DrawerFooter } from "../components/Drawer";
-import { PageHeader } from "../components/Heading";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
 import { Grid, Stack } from "../components/Layout";
 import { Menu, MenuDivider, MenuItem } from "../components/Menu";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
@@ -79,14 +79,16 @@ export function RegisterScreen() {
     >
       <Stack>
         <PageHeader
-          eyebrow="§ 02 — Sources"
-          title="Source register"
+          eyebrow="02 — Sources"
           lede="Every host the workspace reads from, with the manifest that vouches for what it sent."
         >
-          <Button variant="primary" size="dense">
-            <Plus aria-hidden />
-            Connect a source
-          </Button>
+          <PageHeaderTitle>Source register</PageHeaderTitle>
+          <PageHeaderAside>
+            <Button variant="primary" size="dense">
+              <Plus aria-hidden />
+              Connect a source
+            </Button>
+          </PageHeaderAside>
         </PageHeader>
 
         <Notice tone="warn">

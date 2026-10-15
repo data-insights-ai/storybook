@@ -1,0 +1,36 @@
+@layer components {
+  .di-highlight {
+    background: transparent;
+    color: inherit;
+  }
+
+  /*
+   * The tint follows each line of a wrapped passage rather than boxing the
+   * whole run.
+   *
+   * An inline background fills the font's ascent-to-descent box, and Space
+   * Grotesk's is 1.28em: under a display title set at 1.02 it reached into
+   * the line above and painted over its descenders. The passage is set in
+   * the band face, the same glyphs with that box cut to just above the caps
+   * and the foot of the descenders, so a solid tint stops there — clear of
+   * the line above, with a hairline between two tinted lines. A gradient
+   * band drew the same shape, but an accessibility check cannot measure
+   * text over a gradient. `line-height: 0` keeps the shorter box from
+   * reopening the line it sits in.
+   */
+  .di-highlight-passage {
+    padding: 0 var(--di-space-2);
+    background: var(--di-highlight-tint);
+    color: var(--di-text);
+    font-family: var(--di-highlight-font);
+    line-height: 0;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* Bare --di-highlight is 4.2:1 on paper; the ink clears AA at any size. */
+  .di-highlight-figure {
+    color: var(--di-highlight-ink);
+    font-variant-numeric: tabular-nums;
+  }
+}

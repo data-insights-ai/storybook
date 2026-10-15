@@ -23,7 +23,7 @@ const SPACE = [2, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96];
 const SPACE_PROPS = /\b(gap|row-gap|column-gap|padding|margin)(-(top|right|bottom|left|inline|block)(-(start|end))?)?$/;
 
 /* Primitive tokens a component may not bind to. A component names a role. */
-const PRIMITIVE = /--di-(navy-\d+|gold-\d+|ok-\d+|warn-\d+|danger-\d+|night-[\w]+|paper|sheet|grid|sunken|wash|ivory|rule-\d+|ink|font-sans|font-mono|radius-[smlx])(?![\w-])/;
+const PRIMITIVE = /--di-(navy-\d+|gold-\d+|poppy-\d+|cornflower-\d+|ok-\d+|warn-\d+|danger-\d+|night-[\w]+|paper|sheet|grid|sunken|wash|ivory|rule-\d+|ink|font-sans(?:-band)?|font-mono|radius-[smlx])(?![\w-])/;
 
 /* Where a primitive legitimately appears: the token files define them, and
  * a surface that re-points its own tokens is naming a value on purpose. */

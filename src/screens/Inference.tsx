@@ -3,7 +3,7 @@ import { Globe, MoreVertical, Radar, Search, Settings2, ShieldCheck, Timer } fro
 import { Console } from "../components/AppShell";
 import { Button } from "../components/Button";
 import { CommandBar, CommandGroup, CommandRow } from "../components/CommandBar";
-import { PageHeader } from "../components/Heading";
+import { PageHeader, PageHeaderTitle } from "../components/Heading";
 import { ConfidenceField } from "../components/ConfidenceField";
 import { ConfirmActions, ConfirmPanel } from "../components/ConfirmPanel";
 import { ExplainFooter, ExplainPanel, ExplainRow } from "../components/ExplainPanel";
@@ -14,7 +14,7 @@ import { Panel, PanelMeta } from "../components/Panel";
 import { StatTile, StatTileDelta } from "../components/StatTile";
 import { Toast, ToastAction } from "../components/Toast";
 import { sampleChrome } from "../sample/chrome";
-import { SectionTitle } from "../components/SectionTitle";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/SectionTitle";
 import { Sparkline } from "../components/Sparkline";
 
 const bars = [
@@ -46,16 +46,20 @@ export function InferenceScreen() {
     >
       <Stack>
         <PageHeader
-          eyebrow="§ 12 — Inference"
-          title="What a model may say, and how it says it"
+          eyebrow="12 — Inference"
           lede="An output is a claim until something seals it. Every surface here marks the difference with the same hollow ring, and nothing runs before an operator agrees to it."
-        />
+        >
+          <PageHeaderTitle>What a model may say, and how it says it</PageHeaderTitle>
+        </PageHeader>
 
-        <SectionTitle title="The claim, in place" lede="Inside the card it concerns, never floating over it">
-          <PrivacyBadge scope="local">
-            <ShieldCheck aria-hidden />
-            local processing
-          </PrivacyBadge>
+        <SectionTitle lede="Inside the card it concerns, never floating over it">
+          <SectionTitleHeading>The claim, in place</SectionTitleHeading>
+          <SectionTitleMeta>
+            <PrivacyBadge scope="local">
+              <ShieldCheck aria-hidden />
+              local processing
+            </PrivacyBadge>
+          </SectionTitleMeta>
         </SectionTitle>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 16, alignItems: "start" }}>
@@ -109,7 +113,9 @@ export function InferenceScreen() {
           </ConfirmPanel>
         </div>
 
-        <SectionTitle title="Asking, and being answered" lede="One field for navigating, searching and asking" />
+        <SectionTitle lede="One field for navigating, searching and asking">
+          <SectionTitleHeading>Asking, and being answered</SectionTitleHeading>
+        </SectionTitle>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 16, alignItems: "start" }}>
           <CommandBar
@@ -163,8 +169,8 @@ export function InferenceScreen() {
               </ExplainFooter>
             </ExplainPanel>
 
-            <Panel index="§" title="Where a query goes">
-              <PanelMeta>§ 12.4</PanelMeta>
+            <Panel index="04" title="Where a query goes">
+              <PanelMeta>12.4</PanelMeta>
               <Grid>
                 <PrivacyBadge scope="local">
                   <ShieldCheck aria-hidden />
@@ -183,7 +189,9 @@ export function InferenceScreen() {
           </Stack>
         </div>
 
-        <SectionTitle title="Fields that state their own confidence" lede="A rule, and the number in words" />
+        <SectionTitle lede="A rule, and the number in words">
+          <SectionTitleHeading>Fields that state their own confidence</SectionTitleHeading>
+        </SectionTitle>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 22 }}>
           <ConfidenceField

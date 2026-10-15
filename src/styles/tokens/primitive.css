@@ -59,6 +59,21 @@
     --di-gold-50: #fbf6e8;
 
     /*
+     * The two accents. Clear primaries that carry at a distance, in print
+     * and at a trade fair. They stand beside navy and gold, never in their
+     * place, and name no state: poppy (Mohnrot) marks the passage a page
+     * is about, cornflower (Kornblau) signals a comparison or something
+     * new. Poppy 700 sits close to danger 700 by hue; the word beside it,
+     * not the red, is what says nothing failed.
+     */
+    --di-poppy-700: #a42a1f;
+    --di-poppy-600: #d23c2e;
+    --di-poppy-100: #fadfda;
+    --di-cornflower-800: #1f5288;
+    --di-cornflower-600: #2b6cb0;
+    --di-cornflower-100: #dfe9f5;
+
+    /*
      * Status. Each word clears 5:1 on its own wash and on paper. Keep
      * this set: a second yellow, or a generic traffic-light green or
      * red, breaks the register.
@@ -97,10 +112,19 @@
     --di-night-danger-700: #5e2323;
     --di-night-danger-300: #ff9b9b;
     --di-night-danger-500: #d9534f;
+    /* The accents after dark. The two tints are not in the brandbook yet;
+       each holds the night text above 13:1 and its own accent above 6:1. */
+    --di-night-poppy-300: #ff7f6e;
+    --di-night-poppy-900: #3a1c1a;
+    --di-night-cornflower-300: #79aeea;
+    --di-night-cornflower-900: #16294a;
 
     /* Two families. --di-font-display was a third name for this one. */
     --di-font-sans: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --di-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    /* The sans with its box cut to cap height and descenders, for a tint
+       that must not reach the line above. styles/band-face.css. */
+    --di-font-sans-band: "Space Grotesk Band", var(--di-font-sans);
 
     /* A console scale: 13px is the body, the mono track runs beneath it. */
     --di-font-size-100: 0.625rem;

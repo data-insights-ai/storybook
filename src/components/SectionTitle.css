@@ -1,15 +1,30 @@
 @layer components {
+  /* Placed by grid area, so the heading and the meta may be written in
+     either order. Without a meta the heading takes the full width. */
   .di-section-title {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--di-space-16);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "eyebrow"
+      "heading"
+      "lede";
   }
 
-  .di-section-copy {
-    min-width: 0;
+  .di-section-title:has(> .di-section-meta) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "eyebrow meta"
+      "heading meta"
+      "lede meta";
+    column-gap: var(--di-space-16);
   }
 
-  .di-section-title h2 {
+  .di-section-eyebrow {
+    grid-area: eyebrow;
+  }
+
+  .di-section-heading {
+    grid-area: heading;
     font-family: var(--di-font-ui);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
@@ -17,12 +32,13 @@
   }
 
   .di-section-lede {
+    grid-area: lede;
     color: var(--di-text-muted);
     text-wrap: pretty;
   }
 
   .di-section-meta {
-    flex: none;
+    grid-area: meta;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     letter-spacing: var(--di-tracking-eyebrow);
@@ -33,11 +49,14 @@
 
   .di-section-title-console {
     --di-eyebrow-gap: var(--di-space-8);
-    align-items: flex-end;
     margin-bottom: var(--di-space-12);
   }
 
-  .di-section-title-console h2 {
+  .di-section-title-console .di-section-meta {
+    align-self: end;
+  }
+
+  .di-section-title-console .di-section-heading {
     font-size: var(--di-font-size-600);
     line-height: var(--di-leading-tight);
   }
@@ -57,10 +76,13 @@
    */
   .di-section-title-brand {
     --di-eyebrow-gap: var(--di-space-12);
-    align-items: flex-start;
   }
 
-  .di-section-title-brand h2 {
+  .di-section-title-brand .di-section-meta {
+    align-self: start;
+  }
+
+  .di-section-title-brand .di-section-heading {
     max-width: 22ch;
     font-size: clamp(var(--di-font-size-700), 3vw, var(--di-font-size-800));
     line-height: 1.02;

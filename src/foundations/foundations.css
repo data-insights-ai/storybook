@@ -278,3 +278,35 @@
     background: var(--di-bg-surface);
   }
 }
+
+/* Foundations/Color: the accents, in use. The marks are `Highlight` and
+   `Chart`; this only frames them as a card. */
+@layer components {
+  .di-accent-use {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+    margin-bottom: var(--di-space-16);
+    padding: var(--di-space-16);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+  }
+
+  .di-accent-use-eyebrow {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-text-muted);
+  }
+
+  .di-accent-use-claim {
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-600);
+    font-weight: var(--di-weight-medium);
+    line-height: var(--di-leading-snug);
+    letter-spacing: var(--di-tracking-tight);
+    color: var(--di-text);
+  }
+}

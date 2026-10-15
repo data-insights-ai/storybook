@@ -32,7 +32,7 @@ import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle }
 import { Pagination } from "../components/Pagination";
 import { SearchField } from "../components/SearchField";
 import { StatusPill, type StatusTone } from "../components/StatusPill";
-import { SectionTitle } from "../components/SectionTitle";
+import { SectionTitle, SectionTitleHeading } from "../components/SectionTitle";
 
 type Source = {
   id: string;
@@ -223,18 +223,26 @@ export function CoverageScreen() {
         </DataTable>
 
         <section>
-          <SectionTitle title="Method and collection" lede="How sources are handled" />
+          <SectionTitle lede="How sources are handled">
+            <SectionTitleHeading>Method and collection</SectionTitleHeading>
+          </SectionTitle>
           <Grid min="220px">
             <Card>
-              <SectionTitle title="Full history" />
+              <SectionTitle>
+                <SectionTitleHeading>Full history</SectionTitleHeading>
+              </SectionTitle>
               <p>Archive data is kept in full, so older entries stay traceable.</p>
             </Card>
             <Card>
-              <SectionTitle title="Automatic matching" />
+              <SectionTitle>
+                <SectionTitleHeading>Automatic matching</SectionTitleHeading>
+              </SectionTitle>
               <p>New finds are matched against the watchlist — terms, domains, and identities — and reported.</p>
             </Card>
             <Card>
-              <SectionTitle title="Privacy" />
+              <SectionTitle>
+                <SectionTitleHeading>Privacy</SectionTitleHeading>
+              </SectionTitle>
               <p>Records are held under the applicable privacy rules. Review uses encrypted logs.</p>
             </Card>
           </Grid>

@@ -74,7 +74,7 @@ export function TickRule({ thin = false, className }: { thin?: boolean; classNam
  * gold dot is a claim and the rule is what carries it — `dot` as a
  * boolean left the rule drawn with nothing to anchor it.
  *
- * `sealed` is the § mark beside the seal, with a rule to the edge: this
+ * `sealed` is the section label beside the seal, with a rule to the edge: this
  * is the section on record, and there is one of those per view. `plain`
  * is the label on its own, which is what sits above every section of a
  * brand page — repeatable, because it says where you are rather than
@@ -95,10 +95,10 @@ export function Eyebrow({
 }) {
   const sealed = variant === "sealed";
   return (
-    <div className={cx("di-mark", `di-mark-${variant}`, className)}>
+    <div className={cx("di-eyebrow", `di-eyebrow-${variant}`, className)}>
       {sealed ? <SealMark state="sealed" /> : null}
-      <span className="di-mark-label">{children}</span>
-      {sealed ? <span className="di-mark-rule" aria-hidden /> : null}
+      <span className="di-eyebrow-label">{children}</span>
+      {sealed ? <span className="di-eyebrow-rule" aria-hidden /> : null}
     </div>
   );
 }

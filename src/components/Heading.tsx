@@ -15,30 +15,41 @@ import "./Heading.css";
  *
  * A product screen never sets `brand`: the display steps are the top of
  * the type ramp and the console stops below them.
+ *
+ * The title is a slot, `PageHeaderTitle`, because a title can hold a
+ * `Highlight`. What sits beside it is `PageHeaderAside`. The frame places
+ * both with grid areas, so they may be written in either order.
  */
 export function PageHeader({
   eyebrow,
-  title,
   lede,
   tier = "console",
   children,
 }: {
   eyebrow: string;
-  title: string;
   lede?: string;
   /** `console` is a screen. `brand` is the display tier of a brand page. */
   tier?: "console" | "brand";
-  /** Trailing slot. A status, a figure, or whatever the page puts beside the title. */
-  children?: ReactNode;
+  /** `PageHeaderTitle`, and optionally `PageHeaderAside`. */
+  children: ReactNode;
 }) {
   return (
     <header className={cx("di-page-head", `di-page-head-${tier}`)}>
-      <div className="di-page-copy">
-        <Eyebrow variant="plain">{eyebrow}</Eyebrow>
-        <h1>{title}</h1>
+      <div className="di-page-grid">
+        <Eyebrow variant="plain" className="di-page-eyebrow">{eyebrow}</Eyebrow>
+        {children}
         {lede ? <p className="di-lede">{lede}</p> : null}
       </div>
-      {children ? <div className="di-page-aside">{children}</div> : null}
     </header>
   );
+}
+
+/** The page's one h1. Text, and at most one `Highlight` inside it. */
+export function PageHeaderTitle({ children }: { children: ReactNode }) {
+  return <h1 className="di-page-title">{children}</h1>;
+}
+
+/** Beside the title: a status, a figure, or the page's actions. */
+export function PageHeaderAside({ children }: { children: ReactNode }) {
+  return <div className="di-page-aside">{children}</div>;
 }

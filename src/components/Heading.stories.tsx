@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { PageHeader } from "./Heading";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "./Heading";
+import { Highlight } from "./Highlight";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
@@ -9,17 +10,21 @@ const meta = {
   tags: ["autodocs"],
   args: {
     eyebrow: "Watchlist",
-    title: "Watched identities",
     lede: "Manage the people, companies, domains, and email addresses under automatic watch.",
     tier: "console",
+    children: null,
   },
   argTypes: {
     eyebrow: { control: "text" },
-    title: { control: "text" },
     lede: { control: "text" },
     tier: { control: "radio", options: ["console", "brand"] },
     children: { control: false },
   },
+  render: (args) => (
+    <PageHeader {...args}>
+      <PageHeaderTitle>Watched identities</PageHeaderTitle>
+    </PageHeader>
+  ),
 } satisfies Meta<typeof PageHeader>;
 
 export default meta;
@@ -28,32 +33,48 @@ type Story = StoryObj<typeof meta>;
 export const TitleOnly: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("heading", { name: "Watched identities" })).toBeVisible();
+    await expect(canvas.getByRole("heading", { level: 1, name: "Watched identities" })).toBeVisible();
   },
 };
 
+/**
+ * The aside holds what sits beside the title. The slots are placed by grid
+ * area, so this story writes the aside first and it still lands on the right.
+ */
 export const WithStatus: Story = {
   render: (args) => (
     <PageHeader {...args}>
-      <StatusPill tone="ok" dot={true}>
-        Monitoring active
-      </StatusPill>
+      <PageHeaderAside>
+        <StatusPill tone="ok" dot={true}>
+          Monitoring active
+        </StatusPill>
+      </PageHeaderAside>
+      <PageHeaderTitle>Watched identities</PageHeaderTitle>
     </PageHeader>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const title = canvas.getByRole("heading", { name: "Watched identities" });
+    const status = canvas.getByText("Monitoring active");
+    await expect(status.getBoundingClientRect().left).toBeGreaterThan(title.getBoundingClientRect().left);
+  },
 };
 
 /**
- * On a phone the trailing slot keeps its width and wraps beneath the
- * title, rather than squeezing the title to one word a line.
+ * On a phone the aside keeps its width and wraps beneath the lede, rather
+ * than squeezing the title to one word a line.
  */
 export const Narrow: Story = {
   parameters: { controls: { disable: true } },
   render: (args) => (
     <div style={{ maxWidth: 360 }}>
       <PageHeader {...args}>
-        <StatusPill tone="ok" dot={true}>
-          Monitoring active
-        </StatusPill>
+        <PageHeaderTitle>Watched identities</PageHeaderTitle>
+        <PageHeaderAside>
+          <StatusPill tone="ok" dot={true}>
+            Monitoring active
+          </StatusPill>
+        </PageHeaderAside>
       </PageHeader>
     </div>
   ),
@@ -73,9 +94,39 @@ export const Narrow: Story = {
 export const Brand: Story = {
   args: {
     eyebrow: "Brand essence",
-    title: "Provable AI for regulated decisions.",
     lede: "Every answer is grounded in a temporal knowledge graph, every claim is tied to its source, and every source has a timestamp.",
     tier: "brand",
+  },
+  render: (args) => (
+    <PageHeader {...args}>
+      <PageHeaderTitle>Provable AI for regulated decisions.</PageHeaderTitle>
+    </PageHeader>
+  ),
+};
+
+/**
+ * A title with the page's one marked place in it. The title is a slot so a
+ * `Highlight` can sit inside it; the heading's accessible name is still the
+ * whole sentence.
+ */
+export const WithHighlight: Story = {
+  args: {
+    eyebrow: "Coverage",
+    lede: "Two quarters of growth, every entry traced to a source already on record.",
+    tier: "brand",
+  },
+  render: (args) => (
+    <PageHeader {...args}>
+      <PageHeaderTitle>
+        Coverage rose to <Highlight variant="figure">94 %</Highlight> —{" "}
+        <Highlight>without a new source</Highlight>.
+      </PageHeaderTitle>
+    </PageHeader>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const title = canvas.getByRole("heading", { level: 1, name: "Coverage rose to 94 % — without a new source." });
+    await expect(within(title).getByText("without a new source").tagName).toBe("MARK");
   },
 };
 
@@ -88,15 +139,17 @@ export const Tiers: Story = {
       <PageHeader
         tier="brand"
         eyebrow="Brand essence"
-        title="Provable AI for regulated decisions."
         lede="Every claim is tied to its source, and every source has a timestamp."
-      />
+      >
+        <PageHeaderTitle>Provable AI for regulated decisions.</PageHeaderTitle>
+      </PageHeader>
       <PageHeader
         tier="console"
         eyebrow="Watchlist"
-        title="Watched identities"
         lede="Manage the people, companies, domains, and email addresses under automatic watch."
-      />
+      >
+        <PageHeaderTitle>Watched identities</PageHeaderTitle>
+      </PageHeader>
     </div>
   ),
 };

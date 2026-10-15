@@ -3,7 +3,7 @@ import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Console } from "../components/AppShell";
 import { sampleChrome } from "../sample/chrome";
-import { PageHeader } from "../components/Heading";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
 import { Grid, Numbered, Stack } from "../components/Layout";
 import { Metric, MetricNote } from "../components/Metric";
 import { Bars } from "../components/Bars";
@@ -12,7 +12,7 @@ import { Session, SessionDetail, SessionAction, SessionMark, SessionTag } from "
 import { IconTile } from "../components/IconTile";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
 import { StatusPill } from "../components/StatusPill";
-import { SectionTitle } from "../components/SectionTitle";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/SectionTitle";
 
 const days = [46, 62, 70, 80, 58, 90, 84, 76, 88, 64, 72, 86, 91, 77, 69, 95, 100, 82, 74, 88, 93, 70, 81, 96, 85, 78, 90, 87, 73, 92];
 
@@ -21,10 +21,12 @@ export function SettingsScreen() {
     <Console title="Settings" crumb={["Operate", "Settings"]} active="settings" chrome={sampleChrome}>
       <PageHeader
         eyebrow="Session"
-        title="Settings and session"
         lede="The signed-in session, notification channels, and security checks."
       >
-        <StatusPill tone="ok">Company environment active</StatusPill>
+        <PageHeaderTitle>Settings and session</PageHeaderTitle>
+        <PageHeaderAside>
+          <StatusPill tone="ok">Company environment active</StatusPill>
+        </PageHeaderAside>
       </PageHeader>
 
       <Stack>
@@ -59,8 +61,9 @@ export function SettingsScreen() {
         </Numbered>
 
         <Numbered index="02">
-          <SectionTitle title="Notification channels" lede="Active endpoints for security events">
-            Synced
+          <SectionTitle lede="Active endpoints for security events">
+            <SectionTitleHeading>Notification channels</SectionTitleHeading>
+            <SectionTitleMeta>Synced</SectionTitleMeta>
           </SectionTitle>
           <Grid min="240px">
             <Channel title="Email notifications">
@@ -103,14 +106,13 @@ export function SettingsScreen() {
             </NoticeText>
           </Notice>
 
-          <SectionTitle
-            title="Recent security events"
-            lede="New hit on a domain · medium · email sent · webhook received"
-          >
-            10 Sep 2026, 14:37 CEST
+          <SectionTitle lede="New hit on a domain · medium · email sent · webhook received">
+            <SectionTitleHeading>Recent security events</SectionTitleHeading>
+            <SectionTitleMeta>10 Sep 2026, 14:37 CEST</SectionTitleMeta>
           </SectionTitle>
-          <SectionTitle title="Security report created" lede="High · email sent · webhook received">
-            10 Sep 2026, 14:30 CEST
+          <SectionTitle lede="High · email sent · webhook received">
+            <SectionTitleHeading>Security report created</SectionTitleHeading>
+            <SectionTitleMeta>10 Sep 2026, 14:30 CEST</SectionTitleMeta>
           </SectionTitle>
         </Numbered>
 
@@ -132,7 +134,10 @@ export function SettingsScreen() {
           </Grid>
         </Card>
 
-        <SectionTitle title="Security status: checked">ISO/IEC 27001 · privacy rules applied</SectionTitle>
+        <SectionTitle>
+          <SectionTitleHeading>Security status: checked</SectionTitleHeading>
+          <SectionTitleMeta>ISO/IEC 27001 · privacy rules applied</SectionTitleMeta>
+        </SectionTitle>
       </Stack>
     </Console>
   );

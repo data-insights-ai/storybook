@@ -53,6 +53,10 @@
     --di-skeleton-stagger: 90ms;
     --di-skeleton-rest: 0.38;
 
+    /* A highlighted passage is prose, set in the band face so its tint
+       stops at the descenders. */
+    --di-highlight-font: var(--di-font-sans-band);
+
     --di-pill-radius: var(--di-radius-pill);
     --di-pill-height: 20px;
   }

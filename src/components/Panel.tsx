@@ -21,7 +21,7 @@ export function Panel({
   className,
   children,
 }: {
-  /** The ordinal, letter or § mark in the index column. Omit for a panel with no index. */
+  /** The ordinal or letter in the index column. Omit for a panel with no index. */
   index?: string;
   indexSize?: "md" | "sm";
   indexTone?: "neutral" | "danger";

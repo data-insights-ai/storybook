@@ -2,7 +2,7 @@ import { Building2, Globe, Mail, Plus, ShieldCheck, UserRound } from "lucide-rea
 import { Button } from "../components/Button";
 import { Console } from "../components/AppShell";
 import { sampleChrome } from "../sample/chrome";
-import { PageHeader } from "../components/Heading";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
 import { IconTile } from "../components/IconTile";
 import { Grid, Stack, Actions } from "../components/Layout";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
@@ -28,7 +28,7 @@ import {
   TableHead,
   TableRow,
 } from "../components/DataTable";
-import { SectionTitle } from "../components/SectionTitle";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/SectionTitle";
 
 type Identity = {
   id: string;
@@ -54,17 +54,19 @@ export function WatchlistScreen() {
     <Console title="Watchlist" crumb={["Monitor", "Watchlist"]} active="watchlist" chrome={sampleChrome}>
       <PageHeader
         eyebrow="Watchlist"
-        title="Watched identities"
         lede="Manage the people, companies, domains, and email addresses under automatic watch."
       >
-        <StatRow>
-          <Stat label="Active entries" value="08" suffix=" / 08" />
-          <Stat label="System status">
-            <StatusPill tone="ok" dot>
-              Monitoring active
-            </StatusPill>
-          </Stat>
-        </StatRow>
+        <PageHeaderTitle>Watched identities</PageHeaderTitle>
+        <PageHeaderAside>
+          <StatRow>
+            <Stat label="Active entries" value="08" suffix=" / 08" />
+            <Stat label="System status">
+              <StatusPill tone="ok" dot>
+                Monitoring active
+              </StatusPill>
+            </Stat>
+          </StatRow>
+        </PageHeaderAside>
       </PageHeader>
 
       <Stack>
@@ -164,11 +166,9 @@ export function WatchlistScreen() {
         </Notice>
 
         <section>
-          <SectionTitle
-            title="Active watch rules"
-            lede="Name variants, domains, and identifiers currently under audit."
-          >
-            8 entries active
+          <SectionTitle lede="Name variants, domains, and identifiers currently under audit.">
+            <SectionTitleHeading>Active watch rules</SectionTitleHeading>
+            <SectionTitleMeta>8 entries active</SectionTitleMeta>
           </SectionTitle>
           <DataTable caption="Active watch rules">
             <TableFooter>

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
+import { Highlight } from "./Highlight";
 import { StatusPill } from "./StatusPill";
-import { SectionTitle } from "./SectionTitle";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./SectionTitle";
 
 const meta = {
   title: "Blocks/SectionTitle",
@@ -9,18 +10,21 @@ const meta = {
   tags: ["autodocs"],
   args: {
     eyebrow: "",
-    title: "Notification channels",
     lede: "Active endpoints for security events",
     tier: "console",
     children: null,
   },
   argTypes: {
     eyebrow: { control: "text" },
-    title: { control: "text" },
     lede: { control: "text" },
     tier: { control: "radio", options: ["console", "brand"] },
     children: { control: false },
   },
+  render: (args) => (
+    <SectionTitle {...args}>
+      <SectionTitleHeading>Notification channels</SectionTitleHeading>
+    </SectionTitle>
+  ),
 } satisfies Meta<typeof SectionTitle>;
 
 export default meta;
@@ -29,7 +33,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("heading", { name: "Notification channels" })).toBeVisible();
+    await expect(canvas.getByRole("heading", { level: 2, name: "Notification channels" })).toBeVisible();
   },
 };
 
@@ -38,11 +42,14 @@ export const TitleOnly: Story = {
   args: { lede: "" },
 };
 
-/** The trailing slot: a count, a timestamp, or a short status. */
+/** The meta slot: a count, a timestamp, or a short status. */
 export const WithMeta: Story = {
   render: (args) => (
     <SectionTitle {...args}>
-      <StatusPill tone="ok">synced</StatusPill>
+      <SectionTitleHeading>Notification channels</SectionTitleHeading>
+      <SectionTitleMeta>
+        <StatusPill tone="ok">synced</StatusPill>
+      </SectionTitleMeta>
     </SectionTitle>
   ),
 };
@@ -52,7 +59,7 @@ export const WithMeta: Story = {
  * which marks the one section on record.
  */
 export const WithEyebrow: Story = {
-  args: { eyebrow: "§ 02 — Delivery" },
+  args: { eyebrow: "02 — Delivery" },
 };
 
 /**
@@ -63,8 +70,36 @@ export const WithEyebrow: Story = {
 export const Brand: Story = {
   args: {
     eyebrow: "Two",
-    title: "Navy is the ink and the action.",
-    lede: "There is no invented accent colour. Body text is navy; the one filled control on a sheet is navy.",
+    lede: "No accent colour acts. Body text is navy; the one filled control on a sheet is navy.",
     tier: "brand",
+  },
+  render: (args) => (
+    <SectionTitle {...args}>
+      <SectionTitleHeading>Navy is the ink and the action.</SectionTitleHeading>
+    </SectionTitle>
+  ),
+};
+
+/**
+ * A heading with a marked passage. One per page: a page that highlighted
+ * every section heading would have marked nothing.
+ */
+export const WithHighlight: Story = {
+  args: {
+    eyebrow: "Two",
+    lede: "No accent colour acts. Body text is navy; the one filled control on a sheet is navy.",
+    tier: "brand",
+  },
+  render: (args) => (
+    <SectionTitle {...args}>
+      <SectionTitleHeading>
+        Navy is the ink <Highlight>and the action</Highlight>.
+      </SectionTitleHeading>
+    </SectionTitle>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const heading = canvas.getByRole("heading", { level: 2, name: "Navy is the ink and the action." });
+    await expect(within(heading).getByText("and the action").tagName).toBe("MARK");
   },
 };

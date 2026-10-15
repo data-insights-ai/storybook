@@ -56,9 +56,9 @@ Rules that make output look native rather than approximate:
 - **Focus follows its ground**, and this is a mistake the system already made once: `--di-focus` is navy on paper and Gold 400 after dark, and `--di-sidebar-focus` is gold on the navy rail. Do not ring focus in seal gold on paper — it measures **2.1:1**, under the **3:1** a focus indicator has to clear. Never remove a focus indicator.
 - **Anomaly runs on the gold ramp.** Do not introduce a second yellow, or a generic traffic-light green or red — the four status pairs above are the whole set.
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
-- **`--di-font-code` (JetBrains Mono) is for anything a machine wrote**: identifiers, hashes, timestamps, measured values, `§` marks. Prose is `--di-font-ui`. Which track a string sits in says where it came from.
+- **`--di-font-code` (JetBrains Mono) is for anything a machine wrote**: identifiers, hashes, timestamps, measured values, section numbers. Prose is `--di-font-ui`. Which track a string sits in says where it came from.
 - **Depth is a 1px rule.** Only a detached plane — menu, modal, toast — gets a shadow (`--di-shadow-plane`). No blur behind text.
-- **Every panel, table, drawer, notice and empty state carries a 38px index column** (`--di-index-col`) holding an ordinal, a letter or a `§`. A drawer keeps the ordinal of the row it opened from; a failure keeps its ordinal, tinted.
+- **Every panel, table, drawer, notice and empty state carries a 38px index column** (`--di-index-col`) holding an ordinal or a letter. A drawer keeps the ordinal of the row it opened from; a failure keeps its ordinal, tinted.
 - Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
 
 ### API shape
@@ -72,7 +72,7 @@ Rules that make output look native rather than approximate:
 - **`Pagination` and `Switch` are controlled** — you own `page` / `checked`.
 - **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. A blocked link (`disabled` or `loading`) drops its `href` and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined in-text control and stays a `<button>` — it is for acting, not for going somewhere.
 - **`Icon` takes one Lucide icon as its child**: `<Icon label="Search"><Search aria-hidden /></Icon>`.
-- **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-accent`, `--di-chart-muted`, `--di-chart-band`.
+- **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, poppy), `--di-chart-compare` (the comparison series, cornflower), `--di-chart-muted`, `--di-chart-band`.
 - Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first.
 
 ### Exploring a variation
@@ -107,7 +107,7 @@ use, and nothing else.
 | Meta | `--di-font-size-300` | Space Grotesk | 12px | 400 | Screen lede, field hints |
 | Measurement | `--di-font-size-700` | JetBrains Mono | 28px | 500 | `StatTile` figure |
 | Identifier | `--di-font-size-400` | JetBrains Mono | 13px | 400 | Identifiers, hashes, timestamps |
-| Section mark (`§`) | `--di-font-size-200` | JetBrains Mono | 11px | 500 | `Eyebrow` — `--di-tracking-eyebrow`, uppercase, Seal ink |
+| Eyebrow | `--di-font-size-200` | JetBrains Mono | 11px | 500 | `Eyebrow` — `--di-tracking-eyebrow`, uppercase, Seal ink |
 | Micro | `--di-font-size-100` | JetBrains Mono | 10px | 500 | `Kbd`, tile ordinal |
 
 `-550` is the ramp's one interpolated step, and it is the reason the brand tier
@@ -167,7 +167,7 @@ version, because a generator that does not know these will reach for them:
 
 ### The mark
 
-Five fixed assets, each with one context: **Primary** (navy on ivory or paper — the default lockup), **Inverse** (ivory on navy — sidebar, cover, dark fields), **Monochrome** (one colour, when the pair cannot be printed), **Mark only** (the symbol, when the name is already in the sentence) and **Mark, inverse** (the same symbol on navy; the gold node is the tittle). A lockup is never rebuilt from the mark and a typeface.
+Six fixed assets, each with one context: **Primary** (navy on ivory or paper — the default lockup), **Inverse** (ivory on navy — sidebar, cover, dark fields), **Monochrome** (one colour, when the pair cannot be printed), **Mark only** (the symbol, when the name is already in the sentence) **Mark, inverse** (the same symbol on navy; the gold node is the tittle) and **Mark, mono** (the symbol in one ink, where the mono lockup has no room). A lockup is never rebuilt from the mark and a typeface.
 
 Minimum sizes: **20px** height digital (UI, web, small cards), **10mm** in print (letterheads, cards), **16px / 6mm** for the mark alone (favicons, avatars).
 
@@ -210,7 +210,7 @@ is the other value.
 - **`labelTrack="prose"`** on `TextField` and `Select`, where a person is filling
   a form in for themselves rather than reading a record.
 - **`Eyebrow`** has two variants and they are not interchangeable. `sealed` is the
-  § mark beside the seal with a rule to the edge, and there is **one per view**.
+  section label beside the seal with a rule to the edge, and there is **one per view**.
   `plain` is the label alone and repeats down a page — it is what `PageHeader` and
   `SectionTitle` render from their `eyebrow` string. A page that repeated the
   sealed one would be claiming a seal per heading.

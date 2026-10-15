@@ -84,17 +84,6 @@ export function Motifs() {
       </figure>
       <figure>
         <svg viewBox="0 0 120 80" aria-hidden>
-          <text x="60" y="56" textAnchor="middle" fontFamily="JetBrains Mono, monospace" fontWeight="500" fontSize="44" fill="var(--di-seal-ink)">
-            §
-          </text>
-        </svg>
-        <figcaption>
-          <strong>Section mark</strong>
-          <span>Numbers a section of the record, in the mono track. <code>Eyebrow</code> sets it beside the seal and a rule to the edge.</span>
-        </figcaption>
-      </figure>
-      <figure>
-        <svg viewBox="0 0 120 80" aria-hidden>
           <circle cx="60" cy="40" r="12" fill="none" stroke="var(--di-ai-ring)" strokeWidth="3" />
         </svg>
         <figcaption>

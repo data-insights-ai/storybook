@@ -89,8 +89,8 @@ const machine: Row[] = [
   },
   {
     token: "--di-font-size-200 · 11 · 500",
-    note: "Eyebrow, § mark — Seal ink",
-    sample: "§ 04 — COVERAGE",
+    note: "Eyebrow — Seal ink",
+    sample: "04 — COVERAGE",
     style: { fontFamily: MONO, fontWeight: 500, fontSize: "var(--di-font-size-200)", letterSpacing: "var(--di-tracking-eyebrow)", textTransform: "uppercase", color: "var(--di-seal-ink)" },
   },
   {
@@ -127,7 +127,7 @@ export const ScaleStory: StoryObj = {
     <Page
       eyebrow="Type"
       title="Two families, two jobs."
-      lede="Space Grotesk is everything a person reads as prose: headings, body copy, the labels on controls. JetBrains Mono is everything a machine wrote — identifiers, hashes, timestamps, measured values, and the § marks that number a screen. The split is not a texture."
+      lede="Space Grotesk is everything a person reads as prose: headings, body copy, the labels on controls. JetBrains Mono is everything a machine wrote — identifiers, hashes, timestamps, measured values, and the numbers that order a screen's sections. The split is not a texture."
     >
       <Section
         eyebrow="Prose"

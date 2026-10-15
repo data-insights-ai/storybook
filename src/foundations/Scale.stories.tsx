@@ -130,7 +130,7 @@ export const Dimensions: StoryObj = {
       <Section
         eyebrow="The index column"
         title="38 pixels that cost real space."
-        lede="`--di-index-col` is the system's fingerprint: the column down the left of `Panel`, `DataTable`, `Drawer`, `Notice`, `EmptyState`, `Modal`, `SignIn`, `StatTile` and `SkeletonTable`, holding an ordinal, a letter or a § mark."
+        lede="`--di-index-col` is the system's fingerprint: the column down the left of `Panel`, `DataTable`, `Drawer`, `Notice`, `EmptyState`, `Modal`, `SignIn`, `StatTile` and `SkeletonTable`, holding an ordinal or a letter."
       >
         <Rules>
           <Rule>It is what turns a card into an entry, and gives a row a handle an operator can say out loud.</Rule>

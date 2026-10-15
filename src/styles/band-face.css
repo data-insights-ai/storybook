@@ -1,0 +1,59 @@
+/*
+ * Space Grotesk again, under a second name, with its vertical metrics cut
+ * to the band a `Highlight` passage paints.
+ *
+ * An inline background fills the font's whole ascent-to-descent box —
+ * 1.28em for Space Grotesk (ascent 0.984, descent 0.292) — whatever the
+ * line height, and it paints over text earlier in the paragraph. Under a
+ * display title set at 1.02 that box starts 0.04em below the line above's
+ * baseline and covered its descenders.
+ *
+ * Here the ascent stops 0.064em above the cap height (0.70) and the
+ * descent at the foot of the descenders, so the box — and the tint, which
+ * stays one solid colour an accessibility check can measure — is the band
+ * and nothing more. Same files, so the glyphs do not change and nothing
+ * extra downloads.
+ */
+@font-face {
+  font-family: "Space Grotesk Band";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/space-grotesk/files/space-grotesk-latin-400-normal.woff2") format("woff2");
+  ascent-override: 76.4%;
+  descent-override: 21.6%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Space Grotesk Band";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("@fontsource/space-grotesk/files/space-grotesk-latin-500-normal.woff2") format("woff2");
+  ascent-override: 76.4%;
+  descent-override: 21.6%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Space Grotesk Band";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("@fontsource/space-grotesk/files/space-grotesk-latin-600-normal.woff2") format("woff2");
+  ascent-override: 76.4%;
+  descent-override: 21.6%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Space Grotesk Band";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2") format("woff2");
+  ascent-override: 76.4%;
+  descent-override: 21.6%;
+  line-gap-override: 0%;
+}

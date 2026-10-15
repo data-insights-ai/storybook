@@ -28,8 +28,8 @@ function CitedMark(props: DotItemDotProps) {
   if (!point || !payload?.cited) return <g />;
   return (
     <g>
-      <line x1={point.cx} y1={point.cy} x2={point.cx} y2={point.cy - 14} stroke="var(--di-chart-accent)" />
-      <circle cx={point.cx} cy={point.cy} r={4} fill="var(--di-chart-accent)" />
+      <line x1={point.cx} y1={point.cy} x2={point.cx} y2={point.cy - 14} stroke="var(--di-chart-highlight)" />
+      <circle cx={point.cx} cy={point.cy} r={4} fill="var(--di-chart-highlight)" />
       {payload.cite ? (
         <text
           x={point.cx + 8}
@@ -50,7 +50,7 @@ function SeriesActive(props: ActiveDotProps) {
   const point = at(props);
   if (!point) return <g />;
   const cited = Boolean((props.payload as { cited?: boolean } | undefined)?.cited);
-  return <circle cx={point.cx} cy={point.cy} r={4} fill={cited ? "var(--di-chart-accent)" : "var(--di-chart-series)"} />;
+  return <circle cx={point.cx} cy={point.cy} r={4} fill={cited ? "var(--di-chart-highlight)" : "var(--di-chart-series)"} />;
 }
 
 export function SeriesChart({ legend = false }: { legend?: boolean }) {
@@ -91,7 +91,7 @@ export function SeriesChart({ legend = false }: { legend?: boolean }) {
 const bars = [
   { name: "LLM-A", value: 38, fill: "var(--di-chart-muted)" },
   { name: "LLM-B", value: 52, fill: "var(--di-chart-muted-strong)" },
-  { name: "Ours", value: 74, fill: "var(--di-chart-accent)" },
+  { name: "Ours", value: 74, fill: "var(--di-chart-highlight)" },
 ];
 
 const barConfig = {
@@ -130,7 +130,7 @@ function shareLabel(props: {
 
 export function CompareChart() {
   return (
-    <Chart label="Comparison. One gold bar, the rest grey" config={barConfig}>
+    <Chart label="Comparison. One poppy bar, the rest grey" config={barConfig}>
       <ComposedChart data={bars} layout="vertical" margin={{ top: 8, right: 36, bottom: 8, left: 0 }}>
         <XAxis type="number" domain={[0, 100]} hide />
         <YAxis type="category" dataKey="name" tickLine={false} axisLine={false} width={52} interval={0} />

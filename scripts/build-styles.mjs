@@ -24,9 +24,22 @@ function fontFace(spec) {
   });
 }
 
+/* A face of our own over a @fontsource file (styles/band-face.css) names the
+   file by package path; ship it beside the others. */
+function fontUrls(css) {
+  return css.replace(/url\("(@fontsource\/[^"]+\.woff2)"\)/g, (_, spec) => {
+    const file = spec.split("/").pop();
+    if (!seen.has(file)) {
+      copyFileSync(require.resolve(spec), join(fontDir, file));
+      seen.add(file);
+    }
+    return `url(./fonts/${file})`;
+  });
+}
+
 function inline(file) {
   const dir = dirname(file);
-  return readFileSync(file, "utf8").replace(/@import "([^"]+)";/g, (_, spec) => {
+  return fontUrls(readFileSync(file, "utf8")).replace(/@import "([^"]+)";/g, (_, spec) => {
     if (spec.startsWith("@fontsource/")) return fontFace(spec).trim();
     if (spec.startsWith(".")) return inline(join(dir, spec)).trim();
     throw new Error(`Unhandled style import ${spec}`);

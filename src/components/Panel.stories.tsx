@@ -76,11 +76,6 @@ export const MetaStatus: Story = {
   ),
 };
 
-/** The § mark from the section numbering, in place of an ordinal. */
-export const SectionMark: Story = {
-  args: { index: "§", title: "Coverage" },
-};
-
 /** The cold surface. For a dense field of mono values only. */
 export const Grid: Story = {
   args: { surface: "grid", title: "Extract" },

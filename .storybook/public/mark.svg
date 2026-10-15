@@ -1,14 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 138" role="img" aria-label="datAInsights">
-  <g transform="translate(-27 -23)" stroke="#05112b" stroke-width="5.7" fill="none" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10">
-    <polyline points="86.5 30.6 32 62.1 32 124.9 86.5 156.4"/>
-    <polyline points="115.1 156.4 169.6 124.9 169.6 62.1 115.1 30.6"/>
-    <line x1="136.4" y1="73.2" x2="136.4" y2="120.1"/>
-    <polyline points="51.5 116.6 79.9 63.5 107.8 116.6"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 145 132.2">
+  <!-- Generator: Adobe Illustrator 29.8.11, SVG Export Plug-In . SVG Version: 2.1.1 Build 11)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #0a1f44;
+      }
+
+      .st1 {
+        fill: #a6811f;
+      }
+
+      .st2 {
+        fill: none;
+        stroke: #0a1f44;
+        stroke-miterlimit: 10;
+        stroke-width: 7.4px;
+      }
+    </style>
+  </defs>
+  <g>
+    <polyline class="st2" points="58.2 3.2 3.7 34.7 3.7 97.5 58.2 129"/>
+    <polyline class="st2" points="86.8 129 141.3 97.5 141.3 34.7 86.8 3.2"/>
+    <line class="st2" x1="108.1" y1="40.6" x2="108.1" y2="87.5"/>
+    <polyline class="st2" points="23.2 89.2 51.6 36.1 79.5 89.2"/>
   </g>
-  <g transform="translate(-27 -23)">
-    <circle cx="51.5" cy="119.6" r="7.9" fill="#05112b"/>
-    <circle cx="108.4" cy="119.6" r="7.9" fill="#05112b"/>
-    <circle cx="136.4" cy="119.6" r="7.9" fill="#05112b"/>
-    <circle cx="136.4" cy="61.3" r="7.9" fill="#c9a24a"/>
-  </g>
+  <circle class="st0" cx="23.2" cy="92.2" r="7.9"/>
+  <circle class="st0" cx="80.1" cy="92.2" r="7.9"/>
+  <circle class="st0" cx="108.1" cy="92.2" r="7.9"/>
+  <circle class="st1" cx="108.1" cy="33.9" r="7.9"/>
 </svg>

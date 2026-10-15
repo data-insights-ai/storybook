@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { sampleChrome } from "../sample/chrome";
 import { Breadcrumb } from "./Breadcrumb";
-import { PageHeader } from "./Heading";
+import { PageHeader, PageHeaderTitle } from "./Heading";
 import { StatusPill } from "./StatusPill";
 import {
   AppShell,
@@ -69,11 +69,9 @@ export const Product: Story = {
           </AppShellBarEnd>
         </AppShellBar>
         <AppShellContent>
-          <PageHeader
-            eyebrow="Record"
-            title="Findings"
-            lede="Everything the monitor has raised and not yet closed."
-          />
+          <PageHeader eyebrow="Record" lede="Everything the monitor has raised and not yet closed.">
+            <PageHeaderTitle>Findings</PageHeaderTitle>
+          </PageHeader>
           <p>The rail, the workspace and the runtime stay on every page. The content here is what changes.</p>
         </AppShellContent>
       </AppShellMain>
@@ -110,7 +108,9 @@ export const FullWidth: Story = {
           <Breadcrumb label="Breadcrumb" items={[{ label: "WS-01", href: "#/overview" }, { label: "findings" }]} />
         </AppShellBar>
         <AppShellContent width="full">
-          <PageHeader eyebrow="Record" title="Findings" lede="The page runs to the edge of the window." />
+          <PageHeader eyebrow="Record" lede="The page runs to the edge of the window.">
+            <PageHeaderTitle>Findings</PageHeaderTitle>
+          </PageHeader>
         </AppShellContent>
       </AppShellMain>
     </AppShell>

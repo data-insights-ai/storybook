@@ -53,7 +53,9 @@
     );
 
     --di-chart-series: var(--di-ink);
-    --di-chart-accent: var(--di-gold-500);
+    /* The one value the eye should land on is poppy, not gold: gold means
+       sealed, and the highest bar is not the one on record. */
+    --di-chart-highlight: var(--di-highlight);
     --di-chart-baseline: var(--di-border-input);
     --di-chart-muted: var(--di-rule-300);
     --di-chart-muted-strong: var(--di-rule-500);
@@ -67,6 +69,24 @@
      */
     --di-chart-warn: var(--di-gold-600);
     --di-chart-danger: var(--di-danger-700);
+    /* The comparison series beside the recorded one: navy is what is,
+       cornflower is what it is measured against. */
+    --di-chart-compare: var(--di-signal);
+
+    /*
+     * The two accents. At most one per page; the two meet only in a
+     * chart. Neither is a status — critical stays danger 700 — and
+     * neither fills a button. `-ink` is the accent read as text on paper,
+     * `-tint` the ground under a marked passage. The bare role is a mark
+     * or a large figure: poppy measures 4.2:1 on paper, under AA for body
+     * text. Cornflower never sits directly on a navy surface (3.0:1).
+     */
+    --di-highlight: var(--di-poppy-600);
+    --di-highlight-ink: var(--di-poppy-700);
+    --di-highlight-tint: var(--di-poppy-100);
+    --di-signal: var(--di-cornflower-600);
+    --di-signal-ink: var(--di-cornflower-800);
+    --di-signal-tint: var(--di-cornflower-100);
 
     --di-fill-strong: var(--di-ink);
     --di-fill-strong-hover: var(--di-navy-950);
@@ -204,13 +224,22 @@
     );
 
     --di-chart-series: var(--di-night-100);
-    --di-chart-accent: var(--di-gold-400);
+    --di-chart-highlight: var(--di-highlight);
     --di-chart-baseline: var(--di-night-700);
     --di-chart-muted: var(--di-night-800);
     --di-chart-muted-strong: var(--di-night-600);
     --di-chart-band: rgba(242, 245, 251, 0.12);
     --di-chart-warn: var(--di-gold-400);
     --di-chart-danger: var(--di-night-danger-500);
+    --di-chart-compare: var(--di-signal);
+
+    /* The brandbook's `-night` values are this remap, not second names. */
+    --di-highlight: var(--di-night-poppy-300);
+    --di-highlight-ink: var(--di-night-poppy-300);
+    --di-highlight-tint: var(--di-night-poppy-900);
+    --di-signal: var(--di-night-cornflower-300);
+    --di-signal-ink: var(--di-night-cornflower-300);
+    --di-signal-tint: var(--di-night-cornflower-900);
 
     /* After dark, gold is the fill. Navy has nothing left to act against. */
     --di-fill-strong: var(--di-gold-500);

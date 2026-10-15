@@ -5,6 +5,7 @@ import logoInverse from "../assets/logo-inverse.svg";
 import logoMono from "../assets/logo-mono.svg";
 import mark from "../assets/mark.svg";
 import markInverse from "../assets/mark-inverse.svg";
+import markMono from "../assets/mark-mono.svg";
 import { Page, Section } from "./guide/Guide";
 import "./foundations.css";
 
@@ -14,6 +15,7 @@ const cells = [
   { title: "Mono", body: "One colour, when the pair cannot be printed.", src: logoMono, dark: false, mark: false },
   { title: "Mark", body: "Symbol only, when the name is already in the sentence.", src: mark, dark: false, mark: true },
   { title: "Mark, inverse", body: "The same symbol on navy. The gold node is the tittle.", src: markInverse, dark: true, mark: true },
+  { title: "Mark, mono", body: "The symbol in one ink, where the mono lockup has no room.", src: markMono, dark: false, mark: true },
 ];
 
 function Lockups() {
@@ -25,7 +27,7 @@ function Lockups() {
     >
       <Section
         eyebrow="Lockups"
-        title="Five files, and nothing else."
+        title="Six files, and nothing else."
         lede="Each is a fixed asset. A lockup is never rebuilt from the mark and a typeface — see Foundations/Mark for the misuses."
       >
       <div className="di-logo-grid">

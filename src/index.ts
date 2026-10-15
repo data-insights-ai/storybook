@@ -45,7 +45,8 @@ export { Fact, FactList } from "./components/FactList";
 export type { LabelTrack } from "./components/Field";
 export { FieldHint } from "./components/FieldHint";
 export type { HintTone } from "./components/FieldHint";
-export { PageHeader } from "./components/Heading";
+export { PageHeader, PageHeaderAside, PageHeaderTitle } from "./components/Heading";
+export { Highlight } from "./components/Highlight";
 export { Icon } from "./components/Icon";
 export { IconTile } from "./components/IconTile";
 export { KeyValue, KeyValues } from "./components/KeyValues";
@@ -89,7 +90,7 @@ export {
 export { Eyebrow, Kbd, SealMark, SealValue, TickRule } from "./components/Seal";
 export type { SealState } from "./components/Seal";
 export { SearchField } from "./components/SearchField";
-export { SectionTitle } from "./components/SectionTitle";
+export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/SectionTitle";
 export { SegmentedControl } from "./components/SegmentedControl";
 export { Select } from "./components/Select";
 export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/Session";

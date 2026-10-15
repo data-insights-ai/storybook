@@ -30,11 +30,23 @@ const seriesConfig = {
 const bars = [
   { name: "Registry", value: 38, fill: "var(--di-chart-muted)" },
   { name: "Mirror", value: 52, fill: "var(--di-chart-muted-strong)" },
-  { name: "Feed", value: 74, fill: "var(--di-chart-accent)" },
+  { name: "Feed", value: 74, fill: "var(--di-chart-highlight)" },
 ];
 
 const barConfig = {
   value: { label: "Share", color: "var(--di-chart-series)" },
+} satisfies ChartConfig;
+
+const coverage = [
+  { period: "Q1", recorded: 61, compare: 58 },
+  { period: "Q2", recorded: 70, compare: 66 },
+  { period: "Q3", recorded: 82, compare: 79 },
+  { period: "Q4", recorded: 94, compare: 85 },
+];
+
+const coverageConfig = {
+  recorded: { label: "Recorded", color: "var(--di-chart-series)" },
+  compare: { label: "Comparison", color: "var(--di-chart-compare)" },
 } satisfies ChartConfig;
 
 const range = [
@@ -118,8 +130,8 @@ export const Series: Story = {
 
 /**
  * A comparison. Everything is warm neutral except the one bar the eye is
- * meant to land on, which takes `--di-chart-accent`. Per-bar colour is a
- * `Cell`, so the accent is data, not a second series.
+ * meant to land on, which takes `--di-chart-highlight`. Per-bar colour is a
+ * `Cell`, so the highlight is data, not a second series.
  */
 export const Compare: Story = {
   args: { label: "Share of entries by source kind", config: barConfig },
@@ -137,6 +149,35 @@ export const Compare: Story = {
       </ComposedChart>
     </Chart>
   ),
+};
+
+/**
+ * Two series, and the second one is a comparison: navy is what was
+ * recorded, cornflower is what it is measured against. This is the one
+ * place cornflower may share a view with poppy — at most one accent per
+ * page, and the two meet only in a chart. A second *ordinary* series is
+ * still warm neutral; cornflower names the comparison, not "series two".
+ */
+export const AgainstComparison: Story = {
+  args: { label: "Coverage by quarter, recorded against comparison", config: coverageConfig },
+  render: (args) => (
+    <Chart {...args}>
+      <ComposedChart data={coverage} margin={{ top: 16, right: 12, bottom: 0, left: 0 }} barGap={2}>
+        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+        <XAxis dataKey="period" tickLine={false} axisLine={false} interval={0} />
+        <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
+        <ChartTooltip />
+        <ChartLegend />
+        <Bar dataKey="recorded" fill="var(--color-recorded)" radius={0} />
+        <Bar dataKey="compare" fill="var(--color-compare)" radius={0} />
+      </ComposedChart>
+    </Chart>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("Recorded")).toBeVisible();
+    await expect(canvas.getByText("Comparison")).toBeVisible();
+  },
 };
 
 /**

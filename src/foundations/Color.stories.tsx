@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Page, Section } from "./guide/Guide";
+import { Bar, BarChart, XAxis, YAxis } from "recharts";
+import { Chart, ChartLegend, ChartTooltip, type ChartConfig } from "../components/Chart";
+import { Highlight } from "../components/Highlight";
+import { Page, Rule, Rules, Section } from "./guide/Guide";
 import "./foundations.css";
 
 const families = [
@@ -63,20 +66,93 @@ const night = [
 
 const chartRoles = [
   ["Series", "--di-chart-series", "var(--di-chart-series)", "The recorded line."],
-  ["Accent", "--di-chart-accent", "var(--di-chart-accent)", "The one value."],
+  ["Highlight", "--di-chart-highlight", "var(--di-chart-highlight)", "The one value, in poppy."],
   ["Muted", "--di-chart-muted", "var(--di-chart-muted)", "A comparison bar."],
   ["Strong", "--di-chart-muted-strong", "var(--di-chart-muted-strong)", "A second comparison, still grey."],
   ["Band", "--di-chart-band", "var(--di-chart-band)", "The range around a median."],
   ["Warn", "--di-chart-warn", "var(--di-chart-warn)", "The middle of an ordered status scale."],
   ["Danger", "--di-chart-danger", "var(--di-chart-danger)", "The top of an ordered status scale."],
+  ["Compare", "--di-chart-compare", "var(--di-chart-compare)", "What the recorded series is measured against."],
 ];
+
+/*
+ * The two accents, painted from the tokens inside a themed region rather
+ * than from hex literals, so the swatch is the build and the hex beside it
+ * is the caption. Daylight swatches sit in a `data-theme="light"` region so
+ * the page reads the same under either toolbar theme; the night swatch is
+ * the same role resolved on the night sheet. Brandbook v0.5 calls those
+ * `--di-mark-night` and `--di-signal-night`; here they are the dark remap
+ * of `--di-highlight` and `--di-signal`, because a theme remaps a role rather
+ * than adding a second name for it.
+ *
+ * Poppy is `--di-highlight` here, not the brandbook's `--di-mark`: "mark"
+ * already names the logo mark and the seal mark, and a red token called
+ * mark beside a gold mark that means sealed is the one confusion this
+ * palette cannot afford. The component is `Highlight`, and so is the role.
+ */
+const accents = [
+  {
+    name: "Poppy",
+    role: "the highlight",
+    swatches: [
+      ["--di-highlight", "--di-text-on-strong", "#D23C2E", "light", "The marked place. A key figure, a quote, the core claim."],
+      ["--di-highlight-ink", "--di-text-on-strong", "#A42A1F", "light", "Poppy as text on paper."],
+      ["--di-highlight-tint", "--di-highlight-ink", "#FADFDA", "light", "The ground under a marked passage."],
+      ["--di-highlight", "--di-bg-page", "#FF7F6E", "dark", "Poppy on the night sheet."],
+    ],
+  },
+  {
+    name: "Cornflower",
+    role: "the signal",
+    swatches: [
+      ["--di-signal", "--di-text-on-strong", "#2B6CB0", "light", "The accent. A second series, a note that something is new."],
+      ["--di-signal-ink", "--di-text-on-strong", "#1F5288", "light", "Cornflower as text on paper."],
+      ["--di-signal-tint", "--di-signal-ink", "#DFE9F5", "light", "The ground behind an accent."],
+      ["--di-signal", "--di-bg-page", "#79AEEA", "dark", "Cornflower on the night sheet."],
+    ],
+  },
+] as const;
+
+const coverage = [
+  { period: "Q1", recorded: 61, compare: 58 },
+  { period: "Q2", recorded: 70, compare: 66 },
+  { period: "Q3", recorded: 82, compare: 79 },
+  { period: "Q4", recorded: 94, compare: 85 },
+];
+
+const coverageConfig = {
+  recorded: { label: "Recorded", color: "var(--di-chart-series)" },
+  compare: { label: "Comparison", color: "var(--di-chart-compare)" },
+} satisfies ChartConfig;
+
+function AccentsInUse() {
+  return (
+    <div className="di-accent-use">
+      <p className="di-accent-use-eyebrow">In use</p>
+      <p className="di-accent-use-claim">
+        Coverage rose to <Highlight variant="figure">94 %</Highlight> —{" "}
+        <Highlight>without a new source</Highlight>.
+      </p>
+      <Chart label="Coverage by quarter, recorded against comparison" config={coverageConfig}>
+        <BarChart data={coverage} margin={{ top: 8, right: 0, bottom: 0, left: 0 }} barGap={2}>
+          <XAxis dataKey="period" tickLine={false} axisLine={false} />
+          <YAxis hide domain={[0, 100]} />
+          <ChartTooltip />
+          <ChartLegend />
+          <Bar dataKey="recorded" fill="var(--color-recorded)" radius={0} />
+          <Bar dataKey="compare" fill="var(--color-compare)" radius={0} />
+        </BarChart>
+      </Chart>
+    </div>
+  );
+}
 
 function Board() {
   return (
     <Page
       eyebrow="Colour"
       title="Paper, ink, seal."
-      lede="Warm paper is the ground. Navy is the ink and, on paper, the only thing that acts — there is no invented accent, so what writes is what commits. Gold is not decoration: a filled dot means the value is recorded and verifiable, and a hollow ring means a model inferred it and nothing has vouched for it yet."
+      lede="Warm paper is the ground. Navy is the ink and, on paper, the only thing that acts — no accent ever fills a control, so what writes is what commits. Gold is not decoration: a filled dot means the value is recorded and verifiable, and a hollow ring means a model inferred it and nothing has vouched for it yet."
     >
       <div className="di-ratio" aria-hidden>
         <div style={{ flex: 72, background: "#f4f1e8", color: "#0a1f44" }}>
@@ -148,6 +224,43 @@ function Board() {
                 </div>
               ))}
             </div>
+          </section>
+        </div>
+      </Section>
+      <Section
+        eyebrow="Accents"
+        title="Poppy marks. Cornflower signals."
+        lede="Clear primaries that carry at a distance, in print and on a trade-fair wall. They stand beside navy and gold, never in their place, and they carry no status: neither one says a value is good, bad or sealed."
+      >
+        <div className="di-swatches">
+          {accents.map((family) => (
+            <section key={family.name} className="di-swatch-col">
+              <h2>
+                {family.name} <span>/ {family.role}</span>
+              </h2>
+              {family.swatches.map(([name, ink, hex, theme, role]) => (
+                <div
+                  key={`${name}-${theme}`}
+                  data-theme={theme}
+                  className="di-swatch"
+                  style={{ background: `var(${name})`, color: `var(${ink})` }}
+                >
+                  <b>
+                    {name}
+                    <small>{hex}</small>
+                  </b>
+                  <span>{role}</span>
+                </div>
+              ))}
+            </section>
+          ))}
+          <section className="di-swatch-col">
+            <AccentsInUse />
+            <Rules>
+              <Rule>At most one accent per page. The two meet only in a chart.</Rule>
+              <Rule>Poppy is not “critical”. A failure stays danger red, #9E2020, and says so in words.</Rule>
+              <Rule>Never on a button. Cornflower never sits directly on a navy surface — it measures 3:1 there.</Rule>
+            </Rules>
           </section>
         </div>
       </Section>

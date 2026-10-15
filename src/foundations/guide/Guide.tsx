@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { PageHeader } from "../../components/Heading";
-import { SectionTitle } from "../../components/SectionTitle";
+import { PageHeader, PageHeaderTitle } from "../../components/Heading";
+import { SectionTitle, SectionTitleHeading } from "../../components/SectionTitle";
 import logo from "../../assets/logo.svg";
 import mark from "../../assets/mark.svg";
 import "./Guide.css";
@@ -42,7 +42,9 @@ export function Page({
      * body copy was being sized by a Storybook theme.
      */
     <article className="di-guide sb-unstyled">
-      <PageHeader tier="brand" eyebrow={eyebrow} title={title} lede={lede} />
+      <PageHeader tier="brand" eyebrow={eyebrow} lede={lede}>
+        <PageHeaderTitle>{title}</PageHeaderTitle>
+      </PageHeader>
       {children}
     </article>
   );
@@ -61,7 +63,9 @@ export function Section({
 }) {
   return (
     <section className="di-guide-section">
-      <SectionTitle tier="brand" eyebrow={eyebrow} title={title} lede={lede} />
+      <SectionTitle tier="brand" eyebrow={eyebrow} lede={lede}>
+        <SectionTitleHeading>{title}</SectionTitleHeading>
+      </SectionTitle>
       {children}
     </section>
   );

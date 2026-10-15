@@ -6,7 +6,7 @@ const meta = {
   title: "Primitives/Eyebrow",
   component: Eyebrow,
   tags: ["autodocs"],
-  args: { children: "§ 04 — Coverage", variant: "sealed" },
+  args: { children: "04 — Coverage", variant: "sealed" },
   argTypes: {
     children: { control: "text" },
     variant: { control: "radio", options: ["sealed", "plain"] },
@@ -16,11 +16,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The § mark, the seal and a rule to the edge. One gold dot per view. */
+/** The section number, the seal and a rule to the edge. One gold dot per view. */
 export const Sealed: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("§ 04 — Coverage")).toBeVisible();
+    await expect(canvas.getByText("04 — Coverage")).toBeVisible();
   },
 };
 
@@ -39,8 +39,8 @@ export const Pair: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ maxWidth: 440 }}>
-      <Eyebrow>§ 04 — Coverage</Eyebrow>
-      <Eyebrow variant="plain">§ 05 — Sources</Eyebrow>
+      <Eyebrow>04 — Coverage</Eyebrow>
+      <Eyebrow variant="plain">05 — Sources</Eyebrow>
     </div>
   ),
 };

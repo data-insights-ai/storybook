@@ -1,23 +1,40 @@
 @layer components {
   /*
-   * The trailing slot keeps its width and the copy gives way, until the
-   * copy would drop under 20rem: then the slot wraps beneath the title
-   * rather than squeezing it to a word a line on a phone.
+   * The slots are placed by grid area, so a caller may write the title and
+   * the aside in either order. The aside keeps its width and the copy gives
+   * way, until the header is narrower than 36rem: then the aside drops
+   * beneath the lede rather than squeezing the title to a word a line on a
+   * phone. The header is the container, so that is the header's width and
+   * not the viewport's.
    */
   .di-page-head {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: var(--di-space-24);
+    container-type: inline-size;
   }
 
-  .di-page-copy {
-    flex: 1 1 20rem;
-    min-width: 0;
+  .di-page-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "eyebrow"
+      "title"
+      "lede";
   }
 
-  .di-page-head h1 {
+  .di-page-grid:has(> .di-page-aside) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "eyebrow aside"
+      "title aside"
+      "lede aside";
+    column-gap: var(--di-space-24);
+  }
+
+  .di-page-eyebrow {
+    grid-area: eyebrow;
+  }
+
+  .di-page-title {
+    grid-area: title;
     font-family: var(--di-font-ui);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
@@ -25,12 +42,30 @@
   }
 
   .di-lede {
+    grid-area: lede;
     color: var(--di-text-muted);
     text-wrap: pretty;
   }
 
   .di-page-aside {
-    flex: none;
+    grid-area: aside;
+    align-self: end;
+  }
+
+  @container (width < 36rem) {
+    .di-page-grid:has(> .di-page-aside) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "eyebrow"
+        "title"
+        "lede"
+        "aside";
+    }
+
+    .di-page-aside {
+      justify-self: start;
+      margin-top: var(--di-space-24);
+    }
   }
 
   /* The console tier: 28px over a 12px lede, and the head owns the gap
@@ -40,11 +75,8 @@
     margin-bottom: var(--di-space-24);
   }
 
-  .di-page-head-console .di-page-copy {
+  .di-page-head-console .di-page-title {
     max-width: 680px;
-  }
-
-  .di-page-head-console h1 {
     font-size: var(--di-font-size-700);
     line-height: var(--di-leading-tight);
   }
@@ -68,10 +100,13 @@
    */
   .di-page-head-brand {
     --di-eyebrow-gap: var(--di-space-12);
-    align-items: flex-start;
   }
 
-  .di-page-head-brand h1 {
+  .di-page-head-brand .di-page-aside {
+    align-self: start;
+  }
+
+  .di-page-head-brand .di-page-title {
     max-width: 16ch;
     font-size: clamp(var(--di-font-size-800), 6vw, var(--di-font-size-1000));
     line-height: 1.02;
