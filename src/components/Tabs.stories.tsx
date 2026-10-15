@@ -39,7 +39,7 @@ const meta = {
             args.onChange(next);
           }}
         />
-        <TabPanel value={value}>
+        <TabPanel value={value} idPrefix={args.idPrefix}>
           <p className="di-quiet">The {value} view of entry 03.</p>
         </TabPanel>
       </div>
@@ -110,5 +110,84 @@ export const Pair: Story = {
       { value: "record", label: "Record" },
       { value: "log", label: "Log" },
     ],
+  },
+};
+
+/** Separate records can reuse values without duplicating document IDs. */
+export const MultipleStrips: Story = {
+  render: function Render(args) {
+    const [first, setFirst] = useState("record");
+    const [second, setSecond] = useState("record");
+    return <div>
+      <Tabs {...args} idPrefix="first" label="First record" value={first} onChange={setFirst} />
+      <TabPanel idPrefix="first" value={first}>First record view</TabPanel>
+      <Tabs {...args} idPrefix="second" label="Second record" value={second} onChange={setSecond} />
+      <TabPanel idPrefix="second" value={second}>Second record view</TabPanel>
+    </div>;
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const strips = canvas.getAllByRole("tablist");
+    const second = within(strips[1]);
+    second.getByRole("tab", { name: "Record" }).focus();
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(second.getByRole("tab", { name: /Sources/ })).toHaveFocus();
+    await expect(within(strips[0]).getByRole("tab", { name: "Record" })).toHaveAttribute("aria-selected", "true");
+    const ids = Array.from(canvasElement.querySelectorAll("[id]"), node => node.id);
+    await expect(new Set(ids).size).toBe(ids.length);
+    for (const panel of canvas.getAllByRole("tabpanel")) {
+      const tab = canvasElement.ownerDocument.getElementById(panel.getAttribute("aria-labelledby")!);
+      await expect(tab).toHaveAttribute("aria-controls", panel.id);
+    }
+  },
+};
+
+export const UnusualValues: Story = {
+  args: { idPrefix: 'scope " : /', items: [{ value: "record", label: "Record" }, { value: 'a" ] # : /\ud800', label: "Other view" }] },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    canvas.getByRole("tab", { name: "Record" }).focus();
+    await userEvent.keyboard("{ArrowRight}");
+    const target = canvas.getByRole("tab", { name: "Other view" });
+    await expect(target).toHaveFocus();
+    await expect(target).toHaveAttribute("aria-controls", canvas.getByRole("tabpanel").id);
+    await userEvent.keyboard("{ArrowLeft}");
+    await expect(canvas.getByRole("tab", { name: "Record" })).toHaveFocus();
+  },
+};
+
+/** A stale controlled selection must not make all available tabs unreachable. */
+export const MissingSelection: Story = {
+  args: { value: "removed" },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const first = canvas.getByRole("tab", { name: "Record" });
+    await expect(first).toHaveAttribute("tabindex", "0");
+    first.focus();
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(canvas.getByRole("tab", { name: /Sources/ })).toHaveFocus();
+    await expect(canvas.getByRole("tab", { name: /Sources/ })).toHaveAttribute("aria-selected", "true");
+  },
+};
+
+export const AllDisabled: Story = {
+  args: { items: [{ value: "record", label: "Record", disabled: true }] },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("tab", { name: "Record" })).toBeDisabled();
+    for (const key of ["ArrowRight", "ArrowLeft", "Home", "End"]) {
+      canvas.getByRole("tablist").dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
+    }
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+export const Empty: Story = {
+  args: { items: [] },
+  render: (args) => <Tabs {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.queryAllByRole("tab")).toHaveLength(0);
+    canvas.getByRole("tablist").dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }));
   },
 };

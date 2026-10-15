@@ -7,8 +7,7 @@ import "./EmptyState.css";
  * never share a screen. Each state names the cause, states the boundary
  * it ran into, and offers exactly one action.
  *
- * It keeps the index column: an absence is also something the register
- * recorded.
+ * An index is optional: use it when the absence belongs to an indexed record.
  */
 export function EmptyState({
   index,
@@ -20,7 +19,7 @@ export function EmptyState({
   className,
   children,
 }: {
-  index: string;
+  index?: string;
   eyebrow: string;
   title: string;
   body: string;
@@ -34,9 +33,11 @@ export function EmptyState({
 }) {
   return (
     <div className={cx("di-empty", tone === "danger" && "is-danger", className)}>
-      <div className="di-empty-index">
-        <span className="di-empty-index-label">{index}</span>
-      </div>
+      {index === undefined ? null : (
+        <div className="di-empty-index">
+          <span className="di-empty-index-label">{index}</span>
+        </div>
+      )}
       <div className="di-empty-body">
         <p className="di-empty-eyebrow">{eyebrow}</p>
         <p className="di-empty-title">{title}</p>

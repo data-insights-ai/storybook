@@ -18,6 +18,11 @@
     animation: di-menu-in var(--di-duration) var(--di-ease) both;
   }
 
+  .di-menu-start {
+    left: 0;
+    right: auto;
+  }
+
   @keyframes di-menu-in {
     from {
       opacity: 0;
@@ -41,7 +46,8 @@
     white-space: nowrap;
   }
 
-  .di-menu-item:hover {
+  .di-menu-item:hover:not(:disabled),
+  .di-menu-item[aria-checked="true"] {
     background: var(--di-bg-page);
   }
 
@@ -49,8 +55,27 @@
     color: var(--di-status-danger-fg);
   }
 
-  .di-menu-item.is-danger:hover {
+  .di-menu-item.is-danger:hover:not(:disabled) {
     background: var(--di-status-danger-bg);
+  }
+
+  .di-menu-item:disabled {
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .di-menu-choice-mark,
+  .di-menu-choice-mark > svg {
+    width: 14px;
+    height: 14px;
+    flex: none;
+  }
+
+  .di-menu-group-label {
+    padding: var(--di-space-8);
+    color: var(--di-text-muted);
+    font-size: var(--di-font-size-200);
+    font-weight: var(--di-weight-semibold);
   }
 
   .di-menu-divider {

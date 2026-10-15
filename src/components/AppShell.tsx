@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { Children, isValidElement, useState, type ReactNode } from "react";
 import { ChevronsUpDown, RefreshCw, ShieldCheck } from "lucide-react";
 import logoInverse from "../assets/logo-inverse.svg";
 import { cx } from "../cx";
@@ -66,7 +66,7 @@ export function AppShell({ skipLabel, children }: { skipLabel: string; children:
 
 /**
  * The navy rail: the mark, the workspace, the sections. Its children sit
- * at the foot — an `AppShellFoot`, an operator.
+ * below the brand in `AppShellContext`, or at the foot in `AppShellFoot`.
  */
 export function AppShellRail({
   workspace,
@@ -88,6 +88,14 @@ export function AppShellRail({
   sealedMark?: string;
   children?: ReactNode;
 }) {
+  // Pick the named context slot before navigation in DOM order, so visual and
+  // keyboard order agree. Other children keep their existing footer placement.
+  const context: ReactNode[] = [];
+  const foot: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === AppShellContext) context.push(child);
+    else foot.push(child);
+  });
   return (
     <aside className="di-sidebar">
       <div className="di-brand">
@@ -98,15 +106,22 @@ export function AppShellRail({
         </div>
       </div>
 
+      {context}
+
       <nav className="di-nav" aria-label={navLabel}>
         {groups.map((group) => (
           <RailGroup key={group.label} group={group} active={active} sealedMark={sealedMark} />
         ))}
       </nav>
 
-      {children}
+      {foot}
     </aside>
   );
+}
+
+/** Persistent context controls below the brand and before navigation. */
+export function AppShellContext({ children }: { children: ReactNode }) {
+  return <div className="di-sidebar-context">{children}</div>;
 }
 
 /** The rail's foot: the runtime and the version, in the mono track. */

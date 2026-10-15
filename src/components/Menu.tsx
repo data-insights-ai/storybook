@@ -1,4 +1,5 @@
-import { useCallback, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { Check } from "lucide-react";
 import { cx } from "../cx";
 import { SealMark } from "./Seal";
 import "./Menu.css";
@@ -17,6 +18,7 @@ export function Menu({
   onOpenChange,
   trigger,
   label,
+  align = "end",
   children,
 }: {
   open: boolean;
@@ -27,20 +29,39 @@ export function Menu({
     "aria-haspopup": "menu";
     "aria-controls": string;
     onClick: () => void;
+    onKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
     ref: (node: HTMLButtonElement | null) => void;
   }) => ReactNode;
   /** Names the menu, e.g. "Actions for entry 04". */
   label: string;
+  /** Align the detached plane to the trigger’s start or end edge. */
+  align?: "start" | "end";
   children: ReactNode;
 }) {
   const id = useId();
   const list = useRef<HTMLDivElement>(null);
+  const anchor = useRef<HTMLDivElement>(null);
+  const entry = useRef<"first" | "last">("first");
+  const changeOpen = useRef(onOpenChange);
+  changeOpen.current = onOpenChange;
   const [triggerNode, setTriggerNode] = useState<HTMLButtonElement | null>(null);
 
   const items = useCallback(
-    () => Array.from(list.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? []),
+    () => Array.from(list.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"], [role="menuitemradio"]') ?? []).filter((item) => !item.disabled),
     [],
   );
+
+  useEffect(() => {
+    if (!open) return;
+    const all = items();
+    (all.length === 0 ? list.current : entry.current === "last" ? all[all.length - 1] : all[0])?.focus();
+    entry.current = "first";
+    const outside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !anchor.current?.contains(event.target)) changeOpen.current(false);
+    };
+    document.addEventListener("pointerdown", outside);
+    return () => document.removeEventListener("pointerdown", outside);
+  }, [open, items]);
 
   const close = useCallback(() => {
     onOpenChange(false);
@@ -49,7 +70,7 @@ export function Menu({
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     const all = items();
-    const at = all.indexOf(document.activeElement as HTMLElement);
+    const at = all.indexOf(document.activeElement as HTMLButtonElement);
     if (event.key === "Escape") {
       event.preventDefault();
       close();
@@ -58,7 +79,7 @@ export function Menu({
       all[(at + 1) % all.length]?.focus();
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
-      all[(at - 1 + all.length) % all.length]?.focus();
+      all[at < 0 ? all.length - 1 : (at - 1 + all.length) % all.length]?.focus();
     } else if (event.key === "Home") {
       event.preventDefault();
       all[0]?.focus();
@@ -69,12 +90,23 @@ export function Menu({
   }
 
   return (
-    <div className="di-menu-anchor">
+    <div ref={anchor} className="di-menu-anchor" onBlur={(event) => {
+      if (open && !event.currentTarget.contains(event.relatedTarget)) onOpenChange(false);
+    }}>
       {trigger({
         "aria-expanded": open,
         "aria-haspopup": "menu",
         "aria-controls": id,
-        onClick: () => onOpenChange(!open),
+        onClick: () => { entry.current = "first"; onOpenChange(!open); },
+        onKeyDown: (event) => {
+          if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+          event.preventDefault();
+          entry.current = event.key === "ArrowUp" ? "last" : "first";
+          if (open) {
+            const all = items();
+            (entry.current === "last" ? all[all.length - 1] : all[0])?.focus();
+          } else onOpenChange(true);
+        },
         ref: setTriggerNode,
       })}
       {open ? (
@@ -82,9 +114,13 @@ export function Menu({
           id={id}
           ref={list}
           role="menu"
+          tabIndex={-1}
           aria-label={label}
-          className="di-menu"
+          className={cx("di-menu", align === "start" && "di-menu-start")}
           onKeyDown={onKeyDown}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) onOpenChange(false);
+          }}
         >
           {children}
         </div>
@@ -97,24 +133,46 @@ export function MenuItem({
   onSelect,
   tone = "neutral",
   inferred = false,
+  checked,
+  disabled = false,
   children,
 }: {
   onSelect: () => void;
   tone?: "neutral" | "danger";
   /** A model proposed this one, so it carries the hollow ring. */
   inferred?: boolean;
+  /** Defined for one choice in a labelled mutually exclusive group. Omit for an action. */
+  checked?: boolean;
+  disabled?: boolean;
   children: ReactNode;
 }) {
   return (
     <button
       type="button"
-      role="menuitem"
+      role={checked === undefined ? "menuitem" : "menuitemradio"}
+      aria-checked={checked}
+      disabled={disabled}
+      tabIndex={-1}
       className={cx("di-menu-item", tone === "danger" && "is-danger")}
       onClick={onSelect}
     >
+      {checked === undefined ? null : (
+        <span className="di-menu-choice-mark" aria-hidden>{checked ? <Check /> : null}</span>
+      )}
       {inferred ? <SealMark state="inferred" size={6} /> : null}
       {children}
     </button>
+  );
+}
+
+/** A labelled set of related actions or mutually exclusive choices. */
+export function MenuGroup({ label, children }: { label: string; children: ReactNode }) {
+  const id = useId();
+  return (
+    <div role="group" aria-labelledby={id}>
+      <p id={id} className="di-menu-group-label">{label}</p>
+      {children}
+    </div>
   );
 }
 

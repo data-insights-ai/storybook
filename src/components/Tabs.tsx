@@ -15,6 +15,7 @@ export function Tabs({
   onChange,
   items,
   className,
+  idPrefix,
 }: {
   /** Names the strip, e.g. "Entry views". */
   label: string;
@@ -22,27 +23,31 @@ export function Tabs({
   onChange: (value: string) => void;
   items: { value: string; label: string; badge?: string; disabled?: boolean }[];
   className?: string;
+  /** Share a unique prefix with this strip’s TabPanel when a page has multiple strips. */
+  idPrefix?: string;
 }) {
-  const strip = useRef<HTMLDivElement>(null);
+  const buttons = useRef(new Map<string, HTMLButtonElement>());
+  const usable = items.filter((item) => !item.disabled);
+  const tabStop = usable.some((item) => item.value === value) ? value : usable[0]?.value;
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    const usable = items.filter((item) => !item.disabled);
-    const at = usable.findIndex((item) => item.value === value);
+    if (usable.length === 0) return;
+    const focused = usable.findIndex((item) => buttons.current.get(item.value) === document.activeElement);
+    const at = focused < 0 ? usable.findIndex((item) => item.value === value) : focused;
     let next = -1;
     if (event.key === "ArrowRight") next = (at + 1) % usable.length;
-    else if (event.key === "ArrowLeft") next = (at - 1 + usable.length) % usable.length;
+    else if (event.key === "ArrowLeft") next = at < 0 ? usable.length - 1 : (at - 1 + usable.length) % usable.length;
     else if (event.key === "Home") next = 0;
     else if (event.key === "End") next = usable.length - 1;
     if (next === -1) return;
     event.preventDefault();
     const target = usable[next];
     onChange(target.value);
-    strip.current?.querySelector<HTMLButtonElement>(`[data-tab="${target.value}"]`)?.focus();
+    buttons.current.get(target.value)?.focus();
   }
 
   return (
     <div
-      ref={strip}
       role="tablist"
       aria-label={label}
       className={cx("di-tabs", className)}
@@ -56,10 +61,14 @@ export function Tabs({
             type="button"
             role="tab"
             data-tab={item.value}
-            id={`tab-${item.value}`}
+            ref={(node) => {
+              if (node) buttons.current.set(item.value, node);
+              else buttons.current.delete(item.value);
+            }}
+            id={tabId("tab", item.value, idPrefix)}
             aria-selected={selected}
-            aria-controls={`panel-${item.value}`}
-            tabIndex={selected ? 0 : -1}
+            aria-controls={tabId("panel", item.value, idPrefix)}
+            tabIndex={item.value === tabStop ? 0 : -1}
             disabled={item.disabled}
             className={cx("di-tab", selected && "is-active")}
             onClick={() => onChange(item.value)}
@@ -73,9 +82,15 @@ export function Tabs({
   );
 }
 
-export function TabPanel({ value, children }: { value: string; children: ReactNode }) {
+/** Values are encoded without selector interpolation, including unmatched UTF-16 surrogates. */
+function tabId(kind: "tab" | "panel", value: string, prefix?: string) {
+  const encode = (part: string) => part.replace(/[^A-Za-z0-9_-]/g, (char) => `%${char.charCodeAt(0).toString(16).padStart(4, "0")}`);
+  return `${prefix === undefined ? "" : `${encode(prefix)}:`}${kind}-${encode(value)}`;
+}
+
+export function TabPanel({ value, idPrefix, children }: { value: string; idPrefix?: string; children: ReactNode }) {
   return (
-    <div role="tabpanel" id={`panel-${value}`} aria-labelledby={`tab-${value}`} tabIndex={0} className="di-tabpanel">
+    <div role="tabpanel" id={tabId("panel", value, idPrefix)} aria-labelledby={tabId("tab", value, idPrefix)} tabIndex={0} className="di-tabpanel">
       {children}
     </div>
   );

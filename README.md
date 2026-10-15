@@ -46,6 +46,21 @@ import { Button } from "@data-insights-ai/ui";
 
 Import the stylesheet once. It carries the tokens, the base rules, and the woff2 faces. Importing a component pulls in that component and its own stylesheet, and leaves the unused components out. The app supplies React 18.3 or newer. Strings are props. `data-theme="dark"` on a parent switches the semantic tokens.
 
+## Context and repeated views
+
+Place persistent context controls in an `AppShellContext` directly inside `AppShellRail`. It appears below the brand and before navigation in both visual and keyboard order; `AppShellFoot` retains its footer position. The application owns selection state and authorization.
+
+When a page has more than one tab strip, give each `Tabs` and its `TabPanel` the same unique `idPrefix`. Item values are unique within each strip. The prefix scopes their accessible relationship; values are encoded safely for document IDs.
+
+```tsx
+<Tabs idPrefix="entry-details" label="Entry views" value={view} onChange={setView} items={views} />
+<TabPanel idPrefix="entry-details" value={view}>…</TabPanel>
+```
+
+`MenuItem` remains an action by default. Pass `checked` for a radio choice and put related choices in a labelled `MenuGroup`; the application owns the checked state. `disabled` uses the native button state and keyboard movement skips unavailable choices. `Menu align="start"` anchors to the trigger’s start edge; the existing end alignment remains the default.
+
+`Panel` and `EmptyState` can omit `index` when no ordinal belongs to the content. Omission removes the index rail completely.
+
 ## How it is put together
 
 One package. Storybook 10, React 19, Vite.

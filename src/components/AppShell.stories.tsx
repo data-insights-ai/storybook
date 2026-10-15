@@ -3,12 +3,14 @@ import { expect, within } from "storybook/test";
 import { sampleChrome } from "../sample/chrome";
 import { Breadcrumb } from "./Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "./Heading";
+import { Select } from "./Select";
 import { StatusPill } from "./StatusPill";
 import {
   AppShell,
   AppShellBar,
   AppShellBarEnd,
   AppShellContent,
+  AppShellContext,
   AppShellFoot,
   AppShellMain,
   AppShellRail,
@@ -150,4 +152,26 @@ export const Frame: Story = {
       </div>
     </ConsoleFrame>
   ),
+};
+
+/** Persistent context stays before navigation in both layout and keyboard order. */
+export const WithContext: Story = {
+  render: (args) => <AppShell {...args}>
+    <AppShellRail workspace="Register" workspaceId="" navLabel="Sections" groups={linkedGroups} active="findings" sealedMark={sampleChrome.sealedMark}>
+      <AppShellFoot><span>Local runtime</span></AppShellFoot>
+      <AppShellContext>
+        <Select id="context-organization" label="Organization" labelTrack="prose" mono={false} defaultValue="studio"><option value="studio">Example studio</option><option value="lab">Example lab</option></Select>
+        <Select id="context-workspace" label="Workspace" labelTrack="prose" mono={false} defaultValue="operations"><option value="operations">Operations</option><option value="research">Research</option></Select>
+      </AppShellContext>
+    </AppShellRail>
+    <AppShellMain><AppShellContent><h1>Workspace overview</h1><p>Context remains visible as the page changes.</p></AppShellContent></AppShellMain>
+  </AppShell>,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const organization = canvas.getByRole("combobox", { name: "Organization" });
+    const nav = canvas.getByRole("navigation", { name: "Sections" });
+    await expect(Boolean(organization.compareDocumentPosition(nav) & Node.DOCUMENT_POSITION_FOLLOWING)).toBe(true);
+    await expect(organization.getBoundingClientRect().top).toBeLessThan(nav.getBoundingClientRect().top);
+    await expect(canvas.getByRole("combobox", { name: "Workspace" })).toHaveValue("operations");
+  },
 };

@@ -180,6 +180,24 @@
     color: var(--di-sidebar-muted);
   }
 
+  .di-sidebar-context {
+    --di-text: var(--di-sidebar-fg);
+    --di-text-muted: var(--di-sidebar-muted);
+    --di-text-subtle: var(--di-sidebar-muted);
+    --di-bg-surface: var(--di-sidebar-bg);
+    --di-bg-page: var(--di-sidebar-raised);
+    --di-field-bg: var(--di-sidebar-raised);
+    --di-field-border: var(--di-sidebar-edge);
+    --di-border: var(--di-sidebar-edge);
+    --di-border-strong: var(--di-sidebar-muted);
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+    min-width: 0;
+    padding: 0 var(--di-space-8) var(--di-space-16);
+    border-bottom: 1px solid var(--di-sidebar-edge);
+  }
+
   .di-nav {
     display: flex;
     flex-direction: column;

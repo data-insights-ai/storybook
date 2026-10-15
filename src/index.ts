@@ -3,6 +3,7 @@ export {
   AppShellBar,
   AppShellBarEnd,
   AppShellContent,
+  AppShellContext,
   AppShellFoot,
   AppShellMain,
   AppShellRail,
@@ -54,7 +55,7 @@ export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/Leve
 export type { LevelBands } from "./components/LevelMeter";
 export { Actions, Grid, Numbered, Stack, Toolbar, ToolbarEnd } from "./components/Layout";
 export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/LivingCard";
-export { Menu, MenuDivider, MenuItem } from "./components/Menu";
+export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/Menu";
 export { Metric, MetricNote } from "./components/Metric";
 export {
   Modal,
