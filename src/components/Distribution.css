@@ -37,6 +37,15 @@
     background: var(--di-chart-series);
   }
 
+  /* The chart's own status colours, so a bar here and a bar in a Chart agree. */
+  .di-distribution-fill.is-warn {
+    background: var(--di-chart-warn);
+  }
+
+  .di-distribution-fill.is-danger {
+    background: var(--di-chart-danger);
+  }
+
   .di-distribution-total {
     display: flex;
     align-items: baseline;

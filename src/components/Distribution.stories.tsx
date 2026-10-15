@@ -53,3 +53,25 @@ export const Skewed: Story = {
     totalValue: "4,182",
   },
 };
+
+/**
+ * Rows that are states. `tone` puts each bar on the status ramp; the label
+ * still says which state it is, so the colour is a second channel.
+ */
+export const Toned: Story = {
+  args: {
+    rows: [
+      { label: "Blocking", value: "3", percent: 25, tone: "danger" },
+      { label: "Degraded", value: "4", percent: 33, tone: "warn" },
+      { label: "Nominal", value: "5", percent: 42, tone: "neutral" },
+    ],
+    totalLabel: "Open",
+    totalValue: "12",
+  },
+  play: async ({ canvasElement }) => {
+    const fills = canvasElement.querySelectorAll(".di-distribution-fill");
+    await expect(fills[0]).toHaveClass("is-danger");
+    await expect(fills[1]).toHaveClass("is-warn");
+    await expect(fills[2]).toHaveClass("is-neutral");
+  },
+};
