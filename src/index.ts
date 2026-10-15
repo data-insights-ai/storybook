@@ -22,6 +22,8 @@ export type { ChartConfig, ChartTooltipDetail } from "./components/Chart";
 export { Checkbox, ChoiceGroup, Radio } from "./components/Choice";
 export { Chip } from "./components/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/CommandBar";
+export { ComboBox } from "./components/ComboBox";
+export type { ComboBoxSuggestion } from "./components/ComboBox";
 export { ConfidenceField } from "./components/ConfidenceField";
 export { ConfirmActions, ConfirmPanel } from "./components/ConfirmPanel";
 export {

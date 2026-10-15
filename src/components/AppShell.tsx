@@ -1,5 +1,5 @@
-import { Children, isValidElement, useState, type ReactNode } from "react";
-import { ChevronsUpDown, RefreshCw, ShieldCheck } from "lucide-react";
+import { Children, isValidElement, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { ChevronsUpDown, Menu as MenuIcon, RefreshCw, ShieldCheck, X } from "lucide-react";
 import logoInverse from "../assets/logo-inverse.svg";
 import { cx } from "../cx";
 import { Badge } from "./Badge";
@@ -46,8 +46,8 @@ export type ConsoleChrome = {
  * Rail, topbar, workpane, full-bleed: the shell a product renders.
  *
  * The navy rail is the one place the brand colour fills a surface, and it
- * is fixed: navigation that hides itself cannot be audited. On a narrow
- * screen it moves above the page rather than away.
+ * is fixed on desktop. A caller can opt into compact mobile navigation
+ * through `AppShellRail.mobileNavigation`, supplying its translated labels.
  *
  * Every part is a slot: `AppShellRail` (with `AppShellFoot` inside it),
  * then `AppShellMain` holding `AppShellBar` and `AppShellContent`. The
@@ -75,6 +75,7 @@ export function AppShellRail({
   groups,
   active,
   sealedMark = "",
+  mobileNavigation,
   children,
 }: {
   workspace: string;
@@ -86,8 +87,26 @@ export function AppShellRail({
   active: string;
   /** What a screen reader hears for an item's seal. Needed once any item is `sealed`. */
   sealedMark?: string;
+  /** Opt into a compact mobile header and native modal navigation. */
+  mobileNavigation?: {
+    openLabel: string;
+    closeLabel: string;
+    /** Actual selected-context identity; do not pass a lease or display label. */
+    contextKey?: string;
+  };
   children?: ReactNode;
 }) {
+  const narrow = useSyncExternalStore(subscribeNarrowRail, narrowRail, () => false);
+  const mobile = !!mobileNavigation && narrow;
+  const [open, setOpen] = useState(false);
+  const dialogId = useId();
+  useLayoutEffect(() => { setOpen(false); }, [active, workspaceId, mobileNavigation?.contextKey]);
+  useLayoutEffect(() => {
+    if (!mobile && open) {
+      setOpen(false);
+      document.getElementById("di-content")?.focus();
+    }
+  }, [mobile, open]);
   // Pick the named context slot before navigation in DOM order, so visual and
   // keyboard order agree. Other children keep their existing footer placement.
   const context: ReactNode[] = [];
@@ -97,25 +116,77 @@ export function AppShellRail({
     else foot.push(child);
   });
   return (
-    <aside className="di-sidebar">
-      <div className="di-brand">
-        <img className="di-brand-logo" src={logoInverse} alt="datAInsights" />
-        <div className="di-brand-row">
-          <span className="di-brand-product">{workspace}</span>
-          <span className="di-instance">{workspaceId}</span>
+    <aside className={cx("di-sidebar", mobile && "di-sidebar-mobile")}>
+      <div className="di-sidebar-header">
+        <div className="di-brand">
+          <img className="di-brand-logo" src={logoInverse} alt="datAInsights" />
+          <div className="di-brand-row">
+            <span className="di-brand-product">{workspace}</span>
+            <span className="di-instance">{workspaceId}</span>
+          </div>
         </div>
+        {mobile && (
+          <button type="button" className="di-rail-toggle" aria-expanded={open} aria-controls={dialogId} aria-haspopup="dialog" onClick={() => setOpen(true)}>
+            <MenuIcon aria-hidden />{mobileNavigation.openLabel}
+          </button>
+        )}
       </div>
-
-      {context}
-
-      <nav className="di-nav" aria-label={navLabel}>
-        {groups.map((group) => (
-          <RailGroup key={group.label} group={group} active={active} sealedMark={sealedMark} />
-        ))}
-      </nav>
-
-      {foot}
+      <RailNavigation mobile={mobile} open={open} close={() => setOpen(false)} id={dialogId} label={navLabel} closeLabel={mobileNavigation?.closeLabel ?? ""}>
+        {context}
+        <nav className="di-nav" aria-label={navLabel} onClick={(event) => {
+          if (event.target instanceof Element && event.target.closest("a[href]") && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) setOpen(false);
+        }}>
+          {groups.map((group) => (
+            <RailGroup key={group.label} group={group} active={active} sealedMark={sealedMark} />
+          ))}
+        </nav>
+        {foot}
+      </RailNavigation>
     </aside>
+  );
+}
+
+function narrowRail() { return window.matchMedia("(max-width: 900px)").matches; }
+function subscribeNarrowRail(changed: () => void) {
+  const media = window.matchMedia("(max-width: 900px)");
+  media.addEventListener("change", changed);
+  return () => media.removeEventListener("change", changed);
+}
+
+/** One copy of the context/footer stays mounted when the mobile dialog closes.
+ * Only crossing the desktop breakpoint changes its containing element. */
+function RailNavigation({ mobile, open, close, id, label, closeLabel, children }: {
+  mobile: boolean; open: boolean; close: () => void; id: string; label: string; closeLabel: string; children: ReactNode;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
+  const pressedBackdrop = useRef(false);
+  useLayoutEffect(() => {
+    const dialog = ref.current;
+    if (!dialog) return;
+    if (open && !dialog.open) dialog.showModal();
+    if (!open && dialog.open) dialog.close();
+    return () => { if (dialog.open) dialog.close(); };
+  }, [mobile, open]);
+  if (!mobile) return <div className="di-rail-content">{children}</div>;
+  return <dialog ref={ref} id={id} className="di-rail-dialog" aria-label={label} onCancel={close} onClose={(event) => { if (!event.currentTarget.open) close(); }}
+    onPointerDown={(event) => { pressedBackdrop.current = railBackdrop(event); }}
+    onClick={(event) => {
+      if (pressedBackdrop.current && railBackdrop(event)) close();
+      pressedBackdrop.current = false;
+    }}>
+    <div className="di-rail-dialog-heading">
+      <span>{label}</span>
+      <button type="button" className="di-rail-toggle" onClick={close}><X aria-hidden />{closeLabel}</button>
+    </div>
+    <div className="di-rail-content">{children}</div>
+  </dialog>;
+}
+
+function railBackdrop(event: { target: EventTarget; currentTarget: HTMLDialogElement; clientX: number; clientY: number }) {
+  const bounds = event.currentTarget.getBoundingClientRect();
+  return event.target === event.currentTarget && (
+    event.clientX < bounds.left || event.clientX > bounds.right ||
+    event.clientY < bounds.top || event.clientY > bounds.bottom
   );
 }
 

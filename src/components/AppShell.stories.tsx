@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, userEvent, waitFor, within } from "storybook/test";
+import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
 import { sampleChrome } from "../sample/chrome";
 import { Button } from "./Button";
 import { Menu, MenuGroup, MenuItem } from "./Menu";
@@ -362,3 +362,80 @@ export const ReflowConsole: Story = {
     }
   },
 };
+
+function MobileNavigationExample() {
+  const [label, setLabel] = useState("Example studio");
+  const [context, setContext] = useState("north");
+  return <AppShell skipLabel="Skip to content">
+    <AppShellRail workspace={label} workspaceId="REG-01" navLabel="Sections" groups={linkedGroups} active="findings"
+      mobileNavigation={{ openLabel: "Open navigation", closeLabel: "Close navigation", contextKey: context }} sealedMark={sampleChrome.sealedMark}>
+      <AppShellContext>
+        <Select id="navigation-context" label="Register" value={context} onChange={(event) => setContext(event.target.value)}>
+          <option value="north">Northern register</option><option value="south">Southern register</option>
+        </Select>
+        <Button variant="ghost" onClick={() => setLabel("Renamed example studio")}>Refresh display label</Button>
+        <Select id="navigation-draft" label="Local display choice" defaultValue="compact">
+          <option value="compact">Compact</option><option value="comfortable">Comfortable</option>
+        </Select>
+      </AppShellContext>
+      <AppShellFoot><span>Local preview</span><span>v1</span></AppShellFoot>
+    </AppShellRail>
+    <AppShellMain><AppShellBar><Breadcrumb label="Breadcrumb" items={[{ label: "Example studio", href: "#studio" }, { label: "Register" }]} /></AppShellBar>
+      <AppShellContent><h1>Register overview</h1><p>The content stays near the top on a small screen. Navigation opens when requested.</p><Button variant="secondary">Page action</Button></AppShellContent>
+    </AppShellMain>
+  </AppShell>;
+}
+
+/** A labelled mobile opt-in leaves the existing desktop rail unchanged. */
+export const MobileNavigation: Story = {
+  parameters: { viewport: { options: { phone: { name: "Phone", styles: { width: "390px", height: "844px" }, type: "mobile" } } } },
+  globals: { viewport: { value: "phone", isRotated: false } },
+  render: () => <MobileNavigationExample />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement), doc = canvasElement.ownerDocument;
+    await expect(doc.defaultView!.innerWidth).toBe(390);
+    await expect(canvas.getByRole("heading", { name: "Register overview" }).getBoundingClientRect().top).toBeLessThan(240);
+    const trigger = canvas.getByRole("button", { name: "Open navigation" });
+    await userEvent.click(trigger);
+    const dialog = canvas.getByRole("dialog", { name: "Sections" });
+    await waitFor(() => expect(dialog).toBeVisible());
+    await expect(dialog.contains(doc.activeElement)).toBe(true);
+    await userEvent.selectOptions(within(dialog).getByRole("combobox", { name: "Local display choice" }), "comfortable");
+    await userEvent.click(within(dialog).getByRole("button", { name: "Refresh display label" }));
+    await waitFor(() => expect(dialog).toBeVisible());
+    await userEvent.click(within(dialog).getByRole("button", { name: "Close navigation" }));
+    await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
+    await expect(trigger).toHaveFocus();
+    await userEvent.click(trigger);
+    await expect(within(dialog).getByRole("combobox", { name: "Local display choice" })).toHaveValue("comfortable");
+    await userEvent.selectOptions(within(dialog).getByRole("combobox", { name: /^Register$/ }), "south");
+    await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
+    await userEvent.click(trigger);
+    // Exercise native cancel handling here; trusted Escape is checked with an
+    // actual browser keyboard during viewport/focus qualification.
+    fireEvent(dialog, new Event("cancel", { cancelable: true }));
+    await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
+    await expect(trigger).toHaveFocus();
+    await userEvent.click(trigger);
+    const link = within(dialog).getByRole("link", { name: /Findings/ });
+    // The runner sets a parent navigation target. Keep this fixture in place
+    // while exercising the rail's link-selection close behavior.
+    link.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    await userEvent.click(link);
+    await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
+    await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
+  },
+};
+
+export const MobileNavigationNight: Story = { ...MobileNavigation, globals: { ...MobileNavigation.globals, theme: "dark" } };
+/** Change the actual viewport to inspect the same composition at either size.
+ *
+ * Opt in with `mobileNavigation={{ openLabel: "Open navigation", closeLabel:
+ * "Close navigation", contextKey: selectedContextId }}` on AppShellRail.
+ * Labels are supplied by the caller. contextKey identifies the actual selected
+ * context, not a refreshed label, proof or lease. Changing it closes the menu;
+ * routine rerenders do not. Context/footer controls remain mounted on open/close.
+ * The containing element changes at the desktop breakpoint, so keep application
+ * selections controlled outside the rail. Omitting mobileNavigation preserves
+ * the existing stacked layout for callers that have not opted in. */
+export const ResponsiveNavigation: Story = { render: () => <MobileNavigationExample /> };
