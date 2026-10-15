@@ -1,6 +1,6 @@
-import { useLayoutEffect, useRef, useState, type InputHTMLAttributes, type ReactNode } from "react";
+import { useContext, useLayoutEffect, useRef, useState, type InputHTMLAttributes, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
-import { ComboBox as AriaComboBox, useFilter } from "react-aria-components/ComboBox";
+import { ComboBox as AriaComboBox, ComboBoxStateContext, useFilter } from "react-aria-components/ComboBox";
 import { Button as AriaButton } from "react-aria-components/Button";
 import { Input } from "react-aria-components/Input";
 import { Label } from "react-aria-components/Label";
@@ -18,6 +18,16 @@ export type ComboBoxSuggestion = {
   /** Human-readable search aid; never substitutes for the value. */
   label: string;
 };
+
+// A controlled refresh may lock an already focused/open field. Close only the
+// maintained overlay state; close()/commit() would also commit a draft value.
+function CloseUnavailablePopup({ unavailable }: { unavailable: boolean }) {
+  const state = useContext(ComboBoxStateContext);
+  useLayoutEffect(() => {
+    if (unavailable && state?.isOpen) state.setOpen(false);
+  }, [unavailable, state]);
+  return null;
+}
 
 /** Editable text with suggestions. React Aria owns collection, keyboard, IME,
  * focus and popup behavior. The caller owns every value and validation rule.
@@ -74,10 +84,12 @@ export function ComboBox({
   return <AriaComboBox ref={root} id={id} className={cx("di-field", "di-combobox", className)}
     inputValue={value} value={byValue.has(value) ? value : null} defaultItems={suggestions}
     allowsCustomValue allowsEmptyCollection isDisabled={disabled} isReadOnly={readOnly} isRequired={required} isInvalid={invalid}
+    menuTrigger={readOnly || disabled ? "manual" : "input"}
     validationBehavior="native" name={name} onOpenChange={(next) => { if (next) updateOverlay(); setOpen(next); }}
     onInputChange={onValueChange}
     onChange={(key) => { if (typeof key === "string" && byValue.has(key)) onValueChange(key); }}
     defaultFilter={(text, query) => contains(text, query) || contains(byValue.get(text)?.label ?? "", query)}>
+    <CloseUnavailablePopup unavailable={readOnly || disabled} />
     <div className="di-field-row">
       <Label className={cx("di-field-label", `di-field-label-${labelTrack}`)}>{label}</Label>
       {children}

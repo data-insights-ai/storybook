@@ -126,6 +126,53 @@ export const ReadOnly: Story = { args: { value: "NR-01", readOnly: true }, play:
   await expect(input).toHaveValue("NR-01");
   await expect(args.onValueChange).not.toHaveBeenCalled();
 } };
+/** A recorded value can replace a focused draft and become read only together.
+ * The external update must neither reopen suggestions nor hide nearby controls. */
+export const ReadOnlyUpdate: Story = {
+  render: function Render(args) {
+    const [value, setValue] = useState(""), [readOnly, setReadOnly] = useState(false);
+    return <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+      <ComboBox {...args} value={value} readOnly={readOnly}
+        onValueChange={(next) => { args.onValueChange(next); setValue(next); }} />
+      <Button type="button" variant="ghost" onMouseDown={(event) => event.preventDefault()}
+        onClick={() => { setValue("NR-01"); setReadOnly(true); }}>Lock recorded code</Button>
+      <Button type="button" variant="ghost" onMouseDown={(event) => event.preventDefault()}
+        onClick={() => setReadOnly(false)}>Edit recorded code</Button>
+    </form>;
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement), page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Register code" });
+    const lock = canvas.getByRole("button", { name: "Lock recorded code" });
+    await userEvent.type(input, "WR-03");
+    await userEvent.keyboard("{Escape}");
+    await expect(input).toHaveFocus();
+    await expect(input, "Escape closes the focused draft").toHaveAttribute("aria-expanded", "false");
+    args.onValueChange.mockClear();
+    await userEvent.click(lock);
+    await expect(input).toHaveValue("NR-01");
+    await expect(input).toHaveAttribute("readonly");
+    await expect(input).toHaveFocus();
+    await waitFor(() => expect(input, "A readonly refresh stays closed").toHaveAttribute("aria-expanded", "false"));
+    await expect(page.queryByRole("listbox")).toBeNull();
+    await expect(canvas.getByRole("button", { name: "Lock recorded code" })).toBeVisible();
+    await expect(args.onValueChange).not.toHaveBeenCalled();
+    await expect(new FormData(input.closest("form")!).get("register")).toBe("NR-01");
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(input).toHaveAttribute("aria-expanded", "false");
+    await userEvent.tab();
+    await userEvent.click(canvas.getByRole("button", { name: "Edit recorded code" }));
+    await expect(input).not.toHaveAttribute("readonly");
+    await expect(input).toHaveAttribute("aria-expanded", "false");
+    await userEvent.click(canvas.getByRole("button", { name: /^Show register suggestions/ }));
+    await expect(page.getByRole("listbox")).toBeVisible();
+    fireEvent.click(lock); // External state update, without an outside-pointer dismissal.
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
+    await expect(page.queryByRole("listbox")).toBeNull();
+    await expect(input).toHaveValue("NR-01");
+    await expect(args.onValueChange).not.toHaveBeenCalled();
+  },
+};
 export const Error: Story = { args: { value: "unknown", hint: "This code is not available here.", hintTone: "error" }, play: async ({ canvasElement }) => {
   const input = within(canvasElement).getByRole("combobox", { name: "Register code" });
   await expect(input).toHaveAttribute("aria-invalid", "true");
