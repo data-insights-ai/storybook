@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { ChoiceGroup, Radio } from "./Choice";
 
 const meta = {
@@ -64,6 +64,27 @@ export const Disabled: Story = {
 
 export const DisabledSelected: Story = {
   args: { disabled: true, defaultChecked: true, description: "Fixed by the workspace policy." },
+  play: async ({ args, canvasElement, globals }) => {
+    const canvas = within(canvasElement);
+    if (globals.theme === "dark") {
+      await waitFor(() => expect(canvasElement.ownerDocument.documentElement).toHaveAttribute("data-theme", "dark"));
+    }
+    const radio = canvas.getByRole("radio", { name: "30 days" });
+    await expect(radio).toBeDisabled();
+    await expect(radio).toBeChecked();
+    const mark = radio.parentElement!.querySelector(".di-choice-dot")!;
+    const dot = getComputedStyle(mark, "::after");
+    await expect(dot.transform).toBe("matrix(1, 0, 0, 1, 0, 0)");
+    await expect(dot.backgroundColor).not.toBe(getComputedStyle(mark).backgroundColor);
+    await userEvent.click(canvas.getByText("30 days"));
+    await expect(radio).toBeChecked();
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+export const DisabledSelectedNight: Story = {
+  ...DisabledSelected,
+  globals: { theme: "dark" },
 };
 
 /**
