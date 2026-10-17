@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Checkbox, ChoiceGroup } from "./Choice";
 
 const meta = {
@@ -65,6 +65,29 @@ export const Disabled: Story = {
 
 export const DisabledChecked: Story = {
   args: { disabled: true, defaultChecked: true, description: "Fixed by the workspace policy." },
+  play: async ({ args, canvasElement, globals }) => {
+    const canvas = within(canvasElement);
+    if (globals.theme === "dark") {
+      await waitFor(() => expect(canvasElement.ownerDocument.documentElement).toHaveAttribute("data-theme", "dark"));
+    }
+    const checkbox = canvas.getByRole("checkbox", { name: "Seal on ingest" });
+    await expect(checkbox).toBeDisabled();
+    await expect(checkbox).toBeChecked();
+    const mark = checkbox.parentElement!.querySelector("svg")!;
+    const box = mark.parentElement!;
+    // The disabled stroke must remain a check, not an opaque square.
+    await expect(getComputedStyle(mark).opacity).toBe("1");
+    await expect(getComputedStyle(mark).backgroundColor).toBe("rgba(0, 0, 0, 0)");
+    await expect(getComputedStyle(mark).color).not.toBe(getComputedStyle(box).backgroundColor);
+    await userEvent.click(canvas.getByText("Seal on ingest"));
+    await expect(checkbox).toBeChecked();
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+export const DisabledCheckedNight: Story = {
+  ...DisabledChecked,
+  globals: { theme: "dark" },
 };
 
 /** Several checkboxes under one legend. */

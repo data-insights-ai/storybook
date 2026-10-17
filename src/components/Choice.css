@@ -109,9 +109,11 @@
     background: var(--di-bg-disabled);
   }
 
-  .di-choice.is-disabled .di-choice-input:checked ~ .di-choice-box > svg,
-  .di-choice.is-disabled .di-choice-dot::after {
+  .di-choice.is-disabled .di-choice-input:checked ~ .di-choice-box > svg {
     color: var(--di-text-disabled);
+  }
+
+  .di-choice.is-disabled .di-choice-dot::after {
     background: var(--di-text-disabled);
   }
 
