@@ -10,7 +10,7 @@ Components carry no outer margin; spacing belongs to the container. A product sc
 
 - `AppShellContent` is a vertical flow (inside `SidebarInset` as well, below the `AppShellBar`): its direct children — `PageHeader`, a `Notice`, a `DataTable`, a `Panel`, a form — are spaced 24px apart. Do not add margins to separate them.
 - Inside a block, group with `Stack` (`gap={8|12|16|24|32}`); a section of related blocks is one `Stack`, so the page sees it as a single child.
-- A form is a `Stack gap={16}` of fields, followed by `Actions` for its buttons. A one-line form (pick a value and apply it) is a `Toolbar`: the fields, then the button, aligned on one row.
+- A form is a `Stack gap={16}` of fields, followed by `Actions` for its buttons. A one-line form (pick a value and apply it) is a `Toolbar`: the fields, then the button. A toolbar that contains fields aligns every control on the control row, so buttons line up with inputs and an error line does not move them.
 - Fields stretch to their container. Constrain a form's width by placing it in a `Panel` or a `Grid` column, not by sizing the controls.
 - A `DataTable` with no rows is not rendered empty: show an `EmptyState` instead.
 

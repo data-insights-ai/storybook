@@ -4,6 +4,8 @@ import { Actions, Toolbar, ToolbarEnd } from "./Layout";
 import { Button } from "./Button";
 import { Chip } from "./Chip";
 import { SearchField } from "./SearchField";
+import { Select } from "./Select";
+import { TextField } from "./TextField";
 
 const meta = {
   title: "Patterns/Layout/Toolbar",
@@ -52,4 +54,31 @@ export const InlineActions: Story = {
       </Button>
     </Actions>
   ),
+};
+
+/**
+ * A one-line form. Fields and their action share the control row: the button
+ * lines up with the input, not with the label, and an error line under a field
+ * does not move it.
+ */
+export const InlineForm: Story = {
+  render: () => (
+    <form onSubmit={(event) => event.preventDefault()}>
+      <Toolbar>
+        <Select id="toolbar-person" label="Person" mono={false} defaultValue="nora">
+          <option value="nora">Nora Feld</option>
+          <option value="jonas">Jonas Brandt</option>
+        </Select>
+        <TextField id="toolbar-note" label="Note" hint="Use 1 to 80 characters." hintTone="error" />
+        <Button type="submit">Grant</Button>
+      </Toolbar>
+    </form>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole("button", { name: "Grant" });
+    const input = canvas.getByLabelText("Person");
+    const gap = Math.abs(button.getBoundingClientRect().bottom - input.getBoundingClientRect().bottom);
+    await expect(gap).toBeLessThanOrEqual(2);
+  },
 };

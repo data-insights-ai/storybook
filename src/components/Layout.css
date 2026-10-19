@@ -32,6 +32,39 @@
     min-width: 0;
   }
 
+  /* A one-line form: fields and their actions share the control row, so a
+     button lines up with the input next to it, not with the label above it,
+     and an error line under a field does not move the button. */
+  .di-toolbar:has(> .di-field) {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, max-content);
+    grid-template-rows: auto auto auto;
+    align-items: center;
+    justify-content: start;
+    column-gap: var(--di-space-8);
+    row-gap: var(--di-space-6);
+  }
+
+  .di-toolbar:has(> .di-field) > .di-field {
+    grid-row: 1 / span 3;
+    display: grid;
+    grid-template-rows: subgrid;
+    min-width: 0;
+  }
+
+  .di-toolbar:has(> .di-field) > :not(.di-field) {
+    grid-row: 2;
+  }
+
+  @media (max-width: 600px) {
+    .di-toolbar:has(> .di-field) {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
   .di-toolbar-end {
     display: flex;
     flex-wrap: wrap;
