@@ -97,6 +97,22 @@ export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./component
 export { SegmentedControl } from "./components/SegmentedControl";
 export { Select } from "./components/Select";
 export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/Session";
+export { Sidebar } from "./components/Sidebar";
+export { useSidebar } from "./components/SidebarContext";
+export type { SidebarState } from "./components/SidebarContext";
+export { SidebarInset } from "./components/SidebarInset";
+export { SidebarMenu, SidebarMenuItem } from "./components/SidebarMenu";
+export { SidebarMenuButton } from "./components/SidebarMenuButton";
+export type { SidebarMenuButtonProps } from "./components/SidebarMenuButton";
+export { SidebarProvider } from "./components/SidebarProvider";
+export {
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+} from "./components/SidebarSections";
+export { SidebarTrigger } from "./components/SidebarTrigger";
 export { SignIn, SignInVersion } from "./components/SignIn";
 export { SkeletonTable } from "./components/SkeletonTable";
 export { Sparkline } from "./components/Sparkline";
