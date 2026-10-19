@@ -40,7 +40,7 @@
     width: 16px;
     height: 16px;
     padding: 0;
-    margin-right: -var(--di-space-2);
+    margin-right: calc(-1 * var(--di-space-2));
     border: 0;
     border-radius: var(--di-radius-micro);
     background: transparent;

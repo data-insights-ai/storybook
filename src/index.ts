@@ -126,6 +126,8 @@ export { StatusPill } from "./components/StatusPill";
 export { Stepper } from "./components/Stepper";
 export { Switch } from "./components/Switch";
 export { TabPanel, Tabs } from "./components/Tabs";
+export { TabNav, TabNavLink } from "./components/TabNav";
+export type { TabNavLinkProps } from "./components/TabNav";
 export { TextField } from "./components/TextField";
 export { TextLink } from "./components/TextLink";
 export { Toast, ToastAction } from "./components/Toast";

@@ -87,3 +87,17 @@ export const InProse: Story = {
     </p>
   ),
 };
+
+/** A router's link component renders the anchor; the text link supplies only its look. */
+export const WithRouterLink: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <TextLink render={<a href="#/records/0148" data-router="link" />}>REG-0148</TextLink>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const link = canvas.getByRole("link", { name: "REG-0148" });
+    await expect(link).toHaveClass("di-textlink");
+    await expect(link).toHaveAttribute("data-router", "link");
+  },
+};

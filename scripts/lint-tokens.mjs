@@ -92,6 +92,12 @@ for (const file of files) {
         }
       }
 
+      /* A sign in front of var() is not CSS: the declaration is dropped
+       *    silently. Negate with calc(-1 * var(...)). */
+      for (const neg of code.matchAll(/(^|[\s:(,])-var\(/g)) {
+        add(file, line, "negative-var", `"${neg[0].trim()}" is invalid CSS and is ignored by the browser. Use calc(-1 * var(...)).`);
+      }
+
       /* 2. Radius comes from the ramp. */
       const rad = code.match(/^\s*border-radius\s*:\s*([^;]+);/);
       if (rad && !/var\(|50%|^0$/.test(rad[1].trim()) && /\d+px/.test(rad[1])) {
