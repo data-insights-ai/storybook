@@ -32,6 +32,7 @@ export default defineConfig({
           id === "react-dom" ||
           id.startsWith("react/") ||
           id === "lucide-react" ||
+          id.startsWith("@base-ui/react/") ||
           id === "react-aria-components" ||
           id.startsWith("react-aria-components/") ||
           id === "recharts" ||
