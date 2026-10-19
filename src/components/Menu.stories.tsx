@@ -119,6 +119,23 @@ export const KeyboardEntry: Story = {
   },
 };
 
+/** Choosing an item closes the menu and hands focus back to the trigger, by pointer or by key. */
+export const ChoosingReturnsFocus: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole("button", { name: "Actions for entry 04" });
+    await userEvent.click(trigger);
+    await userEvent.click(canvas.getByRole("menuitem", { name: "Copy manifest" }));
+    await expect(canvas.queryByRole("menu")).toBeNull();
+    await waitFor(() => expect(trigger).toHaveFocus());
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(canvas.getByRole("menuitem", { name: "Open record" })).toHaveFocus();
+    await userEvent.keyboard("{Enter}");
+    await expect(canvas.queryByRole("menu")).toBeNull();
+    await waitFor(() => expect(trigger).toHaveFocus());
+  },
+};
+
 export const DismissOutside: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

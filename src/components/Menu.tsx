@@ -63,6 +63,20 @@ export function Menu({
     return () => document.removeEventListener("pointerdown", outside);
   }, [open, items]);
 
+  // Choosing an item closes the menu, and the focused item unmounts with it. Focus that falls to
+  // the body goes back to the trigger; focus that already moved on (Tab, a click on another
+  // control) stays where it went.
+  const wasOpen = useRef(false);
+  useEffect(() => {
+    if (open) {
+      wasOpen.current = true;
+      return;
+    }
+    if (!wasOpen.current) return;
+    wasOpen.current = false;
+    if (document.activeElement === null || document.activeElement === document.body) triggerNode?.focus();
+  }, [open, triggerNode]);
+
   const close = useCallback(() => {
     onOpenChange(false);
     triggerNode?.focus();
