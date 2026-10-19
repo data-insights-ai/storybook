@@ -3,6 +3,7 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { Tooltip } from "@base-ui/react/tooltip";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
+import { ChevronsUpDown } from "lucide-react";
 import { cx } from "../cx";
 import { Badge } from "./Badge";
 import { useSidebarRail } from "./SidebarContext";
@@ -22,10 +23,10 @@ export type SidebarMenuButtonProps = Omit<HTMLAttributes<HTMLElement>, "children
   /** A router link element, e.g. `<Link to="/findings" />`; it receives the item's props and content. */
   render?: useRender.RenderProp;
   /**
-   * An icon after the label that says what the item does, e.g. a chevron on
-   * an item that opens a menu. Hidden in the collapsed rail.
+   * The item opens a menu (a context switcher, say); a chevron after the label
+   * says so. Hidden in the collapsed rail.
    */
-  trailing?: ReactNode;
+  menu?: boolean;
 };
 
 export function SidebarMenuButton({
@@ -36,7 +37,7 @@ export function SidebarMenuButton({
   badgeTone = "neutral",
   href,
   render,
-  trailing,
+  menu = false,
   className,
   ...rest
 }: SidebarMenuButtonProps) {
@@ -60,7 +61,11 @@ export function SidebarMenuButton({
                 <Badge tone={badgeTone}>{badge}</Badge>
               </span>
             ) : null}
-            {trailing ? <span className="di-sb-trailing" aria-hidden>{trailing}</span> : null}
+            {menu ? (
+              <span className="di-sb-trailing" aria-hidden>
+                <ChevronsUpDown />
+              </span>
+            ) : null}
           </>
         ),
       },

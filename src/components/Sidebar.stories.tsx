@@ -1,7 +1,7 @@
 import { useState, type AnchorHTMLAttributes, type MouseEvent } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { Archive, Bell, Building2, ChevronsUpDown, FileSearch, Gauge, Settings, ShieldAlert, UserRound } from "lucide-react";
+import { Archive, Bell, Building2, FileSearch, Gauge, Settings, ShieldAlert, UserRound } from "lucide-react";
 import { AppShellBar } from "./AppShell";
 import { Breadcrumb } from "./Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "./Heading";
@@ -238,7 +238,7 @@ function WorkspaceSwitcher() {
       label="Switch workspace"
       align="start"
       trigger={(props) => (
-        <SidebarMenuButton label={current} trailing={<ChevronsUpDown />} {...props}>
+        <SidebarMenuButton label={current} menu {...props}>
           <Building2 />
         </SidebarMenuButton>
       )}
