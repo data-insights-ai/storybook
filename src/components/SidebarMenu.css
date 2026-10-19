@@ -1,0 +1,99 @@
+@layer components {
+  .di-sb-menu {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-sb-menu-item {
+    min-width: 0;
+  }
+
+  .di-sb-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-8);
+    width: 100%;
+    min-height: var(--di-h-ctl);
+    padding: var(--di-space-6) var(--di-space-8);
+    box-sizing: border-box;
+    border: 0;
+    border-radius: var(--di-radius-surface);
+    background: transparent;
+    color: var(--di-sidebar-fg);
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-medium);
+    line-height: var(--di-leading-snug);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-sb-button:hover {
+    background: color-mix(in srgb, var(--di-sidebar-fg) 6%, transparent);
+  }
+
+  .di-sb-button[aria-current="page"] {
+    background: var(--di-sidebar-active);
+  }
+
+  .di-sb-icon {
+    display: flex;
+    flex: none;
+    color: var(--di-sidebar-muted);
+  }
+
+  .di-sb-icon > svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .di-sb-button[aria-current="page"] .di-sb-icon {
+    color: var(--di-sidebar-fg);
+  }
+
+  .di-sb-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .di-sb-badge {
+    display: flex;
+    flex: none;
+  }
+
+  .di-sb[data-state="collapsed"] .di-sb-button {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .di-sb[data-state="collapsed"] :is(.di-sb-label, .di-sb-badge) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  .di-sb-tooltip {
+    z-index: 20;
+  }
+
+  .di-sb-tooltip .di-tooltip {
+    gap: var(--di-space-6);
+    font-family: var(--di-font-ui);
+    transition: opacity var(--di-duration) var(--di-ease);
+  }
+
+  .di-sb-tooltip .di-tooltip[data-starting-style],
+  .di-sb-tooltip .di-tooltip[data-ending-style] {
+    opacity: 0;
+  }
+}
