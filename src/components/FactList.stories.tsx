@@ -46,6 +46,30 @@ export const Scope: Story = {
   },
 };
 
+/**
+ * Identifiers, addresses and user agents have no spaces to break at; they
+ * wrap anywhere instead of pushing the pane wider than its frame.
+ */
+export const LongValues: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 320 }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: (args) => (
+    <FactList {...args}>
+      <Fact label="Resource">org:395768980536623109/workspace:01a15463-15d1-78d1-a799-9c96d5e69c8b</Fact>
+      <Fact label="Client">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36</Fact>
+    </FactList>
+  ),
+  play: async ({ canvasElement }) => {
+    const list = canvasElement.querySelector("dl");
+    await expect(list?.scrollWidth).toBeLessThanOrEqual(list?.clientWidth ?? 0);
+  },
+};
+
 /** A value slot holds a component, which is why it is a slot and not a prop. */
 export const WithMarks: Story = {
   decorators: [

@@ -33,6 +33,7 @@
 
   .di-facts-rows .di-fact-value {
     flex: 1;
+    overflow-wrap: anywhere;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
     color: var(--di-text);
