@@ -24,7 +24,9 @@ This exists so a page can show both themes at once — `Foundations/Color` puts 
 
 Build from the components in this system. **If something you need is missing, say so — do not approximate it with raw markup.** A missing control is a code change in the library (a new component, with its own story and an export), not something a design invents. A hand-rolled substitute looks right in the design and cannot ship: it has no tokens, no dark theme, no focus handling and no accessible name.
 
-`Screens/*` are **not** in this bundle. `RegisterScreen`, `WatchlistScreen` and the rest exist in the repo but are not package exports, so they are not available here. Compose screens from `Console`, `Panel`, `DataTable` and the rest.
+`Screens/*` are **not** in this bundle. `RegisterScreen`, `WatchlistScreen` and the rest exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `Panel`, `DataTable` and the rest.
+
+A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav. `Console` and `ConsoleFrame` are the same shell inside a Storybook window — no product renders them.
 
 ### Styling idiom — tokens, not utility classes
 
@@ -44,13 +46,15 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | Type | `--di-font-ui`, `--di-font-code`, `--di-font-size-100` … `-1000`, `--di-weight-regular/medium/semibold/bold` |
 | Status | `--di-status-{ok,warn,danger,recorded,neutral}-{bg,fg,border,dot}` |
 | Record marks | `--di-seal`, `--di-seal-ink`, `--di-ai-ring`, `--di-ai-ink` |
+| Accents | `--di-highlight` (poppy), `--di-highlight-ink`, `--di-highlight-tint`; `--di-signal` (cornflower), `--di-signal-ink`, `--di-signal-tint` — see the rules below before using either |
 | Motion | `--di-duration` (120ms), `--di-duration-slow` (200ms), `--di-ease` |
 | Control height | `--di-h-dense` (28), `--di-h-ctl` (32, the standard), `--di-h-comfort` (36), `--di-h-row` (40) |
 | On navy | `--di-inverse-bg`, `-raised`, `-border`, `-text`, `-muted`, `-seal` — a surface sitting on navy re-points its roles from these |
 
 Rules that make output look native rather than approximate:
 
-- **Navy is the ink and the action.** There is no accent colour. One filled navy control per sheet, so it is never unclear which button commits.
+- **Navy is the ink and the action.** No accent acts. One filled navy control per sheet, so it is never unclear which button commits.
+- **Two accents stand beside navy and gold, never in their place.** Poppy marks the place a page is about — a key figure, a quote, the core claim — and on a page it is only ever `Highlight` (`variant="passage"` lays the tint under a run of words, `variant="figure"` sets a key figure in poppy ink). Cornflower signals a second series and lives in charts as `--di-chart-compare`. **At most one accent per page**, and the two meet only in a chart. Neither is a status, so neither is a `tone`: poppy is not critical, and a failure stays danger. Neither fills a button. Cornflower never sits directly on navy (3.0:1) — not on the rail, a toast, a tooltip or a `Badge`. Bare `--di-highlight` is 4.2:1 on paper: a mark or a large figure, never body text.
 - **Gold means sealed, not important.** A filled dot (`--di-seal`) is a recorded, verifiable value; a hollow ring (`--di-ai-ring`) is a value a model inferred. Never swap them — it inverts the meaning. The mark is never the only channel: keep the word beside it.
 - **Gold is a mark, not type.** Gold 500 and Gold 600 do not clear AA as small text on paper. Small gold text uses `--di-seal-ink` (`#7A5C0E`); gold text on navy uses Gold 400. On ivory, a gold-adjacent ink needs `#061631` rather than navy to clear.
 - **Focus follows its ground**, and this is a mistake the system already made once: `--di-focus` is navy on paper and Gold 400 after dark, and `--di-sidebar-focus` is gold on the navy rail. Do not ring focus in seal gold on paper — it measures **2.1:1**, under the **3:1** a focus indicator has to clear. Never remove a focus indicator.
@@ -58,7 +62,7 @@ Rules that make output look native rather than approximate:
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
 - **`--di-font-code` (JetBrains Mono) is for anything a machine wrote**: identifiers, hashes, timestamps, measured values, section numbers. Prose is `--di-font-ui`. Which track a string sits in says where it came from.
 - **Depth is a 1px rule.** Only a detached plane — menu, modal, toast — gets a shadow (`--di-shadow-plane`). No blur behind text.
-- **Every panel, table, drawer, notice and empty state carries a 38px index column** (`--di-index-col`) holding an ordinal or a letter. A drawer keeps the ordinal of the row it opened from; a failure keeps its ordinal, tinted.
+- **Indexed records carry a 38px index column** (`--di-index-col`) holding an ordinal or a letter, wherever sequence or record identity matters — panels, tables, drawers, notices. A drawer keeps the ordinal of the row it opened from; a failure keeps its ordinal, tinted. An ordinary form, a first-use empty state, and a panel or `StatTile` that is not one of a sequence (a row of different measures, the facts on one record) omit it; never invent a number to fill a decorative rail.
 - Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
 
 ### API shape
@@ -72,7 +76,8 @@ Rules that make output look native rather than approximate:
 - **`Pagination` and `Switch` are controlled** — you own `page` / `checked`.
 - **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. A blocked link (`disabled` or `loading`) drops its `href` and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined in-text control and stays a `<button>` — it is for acting, not for going somewhere.
 - **`Icon` takes one Lucide icon as its child**: `<Icon label="Search"><Search aria-hidden /></Icon>`.
-- **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, poppy), `--di-chart-compare` (the comparison series, cornflower), `--di-chart-muted`, `--di-chart-band`.
+- **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, poppy), `--di-chart-compare` (the comparison series, cornflower — also `LevelMeter`'s comparison track), `--di-chart-muted`, `--di-chart-band`. An ordered status scale (low → warn → danger: a stacked severity, a meter's zones, a `Distribution` row's `tone`) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Never draw a one-off SVG chart.
+- **A page or section heading is a slot, because it can hold a `Highlight`**: `<PageHeader eyebrow="…" lede="…"><PageHeaderTitle>…</PageHeaderTitle><PageHeaderAside>…</PageHeaderAside></PageHeader>`, and `SectionTitleHeading` / `SectionTitleMeta` the same way. A `Panel`, `Modal` or `Card` title stays a string — the page marks one place, and it is never a panel's title.
 - Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first.
 
 ### Exploring a variation

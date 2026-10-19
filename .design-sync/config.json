@@ -8,7 +8,6 @@
   "buildCmd": "pnpm build",
   "entry": "dist/lib/index.js",
   "titleMap": {
-    "AppShell": "Console",
     "Confidence": "ConfidenceField",
     "Confirm": "ConfirmPanel",
     "Explain": "ExplainPanel",
@@ -52,6 +51,17 @@
     },
     "Chart": {
       "cardMode": "column"
+    },
+    "AppShell": {
+      "cardMode": "column",
+      "skip": [
+        "patterns-appshell--mobile-navigation-night"
+      ]
+    },
+    "ComboBox": {
+      "skip": [
+        "forms-combobox--night"
+      ]
     }
   },
   "extraEntries": [

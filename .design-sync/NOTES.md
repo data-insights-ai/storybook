@@ -76,7 +76,12 @@ values.
   the segment *before* the matched one — `Blocks/Inference/Confirm` → export
   `ConfirmPanel`, group `inference`. Renames: Confidence→ConfidenceField,
   Confirm→ConfirmPanel, Explain→ExplainPanel, Privacy→PrivacyBadge,
-  Seal→SealValue, Skeleton→SkeletonTable, AppShell→Console.
+  Seal→SealValue, Skeleton→SkeletonTable.
+  `AppShell→Console` was **removed 2026-10-16**: `Patterns/AppShell` became the
+  slot-based `AppShell` a product renders (meta `component: AppShell`), and
+  `Console` is now the Storybook-window variant no product renders and no story
+  owns. The card is `AppShell`; `Console`/`ConsoleFrame` stay in the bundle as
+  exports with no card.
   `null` excludes: `Foundations/*` (Color, Type, Logo, Scale, Decisions — doc
   pages with no component) and `Screens/*` (Architecture, Coverage, Inference,
   Login, Register, Settings, Watchlist). **A new Foundations page needs a new
@@ -91,9 +96,12 @@ values.
   Cosmetic; `index.md` links them correctly.
 - **`dtsPropsFor.Button`** — see the union note under Tool limitations.
 - **`readmeHeader: ".design-sync/conventions.md"`** — the design agent's header.
-- **`overrides`** — five left, reasons under Tool limitations: `Modal` single
-  card + `primaryStory: Confirm`; `Session` / `Tabs` / `Chart` column cards;
-  `FieldHint/Empty` skipped. The `Button` and `StatusPill` entries are **gone** —
+- **`overrides`** — reasons under Tool limitations: `Modal` single
+  card + `primaryStory: Confirm`; `Session` / `Tabs` / `Chart` / `AppShell`
+  column cards (`AppShell` added 2026-10-16 for `[GRID_OVERFLOW] wide`);
+  `FieldHint/Empty` skipped; `AppShell/MobileNavigationNight` and
+  `ComboBox/Night` skipped because they set `globals: { theme: "dark" }` — see
+  "A story that themes through a global" below. The `Button` and `StatusPill` entries are **gone** —
   their NightSheet stories render a themed region now and photograph cleanly.
 
 **Screens are not synced.** `src/screens/*` are real components but are not
@@ -167,6 +175,24 @@ daylight and night-800 after dark; the night sheet's surface is neither. The
 three mechanisms do not overlap. `Toast.css` also keeps its local re-pointing,
 which now looks like the general case rather than a workaround.
 
+### A story that themes through a global renders in daylight
+
+Same root cause as the NightSheet skips that were retired on 2026-09-30:
+`globals: { theme: "dark" }` only works through the Storybook decorator, and the
+decorator is not bundled. The preview renders such a story in daylight, so
+compare grades it `mismatch` for a reason that is not the component.
+
+Two stories still do it: `AppShell/MobileNavigationNight` and `ComboBox/Night`.
+Both are skipped. Every other `*Night` story in the roster renders its own
+`data-theme="dark"` region (`ContextControls theme="dark"`, `LongNameShell
+theme="dark"`, the `NightSheet` stories) and grades `match`, which is how the
+dark contract gets photographed. **The fix is in the story, not here**: render
+the region instead of setting the global, then drop the skip. Until then the
+design agent has no worked example of either component after dark — the skip
+removes the story from `<Name>.prompt.md` too.
+
+`grep -n 'theme: "dark"' src/components/*.stories.tsx` finds any new one.
+
 ### A top-layer `<dialog>` cannot be photographed on either side
 
 `Modal` is a native `<dialog>` opened with `showModal()`, so its content is in
@@ -210,7 +236,9 @@ were not renderable and all 5 were deliberate — the two NightSheet stories,
 `FieldHint/Empty` (renders nothing by design, and it landed as `roots[0]`,
 tripping the validator's `rootEmpty` check), and Modal's two, restored by the
 owned preview. **Since 2026-09-30 the two NightSheet stories render, so the count
-is 1**: `FieldHint/Empty`. Re-run the audit on the next sync.
+is 1**: `FieldHint/Empty`. **Since 2026-10-16 it is 3**: plus
+`AppShell/MobileNavigationNight` and `ComboBox/Night` (themed through a global,
+above). Re-run the audit on the next sync.
 
 Known cosmetic limitation: `<Name>.prompt.md`'s one-line
 `Variants (see <Name>.html): …` header is generated from the non-skipped roster,
@@ -416,12 +444,33 @@ seven slot-reading components** — Card, DataTable, Field, SearchField, Panel,
 SkeletonTable, Button — on the next sync; `Icon.css` changed, which is a CSS-only
 change and therefore will NOT mark them `changed` (see above), so force it.
 
-**Not yet synced.** `b6da02e` ("Add a brand tier to the library") adds `PullQuote`
-as a new component and extends `PageHeader` / `SectionTitle` with `tier`,
-`Eyebrow` with `variant`, `FactList` with `layout="grid"`, `Notice` with
-`size="comfort"`, `TextField` / `Select` with `labelTrack="prose"`, and `Stack`
-with `gap` 64 / 96. `conventions.md` has been updated for it; nothing is
-uploaded. Story counts moved, so pass `--max-stories 16`.
+**2026-10-16 — accents, slot headings, AppShell, v0.3.1.** First upload since
+2026-09-29, so it carries the 09-30 theme-region work and brand tier too.
+69 components: 44 carried forward, 19 changed, 6 new (`AppShell`, `ComboBox`,
+`Highlight`, `LevelMeter`, `PullQuote`, `TooltipTarget`), 1 removed (`Console`,
+replaced by the `AppShell` card — see titleMap). `--max-stories 18` (AppShell
+has 18). Every `close` is a play-function story; none is a styling delta.
+Spot-check canary (Session, Spinner, Channel, LivingCard, Numbered) all
+confirmed against their recorded grades.
+New this run: `AppShell` needed `cardMode: "column"`, and the two
+global-themed Night stories were skipped (above). `conventions.md` was stale
+for the accent release — it still said "there is no accent colour" and pointed
+screens at `Console`; it now carries the poppy/cornflower rules, the heading
+slots, the `AppShell` slots, the chart status scale and the optional index
+column. Re-check it against `AGENTS.md`'s Brand section on every sync; the two
+drift together.
+The reflow stories (`ReflowSmall` … `ReflowTabletNight`) set a viewport global
+that neither side applies in capture, so both photograph at 900px. They grade
+`match` on what is shown, but the 320/390/768px reflow itself is verified by
+`pnpm test`, not by this sync.
+The 09-30 entry's re-capture list is done: Button, StatusPill, DataTable, Panel
+and TextField were recaptured as `changed`; IconTile, Card, SearchField and
+SkeletonTable were carried forward by the diff (CSS-only change) and were
+spot-checked by hand with `compare.mjs --components … --spot-check-components …`.
+All confirmed — `IconTile/Inverse` now draws an ivory glyph on navy on both sides.
+`Numbered` was the driver's canary on every run this session (`render_churn`,
+sources unchanged) and confirmed each time; if it keeps churning on the next
+sync, look for a nondeterministic input in its preview rather than re-grading.
 
 ## Appendix: pnpm 12.5.1 native binary
 
