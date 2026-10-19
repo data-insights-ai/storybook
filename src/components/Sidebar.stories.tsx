@@ -1,10 +1,11 @@
 import { useState, type AnchorHTMLAttributes, type MouseEvent } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { Archive, Bell, Building2, FileSearch, Gauge, Settings, ShieldAlert, UserRound } from "lucide-react";
+import { Archive, Bell, Building2, ChevronsUpDown, FileSearch, Gauge, Settings, ShieldAlert, UserRound } from "lucide-react";
 import { AppShellBar } from "./AppShell";
 import { Breadcrumb } from "./Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "./Heading";
+import { Menu, MenuGroup, MenuItem } from "./Menu";
 import { Sidebar } from "./Sidebar";
 import { SidebarBrand } from "./SidebarBrand";
 import { SidebarInset } from "./SidebarInset";
@@ -225,4 +226,55 @@ export const MobileDrawer: Story = {
 export const Dark: Story = {
   globals: { theme: "dark" },
   render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} />,
+};
+
+function WorkspaceSwitcher() {
+  const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState("Northwind Security");
+  return (
+    <Menu
+      open={open}
+      onOpenChange={setOpen}
+      label="Switch workspace"
+      align="start"
+      trigger={(props) => (
+        <SidebarMenuButton label={current} trailing={<ChevronsUpDown />} {...props}>
+          <Building2 />
+        </SidebarMenuButton>
+      )}
+    >
+      <MenuGroup label="Workspaces">
+        {["Northwind Security", "Harbor Labs"].map((name) => (
+          <MenuItem key={name} checked={name === current} onSelect={() => { setCurrent(name); setOpen(false); }}>
+            {name}
+          </MenuItem>
+        ))}
+      </MenuGroup>
+    </Menu>
+  );
+}
+
+/** The header item opens a menu to switch context; the chevron says so. */
+export const ContextSwitcher: Story = {
+  render: (args) => (
+    <SidebarProvider>
+      <Sidebar label={args.label} closeLabel={args.closeLabel}>
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <WorkspaceSwitcher />
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+        <SidebarContent>{null}</SidebarContent>
+      </Sidebar>
+    </SidebarProvider>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Northwind Security" }));
+    const body = within(canvasElement.ownerDocument.body);
+    await userEvent.click(body.getByRole("menuitemradio", { name: "Harbor Labs" }));
+    await expect(canvas.getByRole("button", { name: "Harbor Labs" })).toBeVisible();
+  },
 };

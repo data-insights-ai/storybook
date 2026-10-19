@@ -68,9 +68,24 @@
     flex: none;
   }
 
+  .di-sb-trailing {
+    display: flex;
+    flex: none;
+    color: var(--di-sidebar-muted);
+  }
+
+  .di-sb-trailing > svg {
+    width: 14px;
+    height: 14px;
+  }
+
   .di-sb[data-state="collapsed"] .di-sb-button {
     justify-content: center;
     padding-inline: 0;
+  }
+
+  .di-sb[data-state="collapsed"] .di-sb-trailing {
+    display: none;
   }
 
   .di-sb[data-state="collapsed"] :is(.di-sb-label, .di-sb-badge) {

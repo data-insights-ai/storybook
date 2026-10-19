@@ -21,6 +21,11 @@ export type SidebarMenuButtonProps = Omit<HTMLAttributes<HTMLElement>, "children
   href?: string;
   /** A router link element, e.g. `<Link to="/findings" />`; it receives the item's props and content. */
   render?: useRender.RenderProp;
+  /**
+   * An icon after the label that says what the item does, e.g. a chevron on
+   * an item that opens a menu. Hidden in the collapsed rail.
+   */
+  trailing?: ReactNode;
 };
 
 export function SidebarMenuButton({
@@ -31,6 +36,7 @@ export function SidebarMenuButton({
   badgeTone = "neutral",
   href,
   render,
+  trailing,
   className,
   ...rest
 }: SidebarMenuButtonProps) {
@@ -54,6 +60,7 @@ export function SidebarMenuButton({
                 <Badge tone={badgeTone}>{badge}</Badge>
               </span>
             ) : null}
+            {trailing ? <span className="di-sb-trailing" aria-hidden>{trailing}</span> : null}
           </>
         ),
       },
