@@ -37,7 +37,9 @@ export type CoverageMatrixColumn = {
  * reached columns read before the cells are counted. A marked cell takes
  * its tone from the ordered status scale (series → warn → danger), and the
  * colour is never the only channel: every mark is also written out as its
- * code beneath the cells, and `CoverageMatrixLegend` names the tones.
+ * code beneath the cells, and `CoverageMatrixLegend` names the tones. Each
+ * column ends where its own codes do, and a name holds two lines, so the
+ * cells of every column start on one line.
  *
  * The cells only fill from the top, so position within a column carries no
  * meaning. They are drawn for the eye and hidden from a screen reader,

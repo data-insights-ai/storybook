@@ -11,25 +11,24 @@
   }
 
   /*
-   * The name and the code are row tracks shared through subgrid, so a name
-   * that wraps moves its neighbours with it and every column's cells start
-   * on one line. The cells and the codes seen beneath them are one track:
-   * the codes follow their own column, not the longest one.
+   * Each column hugs its own cells, so a reached column's frame ends where
+   * its codes do, not where the longest column does. Names hold two lines
+   * either way, so every column's cells start on one line. A column is at
+   * least 88px and grows to its longest code, which never wraps.
    */
   .di-matrix-columns {
     display: grid;
-    grid-auto-columns: minmax(120px, 1fr);
+    grid-auto-columns: minmax(min-content, 1fr);
     grid-auto-flow: column;
-    grid-template-rows: auto auto auto;
-    gap: 0 var(--di-space-8);
+    align-items: start;
+    gap: var(--di-space-8);
   }
 
   .di-matrix-column {
-    display: grid;
-    grid-row: span 3;
-    grid-template-rows: subgrid;
-    row-gap: var(--di-space-8);
-    align-content: start;
+    min-width: 88px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-8);
     padding: var(--di-space-6);
     border: 1px solid transparent;
     border-radius: var(--di-radius-surface);
@@ -40,6 +39,7 @@
   }
 
   .di-matrix-label {
+    min-height: 2lh;
     font-size: var(--di-font-size-200);
     font-weight: var(--di-weight-regular);
     line-height: 1.3;
