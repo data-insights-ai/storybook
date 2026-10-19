@@ -47,6 +47,7 @@ export { ExplainFooter, ExplainPanel, ExplainRow } from "./components/ExplainPan
 export { Fact, FactList } from "./components/FactList";
 export type { LabelTrack } from "./components/Field";
 export { FieldHint } from "./components/FieldHint";
+export { FileField } from "./components/FileField";
 export type { HintTone } from "./components/FieldHint";
 export { PageHeader, PageHeaderAside, PageHeaderTitle } from "./components/Heading";
 export { Highlight } from "./components/Highlight";

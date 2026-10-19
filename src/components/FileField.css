@@ -1,0 +1,39 @@
+@layer components {
+  .di-file {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-8);
+    padding: 0 var(--di-space-2) 0 var(--di-space-2);
+  }
+
+  .di-file.is-dragging {
+    border-color: var(--di-border-strong);
+    border-style: dashed;
+  }
+
+  .di-file.is-disabled {
+    cursor: not-allowed;
+    background: var(--di-bg-disabled);
+  }
+
+  .di-file-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text);
+  }
+
+  .di-file-name.is-empty {
+    font-family: var(--di-font-ui);
+    color: var(--di-text-subtle);
+  }
+
+  .di-file.is-disabled .di-file-name {
+    color: var(--di-text-disabled);
+  }
+}
