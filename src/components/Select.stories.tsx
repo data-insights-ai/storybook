@@ -107,3 +107,14 @@ export const ProseLabel: Story = {
     </Select>
   ),
 };
+
+export const HiddenLabel: Story = {
+  name: "Hidden label (in a table row)",
+  args: { id: "role-nora", label: "Role of Nora Feld", hideLabel: true, mono: false, defaultValue: "operator" },
+  render: (args) => (
+    <Select {...args}>
+      <option value="operator">Operator</option>
+      <option value="auditor">Auditor</option>
+    </Select>
+  ),
+};

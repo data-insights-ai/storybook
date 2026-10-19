@@ -18,6 +18,7 @@ export function Select({
   hint = "",
   hintTone = "neutral",
   labelTrack = "record",
+  hideLabel = false,
   mono = true,
   className,
   disabled = false,
@@ -33,6 +34,11 @@ export function Select({
   hintTone?: HintTone;
   /** Which track the label runs in. `record` is the console, `prose` a form. */
   labelTrack?: LabelTrack;
+  /**
+   * Keeps the label for assistive technology only, for a control whose
+   * column or row already names it, such as a role picker in a table.
+   */
+  hideLabel?: boolean;
   /** A select usually holds an identifier or a range, so mono is the default. */
   mono?: boolean;
   disabled?: boolean;
@@ -43,7 +49,7 @@ export function Select({
 
   return (
     <div className={cx("di-field", className)}>
-      <label className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
+      <label className={cx("di-field-label", `di-field-label-${labelTrack}`, hideLabel && "di-sr")} htmlFor={id}>
         {label}
       </label>
       <div className="di-select">

@@ -76,8 +76,12 @@ export function ModalTitle({ id, eyebrow, children }: { id: string; eyebrow?: st
   );
 }
 
+/**
+ * The explanation under the title: a sentence, or paragraphs and a field.
+ * A block, so paragraphs and controls inside it stay valid HTML.
+ */
 export function ModalBody({ children }: { children: ReactNode }) {
-  return <p className="di-modal-text">{children}</p>;
+  return <div className="di-modal-text">{children}</div>;
 }
 export function ModalFooter({ children }: { children: ReactNode }) {
   return <div className="di-modal-footer">{children}</div>;
