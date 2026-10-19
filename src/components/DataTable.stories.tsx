@@ -21,6 +21,7 @@ import {
 import { LevelMeter } from "./LevelMeter";
 import { Pagination } from "./Pagination";
 import { SearchField } from "./SearchField";
+import { Select } from "./Select";
 import { SealValue } from "./Seal";
 import { StatusPill } from "./StatusPill";
 import { TextLink } from "./TextLink";
@@ -451,4 +452,42 @@ export const NoRows: Story = {
       </TableBody>
     </DataTable>
   ),
+};
+
+const people = [
+  { id: "nora", name: "Nora Feld", email: "nora.feld@data-insights.ai", role: "operator" },
+  { id: "jon", name: "Jon Arlt", email: "jon.arlt@data-insights.ai", role: "auditor" },
+];
+
+export const InlineSelect: Story = {
+  name: "Inline select (role per row)",
+  render: (args) => (
+    <DataTable {...args} caption="People">
+      <TableHead>
+        <TableColumn width="fill">Person</TableColumn>
+        <TableColumn>Role</TableColumn>
+      </TableHead>
+      <TableBody>
+        {people.map((p) => (
+          <TableRow key={p.id}>
+            <TableCell>
+              <CellStack primary={p.name} secondary={p.email} />
+            </TableCell>
+            <TableCell>
+              <Select id={`role-${p.id}`} label={`Role of ${p.name}`} hideLabel mono={false} defaultValue={p.role}>
+                <option value="operator">Operator</option>
+                <option value="auditor">Auditor</option>
+                <option value="administrator">Administrator</option>
+              </Select>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </DataTable>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const select = canvas.getByLabelText("Role of Nora Feld");
+    await expect(select.getBoundingClientRect().width).toBeGreaterThan(100);
+  },
 };

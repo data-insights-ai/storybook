@@ -9,6 +9,14 @@
     padding-right: var(--di-space-32);
   }
 
+  /*
+   * A cell of an auto-width column offers no width of its own, so a select
+   * there would shrink to its caret; it keeps room for its longest option.
+   */
+  .di-table td .di-select-control {
+    min-inline-size: max-content;
+  }
+
   .di-select-caret {
     position: absolute;
     top: 50%;
