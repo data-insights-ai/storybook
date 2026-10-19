@@ -26,6 +26,8 @@ export { ComboBox } from "./components/ComboBox";
 export type { ComboBoxSuggestion } from "./components/ComboBox";
 export { ConfidenceField } from "./components/ConfidenceField";
 export { ConfirmActions, ConfirmPanel } from "./components/ConfirmPanel";
+export { CoverageMatrix, CoverageMatrixLegend } from "./components/CoverageMatrix";
+export type { CoverageMatrixColumn, CoverageMatrixMark, CoverageMatrixTone } from "./components/CoverageMatrix";
 export {
   CellIcon,
   CellLead,

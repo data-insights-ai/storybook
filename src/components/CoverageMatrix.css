@@ -1,0 +1,153 @@
+@layer components {
+  /* The frame scrolls on its own, so a wide set never pushes the page sideways. */
+  .di-matrix {
+    overflow-x: auto;
+    padding-bottom: var(--di-space-4);
+  }
+
+  .di-matrix:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: var(--di-space-2);
+  }
+
+  /*
+   * The name and the code are row tracks shared through subgrid, so a name
+   * that wraps moves its neighbours with it and every column's cells start
+   * on one line. The cells and the codes seen beneath them are one track:
+   * the codes follow their own column, not the longest one.
+   */
+  .di-matrix-columns {
+    display: grid;
+    grid-auto-columns: minmax(120px, 1fr);
+    grid-auto-flow: column;
+    grid-template-rows: auto auto auto;
+    gap: 0 var(--di-space-8);
+  }
+
+  .di-matrix-column {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: var(--di-space-8);
+    align-content: start;
+    padding: var(--di-space-6);
+    border: 1px solid transparent;
+    border-radius: var(--di-radius-surface);
+  }
+
+  .di-matrix-column.is-reached {
+    border-color: var(--di-border-strong);
+  }
+
+  .di-matrix-label {
+    font-size: var(--di-font-size-200);
+    font-weight: var(--di-weight-regular);
+    line-height: 1.3;
+    color: var(--di-text);
+  }
+
+  .di-matrix-column.is-reached .di-matrix-label {
+    font-weight: var(--di-weight-semibold);
+  }
+
+  .di-matrix-code {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: var(--di-tracking-mono);
+    color: var(--di-text-subtle);
+  }
+
+  .di-matrix-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-8);
+  }
+
+  /* Marks, not controls: square, three to a row, so a column's length is its size. */
+  .di-matrix-cells {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--di-space-2);
+    align-content: start;
+  }
+
+  .di-matrix-cell {
+    height: 8px;
+    border-radius: 0;
+    background: var(--di-bg-subtle);
+  }
+
+  .di-matrix-cell.is-neutral,
+  .is-neutral > .di-matrix-swatch {
+    background: var(--di-chart-series);
+  }
+
+  .di-matrix-cell.is-warn,
+  .is-warn > .di-matrix-swatch {
+    background: var(--di-chart-warn);
+  }
+
+  .di-matrix-cell.is-danger,
+  .is-danger > .di-matrix-swatch {
+    background: var(--di-chart-danger);
+  }
+
+  .di-matrix-marks {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The code of a mark, on the same quiet pill a VersionTag uses: it names a thing. */
+  .di-matrix-mark {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-6);
+    height: var(--di-pill-height);
+    padding: 0 var(--di-space-8);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-pill-radius);
+    background: var(--di-bg-subtle);
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-weight: var(--di-weight-medium);
+    letter-spacing: var(--di-tracking-mono);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .di-matrix-swatch {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 0;
+  }
+
+  .di-matrix-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8) var(--di-space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-muted);
+  }
+
+  .di-matrix-key {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-space-6);
+  }
+
+  .di-matrix-key.is-empty > .di-matrix-swatch {
+    background: var(--di-bg-subtle);
+    box-shadow: inset 0 0 0 1px var(--di-border);
+  }
+}
