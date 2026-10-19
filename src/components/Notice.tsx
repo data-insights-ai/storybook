@@ -3,7 +3,9 @@ import { cx } from "../cx";
 import "./Notice.css";
 
 /**
- * Frame only. Icon, text and action are children, in that order.
+ * Frame only. Children: an optional `NoticeIcon`, then one `NoticeText`.
+ * `NoticeText` holds a block with `NoticeTitle` and `NoticeBody` and, after
+ * it, an optional `NoticeAction`, so the action sits inside the padding.
  *
  * A notice spans the sheet and carries the same icon column the panel
  * gives its index: a notice is also a record, not an interruption.
@@ -50,6 +52,7 @@ export function NoticeBody({ mono = false, children }: { mono?: boolean; childre
   return <div className={cx("di-notice-body", mono && "di-mono")}>{children}</div>;
 }
 
+/** One or more controls, spaced and aligned on one line. */
 export function NoticeAction({ children }: { children: ReactNode }) {
   return <div className="di-notice-action">{children}</div>;
 }

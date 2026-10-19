@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AlertTriangle, CheckCircle2, Info, OctagonAlert } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Button } from "./Button";
+import { TextLink } from "./TextLink";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./Notice";
 
 const meta = {
@@ -179,5 +180,35 @@ export const Comfort: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("note")).toBeVisible();
+  },
+};
+
+/** Two actions: a primary one and a way to the full page, spaced on one line. */
+export const TwoActions: Story = {
+  args: { tone: "warn" },
+  render: (args) => (
+    <Notice {...args}>
+      <NoticeIcon>
+        <AlertTriangle aria-hidden />
+      </NoticeIcon>
+      <NoticeText>
+        <div>
+          <NoticeTitle>Nobody reviews the register yet.</NoticeTitle>
+          <NoticeBody>Appoint a reviewer to seal entries.</NoticeBody>
+        </div>
+        <NoticeAction>
+          <Button size="dense">Appoint me</Button>
+          <TextLink href="#reviewers">Choose someone</TextLink>
+        </NoticeAction>
+      </NoticeText>
+    </Notice>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole("button", { name: "Appoint me" }).getBoundingClientRect();
+    const link = canvas.getByRole("link", { name: "Choose someone" }).getBoundingClientRect();
+    const frame = canvas.getByRole("note").getBoundingClientRect();
+    await expect(link.left - button.right).toBeGreaterThanOrEqual(12);
+    await expect(frame.right - link.right).toBeGreaterThanOrEqual(12);
   },
 };

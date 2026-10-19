@@ -68,6 +68,9 @@
   .di-notice-action {
     flex: none;
     align-self: center;
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-12);
   }
 
   .di-notice-neutral .di-notice-icon {
