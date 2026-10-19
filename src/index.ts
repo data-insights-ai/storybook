@@ -99,6 +99,7 @@ export { SegmentedControl } from "./components/SegmentedControl";
 export { Select } from "./components/Select";
 export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/Session";
 export { Sidebar } from "./components/Sidebar";
+export { SidebarBrand } from "./components/SidebarBrand";
 export { useSidebar } from "./components/SidebarContext";
 export type { SidebarState } from "./components/SidebarContext";
 export { SidebarInset } from "./components/SidebarInset";

@@ -6,6 +6,7 @@ import { AppShellBar } from "./AppShell";
 import { Breadcrumb } from "./Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "./Heading";
 import { Sidebar } from "./Sidebar";
+import { SidebarBrand } from "./SidebarBrand";
 import { SidebarInset } from "./SidebarInset";
 import { SidebarMenu, SidebarMenuItem } from "./SidebarMenu";
 import { SidebarMenuButton } from "./SidebarMenuButton";
@@ -108,6 +109,7 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
+          <SidebarBrand />
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
@@ -147,8 +149,10 @@ export const Default: Story = {
     const nav = canvas.getByRole("navigation", { name: "Sections" });
     await expect(within(nav).getByRole("link", { name: /Findings/ })).toHaveAttribute("aria-current", "page");
 
+    await expect(canvas.getByRole("img", { name: "datAInsights" })).toHaveClass("di-sb-brand-logo");
     await userEvent.click(canvas.getByRole("button", { name: "Toggle navigation" }));
     await expect(nav).toHaveAttribute("data-state", "collapsed");
+    await expect(canvas.getByRole("img", { name: "datAInsights" })).toHaveClass("di-sb-brand-mark");
     await expect(canvas.getByRole("button", { name: "Toggle navigation" })).toHaveAttribute("aria-expanded", "false");
 
     await userEvent.keyboard("{Control>}b{/Control}");

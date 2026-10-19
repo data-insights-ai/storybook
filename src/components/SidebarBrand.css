@@ -1,0 +1,18 @@
+@layer components {
+  .di-sb-brand {
+    display: flex;
+    align-items: center;
+    padding: var(--di-space-8) var(--di-space-8);
+  }
+
+  .di-sb-brand-logo {
+    height: 24px;
+    width: auto;
+  }
+
+  .di-sb-brand-mark {
+    height: 24px;
+    width: auto;
+    margin-inline: auto;
+  }
+}
