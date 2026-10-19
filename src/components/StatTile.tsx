@@ -4,7 +4,7 @@ import { TickRule } from "./Seal";
 import "./StatTile.css";
 
 /**
- * One measured value, with its index. The figure runs in the mono track
+ * One measured value, with its index when it has one. The figure runs in the mono track
  * with tabular figures, so a column of tiles does not jitter as the
  * numbers update.
  *
@@ -21,7 +21,11 @@ export function StatTile({
   className,
   children,
 }: {
-  index: string;
+  /**
+   * The ordinal or letter in the index column. Omit for a tile that is not one of a sequence:
+   * a row of different measures has no order to number.
+   */
+  index?: string;
   label: string;
   value: string;
   /** `danger` is a value that crossed a threshold, not a styling choice. */
@@ -35,9 +39,11 @@ export function StatTile({
 }) {
   return (
     <div className={cx("di-stat-tile", tone === "danger" && "is-danger", className)}>
-      <div className="di-stat-tile-index">
-        <span className="di-stat-tile-ordinal">{index}</span>
-      </div>
+      {index === undefined ? null : (
+        <div className="di-stat-tile-index">
+          <span className="di-stat-tile-ordinal">{index}</span>
+        </div>
+      )}
       <div className="di-stat-tile-body">
         <p className="di-stat-tile-label">{label}</p>
         <p className={cx("di-stat-tile-value", compact && "is-compact")}>{value}</p>

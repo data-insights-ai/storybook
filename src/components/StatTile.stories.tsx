@@ -95,6 +95,19 @@ export const WithSparkline: Story = {
   ),
 };
 
+/**
+ * No index, for a tile that is not one of a sequence. A count, a time and a duration are
+ * different measures; numbering them 01 to 03 would claim an order they do not have.
+ */
+export const WithoutIndex: Story = {
+  args: { index: undefined, label: "Sources on record", value: "24" },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("24")).toBeVisible();
+    await expect(canvasElement.querySelector(".di-stat-tile-index")).toBeNull();
+  },
+};
+
 /** Without a delta, where there is no previous reading to compare. */
 export const WithoutDelta: Story = {
   args: { index: "04", label: "Sources on record", value: "24" },
