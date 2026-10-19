@@ -71,11 +71,10 @@
     }
   }
 
-  /* The console tier: 28px over a 12px lede, and the head owns the gap
-     to the first block under it. */
+  /* The console tier: 28px over a 12px lede. Like the brand tier it carries
+     no bottom margin; the page or Stack around it owns the rhythm. */
   .di-page-head-console {
     --di-eyebrow-gap: var(--di-space-8);
-    margin-bottom: var(--di-space-24);
   }
 
   .di-page-head-console .di-page-title {

@@ -4,6 +4,18 @@ This repository is the component workbench for the datAInsights brand. It is not
 
 A designer reviews work in Storybook (`pnpm storybook`, port 4500). Change what Storybook shows. Leave the installable package and the licence intact unless a release was asked for.
 
+## Composing a product screen
+
+Components carry no outer margin; spacing belongs to the container. A product screen is assembled like this:
+
+- `AppShellContent` is a vertical flow (inside `SidebarInset` as well, below the `AppShellBar`): its direct children — `PageHeader`, a `Notice`, a `DataTable`, a `Panel`, a form — are spaced 24px apart. Do not add margins to separate them.
+- Inside a block, group with `Stack` (`gap={8|12|16|24|32}`); a section of related blocks is one `Stack`, so the page sees it as a single child.
+- A form is a `Stack gap={16}` of fields, followed by `Actions` for its buttons. A one-line form (pick a value and apply it) is a `Toolbar`: the fields, then the button, aligned on one row.
+- Fields stretch to their container. Constrain a form's width by placing it in a `Panel` or a `Grid` column, not by sizing the controls.
+- A `DataTable` with no rows is not rendered empty: show an `EmptyState` instead.
+
+The screens under `src/screens` follow these rules; copy from them, not from memory.
+
 ## Public repository
 
 The git repository is public: https://github.com/data-insights-ai/storybook
@@ -109,7 +121,7 @@ A variant is one union prop, never a family of booleans or a second prop that ca
 
 `tone` names one axis and one only: status on the shared ramp, `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. What is not a status carries its own name — `surface` on `Panel`, `scope` on `PrivacyBadge`, `state` on `CommandChip`, `level` on `ConfidenceField`, `variant` on `Button`, `IconTile` and `Eyebrow`, `layout` on `FactList` and `Switch`, `labelTrack` on `TextField` and `Select`, `size` on `Button` and `Notice`, `gap` on `Stack`. `neutral` is the word for “nothing special”; `default` and `info` were two more words for it and are gone. The hollow ring is `inferred` wherever it appears, never `ai`, and gold as a value is `seal` — a public prop does not name a colour.
 
-`tier` is the axis a heading carries, `console | brand`, on `PageHeader` and `SectionTitle`. `console` is the product screen: 28px and 20px over a 12px lede, and the head owns the gap to the block under it. `brand` is the display tier, measured to 16ch and 22ch over a lede at `--di-font-size-550`, and it carries no bottom margin — a brand page's rhythm belongs to the `Stack` around it, not to the header. Two tiers of one header, not two headers: a second component would be a second name for the same job.
+`tier` is the axis a heading carries, `console | brand`, on `PageHeader` and `SectionTitle`. `console` is the product screen: 28px and 20px over a 12px lede, and like `brand` it carries no bottom margin — the page or `Stack` around it owns the rhythm. `brand` is the display tier, measured to 16ch and 22ch over a lede at `--di-font-size-550`, and it carries no bottom margin — a brand page's rhythm belongs to the `Stack` around it, not to the header. Two tiers of one header, not two headers: a second component would be a second name for the same job.
 
 `Eyebrow` is one union prop for the same reason. `sealed` is the section label beside the seal with a rule to the edge, and there is one of those per view. `plain` is the label alone, which repeats down a brand page, and it is what `PageHeader` and `SectionTitle` render from their `eyebrow` string — a page that repeated the sealed one would be claiming a seal per heading. The distance beneath it is `--di-eyebrow-gap`, so a head retunes it without the eyebrow knowing which head it sits in.
 
