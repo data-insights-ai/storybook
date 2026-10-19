@@ -1,6 +1,6 @@
 {
   "name": "@data-insights-ai/ui",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "description": "datAInsights component workbench. All rights reserved.",
   "type": "module",
   "module": "./dist/lib/index.js",
