@@ -220,6 +220,11 @@ export const MobileDrawer: Story = {
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(body.queryByRole("dialog")).toBeNull());
     await waitFor(() => expect(trigger).toHaveFocus());
+
+    await userEvent.click(trigger);
+    const reopened = await body.findByRole("dialog", { name: "Sections" });
+    await userEvent.click(within(reopened).getByRole("link", { name: "Sources" }));
+    await waitFor(() => expect(body.queryByRole("dialog")).toBeNull());
   },
 };
 

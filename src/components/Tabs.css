@@ -1,8 +1,20 @@
 @layer components {
+  /*
+   * A strip wider than its frame scrolls on its own, so the page does not.
+   * The baseline is drawn inside the strip, where the scroll cannot clip the
+   * active tab's mark that sits on it.
+   */
   .di-tabs {
     display: flex;
     gap: var(--di-space-2);
-    border-bottom: 1px solid var(--di-border);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    box-shadow: inset 0 -1px 0 var(--di-border);
+  }
+
+  .di-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .di-tab {
@@ -10,8 +22,8 @@
     align-items: center;
     gap: var(--di-space-6);
     height: var(--di-h-comfort);
+    flex: none;
     padding: 0 var(--di-space-12);
-    margin-bottom: calc(-1 * var(--di-space-2));
     border: 0;
     border-bottom: 2px solid transparent;
     background: transparent;
@@ -62,7 +74,8 @@
     text-decoration: none;
   }
 
-  a.di-tab:focus-visible {
+  /* Inside the strip, where the scroll would clip a ring drawn outside the tab. */
+  .di-tab:focus-visible {
     outline-offset: -2px;
   }
 }

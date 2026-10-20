@@ -104,6 +104,13 @@
     outline: none;
   }
 
+  /* A phone gives the page its width back: the same 16px gutter the narrow shell uses. */
+  @media (max-width: 600px) {
+    .di-sb-inset .di-content {
+      padding: var(--di-space-16) var(--di-space-16) var(--di-space-24);
+    }
+  }
+
   .di-sb-viewport {
     position: fixed;
     inset: 0;

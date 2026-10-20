@@ -1,7 +1,8 @@
-import type { AnchorHTMLAttributes, ReactNode } from "react";
+import { useRef, type AnchorHTMLAttributes, type ReactNode } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cx } from "../cx";
+import { useActiveInView } from "./useActiveInView";
 import "./Tabs.css";
 
 /**
@@ -11,8 +12,10 @@ import "./Tabs.css";
  * one record that do not deserve an address.
  */
 export function TabNav({ label, className, children }: { label: string; className?: string; children: ReactNode }) {
+  const strip = useRef<HTMLElement>(null);
+  useActiveInView(strip);
   return (
-    <nav aria-label={label} className={cx("di-tabs", className)}>
+    <nav ref={strip} aria-label={label} className={cx("di-tabs", className)}>
       {children}
     </nav>
   );

@@ -1,5 +1,6 @@
 import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import { cx } from "../cx";
+import { useActiveInView } from "./useActiveInView";
 import "./Tabs.css";
 
 /**
@@ -27,6 +28,8 @@ export function Tabs({
   idPrefix?: string;
 }) {
   const buttons = useRef(new Map<string, HTMLButtonElement>());
+  const strip = useRef<HTMLDivElement>(null);
+  useActiveInView(strip);
   const usable = items.filter((item) => !item.disabled);
   const tabStop = usable.some((item) => item.value === value) ? value : usable[0]?.value;
 
@@ -48,6 +51,7 @@ export function Tabs({
 
   return (
     <div
+      ref={strip}
       role="tablist"
       aria-label={label}
       className={cx("di-tabs", className)}

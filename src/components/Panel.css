@@ -63,11 +63,13 @@
     flex-direction: column;
   }
 
+  /* On a narrow panel the meta drops under the title rather than off the edge. */
   .di-panel-header {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-12);
+    gap: var(--di-space-4) var(--di-space-12);
     padding: var(--di-space-8) var(--di-space-12);
     border-bottom: 1px solid var(--di-rule-hairline);
   }
@@ -80,7 +82,7 @@
   }
 
   .di-panel-meta {
-    flex: none;
+    min-width: 0;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     font-variant-numeric: tabular-nums;
@@ -95,7 +97,13 @@
     padding: var(--di-panel-pad);
   }
 
-  .di-panel-content-flush {
+  @media (max-width: 600px) {
+    .di-panel-content {
+      --di-panel-pad: var(--di-space-12);
+    }
+  }
+
+  .di-panel-content.di-panel-content-flush {
     --di-panel-pad: 0px;
   }
 
@@ -106,6 +114,7 @@
    */
   .di-panel-footer {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--di-space-8);
     margin: var(--di-panel-pad) calc(-1 * var(--di-panel-pad)) calc(-1 * var(--di-panel-pad));

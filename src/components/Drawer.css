@@ -131,4 +131,37 @@
       translate: 16px 0;
     }
   }
+
+  /*
+   * A phone has no side to open on: beside the register the pane would drop
+   * below every row and open out of sight. It rises from the bottom edge
+   * instead, over the register, and its own content scrolls.
+   */
+  @media (max-width: 600px) {
+    .di-drawer {
+      position: fixed;
+      inset: auto var(--di-space-8) var(--di-space-8);
+      z-index: 5;
+      width: auto;
+      max-height: min(75dvh, 640px);
+      animation-name: di-drawer-up;
+    }
+
+    .di-drawer-body {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .di-drawer-close {
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  @keyframes di-drawer-up {
+    from {
+      opacity: 0;
+      translate: 0 16px;
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { Children, isValidElement, type ReactNode } from "react";
+import { Children, createContext, isValidElement, useContext, type ReactNode } from "react";
 import { cx } from "../cx";
 import "./DataTable.css";
 
@@ -10,10 +10,15 @@ import "./DataTable.css";
  * The grid drops to the one cold surface in the system, so a dense
  * field of mono values reads as an extract from the record. Ordinals
  * run down the index column on the left.
+ *
+ * In a narrow frame the grid scrolls sideways. `narrow="stack"` lays each
+ * row out as a block instead: the cells run on and wrap like words, prose
+ * takes its own line, and the ordinal keeps the left edge.
  */
 export function DataTable({
   caption,
   indexed = true,
+  narrow = "scroll",
   className,
   children,
 }: {
@@ -21,6 +26,12 @@ export function DataTable({
   caption: string;
   /** The ordinal column. Off for a table that is not a register extract. */
   indexed?: boolean;
+  /**
+   * What a frame under 600px does. `scroll` keeps the grid and scrolls it;
+   * `stack` turns each row into a block, for a table read row by row — a
+   * log, a list of events — rather than compared column by column.
+   */
+  narrow?: "scroll" | "stack";
   className?: string;
   /** `TableToolbar`, the grid's `TableHead` and `TableBody`, and `TableFooter`. */
   children: ReactNode;
@@ -40,22 +51,30 @@ export function DataTable({
     grid.push(child);
   });
 
+  const stack = narrow === "stack";
   return (
-    <div className={cx("di-table-wrap", className)}>
+    <div className={cx("di-table-wrap", stack && "is-stackable", className)}>
       {toolbar}
       {/*
         The frame scrolls, not the page. A scrollable region has to be
         reachable from the keyboard, so it takes a tab stop and a name.
       */}
       <div className="di-table-scroll" tabIndex={0} role="region" aria-label={caption}>
-        <table className={cx("di-table", indexed && "is-indexed")}>
+        {/* A stacked row is no longer laid out as a table, so it says what it is. */}
+        <table className={cx("di-table", indexed && "is-indexed")} role={stack ? "table" : undefined}>
           <caption className="di-sr">{caption}</caption>
-          {grid}
+          <StackContext.Provider value={stack}>{grid}</StackContext.Provider>
         </table>
       </div>
       {foot}
     </div>
   );
+}
+
+const StackContext = createContext(false);
+
+function useRole(role: string) {
+  return useContext(StackContext) ? role : undefined;
 }
 
 /** A filter row above the grid, inside the same frame. */
@@ -69,9 +88,11 @@ export function TableFooter({ children }: { children: ReactNode }) {
 }
 
 export function TableHead({ children }: { children: ReactNode }) {
+  const group = useRole("rowgroup");
+  const row = useRole("row");
   return (
-    <thead>
-      <tr>{children}</tr>
+    <thead role={group}>
+      <tr role={row}>{children}</tr>
     </thead>
   );
 }
@@ -103,8 +124,9 @@ export function TableColumn({
   /** Called when the header is pressed. Present, the column offers itself as sortable. */
   onSort?: () => void;
 }) {
+  const role = useRole("columnheader");
   if (index) {
-    return <th scope="col" className="di-table-index"><span className="di-sr">{children}</span></th>;
+    return <th scope="col" role={role} className="di-table-index"><span className="di-sr">{children}</span></th>;
   }
   // A sortable column that is not the sorted one still says so, quietly: a
   // header that only reveals it is a control once pressed is a guess.
@@ -117,6 +139,7 @@ export function TableColumn({
   return (
     <th
       scope="col"
+      role={role}
       className={cx(align === "end" && "is-end", sort !== "none" && "is-sorted", width === "fill" && "is-fill")}
       aria-sort={sort === "none" ? undefined : sort}
     >
@@ -136,7 +159,7 @@ export function TableColumn({
 }
 
 export function TableBody({ children }: { children: ReactNode }) {
-  return <tbody>{children}</tbody>;
+  return <tbody role={useRole("rowgroup")}>{children}</tbody>;
 }
 
 /**
@@ -160,8 +183,10 @@ export function TableRow({
   tone?: "neutral" | "danger";
   onSelect?: () => void;
 }) {
+  const role = useRole("row");
   return (
     <tr
+      role={role}
       className={cx(active && "is-active", tone === "danger" && "is-danger", onSelect && "is-selectable")}
       onClick={
         onSelect
@@ -179,7 +204,7 @@ export function TableRow({
 
 /** The ordinal cell. Mono, quiet, and the row's handle in conversation. */
 export function TableIndex({ children }: { children: ReactNode }) {
-  return <td className="di-table-index">{children}</td>;
+  return <td role={useRole("cell")} className="di-table-index">{children}</td>;
 }
 
 export function TableCell({
@@ -193,7 +218,9 @@ export function TableCell({
   mono?: boolean;
 }) {
   return (
-    <td className={cx(align === "end" && "is-end", mono && "di-mono")}>{children}</td>
+    <td role={useRole("cell")} className={cx(align === "end" && "is-end", mono && "di-mono")}>
+      {children}
+    </td>
   );
 }
 

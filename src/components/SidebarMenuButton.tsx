@@ -6,7 +6,7 @@ import { useRender } from "@base-ui/react/use-render";
 import { ChevronsUpDown } from "lucide-react";
 import { cx } from "../cx";
 import { Badge } from "./Badge";
-import { useSidebarRail } from "./SidebarContext";
+import { useSidebar, useSidebarRail } from "./SidebarContext";
 import "./Tooltip.css";
 import "./SidebarMenu.css";
 
@@ -24,7 +24,8 @@ export type SidebarMenuButtonProps = Omit<HTMLAttributes<HTMLElement>, "children
   render?: useRender.RenderProp;
   /**
    * The item opens a menu (a context switcher, say); a chevron after the label
-   * says so. Hidden in the collapsed rail.
+   * says so. Hidden in the collapsed rail. Any other item closes the sheet the
+   * sidebar is on a phone.
    */
   menu?: boolean;
 };
@@ -42,6 +43,7 @@ export function SidebarMenuButton({
   ...rest
 }: SidebarMenuButtonProps) {
   const rail = useSidebarRail();
+  const { mobile, setMobileOpen } = useSidebar();
 
   const element = useRender({
     render,
@@ -49,6 +51,9 @@ export function SidebarMenuButton({
     props: mergeProps(
       {
         className: cx("di-sb-button", className),
+        // On a phone the sidebar is a sheet over the page; choosing an item is done with it.
+        // An item that opens a menu has not been chosen yet.
+        ...(mobile && !menu ? { onClick: () => setMobileOpen(false) } : {}),
         ...(href !== undefined ? { href } : {}),
         ...(href === undefined && render === undefined ? { type: "button" } : {}),
         "aria-current": active ? "page" : undefined,

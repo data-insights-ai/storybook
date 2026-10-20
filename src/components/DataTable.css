@@ -15,8 +15,13 @@
     background: var(--di-bg-page);
   }
 
-  /* The table scrolls inside its own frame; the page does not. */
+  /*
+   * The table scrolls inside its own frame; the page does not. Positioned,
+   * so a visually hidden label in a cell is held by the frame too instead of
+   * standing out past the page's edge.
+   */
   .di-table-scroll {
+    position: relative;
     overflow-x: auto;
   }
 
@@ -85,6 +90,11 @@
 
   .di-table-sort-btn:hover .di-table-sort.is-idle {
     color: var(--di-text-muted);
+  }
+
+  /* A machine value is one token: a timestamp or an id broken over lines reads as two. */
+  .di-table td.di-mono {
+    white-space: nowrap;
   }
 
   .di-table td {
@@ -190,5 +200,108 @@
   .di-cell-icon > svg {
     width: 14px;
     height: 14px;
+  }
+
+  /*
+   * A stacked row: on a narrow frame the cells run on like words and wrap,
+   * so short values share a line and prose takes one of its own. The
+   * ordinal keeps the left edge, the way it does in the grid.
+   */
+  .di-table-wrap.is-stackable {
+    container: di-table / inline-size;
+  }
+
+  @container di-table (max-width: 600px) {
+    .di-table-wrap.is-stackable :is(.di-table, thead, tbody) {
+      display: block;
+    }
+
+    .di-table-wrap.is-stackable tr {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--di-space-6) var(--di-space-12);
+      padding: var(--di-space-12);
+      border-bottom: 1px solid var(--di-table-rule);
+    }
+
+    .di-table-wrap.is-stackable tbody tr:last-child {
+      border-bottom: 0;
+    }
+
+    .di-table-wrap.is-stackable .di-table.is-indexed tr {
+      padding-left: calc(var(--di-index-col) + var(--di-space-12));
+    }
+
+    .di-table-wrap.is-stackable :is(th, td) {
+      display: block;
+      height: auto;
+      min-width: 0;
+      padding: 0;
+      border: 0;
+      background: none;
+      text-align: left;
+    }
+
+    /* Beside a filling column every cell keeps its line; stacked, prose wraps again. */
+    .di-table-wrap.is-stackable td:not(.di-mono) {
+      white-space: normal;
+    }
+
+    .di-table-wrap.is-stackable td:empty {
+      display: none;
+    }
+
+    .di-table-wrap.is-stackable tbody tr:hover,
+    .di-table-wrap.is-stackable tbody tr:hover td {
+      background: var(--di-bg-row-hover);
+    }
+
+    .di-table-wrap.is-stackable tbody tr.is-active,
+    .di-table-wrap.is-stackable tbody tr.is-active td {
+      background: var(--di-bg-page);
+    }
+
+    .di-table-wrap.is-stackable .di-table-index {
+      position: absolute;
+      inset: 0 auto 0 0;
+      display: flex;
+      justify-content: center;
+      padding-top: var(--di-space-12) !important;
+      border-right: 1px solid var(--di-table-rule);
+      background: var(--di-bg-page);
+    }
+
+    .di-table-wrap.is-stackable tbody tr:hover .di-table-index,
+    .di-table-wrap.is-stackable tbody tr.is-active .di-table-index {
+      background: var(--di-bg-page);
+    }
+
+    .di-table-wrap.is-stackable tbody tr.is-danger .di-table-index {
+      background: var(--di-status-danger-bg);
+    }
+
+    /* The head stays only as the row of sort controls; without one it is read, not shown. */
+    .di-table-wrap.is-stackable thead tr {
+      min-height: 32px;
+      padding-block: var(--di-space-6);
+      border-bottom-color: var(--di-border);
+      background: var(--di-bg-page);
+    }
+
+    .di-table-wrap.is-stackable thead th.di-table-index {
+      padding-top: 0 !important;
+    }
+
+    .di-table-wrap.is-stackable thead:not(:has(.di-table-sort-btn)),
+    .di-table-wrap.is-stackable thead th:not(:has(.di-table-sort-btn)):not(.di-table-index) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
   }
 }

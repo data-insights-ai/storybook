@@ -1,4 +1,14 @@
-import { createContext, useContext, useId, type ComponentProps, type ComponentType } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ComponentProps,
+  type ComponentType,
+  type RefObject,
+} from "react";
 import {
   Legend,
   ResponsiveContainer,
@@ -28,6 +38,7 @@ export type ChartConfig = Record<
 >;
 
 const ChartContext = createContext<ChartConfig | null>(null);
+const TooltipDismissedContext = createContext(false);
 
 function useChart() {
   const config = useContext(ChartContext);
@@ -58,6 +69,8 @@ export function Chart({
   children: ComponentProps<typeof ResponsiveContainer>["children"];
 }) {
   const chartId = `di-chart-${useId().replace(/:/g, "")}`;
+  const frame = useRef<HTMLDivElement>(null);
+  const dismissed = useTipDismissal(frame);
   const rules = Object.entries(config)
     .flatMap(([key, item]) => {
       if (!item.color || !/^[\w-]+$/.test(key)) return [];
@@ -68,14 +81,34 @@ export function Chart({
 
   return (
     <ChartContext.Provider value={config}>
-      <div className={cx("di-chart", className)} data-chart={chartId} role="group" aria-label={label}>
-        {rules ? <style>{`[data-chart="${chartId}"] { ${rules} }`}</style> : null}
-        <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 320, height: 220 }}>
-          {children}
-        </ResponsiveContainer>
-      </div>
+      <TooltipDismissedContext.Provider value={dismissed}>
+        <div ref={frame} className={cx("di-chart", className)} data-chart={chartId} role="group" aria-label={label}>
+          {rules ? <style>{`[data-chart="${chartId}"] { ${rules} }`}</style> : null}
+          <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 320, height: 220 }}>
+            {children}
+          </ResponsiveContainer>
+        </div>
+      </TooltipDismissedContext.Provider>
     </ChartContext.Provider>
   );
+}
+
+/*
+ * A pointer that leaves the chart takes the tooltip with it. A finger never
+ * leaves: after a tap the tooltip would stay over the page until the next
+ * tap on the chart. So a touch anywhere else puts it away.
+ */
+function useTipDismissal(frame: RefObject<HTMLDivElement | null>) {
+  const [dismissed, setDismissed] = useState(false);
+  useEffect(() => {
+    const onPointerDown = (event: PointerEvent) => {
+      const inside = frame.current?.contains(event.target as Node) ?? false;
+      setDismissed(!inside && event.pointerType !== "mouse");
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    return () => document.removeEventListener("pointerdown", onPointerDown, true);
+  }, [frame]);
+  return dismissed;
 }
 
 type TipProps = Partial<TooltipContentProps<ValueType, NameType>>;
@@ -84,13 +117,16 @@ export function ChartTooltip({
   content = <ChartTooltipContent />,
   animationDuration = 160,
   animationEasing = "ease-out",
+  active,
   ...props
 }: TooltipProps<ValueType, NameType>) {
+  const dismissed = useContext(TooltipDismissedContext);
   return (
     <Tooltip
       animationDuration={animationDuration}
       animationEasing={animationEasing}
       content={content}
+      active={dismissed ? false : active}
       {...props}
     />
   );

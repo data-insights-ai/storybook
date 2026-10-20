@@ -1,5 +1,7 @@
 @layer components {
+  /* A container, so the tooltip can size itself to the chart it floats over. */
   .di-chart {
+    container-type: inline-size;
     width: 100%;
     height: 240px;
     color: var(--di-text-muted);
@@ -35,6 +37,7 @@
 
   .di-chart-tip {
     min-width: 148px;
+    max-width: min(320px, 100cqi);
     padding: var(--di-space-8) var(--di-space-8);
     border: 1px solid var(--di-rule);
     background: var(--di-bg-surface);
@@ -67,7 +70,7 @@
 
   .di-chart-tip li {
     display: grid;
-    grid-template-columns: 8px 1fr auto;
+    grid-template-columns: 8px minmax(0, 1fr) auto;
     gap: var(--di-space-8);
     align-items: center;
   }
@@ -88,6 +91,31 @@
   .di-chart-tip b {
     font-family: var(--di-font-code);
     font-weight: var(--di-weight-medium);
+    white-space: nowrap;
+  }
+
+  /*
+   * Over a phone-width chart the tooltip is most of the chart: smaller type,
+   * and a detail's value goes under its label instead of beside it.
+   */
+  @container (max-width: 480px) {
+    .di-chart-tip {
+      padding: var(--di-space-6);
+      font-size: var(--di-font-size-200);
+    }
+
+    .di-chart-tip ul {
+      gap: var(--di-space-2);
+    }
+
+    .di-chart-tip ul.di-chart-tip-details li {
+      grid-template-columns: 8px minmax(0, 1fr);
+      row-gap: 0;
+    }
+
+    .di-chart-tip ul.di-chart-tip-details b {
+      grid-column: 2;
+    }
   }
 
   .di-chart-legend {

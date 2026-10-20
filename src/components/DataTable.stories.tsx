@@ -56,6 +56,7 @@ const meta = {
   argTypes: {
     caption: { control: "text" },
     indexed: { control: "boolean" },
+    narrow: { control: "inline-radio", options: ["scroll", "stack"] },
     children: { control: false },
   },
 } satisfies Meta<typeof DataTable>;
@@ -489,5 +490,54 @@ export const InlineSelect: Story = {
     const canvas = within(canvasElement);
     const select = canvas.getByLabelText("Role of Nora Feld");
     await expect(select.getBoundingClientRect().width).toBeGreaterThan(100);
+  },
+};
+
+const events = [
+  { ordinal: "03", at: "2026-10-19 09:12:04", state: "danger", stateLabel: "failed", text: "archive.example.com stopped answering; the last manifest on record is a4f9c21e." },
+  { ordinal: "02", at: "2026-10-19 08:47:11", state: "warn", stateLabel: "paused", text: "Nora Feld paused feed.example.io while its signing key is rotated." },
+  { ordinal: "01", at: "2026-10-19 08:44:03", state: "ok", stateLabel: "running", text: "registry.example.org sealed manifest 7f3a99e0." },
+] as const;
+
+/**
+ * `narrow="stack"` is for a table read row by row — a log, a list of events. In a
+ * frame under 600px each row becomes a block: short values share a line,
+ * prose takes its own, the ordinal keeps the left edge. Sort controls stay
+ * as a row above. The frame here is a phone's width.
+ */
+export const Stacked: Story = {
+  args: { caption: "Source events", narrow: "stack" },
+  render: (args) => (
+    <div style={{ width: 360 }}>
+      <DataTable {...args}>
+        <TableHead>
+          <TableColumn index={true}>Ordinal</TableColumn>
+          <TableColumn sort="descending" onSort={() => undefined}>
+            When
+          </TableColumn>
+          <TableColumn>State</TableColumn>
+          <TableColumn>Entry</TableColumn>
+        </TableHead>
+        <TableBody>
+          {events.map((row) => (
+            <TableRow key={row.ordinal} tone={row.state === "danger" ? "danger" : "neutral"}>
+              <TableIndex>{row.ordinal}</TableIndex>
+              <TableCell mono={true}>{row.at}</TableCell>
+              <TableCell>
+                <StatusPill tone={row.state}>{row.stateLabel}</StatusPill>
+              </TableCell>
+              <TableCell>{row.text}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </DataTable>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const rows = canvas.getAllByRole("row");
+    await expect(rows).toHaveLength(4);
+    await expect(getComputedStyle(rows[1]).display).toBe("flex");
+    await expect(canvas.getByRole("columnheader", { name: "When" })).toHaveAttribute("aria-sort", "descending");
   },
 };
