@@ -1,7 +1,9 @@
 @layer components {
   .di-kv {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    /* The term keeps up to two fifths, so a long value wraps instead of
+       pushing the term to nothing. */
+    grid-template-columns: fit-content(40%) minmax(0, 1fr);
     gap: var(--di-space-6) var(--di-space-12);
     margin: var(--di-space-12) 0 0;
     font-size: var(--di-font-size-400);
