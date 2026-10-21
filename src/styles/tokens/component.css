@@ -59,5 +59,23 @@
 
     --di-pill-radius: var(--di-radius-pill);
     --di-pill-height: 20px;
+
+    /* Page layout. How wide a page reads, by what it holds: a form is read
+       down one column, a record with its sections a little wider, a list or
+       table uses the whole frame. */
+    --di-measure-form: 720px;
+    --di-measure-detail: 1040px;
+    --di-measure-prose: 62ch;
+
+    /* The vertical rhythm of a console page: from the header to what
+       follows, from a toolbar to the list it filters, between sections, and
+       between the fields of one form. */
+    --di-rhythm-header: var(--di-space-24);
+    --di-rhythm-toolbar: var(--di-space-12);
+    --di-rhythm-section: var(--di-space-32);
+    --di-rhythm-field: var(--di-space-16);
+
+    /* Where a sticky toolbar or table head stops: under the app bar. */
+    --di-sticky-top: 59px;
   }
 }

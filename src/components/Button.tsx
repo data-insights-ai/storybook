@@ -1,4 +1,4 @@
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes, Ref } from "react";
 import { cx } from "../cx";
 import "./Button.css";
 
@@ -21,7 +21,7 @@ type Common = {
  * is no `as` and no `asChild` — a second way to say the same thing, and
  * neither of them can make `href` mandatory on the link.
  */
-type ButtonProps = Common & ButtonHTMLAttributes<HTMLButtonElement> & { href?: never };
+type ButtonProps = Common & ButtonHTMLAttributes<HTMLButtonElement> & { href?: never; ref?: Ref<HTMLButtonElement> };
 type LinkProps = Common & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "type"> & { href: string };
 
 /**

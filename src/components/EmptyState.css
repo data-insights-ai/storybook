@@ -78,4 +78,28 @@
   .di-empty-action {
     margin-top: var(--di-space-16);
   }
+
+  .di-empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--di-space-12);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-page);
+    color: var(--di-text-muted);
+  }
+
+  .di-empty-icon > svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Text keeps a readable measure in a wide frame. */
+  .di-empty-title,
+  .di-empty-text {
+    max-width: var(--di-measure-prose);
+  }
 }

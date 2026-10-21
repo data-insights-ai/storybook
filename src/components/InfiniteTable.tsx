@@ -13,6 +13,7 @@ import {
 import { DataTable, TableBody, TableFooter, TableSpacer, TableToolbar } from "./DataTable";
 import { NewEntries } from "./NewEntries";
 import { Spinner } from "./Spinner";
+import "./InfiniteTable.css";
 
 /** What a row needs to be measured and placed: spread it onto its `TableRow`. */
 export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLTableRowElement | null) => void };
@@ -27,7 +28,9 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * The table holds no data. The caller says how many rows are loaded, names
  * each by `rowKey`, renders one `TableRow` per index with `renderRow`, and
  * fetches when `onLoadMore` is called. Its `TableToolbar` and `TableHead`
- * are children, as in `DataTable`. The page scrolls, not the table.
+ * are children, as in `DataTable`. The page scrolls, not the table, and
+ * the head stays in view under the app bar (`--di-sticky-top`) and under a
+ * sticky `ListToolbar` above the table.
  */
 export function InfiniteTable({
   caption,
@@ -107,7 +110,7 @@ export function InfiniteTable({
   const { before, after } = gaps(rows, virtualizer.getTotalSize(), start);
 
   return (
-    <>
+    <div className="di-infinite">
       {held.count > 0 ? <NewEntries label={newEntriesLabel(held.count)} onShow={held.show} /> : null}
       <DataTable caption={caption} rowCount={shown} indexed={indexed} narrow={narrow}>
         {toolbar}
@@ -123,7 +126,7 @@ export function InfiniteTable({
           <span ref={end}>{loadingMore ? <Spinner label={loadingLabel} /> : footerLabel(shown, hasMore)}</span>
         </TableFooter>
       </DataTable>
-    </>
+    </div>
   );
 }
 
@@ -175,8 +178,11 @@ function useNearEnd({ hasMore, loadingMore, loaded, onLoadMore }: {
   return setTarget;
 }
 
-/* The sticky topbar's room: the register's top counts as seen below it. */
-const topbar = 64;
+/* The sticky app bar's room, from `--di-sticky-top`: the register's top counts as seen below it. */
+function stickyTop(el: Element | null) {
+  const value = el ? parseFloat(getComputedStyle(el).getPropertyValue("--di-sticky-top")) : NaN;
+  return Number.isFinite(value) ? value : 64;
+}
 
 /** How many of `keys` arrived above the row the reader's view is anchored to. */
 export function heldCount(keys: string[], anchor: string | undefined) {
@@ -191,7 +197,10 @@ function useHeld(keys: string[], enabled: boolean, top: RefObject<Element | null
   const first = keys[0];
   useEffect(() => {
     if (!enabled) return;
-    const check = () => setAtTop((top.current?.getBoundingClientRect().top ?? topbar) >= topbar);
+    const check = () => {
+      const edge = stickyTop(top.current);
+      setAtTop((top.current?.getBoundingClientRect().top ?? edge) >= edge);
+    };
     check();
     window.addEventListener("scroll", check, { passive: true });
     return () => window.removeEventListener("scroll", check);
@@ -202,7 +211,7 @@ function useHeld(keys: string[], enabled: boolean, top: RefObject<Element | null
   }, [atTop, first]);
   const show = useCallback(() => {
     setAnchor(undefined);
-    window.scrollTo({ top: Math.max(0, start - topbar - 24), behavior: "smooth" });
+    window.scrollTo({ top: Math.max(0, start - stickyTop(top.current) - 24), behavior: "smooth" });
   }, [start]);
   return { count: enabled ? heldCount(keys, anchor) : 0, show };
 }

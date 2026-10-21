@@ -83,4 +83,52 @@
     line-height: 1.25;
     color: var(--di-text);
   }
+
+  /* A record’s facts in a section: label above value, columns as fit. */
+  .di-facts-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+    gap: var(--di-space-16) var(--di-space-24);
+    margin: 0;
+  }
+
+  .di-facts-columns .di-fact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    min-width: 0;
+  }
+
+  .di-facts-columns .di-fact-label,
+  .di-facts-inline .di-fact-label {
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-subtle);
+  }
+
+  .di-facts-columns .di-fact-value {
+    overflow-wrap: anywhere;
+    font-size: var(--di-font-size-400);
+    color: var(--di-text);
+  }
+
+  /* A header’s key facts: one line that wraps, label beside value. */
+  .di-facts-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-8) var(--di-space-24);
+    margin: 0;
+  }
+
+  .di-facts-inline .di-fact {
+    display: flex;
+    align-items: baseline;
+    gap: var(--di-space-8);
+    min-width: 0;
+  }
+
+  .di-facts-inline .di-fact-value {
+    overflow-wrap: anywhere;
+    font-size: var(--di-font-size-300);
+    color: var(--di-text);
+  }
 }

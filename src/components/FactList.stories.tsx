@@ -10,7 +10,7 @@ const meta = {
   tags: ["autodocs"],
   args: { layout: "rows", children: null },
   argTypes: {
-    layout: { control: "radio", options: ["rows", "grid"] },
+    layout: { control: "radio", options: ["rows", "grid", "columns", "inline"] },
     children: { control: false },
   },
 } satisfies Meta<typeof FactList>;
@@ -114,4 +114,31 @@ export const Grid: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Promise")).toBeVisible();
   },
+};
+
+/** The facts of one record inside a section: label above value, as many columns as fit. */
+export const Columns: Story = {
+  args: { layout: "columns" },
+  render: (args) => (
+    <FactList {...args}>
+      <Fact label="Kind">Customer</Fact>
+      <Fact label="Your role">Owner</Fact>
+      <Fact label="Created">3 Mar 2026</Fact>
+      <Fact label="Members">14</Fact>
+    </FactList>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText("Customer")).toBeVisible();
+  },
+};
+
+/** A header’s key facts on one line that wraps. */
+export const Inline: Story = {
+  args: { layout: "inline" },
+  render: (args) => (
+    <FactList {...args}>
+      <Fact label="Seats">12 of 25</Fact>
+      <Fact label="Renews">1 Nov 2026</Fact>
+    </FactList>
+  ),
 };

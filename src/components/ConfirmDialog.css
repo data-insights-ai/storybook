@@ -1,0 +1,25 @@
+@layer components {
+  .di-confirm-dialog .di-modal-icon {
+    background: var(--di-status-danger-bg);
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-confirm-consequences {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    margin: var(--di-space-8) 0 0;
+    padding-left: var(--di-space-16);
+    list-style: disc;
+  }
+
+  .di-confirm-field {
+    margin-top: var(--di-space-16);
+  }
+
+  .di-confirm-error {
+    margin-top: var(--di-space-12);
+    font-size: var(--di-font-size-300);
+    color: var(--di-status-danger-fg);
+  }
+}

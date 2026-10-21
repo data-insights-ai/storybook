@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../cx";
 import "./EmptyState.css";
 
@@ -8,6 +8,9 @@ import "./EmptyState.css";
  * it ran into, and offers exactly one action.
  *
  * An index is optional: use it when the absence belongs to an indexed record.
+ * So is the eyebrow: inside a page that already names the place, repeating
+ * it over the empty state is noise. `EmptyStateIcon` sets one line icon
+ * above the title, for a first-use state that invites the first entry.
  */
 export function EmptyState({
   index,
@@ -20,7 +23,7 @@ export function EmptyState({
   children,
 }: {
   index?: string;
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   body: string;
   /** The body is a query or a path rather than a sentence. */
@@ -28,9 +31,15 @@ export function EmptyState({
   /** `danger` is a failure, not an absence: a boundary the system hit. */
   tone?: "neutral" | "danger";
   className?: string;
-  /** Holds one `EmptyStateAction`. An absence offers exactly one way out. */
+  /** One `EmptyStateAction` (an absence offers exactly one way out), and optionally `EmptyStateIcon`. */
   children?: ReactNode;
 }) {
+  const icon: ReactNode[] = [];
+  const rest: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === EmptyStateIcon) icon.push(child);
+    else rest.push(child);
+  });
   return (
     <div className={cx("di-empty", tone === "danger" && "is-danger", className)}>
       {index === undefined ? null : (
@@ -39,10 +48,11 @@ export function EmptyState({
         </div>
       )}
       <div className="di-empty-body">
-        <p className="di-empty-eyebrow">{eyebrow}</p>
+        {icon}
+        {eyebrow ? <p className="di-empty-eyebrow">{eyebrow}</p> : null}
         <p className="di-empty-title">{title}</p>
         <p className={cx("di-empty-text", mono && "di-mono")}>{body}</p>
-        {children}
+        {rest}
       </div>
     </div>
   );
@@ -51,4 +61,13 @@ export function EmptyState({
 /** The one way out of an empty state. Never two. */
 export function EmptyStateAction({ children }: { children: ReactNode }) {
   return <div className="di-empty-action">{children}</div>;
+}
+
+/** One line icon above the title, from `lucide-react`. Decoration: the title carries the meaning. */
+export function EmptyStateIcon({ children }: { children: ReactNode }) {
+  return (
+    <div className="di-empty-icon" aria-hidden>
+      {children}
+    </div>
+  );
 }
