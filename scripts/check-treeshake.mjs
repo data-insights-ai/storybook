@@ -58,6 +58,32 @@ try {
     process.exit(1);
   }
   console.log(`tree-shake ok, Button bundle ${js.length} bytes`);
+
+  writeFileSync(entry, `export { Sidebar } from "@data-insights-ai/ui";\n`);
+  await build({
+    configFile: false,
+    root,
+    logLevel: "silent",
+    resolve: { alias: { "@data-insights-ai/ui": path.resolve("dist/lib/index.js") } },
+    build: {
+      outDir: path.join(root, "sidebar"),
+      emptyOutDir: true,
+      minify: false,
+      modulePreload: false,
+      lib: { entry, formats: ["es"], fileName: "app" },
+      rollupOptions: {
+        external(id) {
+          return id.endsWith(".css") || id === "react" || id === "react-dom" || id.startsWith("react/") || id === "lucide-react";
+        },
+      },
+    },
+  });
+  const sidebar = readFileSync(filesUnder(path.join(root, "sidebar")).find((file) => path.basename(file).startsWith("app.")), "utf8");
+  if (sidebar.includes("swipeDirection") || sidebar.includes("DrawerViewport")) {
+    console.error("the desktop sidebar loads the mobile drawer up front");
+    process.exit(1);
+  }
+  console.log(`tree-shake ok, Sidebar bundle ${sidebar.length} bytes without the drawer`);
 } finally {
   rmSync(root, { recursive: true, force: true });
 }

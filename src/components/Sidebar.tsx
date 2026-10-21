@@ -1,11 +1,13 @@
-import type { ReactNode } from "react";
-import { Drawer } from "@base-ui/react/drawer";
-import { X } from "lucide-react";
+import { lazy, Suspense, type ReactNode } from "react";
 import { useSidebar } from "./SidebarContext";
 import "./Sidebar.css";
 
+/* The drawer only serves narrow screens; its own module keeps the drawer and
+ * swipe code out of a desktop page's first load. */
+const SidebarDrawer = lazy(() => import("./SidebarDrawer"));
+
 export function Sidebar({ label, closeLabel, children }: { label: string; closeLabel: string; children: ReactNode }) {
-  const { expanded, mobile, mobileOpen, setMobileOpen, sidebarId } = useSidebar();
+  const { expanded, mobile, sidebarId } = useSidebar();
 
   if (!mobile) {
     return (
@@ -16,20 +18,10 @@ export function Sidebar({ label, closeLabel, children }: { label: string; closeL
   }
 
   return (
-    <Drawer.Root open={mobileOpen} onOpenChange={setMobileOpen} swipeDirection="left">
-      <Drawer.Portal>
-        <Drawer.Backdrop className="di-sb-backdrop" />
-        <Drawer.Viewport className="di-sb-viewport">
-          <Drawer.Popup id={sidebarId} className="di-sb di-sb-drawer" aria-label={label} data-state="expanded">
-            <Drawer.Close className="di-sb-close" aria-label={closeLabel}>
-              <X aria-hidden />
-            </Drawer.Close>
-            <nav className="di-sb-drawer-nav" aria-label={label}>
-              {children}
-            </nav>
-          </Drawer.Popup>
-        </Drawer.Viewport>
-      </Drawer.Portal>
-    </Drawer.Root>
+    <Suspense fallback={null}>
+      <SidebarDrawer label={label} closeLabel={closeLabel}>
+        {children}
+      </SidebarDrawer>
+    </Suspense>
   );
 }
