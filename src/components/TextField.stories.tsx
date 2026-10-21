@@ -14,6 +14,7 @@ const meta = {
     hint: "",
     hintTone: "neutral",
     labelTrack: "record",
+    hideLabel: false,
     mono: false,
     placeholder: "registry.example.org",
     disabled: false,
@@ -173,5 +174,13 @@ export const ProseLabel: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByLabelText("Work email")).toBeVisible();
+  },
+};
+
+/** In a list toolbar the place names the field: the label stays for assistive technology only. */
+export const HiddenLabel: Story = {
+  args: { id: "range-from", label: "From", type: "date", hideLabel: true, hint: "" },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByLabelText("From")).toBeVisible();
   },
 };

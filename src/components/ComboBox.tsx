@@ -36,7 +36,7 @@ function CloseUnavailablePopup({ unavailable }: { unavailable: boolean }) {
  * silently replace a canonical value with its human-readable label. */
 export function ComboBox({
   id, label, value, onValueChange, suggestions, toggleLabel, emptyLabel,
-  hint = "", hintTone = "neutral", labelTrack = "record", mono = false,
+  hint = "", hintTone = "neutral", labelTrack = "record", hideLabel = false, mono = false,
   disabled = false, readOnly = false, required = false, className, children,
   name, placeholder, autoComplete,
 }: {
@@ -50,6 +50,8 @@ export function ComboBox({
   hint?: string;
   hintTone?: HintTone;
   labelTrack?: LabelTrack;
+  /** Keeps the label for assistive technology only, e.g. a filter in a list toolbar. */
+  hideLabel?: boolean;
   mono?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
@@ -90,7 +92,7 @@ export function ComboBox({
     onChange={(key) => { if (typeof key === "string" && byValue.has(key)) onValueChange(key); }}
     defaultFilter={(text, query) => contains(text, query) || contains(byValue.get(text)?.label ?? "", query)}>
     <CloseUnavailablePopup unavailable={readOnly || disabled} />
-    <div className="di-field-row">
+    <div className={cx("di-field-row", hideLabel && "di-sr")}>
       <Label className={cx("di-field-label", `di-field-label-${labelTrack}`)}>{label}</Label>
       {children}
     </div>

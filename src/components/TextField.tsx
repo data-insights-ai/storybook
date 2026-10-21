@@ -17,6 +17,7 @@ export function TextField({
   hint = "",
   hintTone = "neutral",
   labelTrack = "record",
+  hideLabel = false,
   mono = false,
   className,
   disabled = false,
@@ -37,6 +38,11 @@ export function TextField({
    * fills in for themselves.
    */
   labelTrack?: LabelTrack;
+  /**
+   * Keeps the label for assistive technology only, for a field whose
+   * place already names it, such as a date in a list toolbar.
+   */
+  hideLabel?: boolean;
   /** Identifiers, hashes and timestamps are typed in the mono track. */
   mono?: boolean;
   /** Slot beside the label, for example a “Forgot password?” link. */
@@ -49,7 +55,7 @@ export function TextField({
 
   return (
     <div className={cx("di-field", className)}>
-      <div className="di-field-row">
+      <div className={cx("di-field-row", hideLabel && "di-sr")}>
         <label className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
           {label}
         </label>
