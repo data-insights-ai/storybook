@@ -61,6 +61,8 @@ export { PageHeader, PageHeaderAside, PageHeaderTitle } from "./components/Headi
 export { Highlight } from "./components/Highlight";
 export { Icon } from "./components/Icon";
 export { IconTile } from "./components/IconTile";
+export { InfiniteTable, heldCount } from "./components/InfiniteTable";
+export type { InfiniteRowPlace } from "./components/InfiniteTable";
 export { KeyValue, KeyValues } from "./components/KeyValues";
 export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/LevelMeter";
 export type { LevelBands } from "./components/LevelMeter";
