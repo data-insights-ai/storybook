@@ -50,3 +50,11 @@ export function Toast({
 export function ToastAction({ children }: { children: ReactNode }) {
   return <div className="di-toast-action">{children}</div>;
 }
+
+/**
+ * Where receipts appear: fixed at the bottom of the view, announced
+ * politely. Holds the current Toast, or nothing.
+ */
+export function ToastRegion({ children, className }: { children?: ReactNode; className?: string }) {
+  return <div className={cx("di-toast-region", className)}>{children}</div>;
+}

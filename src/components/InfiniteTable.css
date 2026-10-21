@@ -17,14 +17,4 @@
       z-index: 1;
     }
   }
-
-  .di-infinite-foot {
-    display: inline-flex;
-    align-items: center;
-    min-height: 24px;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    font-variant-numeric: tabular-nums;
-    color: var(--di-text-subtle);
-  }
 }

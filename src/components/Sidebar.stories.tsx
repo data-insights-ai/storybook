@@ -167,10 +167,15 @@ export const Collapsed: Story = {
     const canvas = within(canvasElement);
     const nav = canvas.getByRole("navigation", { name: "Sections" });
     await expect(nav).toHaveAttribute("data-state", "collapsed");
-    const sources = within(nav).getByRole("link", { name: "Sources" });
-    await userEvent.hover(sources);
     const body = within(canvasElement.ownerDocument.body);
-    await waitFor(() => expect(body.getByText("Sources", { selector: ".di-tooltip" })).toBeVisible());
+    // The rail loads its tooltips on demand; the item is hovered again once they are there.
+    await waitFor(
+      async () => {
+        await userEvent.hover(within(nav).getByRole("link", { name: "Sources" }));
+        await expect(await body.findByText("Sources", { selector: ".di-tooltip" }, { timeout: 600 })).toBeVisible();
+      },
+      { timeout: 3000 },
+    );
   },
 };
 

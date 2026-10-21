@@ -74,7 +74,7 @@ export {
 export { Highlight } from "./components/Highlight";
 export { Icon } from "./components/Icon";
 export { IconTile } from "./components/IconTile";
-export { InfiniteTable } from "./components/InfiniteTable";
+export { InfiniteTable, heldCount } from "./components/InfiniteTable";
 export type { InfiniteRowPlace } from "./components/InfiniteTable";
 export { KeyValue, KeyValues } from "./components/KeyValues";
 export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/LevelMeter";
@@ -108,6 +108,7 @@ export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/Panel";
 export { PrivacyBadge } from "./components/PrivacyBadge";
 export { Progress } from "./components/Progress";
 export { PullQuote } from "./components/PullQuote";
+export { QuantityField } from "./components/QuantityField";
 export { RowActions } from "./components/RowActions";
 export {
   RecordCard,
@@ -158,9 +159,11 @@ export { Switch } from "./components/Switch";
 export { TabPanel, Tabs } from "./components/Tabs";
 export { TabNav, TabNavLink } from "./components/TabNav";
 export type { TabNavLinkProps } from "./components/TabNav";
-export { TextField } from "./components/TextField";
+export { TextArea, TextField } from "./components/TextField";
 export { TextLink } from "./components/TextLink";
-export { Toast, ToastAction } from "./components/Toast";
+export { Toast, ToastAction, ToastRegion } from "./components/Toast";
+export { ToggleGroup, type ToggleOption } from "./components/ToggleGroup";
+export { WeekTimeline, type WeekTimelineRow } from "./components/WeekTimeline";
 export { TokenField } from "./components/TokenField";
 export { Tooltip } from "./components/Tooltip";
 export { TooltipTarget } from "./components/TooltipTarget";

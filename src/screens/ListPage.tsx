@@ -9,7 +9,7 @@ import { DetailSection, DetailSectionForm } from "../components/DetailSection";
 import { EmptyState, EmptyStateAction } from "../components/EmptyState";
 import { Fact, FactList } from "../components/FactList";
 import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
-import { InfiniteTable } from "../components/InfiniteTable";
+import { InfiniteTable, type InfiniteRowPlace } from "../components/InfiniteTable";
 import { ListToolbar, ListToolbarEnd } from "../components/ListToolbar";
 import { Menu, MenuItem } from "../components/Menu";
 import { Page } from "../components/Page";
@@ -41,10 +41,10 @@ const members: Member[] = [
   seat: seat as boolean,
 }));
 
-function MemberRow({ member, place, onOpen }: { member: Member; place: object; onOpen: () => void }) {
+function MemberRow({ member, place, onOpen }: { member: Member; place: InfiniteRowPlace; onOpen: () => void }) {
   const [menu, setMenu] = useState(false);
   return (
-    <TableRow {...place} onSelect={onOpen}>
+    <TableRow rowIndex={place.rowIndex} ref={place.ref} onSelect={onOpen}>
       <TableCell>
         <TextLink onClick={onOpen}>{member.name}</TextLink>
       </TableCell>
@@ -123,29 +123,7 @@ export function ListPageScreen() {
             </Button>
           </ListToolbarEnd>
         </ListToolbar>
-        <InfiniteTable
-          caption="Members"
-          items={shown}
-          rowKey={(m) => m.id}
-          loading={false}
-          hasMore={false}
-          loadingMore={false}
-          onLoadMore={() => {}}
-          order="sorted"
-          memoryKey={`screen-members-${q}-${role}`}
-          loadingLabel="Loading members"
-          loadingMoreLabel="Loading more members"
-          footerLabel={`All ${shown.length} shown`}
-          newEntriesLabel={(n) => `${n} new members`}
-          row={(m, place) => <MemberRow key={place.key} member={m} place={place} onOpen={() => setOpen(m)} />}
-        >
-          <TableHead>
-            <TableColumn width="fill">Name</TableColumn>
-            <TableColumn>Email</TableColumn>
-            <TableColumn>Role</TableColumn>
-            <TableColumn>Seat</TableColumn>
-            <TableColumn align="end">Actions</TableColumn>
-          </TableHead>
+        {shown.length === 0 ? (
           <EmptyState title="No member matches." body="Try another name, or show all roles.">
             <EmptyStateAction>
               <Button variant="secondary" onClick={() => (setQ(""), setRole(""))}>
@@ -153,7 +131,30 @@ export function ListPageScreen() {
               </Button>
             </EmptyStateAction>
           </EmptyState>
-        </InfiniteTable>
+        ) : (
+          <InfiniteTable
+            caption="Members"
+            count={shown.length}
+            rowKey={(i) => shown[i].id}
+            hasMore={false}
+            loadingMore={false}
+            onLoadMore={() => {}}
+            order="sorted"
+            memoryKey={`screen-members-${q}-${role}`}
+            loadingLabel="Loading more members"
+            footerLabel={(n) => `All ${n} shown`}
+            newEntriesLabel={(n) => `${n} new members`}
+            renderRow={(i, place) => <MemberRow key={place.key} member={shown[i]} place={place} onOpen={() => setOpen(shown[i])} />}
+          >
+            <TableHead>
+              <TableColumn width="fill">Name</TableColumn>
+              <TableColumn>Email</TableColumn>
+              <TableColumn>Role</TableColumn>
+              <TableColumn>Seat</TableColumn>
+              <TableColumn align="end">Actions</TableColumn>
+            </TableHead>
+          </InfiniteTable>
+        )}
       </Page>
       <Sheet
         open={open !== undefined}
