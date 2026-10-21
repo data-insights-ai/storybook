@@ -108,3 +108,20 @@
     height: 15px;
   }
 }
+
+@layer components {
+  .di-toast-region {
+    position: fixed;
+    right: var(--di-space-16);
+    bottom: var(--di-space-16);
+    left: var(--di-space-16);
+    z-index: 50;
+    display: flex;
+    justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  .di-toast-region > * {
+    pointer-events: auto;
+  }
+}

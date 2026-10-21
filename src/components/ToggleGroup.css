@@ -1,0 +1,57 @@
+@layer components {
+  .di-toggle-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-4);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .di-toggle-legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .di-toggle {
+    min-width: 36px;
+    height: var(--di-h-dense);
+    padding: 0 var(--di-space-8);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-surface);
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    cursor: pointer;
+    transition:
+      border-color var(--di-duration) var(--di-ease),
+      background var(--di-duration) var(--di-ease);
+  }
+
+  .di-toggle:hover:not(:disabled) {
+    border-color: var(--di-text);
+    color: var(--di-text);
+  }
+
+  .di-toggle[aria-pressed="true"] {
+    border-color: var(--di-fill-strong);
+    background: var(--di-fill-strong);
+    color: var(--di-text-on-strong);
+  }
+
+  .di-toggle:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-toggle:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+}
