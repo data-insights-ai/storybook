@@ -20,6 +20,8 @@ export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/Chart";
 export type { ChartConfig, ChartTooltipDetail } from "./components/Chart";
 export { Checkbox, ChoiceGroup, Radio } from "./components/Choice";
+export { ChoiceCards } from "./components/ChoiceCards";
+export type { ChoiceCard } from "./components/ChoiceCards";
 export { Chip } from "./components/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/CommandBar";
 export { ComboBox } from "./components/ComboBox";
@@ -42,6 +44,7 @@ export {
   TableRow,
   TableToolbar,
 } from "./components/DataTable";
+export { Disclosure, DisclosureLead } from "./components/Disclosure";
 export { Distribution } from "./components/Distribution";
 export { Drawer, DrawerFooter } from "./components/Drawer";
 export { EmptyState, EmptyStateAction } from "./components/EmptyState";
@@ -95,6 +98,7 @@ export {
 } from "./components/RecordCard";
 export { Eyebrow, Kbd, SealMark, SealValue, TickRule } from "./components/Seal";
 export type { SealState } from "./components/Seal";
+export { SaveBar } from "./components/SaveBar";
 export { SearchField } from "./components/SearchField";
 export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/SectionTitle";
 export { SegmentedControl } from "./components/SegmentedControl";

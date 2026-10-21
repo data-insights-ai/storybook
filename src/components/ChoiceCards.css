@@ -1,0 +1,82 @@
+@layer components {
+  .di-choicecards {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .di-choicecards-legend {
+    margin-bottom: var(--di-space-8);
+    padding: 0;
+    font-size: var(--di-font-size-300);
+    font-weight: var(--di-weight-medium);
+    color: var(--di-text);
+  }
+
+  .di-choicecards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+    gap: var(--di-space-12);
+  }
+
+  .di-choicecard {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--di-space-12);
+    padding: var(--di-space-12) var(--di-space-16);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-container);
+    background: var(--di-bg-surface);
+    cursor: pointer;
+    transition: border-color var(--di-duration) var(--di-ease), background-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-choicecard:hover {
+    border-color: var(--di-border-strong);
+    background: var(--di-bg-row-hover);
+  }
+
+  .di-choicecard.is-active {
+    border-color: var(--di-fill-strong);
+    box-shadow: inset 0 0 0 1px var(--di-fill-strong);
+  }
+
+  .di-choicecard:has(input:focus-visible) {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-choicecard-icon {
+    display: inline-flex;
+    flex: none;
+    color: var(--di-text-muted);
+  }
+
+  .di-choicecard-icon > svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .di-choicecard.is-active .di-choicecard-icon {
+    color: var(--di-text);
+  }
+
+  .di-choicecard-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-2);
+    min-width: 0;
+  }
+
+  .di-choicecard-label {
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-medium);
+    color: var(--di-text);
+  }
+
+  .di-choicecard-desc {
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-subtle);
+  }
+}

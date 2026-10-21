@@ -102,3 +102,13 @@ export const Group: Story = {
     </ChoiceGroup>
   ),
 };
+
+/** Some of a group is chosen: the box under which the group sits. */
+export const Indeterminate: Story = {
+  args: { label: "All access events", indeterminate: true },
+  play: async ({ canvasElement }) => {
+    const box = within(canvasElement).getByRole("checkbox", { name: "All access events" }) as HTMLInputElement;
+    await expect(box.indeterminate).toBe(true);
+    await expect(box).toBePartiallyChecked();
+  },
+};

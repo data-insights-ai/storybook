@@ -1,0 +1,67 @@
+@layer components {
+  .di-disclosure {
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-container);
+    background: var(--di-bg-surface);
+  }
+
+  .di-disclosure-head {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-12);
+    padding: var(--di-space-8) var(--di-space-12);
+  }
+
+  .di-disclosure-lead {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .di-disclosure-meta {
+    flex: none;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+  }
+
+  .di-disclosure-toggle {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--di-h-dense);
+    height: var(--di-h-dense);
+    padding: 0;
+    border: 0;
+    border-radius: var(--di-radius-control);
+    background: transparent;
+    color: var(--di-text-muted);
+    cursor: pointer;
+  }
+
+  .di-disclosure-toggle > svg {
+    width: 16px;
+    height: 16px;
+    transition: transform var(--di-duration) var(--di-ease);
+  }
+
+  .di-disclosure.is-open .di-disclosure-toggle > svg {
+    transform: rotate(180deg);
+  }
+
+  .di-disclosure-toggle:hover {
+    color: var(--di-text);
+    background: var(--di-bg-row-hover);
+  }
+
+  .di-disclosure-toggle:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-disclosure-body {
+    padding: var(--di-space-12);
+    border-top: 1px solid var(--di-border);
+  }
+}

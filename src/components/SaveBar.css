@@ -1,0 +1,29 @@
+@layer components {
+  .di-savebar {
+    position: sticky;
+    bottom: var(--di-space-16);
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-space-12);
+    padding: var(--di-space-12) var(--di-space-16);
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-container);
+    background: var(--di-bg-surface);
+    box-shadow: var(--di-shadow-plane);
+  }
+
+  .di-savebar-message {
+    margin: 0;
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
+
+  .di-savebar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-8);
+  }
+}

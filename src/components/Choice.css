@@ -61,6 +61,7 @@
   }
 
   .di-choice-box > svg {
+    position: absolute;
     width: 12px;
     height: 12px;
     stroke-width: 3px;
@@ -84,7 +85,20 @@
     background: var(--di-fill-strong);
   }
 
-  .di-choice-input:checked ~ .di-choice-box > svg {
+  .di-choice-input:checked ~ .di-choice-box > .di-choice-check {
+    opacity: 1;
+  }
+
+  .di-choice-input:indeterminate ~ .di-choice-box {
+    border-color: var(--di-fill-strong);
+    background: var(--di-fill-strong);
+  }
+
+  .di-choice-input:indeterminate ~ .di-choice-box > .di-choice-check {
+    opacity: 0;
+  }
+
+  .di-choice-input:indeterminate ~ .di-choice-box > .di-choice-dash {
     opacity: 1;
   }
 
