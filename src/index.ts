@@ -91,6 +91,7 @@ export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/Panel";
 export { PrivacyBadge } from "./components/PrivacyBadge";
 export { Progress } from "./components/Progress";
 export { PullQuote } from "./components/PullQuote";
+export { QuantityField } from "./components/QuantityField";
 export {
   RecordCard,
   RecordCount,

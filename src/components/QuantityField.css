@@ -1,0 +1,64 @@
+@layer components {
+  /* − value +, one control wide: a quantity is short, so the field is too. */
+  .di-quantity {
+    width: max-content;
+  }
+
+  .di-quantity-group {
+    display: inline-flex;
+    align-items: stretch;
+    height: var(--di-field-height);
+  }
+
+  .di-quantity-input.di-control {
+    width: 7ch;
+    height: 100%;
+    padding: 0 var(--di-space-4);
+    border-radius: 0;
+    text-align: center;
+  }
+
+  .di-quantity-step {
+    display: grid;
+    place-items: center;
+    width: var(--di-field-height);
+    padding: 0;
+    border: 1px solid var(--di-field-border);
+    background: var(--di-field-bg);
+    color: var(--di-text-muted);
+    cursor: pointer;
+    transition: border-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-quantity-step:first-child {
+    border-right: 0;
+    border-radius: var(--di-field-radius) 0 0 var(--di-field-radius);
+  }
+
+  .di-quantity-step:last-child {
+    border-left: 0;
+    border-radius: 0 var(--di-field-radius) var(--di-field-radius) 0;
+  }
+
+  .di-quantity-step:hover:not(:disabled) {
+    border-color: var(--di-border-strong);
+    color: var(--di-text);
+  }
+
+  .di-quantity-step:disabled {
+    cursor: not-allowed;
+    background: var(--di-bg-disabled);
+    color: var(--di-text-disabled);
+  }
+
+  .di-quantity-step > svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .di-quantity-step:focus-visible,
+  .di-quantity-input:focus-visible {
+    position: relative;
+    z-index: 1;
+  }
+}
