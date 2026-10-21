@@ -1,16 +1,18 @@
 
-import type { HTMLAttributes, ReactNode } from "react";
-import { Tooltip } from "@base-ui/react/tooltip";
+import { lazy, Suspense, type HTMLAttributes, type ReactNode } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { ChevronsUpDown } from "lucide-react";
 import { cx } from "../cx";
 import { Badge } from "./Badge";
 import { useSidebar, useSidebarRail } from "./SidebarContext";
-import "./Tooltip.css";
 import "./SidebarMenu.css";
 
-type BadgeTone = "neutral" | "alert" | "seal";
+/* Only the collapsed rail shows tooltips; loading them with the rail keeps
+ * the tooltip and positioning code out of an expanded sidebar's first load. */
+const SidebarRailTooltip = lazy(() => import("./SidebarRailTooltip"));
+
+export type BadgeTone = "neutral" | "alert" | "seal";
 
 export type SidebarMenuButtonProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   label: string;
@@ -78,17 +80,14 @@ export function SidebarMenuButton({
     ),
   });
 
+  if (!rail) {
+    return element;
+  }
   return (
-    <Tooltip.Root disabled={!rail}>
-      <Tooltip.Trigger render={element} />
-      <Tooltip.Portal>
-        <Tooltip.Positioner side="right" sideOffset={12} className="di-sb-tooltip">
-          <Tooltip.Popup className="di-tooltip">
-            {label}
-            {badge ? <Badge tone={badgeTone}>{badge}</Badge> : null}
-          </Tooltip.Popup>
-        </Tooltip.Positioner>
-      </Tooltip.Portal>
-    </Tooltip.Root>
+    <Suspense fallback={element}>
+      <SidebarRailTooltip label={label} badge={badge} badgeTone={badgeTone}>
+        {element}
+      </SidebarRailTooltip>
+    </Suspense>
   );
 }
