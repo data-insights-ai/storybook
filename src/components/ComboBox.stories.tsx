@@ -16,7 +16,7 @@ const meta = {
   args: {
     id: "register-code", name: "register", label: "Register code", value: "",
     suggestions, toggleLabel: "Show register suggestions", emptyLabel: "No matching suggestions. You can enter another code.",
-    placeholder: "Choose or enter a code", hint: "", hintTone: "neutral", labelTrack: "record", mono: true,
+    placeholder: "Choose or enter a code", hint: "", hintTone: "neutral", labelTrack: "record", hideLabel: false, mono: true,
     disabled: false, readOnly: false, required: false, children: null, onValueChange: fn(),
   },
   argTypes: { children: { control: false } },
