@@ -27,6 +27,7 @@ export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/
 export { ComboBox } from "./components/ComboBox";
 export type { ComboBoxSuggestion } from "./components/ComboBox";
 export { ConfidenceField } from "./components/ConfidenceField";
+export { CountButton } from "./components/CountButton";
 export { ConfirmActions, ConfirmPanel } from "./components/ConfirmPanel";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/CoverageMatrix";
 export type { CoverageMatrixColumn, CoverageMatrixMark, CoverageMatrixTone } from "./components/CoverageMatrix";
@@ -42,6 +43,7 @@ export {
   TableHead,
   TableIndex,
   TableRow,
+  TableSpacer,
   TableToolbar,
 } from "./components/DataTable";
 export { Disclosure, DisclosureLead } from "./components/Disclosure";
@@ -50,6 +52,7 @@ export { Drawer, DrawerFooter } from "./components/Drawer";
 export { EmptyState, EmptyStateAction } from "./components/EmptyState";
 export { ExplainFooter, ExplainPanel, ExplainRow } from "./components/ExplainPanel";
 export { Fact, FactList } from "./components/FactList";
+export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/Flyout";
 export type { LabelTrack } from "./components/Field";
 export { FieldHint } from "./components/FieldHint";
 export { FileField } from "./components/FileField";
@@ -74,6 +77,7 @@ export {
   ModalIcon,
   ModalTitle,
 } from "./components/Modal";
+export { NewEntries } from "./components/NewEntries";
 export {
   Notice,
   NoticeAction,
