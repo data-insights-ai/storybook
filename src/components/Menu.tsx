@@ -48,20 +48,24 @@ export function Menu({
   const [place, setPlace] = useState<CSSProperties>();
 
   // In a table, whose frame clips its overflow, the plane is fixed to the
-  // viewport so it is never cut off; near the bottom it opens upwards.
+  // viewport so it is never cut off; near the bottom it opens upwards. It
+  // follows the trigger while the page scrolls rather than closing, because
+  // opening it can scroll the trigger into view.
   useLayoutEffect(() => {
     if (!open || !triggerNode?.closest(".di-table-wrap")) return setPlace(undefined);
-    const at = triggerNode.getBoundingClientRect();
-    const height = list.current?.offsetHeight ?? 0;
-    const below = at.bottom + 4;
-    const top = below + height > window.innerHeight && at.top - 4 - height > 0 ? at.top - 4 - height : below;
-    setPlace(align === "start" ? { top, left: at.left } : { top, right: window.innerWidth - at.right });
-    const away = () => changeOpen.current(false);
-    window.addEventListener("scroll", away, { capture: true, passive: true });
-    window.addEventListener("resize", away);
+    const measure = () => {
+      const at = triggerNode.getBoundingClientRect();
+      const height = list.current?.offsetHeight ?? 0;
+      const below = at.bottom + 4;
+      const top = below + height > window.innerHeight && at.top - 4 - height > 0 ? at.top - 4 - height : below;
+      setPlace(align === "start" ? { top, left: at.left } : { top, right: window.innerWidth - at.right });
+    };
+    measure();
+    window.addEventListener("scroll", measure, { capture: true, passive: true });
+    window.addEventListener("resize", measure);
     return () => {
-      window.removeEventListener("scroll", away, { capture: true });
-      window.removeEventListener("resize", away);
+      window.removeEventListener("scroll", measure, { capture: true });
+      window.removeEventListener("resize", measure);
     };
   }, [open, triggerNode, align]);
 
