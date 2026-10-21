@@ -581,3 +581,30 @@ export const Windowed: Story = {
     await expect(rows[1]).toHaveAttribute("aria-rowindex", "42");
   },
 };
+
+/** A price with what the quantity buys and its total, one line each, so a narrow frame never cuts them. */
+export const CellLines: Story = {
+  render: (args) => (
+    <DataTable {...args} narrow="stack">
+      <TableHead>
+        <TableColumn width="fill">Offer</TableColumn>
+        <TableColumn align="end">Price</TableColumn>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>
+            <CellStack primary="Register retention" secondary="Yearly · 25 seats per unit" />
+          </TableCell>
+          <TableCell align="end" mono>
+            <CellStack primary="€9,900.00 per year" secondary={["100 × 25 = 2,500 seats", "Total €990,000.00 per year"]} />
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </DataTable>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("100 × 25 = 2,500 seats")).toHaveClass("di-cell-secondary");
+    await expect(canvas.getByText("Total €990,000.00 per year")).toHaveClass("di-cell-secondary");
+  },
+};

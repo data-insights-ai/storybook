@@ -263,12 +263,22 @@ export function TableCell({
   );
 }
 
-/** Two lines in one cell: the value, and what qualifies it. Both text. */
-export function CellStack({ primary, secondary = "" }: { primary: string; secondary?: string }) {
+/**
+ * A value with what qualifies it underneath. `secondary` is one line, or
+ * several short ones that each keep their own line — a unit price, then
+ * what a quantity buys, then its total — so a narrow frame stacks them
+ * instead of cutting one long line.
+ */
+export function CellStack({ primary, secondary = "" }: { primary: string; secondary?: string | readonly string[] }) {
+  const lines = (typeof secondary === "string" ? [secondary] : secondary).filter((line) => line !== "");
   return (
     <span className="di-cell">
       <span className="di-cell-primary">{primary}</span>
-      {secondary === "" ? null : <span className="di-cell-secondary">{secondary}</span>}
+      {lines.map((line, i) => (
+        <span key={i} className="di-cell-secondary">
+          {line}
+        </span>
+      ))}
     </span>
   );
 }
