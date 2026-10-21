@@ -59,7 +59,7 @@ try {
   }
   console.log(`tree-shake ok, Button bundle ${js.length} bytes`);
 
-  writeFileSync(entry, `export { Sidebar } from "@data-insights-ai/ui";\n`);
+  writeFileSync(entry, `export { Sidebar, SidebarMenuButton } from "@data-insights-ai/ui";\n`);
   await build({
     configFile: false,
     root,
@@ -83,7 +83,11 @@ try {
     console.error("the desktop sidebar loads the mobile drawer up front");
     process.exit(1);
   }
-  console.log(`tree-shake ok, Sidebar bundle ${sidebar.length} bytes without the drawer`);
+  if (sidebar.includes("TooltipPositioner")) {
+    console.error("the expanded sidebar loads the rail tooltips up front");
+    process.exit(1);
+  }
+  console.log(`tree-shake ok, Sidebar bundle ${sidebar.length} bytes without the drawer and rail tooltips`);
 } finally {
   rmSync(root, { recursive: true, force: true });
 }
