@@ -59,6 +59,11 @@
     white-space: nowrap;
   }
 
+  /* A dialog opened from a cell is prose again, whatever the cell's line rule. */
+  .di-table dialog {
+    white-space: normal;
+  }
+
   .di-table th.is-sorted {
     color: var(--di-text);
   }

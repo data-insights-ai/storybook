@@ -1,7 +1,14 @@
 import { useEffect, useRef } from "react";
 
+// Choices (radios, checkboxes, a segmented control) take no typed text, so a
+// shortcut still fires while one of them holds focus.
+const choices = new Set(["radio", "checkbox", "button", "submit", "reset", "range", "color"]);
+
 function editable(target: EventTarget | null) {
-  return target instanceof HTMLElement && (target.isContentEditable || target.closest("input, textarea, select") !== null);
+  if (!(target instanceof HTMLElement)) return false;
+  if (target.isContentEditable || target.closest("textarea, select") !== null) return true;
+  const input = target.closest("input");
+  return input !== null && !choices.has(input.type);
 }
 
 /**

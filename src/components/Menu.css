@@ -20,6 +20,11 @@
     animation: di-menu-in var(--di-duration) var(--di-ease) both;
   }
 
+  .di-menu.is-placed {
+    position: fixed;
+    bottom: auto;
+  }
+
   .di-menu-start {
     left: 0;
     right: auto;

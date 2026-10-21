@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { cx } from "../cx";
 import { SealMark } from "./Seal";
@@ -45,6 +45,25 @@ export function Menu({
   const changeOpen = useRef(onOpenChange);
   changeOpen.current = onOpenChange;
   const [triggerNode, setTriggerNode] = useState<HTMLButtonElement | null>(null);
+  const [place, setPlace] = useState<CSSProperties>();
+
+  // In a table, whose frame clips its overflow, the plane is fixed to the
+  // viewport so it is never cut off; near the bottom it opens upwards.
+  useLayoutEffect(() => {
+    if (!open || !triggerNode?.closest(".di-table-wrap")) return setPlace(undefined);
+    const at = triggerNode.getBoundingClientRect();
+    const height = list.current?.offsetHeight ?? 0;
+    const below = at.bottom + 4;
+    const top = below + height > window.innerHeight && at.top - 4 - height > 0 ? at.top - 4 - height : below;
+    setPlace(align === "start" ? { top, left: at.left } : { top, right: window.innerWidth - at.right });
+    const away = () => changeOpen.current(false);
+    window.addEventListener("scroll", away, { capture: true, passive: true });
+    window.addEventListener("resize", away);
+    return () => {
+      window.removeEventListener("scroll", away, { capture: true });
+      window.removeEventListener("resize", away);
+    };
+  }, [open, triggerNode, align]);
 
   const items = useCallback(
     () => Array.from(list.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"], [role="menuitemradio"]') ?? []).filter((item) => !item.disabled),
@@ -130,7 +149,8 @@ export function Menu({
           role="menu"
           tabIndex={-1}
           aria-label={label}
-          className={cx("di-menu", align === "start" && "di-menu-start")}
+          className={cx("di-menu", align === "start" && "di-menu-start", place && "is-placed")}
+          style={place}
           onKeyDown={onKeyDown}
           onBlur={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) onOpenChange(false);

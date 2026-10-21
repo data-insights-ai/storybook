@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MoreVertical } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "./Button";
+import { DataTable, TableBody, TableCell, TableRow } from "./DataTable";
 import { Menu, MenuDivider, MenuGroup, MenuItem } from "./Menu";
 
 const meta = {
@@ -210,5 +211,49 @@ export const GroupedChoices: Story = {
     await userEvent.keyboard("{Home}");
     await expect(first).toHaveFocus();
     await expect(args.onOpenChange).not.toHaveBeenCalled();
+  },
+};
+
+function RowMenu() {
+  const [open, setOpen] = useState(false);
+  return (
+    <DataTable caption="One row" indexed={false}>
+      <TableBody>
+        <TableRow>
+          <TableCell>Splunk forwarder</TableCell>
+          <TableCell align="end">
+            <Menu
+              open={open}
+              onOpenChange={setOpen}
+              label="Actions for Splunk forwarder"
+              trigger={(props) => (
+                <Button variant="ghost" iconOnly aria-label="Actions" {...props}>
+                  <MoreVertical />
+                </Button>
+              )}
+            >
+              <MenuItem onSelect={() => setOpen(false)}>Replace</MenuItem>
+              <MenuItem onSelect={() => setOpen(false)}>Rename</MenuItem>
+              <MenuItem tone="danger" onSelect={() => setOpen(false)}>
+                Revoke
+              </MenuItem>
+            </Menu>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </DataTable>
+  );
+}
+
+/** A row's menu escapes the table's frame, which clips everything else. */
+export const InATable: StoryObj = {
+  render: () => <RowMenu />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Actions" }));
+    const menu = await canvas.findByRole("menu", { name: "Actions for Splunk forwarder" });
+    await expect(getComputedStyle(menu).position).toBe("fixed");
+    const frame = canvasElement.querySelector(".di-table-wrap")!.getBoundingClientRect();
+    await expect(menu.getBoundingClientRect().bottom).toBeGreaterThan(frame.bottom);
   },
 };
