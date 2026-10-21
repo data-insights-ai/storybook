@@ -3,7 +3,7 @@ import { cx } from "../cx";
 import "./FactList.css";
 
 /**
- * A term and what is on record against it. Two layouts, one list.
+ * A term and what is on record against it. Four layouts, one list.
  *
  * `rows` is the console's: hairline rows, a 96px term column, the value
  * in the mono track. It is what an action states about itself before it
@@ -18,8 +18,12 @@ export function FactList({
   layout = "rows",
   children,
 }: {
-  /** `rows` is a screen. `grid` is a brand page's stated facts. */
-  layout?: "rows" | "grid";
+  /**
+   * `rows` is a screen. `grid` is a brand page's stated facts. `columns` is
+   * the facts of one record inside a section: label above value, as many
+   * columns as fit. `inline` is a header's key facts on one wrapping line.
+   */
+  layout?: "rows" | "grid" | "columns" | "inline";
   children: ReactNode;
 }) {
   return <dl className={cx("di-facts", `di-facts-${layout}`)}>{children}</dl>;

@@ -15,18 +15,44 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
+      "crumbs"
       "eyebrow"
       "title"
-      "lede";
+      "status"
+      "lede"
+      "facts";
   }
 
   .di-page-grid:has(> .di-page-aside) {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
+      "crumbs crumbs"
       "eyebrow aside"
       "title aside"
-      "lede aside";
+      "status aside"
+      "lede aside"
+      "facts facts";
     column-gap: var(--di-space-24);
+  }
+
+  .di-page-crumbs {
+    grid-area: crumbs;
+    margin-bottom: var(--di-space-12);
+  }
+
+  .di-page-status {
+    grid-area: status;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-6);
+    margin-top: var(--di-space-8);
+  }
+
+  .di-page-facts {
+    grid-area: facts;
+    min-width: 0;
+    margin-top: var(--di-space-16);
   }
 
   .di-page-eyebrow {
@@ -53,21 +79,29 @@
   .di-page-aside {
     grid-area: aside;
     align-self: end;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--di-space-8);
   }
 
   @container (width < 36rem) {
     .di-page-grid:has(> .di-page-aside) {
       grid-template-columns: minmax(0, 1fr);
       grid-template-areas:
+        "crumbs"
         "eyebrow"
         "title"
+        "status"
         "lede"
-        "aside";
+        "aside"
+        "facts";
     }
 
     .di-page-aside {
       justify-self: start;
-      margin-top: var(--di-space-24);
+      margin-top: var(--di-space-16);
     }
   }
 

@@ -17,8 +17,14 @@ import "./Heading.css";
  * the type ramp and the console stops below them.
  *
  * The title is a slot, `PageHeaderTitle`, because a title can hold a
- * `Highlight`. What sits beside it is `PageHeaderAside`. The frame places
- * both with grid areas, so they may be written in either order.
+ * `Highlight`. What sits beside it is `PageHeaderAside`: the page’s
+ * primary actions. A detail page adds `PageHeaderCrumbs` above (the way
+ * back to its list), `PageHeaderStatus` under the title (badges) and
+ * `PageHeaderFacts` under the lede (the key facts, a `FactList
+ * layout="inline"`). The frame places every slot with grid areas, so they
+ * may be written in any order.
+ *
+ * The eyebrow is optional: a page under breadcrumbs is already placed.
  */
 export function PageHeader({
   eyebrow,
@@ -26,17 +32,21 @@ export function PageHeader({
   tier = "console",
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   lede?: string;
   /** `console` is a screen. `brand` is the display tier of a brand page. */
   tier?: "console" | "brand";
-  /** `PageHeaderTitle`, and optionally `PageHeaderAside`. */
+  /** `PageHeaderTitle`, and optionally `PageHeaderAside`, `PageHeaderCrumbs`, `PageHeaderStatus`, `PageHeaderFacts`. */
   children: ReactNode;
 }) {
   return (
     <header className={cx("di-page-head", `di-page-head-${tier}`)}>
       <div className="di-page-grid">
-        <Eyebrow variant="plain" className="di-page-eyebrow">{eyebrow}</Eyebrow>
+        {eyebrow ? (
+          <Eyebrow variant="plain" className="di-page-eyebrow">
+            {eyebrow}
+          </Eyebrow>
+        ) : null}
         {children}
         {lede ? <p className="di-lede">{lede}</p> : null}
       </div>
@@ -52,4 +62,19 @@ export function PageHeaderTitle({ children }: { children: ReactNode }) {
 /** Beside the title: a status, a figure, or the page's actions. */
 export function PageHeaderAside({ children }: { children: ReactNode }) {
   return <div className="di-page-aside">{children}</div>;
+}
+
+/** Above the eyebrow: a `Breadcrumb` back to the list a detail page belongs to. */
+export function PageHeaderCrumbs({ children }: { children: ReactNode }) {
+  return <div className="di-page-crumbs">{children}</div>;
+}
+
+/** Under the title: the record’s state, as `StatusPill`s or `Badge`s. */
+export function PageHeaderStatus({ children }: { children: ReactNode }) {
+  return <div className="di-page-status">{children}</div>;
+}
+
+/** Under the lede: the record’s key facts, a `FactList layout="inline"`. */
+export function PageHeaderFacts({ children }: { children: ReactNode }) {
+  return <div className="di-page-facts">{children}</div>;
 }

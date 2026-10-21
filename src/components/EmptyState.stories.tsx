@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "./Button";
-import { EmptyState, EmptyStateAction } from "./EmptyState";
+import { UserPlus } from "lucide-react";
+import { EmptyState, EmptyStateAction, EmptyStateIcon } from "./EmptyState";
 
 const meta = {
   title: "Blocks/EmptyState",
@@ -124,5 +125,28 @@ export const WithoutIndex: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { name: "Connect source" })).toBeVisible();
     await expect(canvasElement.querySelector(".di-empty-index")).toBeNull();
+  },
+};
+
+/** First use inside a page that already names the place: no eyebrow, an icon, the one action. */
+export const FirstUse: Story = {
+  args: {
+    index: undefined,
+    eyebrow: "",
+    title: "No invitations yet.",
+    body: "Invite colleagues by email. They join with the role you choose.",
+  },
+  render: (args) => (
+    <EmptyState {...args}>
+      <EmptyStateIcon>
+        <UserPlus />
+      </EmptyStateIcon>
+      <EmptyStateAction>
+        <Button>Invite people</Button>
+      </EmptyStateAction>
+    </EmptyState>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByRole("button", { name: "Invite people" })).toBeVisible();
   },
 };

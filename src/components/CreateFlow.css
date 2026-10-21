@@ -1,0 +1,47 @@
+@layer components {
+  .di-create-flow {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-24);
+    width: 100%;
+    max-width: var(--di-measure-form);
+    min-width: 0;
+  }
+
+  .di-create-flow-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-rhythm-field);
+    min-width: 0;
+  }
+
+  .di-create-flow-title {
+    font-size: var(--di-font-size-500);
+    font-weight: var(--di-weight-semibold);
+    letter-spacing: var(--di-tracking-tight);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-create-flow-title:focus {
+    outline: none;
+  }
+
+  .di-create-flow-error {
+    font-size: var(--di-font-size-300);
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-create-flow-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8);
+    padding-top: var(--di-space-16);
+    border-top: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-create-flow-spacer {
+    flex: 1;
+  }
+}

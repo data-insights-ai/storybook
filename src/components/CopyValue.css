@@ -1,0 +1,40 @@
+@layer components {
+  .di-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-space-4);
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .di-copy-value {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .di-copy-button {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--di-radius-control);
+    background: transparent;
+    color: var(--di-text-subtle);
+    cursor: pointer;
+    transition: color var(--di-duration) var(--di-ease), border-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-copy-button:hover {
+    border-color: var(--di-border);
+    color: var(--di-text);
+  }
+
+  .di-copy-button > svg {
+    width: 14px;
+    height: 14px;
+  }
+}

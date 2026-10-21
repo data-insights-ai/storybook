@@ -1,0 +1,96 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
+
+<Meta title="Patterns/Pages" />
+
+<Page
+  eyebrow="Page patterns"
+  title="Read first, change on purpose."
+  lede="A console page has one job and shows it first. A list page finds and opens records, a detail page states one record and lets a reader change a part of it, a create flow makes a new one. Overview, editing and destruction never share one undifferentiated column."
+>
+  <Section
+    eyebrow="Before the layout"
+    title="Who comes here, and what for."
+    lede="Write down, per page, who arrives, their three most frequent tasks, what they must see first, and where they expect each action. Place by that: nothing frequent below the fold, nothing destructive next to something routine."
+  >
+    <Rules>
+      <Rule>The primary action of the page — `New …`, `Invite people`, `Open product` — sits in `PageHeaderAside`, top right.</Rule>
+      <Rule>Actions on the whole list — export, a view switch — sit at the end of the `ListToolbar`, and apply the current search and filters.</Rule>
+      <Rule>Actions on one row sit in the row: frequent safe ones as `RowActions` on hover, all of them in the row's `Menu`. Opening the row is the row itself.</Rule>
+      <Rule>Changing a part of a record is the `Edit` of its `DetailSection`. Destroying it is the `DangerZone`, last on the page, through a `ConfirmDialog`.</Rule>
+      <Rule>Frequent actions get a key: `/` search, `n` new, `e` edit or export (`useShortcut`), shown beside the control.</Rule>
+    </Rules>
+  </Section>
+
+  <Section
+    eyebrow="List page"
+    title="Find, filter, open."
+    lede="`Page width='list'`: `PageHeader` with the primary action, a sticky `ListToolbar`, then an `InfiniteTable` — or an `EmptyState` in its place."
+  >
+    <Rules>
+      <Rule>Search and filters run on the server and live in the URL, so a link, reload and back show the same list.</Rule>
+      <Rule>The list loads page by page with a cursor and loads the next page before the end. No pagination control, no `Load more` button, no client-side filter over a partial list.</Rule>
+      <Rule>The toolbar and the table head stay in view while the list scrolls.</Rule>
+      <Rule>Entries pushed in realtime appear in place in a sorted list; in a newest-first list they wait behind the `n new` notice while the reader is further down.</Rule>
+      <Rule>The first load is a skeleton, not a spinner. An empty result names why and offers one way out: clear the filters, or create the first entry.</Rule>
+    </Rules>
+    <Columns>
+      <Lines title="Do" items={["The create form opens in a Sheet or its own page from the header action.", "Filters are selects whose first option names them: All roles.", "One EmptyState, no eyebrow, an icon and the one action."]} />
+      <Lines title="Don't" items={["An add form that is always open above the list.", "A list that loads everything and filters in the browser.", "An empty card repeating the page's eyebrow over the full width."]} />
+    </Columns>
+  </Section>
+
+  <Section
+    eyebrow="Detail page"
+    title="One record: summary, sections, danger last."
+    lede="`Page width='detail'`: a `PageHeader` with breadcrumbs back to the list, status under the name and key facts under the lede, then `DetailSection`s, then the `DangerZone`."
+  >
+    <Rules>
+      <Rule>A section reads by default — a `FactList layout="columns"`, ids as `CopyValue`. Its `Edit` switches only that section into its form with Save and Cancel; focus moves in and back.</Rule>
+      <Rule>A change of several independent settings in one section (switches) collects in a sticky `SaveBar` instead of saving each.</Rule>
+      <Rule>A change too large for a section opens a `Sheet`. A record opened from a list row may live in a `Sheet` too, with the same sections inside.</Rule>
+      <Rule>Each `DangerAction` states the consequence and has one danger button. When it is unavailable, `note` says why — "You are the only owner" — and the button is disabled, not hidden.</Rule>
+      <Rule>An irreversible action asks for the record's name in the `ConfirmDialog` (`confirmText`). A reversible removal confirms with a toast that offers Undo.</Rule>
+    </Rules>
+    <Columns>
+      <Lines title="Do" items={["Facts as a FactList; Edit beside the section title.", "Leave and Delete in a red-tinted Danger zone at the end.", "The disabled Leave says what to do first."]} />
+      <Lines title="Don't" items={["A Name field with a Rename button under the read-only facts.", "Leave as an outlined button at the bottom right like any other.", "A destructive button inside a table row."]} />
+    </Columns>
+  </Section>
+
+  <Section
+    eyebrow="Create flow"
+    title="Choose, fill in, review, create."
+    lede="`CreateFlow` with a `Stepper`: the type as `ChoiceCards`, then the details, then a review of what will be created. On its own page at `width='form'`, or in a `Sheet` when it is short."
+  >
+    <Rules>
+      <Rule>Enter moves on, Back keeps what was entered, Next stays disabled until the step is complete.</Rule>
+      <Rule>After creating, land on the new record's detail page, with a toast.</Rule>
+    </Rules>
+  </Section>
+
+  <Section
+    eyebrow="Proportions"
+    title="Width by content, rhythm by token."
+    lede="A page is as wide as what it holds. Spacing between blocks belongs to the page, never to the block."
+  >
+    <Rules>
+      <Rule>Width: lists and tables use the frame (`list`, up to 1440px); a record with sections `--di-measure-detail` (1040px); a form `--di-measure-form` (720px); prose `--di-measure-prose` (62ch).</Rule>
+      <Rule>Rhythm: header to content `--di-rhythm-header` (24), toolbar to its list `--di-rhythm-toolbar` (12), section to section `--di-rhythm-section` (32), field to field `--di-rhythm-field` (16). `Page` applies them.</Rule>
+      <Rule>Fields by content: text, an email or a URL spans the form column; a select is as wide as its options; a number is short (`FieldStack`). On one line, the first field grows and the button sits on the control row (`InlineForm`).</Rule>
+      <Rule>Headings: one `h1` per page. Section titles only where there are several sections. No eyebrow repeated inside cards, empty states or dialogs on a page that already has one.</Rule>
+      <Rule>At phone width the gutter is 16px, toolbars wrap, the search takes its own line, a `Sheet` takes the screen and nothing scrolls sideways but a table frame.</Rule>
+    </Rules>
+  </Section>
+
+  <Section
+    eyebrow="Feedback"
+    title="Say what happened, where it happened."
+    lede="A save confirms with a `Toast`; an error stays next to the control that failed. Optimistic updates only where a failure can be undone visibly."
+  >
+    <Rules>
+      <Rule>Every visible string is a prop. A product passes its own language — the components ship none.</Rule>
+      <Rule>Dialogs and sheets are native dialogs: focus moves in, is trapped, and returns to the opener. Every icon-only button has a name.</Rule>
+    </Rules>
+  </Section>
+</Page>

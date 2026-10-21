@@ -1,0 +1,30 @@
+@layer components {
+  /*
+   * The head stays in view under the app bar and a sticky toolbar. A sticky
+   * cell sticks to its nearest scroll container, so on a wide frame the
+   * table's own frames clip instead of scrolling; under 768px the grid
+   * scrolls sideways again and the head scrolls with the page.
+   */
+  @media (min-width: 768px) {
+    .di-infinite .di-table-wrap,
+    .di-infinite .di-table-scroll {
+      overflow: clip;
+    }
+
+    .di-infinite .di-table thead th {
+      position: sticky;
+      top: calc(var(--di-sticky-top) + var(--di-list-toolbar-h, 0px));
+      z-index: 1;
+    }
+  }
+
+  .di-infinite-foot {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+  }
+}

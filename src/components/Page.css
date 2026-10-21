@@ -1,0 +1,27 @@
+@layer components {
+  .di-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-rhythm-section);
+    width: 100%;
+    min-width: 0;
+  }
+
+  .di-page[data-width="detail"] {
+    max-width: var(--di-measure-detail);
+  }
+
+  .di-page[data-width="form"] {
+    max-width: var(--di-measure-form);
+  }
+
+  /* The header sits closer to what it introduces than sections sit to each other. */
+  .di-page > .di-page-head {
+    margin-bottom: calc(var(--di-rhythm-header) - var(--di-rhythm-section));
+  }
+
+  /* A list page: the toolbar belongs to the list under it. */
+  .di-page > .di-list-toolbar + * {
+    margin-top: calc(var(--di-rhythm-toolbar) - var(--di-rhythm-section));
+  }
+}

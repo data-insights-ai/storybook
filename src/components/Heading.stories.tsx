@@ -1,6 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "./Heading";
+import { Breadcrumb } from "./Breadcrumb";
+import { Button } from "./Button";
+import { Fact, FactList } from "./FactList";
+import {
+  PageHeader,
+  PageHeaderAside,
+  PageHeaderCrumbs,
+  PageHeaderFacts,
+  PageHeaderStatus,
+  PageHeaderTitle,
+} from "./Heading";
 import { Highlight } from "./Highlight";
 import { StatusPill } from "./StatusPill";
 
@@ -152,4 +162,41 @@ export const Tiers: Story = {
       </PageHeader>
     </div>
   ),
+};
+
+/**
+ * A detail page: breadcrumbs back to the list instead of an eyebrow, the
+ * record’s state under its name, its key facts, and its primary actions.
+ */
+export const Detail: Story = {
+  args: { eyebrow: "", lede: "" },
+  render: (args) => (
+    <PageHeader {...args}>
+      <PageHeaderCrumbs>
+        <Breadcrumb label="Breadcrumb" items={[{ label: "Sign-in", href: "#" }, { label: "Head office" }]} />
+      </PageHeaderCrumbs>
+      <PageHeaderTitle>Head office</PageHeaderTitle>
+      <PageHeaderStatus>
+        <StatusPill tone="ok">Active</StatusPill>
+        <StatusPill tone="neutral" dot={false}>
+          SAML 2.0
+        </StatusPill>
+      </PageHeaderStatus>
+      <PageHeaderFacts>
+        <FactList layout="inline">
+          <Fact label="Domains">2 verified</Fact>
+          <Fact label="Members">38</Fact>
+          <Fact label="Created">3 Mar 2026</Fact>
+        </FactList>
+      </PageHeaderFacts>
+      <PageHeaderAside>
+        <Button variant="secondary">Test sign-in</Button>
+      </PageHeaderAside>
+    </PageHeader>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("heading", { level: 1, name: "Head office" })).toBeVisible();
+    await expect(canvas.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+  },
 };

@@ -35,6 +35,7 @@ export default defineConfig({
           id.startsWith("@base-ui/react/") ||
           id === "react-aria-components" ||
           id.startsWith("react-aria-components/") ||
+          id === "@tanstack/react-virtual" ||
           id === "recharts" ||
           id.startsWith("recharts/")
         );

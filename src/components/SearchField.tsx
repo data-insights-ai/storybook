@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes } from "react";
+import type { InputHTMLAttributes, Ref } from "react";
 import { Search } from "lucide-react";
 import { cx } from "../cx";
 import { Kbd } from "./Seal";
@@ -30,6 +30,7 @@ export function SearchField({
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  ref?: Ref<HTMLInputElement>;
 } & InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div className={cx("di-search", dense && "is-dense", className)}>
