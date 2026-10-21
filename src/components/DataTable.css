@@ -113,6 +113,18 @@
     background: var(--di-bg-row-hover);
   }
 
+  .di-table tbody tr.di-table-spacer td {
+    height: var(--di-table-spacer);
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  /* An empty spacer closing the body leaves the last rendered row the last one drawn. */
+  .di-table tbody tr:has(+ tr.di-table-spacer.is-empty:last-child) td {
+    border-bottom: 0;
+  }
+
   .di-table tbody tr.is-selectable {
     cursor: pointer;
   }
@@ -226,8 +238,20 @@
       border-bottom: 1px solid var(--di-table-rule);
     }
 
-    .di-table-wrap.is-stackable tbody tr:last-child {
+    .di-table-wrap.is-stackable tbody tr:last-child,
+    .di-table-wrap.is-stackable tbody tr:has(+ tr.di-table-spacer.is-empty:last-child) {
       border-bottom: 0;
+    }
+
+    .di-table-wrap.is-stackable tbody tr.di-table-spacer {
+      display: block;
+      height: var(--di-table-spacer);
+      padding: 0;
+      border: 0;
+    }
+
+    .di-table-wrap.is-stackable tbody tr.di-table-spacer td {
+      display: none;
     }
 
     .di-table-wrap.is-stackable .di-table.is-indexed tr {
@@ -256,6 +280,10 @@
     .di-table-wrap.is-stackable tbody tr:hover,
     .di-table-wrap.is-stackable tbody tr:hover td {
       background: var(--di-bg-row-hover);
+    }
+
+    .di-table-wrap.is-stackable tbody tr.di-table-spacer:hover {
+      background: none;
     }
 
     .di-table-wrap.is-stackable tbody tr.is-active,

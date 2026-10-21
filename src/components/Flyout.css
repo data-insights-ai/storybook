@@ -1,0 +1,74 @@
+@layer components {
+  .di-flyout-anchor {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .di-flyout-trigger {
+    display: inline-flex;
+  }
+
+  .di-flyout {
+    position: absolute;
+    top: calc(100% + var(--di-space-4));
+    right: 0;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    width: min(440px, calc(100vw - var(--di-space-32)));
+    max-height: min(640px, calc(100dvh - var(--di-space-96)));
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+    box-shadow: var(--di-shadow-plane);
+    color: var(--di-text);
+    overflow: hidden;
+    animation: di-flyout-in var(--di-duration) var(--di-ease) both;
+  }
+
+  .di-flyout:focus {
+    outline: none;
+  }
+
+  .di-flyout:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  @keyframes di-flyout-in {
+    from {
+      opacity: 0;
+      translate: 0 -4px;
+    }
+  }
+
+  .di-flyout-title {
+    margin: 0;
+    padding: var(--di-space-12) var(--di-space-16);
+    border-bottom: 1px solid var(--di-border);
+    font-size: var(--di-font-size-500);
+    font-weight: var(--di-weight-medium);
+    line-height: var(--di-leading-snug);
+  }
+
+  .di-flyout-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+    min-height: 0;
+    padding: var(--di-space-12) var(--di-space-16);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .di-flyout-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-space-8);
+    padding: var(--di-space-8) var(--di-space-16);
+    border-top: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+  }
+}

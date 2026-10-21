@@ -1,4 +1,4 @@
-import { Children, createContext, isValidElement, useContext, type ReactNode } from "react";
+import { Children, createContext, isValidElement, useContext, type CSSProperties, type ReactNode, type Ref } from "react";
 import { cx } from "../cx";
 import "./DataTable.css";
 
@@ -19,6 +19,7 @@ export function DataTable({
   caption,
   indexed = true,
   narrow = "scroll",
+  rowCount,
   className,
   children,
 }: {
@@ -32,6 +33,12 @@ export function DataTable({
    * log, a list of events — rather than compared column by column.
    */
   narrow?: "scroll" | "stack";
+  /**
+   * How many rows the whole list has, when only some of them are rendered
+   * (a virtualized register). A screen reader then hears the full size, and
+   * each `TableRow` states its place with `rowIndex`.
+   */
+  rowCount?: number;
   className?: string;
   /** `TableToolbar`, the grid's `TableHead` and `TableBody`, and `TableFooter`. */
   children: ReactNode;
@@ -61,7 +68,11 @@ export function DataTable({
       */}
       <div className="di-table-scroll" tabIndex={0} role="region" aria-label={caption}>
         {/* A stacked row is no longer laid out as a table, so it says what it is. */}
-        <table className={cx("di-table", indexed && "is-indexed")} role={stack ? "table" : undefined}>
+        <table
+          className={cx("di-table", indexed && "is-indexed")}
+          role={stack ? "table" : undefined}
+          aria-rowcount={rowCount === undefined ? undefined : rowCount + 1}
+        >
           <caption className="di-sr">{caption}</caption>
           <StackContext.Provider value={stack}>{grid}</StackContext.Provider>
         </table>
@@ -176,17 +187,30 @@ export function TableRow({
   active = false,
   tone = "neutral",
   onSelect,
+  rowIndex,
+  ref,
 }: {
   children: ReactNode;
   active?: boolean;
   /** `danger` tints the ordinal, for a row that failed. */
   tone?: "neutral" | "danger";
   onSelect?: () => void;
+  /**
+   * The row's place in the whole list, from 0, when the table renders only
+   * part of it. It sets `aria-rowindex` and the `data-index` a virtualizer
+   * measures the row by.
+   */
+  rowIndex?: number;
+  /** The row element, for a virtualizer that measures rendered rows. */
+  ref?: Ref<HTMLTableRowElement>;
 }) {
   const role = useRole("row");
   return (
     <tr
+      ref={ref}
       role={role}
+      data-index={rowIndex}
+      aria-rowindex={rowIndex === undefined ? undefined : rowIndex + 2}
       className={cx(active && "is-active", tone === "danger" && "is-danger", onSelect && "is-selectable")}
       onClick={
         onSelect
@@ -198,6 +222,21 @@ export function TableRow({
       }
     >
       {children}
+    </tr>
+  );
+}
+
+/**
+ * Stands in for the rows a virtualized register does not render, above or
+ * below the ones on screen, so the scroll height stays that of the whole
+ * list. It is hidden from assistive technology; `ref` lets the caller watch
+ * it, for example to load the next page as the reader nears the end.
+ */
+export function TableSpacer({ height, ref }: { height: number; ref?: Ref<HTMLTableRowElement> }) {
+  const style = { "--di-table-spacer": `${Math.max(0, height)}px` } as CSSProperties;
+  return (
+    <tr ref={ref} className={cx("di-table-spacer", height <= 0 && "is-empty")} aria-hidden style={style}>
+      <td colSpan={1000} />
     </tr>
   );
 }

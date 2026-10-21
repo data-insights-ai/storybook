@@ -16,6 +16,7 @@ import {
   TableHead,
   TableIndex,
   TableRow,
+  TableSpacer,
   TableToolbar,
 } from "./DataTable";
 import { LevelMeter } from "./LevelMeter";
@@ -539,5 +540,44 @@ export const Stacked: Story = {
     await expect(rows).toHaveLength(4);
     await expect(getComputedStyle(rows[1]).display).toBe("flex");
     await expect(canvas.getByRole("columnheader", { name: "When" })).toHaveAttribute("aria-sort", "descending");
+  },
+};
+
+/*
+ * A register too long to render: the product's virtualizer decides which
+ * rows are on screen, the spacers stand in for the rest, and `rowCount`
+ * with each row's `rowIndex` tells a screen reader where it is.
+ */
+const windowed = Array.from({ length: 20 }, (_, i) => 40 + i);
+
+export const Windowed: Story = {
+  render: (args) => (
+    <DataTable {...args} rowCount={1000}>
+      <TableHead>
+        <TableColumn index={true}>Ordinal</TableColumn>
+        <TableColumn width="fill">Entry</TableColumn>
+        <TableColumn align="end">Seen</TableColumn>
+      </TableHead>
+      <TableBody>
+        <TableSpacer height={40 * 41} />
+        {windowed.map((i) => (
+          <TableRow key={i} rowIndex={i}>
+            <TableIndex>{String(i + 1).padStart(4, "0")}</TableIndex>
+            <TableCell>Entry {i + 1}</TableCell>
+            <TableCell align="end" mono>
+              09:{String(i % 60).padStart(2, "0")}:00Z
+            </TableCell>
+          </TableRow>
+        ))}
+        <TableSpacer height={(1000 - 60) * 41} />
+      </TableBody>
+      <TableFooter>Rows 41–60 of 1,000 on screen</TableFooter>
+    </DataTable>
+  ),
+  play: async ({ canvasElement }) => {
+    const table = within(canvasElement).getByRole("table");
+    await expect(table).toHaveAttribute("aria-rowcount", "1001");
+    const rows = within(table).getAllByRole("row");
+    await expect(rows[1]).toHaveAttribute("aria-rowindex", "42");
   },
 };
