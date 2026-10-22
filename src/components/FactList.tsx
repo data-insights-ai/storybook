@@ -5,8 +5,8 @@ import "./FactList.css";
 /**
  * A term and what is on record against it. Four layouts, one list.
  *
- * `rows` is the console's: hairline rows, a 96px term column, the value
- * in the mono track. It is what an action states about itself before it
+ * `rows` is the console's: hairline rows, a term column that wraps, the
+ * value beside it. It is what an action states about itself before it
  * runs — scope and reversibility belong here, not in a tooltip.
  *
  * `grid` is the brand pages': a ruled grid of cells, the term in seal
@@ -29,11 +29,15 @@ export function FactList({
   return <dl className={cx("di-facts", `di-facts-${layout}`)}>{children}</dl>;
 }
 
-export function Fact({ label, children }: { label: string; children: ReactNode }) {
+/**
+ * Labels and values are prose in the UI font. `mono` sets a value that is
+ * an identifier or code in the code track.
+ */
+export function Fact({ label, mono = false, children }: { label: string; mono?: boolean; children: ReactNode }) {
   return (
     <div className="di-fact">
       <dt className="di-fact-label">{label}</dt>
-      <dd className="di-fact-value">{children}</dd>
+      <dd className={cx("di-fact-value", mono && "di-fact-mono")}>{children}</dd>
     </div>
   );
 }
