@@ -105,7 +105,9 @@ export function DataTable({
               ))}
             </colgroup>
           ) : null}
-          <StackContext.Provider value={stack}>{grid}</StackContext.Provider>
+          <StackContext.Provider value={stack}>
+            <MeasuredContext.Provider value={widths !== undefined}>{grid}</MeasuredContext.Provider>
+          </StackContext.Provider>
         </table>
       </div>
       {foot}
@@ -114,6 +116,7 @@ export function DataTable({
 }
 
 const StackContext = createContext(false);
+const MeasuredContext = createContext(false);
 
 /*
  * Whether the grid is wider than its frame. A frame that keeps its head in
@@ -359,15 +362,25 @@ export function TableCell({
   /** Stays at the left edge while the grid scrolls sideways, with its `TableColumn`. */
   pinned?: boolean;
 }) {
+  const measured = useContext(MeasuredContext);
   return (
     <td
       role={useRole("cell")}
       data-label={label}
       className={cx(align === "end" && "is-end", mono && "di-mono", pinned && "is-pinned", label && "is-labelled")}
+      /* A value cut by a measured column shows whole in its tooltip. */
+      onMouseEnter={measured ? revealCut : undefined}
     >
       {children}
     </td>
   );
+}
+
+function revealCut(event: { currentTarget: HTMLTableCellElement }) {
+  const el = event.currentTarget;
+  const cut = el.scrollWidth > el.clientWidth + 1;
+  if (cut && !el.title) el.title = el.textContent?.trim() ?? "";
+  else if (!cut && el.title) el.removeAttribute("title");
 }
 
 /**
