@@ -22,6 +22,11 @@ export type { ChainTimelineEvent, ChainTimelineLane } from "./components/ChainTi
 export { CodeBlock } from "./components/CodeBlock";
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/Chart";
 export type { ChartConfig, ChartTooltipDetail } from "./components/Chart";
+export { ChartCard, ChartCardAction, ChartCardGrid } from "./components/ChartCard";
+export { PeriodTimeline } from "./components/PeriodTimeline";
+export type { Period } from "./components/PeriodTimeline";
+export { TrendChart } from "./components/TrendChart";
+export type { TrendMarker, TrendSeries, TrendTone } from "./components/TrendChart";
 export { Checkbox, ChoiceGroup, Radio } from "./components/Choice";
 export { ChoiceCards } from "./components/ChoiceCards";
 export type { ChoiceCard } from "./components/ChoiceCards";

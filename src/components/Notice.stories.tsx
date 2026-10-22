@@ -242,3 +242,65 @@ export const PhoneWidth: Story = {
     await expect(action.getBoundingClientRect().top).toBeGreaterThan(title.getBoundingClientRect().bottom);
   },
 };
+
+/**
+ * Title and body straight inside `NoticeText`, the action beside it rather
+ * than inside: the action still keeps the notice's inset and sits in line
+ * with the copy, and the title keeps the copy's full width.
+ */
+export const ActionBesideText: Story = {
+  args: { tone: "warn" },
+  render: (args) => (
+    <div style={{ display: "grid", gap: 16 }}>
+      <div style={{ width: 720 }} data-testid="wide">
+        <Notice {...args}>
+          <NoticeIcon>
+            <AlertTriangle aria-hidden />
+          </NoticeIcon>
+          <NoticeText>
+            <NoticeTitle>Staff account required</NoticeTitle>
+            <NoticeBody>The operator console opens only with a staff account. Sign out and sign in with it.</NoticeBody>
+          </NoticeText>
+          <NoticeAction>
+            <Button variant="secondary" size="dense">
+              Sign out
+            </Button>
+          </NoticeAction>
+        </Notice>
+      </div>
+      <div style={{ width: 360 }} data-testid="phone">
+        <Notice {...args}>
+          <NoticeIcon>
+            <AlertTriangle aria-hidden />
+          </NoticeIcon>
+          <NoticeText>
+            <NoticeTitle>Staff account required</NoticeTitle>
+            <NoticeBody>The operator console opens only with a staff account.</NoticeBody>
+          </NoticeText>
+          <NoticeAction>
+            <Button variant="secondary" size="dense">
+              Sign out
+            </Button>
+          </NoticeAction>
+        </Notice>
+      </div>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    for (const id of ["wide", "phone"]) {
+      const area = within(within(canvasElement).getByTestId(id));
+      const frame = area.getByRole("note").getBoundingClientRect();
+      const button = area.getByRole("button", { name: "Sign out" }).getBoundingClientRect();
+      const title = area.getByText("Staff account required").getBoundingClientRect();
+      const body = area.getByText(/opens only with a staff account/).getBoundingClientRect();
+      await expect(frame.right - button.right).toBeGreaterThanOrEqual(12);
+      await expect(button.top - frame.top).toBeGreaterThanOrEqual(12);
+      await expect(body.top).toBeGreaterThan(title.bottom - 1);
+      if (id === "wide") {
+        await expect(button.left).toBeGreaterThan(body.right - 1);
+      } else {
+        await expect(button.top).toBeGreaterThan(body.bottom);
+      }
+    }
+  },
+};
