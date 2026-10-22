@@ -327,11 +327,20 @@ export function TableCell({
  * what a quantity buys, then its total — so a narrow frame stacks them
  * instead of cutting one long line.
  */
-export function CellStack({ primary, secondary = "" }: { primary: string; secondary?: string | readonly string[] }) {
+export function CellStack({
+  primary = "",
+  secondary = "",
+  children,
+}: {
+  primary?: string;
+  secondary?: string | readonly string[];
+  /** The value as an element instead of `primary`: a `TextLink` when the row opens a record. */
+  children?: ReactNode;
+}) {
   const lines = (typeof secondary === "string" ? [secondary] : secondary).filter((line) => line !== "");
   return (
     <span className="di-cell">
-      <span className="di-cell-primary">{primary}</span>
+      <span className="di-cell-primary">{children ?? primary}</span>
       {lines.map((line, i) => (
         <span key={i} className="di-cell-secondary">
           {line}

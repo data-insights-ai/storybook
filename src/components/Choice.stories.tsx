@@ -112,3 +112,14 @@ export const Indeterminate: Story = {
     await expect(box).toBePartiallyChecked();
   },
 };
+
+/** A box that selects a table row: the label is read, the row's name beside it is what a reader sees. */
+export const HiddenLabel: Story = {
+  args: { hideLabel: true },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const box = canvas.getByLabelText("Seal on ingest");
+    await expect(box).toBeInTheDocument();
+    await expect(canvasElement.querySelector(".di-choice-text")?.getBoundingClientRect().width).toBeLessThanOrEqual(1);
+  },
+};
