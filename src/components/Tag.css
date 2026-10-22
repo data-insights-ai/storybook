@@ -30,4 +30,39 @@
   .di-tag-detail::before {
     content: "· ";
   }
+
+  /* Compact: one line; a tag that does not fit is cut, never wrapped. */
+  .di-tag-list.is-compact {
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .di-tag-list.is-compact .di-tag {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .di-tag-list.is-compact .di-tag-more {
+    flex: none;
+  }
+
+  .di-tag-more {
+    color: var(--di-text-muted);
+    cursor: default;
+  }
+
+  button.di-tag-more {
+    font: inherit;
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-300);
+    cursor: pointer;
+  }
+
+  button.di-tag-more:hover {
+    color: var(--di-text);
+    border-color: var(--di-border-strong);
+  }
 }

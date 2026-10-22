@@ -244,6 +244,12 @@
     color: var(--di-text-subtle);
   }
 
+  .di-cell-secondary.is-prose {
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
+
   .di-cell-lead {
     display: flex;
     align-items: center;

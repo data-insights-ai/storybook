@@ -379,10 +379,13 @@ export function TableCell({
 export function CellStack({
   primary = "",
   secondary = "",
+  prose = false,
   children,
 }: {
   primary?: string;
   secondary?: string | readonly string[];
+  /** The lines underneath are prose (an email, a description), not machine values. */
+  prose?: boolean;
   /** The value as an element instead of `primary`: a `TextLink` when the row opens a record. */
   children?: ReactNode;
 }) {
@@ -391,7 +394,7 @@ export function CellStack({
     <span className="di-cell">
       <span className="di-cell-primary">{children ?? primary}</span>
       {lines.map((line, i) => (
-        <span key={i} className="di-cell-secondary">
+        <span key={i} className={prose ? "di-cell-secondary is-prose" : "di-cell-secondary"}>
           {line}
         </span>
       ))}

@@ -18,3 +18,16 @@ export const Grants: Story = {
     </div>
   ),
 };
+
+/** In a table cell: two tags on one line, the rest behind "+N more". */
+export const Compact: Story = {
+  render: () => (
+    <div style={{ width: 360 }}>
+      <TagList max={2} moreLabel={(n) => `+${n} more`} onMore={() => undefined}>
+        <Tag detail="whole organization">Organization admin</Tag>
+        <Tag detail="test 001">Workspace admin</Tag>
+        <Tag title="Handle cases: assign, status, verdict, comments">Handle cases</Tag>
+      </TagList>
+    </div>
+  ),
+};
