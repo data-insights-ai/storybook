@@ -107,6 +107,7 @@
     padding: 0 var(--di-space-12);
     border-bottom: 1px solid var(--di-table-rule);
     color: var(--di-text);
+    font-variant-numeric: tabular-nums;
     vertical-align: middle;
   }
 

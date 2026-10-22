@@ -15,6 +15,12 @@
     white-space: nowrap;
   }
 
+  .di-pill-prose {
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-200);
+    letter-spacing: normal;
+  }
+
   .di-pill-dot {
     width: 5px;
     height: 5px;
