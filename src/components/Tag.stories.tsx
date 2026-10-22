@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 import { Tag, TagList } from "./Tag";
 
 const meta = { title: "Components/Tag", component: Tag, args: { children: "Workspace admin" } } satisfies Meta<typeof Tag>;
@@ -30,4 +31,19 @@ export const Compact: Story = {
       </TagList>
     </div>
   ),
+};
+
+/** A tag wider than its place wraps its scope onto a second line; nothing is cut. */
+export const Narrow: Story = {
+  render: () => (
+    <div style={{ width: 120 }}>
+      <TagList>
+        <Tag detail="Production">Workspace administrator</Tag>
+      </TagList>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const detail = within(canvasElement).getByText("Production");
+    await expect(detail.scrollWidth).toBeLessThanOrEqual(detail.clientWidth + 1);
+  },
 };
