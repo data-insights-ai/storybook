@@ -112,9 +112,14 @@
     white-space: nowrap;
   }
 
+  /*
+   * Every cell keeps the same inset on all four sides of its content: a
+   * value of two lines (a name and its description) stays clear of the
+   * row's rules instead of touching them.
+   */
   .di-table td {
     height: var(--di-table-row-height);
-    padding: 0 var(--di-space-12);
+    padding: var(--di-space-8) var(--di-space-12);
     border-bottom: 1px solid var(--di-table-rule);
     color: var(--di-text);
     font-variant-numeric: tabular-nums;
@@ -227,7 +232,7 @@
   .di-cell {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-2);
+    gap: var(--di-space-4);
     min-width: 0;
   }
 

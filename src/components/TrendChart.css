@@ -1,0 +1,13 @@
+@layer components {
+  .di-chart.di-trend-sm {
+    height: 140px;
+  }
+
+  .di-chart.di-trend-md {
+    height: 200px;
+  }
+
+  .di-chart.di-trend-lg {
+    height: 280px;
+  }
+}
