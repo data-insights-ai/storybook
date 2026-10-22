@@ -14,6 +14,7 @@ const meta = {
     count: "1,284 of 4,000",
     value: 32,
     max: 100,
+    countTrack: "record",
   },
   argTypes: {
     id: { control: "text" },
@@ -21,6 +22,7 @@ const meta = {
     count: { control: "text" },
     value: { control: { type: "range", min: 0, max: 100 } },
     max: { control: { type: "number" } },
+    countTrack: { control: "radio", options: ["record", "prose"] },
   },
   decorators: [
     (Story) => (
@@ -101,4 +103,9 @@ export const Counting: Story = {
       </div>
     );
   },
+};
+
+/** A count stated in words, among prose: seats of a licence. */
+export const ProseCount: Story = {
+  args: { id: "seats", label: "Seats", count: "1 of 10 seats used", value: 1, max: 10, countTrack: "prose" },
 };

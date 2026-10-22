@@ -12,18 +12,24 @@ export type StatusTone = "ok" | "warn" | "danger" | "recorded" | "neutral" | "in
  * Machine state, set lowercase in the mono track: reported, not
  * announced. The dot is a second channel beside the word, never the
  * only one — colour alone does not carry the state.
+ *
+ * `track="prose"` sets the state in the reading font, capitalised by the
+ * caller, where it sits among prose rather than records: the state of a
+ * licence or a plan on a page a person reads.
  */
 export function StatusPill({
   tone = "neutral",
   children,
   dot = true,
+  track = "record",
 }: {
   tone?: StatusTone;
   children: ReactNode;
   dot?: boolean;
+  track?: "record" | "prose";
 }) {
   return (
-    <span className={cx("di-pill", `di-pill-${tone}`)}>
+    <span className={cx("di-pill", `di-pill-${tone}`, track === "prose" && "di-pill-prose")}>
       {dot ? <span className={cx("di-pill-dot", tone === "inferred" && "di-pill-ring")} aria-hidden /> : null}
       {children}
     </span>

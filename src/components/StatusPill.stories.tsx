@@ -9,6 +9,7 @@ const meta = {
   args: {
     tone: "ok",
     dot: true,
+    track: "record",
     children: "running",
   },
   argTypes: {
@@ -17,6 +18,7 @@ const meta = {
       options: ["ok", "warn", "danger", "recorded", "neutral", "ai"],
     },
     dot: { control: "boolean" },
+    track: { control: "radio", options: ["record", "prose"] },
     children: { control: "text" },
   },
 } satisfies Meta<typeof StatusPill>;
@@ -97,4 +99,9 @@ export const NightSheet: Story = {
       <StatusPill tone="inferred">ai insight</StatusPill>
     </div>
   ),
+};
+
+/** In the reading font, among prose: the state of a licence on a page a person reads. */
+export const Prose: Story = {
+  args: { track: "prose", children: "Valid" },
 };
