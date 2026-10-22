@@ -146,6 +146,7 @@ export {
   SidebarHeader,
 } from "./components/SidebarSections";
 export { SidebarTrigger } from "./components/SidebarTrigger";
+export { SkipLink } from "./components/SkipLink";
 export { SignIn, SignInVersion } from "./components/SignIn";
 export { SkeletonTable } from "./components/SkeletonTable";
 export { Sparkline } from "./components/Sparkline";

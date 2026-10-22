@@ -60,6 +60,50 @@ export const Default: Story = {
   },
 };
 
+/** A dialog: focus moves in, Tab stays inside, Escape closes it and focus goes back to the opener. */
+export const Keyboard: Story = {
+  parameters: { controls: { disable: true } },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return (
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 16, minHeight: 320 }}>
+        <Button variant="secondary" size="dense" onClick={() => setOpen(true)}>
+          Open entry 03
+        </Button>
+        {open ? (
+          <Drawer {...args} onClose={() => setOpen(false)}>
+            <FactList>
+              <Fact label="Kind">Feed</Fact>
+            </FactList>
+            <DrawerFooter>
+              <Button variant="primary" size="dense">
+                Resume
+              </Button>
+            </DrawerFooter>
+          </Drawer>
+        ) : null}
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const opener = canvas.getByRole("button", { name: "Open entry 03" });
+    await userEvent.click(opener);
+    const dialog = canvas.getByRole("dialog", { name: "feed.example.io" });
+    await expect(dialog).toHaveAttribute("aria-modal", "true");
+    await expect(dialog).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole("button", { name: "Close the source detail" })).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole("button", { name: "Resume" })).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole("button", { name: "Close the source detail" })).toHaveFocus();
+    await userEvent.keyboard("{Escape}");
+    await expect(canvas.queryByRole("dialog")).toBeNull();
+    await expect(opener).toHaveFocus();
+  },
+};
+
 /** With the actions this record allows, under its own rule. */
 export const WithActions: Story = {
   render: (args) => (
@@ -142,6 +186,7 @@ export const Transition: Story = {
         {open === null ? null : (
           <Drawer
             {...args}
+            modal={false}
             key={open}
             index={open}
             title={open === "03" ? "feed.example.io" : "archive.example.com"}

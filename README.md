@@ -59,6 +59,10 @@ When a page has more than one tab strip, give each `Tabs` and its `TabPanel` the
 
 `MenuItem` remains an action by default. Pass `checked` for a radio choice and put related choices in a labelled `MenuGroup`; the application owns the checked state. `disabled` uses the native button state and keyboard movement skips unavailable choices. `Menu align="start"` anchors to the trigger’s start edge; the existing end alignment remains the default.
 
+A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around the bar and the page. Give `SidebarProvider` a `skipLabel` (or `AppShell` its required one) and the first Tab stop is a skip link to the page.
+
+`Drawer` is a dialog: focus moves in, Escape closes it and focus returns to the opener. It is modal by default; `modal={false}` keeps the page behind reachable from the keyboard. `Sheet` and `Modal` are native modal dialogs.
+
 `Panel` and `EmptyState` can omit `index` when no ordinal belongs to the content. Omission removes the index rail completely.
 
 ## How it is put together

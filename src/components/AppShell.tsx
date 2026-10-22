@@ -5,6 +5,7 @@ import { cx } from "../cx";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { SealMark } from "./Seal";
+import { SkipLink } from "./SkipLink";
 import "./AppShell.css";
 
 export type NavItem = {
@@ -56,9 +57,7 @@ export type ConsoleChrome = {
 export function AppShell({ skipLabel, children }: { skipLabel: string; children: ReactNode }) {
   return (
     <div className="di-shell">
-      <a className="di-skip" href="#di-content">
-        {skipLabel}
-      </a>
+      <SkipLink label={skipLabel} />
       {children}
     </div>
   );

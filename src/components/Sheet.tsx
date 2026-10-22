@@ -53,6 +53,8 @@ export function Sheet({
     <dialog
       ref={ref}
       className="di-sheet"
+      role="dialog"
+      aria-modal="true"
       data-size={size}
       aria-labelledby={titleId}
       onCancel={(event) => {

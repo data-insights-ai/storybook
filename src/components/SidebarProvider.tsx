@@ -4,6 +4,7 @@ import { SidebarContext } from "./SidebarContext";
 import { readStoredExpanded, usePersistExpanded } from "./sidebarStorage";
 import { useNarrowViewport } from "./useNarrowViewport";
 import { useToggleShortcut } from "./useToggleShortcut";
+import { SkipLink } from "./SkipLink";
 import "./Sidebar.css";
 
 export function SidebarProvider({
@@ -12,6 +13,7 @@ export function SidebarProvider({
   onExpandedChange,
   storageKey,
   shortcut = "b",
+  skipLabel,
   children,
 }: {
   defaultExpanded?: boolean;
@@ -19,6 +21,8 @@ export function SidebarProvider({
   onExpandedChange?: (expanded: boolean) => void;
   storageKey?: string;
   shortcut?: string | false;
+  /** The skip link, the first thing the keyboard reaches: it jumps past the sidebar to `AppShellContent`. */
+  skipLabel?: string;
   children: ReactNode;
 }) {
   const [ownExpanded, setOwnExpanded] = useState(() => readStoredExpanded(storageKey) ?? defaultExpanded);
@@ -56,6 +60,7 @@ export function SidebarProvider({
     <SidebarContext.Provider value={state}>
       <Tooltip.Provider delay={300}>
         <div className="di-sb-layout" data-state={expanded ? "expanded" : "collapsed"}>
+          {skipLabel ? <SkipLink label={skipLabel} /> : null}
           {children}
         </div>
       </Tooltip.Provider>
