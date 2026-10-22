@@ -34,6 +34,17 @@ export { Chip } from "./components/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/CommandBar";
 export { ComboBox } from "./components/ComboBox";
 export type { ComboBoxSuggestion } from "./components/ComboBox";
+export { DateRangePicker, defaultDateRangeLabels } from "./components/DateRangePicker";
+export type { DateRangeLabels } from "./components/DateRangePicker";
+export {
+  dateRangePresets,
+  isDateRangeSet,
+  parseDateRange,
+  resolveDateRange,
+  serializeDateRange,
+  weekStartName,
+} from "./components/dateRange";
+export type { DateRangePreset, DateRangeSearch, DateRangeValue, ResolvedDateRange } from "./components/dateRange";
 export { ConfidenceField } from "./components/ConfidenceField";
 export { ConfirmDialog } from "./components/ConfirmDialog";
 export { CountButton } from "./components/CountButton";

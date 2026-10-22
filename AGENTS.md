@@ -15,6 +15,7 @@ Components carry no outer margin; spacing belongs to the container. A product sc
 - A `DataTable` with no rows is not rendered empty: show an `EmptyState` instead.
 - A record's detail page with heavy sub-lists or more than about three sections is split into tabs (`TabNav`), each tab its own URL, so it is deep-linkable, keyboard navigable and kept on back: the record's settings tab holds its sections and, last, its `DangerZone`.
 - A tabbed page's header (eyebrow, title, one description of the page) never holds a tab's action. Every tab panel starts with the same `ListToolbar`: the search on the left, the tab's one primary action in `ListToolbarEnd` with its `n` key, an optional `ListToolbarNote` under it; no heading of its own. A page without tabs keeps its primary action in `PageHeaderAside`, with the same key. Each tab shows the same `EmptyState` style.
+- A list read by date keeps its period in one `DateRangePicker` in its `ListToolbar`, after the filters. The product passes `locale`, `weekStartsOn` and `timeZone` from its settings, keeps the period in the URL (`serializeDateRange`, `parseDateRange`) and sends the server the instants `resolveDateRange` gives; a preset that runs up to now has no end, so new entries still arrive in it.
 - Keys are one scheme on every page and need no binding: a `SearchField` answers `/`, a `Button` with `shortcut="n"` is the primary create action, a `DetailSection` Edit answers `e`, Esc closes, `?` opens `ShortcutHelp` (mounted once in the shell). Keys never fire while the reader types. Every `Sheet`, `Modal`, `Drawer`, `CreateFlow` step and section form starts in its first field.
 
 The screens under `src/screens` follow these rules; copy from them, not from memory.
@@ -89,7 +90,7 @@ The sign-in card pins the daylight colours, including in the dark theme, because
 Every component lives in `src/components`; the story `title` decides where it lands in the sidebar, and there are five groups:
 
 - `Primitives/` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it. Button, Badge, StatusPill, Chip, Highlight, Icon, IconTile, Seal, Eyebrow, Kbd, TickRule, TextLink, VersionTag, KeyValues, PullQuote, Bars, Sparkline, Distribution, Pagination, Breadcrumb, Stepper, Tooltip, Waiting/{AppLoader,Progress,RouteProgress,Skeleton,SkeletonPage,Spinner}.
-- `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl, FieldHint.
+- `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl, DateRangePicker, FieldHint.
 - `Blocks/` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, FactList, Drawer, Menu, Tabs, EmptyState, StatTile, Metric, LivingCard, CommandBar, SignIn and the rest.
 - `Patterns/` — a whole arrangement: AppShell, Layout. A product renders `AppShell` full-bleed from its slots; `Console` is the same shell inside its Storybook window, with the sample chrome the screens share, and no product renders it.
 - `Screens/` — a console example, composed from the above.
