@@ -73,9 +73,11 @@ if (!layerOrder) {
   console.error("src/styles.css no longer opens with an @layer order statement");
   process.exit(1);
 }
-for (const file of readdirSync("src/components")) {
+/* A component drawn from several modules keeps its sheet in its own folder (`timeline/`). */
+for (const file of readdirSync("src/components", { recursive: true })) {
   if (!file.endsWith(".css")) continue;
   const sheet = readFileSync(join("src/components", file), "utf8");
+  mkdirSync(dirname(join(componentDir, file)), { recursive: true });
   writeFileSync(join(componentDir, file), `${layerOrder}\n${sheet}`);
   sheets += 1;
 }

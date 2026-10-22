@@ -117,11 +117,19 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--di-space-8);
-    margin: var(--di-panel-pad) calc(-1 * var(--di-panel-pad)) calc(-1 * var(--di-panel-pad));
-    margin-top: auto;
+    margin: auto calc(-1 * var(--di-panel-pad)) calc(-1 * var(--di-panel-pad));
     padding: var(--di-space-8) var(--di-space-12);
     border-top: 1px solid var(--di-rule-hairline);
     background: var(--di-bg-page);
+  }
+
+  /*
+   * The footer's top margin is `auto`, so it sinks to the bottom of a panel
+   * taller than its content. That leaves no room above it when the panel is
+   * not, so the last block before it keeps the panel's padding instead.
+   */
+  .di-panel-content > :has(+ .di-panel-footer) {
+    margin-bottom: var(--di-panel-pad);
   }
 
   .di-panel-note {
