@@ -15,6 +15,11 @@ type ChoiceProps = {
 type CheckboxProps = ChoiceProps & {
   /** Some, not all, of what the box stands for is chosen: a group of boxes under it. */
   indeterminate?: boolean;
+  /**
+   * The label is read, not shown: a box that selects a table row, where the
+   * row's name stands beside it already.
+   */
+  hideLabel?: boolean;
 };
 
 /**
@@ -34,6 +39,7 @@ export function Checkbox({
   className,
   disabled = false,
   indeterminate = false,
+  hideLabel = false,
   ...props
 }: CheckboxProps) {
   const ref = useRef<HTMLInputElement>(null);
@@ -41,7 +47,7 @@ export function Checkbox({
     if (ref.current) ref.current.indeterminate = indeterminate;
   }, [indeterminate]);
   return (
-    <div className={cx("di-choice", disabled && "is-disabled", className)}>
+    <div className={cx("di-choice", disabled && "is-disabled", hideLabel && "is-bare", className)}>
       <span className="di-choice-control">
         <span className="di-choice-mark">
           <input
@@ -59,7 +65,7 @@ export function Checkbox({
           </span>
         </span>
       </span>
-      <ChoiceText id={id} label={label} description={description} />
+      <ChoiceText id={id} label={label} description={description} hidden={hideLabel} />
     </div>
   );
 }
@@ -97,13 +103,15 @@ function ChoiceText({
   id,
   label,
   description,
+  hidden = false,
 }: {
   id: string;
   label: string;
   description: string;
+  hidden?: boolean;
 }) {
   return (
-    <span className="di-choice-text">
+    <span className={cx("di-choice-text", hidden && "di-sr")}>
       <label className="di-choice-label" htmlFor={id}>
         {label}
       </label>

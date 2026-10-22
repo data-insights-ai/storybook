@@ -175,4 +175,10 @@
     text-transform: uppercase;
     color: var(--di-text-muted);
   }
+
+  /* Without a visible label the box takes no more room than itself. */
+  .di-choice.is-bare {
+    display: inline-flex;
+    gap: 0;
+  }
 }
