@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { Stepper } from "./Stepper";
 
 const meta = {
@@ -74,5 +74,16 @@ export const Pair: Story = {
       { label: "Confirm", state: "done" },
       { label: "Seal", state: "current" },
     ],
+  },
+};
+
+/** A completed step is a button that returns to it. */
+export const Returnable: StoryObj<typeof meta> = {
+  args: { onStep: fn() },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const done = canvas.getAllByRole("button")[0];
+    await userEvent.click(done);
+    await expect(args.onStep).toHaveBeenCalledWith(0);
   },
 };

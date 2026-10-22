@@ -1,33 +1,68 @@
 @layer components {
   .di-stepper {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--di-space-8);
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    width: 100%;
     padding: 0;
     margin: 0;
     list-style: none;
   }
 
+  /* The line between bullets runs from each step's centre to the next. */
   .di-step {
+    position: relative;
     display: flex;
-    align-items: center;
-    gap: var(--di-space-8);
+    justify-content: center;
+    min-width: 0;
   }
 
-  .di-step-connector {
-    width: 22px;
+  .di-step:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    top: 11px;
+    right: 50%;
+    left: -50%;
     height: 1px;
-    margin-right: var(--di-space-2);
     background: var(--di-border);
+  }
+
+  .di-step-button {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--di-space-6);
+    min-width: 0;
+    max-width: 100%;
+    padding: 0 var(--di-space-4);
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: center;
+  }
+
+  button.di-step-button {
+    cursor: pointer;
+    border-radius: var(--di-radius-control);
+  }
+
+  button.di-step-button:hover .di-step-label {
+    text-decoration: underline;
+  }
+
+  button.di-step-button:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
   }
 
   .di-step-bullet {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     flex: none;
     border: 1px solid var(--di-border-input);
     border-radius: var(--di-radius-pill);
@@ -51,7 +86,10 @@
   }
 
   .di-step-label {
+    max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
     color: var(--di-text-subtle);
   }
 
@@ -62,5 +100,16 @@
 
   .di-step-label.is-current {
     font-weight: var(--di-weight-medium);
+  }
+
+  /* On a phone only the current step keeps its name; the others are their numbers. */
+  @media (max-width: 600px) {
+    .di-step:not([aria-current]) .di-step-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
   }
 }

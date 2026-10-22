@@ -13,7 +13,10 @@ import "./CreateFlow.css";
  *
  * The flow is a form. The caller owns the step and the values and checks
  * them; `canAdvance` false keeps Next disabled until the step is complete.
- * It sits on a page (`Page width="form"`) or in a `Sheet`.
+ * The stepper spans the flow, a completed step is pressed to return to it
+ * (`onBack` once per step), and the actions sit in a footer that stays in
+ * view: Back and Cancel at the left, the one action that moves on at the
+ * right. It sits on a page (`width="page"`) or in a `Sheet`.
  */
 export function CreateFlow({
   label,
@@ -73,6 +76,10 @@ export function CreateFlow({
     if (!focusFirstField(fields.current) && !opening) heading.current?.focus();
   }, [step]);
 
+  const goTo = (index: number) => {
+    for (let i = step; i > index; i--) onBack();
+  };
+
   const submit = (event: FormEvent) => {
     event.preventDefault();
     if (busy || !canAdvance) return;
@@ -85,6 +92,7 @@ export function CreateFlow({
       <Stepper
         label={label}
         stateLabels={stateLabels}
+        onStep={goTo}
         steps={steps.map((title, i) => ({
           label: title,
           state: i < step ? "done" : i === step ? "current" : "upcoming",
@@ -104,17 +112,17 @@ export function CreateFlow({
         </p>
       ) : null}
       <div className="di-create-flow-actions">
+        {step > 0 ? (
+          <Button variant="secondary" onClick={onBack} disabled={busy}>
+            {backLabel}
+          </Button>
+        ) : null}
         {cancelLabel !== "" && onCancel ? (
           <Button variant="ghost" onClick={onCancel} disabled={busy}>
             {cancelLabel}
           </Button>
         ) : null}
         <span className="di-create-flow-spacer" />
-        {step > 0 ? (
-          <Button variant="secondary" onClick={onBack} disabled={busy}>
-            {backLabel}
-          </Button>
-        ) : null}
         <Button type="submit" loading={busy} disabled={!canAdvance}>
           {last ? submitLabel : nextLabel}
         </Button>
