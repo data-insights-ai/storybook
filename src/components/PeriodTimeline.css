@@ -84,9 +84,11 @@
     --di-period-color: var(--di-chart-danger);
   }
 
+  /* Today has a line of its own under the ends, so it never sits on a date. */
   .di-periods-scale {
     position: relative;
     display: flex;
+    padding-bottom: var(--di-space-16);
     justify-content: space-between;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
@@ -95,6 +97,7 @@
 
   .di-periods-today {
     position: absolute;
+    top: var(--di-space-16);
     left: var(--di-period-today);
     transform: translateX(-50%);
     color: var(--di-highlight-ink);

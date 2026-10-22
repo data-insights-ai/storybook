@@ -1,19 +1,82 @@
 @layer components {
-  .di-file {
-    position: relative;
+  /* One dashed frame: the place a file goes. Nothing inside it is bordered. */
+  .di-file-drop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--di-space-8);
+    padding: var(--di-space-16);
+    border: 1px dashed var(--di-border-input);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-surface);
+    color: var(--di-text-muted);
+    text-align: center;
+    transition: border-color var(--di-duration) var(--di-ease), background var(--di-duration) var(--di-ease);
+  }
+
+  .di-file-drop.is-dragging {
+    border-color: var(--di-border-strong);
+    background: var(--di-bg-subtle);
+  }
+
+  .di-file-drop[aria-invalid="true"],
+  .di-file-row[aria-invalid="true"] {
+    border-color: var(--di-status-danger-border);
+  }
+
+  .di-file-drop.is-disabled {
+    cursor: not-allowed;
+    background: var(--di-bg-disabled);
+  }
+
+  .di-file-prompt {
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+  }
+
+  /* The picker opens from a link in the sentence, not a second framed button. */
+  .di-file-choose {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: var(--di-weight-medium);
+    color: var(--di-text);
+    text-decoration: underline;
+    text-decoration-color: var(--di-seal);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .di-file-choose:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  .di-file-choose:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+    border-radius: var(--di-radius-micro);
+  }
+
+  .di-file-choose:disabled {
+    color: inherit;
+    cursor: not-allowed;
+  }
+
+  /* A chosen file: one row with what it is, how big, and the way to remove it. */
+  .di-file-row {
     display: flex;
     align-items: center;
     gap: var(--di-space-8);
-    padding: 0 var(--di-space-2) 0 var(--di-space-2);
+    min-height: var(--di-field-height);
+    padding: var(--di-space-4) var(--di-space-4) var(--di-space-4) var(--di-space-12);
+    border: 1px solid var(--di-border-input);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-surface);
+    color: var(--di-text-muted);
   }
 
-  .di-file.is-dragging {
-    border-color: var(--di-border-strong);
-    border-style: dashed;
-  }
-
-  .di-file.is-disabled {
-    cursor: not-allowed;
+  .di-file-row.is-disabled {
     background: var(--di-bg-disabled);
   }
 
@@ -23,17 +86,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
     color: var(--di-text);
   }
 
-  .di-file-name.is-empty {
-    font-family: var(--di-font-ui);
+  .di-file-size {
+    flex: none;
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
     color: var(--di-text-subtle);
-  }
-
-  .di-file.is-disabled .di-file-name {
-    color: var(--di-text-disabled);
   }
 }

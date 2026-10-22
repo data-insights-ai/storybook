@@ -38,14 +38,30 @@ type Story = StoryObj<typeof meta>;
 
 const certificate = new File(["-----BEGIN CERTIFICATE-----"], "collector-eu-west.pem", { type: "application/x-pem-file" });
 
+/** One dashed area; the link opens the picker. A chosen file is a row with its size and a remove button. */
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("No file chosen")).toBeInTheDocument();
+    await expect(canvas.getByRole("button", { name: /Certificate/ })).toHaveTextContent("choose a file");
     await userEvent.upload(canvas.getByLabelText("Certificate", { selector: "input" }), certificate);
     await expect(canvas.getByText("collector-eu-west.pem")).toBeInTheDocument();
-    await userEvent.click(canvas.getByRole("button", { name: "Remove file" }));
-    await expect(canvas.getByText("No file chosen")).toBeInTheDocument();
+    await expect(canvas.getByText(/byte/)).toBeInTheDocument();
+    await userEvent.click(canvas.getByRole("button", { name: "Remove file: collector-eu-west.pem" }));
+    await expect(canvas.getByText("choose a file")).toBeInTheDocument();
+  },
+};
+
+/** A file the field does not take is not passed on; the line under it says why. */
+export const Refused: Story = {
+  args: { maxBytes: 10, tooLargeLabel: "The file is larger than 10 bytes.", wrongTypeLabel: "Choose a .pem or .crt file." },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText("Certificate", { selector: "input" });
+    await userEvent.upload(input, new File(["x"], "notes.txt", { type: "text/plain" }), { applyAccept: false });
+    await expect(canvas.getByText("Choose a .pem or .crt file.")).toBeInTheDocument();
+    await userEvent.upload(input, certificate);
+    await expect(canvas.getByText("The file is larger than 10 bytes.")).toBeInTheDocument();
+    await expect(canvas.queryByText("collector-eu-west.pem")).toBeNull();
   },
 };
 
@@ -53,7 +69,7 @@ export const WithError: Story = {
   args: { hint: "This file is not a certificate.", hintTone: "error" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("button", { name: /Choose file/ })).toHaveAccessibleDescription(
+    await expect(canvas.getByRole("button", { name: /choose a file/ })).toHaveAccessibleDescription(
       "This file is not a certificate.",
     );
   },
