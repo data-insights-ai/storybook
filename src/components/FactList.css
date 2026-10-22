@@ -1,8 +1,13 @@
 @layer components {
   .di-fact-label {
+    font-family: var(--di-font-ui);
+    color: var(--di-text-subtle);
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .di-fact-mono {
     font-family: var(--di-font-code);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
   }
 
   .di-fact-value {
@@ -11,7 +16,7 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* The console list: a term column, then the value in the mono track. */
+  /* The console list: a term column that wraps, then the value. */
   .di-facts-rows {
     margin: var(--di-space-12) 0 0;
     border-top: 1px solid var(--di-rule-hairline);
@@ -26,8 +31,8 @@
   }
 
   .di-facts-rows .di-fact-label {
-    width: 96px;
-    flex: none;
+    flex: 0 0 clamp(96px, 34%, 200px);
+    min-width: 0;
     font-size: var(--di-font-size-200);
     color: var(--di-text-subtle);
   }
@@ -35,7 +40,6 @@
   .di-facts-rows .di-fact-value {
     flex: 1;
     overflow-wrap: anywhere;
-    font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
     color: var(--di-text);
   }
