@@ -16,7 +16,8 @@
    * option, "Type: all"); the label above it is read, not shown, so every
    * control in the row has the search field's height.
    */
-  .di-list-toolbar .di-field-label {
+  /* Only the toolbar's own fields: a dialog opened from a toolbar button keeps its labels. */
+  :is(.di-list-toolbar, .di-list-toolbar-end) > .di-field > .di-field-label {
     position: absolute;
     width: 1px;
     height: 1px;
