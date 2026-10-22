@@ -13,6 +13,9 @@ export type SkeletonPageVariant = "list" | "detail" | "form";
  * a form's fields and its actions (`form`). It takes the place of the
  * page's content inside the shell, so the rail and the bar never leave.
  *
+ * A page inside a layout that already drew the header (a tab of a page)
+ * passes `heading={false}` and gets the body alone.
+ *
  * Like `SkeletonTable`, only the bars breathe, and nothing appears for the
  * first `delay` ms; the space is reserved from the first frame.
  */
@@ -20,10 +23,13 @@ export function SkeletonPage({
   variant,
   label,
   rows = 6,
+  heading = true,
   delay = 150,
   className,
 }: {
   variant: SkeletonPageVariant;
+  /** False when the surrounding layout already shows the page header. */
+  heading?: boolean;
   /** What a screen reader hears while the page loads. */
   label: string;
   /** Rows of the register in the `list` variant. */
@@ -42,10 +48,12 @@ export function SkeletonPage({
       aria-live="polite"
     >
       <span className="di-sr">{label}</span>
-      <div className="di-skp-head" aria-hidden>
-        <Bar className="is-title" />
-        <Bar className="is-lede" step={1} />
-      </div>
+      {heading && (
+        <div className="di-skp-head" aria-hidden>
+          <Bar className="is-title" />
+          <Bar className="is-lede" step={1} />
+        </div>
+      )}
       <div className="di-skp-body" aria-hidden>
         {variant === "list" && <ListBody rows={rows} label={label} />}
         {variant === "detail" && <DetailBody />}

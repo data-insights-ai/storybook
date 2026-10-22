@@ -6,11 +6,12 @@ const meta = {
   title: "Primitives/Waiting/SkeletonPage",
   component: SkeletonPage,
   tags: ["autodocs"],
-  args: { variant: "list", label: "Loading the page", rows: 6, delay: 150 },
+  args: { variant: "list", label: "Loading the page", rows: 6, heading: true, delay: 150 },
   argTypes: {
     variant: { control: "inline-radio", options: ["list", "detail", "form"] },
     label: { control: "text" },
     rows: { control: { type: "number" } },
+    heading: { control: "boolean" },
     delay: { control: { type: "number" } },
   },
 } satisfies Meta<typeof SkeletonPage>;
@@ -34,4 +35,9 @@ export const Detail: Story = {
 /** A form: labelled fields and the action that commits them. */
 export const Form: Story = {
   args: { variant: "form" },
+};
+
+/** A tab of a page: the layout above already shows the header. */
+export const InsideLayout: Story = {
+  args: { variant: "form", heading: false },
 };
