@@ -1,0 +1,112 @@
+@layer components {
+  /* The same flow as AppShellContent: header, then blocks 24px apart. */
+  .di-skp,
+  .di-skp-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-24);
+  }
+
+  .di-skp-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+    padding-block: var(--di-space-4);
+  }
+
+  /*
+   * Opacity only, staggered down the page, and nothing sweeps — the
+   * register rule `SkeletonTable` states. `prefers-reduced-motion` drops
+   * the loop in base.css and the bars rest at full opacity.
+   */
+  .di-skp-bar {
+    display: block;
+    max-width: 100%;
+    height: 9px;
+    border-radius: var(--di-radius-micro);
+    background: var(--di-bg-subtle);
+    animation: di-skp-breathe var(--di-skeleton-breath) ease-in-out infinite;
+    animation-delay: calc(var(--di-skeleton-row, 0) * var(--di-skeleton-stagger));
+  }
+
+  @keyframes di-skp-breathe {
+    50% {
+      opacity: var(--di-skeleton-rest);
+    }
+  }
+
+  .di-skp-bar.is-title {
+    width: 260px;
+    height: 22px;
+  }
+
+  .di-skp-bar.is-lede {
+    width: 420px;
+  }
+
+  .di-skp-bar.is-heading {
+    width: 140px;
+    height: 12px;
+  }
+
+  .di-skp-bar.is-label {
+    width: 96px;
+    height: 7px;
+    background: var(--di-border);
+  }
+
+  .di-skp-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-space-12);
+  }
+
+  .di-skp-control {
+    display: block;
+    height: var(--di-field-height);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-surface);
+  }
+
+  .di-skp-control.is-search {
+    flex: 0 1 280px;
+    min-width: 0;
+  }
+
+  .di-skp-control.is-button {
+    width: 96px;
+    flex: none;
+    border-color: transparent;
+    background: var(--di-bg-subtle);
+  }
+
+  .di-skp-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-16);
+    padding: var(--di-space-16);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+  }
+
+  .di-skp-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--di-space-16) var(--di-space-24);
+  }
+
+  .di-skp-fact,
+  .di-skp-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-8);
+  }
+
+  .di-skp-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

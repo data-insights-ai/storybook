@@ -1,0 +1,34 @@
+@layer components {
+  /*
+   * Drawn over the bar's bottom rule, in the action colour: navy on paper,
+   * gold after dark. Absolute, so the bar's flex row never sees it.
+   */
+  .di-route-progress {
+    position: absolute;
+    inset: auto 0 -1px 0;
+    z-index: 1;
+    height: 2px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .di-route-progress-fill {
+    display: block;
+    height: 100%;
+    background: var(--di-fill-strong);
+    transform-origin: left center;
+    transition: transform var(--di-duration-slow) ease-out;
+  }
+
+  .di-route-progress[data-phase="done"] {
+    opacity: 0;
+    transition: opacity var(--di-duration-slow) ease-out var(--di-duration-slow);
+  }
+
+  /* Without motion the line does not crawl: it stands at full length while the wait lasts. */
+  @media (prefers-reduced-motion: reduce) {
+    .di-route-progress-fill {
+      transform: none !important;
+    }
+  }
+}
