@@ -666,3 +666,48 @@ export const CellLines: Story = {
     await expect(canvas.getByText("Total €990,000.00 per year")).toHaveClass("di-cell-secondary");
   },
 };
+
+/**
+ * A pinned name column in a table without an index column — the default
+ * `indexed` left as it is, as most product tables do. The name starts at the
+ * frame's edge and the cell after it shows whole: nothing sits 38px in.
+ */
+export const PinnedWithoutIndex: Story = {
+  args: { caption: "Plans" },
+  render: (args) => (
+    <div style={{ width: 720 }}>
+      <DataTable {...args}>
+        <TableHead>
+          <TableColumn width="fill" pinned>
+            Offer
+          </TableColumn>
+          <TableColumn align="end">Price</TableColumn>
+          <TableColumn align="end">Action</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell pinned>
+              <CellStack primary="Team Add-on" secondary="Yearly · 3 seats per unit" prose />
+            </TableCell>
+            <TableCell align="end">
+              <CellStack primary="€9,900.00 per year" secondary={["Total €9,900.00 per year"]} prose />
+            </TableCell>
+            <TableCell align="end">
+              <Button size="dense">Subscribe</Button>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const frame = canvas.getByRole("table").getBoundingClientRect();
+    const name = canvas.getByRole("columnheader", { name: "Offer" }).getBoundingClientRect();
+    const price = canvas.getByRole("columnheader", { name: "Price" }).getBoundingClientRect();
+    await expect(Math.abs(name.left - frame.left)).toBeLessThan(1);
+    await expect(name.right).toBeLessThanOrEqual(price.left + 1);
+    const total = canvas.getByText("Total €9,900.00 per year");
+    await expect(total.scrollWidth).toBeLessThanOrEqual(total.clientWidth + 1);
+  },
+};
