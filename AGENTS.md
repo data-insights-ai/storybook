@@ -13,6 +13,9 @@ Components carry no outer margin; spacing belongs to the container. A product sc
 - A form is a `Stack gap={16}` of fields, followed by `Actions` for its buttons. A one-line form (pick a value and apply it) is a `Toolbar`: the fields, then the button. A toolbar that contains fields aligns every control on the control row, so buttons line up with inputs and an error line does not move them.
 - Fields stretch to their container. Constrain a form's width by placing it in a `Panel` or a `Grid` column, not by sizing the controls.
 - A `DataTable` with no rows is not rendered empty: show an `EmptyState` instead.
+- A record's detail page with heavy sub-lists or more than about three sections is split into tabs (`TabNav`), each tab its own URL, so it is deep-linkable, keyboard navigable and kept on back: the record's settings tab holds its sections and, last, its `DangerZone`.
+- A tabbed page's header (eyebrow, title, one description of the page) never holds a tab's action. Every tab panel starts with the same `ListToolbar`: the search on the left, the tab's one primary action in `ListToolbarEnd` with its `n` key, an optional `ListToolbarNote` under it; no heading of its own. A page without tabs keeps its primary action in `PageHeaderAside`, with the same key. Each tab shows the same `EmptyState` style.
+- Keys are one scheme on every page and need no binding: a `SearchField` answers `/`, a `Button` with `shortcut="n"` is the primary create action, a `DetailSection` Edit answers `e`, Esc closes, `?` opens `ShortcutHelp` (mounted once in the shell). Keys never fire while the reader types. Every `Sheet`, `Modal`, `Drawer`, `CreateFlow` step and section form starts in its first field.
 
 The screens under `src/screens` follow these rules; copy from them, not from memory.
 

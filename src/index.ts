@@ -81,7 +81,7 @@ export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/Leve
 export type { LevelBands } from "./components/LevelMeter";
 export { Actions, Grid, Numbered, Stack, Toolbar, ToolbarEnd } from "./components/Layout";
 export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/LivingCard";
-export { ListToolbar, ListToolbarEnd } from "./components/ListToolbar";
+export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/Menu";
 export { Metric, MetricNote } from "./components/Metric";
 export {
@@ -131,6 +131,8 @@ export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "
 export { Sidebar } from "./components/Sidebar";
 export { SidebarBrand } from "./components/SidebarBrand";
 export { useShortcut } from "./components/useShortcut";
+export { ShortcutHelp } from "./components/ShortcutHelp";
+export { Tag, TagList } from "./components/Tag";
 export { useSidebar } from "./components/SidebarContext";
 export type { SidebarState } from "./components/SidebarContext";
 export { SidebarInset } from "./components/SidebarInset";
