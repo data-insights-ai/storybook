@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 // shortcut still fires while one of them holds focus.
 const choices = new Set(["radio", "checkbox", "button", "submit", "reset", "range", "color"]);
 
-function editable(target: EventTarget | null) {
+export function editable(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) return false;
   if (target.isContentEditable || target.closest("textarea, select") !== null) return true;
   const input = target.closest("input");
@@ -27,7 +27,7 @@ export function useShortcut(key: string | false, action: () => void) {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.metaKey || event.ctrlKey || event.altKey || event.defaultPrevented) return;
       if (event.key !== key || editable(event.target)) return;
-      if (document.querySelector("dialog[open]")) return;
+      if (document.querySelector('dialog[open], [aria-modal="true"]:not(dialog)')) return;
       event.preventDefault();
       latest.current();
     };

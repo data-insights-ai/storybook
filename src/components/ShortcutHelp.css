@@ -1,0 +1,25 @@
+@layer components {
+  .di-shortcut-help {
+    display: grid;
+    gap: var(--di-space-8);
+    margin: 0;
+  }
+
+  .di-shortcut-help-row {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--di-space-12);
+  }
+
+  .di-shortcut-help-row dd {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-4) var(--di-space-8);
+    margin: 0;
+  }
+
+  .di-shortcut-help-target {
+    color: var(--di-text-muted);
+  }
+}

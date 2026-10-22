@@ -69,4 +69,11 @@
     font-size: var(--di-font-size-100);
     line-height: 1;
   }
+
+  /* A key hint is for a keyboard; on a touch screen it is noise. */
+  @media (pointer: coarse) {
+    .di-kbd.di-search-kbd {
+      display: none;
+    }
+  }
 }

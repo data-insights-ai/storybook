@@ -1,5 +1,6 @@
 import { Children, isValidElement, useEffect, useId, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
+import { focusFirstField } from "./shortcutKeys";
 import "./Sheet.css";
 
 /**
@@ -38,7 +39,10 @@ export function Sheet({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      focusFirstField(dialog);
+    }
     if (!open && dialog.open) dialog.close();
   }, [open]);
 

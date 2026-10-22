@@ -1,5 +1,6 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, Ref } from "react";
 import { cx } from "../cx";
+import { useShortcutKeys } from "./shortcutKeys";
 import "./Button.css";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "seal" | "inferred";
@@ -13,6 +14,11 @@ type Common = {
   /** Swaps the icon for a spinner and blocks the press. */
   loading?: boolean;
   disabled?: boolean;
+  /**
+   * The page key that presses it: `n` for the primary create action, `e`
+   * for Edit. The key shows beside the label and in the shortcut help.
+   */
+  shortcut?: string;
 };
 
 /**
@@ -32,7 +38,10 @@ type LinkProps = Common & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "type"> 
  * The icon is the first child. An icon-only button needs `aria-label`.
  */
 export function Button(props: ButtonProps | LinkProps) {
-  const { variant = "primary", size = "md", iconOnly = false, loading = false, disabled = false } = props;
+  const { variant = "primary", size = "md", iconOnly = false, loading = false, disabled = false, shortcut } = props;
+  useShortcutKeys(Boolean(shortcut));
+  const keyed = shortcut ? { "data-di-shortcut": shortcut, "aria-keyshortcuts": shortcut } : {};
+  const hint = shortcut && !iconOnly ? <kbd className="di-btn-kbd">{shortcut.toUpperCase()}</kbd> : null;
 
   const className = cx(
     "di-btn",
@@ -44,7 +53,7 @@ export function Button(props: ButtonProps | LinkProps) {
   );
 
   if (props.href !== undefined) {
-    const { href, variant: _v, size: _s, iconOnly: _i, loading: _l, disabled: _d, className: _c, children, ...rest } = props;
+    const { href, variant: _v, size: _s, iconOnly: _i, loading: _l, disabled: _d, className: _c, shortcut: _k, children, ...rest } = props;
     /*
      * An anchor has no `disabled`, so a blocked link drops its `href`:
      * it cannot be followed, cannot be tabbed to, and says why. Leaving
@@ -56,6 +65,7 @@ export function Button(props: ButtonProps | LinkProps) {
     return (
       <a
         {...rest}
+        {...keyed}
         href={blocked ? undefined : href}
         aria-disabled={blocked || undefined}
         aria-busy={loading || undefined}
@@ -63,14 +73,16 @@ export function Button(props: ButtonProps | LinkProps) {
       >
         {loading ? <span className="di-btn-spinner" aria-hidden /> : null}
         {children}
+        {hint}
       </a>
     );
   }
 
-  const { type = "button", variant: _v, size: _s, iconOnly: _i, loading: _l, disabled: _d, className: _c, href: _h, children, ...rest } = props;
+  const { type = "button", variant: _v, size: _s, iconOnly: _i, loading: _l, disabled: _d, className: _c, href: _h, shortcut: _k, children, ...rest } = props;
   return (
     <button
       {...rest}
+      {...keyed}
       type={type}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
@@ -78,6 +90,7 @@ export function Button(props: ButtonProps | LinkProps) {
     >
       {loading ? <span className="di-btn-spinner" aria-hidden /> : null}
       {children}
+      {hint}
     </button>
   );
 }

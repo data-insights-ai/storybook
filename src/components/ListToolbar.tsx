@@ -8,8 +8,11 @@ import "./ListToolbar.css";
  * an `InfiniteTable` below keeps its head under it.
  *
  * The `SearchField` grows; each filter is a `Select` with `hideLabel`
- * whose first option names the filter ("All roles"). The page's primary
- * action ("New …", "Invite people") belongs in `PageHeaderAside`, not here.
+ * whose first option names the filter ("All roles"). On a page without
+ * tabs the primary action ("New …", "Invite people") belongs in
+ * `PageHeaderAside`. In a tab panel it is the tab's own and sits here, in
+ * `ListToolbarEnd`; the panel has no heading of its own, only an optional
+ * `ListToolbarNote` under the row.
  * Search and filters are state the reader shares by link: keep them in the
  * URL.
  */
@@ -50,4 +53,9 @@ export function ListToolbar({
 /** The toolbar's trailing actions on the list as a whole: export, a view switch. */
 export function ListToolbarEnd({ children }: { children: ReactNode }) {
   return <div className="di-list-toolbar-end">{children}</div>;
+}
+
+/** One muted line under a tab panel's toolbar: what this tab holds. */
+export function ListToolbarNote({ children }: { children: ReactNode }) {
+  return <p className="di-list-toolbar-note">{children}</p>;
 }

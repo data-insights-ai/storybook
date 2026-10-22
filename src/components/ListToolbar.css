@@ -39,4 +39,11 @@
       max-width: none;
     }
   }
+
+  .di-list-toolbar-note {
+    margin: 0;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
 }

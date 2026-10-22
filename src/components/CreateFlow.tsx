@@ -1,14 +1,15 @@
 import { useEffect, useId, useRef, type FormEvent, type ReactNode } from "react";
 import { Button } from "./Button";
 import { Stepper } from "./Stepper";
+import { focusFirstField } from "./shortcutKeys";
 import "./CreateFlow.css";
 
 /**
  * Creating something that needs a choice before its details: choose the
  * type (`ChoiceCards`), fill in the details, review, create. One step is
  * on screen at a time, under a `Stepper` that says where the reader is.
- * Enter moves on; Back keeps what was entered. On each step focus moves
- * to the step's heading, so a screen reader hears where it landed.
+ * Enter moves on; Back keeps what was entered. Each step starts in its
+ * first field, or on its heading when it has none.
  *
  * The flow is a form. The caller owns the step and the values and checks
  * them; `canAdvance` false keeps Next disabled until the step is complete.
@@ -60,12 +61,13 @@ export function CreateFlow({
   const first = useRef(true);
   const last = step === steps.length - 1;
 
+  const fields = useRef<HTMLDivElement>(null);
+  // Each step starts in its first field; a step without one (a review)
+  // puts focus on its heading, so a screen reader hears where it landed.
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    heading.current?.focus();
+    const opening = first.current;
+    first.current = false;
+    if (!focusFirstField(fields.current) && !opening) heading.current?.focus();
   }, [step]);
 
   const submit = (event: FormEvent) => {
@@ -89,7 +91,9 @@ export function CreateFlow({
         <h2 className="di-create-flow-title" id={headingId} ref={heading} tabIndex={-1}>
           {steps[step]}
         </h2>
-        <div className="di-field-stack">{children}</div>
+        <div className="di-field-stack" ref={fields}>
+          {children}
+        </div>
       </div>
       {error ? (
         <p className="di-create-flow-error" role="alert">

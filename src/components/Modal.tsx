@@ -1,4 +1,5 @@
 import { Children, isValidElement, useEffect, useRef, type ReactNode } from "react";
+import { focusFirstField } from "./shortcutKeys";
 import "./Modal.css";
 
 /**
@@ -26,7 +27,10 @@ export function Modal({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      focusFirstField(dialog);
+    }
     if (!open && dialog.open) dialog.close();
   }, [open]);
 
