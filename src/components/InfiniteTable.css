@@ -2,16 +2,18 @@
   /*
    * The head stays in view under the app bar and a sticky toolbar. A sticky
    * cell sticks to its nearest scroll container, so on a wide frame the
-   * table's own frames clip instead of scrolling; under 768px the grid
-   * scrolls sideways again and the head scrolls with the page.
+   * table's own frames clip instead of scrolling. Under 768px, or once the
+   * columns are wider than the frame, the grid scrolls sideways again and
+   * the head scrolls with the page: a cut-off column is worse than a head
+   * that leaves.
    */
   @media (min-width: 768px) {
-    .di-infinite .di-table-wrap,
-    .di-infinite .di-table-scroll {
+    .di-infinite .di-table-wrap:not(.is-overflowing),
+    .di-infinite .di-table-wrap:not(.is-overflowing) .di-table-scroll {
       overflow: clip;
     }
 
-    .di-infinite .di-table thead th {
+    .di-infinite .di-table-wrap:not(.is-overflowing) .di-table thead th {
       position: sticky;
       top: calc(var(--di-sticky-top) + var(--di-list-toolbar-h, 0px));
       z-index: 1;

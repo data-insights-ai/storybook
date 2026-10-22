@@ -138,6 +138,44 @@
     background: var(--di-bg-page);
   }
 
+  /*
+   * The row's name stays at the left edge while the grid scrolls sideways.
+   * It needs a ground of its own, or the passing columns show through it.
+   */
+  .di-table :is(th, td).is-pinned {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--di-table-bg);
+  }
+
+  .di-table th.is-pinned {
+    z-index: 2;
+    background: var(--di-bg-page);
+  }
+
+  .di-table.is-indexed :is(th, td).is-pinned {
+    left: var(--di-index-col);
+  }
+
+  .di-table:has(.is-pinned) .di-table-index {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+  }
+
+  .di-table-wrap.is-overflowing .di-table :is(th, td).is-pinned {
+    box-shadow: inset -1px 0 0 var(--di-table-rule);
+  }
+
+  .di-table tbody tr:hover td.is-pinned {
+    background: var(--di-bg-row-hover);
+  }
+
+  .di-table tbody tr.is-active td.is-pinned {
+    background: var(--di-bg-page);
+  }
+
   /* The ordinal column: the row's handle, never its content. */
   .di-table-index {
     width: var(--di-index-col);
@@ -280,6 +318,41 @@
 
     .di-table-wrap.is-stackable td:empty {
       display: none;
+    }
+
+    /* Stacked, nothing is pinned: the card is as wide as the frame. */
+    .di-table-wrap.is-stackable :is(th, td).is-pinned {
+      position: static;
+      box-shadow: none;
+    }
+
+    /* The row's name heads the card on a line of its own. */
+    .di-table-wrap.is-stackable td.is-pinned {
+      flex-basis: 100%;
+    }
+
+    /*
+     * A labelled cell is one line of the card: its column's name, then the
+     * value, so a figure on a phone still says which figure it is. The name
+     * is drawn, not read: a screen reader hears the column header already.
+     */
+    .di-table-wrap.is-stackable td.is-labelled {
+      display: grid;
+      grid-template-columns: minmax(96px, 38%) minmax(0, 1fr);
+      gap: var(--di-space-12);
+      align-items: baseline;
+      flex-basis: 100%;
+      text-align: left;
+    }
+
+    .di-table-wrap.is-stackable td.is-labelled::before {
+      content: attr(data-label) / "";
+      font-family: var(--di-font-code);
+      font-size: var(--di-font-size-200);
+      letter-spacing: var(--di-tracking-eyebrow);
+      text-transform: uppercase;
+      color: var(--di-text-muted);
+      white-space: normal;
     }
 
     .di-table-wrap.is-stackable tbody tr:hover,
