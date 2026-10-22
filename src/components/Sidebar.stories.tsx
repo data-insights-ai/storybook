@@ -2,7 +2,7 @@ import { useState, type AnchorHTMLAttributes, type MouseEvent } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Archive, Bell, Building2, FileSearch, Gauge, Settings, ShieldAlert, UserRound } from "lucide-react";
-import { AppShellBar } from "./AppShell";
+import { AppShellBar, AppShellContent } from "./AppShell";
 import { Breadcrumb } from "./Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "./Heading";
 import { Menu, MenuGroup, MenuItem } from "./Menu";
@@ -54,7 +54,7 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
   const current = [...sections, ...records].find((item) => item.id === active)!;
 
   return (
-    <SidebarProvider defaultExpanded={defaultExpanded} storageKey={storageKey}>
+    <SidebarProvider defaultExpanded={defaultExpanded} storageKey={storageKey} skipLabel="Skip to content">
       <Sidebar label={label} closeLabel={closeLabel}>
         <SidebarHeader>
           <SidebarMenu>
@@ -118,11 +118,11 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
           <SidebarTrigger label="Toggle navigation" />
           <Breadcrumb label="Breadcrumb" items={[{ label: "Example studio", href: "#/workspace" }, { label: current.label }]} />
         </AppShellBar>
-        <div style={{ padding: "var(--di-space-24)" }}>
+        <AppShellContent>
           <PageHeader eyebrow="Record" lede="Press Ctrl+B or Cmd+B to collapse the navigation to its icon rail.">
             <PageHeaderTitle>{current.label}</PageHeaderTitle>
           </PageHeader>
-        </div>
+        </AppShellContent>
       </SidebarInset>
     </SidebarProvider>
   );
@@ -149,6 +149,12 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     const nav = canvas.getByRole("navigation", { name: "Sections" });
     await expect(within(nav).getByRole("link", { name: /Findings/ })).toHaveAttribute("aria-current", "page");
+    await expect(canvas.getAllByRole("main")).toHaveLength(1);
+    await userEvent.tab();
+    const skip = canvas.getByRole("link", { name: "Skip to content" });
+    await expect(skip).toHaveFocus();
+    await userEvent.keyboard("{Enter}");
+    await expect(canvas.getByRole("main")).toHaveFocus();
 
     await expect(canvas.getByRole("img", { name: "datAInsights" })).toHaveClass("di-sb-brand-logo");
     await userEvent.click(canvas.getByRole("button", { name: "Toggle navigation" }));

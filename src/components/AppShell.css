@@ -538,34 +538,6 @@
     outline: none;
   }
 
-  .di-skip {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: calc(-1 * var(--di-space-2));
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .di-skip:focus {
-    left: 16px;
-    top: 16px;
-    z-index: 3;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: var(--di-space-8) var(--di-space-12);
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-    border-radius: var(--di-radius-control);
-    background: var(--di-bg-surface);
-    color: var(--di-text);
-  }
-
   /*
    * A narrow screen. The rail moves above the page instead of away: it
    * still names the workspace and every section, set in rows.

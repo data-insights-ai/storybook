@@ -1,5 +1,6 @@
-import type { ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
+import { useDialogFocus } from "./useDialogFocus";
 import "./Modal.css";
 import "./Drawer.css";
 
@@ -8,8 +9,11 @@ import "./Drawer.css";
  * its detail are recognisably the same object. It never stacks: a second
  * drawer replaces the first.
  *
- * Not a dialog — the register behind it stays readable and usable, which
- * is the point of opening a drawer instead of a modal.
+ * A dialog: focus moves into it when it opens and returns to whatever
+ * opened it when it closes, and Escape closes it. Modal by default — Tab
+ * stays inside and a screen reader leaves the page behind alone. With
+ * `modal={false}` the register behind stays reachable from the keyboard,
+ * for a pane read beside the rows it came from.
  */
 export function Drawer({
   index,
@@ -18,6 +22,7 @@ export function Drawer({
   titleId,
   onClose,
   closeLabel,
+  modal = true,
   children,
 }: {
   /** The ordinal of the row this drawer belongs to. */
@@ -28,11 +33,21 @@ export function Drawer({
   titleId: string;
   onClose: () => void;
   closeLabel: string;
+  modal?: boolean;
   /** The detail, and one `DrawerFooter` if the pane carries controls. */
   children: ReactNode;
 }) {
+  const panel = useRef<HTMLDivElement>(null);
+  useDialogFocus(panel, onClose, modal);
   return (
-    <aside className="di-drawer" aria-labelledby={titleId}>
+    <div
+      ref={panel}
+      className="di-drawer"
+      role="dialog"
+      aria-modal={modal || undefined}
+      aria-labelledby={titleId}
+      tabIndex={-1}
+    >
       <div className="di-drawer-index">
         <span className="di-drawer-index-label">{index}</span>
         <span className="di-drawer-index-rule" aria-hidden />
@@ -51,7 +66,7 @@ export function Drawer({
         </div>
         <div className="di-drawer-content">{children}</div>
       </div>
-    </aside>
+    </div>
   );
 }
 

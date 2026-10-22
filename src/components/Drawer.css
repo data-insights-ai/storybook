@@ -12,6 +12,10 @@
     box-shadow: var(--di-shadow-plane);
   }
 
+  .di-drawer:focus {
+    outline: none;
+  }
+
   .di-drawer-index {
     display: flex;
     flex-direction: column;

@@ -100,10 +100,6 @@
     color: var(--di-text);
   }
 
-  .di-sb-inset:focus {
-    outline: none;
-  }
-
   /* A phone gives the page its width back: the same 16px gutter the narrow shell uses. */
   @media (max-width: 600px) {
     .di-sb-inset .di-content {
