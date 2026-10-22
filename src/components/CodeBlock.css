@@ -1,0 +1,23 @@
+@layer components {
+  .di-codeblock {
+    max-height: 480px;
+    margin: 0;
+    padding: var(--di-space-12);
+    overflow: auto;
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-control);
+    background: var(--di-table-bg);
+    color: var(--di-text);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    line-height: var(--di-leading-body);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    tab-size: 2;
+  }
+
+  .di-codeblock:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+}
