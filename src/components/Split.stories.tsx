@@ -53,7 +53,11 @@ type Story = StoryObj<typeof meta>;
 export const Record: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("complementary", { name: "Decide" })).toBeVisible();
+    const aside = canvas.getByRole("complementary", { name: "Decide" });
+    await expect(aside).toBeVisible();
+    for (const card of Array.from(aside.children)) {
+      await expect(card.scrollHeight).toBeLessThanOrEqual(card.clientHeight + 1);
+    }
   },
 };
 

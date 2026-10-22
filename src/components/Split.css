@@ -15,6 +15,11 @@
     min-width: 0;
   }
 
+  /* A card in the rail keeps its natural height; the rail scrolls, the card never clips. */
+  .di-split-aside > * {
+    flex: none;
+  }
+
   .di-split.is-aside-first .di-split-aside {
     order: -1;
   }
