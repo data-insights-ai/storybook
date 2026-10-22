@@ -35,11 +35,12 @@
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "check": "pnpm typecheck && pnpm lint:tokens && pnpm test",
-    "test": "vitest run --project=storybook",
+    "test": "vitest run --project=unit --project=storybook",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",
+    "@internationalized/date": "^3.12.4",
     "@tanstack/react-virtual": "3.14.17",
     "lucide-react": "^0.544.0",
     "react-aria-components": "1.22.1",

@@ -7,13 +7,20 @@ import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
- * Stories run as tests in Chromium. This is the shape Storybook 10 expects
+ * Stories run as tests in Chromium; plain logic (`*.test.ts`) runs in Node. This is the shape Storybook 10 expects
  * so the testing panel in the sidebar can start Vitest itself.
  * https://storybook.js.org/docs/writing-tests/integrations/vitest-addon
  */
 export default defineConfig({
   test: {
     projects: [
+      {
+        test: {
+          name: "unit",
+          include: ["src/**/*.test.ts"],
+          environment: "node",
+        },
+      },
       {
         extends: true,
         plugins: [

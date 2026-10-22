@@ -1,0 +1,340 @@
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { CalendarDays, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  type CalendarDate,
+  type DateValue,
+  type Time,
+  fromAbsolute,
+  getLocalTimeZone,
+  toCalendarDate,
+  toCalendarDateTime,
+  toTime,
+  toZoned,
+  today,
+} from "@internationalized/date";
+import { Button as AriaButton } from "react-aria-components/Button";
+import { CalendarCell, CalendarGrid, Heading, RangeCalendar } from "react-aria-components/RangeCalendar";
+import { Dialog, DialogTrigger } from "react-aria-components/Dialog";
+import { I18nProvider } from "react-aria-components/I18nProvider";
+import { ListBox, ListBoxItem } from "react-aria-components/ListBox";
+import { Popover } from "react-aria-components/Popover";
+import { DateInput, DateSegment, Label, TimeField } from "react-aria-components/TimeField";
+import { cx } from "../cx";
+import { Button } from "./Button";
+import { Checkbox } from "./Choice";
+import {
+  type DateRangePreset,
+  type DateRangeValue,
+  dateRangePresets,
+  isDateRangeSet,
+  resolveDateRange,
+  weekStartName,
+} from "./dateRange";
+import "./DateRangePicker.css";
+
+/** Every word the picker shows; a product passes its own language. */
+export type DateRangeLabels = Record<DateRangePreset, string> & {
+  any: string;
+  custom: string;
+  presets: string;
+  dialog: string;
+  previous: string;
+  next: string;
+  setTimes: string;
+  fromTime: string;
+  toTime: string;
+  apply: string;
+  cancel: string;
+  timeZone: string;
+};
+
+export const defaultDateRangeLabels: DateRangeLabels = {
+  any: "Any time",
+  "24h": "Last 24 hours",
+  "7d": "Last 7 days",
+  "30d": "Last 30 days",
+  thisMonth: "This month",
+  lastMonth: "Last month",
+  custom: "Custom range",
+  presets: "Periods",
+  dialog: "Choose a period",
+  previous: "Previous month",
+  next: "Next month",
+  setTimes: "Set times",
+  fromTime: "From",
+  toTime: "Until",
+  apply: "Apply",
+  cancel: "Cancel",
+  timeZone: "Time zone",
+};
+
+type Draft = { start: CalendarDate; end: CalendarDate } | null;
+type Times = { on: boolean; from: Time | null; to: Time | null };
+
+const midnight = (zoned: { hour: number; minute: number; second: number; millisecond: number }) =>
+  zoned.hour === 0 && zoned.minute === 0 && zoned.second === 0 && zoned.millisecond === 0;
+
+// A fixed range as the calendar shows it: an end at midnight is exclusive,
+// so the last day shown is the day before it.
+function draftOf(value: DateRangeValue, timeZone: string): { draft: Draft; times: Times } {
+  const none = { draft: null, times: { on: false, from: null, to: null } };
+  if (value.preset || !value.from || !value.to) return none;
+  const from = fromAbsolute(Date.parse(value.from), timeZone);
+  const to = fromAbsolute(Date.parse(value.to), timeZone);
+  if (midnight(from) && midnight(to)) {
+    return { draft: { start: toCalendarDate(from), end: toCalendarDate(to).subtract({ days: 1 }) }, times: none.times };
+  }
+  return {
+    draft: { start: toCalendarDate(from), end: toCalendarDate(to) },
+    times: { on: true, from: toTime(from), to: toTime(to) },
+  };
+}
+
+function rangeOf(draft: NonNullable<Draft>, times: Times, timeZone: string): DateRangeValue | null {
+  const from = times.on && times.from ? toCalendarDateTime(draft.start, times.from) : toCalendarDateTime(draft.start);
+  const to =
+    times.on && times.to ? toCalendarDateTime(draft.end, times.to) : toCalendarDateTime(draft.end.add({ days: 1 }));
+  const fromAt = toZoned(from, timeZone).toDate();
+  const toAt = toZoned(to, timeZone).toDate();
+  return fromAt < toAt ? { from: fromAt.toISOString(), to: toAt.toISOString() } : null;
+}
+
+function describe(value: DateRangeValue, labels: DateRangeLabels, locale: string, timeZone: string): string {
+  if (value.preset) return labels[value.preset];
+  if (!isDateRangeSet(value)) return labels.any;
+  const { from, to } = resolveDateRange(value, new Date(), timeZone);
+  const { times } = draftOf(value, timeZone);
+  const format = new Intl.DateTimeFormat(locale, {
+    timeZone,
+    dateStyle: "medium",
+    ...(times.on ? { timeStyle: "short" } : {}),
+  });
+  if (from && to) {
+    const end = times.on ? new Date(to) : new Date(Date.parse(to) - 1);
+    return format.formatRange(new Date(from), end);
+  }
+  return from ? `${format.format(new Date(from))} –` : `– ${format.format(new Date(to!))}`;
+}
+
+function useNarrow(): boolean {
+  const query = "(max-width: 600px)";
+  const [narrow, setNarrow] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
+  useEffect(() => {
+    const list = window.matchMedia(query);
+    const update = () => setNarrow(list.matches);
+    list.addEventListener("change", update);
+    return () => list.removeEventListener("change", update);
+  }, []);
+  return narrow;
+}
+
+/**
+ * The period a date-based list shows, as one toolbar control the height of
+ * a field, its choice written inside ("Last 7 days"). Presets apply at once;
+ * a custom range is picked on a two-month calendar (one month on a narrow
+ * screen), optionally with times, and applied. Days, months and the week's
+ * first day follow the `locale`, `weekStartsOn` and `timeZone` the product
+ * passes from its settings; the popover names the zone. React Aria owns the
+ * popover, the calendar grid and the time fields, so arrows move by day,
+ * Page Up and Page Down by month, Home and End to the week's edges, Enter
+ * picks, and Esc closes and returns to the control.
+ */
+export function DateRangePicker({
+  id,
+  label,
+  value,
+  onChange,
+  locale = "en-GB",
+  weekStartsOn = 1,
+  timeZone = getLocalTimeZone(),
+  allowAny = true,
+  allowTimes = true,
+  disabled = false,
+  labels: labelOverrides = {},
+  className,
+}: {
+  id: string;
+  /** What the period is of, read with the choice: "Period: Last 7 days". */
+  label: string;
+  value: DateRangeValue;
+  onChange: (value: DateRangeValue) => void;
+  /** BCP 47 language tag for month and weekday names and the range shown. */
+  locale?: string;
+  /** First day of the week, 0 Sunday … 6 Saturday. */
+  weekStartsOn?: number;
+  /** IANA zone days and months are counted in; shown in the popover. */
+  timeZone?: string;
+  /** Offers "Any time", which clears the period. */
+  allowAny?: boolean;
+  /** Offers times on a custom range. */
+  allowTimes?: boolean;
+  disabled?: boolean;
+  labels?: Partial<DateRangeLabels>;
+  className?: string;
+}) {
+  const labels = { ...defaultDateRangeLabels, ...labelOverrides };
+  const narrow = useNarrow();
+  const root = useRef<HTMLButtonElement>(null);
+  const dialog = useRef<HTMLElement>(null);
+  const focusCalendar = () => dialog.current?.querySelector<HTMLElement>('[role="grid"] [tabindex="0"]')?.focus();
+  const [open, setOpen] = useState(false);
+  const [draft, setDraft] = useState<Draft>(null);
+  const [times, setTimes] = useState<Times>({ on: false, from: null, to: null });
+  const [overlay, setOverlay] = useState<{ theme?: string; container?: HTMLElement }>({});
+
+  // The popover is portalled: it keeps a nested theme and stays inside a
+  // native modal's inert boundary, as ComboBox does.
+  useLayoutEffect(() => {
+    if (!open || !root.current) return;
+    const element = root.current;
+    setOverlay({
+      theme: element.closest<HTMLElement>("[data-theme]")?.dataset.theme,
+      container: element.closest("dialog") ?? undefined,
+    });
+  }, [open]);
+
+  const openChange = (next: boolean) => {
+    if (next) {
+      const start = draftOf(value, timeZone);
+      setDraft(start.draft);
+      setTimes(start.times);
+    }
+    setOpen(next);
+  };
+  const choose = (next: DateRangeValue) => {
+    onChange(next);
+    setOpen(false);
+  };
+  const applied = draft ? rangeOf(draft, times, timeZone) : null;
+  const current = value.preset ?? (isDateRangeSet(value) ? "custom" : "any");
+  const text = describe(value, labels, locale, timeZone);
+  const options = [...(allowAny ? (["any"] as const) : []), ...dateRangePresets];
+
+  return (
+    <I18nProvider locale={locale}>
+      <DialogTrigger isOpen={open} onOpenChange={openChange}>
+        <AriaButton
+          ref={root}
+          id={id}
+          isDisabled={disabled}
+          aria-label={`${label}: ${text}`}
+          className={cx("di-control", "di-date-range", isDateRangeSet(value) && "is-set", className)}
+        >
+          <CalendarDays className="di-date-range-icon" aria-hidden />
+          <span className="di-date-range-text">{text}</span>
+          <ChevronDown className="di-date-range-caret" aria-hidden />
+        </AriaButton>
+        <Popover
+          className="di-date-range-popover"
+          data-theme={overlay.theme}
+          UNSTABLE_portalContainer={overlay.container}
+          placement="bottom start"
+          offset={4}
+        >
+          <Dialog ref={dialog} className="di-date-range-dialog" aria-label={labels.dialog}>
+            <ListBox
+              className="di-date-range-presets"
+              aria-label={labels.presets}
+              selectionMode="single"
+              disallowEmptySelection
+              selectedKeys={[current]}
+              onSelectionChange={(keys) => {
+                const key = [...keys][0];
+                if (key === "any") choose({});
+                else if (key === "custom") focusCalendar();
+                else if (typeof key === "string") choose({ preset: key as DateRangePreset });
+              }}
+            >
+              {options.map((key) => (
+                <ListBoxItem key={key} id={key} className="di-date-range-preset">
+                  {labels[key]}
+                </ListBoxItem>
+              ))}
+              <ListBoxItem id="custom" className="di-date-range-preset">
+                {labels.custom}
+              </ListBoxItem>
+            </ListBox>
+            <div className="di-date-range-custom">
+              <RangeCalendar
+                className="di-date-range-calendar"
+                aria-label={labels.custom}
+                visibleDuration={{ months: narrow ? 1 : 2 }}
+                pageBehavior="single"
+                firstDayOfWeek={weekStartName(weekStartsOn)}
+                value={draft}
+                defaultFocusedValue={draft?.end ?? today(timeZone)}
+                onChange={(range: { start: DateValue; end: DateValue } | null) =>
+                  setDraft(range ? { start: toCalendarDate(range.start), end: toCalendarDate(range.end) } : null)
+                }
+              >
+                <header className="di-date-range-head">
+                  <AriaButton slot="previous" className="di-date-range-nav" aria-label={labels.previous}>
+                    <ChevronLeft aria-hidden />
+                  </AriaButton>
+                  <Heading className="di-date-range-heading" />
+                  <AriaButton slot="next" className="di-date-range-nav" aria-label={labels.next}>
+                    <ChevronRight aria-hidden />
+                  </AriaButton>
+                </header>
+                <div className="di-date-range-months">
+                  {Array.from({ length: narrow ? 1 : 2 }, (_, month) => (
+                    <CalendarGrid key={month} offset={{ months: month }} className="di-date-range-grid">
+                      {(date) => <CalendarCell date={date} className="di-date-range-cell" />}
+                    </CalendarGrid>
+                  ))}
+                </div>
+              </RangeCalendar>
+              {allowTimes && (
+                <div className="di-date-range-times">
+                  <Checkbox
+                    id={`${id}-times`}
+                    label={labels.setTimes}
+                    checked={times.on}
+                    onChange={(event) => setTimes({ ...times, on: event.target.checked })}
+                  />
+                  {times.on && (
+                    <div className="di-date-range-time-fields">
+                      <TimeField
+                        className="di-date-range-time"
+                        value={times.from}
+                        onChange={(from) => setTimes({ ...times, from })}
+                      >
+                        <Label className="di-field-label di-field-label-record">{labels.fromTime}</Label>
+                        <DateInput className="di-control di-date-range-time-input">
+                          {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
+                        </DateInput>
+                      </TimeField>
+                      <TimeField
+                        className="di-date-range-time"
+                        value={times.to}
+                        onChange={(to) => setTimes({ ...times, to })}
+                      >
+                        <Label className="di-field-label di-field-label-record">{labels.toTime}</Label>
+                        <DateInput className="di-control di-date-range-time-input">
+                          {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
+                        </DateInput>
+                      </TimeField>
+                    </div>
+                  )}
+                </div>
+              )}
+              <footer className="di-date-range-foot">
+                <span className="di-date-range-zone">
+                  {labels.timeZone} <code>{timeZone}</code>
+                </span>
+                <span className="di-date-range-actions">
+                  <Button variant="ghost" size="dense" onClick={() => setOpen(false)}>
+                    {labels.cancel}
+                  </Button>
+                  <Button size="dense" disabled={!applied} onClick={() => applied && choose(applied)}>
+                    {labels.apply}
+                  </Button>
+                </span>
+              </footer>
+            </div>
+          </Dialog>
+        </Popover>
+      </DialogTrigger>
+    </I18nProvider>
+  );
+}
