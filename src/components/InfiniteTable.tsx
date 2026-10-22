@@ -48,6 +48,7 @@ export function InfiniteTable({
   estimateRowHeight = 44,
   indexed = false,
   narrow = "scroll",
+  layout = "measured",
   children,
 }: {
   caption: string;
@@ -75,6 +76,8 @@ export function InfiniteTable({
   estimateRowHeight?: number;
   indexed?: boolean;
   narrow?: "scroll" | "stack";
+  /** Column widths are measured once and kept while rows come and go; `auto` lets each render size them. */
+  layout?: "auto" | "measured";
   /** `TableToolbar` and `TableHead`. */
   children: ReactNode;
 }) {
@@ -112,7 +115,7 @@ export function InfiniteTable({
   return (
     <div className="di-infinite">
       {held.count > 0 ? <NewEntries label={newEntriesLabel(held.count)} onShow={held.show} /> : null}
-      <DataTable caption={caption} rowCount={shown} indexed={indexed} narrow={narrow}>
+      <DataTable caption={caption} rowCount={shown} indexed={indexed} narrow={narrow} layout={layout}>
         {toolbar}
         {head}
         <TableBody>

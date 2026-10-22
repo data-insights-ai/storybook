@@ -8,6 +8,10 @@
     min-width: 0;
   }
 
+  .di-create-flow[data-width="page"] {
+    max-width: none;
+  }
+
   .di-create-flow-step {
     display: flex;
     flex-direction: column;

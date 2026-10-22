@@ -59,6 +59,16 @@
     white-space: nowrap;
   }
 
+  /* Measured columns keep their width; a value longer than its column is cut, not the grid widened. */
+  .di-table.is-measured {
+    table-layout: fixed;
+  }
+
+  .di-table.is-measured td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   /* A dialog opened from a cell is prose again, whatever the cell's line rule. */
   .di-table dialog {
     white-space: normal;

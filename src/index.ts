@@ -17,6 +17,8 @@ export { Breadcrumb } from "./components/Breadcrumb";
 export { Button } from "./components/Button";
 export { Card } from "./components/Card";
 export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components/Channel";
+export { ChainTimeline } from "./components/ChainTimeline";
+export type { ChainTimelineEvent, ChainTimelineLane } from "./components/ChainTimeline";
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/Chart";
 export type { ChartConfig, ChartTooltipDetail } from "./components/Chart";
 export { Checkbox, ChoiceGroup, Radio } from "./components/Choice";

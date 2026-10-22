@@ -27,6 +27,7 @@ export function CreateFlow({
   canAdvance = true,
   busy = false,
   error = "",
+  width = "form",
   onBack,
   onNext,
   onSubmit,
@@ -49,6 +50,8 @@ export function CreateFlow({
   canAdvance?: boolean;
   busy?: boolean;
   error?: string;
+  /** `form` keeps the flow at the form measure; `page` lets it fill the page it sits on. */
+  width?: "form" | "page";
   onBack: () => void;
   onNext: () => void;
   onSubmit: () => void;
@@ -78,7 +81,7 @@ export function CreateFlow({
   };
 
   return (
-    <form className="di-create-flow" onSubmit={submit} aria-labelledby={headingId}>
+    <form className="di-create-flow" data-width={width} onSubmit={submit} aria-labelledby={headingId}>
       <Stepper
         label={label}
         stateLabels={stateLabels}

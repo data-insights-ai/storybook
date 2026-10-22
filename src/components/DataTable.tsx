@@ -32,6 +32,7 @@ export function DataTable({
   caption,
   indexed = true,
   narrow = "scroll",
+  layout = "auto",
   rowCount,
   className,
   children,
@@ -46,6 +47,13 @@ export function DataTable({
    * log, a list of events — rather than compared column by column.
    */
   narrow?: "scroll" | "stack";
+  /**
+   * `measured` takes the column widths from the head and the first rows
+   * drawn and keeps them, so a register whose rows come and go while it
+   * scrolls (a virtualized list) does not shift its columns with every
+   * row rendered. Measured again when the frame changes width.
+   */
+  layout?: "auto" | "measured";
   /**
    * How many rows the whole list has, when only some of them are rendered
    * (a virtualized register). A screen reader then hears the full size, and
@@ -74,6 +82,7 @@ export function DataTable({
   const stack = narrow === "stack";
   const scroll = useRef<HTMLDivElement>(null);
   const overflowing = useOverflowing(scroll);
+  const widths = useMeasuredColumns(scroll, layout === "measured");
   return (
     <div className={cx("di-table-wrap", stack && "is-stackable", overflowing && "is-overflowing", className)}>
       {toolbar}
@@ -84,11 +93,18 @@ export function DataTable({
       <div ref={scroll} className="di-table-scroll" tabIndex={0} role="region" aria-label={caption}>
         {/* A stacked row is no longer laid out as a table, so it says what it is. */}
         <table
-          className={cx("di-table", indexed && "is-indexed")}
+          className={cx("di-table", indexed && "is-indexed", widths && "is-measured")}
           role={stack ? "table" : undefined}
           aria-rowcount={rowCount === undefined ? undefined : rowCount + 1}
         >
           <caption className="di-sr">{caption}</caption>
+          {widths ? (
+            <colgroup>
+              {widths.map((width, i) => (
+                <col key={i} style={{ width }} />
+              ))}
+            </colgroup>
+          ) : null}
           <StackContext.Provider value={stack}>{grid}</StackContext.Provider>
         </table>
       </div>
@@ -118,6 +134,39 @@ function useOverflowing(frame: { current: HTMLDivElement | null }) {
     return () => observer.disconnect();
   }, [frame]);
   return overflowing;
+}
+
+/*
+ * The widths the head and the first rows settle on, locked until the frame
+ * changes width: a column measured by content would otherwise widen and
+ * narrow with the rows a virtualized register happens to render. Nothing is
+ * measured while the rows are stacked, where there are no columns.
+ */
+function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: boolean) {
+  const [widths, setWidths] = useState<number[]>();
+  useLayoutEffect(() => {
+    const el = frame.current;
+    const table = el?.querySelector("table");
+    if (!enabled || !el || !table || widths) return;
+    const heads = table.tHead?.rows[0]?.cells;
+    const row = table.tBodies[0]?.querySelector("tr:not(.di-table-spacer)");
+    if (!heads || !row || getComputedStyle(table).display !== "table") return;
+    setWidths(Array.from(heads, (th) => th.getBoundingClientRect().width));
+  });
+  useLayoutEffect(() => {
+    const el = frame.current;
+    if (!enabled || !el || typeof ResizeObserver === "undefined") return;
+    let width = el.clientWidth;
+    const observer = new ResizeObserver(() => {
+      if (Math.abs(el.clientWidth - width) > 1) {
+        width = el.clientWidth;
+        setWidths(undefined);
+      }
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [frame, enabled]);
+  return enabled ? widths : undefined;
 }
 
 function useRole(role: string) {

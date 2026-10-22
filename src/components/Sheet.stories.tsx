@@ -18,13 +18,13 @@ const meta = {
     onClose: () => {},
     children: null,
   },
-  argTypes: { size: { control: "radio", options: ["md", "lg"] }, children: { control: false } },
+  argTypes: { size: { control: "radio", options: ["md", "lg", "xl"] }, children: { control: false } },
 } satisfies Meta<typeof Sheet>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Opener(args: { title: string; lede?: string; closeLabel: string; size?: "md" | "lg" }) {
+function Opener(args: { title: string; lede?: string; closeLabel: string; size?: "md" | "lg" | "xl" }) {
   const [open, setOpen] = useState(false);
   return (
     <>

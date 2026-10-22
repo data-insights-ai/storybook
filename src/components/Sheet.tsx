@@ -28,8 +28,8 @@ export function Sheet({
   lede?: string;
   /** The close button's accessible name. */
   closeLabel: string;
-  /** `md` is a form or a record; `lg` holds a table or two columns. */
-  size?: "md" | "lg";
+  /** `md` is a form or a record; `lg` holds a table or two columns; `xl` a record read field by field beside its source. */
+  size?: "md" | "lg" | "xl";
   /** The body, and optionally one `SheetFooter`. */
   children: ReactNode;
 }) {
