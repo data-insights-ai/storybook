@@ -212,3 +212,33 @@ export const TwoActions: Story = {
     await expect(frame.right - link.right).toBeGreaterThanOrEqual(12);
   },
 };
+
+/** On a phone the action moves under the copy, so the copy keeps its width. */
+export const PhoneWidth: Story = {
+  render: (args) => (
+    <div style={{ width: 360 }}>
+      <Notice {...args} tone="warn">
+        <NoticeIcon>
+          <AlertTriangle aria-hidden />
+        </NoticeIcon>
+        <NoticeText>
+          <div>
+            <NoticeTitle>The license has expired. The workspace is read-only.</NoticeTitle>
+            <NoticeBody>Viewing, collection and alerting continue; changes wait for a renewed license.</NoticeBody>
+          </div>
+          <NoticeAction>
+            <Button variant="secondary" size="dense">
+              License details
+            </Button>
+          </NoticeAction>
+        </NoticeText>
+      </Notice>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const title = canvas.getByText(/license has expired/);
+    const action = canvas.getByRole("button", { name: "License details" });
+    await expect(action.getBoundingClientRect().top).toBeGreaterThan(title.getBoundingClientRect().bottom);
+  },
+};
