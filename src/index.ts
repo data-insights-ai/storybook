@@ -13,6 +13,7 @@ export {
 export type { ConsoleChrome, NavGroup, NavItem } from "./components/AppShell";
 export { Badge } from "./components/Badge";
 export { Bars } from "./components/Bars";
+export { BulkActionBar } from "./components/BulkActionBar";
 export { Breadcrumb } from "./components/Breadcrumb";
 export { Button } from "./components/Button";
 export { Card } from "./components/Card";
