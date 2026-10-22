@@ -54,6 +54,7 @@ export const Record: Story = {
     const opener = canvas.getByRole("button", { name: "Open member" });
     await userEvent.click(opener);
     const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog");
+    await expect(getComputedStyle(canvasElement.ownerDocument.body).overflow).toBe("hidden");
     await waitFor(() => expect(dialog).toBeVisible());
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(opener).toHaveFocus());
