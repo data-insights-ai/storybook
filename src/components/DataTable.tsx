@@ -1,4 +1,15 @@
-import { Children, createContext, isValidElement, useContext, type CSSProperties, type ReactNode, type Ref } from "react";
+import {
+  Children,
+  createContext,
+  isValidElement,
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+  type Ref,
+} from "react";
 import { cx } from "../cx";
 import "./DataTable.css";
 
@@ -11,9 +22,11 @@ import "./DataTable.css";
  * field of mono values reads as an extract from the record. Ordinals
  * run down the index column on the left.
  *
- * In a narrow frame the grid scrolls sideways. `narrow="stack"` lays each
- * row out as a block instead: the cells run on and wrap like words, prose
- * takes its own line, and the ordinal keeps the left edge.
+ * In a narrow frame the grid scrolls sideways, and a `pinned` column — the
+ * row's name — stays at the left edge while the others pass under it.
+ * `narrow="stack"` lays each row out as a card instead: unlabelled cells run
+ * on and wrap like words, a cell with a `label` takes a line of its own with
+ * its column's name in front, and the ordinal keeps the left edge.
  */
 export function DataTable({
   caption,
@@ -59,14 +72,16 @@ export function DataTable({
   });
 
   const stack = narrow === "stack";
+  const scroll = useRef<HTMLDivElement>(null);
+  const overflowing = useOverflowing(scroll);
   return (
-    <div className={cx("di-table-wrap", stack && "is-stackable", className)}>
+    <div className={cx("di-table-wrap", stack && "is-stackable", overflowing && "is-overflowing", className)}>
       {toolbar}
       {/*
         The frame scrolls, not the page. A scrollable region has to be
         reachable from the keyboard, so it takes a tab stop and a name.
       */}
-      <div className="di-table-scroll" tabIndex={0} role="region" aria-label={caption}>
+      <div ref={scroll} className="di-table-scroll" tabIndex={0} role="region" aria-label={caption}>
         {/* A stacked row is no longer laid out as a table, so it says what it is. */}
         <table
           className={cx("di-table", indexed && "is-indexed")}
@@ -83,6 +98,27 @@ export function DataTable({
 }
 
 const StackContext = createContext(false);
+
+/*
+ * Whether the grid is wider than its frame. A frame that keeps its head in
+ * view clips instead of scrolling; once the columns no longer fit, it hands
+ * the sticky head back for a sideways scroll, so no column is cut off.
+ */
+function useOverflowing(frame: { current: HTMLDivElement | null }) {
+  const [overflowing, setOverflowing] = useState(false);
+  useLayoutEffect(() => {
+    const el = frame.current;
+    const table = el?.firstElementChild;
+    if (!el || !table || typeof ResizeObserver === "undefined") return;
+    const measure = () => setOverflowing(table.scrollWidth > el.clientWidth + 1);
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    observer.observe(table);
+    measure();
+    return () => observer.disconnect();
+  }, [frame]);
+  return overflowing;
+}
 
 function useRole(role: string) {
   return useContext(StackContext) ? role : undefined;
@@ -124,9 +160,12 @@ export function TableColumn({
   sort = "none",
   onSort,
   width = "auto",
+  pinned = false,
 }: {
   children?: ReactNode;
   align?: "start" | "end";
+  /** Stays at the left edge while the grid scrolls sideways. Set it on the column's cells too. */
+  pinned?: boolean;
   /** `fill` hands this column whatever width the others leave — for a bar or a meter. */
   width?: "auto" | "fill";
   /** The empty head cell above the ordinal column. */
@@ -151,7 +190,12 @@ export function TableColumn({
     <th
       scope="col"
       role={role}
-      className={cx(align === "end" && "is-end", sort !== "none" && "is-sorted", width === "fill" && "is-fill")}
+      className={cx(
+        align === "end" && "is-end",
+        sort !== "none" && "is-sorted",
+        width === "fill" && "is-fill",
+        pinned && "is-pinned",
+      )}
       aria-sort={sort === "none" ? undefined : sort}
     >
       {onSort ? (
@@ -250,14 +294,28 @@ export function TableCell({
   children,
   align = "start",
   mono = false,
+  label,
+  pinned = false,
 }: {
   children: ReactNode;
   align?: "start" | "end";
   /** Identifiers, timestamps and measured values run in the mono track. */
   mono?: boolean;
+  /**
+   * The column's name, said in front of the value when the row is stacked
+   * as a card (`narrow="stack"` in a narrow frame). Leave it off for the
+   * row's name and its actions: they head and close the card unlabelled.
+   */
+  label?: string;
+  /** Stays at the left edge while the grid scrolls sideways, with its `TableColumn`. */
+  pinned?: boolean;
 }) {
   return (
-    <td role={useRole("cell")} className={cx(align === "end" && "is-end", mono && "di-mono")}>
+    <td
+      role={useRole("cell")}
+      data-label={label}
+      className={cx(align === "end" && "is-end", mono && "di-mono", pinned && "is-pinned", label && "is-labelled")}
+    >
       {children}
     </td>
   );

@@ -543,6 +543,64 @@ export const Stacked: Story = {
   },
 };
 
+const devices = [
+  { name: "srv-vie-212.example.com", criticality: "High", owner: "Nora Feld", unit: "Finance", seen: "4 min ago", source: "Endpoint agent" },
+  { name: "ws-hr-007.example.com", criticality: "Low", owner: "Jonas Wirt", unit: "People", seen: "2 h ago", source: "Directory" },
+] as const;
+
+/**
+ * An inventory with more columns than a laptop shows. The name is `pinned`:
+ * it stays at the left edge while the others scroll under it. Stacked on a
+ * phone, every labelled cell is one line of the card with its column's name.
+ */
+export const PinnedAndLabelled: Story = {
+  args: { caption: "Devices", indexed: false, narrow: "stack" },
+  render: (args) => (
+    <div style={{ display: "grid", gap: 24 }}>
+      {[760, 360].map((width) => (
+        <div key={width} style={{ width }}>
+          <DataTable {...args} caption={`${args.caption}, ${width}px`}>
+            <TableHead>
+              <TableColumn pinned>Name</TableColumn>
+              <TableColumn>Criticality</TableColumn>
+              <TableColumn>Owner</TableColumn>
+              <TableColumn>Business unit</TableColumn>
+              <TableColumn>Last seen</TableColumn>
+              <TableColumn>Source</TableColumn>
+            </TableHead>
+            <TableBody>
+              {devices.map((d) => (
+                <TableRow key={d.name}>
+                  <TableCell pinned>
+                    <TextLink href="#">{d.name}</TextLink>
+                  </TableCell>
+                  <TableCell label="Criticality">
+                    <StatusPill tone={d.criticality === "High" ? "danger" : "ok"}>{d.criticality}</StatusPill>
+                  </TableCell>
+                  <TableCell label="Owner">{d.owner}</TableCell>
+                  <TableCell label="Business unit">{d.unit}</TableCell>
+                  <TableCell label="Last seen" mono>
+                    {d.seen}
+                  </TableCell>
+                  <TableCell label="Source">{d.source}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </DataTable>
+        </div>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const [wide, narrow] = within(canvasElement).getAllByRole("table");
+    const pinned = within(wide).getAllByRole("cell")[0];
+    await expect(getComputedStyle(pinned).position).toBe("sticky");
+    const owner = within(narrow).getByText("Nora Feld");
+    await expect(owner).toHaveAttribute("data-label", "Owner");
+    await expect(getComputedStyle(owner).display).toBe("grid");
+  },
+};
+
 /*
  * A register too long to render: the product's virtualizer decides which
  * rows are on screen, the spacers stand in for the rest, and `rowCount`
