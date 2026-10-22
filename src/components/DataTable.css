@@ -341,6 +341,7 @@
       grid-template-columns: minmax(96px, 38%) minmax(0, 1fr);
       gap: var(--di-space-12);
       align-items: baseline;
+      justify-items: start;
       flex-basis: 100%;
       text-align: left;
     }
