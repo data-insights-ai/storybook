@@ -9,8 +9,10 @@
     list-style: none;
   }
 
-  /* The line between bullets runs from each step's centre to the next. */
+  /* The line between bullets runs from one circle's edge to the next's, under them. */
   .di-step {
+    --di-step-radius: 11px;
+    --di-step-gap: var(--di-space-4);
     position: relative;
     display: flex;
     justify-content: center;
@@ -20,15 +22,17 @@
   .di-step:not(:first-child)::before {
     content: "";
     position: absolute;
-    top: 11px;
-    right: 50%;
-    left: -50%;
+    z-index: 0;
+    top: var(--di-step-radius);
+    right: calc(50% + var(--di-step-radius) + var(--di-step-gap));
+    left: calc(-50% + var(--di-step-radius) + var(--di-step-gap));
     height: 1px;
     background: var(--di-border);
   }
 
   .di-step-button {
     position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;

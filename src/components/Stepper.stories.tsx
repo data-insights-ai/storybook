@@ -87,3 +87,21 @@ export const Returnable: StoryObj<typeof meta> = {
     await expect(args.onStep).toHaveBeenCalledWith(0);
   },
 };
+
+/** The connector stops at the circle's edge: no line crosses a number, in any state or width. */
+export const ConnectorsClearTheCircles: StoryObj<typeof meta> = {
+  play: async ({ canvasElement }) => {
+    const steps = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-step"));
+    await expect(steps.length).toBeGreaterThan(1);
+    for (const step of steps.slice(1)) {
+      const line = getComputedStyle(step, "::before");
+      const bullet = step.querySelector<HTMLElement>(".di-step-bullet")!.getBoundingClientRect();
+      const previous = step.previousElementSibling!.querySelector<HTMLElement>(".di-step-bullet")!.getBoundingClientRect();
+      const stepBox = step.getBoundingClientRect();
+      const lineLeft = stepBox.left + parseFloat(line.left);
+      const lineRight = stepBox.right - parseFloat(line.right);
+      await expect(lineLeft).toBeGreaterThanOrEqual(previous.right);
+      await expect(lineRight).toBeLessThanOrEqual(bullet.left);
+    }
+  },
+};
