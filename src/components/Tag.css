@@ -21,9 +21,20 @@
     white-space: nowrap;
   }
 
+  /*
+   * A tag wider than its place wraps its detail onto a second line rather
+   * than cutting it: "Analyst · Production" must not read "Analyst · Produ…".
+   * Only a compact list, which promises one line, cuts.
+   */
+  .di-tag:has(.di-tag-detail) {
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+
   .di-tag-detail {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
     color: var(--di-text-muted);
   }
 
@@ -40,9 +51,16 @@
 
   .di-tag-list.is-compact .di-tag {
     flex: 0 1 auto;
+    flex-wrap: nowrap;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .di-tag-list.is-compact .di-tag-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .di-tag-list.is-compact .di-tag-more {
