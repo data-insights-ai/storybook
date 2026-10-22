@@ -28,12 +28,21 @@ const meta = {
     events,
     startLabel: "08:12",
     endLabel: "08:34",
+    ticks: [
+      { at: 23, label: "+5 min" },
+      { at: 45, label: "+10 min" },
+      { at: 68, label: "+15 min" },
+      { at: 91, label: "+20 min" },
+    ],
     onSelect: fn(),
+    onHover: fn(),
   },
   argTypes: {
     lanes: { control: false },
     events: { control: false },
+    ticks: { control: false },
     onSelect: { control: false },
+    onHover: { control: false },
   },
 } satisfies Meta<typeof ChainTimeline>;
 
@@ -71,5 +80,21 @@ export const Withdrawn: Story = {
     startLabel: "09:00",
     endLabel: "09:05",
     onSelect: undefined,
+  },
+};
+
+/** Two steps seconds apart on one lane are drawn as one marker named by their range. */
+export const Clustered: Story = {
+  args: {
+    events: [
+      { id: "1", lane: "ws", at: 0, label: "08:12 Sign-in from a public address" },
+      { id: "2", lane: "ws", at: 0.4, label: "08:12 Domain trust discovery" },
+      { id: "3", lane: "fs", at: 60, label: "08:25 Network sign-in as local admin" },
+      { id: "4", lane: "fs", at: 100, label: "08:34 Remote service started" },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("button", { name: /public address; .*discovery/i })).toHaveTextContent("01–02");
   },
 };
