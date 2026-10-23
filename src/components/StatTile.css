@@ -1,6 +1,10 @@
 @layer components {
+  /* Tiles in a row read as one band: a tile fills the height its row or
+     link gives it, and what it is read against sits at its foot. */
   .di-stat-tile {
     display: flex;
+    height: 100%;
+    box-sizing: border-box;
     overflow: hidden;
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
@@ -38,6 +42,8 @@
   }
 
   .di-stat-tile-body {
+    display: flex;
+    flex-direction: column;
     flex: 1;
     min-width: 0;
     padding: var(--di-space-12) var(--di-space-12) var(--di-space-12);
@@ -72,7 +78,8 @@
   }
 
   .di-stat-tile-delta {
-    margin-top: var(--di-space-4);
+    margin-top: auto;
+    padding-top: var(--di-space-4);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     font-variant-numeric: tabular-nums;
