@@ -258,3 +258,118 @@ export const NoOpenEnd: Story = {
     });
   },
 };
+
+const phone = {
+  parameters: {
+    viewport: { options: { phone: { name: "Phone", styles: { width: "390px", height: "844px" }, type: "mobile" } } },
+  },
+  globals: { viewport: { value: "phone", isRotated: false } },
+} as const;
+
+const openSheet = async (canvasElement: HTMLElement) => {
+  await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
+  const doc = canvasElement.ownerDocument;
+  await waitFor(() => expect(doc.querySelector(".di-date-range-sheet")).not.toBeNull());
+  return { doc, sheet: doc.querySelector<HTMLElement>(".di-date-range-sheet")!, page: within(doc.body) };
+};
+
+/**
+ * On a phone (390px) the picker is a bottom sheet: full width, a drag handle, the periods as a list, then the
+ * calendar and the typed days, Cancel and Apply pinned to the foot above the home indicator. Focus starts and stays
+ * inside; Esc closes and returns to the control.
+ */
+export const PhoneSheet: Story = {
+  ...phone,
+  args: { timeZone: "UTC", value: { from: "2026-10-01T00:00:00.000Z", to: "2026-10-16T00:00:00.000Z" } },
+  play: async ({ canvasElement }) => {
+    const { doc, sheet, page } = await openSheet(canvasElement);
+    await expect(doc.defaultView!.innerWidth).toBe(390);
+    await expect(doc.querySelector(".di-date-range-popover")).toBeNull();
+    await waitFor(() => expect(sheet.getBoundingClientRect().width).toBe(390));
+    await waitFor(() => expect(Math.round(sheet.getBoundingClientRect().bottom)).toBe(844));
+    await expect(sheet.querySelector(".di-date-range-handle")).not.toBeNull();
+    const top = (element: Element) => element.getBoundingClientRect().top;
+    const presets = page.getByRole("listbox", { name: "Periods" });
+    const calendar = page.getAllByRole("grid")[0];
+    await expect(top(presets)).toBeLessThan(top(calendar));
+    await expect(top(calendar)).toBeLessThan(top(page.getByLabelText("From date")));
+    await expect(page.getAllByRole("grid")).toHaveLength(1);
+    const apply = page.getByRole("button", { name: "Apply" });
+    await expect(apply.getBoundingClientRect().bottom).toBeLessThanOrEqual(844);
+    await expect(sheet.contains(doc.activeElement)).toBe(true);
+    for (let i = 0; i < 30; i++) {
+      await userEvent.tab();
+      await expect(sheet.contains(doc.activeElement)).toBe(true);
+    }
+    await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(doc.querySelector(".di-date-range-sheet")).toBeNull());
+    await waitFor(() => expect(within(canvasElement).getByRole("button", { name: /^Period: / })).toHaveFocus());
+  },
+};
+
+/** A period in the list applies at once and closes the sheet; typed days apply with Apply. */
+export const PhoneChoose: Story = {
+  ...phone,
+  args: { timeZone: "UTC" },
+  play: async ({ canvasElement, args }) => {
+    let { doc, page } = await openSheet(canvasElement);
+    await userEvent.click(page.getByRole("option", { name: "Last 7 days" }));
+    await expect(args.onChange).toHaveBeenLastCalledWith({ preset: "7d" });
+    await waitFor(() => expect(doc.querySelector(".di-date-range-sheet")).toBeNull());
+    ({ doc, page } = await openSheet(canvasElement));
+    fireEvent.change(page.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    fireEvent.change(page.getByLabelText("Through date"), { target: { value: "2026-10-05" } });
+    await userEvent.click(page.getByRole("button", { name: "Apply" }));
+    await expect(args.onChange).toHaveBeenLastCalledWith({
+      from: "2026-10-03T00:00:00.000Z",
+      to: "2026-10-06T00:00:00.000Z",
+    });
+    await waitFor(() => expect(doc.querySelector(".di-date-range-sheet")).toBeNull());
+  },
+};
+
+/** The back button, Cancel and dragging the handle down each close the sheet without a change. */
+export const PhoneDismiss: Story = {
+  ...phone,
+  args: { timeZone: "UTC" },
+  play: async ({ canvasElement, args }) => {
+    let { doc, sheet, page } = await openSheet(canvasElement);
+    const gone = () => waitFor(() => expect(doc.querySelector(".di-date-range-sheet")).toBeNull());
+    doc.defaultView!.history.back();
+    await gone();
+
+    ({ doc, page } = await openSheet(canvasElement));
+    await userEvent.click(page.getByRole("button", { name: "Cancel" }));
+    await gone();
+
+    ({ doc, sheet } = await openSheet(canvasElement));
+    const grip = sheet.querySelector<HTMLElement>(".di-date-range-grip")!;
+    const y = grip.getBoundingClientRect().top + 8;
+    fireEvent.pointerDown(grip, { pointerId: 1, clientY: y });
+    fireEvent.pointerMove(grip, { pointerId: 1, clientY: y + 40 });
+    fireEvent.pointerUp(grip, { pointerId: 1, clientY: y + 40 });
+    await expect(doc.querySelector(".di-date-range-sheet")).not.toBeNull();
+    fireEvent.pointerDown(grip, { pointerId: 1, clientY: y });
+    fireEvent.pointerMove(grip, { pointerId: 1, clientY: y + 200 });
+    fireEvent.pointerUp(grip, { pointerId: 1, clientY: y + 200 });
+    await gone();
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};
+
+/** At console width the picker stays a popover beside its control, two months wide. */
+export const DesktopPopover: Story = {
+  parameters: {
+    viewport: { options: { desk: { name: "Console (1280)", styles: { width: "1280px", height: "900px" } } } },
+  },
+  globals: { viewport: { value: "desk", isRotated: false } },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
+    const doc = canvasElement.ownerDocument;
+    await waitFor(() => expect(doc.querySelector(".di-date-range-popover")).not.toBeNull());
+    await expect(doc.querySelector(".di-date-range-sheet")).toBeNull();
+    await expect(within(doc.body).getAllByRole("grid")).toHaveLength(2);
+    await userEvent.keyboard("{Escape}");
+  },
+};

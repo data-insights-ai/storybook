@@ -303,16 +303,131 @@
     margin-left: auto;
   }
 
-  @media (max-width: 600px) {
-    .di-date-range-dialog {
-      grid-template-columns: 1fr;
-    }
+  /* Below 640px: a bottom sheet over a scrim, as tall as its content up to
+     92% of the screen, clear of the home indicator and the notch. */
+  .di-date-range-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    background: var(--di-scrim);
+  }
 
-    .di-date-range-presets {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      border-right: 0;
-      border-bottom: 1px solid var(--di-border);
+  .di-date-range-scrim[data-entering] {
+    animation: di-date-range-fade var(--di-duration-slow) var(--di-ease);
+  }
+
+  .di-date-range-scrim[data-exiting] {
+    animation: di-date-range-fade var(--di-duration) var(--di-ease) reverse;
+  }
+
+  @keyframes di-date-range-fade {
+    from {
+      opacity: 0;
     }
+  }
+
+  .di-date-range-sheet {
+    display: flex;
+    width: 100%;
+    max-height: 92dvh;
+    border-top: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-surface) var(--di-radius-surface) 0 0;
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    box-shadow: var(--di-shadow-plane);
+    outline: none;
+    transition: translate var(--di-duration) var(--di-ease);
+  }
+
+  .di-date-range-sheet[data-dragging] {
+    transition: none;
+  }
+
+  .di-date-range-sheet[data-entering] {
+    animation: di-date-range-rise var(--di-duration-slow) var(--di-ease);
+  }
+
+  .di-date-range-sheet[data-exiting] {
+    animation: di-date-range-rise var(--di-duration) var(--di-ease) reverse;
+  }
+
+  @keyframes di-date-range-rise {
+    from {
+      translate: 0 100%;
+    }
+  }
+
+  .di-date-range-sheet .di-date-range-dialog {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
+  }
+
+  .di-date-range-grip {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: grid;
+    justify-items: center;
+    gap: var(--di-space-8);
+    padding: var(--di-space-8) var(--di-space-16) var(--di-space-12);
+    border-bottom: 1px solid var(--di-border);
+    background: var(--di-bg-surface);
+    touch-action: none;
+    cursor: grab;
+  }
+
+  .di-date-range-handle {
+    width: 36px;
+    height: 4px;
+    border-radius: var(--di-radius-pill);
+    background: var(--di-border-strong);
+  }
+
+  .di-date-range-sheet-title {
+    justify-self: start;
+    font-size: var(--di-font-size-500);
+    font-weight: var(--di-weight-semibold);
+  }
+
+  .di-date-range-sheet .di-date-range-presets {
+    min-width: 0;
+    padding: var(--di-space-8) var(--di-space-16);
+    border-right: 0;
+    border-bottom: 1px solid var(--di-border);
+  }
+
+  .di-date-range-sheet .di-date-range-preset {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .di-date-range-sheet .di-date-range-custom {
+    padding: var(--di-space-16);
+  }
+
+  .di-date-range-sheet .di-date-range-calendar {
+    order: -1;
+    align-self: center;
+  }
+
+  .di-date-range-sheet .di-date-range-foot {
+    position: sticky;
+    bottom: 0;
+    margin-top: auto;
+    padding: var(--di-space-12) var(--di-space-16) calc(var(--di-space-12) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+  }
+
+  body:has(.di-date-range-scrim) {
+    overflow: hidden;
   }
 }

@@ -17,6 +17,7 @@ import { CalendarCell, CalendarGrid, Heading, RangeCalendar } from "react-aria-c
 import { Dialog, DialogTrigger } from "react-aria-components/Dialog";
 import { I18nProvider } from "react-aria-components/I18nProvider";
 import { ListBox, ListBoxItem } from "react-aria-components/ListBox";
+import { Modal, ModalOverlay } from "react-aria-components/Modal";
 import { Popover } from "react-aria-components/Popover";
 import { DateInput, DateSegment, Label, TimeField } from "react-aria-components/TimeField";
 import { cx } from "../cx";
@@ -104,7 +105,13 @@ function draftOf(value: DateRangeValue, timeZone: string, openEnd = false): { dr
   const from = fromAbsolute(Date.parse(value.from), timeZone);
   const to = fromAbsolute(Date.parse(value.to), timeZone);
   if (midnight(from) && midnight(to)) {
-    return { draft: { start: toCalendarDate(from), end: toCalendarDate(to).subtract({ days: 1 }) }, times: none.times };
+    return {
+      draft: {
+        start: toCalendarDate(from),
+        end: toCalendarDate(to).subtract({ days: 1 }),
+      },
+      times: none.times,
+    };
   }
   return {
     draft: { start: toCalendarDate(from), end: toCalendarDate(to) },
@@ -138,8 +145,9 @@ function describe(value: DateRangeValue, labels: DateRangeLabels, locale: string
   return from ? `${format.format(new Date(from))} –` : `– ${format.format(new Date(to!))}`;
 }
 
+// Below 640px the picker opens as a bottom sheet instead of a popover.
 function useNarrow(): boolean {
-  const query = "(max-width: 600px)";
+  const query = "(max-width: 639.98px)";
   const [narrow, setNarrow] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
   useEffect(() => {
     const list = window.matchMedia(query);
@@ -148,6 +156,61 @@ function useNarrow(): boolean {
     return () => list.removeEventListener("change", update);
   }, []);
   return narrow;
+}
+
+// The sheet closes when the reader goes back, as an app's sheet does: its
+// opening adds a history entry, and closing it otherwise takes that entry
+// away again.
+function useBackCloses(open: boolean, close: () => void) {
+  const closeRef = useRef(close);
+  closeRef.current = close;
+  useEffect(() => {
+    if (!open) return;
+    const marker = { diDateRangeSheet: Math.random() };
+    window.history.pushState({ ...window.history.state, ...marker }, "");
+    let popped = false;
+    const onPop = () => {
+      popped = true;
+      closeRef.current();
+    };
+    window.addEventListener("popstate", onPop);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      if (!popped && window.history.state?.diDateRangeSheet === marker.diDateRangeSheet) window.history.back();
+    };
+  }, [open]);
+}
+
+// Dragging the sheet's handle down by more than a quarter of its height, or
+// 96px, closes it; a shorter drag springs back.
+function useDragToClose(sheet: React.RefObject<HTMLElement | null>, close: () => void) {
+  const start = useRef<number | null>(null);
+  const move = (y: number) => {
+    if (start.current === null || !sheet.current) return;
+    sheet.current.style.translate = `0 ${Math.max(0, y - start.current)}px`;
+  };
+  return {
+    onPointerDown: (event: React.PointerEvent<HTMLElement>) => {
+      start.current = event.clientY;
+      event.currentTarget.setPointerCapture(event.pointerId);
+      sheet.current?.setAttribute("data-dragging", "");
+    },
+    onPointerMove: (event: React.PointerEvent<HTMLElement>) => move(event.clientY),
+    onPointerUp: (event: React.PointerEvent<HTMLElement>) => {
+      const element = sheet.current;
+      const distance = start.current === null ? 0 : event.clientY - start.current;
+      start.current = null;
+      if (!element) return;
+      element.removeAttribute("data-dragging");
+      element.style.translate = "";
+      if (distance > Math.min(96, element.offsetHeight / 4)) close();
+    },
+    onPointerCancel: () => {
+      start.current = null;
+      sheet.current?.removeAttribute("data-dragging");
+      if (sheet.current) sheet.current.style.translate = "";
+    },
+  };
 }
 
 /**
@@ -159,7 +222,11 @@ function useNarrow(): boolean {
  * passes from its settings; the popover names the zone. React Aria owns the
  * popover, the calendar grid and the time fields, so arrows move by day,
  * Page Up and Page Down by month, Home and End to the week's edges, Enter
- * picks, and Esc closes and returns to the control.
+ * picks, and Esc closes and returns to the control. Below 640px it opens
+ * as a bottom sheet instead: full width with a drag handle, the periods as
+ * a list, then the calendar and the typed days, Cancel and Apply pinned to
+ * its foot; focus stays inside, and Esc, the back button, a tap beside it or
+ * dragging the handle down close it.
  */
 export function DateRangePicker({
   id,
@@ -205,8 +272,18 @@ export function DateRangePicker({
   const [open, setOpen] = useState(false);
   const [openEnd, setOpenEnd] = useState(false);
   const [typed, setTyped] = useState({ from: "", to: "" });
-  const [times, setTimes] = useState<Times>({ on: false, from: null, to: null });
-  const [overlay, setOverlay] = useState<{ theme?: string; container?: HTMLElement }>({});
+  const [times, setTimes] = useState<Times>({
+    on: false,
+    from: null,
+    to: null,
+  });
+  const [overlay, setOverlay] = useState<{
+    theme?: string;
+    container?: HTMLElement;
+  }>({});
+  const sheet = useRef<HTMLDivElement>(null);
+  useBackCloses(open && narrow, () => setOpen(false));
+  const drag = useDragToClose(sheet, () => setOpen(false));
 
   // The popover is portalled: it keeps a nested theme and stays inside a
   // native modal's inert boundary, as ComboBox does.
@@ -224,7 +301,10 @@ export function DateRangePicker({
       const open = allowOpenEnd && !value.preset && !!value.from && !value.to;
       const start = draftOf(value, timeZone, open);
       setOpenEnd(open);
-      setTyped({ from: start.draft?.start.toString() ?? "", to: open ? "" : (start.draft?.end.toString() ?? "") });
+      setTyped({
+        from: start.draft?.start.toString() ?? "",
+        to: open ? "" : (start.draft?.end.toString() ?? ""),
+      });
       setTimes(start.times);
     }
     setOpen(next);
@@ -244,6 +324,158 @@ export function DateRangePicker({
   const text = describe(value, labels, locale, timeZone);
   const options = [...(allowAny ? (["any"] as const) : []), ...dateRangePresets];
 
+  const foot = (
+    <footer className="di-date-range-foot">
+      <span className="di-date-range-zone">
+        {labels.timeZone} <code>{timeZone}</code>
+      </span>
+      <span className="di-date-range-actions">
+        <Button variant="ghost" size={narrow ? "md" : "dense"} onClick={() => setOpen(false)}>
+          {labels.cancel}
+        </Button>
+        <Button size={narrow ? "md" : "dense"} disabled={!applied} onClick={() => applied && choose(applied)}>
+          {labels.apply}
+        </Button>
+      </span>
+    </footer>
+  );
+  const content = (
+    <Dialog ref={dialog} className="di-date-range-dialog" aria-label={labels.dialog}>
+      {narrow ? (
+        <div className="di-date-range-grip" {...drag}>
+          <span className="di-date-range-handle" aria-hidden />
+          <span className="di-date-range-sheet-title">{labels.dialog}</span>
+        </div>
+      ) : null}
+      <ListBox
+        className="di-date-range-presets"
+        aria-label={labels.presets}
+        selectionMode="single"
+        disallowEmptySelection
+        selectedKeys={[current]}
+        onSelectionChange={(keys) => {
+          const key = [...keys][0];
+          if (key === "any") choose({});
+          else if (key === "custom") focusCalendar();
+          else if (typeof key === "string") choose({ preset: key as DateRangePreset });
+        }}
+      >
+        {options.map((key) => (
+          <ListBoxItem key={key} id={key} className="di-date-range-preset">
+            {labels[key]}
+          </ListBoxItem>
+        ))}
+        <ListBoxItem id="custom" className="di-date-range-preset">
+          {labels.custom}
+        </ListBoxItem>
+      </ListBox>
+      <div className="di-date-range-custom">
+        <div className="di-date-range-dates">
+          <TextField
+            id={`${id}-from-date`}
+            type="date"
+            label={labels.fromDate}
+            value={typed.from}
+            onChange={(event) => setTyped({ ...typed, from: event.target.value })}
+          />
+          {openEnd ? null : (
+            <TextField
+              id={`${id}-to-date`}
+              type="date"
+              label={labels.toDate}
+              value={typed.to}
+              hint={typedRange.state === "reversed" ? labels.reversed : ""}
+              hintTone="error"
+              onChange={(event) => setTyped({ ...typed, to: event.target.value })}
+            />
+          )}
+        </div>
+        {allowOpenEnd ? (
+          <Checkbox
+            id={`${id}-open-end`}
+            label={labels.openEnd}
+            checked={openEnd}
+            onChange={(event) => {
+              setOpenEnd(event.target.checked);
+              if (!event.target.checked && !typed.to) setTyped({ ...typed, to: typed.from });
+            }}
+          />
+        ) : null}
+        <RangeCalendar
+          className="di-date-range-calendar"
+          aria-label={labels.custom}
+          visibleDuration={{ months: narrow ? 1 : 2 }}
+          pageBehavior="single"
+          firstDayOfWeek={weekStartName(weekStartsOn)}
+          value={draft}
+          defaultFocusedValue={draft?.end ?? today(timeZone)}
+          onChange={(range: { start: DateValue; end: DateValue } | null) => {
+            setTyped({
+              from: range ? toCalendarDate(range.start).toString() : "",
+              to: range ? toCalendarDate(range.end).toString() : "",
+            });
+            setOpenEnd(false);
+          }}
+        >
+          <header className="di-date-range-head">
+            <AriaButton slot="previous" className="di-date-range-nav" aria-label={labels.previous}>
+              <ChevronLeft aria-hidden />
+            </AriaButton>
+            <Heading className="di-date-range-heading" />
+            <AriaButton slot="next" className="di-date-range-nav" aria-label={labels.next}>
+              <ChevronRight aria-hidden />
+            </AriaButton>
+          </header>
+          <div className="di-date-range-months">
+            {Array.from({ length: narrow ? 1 : 2 }, (_, month) => (
+              <CalendarGrid key={month} offset={{ months: month }} className="di-date-range-grid">
+                {(date) => <CalendarCell date={date} className="di-date-range-cell" />}
+              </CalendarGrid>
+            ))}
+          </div>
+        </RangeCalendar>
+        {allowTimes && (
+          <div className="di-date-range-times">
+            <Checkbox
+              id={`${id}-times`}
+              label={labels.setTimes}
+              checked={times.on}
+              onChange={(event) => setTimes({ ...times, on: event.target.checked })}
+            />
+            {times.on && (
+              <div className="di-date-range-time-fields">
+                <TimeField
+                  className="di-date-range-time"
+                  value={times.from}
+                  onChange={(from) => setTimes({ ...times, from })}
+                >
+                  <Label className="di-field-label di-field-label-record">{labels.fromTime}</Label>
+                  <DateInput className="di-control di-date-range-time-input">
+                    {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
+                  </DateInput>
+                </TimeField>
+                {openEnd ? null : (
+                  <TimeField
+                    className="di-date-range-time"
+                    value={times.to}
+                    onChange={(to) => setTimes({ ...times, to })}
+                  >
+                    <Label className="di-field-label di-field-label-record">{labels.toTime}</Label>
+                    <DateInput className="di-control di-date-range-time-input">
+                      {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
+                    </DateInput>
+                  </TimeField>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        {narrow ? null : foot}
+      </div>
+      {narrow ? foot : null}
+    </Dialog>
+  );
+
   return (
     <I18nProvider locale={locale}>
       <DialogTrigger isOpen={open} onOpenChange={openChange}>
@@ -258,153 +490,28 @@ export function DateRangePicker({
           <span className="di-date-range-text">{text}</span>
           <ChevronDown className="di-date-range-caret" aria-hidden />
         </AriaButton>
-        <Popover
-          className="di-date-range-popover"
-          data-theme={overlay.theme}
-          UNSTABLE_portalContainer={overlay.container}
-          placement="bottom start"
-          offset={4}
-        >
-          <Dialog ref={dialog} className="di-date-range-dialog" aria-label={labels.dialog}>
-            <ListBox
-              className="di-date-range-presets"
-              aria-label={labels.presets}
-              selectionMode="single"
-              disallowEmptySelection
-              selectedKeys={[current]}
-              onSelectionChange={(keys) => {
-                const key = [...keys][0];
-                if (key === "any") choose({});
-                else if (key === "custom") focusCalendar();
-                else if (typeof key === "string") choose({ preset: key as DateRangePreset });
-              }}
-            >
-              {options.map((key) => (
-                <ListBoxItem key={key} id={key} className="di-date-range-preset">
-                  {labels[key]}
-                </ListBoxItem>
-              ))}
-              <ListBoxItem id="custom" className="di-date-range-preset">
-                {labels.custom}
-              </ListBoxItem>
-            </ListBox>
-            <div className="di-date-range-custom">
-              <div className="di-date-range-dates">
-                <TextField
-                  id={`${id}-from-date`}
-                  type="date"
-                  label={labels.fromDate}
-                  value={typed.from}
-                  onChange={(event) => setTyped({ ...typed, from: event.target.value })}
-                />
-                {openEnd ? null : (
-                  <TextField
-                    id={`${id}-to-date`}
-                    type="date"
-                    label={labels.toDate}
-                    value={typed.to}
-                    hint={typedRange.state === "reversed" ? labels.reversed : ""}
-                    hintTone="error"
-                    onChange={(event) => setTyped({ ...typed, to: event.target.value })}
-                  />
-                )}
-              </div>
-              {allowOpenEnd ? (
-                <Checkbox
-                  id={`${id}-open-end`}
-                  label={labels.openEnd}
-                  checked={openEnd}
-                  onChange={(event) => {
-                    setOpenEnd(event.target.checked);
-                    if (!event.target.checked && !typed.to) setTyped({ ...typed, to: typed.from });
-                  }}
-                />
-              ) : null}
-              <RangeCalendar
-                className="di-date-range-calendar"
-                aria-label={labels.custom}
-                visibleDuration={{ months: narrow ? 1 : 2 }}
-                pageBehavior="single"
-                firstDayOfWeek={weekStartName(weekStartsOn)}
-                value={draft}
-                defaultFocusedValue={draft?.end ?? today(timeZone)}
-                onChange={(range: { start: DateValue; end: DateValue } | null) => {
-                  setTyped({
-                    from: range ? toCalendarDate(range.start).toString() : "",
-                    to: range ? toCalendarDate(range.end).toString() : "",
-                  });
-                  setOpenEnd(false);
-                }}
-              >
-                <header className="di-date-range-head">
-                  <AriaButton slot="previous" className="di-date-range-nav" aria-label={labels.previous}>
-                    <ChevronLeft aria-hidden />
-                  </AriaButton>
-                  <Heading className="di-date-range-heading" />
-                  <AriaButton slot="next" className="di-date-range-nav" aria-label={labels.next}>
-                    <ChevronRight aria-hidden />
-                  </AriaButton>
-                </header>
-                <div className="di-date-range-months">
-                  {Array.from({ length: narrow ? 1 : 2 }, (_, month) => (
-                    <CalendarGrid key={month} offset={{ months: month }} className="di-date-range-grid">
-                      {(date) => <CalendarCell date={date} className="di-date-range-cell" />}
-                    </CalendarGrid>
-                  ))}
-                </div>
-              </RangeCalendar>
-              {allowTimes && (
-                <div className="di-date-range-times">
-                  <Checkbox
-                    id={`${id}-times`}
-                    label={labels.setTimes}
-                    checked={times.on}
-                    onChange={(event) => setTimes({ ...times, on: event.target.checked })}
-                  />
-                  {times.on && (
-                    <div className="di-date-range-time-fields">
-                      <TimeField
-                        className="di-date-range-time"
-                        value={times.from}
-                        onChange={(from) => setTimes({ ...times, from })}
-                      >
-                        <Label className="di-field-label di-field-label-record">{labels.fromTime}</Label>
-                        <DateInput className="di-control di-date-range-time-input">
-                          {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
-                        </DateInput>
-                      </TimeField>
-                      {openEnd ? null : (
-                        <TimeField
-                          className="di-date-range-time"
-                          value={times.to}
-                          onChange={(to) => setTimes({ ...times, to })}
-                        >
-                          <Label className="di-field-label di-field-label-record">{labels.toTime}</Label>
-                          <DateInput className="di-control di-date-range-time-input">
-                            {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
-                          </DateInput>
-                        </TimeField>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
-              <footer className="di-date-range-foot">
-                <span className="di-date-range-zone">
-                  {labels.timeZone} <code>{timeZone}</code>
-                </span>
-                <span className="di-date-range-actions">
-                  <Button variant="ghost" size="dense" onClick={() => setOpen(false)}>
-                    {labels.cancel}
-                  </Button>
-                  <Button size="dense" disabled={!applied} onClick={() => applied && choose(applied)}>
-                    {labels.apply}
-                  </Button>
-                </span>
-              </footer>
-            </div>
-          </Dialog>
-        </Popover>
+        {narrow ? (
+          <ModalOverlay
+            className="di-date-range-scrim"
+            data-theme={overlay.theme}
+            UNSTABLE_portalContainer={overlay.container}
+            isDismissable
+          >
+            <Modal ref={sheet} className="di-date-range-sheet">
+              {content}
+            </Modal>
+          </ModalOverlay>
+        ) : (
+          <Popover
+            className="di-date-range-popover"
+            data-theme={overlay.theme}
+            UNSTABLE_portalContainer={overlay.container}
+            placement="bottom start"
+            offset={4}
+          >
+            {content}
+          </Popover>
+        )}
       </DialogTrigger>
     </I18nProvider>
   );
