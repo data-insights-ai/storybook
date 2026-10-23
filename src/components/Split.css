@@ -25,15 +25,33 @@
   }
 
   @media (min-width: 1024px) {
-    .di-split {
+    .di-split:not(.is-preview) {
       grid-template-columns: minmax(0, 1fr) 320px;
     }
 
-    .di-split.is-aside-first .di-split-aside {
+    .di-split.is-aside-first:not(.is-preview) .di-split-aside {
       order: 0;
     }
 
-    .di-split-aside {
+    .di-split:not(.is-preview) > .di-split-aside {
+      position: sticky;
+      top: calc(var(--di-sticky-top, 64px) + var(--di-space-16));
+      max-height: calc(100dvh - var(--di-sticky-top, 64px) - var(--di-space-32));
+      overflow-y: auto;
+    }
+  }
+
+  /* A preview keeps its order under the form on every width below the column. */
+  .di-split.is-preview.is-aside-first .di-split-aside {
+    order: 0;
+  }
+
+  @media (min-width: 1280px) {
+    .di-split.is-preview {
+      grid-template-columns: minmax(0, 3fr) minmax(360px, 2fr);
+    }
+
+    .di-split.is-preview > .di-split-aside {
       position: sticky;
       top: calc(var(--di-sticky-top, 64px) + var(--di-space-16));
       max-height: calc(100dvh - var(--di-sticky-top, 64px) - var(--di-space-32));

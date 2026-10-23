@@ -63,3 +63,39 @@ export const Record: Story = {
 
 /** On a phone the decisions come first when they must not be missed. */
 export const AsideFirst: Story = { args: { asideFirst: true } };
+
+/**
+ * A form beside the live result of what it edits: from 1280px the preview is
+ * a wide column that stays in view while the form scrolls; narrower, it
+ * follows the form.
+ */
+export const Preview: Story = {
+  args: { variant: "preview" },
+  render: (args) => (
+    <Split {...args}>
+      <SplitMain>
+        {["Event time", "Severity", "Source address", "Account", "Device", "Action"].map((label) => (
+          <Panel key={label} title={label} padded>
+            <Select id={`split-preview-${label}`} label="From" mono={false} value="a" onChange={() => {}}>
+              <option value="a">The recorded value</option>
+              <option value="b">A fixed value</option>
+            </Select>
+          </Panel>
+        ))}
+      </SplitMain>
+      <SplitAside label="Preview">
+        <Panel title="Preview" padded>
+          <pre style={{ margin: 0, whiteSpace: "pre-wrap", fontFamily: "var(--di-font-code)" }}>
+            {'{"time":"2026-10-23T09:14:02Z","severity":"high","src":"203.0.113.7","user":"nora.feld"}'}
+          </pre>
+        </Panel>
+      </SplitAside>
+    </Split>
+  ),
+  play: async ({ canvasElement }) => {
+    const aside = within(canvasElement).getByRole("complementary", { name: "Preview" });
+    await expect(aside).toBeVisible();
+    const sticky = getComputedStyle(aside).position === "sticky";
+    await expect(sticky).toBe(window.innerWidth >= 1280);
+  },
+};
