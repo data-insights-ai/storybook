@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+import { expect, fireEvent, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateRangePicker, defaultDateRangeLabels } from "./DateRangePicker";
 import { type DateRangeValue, parseDateRange, resolveDateRange, serializeDateRange } from "./dateRange";
 import { ListToolbar } from "./ListToolbar";
@@ -50,6 +50,33 @@ export const Preset: Story = { args: { value: { preset: "7d" } } };
 /** A fixed range shows its days in the reader's language; the end is exclusive, so the last day shown is 7 October. */
 export const CustomRange: Story = {
   args: { value: { from: "2026-09-30T22:00:00.000Z", to: "2026-10-07T22:00:00.000Z" } },
+};
+
+export const IndependentStart: Story = {
+  args: { timeZone: "UTC", value: { from: "2026-10-01T00:00:00.000Z", to: "2026-10-16T00:00:00.000Z" } },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: /Period:/ }));
+    const dialog = within(canvasElement.ownerDocument.body);
+    fireEvent.change(dialog.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
+    await expect(args.onChange).toHaveBeenLastCalledWith({
+      from: "2026-10-03T00:00:00.000Z",
+      to: "2026-10-16T00:00:00.000Z",
+    });
+  },
+};
+
+export const OpenEnded: Story = {
+  args: { allowOpenEnd: true, timeZone: "UTC", value: { from: "2026-10-01T00:00:00.000Z" } },
+  play: async ({ canvasElement, args }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
+    const dialog = within(canvasElement.ownerDocument.body);
+    await expect(dialog.getByLabelText("Until now")).toBeChecked();
+    fireEvent.change(dialog.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
+    await expect(args.onChange).toHaveBeenLastCalledWith({ from: "2026-10-03T00:00:00.000Z" });
+  },
 };
 
 /** German, the week starting on Monday, the zone from the product's settings. */
@@ -148,11 +175,86 @@ export const Keyboard: Story = {
     await expect(applied.from).toBe(midnight.toISOString());
     await expect(Date.parse(applied.to!) - Date.parse(applied.from!)).toBeGreaterThanOrEqual(4 * 86_400_000);
     await expect(Date.parse(applied.to!) % 86_400_000).toBe(0);
+    await waitFor(() => expect(canvas.getByRole("button", { name: /^Period: / })).toHaveFocus());
 
     await userEvent.keyboard("{Enter}");
     await page.findByRole("listbox", { name: "Periods" });
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(page.queryByRole("listbox", { name: "Periods" })).toBeNull());
     await waitFor(() => expect(canvas.getByRole("button", { name: /^Period: / })).toHaveFocus());
+  },
+};
+
+export const PartialDateKeepsOtherEndpoint: Story = {
+  args: {
+    allowOpenEnd: true,
+    timeZone: "UTC",
+    value: { from: "2026-10-01T00:00:00.000Z", to: "2026-10-16T00:00:00.000Z" },
+  },
+  play: async ({ canvasElement, args }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
+    const dialog = within(canvasElement.ownerDocument.body);
+    fireEvent.change(dialog.getByLabelText("From date"), { target: { value: "" } });
+    await expect(dialog.getByLabelText("Through date")).toHaveValue("2026-10-15");
+    await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
+    fireEvent.input(dialog.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
+    await expect(args.onChange).toHaveBeenLastCalledWith({
+      from: "2026-10-03T00:00:00.000Z",
+      to: "2026-10-16T00:00:00.000Z",
+    });
+  },
+};
+
+/** A last day before the first is named under it and cannot be applied; nothing is swapped. */
+export const ReversedDates: Story = {
+  args: { timeZone: "UTC", value: { from: "2026-10-01T00:00:00.000Z", to: "2026-10-16T00:00:00.000Z" } },
+  play: async ({ canvasElement, args }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
+    const dialog = within(canvasElement.ownerDocument.body);
+    fireEvent.change(dialog.getByLabelText("Through date"), { target: { value: "2026-09-20" } });
+    await waitFor(() => expect(dialog.getByText("The last day comes before the first.")).toBeVisible());
+    await expect(dialog.getByLabelText("Through date")).toHaveAttribute("aria-invalid", "true");
+    await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
+    fireEvent.change(dialog.getByLabelText("Through date"), { target: { value: "2026-10-04" } });
+    await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
+    await expect(args.onChange).toHaveBeenLastCalledWith({
+      from: "2026-10-01T00:00:00.000Z",
+      to: "2026-10-05T00:00:00.000Z",
+    });
+  },
+};
+
+/** An open end with times applies from the first day's time; the end time is not asked for. */
+export const OpenEndedWithTime: Story = {
+  args: { allowOpenEnd: true, timeZone: "UTC", value: { from: "2026-10-01T09:30:00.000Z" } },
+  play: async ({ canvasElement, args }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
+    const dialog = within(canvasElement.ownerDocument.body);
+    await expect(dialog.getByLabelText("Until now")).toBeChecked();
+    await expect(dialog.getByLabelText("Set times")).toBeChecked();
+    await expect(dialog.queryByLabelText("Through date")).toBeNull();
+    await expect(dialog.queryByText("Until")).toBeNull();
+    await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
+    await expect(args.onChange).toHaveBeenLastCalledWith({ from: "2026-10-01T09:30:00.000Z" });
+  },
+};
+
+/** Without `allowOpenEnd` there is no "Until now", and a range needs both days as before. */
+export const NoOpenEnd: Story = {
+  args: { timeZone: "UTC", value: { from: "2026-10-01T00:00:00.000Z" } },
+  play: async ({ canvasElement, args }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
+    const dialog = within(canvasElement.ownerDocument.body);
+    await expect(dialog.queryByLabelText("Until now")).toBeNull();
+    await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
+    fireEvent.change(dialog.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
+    fireEvent.change(dialog.getByLabelText("Through date"), { target: { value: "2026-10-03" } });
+    await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
+    await expect(args.onChange).toHaveBeenLastCalledWith({
+      from: "2026-10-03T00:00:00.000Z",
+      to: "2026-10-04T00:00:00.000Z",
+    });
   },
 };

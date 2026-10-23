@@ -65,6 +65,12 @@ A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around 
 
 `Panel` and `EmptyState` can omit `index` when no ordinal belongs to the content. Omission removes the index rail completely.
 
+## Periods and counts
+
+`DateRangePicker` takes a custom range on the calendar or typed into its first and last day; a partial or impossible day applies nothing, and a last day before the first is named under it instead of being swapped. `allowOpenEnd` adds "Until now": a custom range from a first day (and its time, with times on) with no end, applied as `{ from }`, so entries keep arriving in it. Without it the picker works as before.
+
+`Seismograph` reads counts per period as pulses: up for what lies above a line, down for what lies below it, on one count scale; the highest periods carry their count. With `onSelect` a period is picked by a click or with the scrubber under the chart, a slider that arrows, Page Up/Down, Home and End move and a screen reader reads as the period and its counts. `scale="log"` is symmetric, so zero stays on the line. Colours are the chart tokens: `above` is `--di-chart-series`, `below` `--di-chart-compare`, the selection `--di-chart-highlight`.
+
 ## How it is put together
 
 One package. Storybook 10, React 19, Vite.
