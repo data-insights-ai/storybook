@@ -95,11 +95,17 @@
     color: var(--di-text-subtle);
   }
 
+  /*
+   * Shifted by as much of its own width as today is along the axis: centred
+   * in the middle, flush with the start or the end at either edge, so it is
+   * never cut off.
+   */
   .di-periods-today {
     position: absolute;
     top: var(--di-space-16);
     left: var(--di-period-today);
-    transform: translateX(-50%);
+    transform: translateX(calc(var(--di-period-today) * -1));
+    white-space: nowrap;
     color: var(--di-highlight-ink);
   }
 
