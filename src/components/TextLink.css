@@ -33,6 +33,15 @@
     color: var(--di-text);
   }
 
+  .di-textlink.is-plain {
+    text-decoration-color: transparent;
+  }
+
+  .di-textlink.is-plain:hover:not(:disabled),
+  .di-textlink.is-plain:focus-visible {
+    text-decoration-color: var(--di-seal);
+  }
+
   .di-textlink:disabled {
     color: var(--di-text-disabled);
     cursor: not-allowed;
