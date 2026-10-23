@@ -1,0 +1,301 @@
+@layer components {
+  .di-tsummary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+    min-width: 0;
+    container-type: inline-size;
+  }
+
+  .di-tsummary-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-space-4) var(--di-space-12);
+  }
+
+  .di-tsummary-title {
+    font-weight: var(--di-weight-semibold);
+  }
+
+  .di-tsummary-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-space-4) var(--di-space-12);
+    min-width: 0;
+  }
+
+  .di-tsummary-figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+  }
+
+  /* Blocks stand on the track like bars, each with its ordinal above it. */
+  .di-tsummary-strip {
+    position: relative;
+    height: 46px;
+    user-select: none;
+  }
+
+  .di-tsummary-track {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: var(--di-chart-baseline);
+  }
+
+  .di-tsummary-block {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--di-space-2);
+  }
+
+  .di-tsummary-block.is-pickable {
+    cursor: pointer;
+  }
+
+  .di-tsummary-block-index {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+    white-space: nowrap;
+  }
+
+  /* A faint block, filled in each tone only where events of it fell; the quiet inside stays faint. */
+  .di-tsummary-block-fill {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--di-radius-micro) var(--di-radius-micro) 0 0;
+    transition: box-shadow var(--di-duration) ease-out;
+  }
+
+  .di-tsummary-block-fill {
+    background: var(--di-chart-muted);
+  }
+
+  .di-tsummary-stretch {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    min-width: 2px;
+  }
+
+  .di-tsummary-stretch.is-neutral,
+  .di-tsummary-swatch.is-neutral {
+    background: color-mix(in srgb, var(--di-chart-series) 45%, var(--di-bg-surface));
+  }
+
+  .di-tsummary-stretch.is-warn,
+  .di-tsummary-swatch.is-warn {
+    background: var(--di-chart-warn);
+  }
+
+  .di-tsummary-stretch.is-danger,
+  .di-tsummary-swatch.is-danger {
+    background: var(--di-chart-danger);
+  }
+
+  .di-tsummary-block.is-hovered .di-tsummary-block-fill {
+    box-shadow: 0 0 0 1px var(--di-text);
+  }
+
+  .di-tsummary-block.is-active .di-tsummary-block-fill {
+    box-shadow:
+      0 0 0 2px var(--di-bg-surface),
+      0 0 0 3px var(--di-text);
+  }
+
+  .di-tsummary-block.is-hovered .di-tsummary-block-index,
+  .di-tsummary-block.is-active .di-tsummary-block-index {
+    color: var(--di-text);
+  }
+
+  /* What happened to the record: a flag under the track. */
+  .di-tsummary-flag,
+  .di-tsummary-note-flag,
+  .di-tsummary-legend-flag {
+    width: 0;
+    height: 0;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid var(--di-text-subtle);
+    border-left: 4px solid transparent;
+  }
+
+  .di-tsummary-flag {
+    position: absolute;
+    bottom: -7px;
+    transform: translateX(-4px);
+  }
+
+  .di-tsummary-legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-4) var(--di-space-16);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-subtle);
+  }
+
+  .di-tsummary-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-space-6);
+  }
+
+  .di-tsummary-swatch {
+    width: 12px;
+    height: 8px;
+    border-radius: var(--di-radius-micro);
+  }
+
+  .di-tsummary-legend-note {
+    flex-basis: 100%;
+  }
+
+  .di-tsummary-edges {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--di-space-12);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+  }
+
+  .di-tsummary-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--di-rule);
+  }
+
+  .di-tsummary-item {
+    border-bottom: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-tsummary-row {
+    display: grid;
+    grid-template-columns: var(--di-index-col) auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "index title title tone"
+      "index time detail detail";
+    align-items: baseline;
+    gap: var(--di-space-2) var(--di-space-12);
+    width: 100%;
+    padding: var(--di-space-8) var(--di-space-8) var(--di-space-8) 0;
+    border: 0;
+    background: transparent;
+    color: var(--di-text);
+    font: inherit;
+    text-align: left;
+    transition: background-color var(--di-duration) ease-out;
+  }
+
+  button.di-tsummary-row {
+    cursor: pointer;
+  }
+
+  .di-tsummary-row.is-hovered {
+    background: var(--di-bg-row-hover);
+  }
+
+  .di-tsummary-row.is-active {
+    background: var(--di-bg-row-hover);
+    box-shadow: inset 2px 0 0 var(--di-text);
+  }
+
+  .di-tsummary-row:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: -2px;
+  }
+
+  .di-tsummary-index {
+    grid-area: index;
+    justify-self: center;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-weight: var(--di-weight-medium);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+  }
+
+  .di-tsummary-row.is-active .di-tsummary-index {
+    color: var(--di-text);
+  }
+
+  .di-tsummary-row-title {
+    grid-area: title;
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-medium);
+  }
+
+  .di-tsummary-tone {
+    grid-area: tone;
+  }
+
+  .di-tsummary-time {
+    grid-area: time;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-muted);
+    white-space: nowrap;
+  }
+
+  .di-tsummary-detail {
+    grid-area: detail;
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-subtle);
+  }
+
+  /* On a narrow frame every part of a row takes its own line, the tone under the title. */
+  @container (max-width: 480px) {
+    .di-tsummary-row {
+      grid-template-columns: var(--di-index-col) minmax(0, 1fr);
+      grid-template-areas:
+        "index title"
+        "index tone"
+        "index time"
+        "index detail";
+    }
+
+    .di-tsummary-tone {
+      justify-self: start;
+    }
+  }
+
+  .di-tsummary-note {
+    display: grid;
+    grid-template-columns: var(--di-index-col) auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--di-space-12);
+    padding: var(--di-space-6) var(--di-space-8) var(--di-space-6) 0;
+    color: var(--di-text-subtle);
+  }
+
+  .di-tsummary-note .di-tsummary-time {
+    grid-area: auto;
+  }
+
+  .di-tsummary-note-flag {
+    justify-self: center;
+    align-self: center;
+  }
+
+  .di-tsummary-note-label {
+    font-size: var(--di-font-size-300);
+  }
+}
