@@ -183,6 +183,8 @@ export { Eyebrow, Kbd, SealMark, SealValue, TickRule } from "./components/Seal";
 export type { SealState } from "./components/Seal";
 export { SaveBar } from "./components/SaveBar";
 export { SearchField } from "./components/SearchField";
+export { Seismograph } from "./components/Seismograph";
+export type { SeismographPoint } from "./components/Seismograph";
 export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/SectionTitle";
 export { SegmentedControl } from "./components/SegmentedControl";
 export { Select } from "./components/Select";

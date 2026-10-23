@@ -22,6 +22,8 @@ import { DateInput, DateSegment, Label, TimeField } from "react-aria-components/
 import { cx } from "../cx";
 import { Button } from "./Button";
 import { Checkbox } from "./Choice";
+import { TextField } from "./TextField";
+import { openEndedRange, typedDraft } from "./dateRangeDraft";
 import {
   type DateRangePreset,
   type DateRangeValue,
@@ -46,9 +48,16 @@ export type DateRangeLabels = Record<DateRangePreset, string> & {
   apply: string;
   cancel: string;
   timeZone: string;
+  /** The typed first and last day of a custom range. */
+  fromDate?: string;
+  toDate?: string;
+  /** With `allowOpenEnd`: a custom range without a last day, up to now. */
+  openEnd?: string;
+  /** Under the last day when it comes before the first. */
+  reversed?: string;
 };
 
-export const defaultDateRangeLabels: DateRangeLabels = {
+export const defaultDateRangeLabels = {
   any: "Any time",
   "24h": "Last 24 hours",
   "7d": "Last 7 days",
@@ -66,7 +75,11 @@ export const defaultDateRangeLabels: DateRangeLabels = {
   apply: "Apply",
   cancel: "Cancel",
   timeZone: "Time zone",
-};
+  fromDate: "From date",
+  toDate: "Through date",
+  openEnd: "Until now",
+  reversed: "The last day comes before the first.",
+} satisfies DateRangeLabels;
 
 type Draft = { start: CalendarDate; end: CalendarDate } | null;
 type Times = { on: boolean; from: Time | null; to: Time | null };
@@ -75,9 +88,18 @@ const midnight = (zoned: { hour: number; minute: number; second: number; millise
   zoned.hour === 0 && zoned.minute === 0 && zoned.second === 0 && zoned.millisecond === 0;
 
 // A fixed range as the calendar shows it: an end at midnight is exclusive,
-// so the last day shown is the day before it.
-function draftOf(value: DateRangeValue, timeZone: string): { draft: Draft; times: Times } {
+// so the last day shown is the day before it. With openEnd a custom range
+// with a first day and no last one shows as that day, open.
+function draftOf(value: DateRangeValue, timeZone: string, openEnd = false): { draft: Draft; times: Times } {
   const none = { draft: null, times: { on: false, from: null, to: null } };
+  if (openEnd && !value.preset && value.from && !value.to) {
+    const from = fromAbsolute(Date.parse(value.from), timeZone);
+    const day = toCalendarDate(from);
+    return {
+      draft: { start: day, end: day },
+      times: midnight(from) ? none.times : { on: true, from: toTime(from), to: null },
+    };
+  }
   if (value.preset || !value.from || !value.to) return none;
   const from = fromAbsolute(Date.parse(value.from), timeZone);
   const to = fromAbsolute(Date.parse(value.to), timeZone);
@@ -149,6 +171,7 @@ export function DateRangePicker({
   timeZone = getLocalTimeZone(),
   allowAny = true,
   allowTimes = true,
+  allowOpenEnd = false,
   disabled = false,
   labels: labelOverrides = {},
   className,
@@ -168,6 +191,8 @@ export function DateRangePicker({
   allowAny?: boolean;
   /** Offers times on a custom range. */
   allowTimes?: boolean;
+  /** Offers "Until now": a custom range from a first day with no last one. */
+  allowOpenEnd?: boolean;
   disabled?: boolean;
   labels?: Partial<DateRangeLabels>;
   className?: string;
@@ -178,7 +203,8 @@ export function DateRangePicker({
   const dialog = useRef<HTMLElement>(null);
   const focusCalendar = () => dialog.current?.querySelector<HTMLElement>('[role="grid"] [tabindex="0"]')?.focus();
   const [open, setOpen] = useState(false);
-  const [draft, setDraft] = useState<Draft>(null);
+  const [openEnd, setOpenEnd] = useState(false);
+  const [typed, setTyped] = useState({ from: "", to: "" });
   const [times, setTimes] = useState<Times>({ on: false, from: null, to: null });
   const [overlay, setOverlay] = useState<{ theme?: string; container?: HTMLElement }>({});
 
@@ -195,8 +221,10 @@ export function DateRangePicker({
 
   const openChange = (next: boolean) => {
     if (next) {
-      const start = draftOf(value, timeZone);
-      setDraft(start.draft);
+      const open = allowOpenEnd && !value.preset && !!value.from && !value.to;
+      const start = draftOf(value, timeZone, open);
+      setOpenEnd(open);
+      setTyped({ from: start.draft?.start.toString() ?? "", to: open ? "" : (start.draft?.end.toString() ?? "") });
       setTimes(start.times);
     }
     setOpen(next);
@@ -205,7 +233,13 @@ export function DateRangePicker({
     onChange(next);
     setOpen(false);
   };
-  const applied = draft ? rangeOf(draft, times, timeZone) : null;
+  const typedRange = typedDraft({ ...typed, openEnd });
+  const draft: Draft = typedRange.state === "ready" ? { start: typedRange.start, end: typedRange.end } : null;
+  const applied = !draft
+    ? null
+    : openEnd
+      ? openEndedRange(draft.start, times.on ? times.from : null, timeZone)
+      : rangeOf(draft, times, timeZone);
   const current = value.preset ?? (isDateRangeSet(value) ? "custom" : "any");
   const text = describe(value, labels, locale, timeZone);
   const options = [...(allowAny ? (["any"] as const) : []), ...dateRangePresets];
@@ -255,6 +289,37 @@ export function DateRangePicker({
               </ListBoxItem>
             </ListBox>
             <div className="di-date-range-custom">
+              <div className="di-date-range-dates">
+                <TextField
+                  id={`${id}-from-date`}
+                  type="date"
+                  label={labels.fromDate}
+                  value={typed.from}
+                  onChange={(event) => setTyped({ ...typed, from: event.target.value })}
+                />
+                {openEnd ? null : (
+                  <TextField
+                    id={`${id}-to-date`}
+                    type="date"
+                    label={labels.toDate}
+                    value={typed.to}
+                    hint={typedRange.state === "reversed" ? labels.reversed : ""}
+                    hintTone="error"
+                    onChange={(event) => setTyped({ ...typed, to: event.target.value })}
+                  />
+                )}
+              </div>
+              {allowOpenEnd ? (
+                <Checkbox
+                  id={`${id}-open-end`}
+                  label={labels.openEnd}
+                  checked={openEnd}
+                  onChange={(event) => {
+                    setOpenEnd(event.target.checked);
+                    if (!event.target.checked && !typed.to) setTyped({ ...typed, to: typed.from });
+                  }}
+                />
+              ) : null}
               <RangeCalendar
                 className="di-date-range-calendar"
                 aria-label={labels.custom}
@@ -263,9 +328,13 @@ export function DateRangePicker({
                 firstDayOfWeek={weekStartName(weekStartsOn)}
                 value={draft}
                 defaultFocusedValue={draft?.end ?? today(timeZone)}
-                onChange={(range: { start: DateValue; end: DateValue } | null) =>
-                  setDraft(range ? { start: toCalendarDate(range.start), end: toCalendarDate(range.end) } : null)
-                }
+                onChange={(range: { start: DateValue; end: DateValue } | null) => {
+                  setTyped({
+                    from: range ? toCalendarDate(range.start).toString() : "",
+                    to: range ? toCalendarDate(range.end).toString() : "",
+                  });
+                  setOpenEnd(false);
+                }}
               >
                 <header className="di-date-range-head">
                   <AriaButton slot="previous" className="di-date-range-nav" aria-label={labels.previous}>
@@ -304,16 +373,18 @@ export function DateRangePicker({
                           {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
                         </DateInput>
                       </TimeField>
-                      <TimeField
-                        className="di-date-range-time"
-                        value={times.to}
-                        onChange={(to) => setTimes({ ...times, to })}
-                      >
-                        <Label className="di-field-label di-field-label-record">{labels.toTime}</Label>
-                        <DateInput className="di-control di-date-range-time-input">
-                          {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
-                        </DateInput>
-                      </TimeField>
+                      {openEnd ? null : (
+                        <TimeField
+                          className="di-date-range-time"
+                          value={times.to}
+                          onChange={(to) => setTimes({ ...times, to })}
+                        >
+                          <Label className="di-field-label di-field-label-record">{labels.toTime}</Label>
+                          <DateInput className="di-control di-date-range-time-input">
+                            {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
+                          </DateInput>
+                        </TimeField>
+                      )}
                     </div>
                   )}
                 </div>
