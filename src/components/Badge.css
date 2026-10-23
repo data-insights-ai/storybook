@@ -7,7 +7,7 @@
     height: 18px;
     padding: 0 var(--di-space-6);
     border-radius: var(--di-radius-pill);
-    font-family: var(--di-font-code);
+    font-family: var(--di-font-ui);
     font-size: var(--di-font-size-100);
     font-weight: var(--di-weight-medium);
     font-variant-numeric: tabular-nums;

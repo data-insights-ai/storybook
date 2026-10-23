@@ -146,7 +146,15 @@ export function ChartTooltipContent({
   payload,
   label,
   details,
-}: TipProps & { details?: (datum: Record<string, unknown>) => ChartTooltipDetail[] }) {
+  formatValue,
+  formatLabel,
+}: TipProps & {
+  details?: (datum: Record<string, unknown>) => ChartTooltipDetail[];
+  /** A series value as people read it: "1,250 credits", "12 GB". */
+  formatValue?: (value: number, key: string) => string;
+  /** The hovered point's label, such as a formatted date. */
+  formatLabel?: (label: unknown) => string;
+}) {
   const config = useChart();
   if (!active || !payload?.length) return null;
   const order = Object.keys(config);
@@ -154,7 +162,11 @@ export function ChartTooltipContent({
     const key = seriesKey(item.dataKey);
     const entry = config[key];
     if (!entry || item.value == null || item.type === "none") return [];
-    const value = Array.isArray(item.value) ? item.value.join("–") : String(item.value);
+    const value = Array.isArray(item.value)
+      ? item.value.join("–")
+      : formatValue && typeof item.value === "number"
+        ? formatValue(item.value, key)
+        : String(item.value);
     return [{ key, label: entry.label, value, color: item.color ?? `var(--color-${key})` }];
   });
   rows.sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
@@ -163,7 +175,9 @@ export function ChartTooltipContent({
   const extra = details && datum && typeof datum === "object" ? details(datum as Record<string, unknown>) : [];
   return (
     <div className="di-chart-tip">
-      {label != null && label !== "" ? <p className="di-chart-tip-label">{label}</p> : null}
+      {label != null && label !== "" ? (
+        <p className="di-chart-tip-label">{formatLabel ? formatLabel(label) : label}</p>
+      ) : null}
       <ul>
         {rows.map((row) => (
           <li key={row.key}>

@@ -1,5 +1,7 @@
 import type { CSSProperties } from "react";
 import { cx } from "../cx";
+import { useDelayed } from "./useDelayed";
+import "./Delayed.css";
 import "./SkeletonTable.css";
 
 /**
@@ -15,20 +17,32 @@ import "./SkeletonTable.css";
  *
  * Rows start one stagger apart, so the wait reads top to bottom the way
  * the register itself does.
+ *
+ * The grid stays hidden for the first `delay` ms of a wait, with its space
+ * already reserved, so a fast load neither flashes nor shifts the page.
  */
 export function SkeletonTable({
   rows = 5,
   label,
+  delay = 150,
   className,
 }: {
   rows?: number;
+  /** Milliseconds before the grid appears; 0 shows it at once. */
+  delay?: number;
   /** What a screen reader hears while the grid is empty. */
   label: string;
   className?: string;
 }) {
   const widths = [132, 98, 154, 112, 140, 88, 120];
+  const shown = useDelayed(delay);
   return (
-    <div className={cx("di-skeleton", className)} role="status" aria-live="polite">
+    <div
+      className={cx("di-skeleton", "di-delayed", className)}
+      data-shown={shown}
+      role="status"
+      aria-live="polite"
+    >
       <span className="di-sr">{label}</span>
       <div className="di-skeleton-row is-header" aria-hidden>
         <span className="di-skeleton-index" />

@@ -1,6 +1,10 @@
 @layer components {
+  /* It never runs past its container: segments that do not fit wrap onto a second row. */
   .di-segmented {
     display: inline-flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
     padding: var(--di-space-2);
     margin: 0;
     border: 1px solid var(--di-border-input);

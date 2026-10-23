@@ -1,0 +1,86 @@
+@layer components {
+  .di-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-4) var(--di-space-6);
+  }
+
+  .di-tag {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--di-space-4);
+    max-width: 100%;
+    padding: var(--di-space-2) var(--di-space-6);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-micro);
+    background: var(--di-bg-surface);
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+    white-space: nowrap;
+  }
+
+  /*
+   * A tag wider than its place wraps its detail onto a second line rather
+   * than cutting it: "Analyst · Production" must not read "Analyst · Produ…".
+   * Only a compact list, which promises one line, cuts.
+   */
+  .di-tag:has(.di-tag-detail) {
+    flex-wrap: wrap;
+    row-gap: 0;
+  }
+
+  .di-tag-detail {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    color: var(--di-text-muted);
+  }
+
+  .di-tag-detail::before {
+    content: "· ";
+  }
+
+  /* Compact: one line; a tag that does not fit is cut, never wrapped. */
+  .di-tag-list.is-compact {
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .di-tag-list.is-compact .di-tag {
+    flex: 0 1 auto;
+    flex-wrap: nowrap;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .di-tag-list.is-compact .di-tag-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .di-tag-list.is-compact .di-tag-more {
+    flex: none;
+  }
+
+  .di-tag-more {
+    color: var(--di-text-muted);
+    cursor: default;
+  }
+
+  button.di-tag-more {
+    font: inherit;
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-300);
+    cursor: pointer;
+  }
+
+  button.di-tag-more:hover {
+    color: var(--di-text);
+    border-color: var(--di-border-strong);
+  }
+}

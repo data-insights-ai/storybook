@@ -77,3 +77,69 @@ export const GrowsAsYouScroll: StoryObj = {
     await expect(Number(table.getAttribute("aria-rowcount"))).toBeGreaterThanOrEqual(41);
   },
 };
+
+const wide = (n: number): Entry => ({
+  ...entry(n),
+  what:
+    n % 9 === 0
+      ? `Collector run ${n} finished after reading every partition of the hub twice, which took longer than the window allowed`
+      : n % 4 === 0
+        ? `Run ${n}`
+        : `Collector run ${n} finished`,
+});
+
+/* Every row loaded at once, so the test scrolls the whole register. */
+function LongRegister() {
+  const entries = Array.from({ length: 2000 }, (_, i) => wide(2000 - i));
+  return (
+    <InfiniteTable
+      caption="Collector runs"
+      count={entries.length}
+      rowKey={(i) => entries[i].id}
+      hasMore={false}
+      loadingMore={false}
+      onLoadMore={() => {}}
+      newEntriesLabel={(n) => `${n} new entries`}
+      footerLabel={(shown) => `All ${shown} entries`}
+      loadingLabel="Loading more"
+      renderRow={(i, { key, ...place }) => (
+        <TableRow key={key} {...place}>
+          <TableCell mono>{entries[i].at}</TableCell>
+          <TableCell>{entries[i].what}</TableCell>
+          <TableCell align="end">
+            <StatusPill tone={entries[i].ok ? "ok" : "danger"}>{entries[i].ok ? "Done" : "Failed"}</StatusPill>
+          </TableCell>
+        </TableRow>
+      )}
+    >
+      <TableHead>
+        <TableColumn>Time</TableColumn>
+        <TableColumn width="fill">What happened</TableColumn>
+        <TableColumn align="end">Result</TableColumn>
+      </TableHead>
+    </InfiniteTable>
+  );
+}
+
+/**
+ * Two thousand rows of uneven width. The columns are measured once from the
+ * head and the first rows and keep their place while the register scrolls,
+ * whatever the rows on screen happen to hold.
+ */
+export const StableColumns: StoryObj = {
+  render: () => <LongRegister />,
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+    const canvas = within(canvasElement);
+    const heads = await canvas.findAllByRole("columnheader");
+    await waitFor(() => expect(canvasElement.querySelector("table.is-measured")).not.toBeNull());
+    const edges = () => heads.map((th) => Math.round(th.getBoundingClientRect().left * 2) / 2);
+    const before = edges();
+    const total = document.documentElement.scrollHeight;
+    for (let y = 0; y <= total; y += 700) {
+      window.scrollTo(0, y);
+      await new Promise((r) => setTimeout(r, 40));
+      await expect(edges()).toEqual(before);
+    }
+    window.scrollTo(0, 0);
+  },
+};

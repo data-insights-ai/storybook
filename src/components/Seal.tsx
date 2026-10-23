@@ -104,6 +104,6 @@ export function Eyebrow({
 }
 
 /** A keyboard shortcut, set in the mono track. */
-export function Kbd({ children }: { children: ReactNode }) {
-  return <kbd className="di-kbd">{children}</kbd>;
+export function Kbd({ children, className }: { children: ReactNode; className?: string }) {
+  return <kbd className={className ? `di-kbd ${className}` : "di-kbd"}>{children}</kbd>;
 }

@@ -1,0 +1,173 @@
+@layer components {
+  .di-chain {
+    display: grid;
+    grid-template-columns: minmax(120px, 200px) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: var(--di-space-12);
+    min-width: 0;
+  }
+
+  .di-chain-lanes {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .di-chain-lane {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding-right: var(--di-space-8);
+    border-bottom: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-chain-lane-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--di-font-size-300);
+    font-weight: var(--di-weight-medium);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-chain-lane-detail {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-subtle);
+  }
+
+  /* The markers sit 12px in from either edge, so a first or last step is not cut by the frame. */
+  .di-chain-track {
+    position: relative;
+    min-width: 0;
+    padding: 0 var(--di-space-12);
+  }
+
+  .di-chain-rule {
+    border-bottom: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-chain-tick {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px dashed var(--di-rule-hairline);
+  }
+
+  .di-chain-links {
+    position: absolute;
+    inset: 0 var(--di-space-12);
+    width: calc(100% - 2 * var(--di-space-12));
+    height: 100%;
+    overflow: visible;
+  }
+
+  .di-chain-links path {
+    fill: none;
+    stroke: var(--di-chart-series);
+    stroke-width: 1.5px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .di-chain-marker {
+    position: absolute;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 var(--di-space-6);
+    translate: -50% -50%;
+    border: 1px solid var(--di-chart-series);
+    border-radius: var(--di-radius-pill);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    cursor: default;
+    transition:
+      background var(--di-duration) var(--di-ease),
+      color var(--di-duration) var(--di-ease);
+  }
+
+  .di-chain-marker[aria-pressed] {
+    cursor: pointer;
+  }
+
+  .di-chain-marker:hover,
+  .di-chain-marker.is-hovered,
+  .di-chain-marker.is-selected {
+    background: var(--di-chart-series);
+    color: var(--di-bg-surface);
+  }
+
+  .di-chain-marker.is-danger {
+    border-color: var(--di-chart-danger);
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-chain-marker.is-danger:hover,
+  .di-chain-marker.is-danger.is-hovered,
+  .di-chain-marker.is-danger.is-selected {
+    background: var(--di-chart-danger);
+    color: var(--di-bg-surface);
+  }
+
+  .di-chain-marker.is-muted {
+    border-color: var(--di-chart-muted-strong);
+    color: var(--di-text-subtle);
+  }
+
+  .di-chain-marker:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  /* The axis is read, not copied: absolute ends and relative ticks in the UI font, figures tabular. */
+  .di-chain-axis {
+    grid-column: 2;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--di-space-8);
+    padding: var(--di-space-6) var(--di-space-12) 0;
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+  }
+
+  .di-chain-axis-ticks {
+    position: absolute;
+    inset: var(--di-space-6) var(--di-space-12) 0;
+    pointer-events: none;
+  }
+
+  .di-chain-axis-tick {
+    position: absolute;
+    top: 0;
+    translate: -50% 0;
+    white-space: nowrap;
+  }
+
+  .di-chain-axis-end {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--di-space-16);
+    background: var(--di-bg-surface);
+  }
+
+  @container (max-width: 480px) {
+    .di-chain {
+      grid-template-columns: 96px minmax(0, 1fr);
+    }
+  }
+}

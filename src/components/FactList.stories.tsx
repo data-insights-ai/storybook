@@ -142,3 +142,35 @@ export const Inline: Story = {
     </FactList>
   ),
 };
+
+/**
+ * Labels are prose: a long German label wraps inside its column instead
+ * of running into the value. Identifiers take `mono`.
+ */
+export const LongLabels: Story = {
+  decorators: [
+    (Story) => (
+      <div lang="de" style={{ maxWidth: 380 }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: (args) => (
+    <FactList {...args}>
+      <Fact label="Zustellungen von Benachrichtigungen">365 Tage</Fact>
+      <Fact label="Aufbewahrungsdauer des Prüfprotokolls">1.095 Tage</Fact>
+      <Fact label="Kennung" mono>
+        01a155a0-dd8b-79bb-a708-3841c4fc4562
+      </Fact>
+    </FactList>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const label = canvas.getByText("Zustellungen von Benachrichtigungen");
+    const value = canvas.getByText("365 Tage");
+    await expect(label.getBoundingClientRect().right).toBeLessThanOrEqual(value.getBoundingClientRect().left);
+    await expect(getComputedStyle(label).textTransform).toBe("none");
+    await expect(getComputedStyle(value).fontFamily).not.toMatch(/mono/i);
+    await expect(canvas.getByText(/^01a155a0/)).toHaveClass("di-fact-mono");
+  },
+};

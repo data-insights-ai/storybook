@@ -59,6 +59,23 @@
     white-space: nowrap;
   }
 
+  /* Measured columns keep their width; a value longer than its column is cut, not the grid widened. */
+  .di-table.is-measured {
+    table-layout: fixed;
+  }
+
+  .di-table.is-measured td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* A value with lines under it (a price, its total) wraps rather than being cut. */
+  .di-table.is-measured td:has(.di-cell) {
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
   /* A dialog opened from a cell is prose again, whatever the cell's line rule. */
   .di-table dialog {
     white-space: normal;
@@ -102,11 +119,17 @@
     white-space: nowrap;
   }
 
+  /*
+   * Every cell keeps the same inset on all four sides of its content: a
+   * value of two lines (a name and its description) stays clear of the
+   * row's rules instead of touching them.
+   */
   .di-table td {
     height: var(--di-table-row-height);
-    padding: 0 var(--di-space-12);
+    padding: var(--di-space-8) var(--di-space-12);
     border-bottom: 1px solid var(--di-table-rule);
     color: var(--di-text);
+    font-variant-numeric: tabular-nums;
     vertical-align: middle;
   }
 
@@ -154,7 +177,14 @@
     background: var(--di-bg-page);
   }
 
-  .di-table.is-indexed :is(th, td).is-pinned {
+  /*
+   * The pinned column sits after the index column only when the table has
+   * one. Keyed to the cells, not to the `indexed` prop: a table that kept
+   * the default without rendering an index would otherwise hold its pinned
+   * column 38px in, leaving an empty first column and covering the start of
+   * the next cell.
+   */
+  .di-table:has(.di-table-index) :is(th, td).is-pinned {
     left: var(--di-index-col);
   }
 
@@ -216,7 +246,7 @@
   .di-cell {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-2);
+    gap: var(--di-space-4);
     min-width: 0;
   }
 
@@ -231,6 +261,12 @@
     font-size: var(--di-font-size-200);
     line-height: var(--di-leading-snug);
     color: var(--di-text-subtle);
+  }
+
+  .di-cell-secondary.is-prose {
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
   }
 
   .di-cell-lead {
@@ -297,7 +333,7 @@
       display: none;
     }
 
-    .di-table-wrap.is-stackable .di-table.is-indexed tr {
+    .di-table-wrap.is-stackable .di-table:has(.di-table-index) tr {
       padding-left: calc(var(--di-index-col) + var(--di-space-12));
     }
 

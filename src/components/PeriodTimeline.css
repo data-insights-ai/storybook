@@ -1,0 +1,125 @@
+@layer components {
+  /*
+   * Rows of label, track and caption. The track column is shared, so the
+   * today rule can run through every row at the same x.
+   */
+  .di-periods {
+    --di-periods-label: minmax(96px, 22%);
+    --di-periods-caption: minmax(120px, 26%);
+    position: relative;
+    display: grid;
+    gap: var(--di-space-8);
+    container: di-periods / inline-size;
+  }
+
+  .di-periods-rows {
+    display: grid;
+    gap: var(--di-space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-period {
+    display: grid;
+    grid-template-columns: var(--di-periods-label) minmax(0, 1fr) var(--di-periods-caption);
+    align-items: center;
+    gap: var(--di-space-12);
+    font-size: var(--di-font-size-300);
+  }
+
+  .di-period-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--di-text);
+  }
+
+  .di-period-caption {
+    color: var(--di-text-muted);
+  }
+
+  .di-period-track {
+    position: relative;
+    height: 10px;
+    border-radius: var(--di-radius-pill);
+    background: var(--di-bg-subtle);
+  }
+
+  .di-period-bar,
+  .di-period-grace {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: var(--di-radius-pill);
+  }
+
+  .di-period-bar {
+    left: var(--di-period-start);
+    right: calc(100% - var(--di-period-end));
+    background: var(--di-period-color);
+  }
+
+  /* The grace period: the same colour, hatched, so it reads as "still, but borrowed". */
+  .di-period-grace {
+    left: var(--di-period-end);
+    right: calc(100% - var(--di-period-grace));
+    background: repeating-linear-gradient(135deg, var(--di-period-color) 0 2px, transparent 2px 5px);
+    opacity: 0.7;
+  }
+
+  .di-period-ok {
+    --di-period-color: var(--di-chart-series);
+  }
+
+  .di-period-neutral {
+    --di-period-color: var(--di-chart-muted-strong);
+  }
+
+  .di-period-warn {
+    --di-period-color: var(--di-chart-warn);
+  }
+
+  .di-period-danger {
+    --di-period-color: var(--di-chart-danger);
+  }
+
+  /* Today has a line of its own under the ends, so it never sits on a date. */
+  .di-periods-scale {
+    position: relative;
+    display: flex;
+    padding-bottom: var(--di-space-16);
+    justify-content: space-between;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    color: var(--di-text-subtle);
+  }
+
+  .di-periods-today {
+    position: absolute;
+    top: var(--di-space-16);
+    left: var(--di-period-today);
+    transform: translateX(-50%);
+    color: var(--di-highlight-ink);
+  }
+
+  /* Today, at the same x in every row. */
+  .di-period-now {
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    left: var(--di-period-today);
+    border-left: 1px dashed var(--di-chart-highlight);
+  }
+
+  @container di-periods (max-width: 520px) {
+    .di-period {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--di-space-4);
+    }
+
+    .di-periods-axis > span:empty {
+      display: none;
+    }
+  }
+}

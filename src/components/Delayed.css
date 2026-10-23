@@ -1,0 +1,20 @@
+@layer components {
+  /*
+   * Hidden, not absent: the reserved box is what keeps the page from
+   * moving when the indicator appears. Shared by every waiting surface
+   * that takes a delay.
+   */
+  .di-delayed[data-shown="false"] {
+    visibility: hidden;
+  }
+
+  .di-delayed[data-shown="true"] {
+    animation: di-delayed-in var(--di-duration-slow) ease-out;
+  }
+
+  @keyframes di-delayed-in {
+    from {
+      opacity: 0;
+    }
+  }
+}

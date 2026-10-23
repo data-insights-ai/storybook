@@ -1,7 +1,13 @@
 @layer components {
+  /*
+   * Three columns: the icon, the copy, the action. An action may sit inside
+   * `NoticeText` or beside it; either way it stays inside the padding, in
+   * line with the copy, and goes under the copy on a narrow notice.
+   */
   .di-notice {
     container: di-notice / inline-size;
-    display: flex;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
     overflow: hidden;
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
@@ -10,6 +16,8 @@
 
   /* The icon column echoes the panel's index: a notice is also a record. */
   .di-notice-icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
     display: flex;
     justify-content: center;
     width: var(--di-index-col);
@@ -25,13 +33,28 @@
   }
 
   .di-notice-copy {
-    flex: 1;
+    grid-column: 2;
     min-width: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--di-space-16);
-    padding: var(--di-notice-pad) var(--di-notice-pad);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: start;
+    column-gap: var(--di-notice-pad);
+    padding: var(--di-notice-pad);
+  }
+
+  .di-notice-copy > * {
+    grid-column: 1;
+  }
+
+  .di-notice-copy > .di-notice-action {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+  }
+
+  .di-notice > .di-notice-action {
+    grid-column: 3;
+    grid-row: 1;
+    padding: var(--di-notice-pad) var(--di-notice-pad) var(--di-notice-pad) 0;
   }
 
   .di-notice-title {
@@ -67,7 +90,6 @@
   }
 
   .di-notice-action {
-    flex: none;
     align-self: center;
     display: flex;
     align-items: center;
@@ -110,13 +132,20 @@
 
   /* On a phone the action goes under the copy instead of squeezing it. */
   @container di-notice (max-width: 480px) {
-    .di-notice-copy {
-      flex-direction: column;
-      gap: var(--di-space-12);
+    .di-notice-copy > .di-notice-action {
+      grid-column: 1;
+      grid-row: auto;
+      margin-top: var(--di-space-12);
+    }
+
+    .di-notice > .di-notice-action {
+      grid-column: 2;
+      grid-row: 2;
+      padding: 0 var(--di-notice-pad) var(--di-notice-pad);
     }
 
     .di-notice-action {
-      align-self: flex-start;
+      align-self: start;
       flex-wrap: wrap;
     }
   }

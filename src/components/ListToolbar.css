@@ -5,8 +5,25 @@
     align-items: center;
     gap: var(--di-space-8);
     min-width: 0;
+    /* Every tab's toolbar is one control high, with or without filters, so switching tabs never moves the page. */
+    min-height: calc(var(--di-control-h, 32px) + 2 * var(--di-space-8));
     padding: var(--di-space-8) 0;
     background: var(--di-bg-page);
+  }
+
+  /*
+   * A filter in the toolbar names itself inside the control (its first
+   * option, "Type: all"); the label above it is read, not shown, so every
+   * control in the row has the search field's height.
+   */
+  /* Only the toolbar's own fields: a dialog opened from a toolbar button keeps its labels. */
+  :is(.di-list-toolbar, .di-list-toolbar-end) > .di-field > .di-field-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .di-list-toolbar[data-sticky="true"] {
@@ -38,5 +55,12 @@
       flex-basis: 100%;
       max-width: none;
     }
+  }
+
+  .di-list-toolbar-note {
+    margin: 0;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
   }
 }

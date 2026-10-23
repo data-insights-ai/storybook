@@ -1,18 +1,22 @@
 import { useEffect, useId, useRef, type FormEvent, type ReactNode } from "react";
 import { Button } from "./Button";
 import { Stepper } from "./Stepper";
+import { focusFirstField } from "./shortcutKeys";
 import "./CreateFlow.css";
 
 /**
  * Creating something that needs a choice before its details: choose the
  * type (`ChoiceCards`), fill in the details, review, create. One step is
  * on screen at a time, under a `Stepper` that says where the reader is.
- * Enter moves on; Back keeps what was entered. On each step focus moves
- * to the step's heading, so a screen reader hears where it landed.
+ * Enter moves on; Back keeps what was entered. Each step starts in its
+ * first field, or on its heading when it has none.
  *
  * The flow is a form. The caller owns the step and the values and checks
  * them; `canAdvance` false keeps Next disabled until the step is complete.
- * It sits on a page (`Page width="form"`) or in a `Sheet`.
+ * The stepper spans the flow, a completed step is pressed to return to it
+ * (`onBack` once per step), and the actions sit in a footer that stays in
+ * view: Back and Cancel at the left, the one action that moves on at the
+ * right. It sits on a page (`width="page"`) or in a `Sheet`.
  */
 export function CreateFlow({
   label,
@@ -26,6 +30,7 @@ export function CreateFlow({
   canAdvance = true,
   busy = false,
   error = "",
+  width = "form",
   onBack,
   onNext,
   onSubmit,
@@ -48,6 +53,8 @@ export function CreateFlow({
   canAdvance?: boolean;
   busy?: boolean;
   error?: string;
+  /** `form` keeps the flow at the form measure; `page` lets it fill the page it sits on. */
+  width?: "form" | "page";
   onBack: () => void;
   onNext: () => void;
   onSubmit: () => void;
@@ -60,13 +67,18 @@ export function CreateFlow({
   const first = useRef(true);
   const last = step === steps.length - 1;
 
+  const fields = useRef<HTMLDivElement>(null);
+  // Each step starts in its first field; a step without one (a review)
+  // puts focus on its heading, so a screen reader hears where it landed.
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    heading.current?.focus();
+    const opening = first.current;
+    first.current = false;
+    if (!focusFirstField(fields.current) && !opening) heading.current?.focus();
   }, [step]);
+
+  const goTo = (index: number) => {
+    for (let i = step; i > index; i--) onBack();
+  };
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -76,10 +88,11 @@ export function CreateFlow({
   };
 
   return (
-    <form className="di-create-flow" onSubmit={submit} aria-labelledby={headingId}>
+    <form className="di-create-flow" data-width={width} onSubmit={submit} aria-labelledby={headingId}>
       <Stepper
         label={label}
         stateLabels={stateLabels}
+        onStep={goTo}
         steps={steps.map((title, i) => ({
           label: title,
           state: i < step ? "done" : i === step ? "current" : "upcoming",
@@ -89,7 +102,9 @@ export function CreateFlow({
         <h2 className="di-create-flow-title" id={headingId} ref={heading} tabIndex={-1}>
           {steps[step]}
         </h2>
-        <div className="di-field-stack">{children}</div>
+        <div className="di-field-stack" ref={fields}>
+          {children}
+        </div>
       </div>
       {error ? (
         <p className="di-create-flow-error" role="alert">
@@ -97,17 +112,17 @@ export function CreateFlow({
         </p>
       ) : null}
       <div className="di-create-flow-actions">
+        {step > 0 ? (
+          <Button variant="secondary" onClick={onBack} disabled={busy}>
+            {backLabel}
+          </Button>
+        ) : null}
         {cancelLabel !== "" && onCancel ? (
           <Button variant="ghost" onClick={onCancel} disabled={busy}>
             {cancelLabel}
           </Button>
         ) : null}
         <span className="di-create-flow-spacer" />
-        {step > 0 ? (
-          <Button variant="secondary" onClick={onBack} disabled={busy}>
-            {backLabel}
-          </Button>
-        ) : null}
         <Button type="submit" loading={busy} disabled={!canAdvance}>
           {last ? submitLabel : nextLabel}
         </Button>

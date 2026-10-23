@@ -76,10 +76,19 @@
   .di-modal-body {
     flex: 1;
     min-width: 0;
+    overflow-x: hidden;
+  }
+
+  .di-modal-column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
   }
 
   .di-modal-content {
-    padding: var(--di-space-16);
+    min-width: 0;
+    padding: var(--di-space-24) var(--di-space-24) var(--di-space-24);
   }
 
   .di-modal-eyebrow {
@@ -127,8 +136,19 @@
     align-items: center;
     justify-content: flex-end;
     gap: var(--di-space-8);
-    padding: var(--di-space-12) var(--di-space-16);
+    flex-wrap: wrap;
+    padding: var(--di-space-12) var(--di-space-24);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
+  }
+
+  @media (max-width: 600px) {
+    .di-modal-content {
+      padding: var(--di-space-16);
+    }
+
+    .di-modal-footer {
+      padding-inline: var(--di-space-16);
+    }
   }
 }

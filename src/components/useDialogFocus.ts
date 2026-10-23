@@ -1,4 +1,5 @@
 import { useEffect, useRef, type RefObject } from "react";
+import { focusFirstField } from "./shortcutKeys";
 
 const focusable =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -16,7 +17,7 @@ export function useDialogFocus(panel: RefObject<HTMLElement | null>, onClose: ()
     const node = panel.current;
     if (!node) return;
     const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    node.focus({ preventScroll: true });
+    if (!focusFirstField(node)) node.focus({ preventScroll: true });
 
     const keydown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && !event.defaultPrevented) {

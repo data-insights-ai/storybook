@@ -1,4 +1,5 @@
 import { Children, isValidElement, useEffect, useRef, type ReactNode } from "react";
+import { focusFirstField } from "./shortcutKeys";
 import "./Modal.css";
 
 /**
@@ -26,7 +27,10 @@ export function Modal({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      focusFirstField(dialog);
+    }
     if (!open && dialog.open) dialog.close();
   }, [open]);
 
@@ -61,8 +65,24 @@ export function ModalIcon({ children }: { children: ReactNode }) {
   return <div className="di-modal-icon">{children}</div>;
 }
 
+/**
+ * The title, the body and, last, the `ModalFooter`. The footer is lifted out
+ * of the padded content wherever it is placed, so it always spans the
+ * modal's width with the same padding and a step of space above it.
+ */
 export function ModalContent({ children }: { children: ReactNode }) {
-  return <div className="di-modal-content">{children}</div>;
+  const footer: ReactNode[] = [];
+  const body: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === ModalFooter) footer.push(child);
+    else body.push(child);
+  });
+  return (
+    <div className="di-modal-column">
+      <div className="di-modal-content">{body}</div>
+      {footer}
+    </div>
+  );
 }
 
 export function ModalTitle({ id, eyebrow, children }: { id: string; eyebrow?: string; children: ReactNode }) {

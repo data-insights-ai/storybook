@@ -1,6 +1,7 @@
 import { Children, isValidElement, useEffect, useId, useRef, type FormEvent, type ReactNode } from "react";
 import { Pencil } from "lucide-react";
 import { Button } from "./Button";
+import { focusFirstField, useShortcutKeys } from "./shortcutKeys";
 import "./DetailSection.css";
 
 /**
@@ -49,7 +50,7 @@ export function DetailSection({
 
   useEffect(() => {
     if (editing && !wasEditing.current) {
-      body.current?.querySelector<HTMLElement>("input, select, textarea, button")?.focus();
+      if (!focusFirstField(body.current)) body.current?.querySelector<HTMLElement>("button")?.focus();
     }
     if (!editing && wasEditing.current) {
       editButton.current?.focus();
@@ -58,6 +59,9 @@ export function DetailSection({
   }, [editing]);
 
   const canEdit = editLabel !== "" && onEdit !== undefined && form.length > 0;
+  // `e` presses the first section's Edit on the page; the key is not drawn
+  // on every section, the shortcut help names it.
+  useShortcutKeys(canEdit);
   return (
     <section className="di-detail-section" aria-labelledby={titleId}>
       <header className="di-detail-section-head">
@@ -71,7 +75,14 @@ export function DetailSection({
           <div className="di-detail-section-actions">
             {actions}
             {canEdit ? (
-              <Button ref={editButton} variant="secondary" size="dense" onClick={onEdit}>
+              <Button
+                ref={editButton}
+                variant="secondary"
+                size="dense"
+                onClick={onEdit}
+                data-di-shortcut="e"
+                aria-keyshortcuts="e"
+              >
                 <Pencil aria-hidden />
                 {editLabel}
               </Button>

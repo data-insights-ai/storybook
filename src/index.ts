@@ -13,12 +13,21 @@ export {
 export type { ConsoleChrome, NavGroup, NavItem } from "./components/AppShell";
 export { Badge } from "./components/Badge";
 export { Bars } from "./components/Bars";
+export { BulkActionBar } from "./components/BulkActionBar";
 export { Breadcrumb } from "./components/Breadcrumb";
 export { Button } from "./components/Button";
 export { Card } from "./components/Card";
 export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components/Channel";
+export { ChainTimeline } from "./components/ChainTimeline";
+export type { ChainTimelineEvent, ChainTimelineLane } from "./components/ChainTimeline";
+export { CodeBlock } from "./components/CodeBlock";
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/Chart";
 export type { ChartConfig, ChartTooltipDetail } from "./components/Chart";
+export { ChartCard, ChartCardAction, ChartCardGrid } from "./components/ChartCard";
+export { PeriodTimeline } from "./components/PeriodTimeline";
+export type { Period } from "./components/PeriodTimeline";
+export { TrendChart } from "./components/TrendChart";
+export type { TrendMarker, TrendSeries, TrendTone } from "./components/TrendChart";
 export { Checkbox, ChoiceGroup, Radio } from "./components/Choice";
 export { ChoiceCards } from "./components/ChoiceCards";
 export type { ChoiceCard } from "./components/ChoiceCards";
@@ -26,6 +35,17 @@ export { Chip } from "./components/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/CommandBar";
 export { ComboBox } from "./components/ComboBox";
 export type { ComboBoxSuggestion } from "./components/ComboBox";
+export { DateRangePicker, defaultDateRangeLabels } from "./components/DateRangePicker";
+export type { DateRangeLabels } from "./components/DateRangePicker";
+export {
+  dateRangePresets,
+  isDateRangeSet,
+  parseDateRange,
+  resolveDateRange,
+  serializeDateRange,
+  weekStartName,
+} from "./components/dateRange";
+export type { DateRangePreset, DateRangeSearch, DateRangeValue, ResolvedDateRange } from "./components/dateRange";
 export { ConfidenceField } from "./components/ConfidenceField";
 export { ConfirmDialog } from "./components/ConfirmDialog";
 export { CountButton } from "./components/CountButton";
@@ -115,7 +135,7 @@ export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/Leve
 export type { LevelBands } from "./components/LevelMeter";
 export { Actions, Grid, Numbered, Stack, Toolbar, ToolbarEnd } from "./components/Layout";
 export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/LivingCard";
-export { ListToolbar, ListToolbarEnd } from "./components/ListToolbar";
+export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/Menu";
 export { Metric, MetricNote } from "./components/Metric";
 export {
@@ -141,6 +161,9 @@ export { Pagination } from "./components/Pagination";
 export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/Panel";
 export { PrivacyBadge } from "./components/PrivacyBadge";
 export { Progress } from "./components/Progress";
+export { RouteProgress } from "./components/RouteProgress";
+export { AppLoader } from "./components/AppLoader";
+export { Delayed } from "./components/Delayed";
 export { PullQuote } from "./components/PullQuote";
 export { QuantityField } from "./components/QuantityField";
 export { RowActions } from "./components/RowActions";
@@ -165,6 +188,8 @@ export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "
 export { Sidebar } from "./components/Sidebar";
 export { SidebarBrand } from "./components/SidebarBrand";
 export { useShortcut } from "./components/useShortcut";
+export { ShortcutHelp } from "./components/ShortcutHelp";
+export { Tag, TagList } from "./components/Tag";
 export { useSidebar } from "./components/SidebarContext";
 export type { SidebarState } from "./components/SidebarContext";
 export { SidebarInset } from "./components/SidebarInset";
@@ -183,7 +208,10 @@ export { SidebarTrigger } from "./components/SidebarTrigger";
 export { SkipLink } from "./components/SkipLink";
 export { SignIn, SignInVersion } from "./components/SignIn";
 export { SkeletonTable } from "./components/SkeletonTable";
+export { SkeletonPage } from "./components/SkeletonPage";
+export type { SkeletonPageVariant } from "./components/SkeletonPage";
 export { Sparkline } from "./components/Sparkline";
+export { Split, SplitAside, SplitMain } from "./components/Split";
 export { Spinner } from "./components/Spinner";
 export { Stage, StageFooter, StageIcon, StageTrack } from "./components/Stage";
 export { Stat, StatRow } from "./components/Stat";

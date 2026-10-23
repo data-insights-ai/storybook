@@ -18,13 +18,13 @@ const meta = {
     onClose: () => {},
     children: null,
   },
-  argTypes: { size: { control: "radio", options: ["md", "lg"] }, children: { control: false } },
+  argTypes: { size: { control: "radio", options: ["md", "lg", "xl"] }, children: { control: false } },
 } satisfies Meta<typeof Sheet>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Opener(args: { title: string; lede?: string; closeLabel: string; size?: "md" | "lg" }) {
+function Opener(args: { title: string; lede?: string; closeLabel: string; size?: "md" | "lg" | "xl" }) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -54,6 +54,7 @@ export const Record: Story = {
     const opener = canvas.getByRole("button", { name: "Open member" });
     await userEvent.click(opener);
     const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog");
+    await expect(getComputedStyle(canvasElement.ownerDocument.body).overflow).toBe("hidden");
     await waitFor(() => expect(dialog).toBeVisible());
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(opener).toHaveFocus());

@@ -2,18 +2,20 @@ import type { InputHTMLAttributes, Ref } from "react";
 import { Search } from "lucide-react";
 import { cx } from "../cx";
 import { Kbd } from "./Seal";
+import { useShortcutKeys } from "./shortcutKeys";
 import "./Field.css";
 import "./SearchField.css";
 
 /**
- * One field that narrows the register. The shortcut sits inside the
- * control because that is where the operator looks for it, and it is
- * decoration only — the caller binds the key.
+ * One field that narrows the register. `/` focuses it from anywhere on the
+ * page (the first visible one answers); the key sits inside the control
+ * because that is where the operator looks for it. Any other `shortcut`
+ * is decoration only, bound by the caller.
  */
 export function SearchField({
   id = "search",
   label,
-  shortcut = "",
+  shortcut = "/",
   dense = false,
   className,
   disabled = false,
@@ -24,7 +26,7 @@ export function SearchField({
   id?: string;
   /** Names the field for a screen reader; the magnifier alone does not. */
   label: string;
-  /** Shown at the trailing edge, for example ⌘K. Empty means none. */
+  /** Shown at the trailing edge; `/` also binds it. Empty means none. */
   shortcut?: string;
   dense?: boolean;
   disabled?: boolean;
@@ -32,6 +34,8 @@ export function SearchField({
   required?: boolean;
   ref?: Ref<HTMLInputElement>;
 } & InputHTMLAttributes<HTMLInputElement>) {
+  const slash = shortcut === "/" && !disabled;
+  useShortcutKeys(slash);
   return (
     <div className={cx("di-search", dense && "is-dense", className)}>
       <label className="di-sr" htmlFor={id}>
@@ -45,9 +49,11 @@ export function SearchField({
         disabled={disabled}
         readOnly={readOnly}
         required={required}
+        data-di-shortcut={slash ? "/" : undefined}
+        aria-keyshortcuts={slash ? "/" : undefined}
         {...props}
       />
-      {shortcut === "" ? null : <Kbd>{shortcut}</Kbd>}
+      {shortcut === "" ? null : <Kbd className="di-search-kbd">{shortcut}</Kbd>}
     </div>
   );
 }

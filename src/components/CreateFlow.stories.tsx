@@ -77,7 +77,7 @@ export const NewConnection: Story = {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByText("SAML 2.0"));
     await userEvent.click(canvas.getByRole("button", { name: "Next" }));
-    await waitFor(() => expect(canvas.getByRole("heading", { name: "Details" })).toHaveFocus());
+    await waitFor(() => expect(canvas.getByLabelText("Name")).toHaveFocus());
     await expect(canvas.getByRole("button", { name: "Next" })).toBeDisabled();
     await userEvent.type(canvas.getByLabelText("Name"), "Head office{Enter}");
     await expect(canvas.getByRole("heading", { name: "Review" })).toBeVisible();
