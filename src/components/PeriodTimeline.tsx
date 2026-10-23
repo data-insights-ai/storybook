@@ -37,7 +37,12 @@ export function PeriodTimeline({
   todayLabel: string;
   from?: string;
   to?: string;
-  formatDate: (iso: string) => string;
+  /**
+   * Formats an end of the axis. `year` is set when the axis crosses a year
+   * or spans more than about eleven months, where day and month alone would
+   * not say which year an end is in.
+   */
+  formatDate: (iso: string, options: { year: boolean }) => string;
 }) {
   const ends = periods.flatMap((p) => [p.graceEnd ?? p.end ?? today]);
   const start = from ? day(from) : Math.min(day(today), ...periods.map((p) => day(p.start)));
@@ -45,6 +50,7 @@ export function PeriodTimeline({
   const span = Math.max(end - start, 1);
   const at = (t: number) => `${(Math.min(Math.max(t - start, 0), span) / span) * 100}%`;
   const now = day(today);
+  const year = needsYear(start, end);
   return (
     <div className="di-periods" role="group" aria-label={label} style={{ "--di-period-today": at(now) } as CSSProperties}>
       <ul className="di-periods-rows">
@@ -73,12 +79,19 @@ export function PeriodTimeline({
       <div className="di-period di-periods-axis" aria-hidden>
         <span />
         <span className="di-periods-scale">
-          <span>{formatDate(new Date(start).toISOString())}</span>
+          <span>{formatDate(new Date(start).toISOString(), { year })}</span>
           <span className="di-periods-today">{todayLabel}</span>
-          <span>{formatDate(new Date(end).toISOString())}</span>
+          <span>{formatDate(new Date(end).toISOString(), { year })}</span>
         </span>
         <span />
       </div>
     </div>
   );
+}
+
+const elevenMonths = 335 * 86_400_000;
+
+/** An axis needs years on its ends when they fall in different years or lie more than about eleven months apart. */
+export function needsYear(start: number, end: number): boolean {
+  return new Date(start).getUTCFullYear() !== new Date(end).getUTCFullYear() || end - start > elevenMonths;
 }
