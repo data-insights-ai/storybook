@@ -75,6 +75,43 @@ export { Disclosure, DisclosureLead } from "./components/Disclosure";
 export { Distribution } from "./components/Distribution";
 export { Drawer, DrawerFooter } from "./components/Drawer";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/EmptyState";
+export {
+  EventTimeline,
+  EventTimelineMeta,
+  EventTimelineReadout,
+} from "./components/timeline/EventTimeline";
+export { useTimelineView } from "./components/timeline/navigation/useTimelineView";
+export type { TimelineNavigation } from "./components/timeline/navigation/useTimelineView";
+export {
+  bucketFor as timelineBucketFor,
+  eventsReadable as timelineEventsReadable,
+} from "./components/timeline/scale/resolution";
+export { boundsAround as timelineBounds } from "./components/timeline/scale/viewport";
+export {
+  TimelineSummary,
+  TimelineSummaryDetail,
+  TimelineSummaryEpisode,
+  TimelineSummaryMarker,
+  TimelineSummaryMeta,
+  TimelineSummaryTime,
+} from "./components/timeline/summary/TimelineSummary";
+export {
+  episodesIn as timelineEpisodesIn,
+  episodesOf as timelineEpisodes,
+} from "./components/timeline/summary/episodes";
+export type { TimelineEpisode } from "./components/timeline/summary/episodes";
+export type {
+  TimelineBar,
+  TimelineCell,
+  TimelineEvent,
+  TimelineInstruction,
+  TimelineLane,
+  TimelineMarker,
+  TimelineScore,
+  TimelineSpan,
+  TimelineTarget,
+  TimelineTone,
+} from "./components/timeline/types";
 export { ExplainFooter, ExplainPanel, ExplainRow } from "./components/ExplainPanel";
 export { Fact, FactList } from "./components/FactList";
 export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/Flyout";
