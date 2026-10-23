@@ -38,6 +38,10 @@ export const Quiet: Story = {
   args: { quiet: true, children: "Forgot password?" },
 };
 
+export const Plain: Story = {
+  args: { plain: true, children: "3 unassigned" },
+};
+
 export const Disabled: Story = {
   args: { disabled: true, children: "Not available" },
   play: async ({ canvasElement }) => {

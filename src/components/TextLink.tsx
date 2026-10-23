@@ -4,7 +4,11 @@ import { useRender } from "@base-ui/react/use-render";
 import { cx } from "../cx";
 import "./TextLink.css";
 
-type Common = { quiet?: boolean };
+type Common = {
+  quiet?: boolean;
+  /** A link among many, in a dense table or a row of figures: underlined on hover and focus only, so the figures read first. */
+  plain?: boolean;
+};
 
 /**
  * `href` decides the element, the way it does on `Button` and `Breadcrumb`:
@@ -18,8 +22,8 @@ type RenderProps = Common &
   Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "type" | "href"> & { href?: never; render: useRender.RenderProp };
 
 export function TextLink(props: ButtonProps | LinkProps | RenderProps) {
-  const { quiet = false, className, render, ...rest } = props;
-  const classes = cx("di-textlink", quiet && "is-quiet", className);
+  const { quiet = false, plain = false, className, render, ...rest } = props;
+  const classes = cx("di-textlink", quiet && "is-quiet", plain && "is-plain", className);
   const routed = useRender({
     render: render ?? <span />,
     props: mergeProps<"a">({ className: classes }, rest as AnchorHTMLAttributes<HTMLAnchorElement>),
