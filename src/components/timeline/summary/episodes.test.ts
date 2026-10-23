@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { TimelineBar, TimelineLane } from "../types";
-import { episodesOf } from "./episodes";
+import { episodesIn, episodesOf } from "./episodes";
 
 const MIN = 60_000;
 const bar = (
@@ -134,5 +134,26 @@ describe("episodesOf", () => {
     expect(episodes[1].lanes).toEqual([
       { id: "b", label: "Movement", count: 4, tone: "neutral" },
     ]);
+  });
+});
+
+describe("episodesIn", () => {
+  it("counts the same episodes again from a filtered set and keeps their places", () => {
+    const all = [
+      bar(0),
+      bar(1, { danger: 2 }),
+      bar(100),
+      bar(200, { warn: 1 }),
+    ];
+    const episodes = episodesOf(all);
+    const severe = all
+      .filter((b) => b.danger > 0)
+      .map((b) => ({ ...b, neutral: 0, warn: 0 }));
+    const again = episodesIn(episodes, severe);
+    expect(again.map((e) => [e.start, e.end, e.kind])).toEqual(
+      episodes.map((e) => [e.start, e.end, e.kind]),
+    );
+    expect(again.map((e) => e.total)).toEqual([2, 0, 0]);
+    expect(again[0].stretches.map((s) => s.tone)).toEqual(["danger"]);
   });
 });

@@ -9,8 +9,8 @@ import {
   boundsOf,
   foldBars,
   foldLanes,
-  intrusion,
-  intrusionLanes,
+  activity,
+  activityLanes,
   rhythm,
   sparse,
   type SampleEvent,
@@ -38,11 +38,11 @@ const instant = new Intl.DateTimeFormat("en", {
 });
 const count = new Intl.NumberFormat("en");
 
-const INTRUSION = intrusion(NOW);
+const ACTIVITY = activity(NOW);
 const RHYTHM = rhythm(NOW);
 const SPARSE = sparse(NOW);
 
-/** A score that climbs with the severe events, recorded once an hour. */
+/** A score that climbs with the critical events, recorded once an hour. */
 function scoreOf(events: SampleEvent[], bounds: TimelineSpan): TimelineScore {
   const points: TimelineScore["points"] = [];
   let i = 0;
@@ -145,8 +145,8 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
           <>
             <div className="di-mono">{clock.format(hovered.bar.start)}</div>
             <div>
-              {count.format(hovered.bar.danger)} severe · {count.format(hovered.bar.warn)} medium ·{" "}
-              {count.format(hovered.bar.neutral)} low
+              {count.format(hovered.bar.danger)} critical · {count.format(hovered.bar.warn)} warning ·{" "}
+              {count.format(hovered.bar.neutral)} routine
             </div>
           </>
         ) : null}
@@ -176,7 +176,7 @@ const meta = {
     zoomOutLabel: "Zoom out",
     backLabel: "Back to the previous view",
     wholeLabel: "Show everything",
-    toneLabels: { danger: "high & critical", warn: "medium", neutral: "informational & low" },
+    toneLabels: { danger: "critical", warn: "warning", neutral: "routine" },
     scaleNote: "",
     locale: "en",
     timeZone: "UTC",
@@ -200,13 +200,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * Three days with a spray of hundreds of logons inside minutes. The score runs
+ * Three days with a spray of hundreds of retries inside minutes. The score runs
  * above on the same clock; the lanes read as a staircase in the order the
- * phases started.
+ * stages started.
  */
 export const Default: Story = {
   render: (args) => (
-    <Sample {...args} sample={INTRUSION} sampleLanes={intrusionLanes} withScore withMarkers />
+    <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} withScore withMarkers />
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -221,12 +221,12 @@ export const Default: Story = {
 };
 
 /**
- * A request every minute for twelve hours: a solid block from afar, a rhythm
+ * A health check every minute for twelve hours: a solid block from afar, a rhythm
  * close up. Zooming in far enough turns the bars into the events themselves.
  */
 export const Resolving: Story = {
   render: (args) => (
-    <Sample {...args} sample={RHYTHM} sampleLanes={[{ id: "c2", label: "Command and control" }]} />
+    <Sample {...args} sample={RHYTHM} sampleLanes={[{ id: "health", label: "Health checks" }]} />
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -243,7 +243,7 @@ export const Resolving: Story = {
 /** Few enough to draw one by one from the start. Picking one hands it to the caller. */
 export const FewEvents: Story = {
   render: (args) => (
-    <Sample {...args} sample={SPARSE} sampleLanes={[{ id: "recon", label: "Reconnaissance" }]} />
+    <Sample {...args} sample={SPARSE} sampleLanes={[{ id: "notes", label: "Corrections" }]} />
   ),
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);

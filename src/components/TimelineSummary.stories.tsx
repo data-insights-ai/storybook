@@ -2,7 +2,11 @@ import { useMemo, useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { bucketFor } from "./timeline/scale/resolution";
-import { episodesOf, type TimelineEpisode } from "./timeline/summary/episodes";
+import {
+  episodesIn,
+  episodesOf,
+  type TimelineEpisode,
+} from "./timeline/summary/episodes";
 import {
   TimelineSummary,
   TimelineSummaryDetail,
@@ -20,8 +24,8 @@ import {
   boundsOf,
   foldBars,
   foldLanes,
-  intrusion,
-  intrusionLanes,
+  activity,
+  activityLanes,
   rhythm,
   type SampleEvent,
 } from "../sample/timeline";
@@ -46,12 +50,13 @@ const count = new Intl.NumberFormat("en");
 const list = new Intl.ListFormat("en");
 
 const TONE: Record<TimelineTone, string> = {
-  danger: "high & critical",
-  warn: "medium",
-  neutral: "low",
+  danger: "critical",
+  warn: "warning",
+  neutral: "routine",
 };
 
-const INTRUSION = intrusion(NOW);
+const ACTIVITY = activity(NOW);
+const isCritical = (event: SampleEvent) => event.tone === "danger";
 const RHYTHM = rhythm(NOW);
 
 function duration(ms: number) {
@@ -86,6 +91,8 @@ type SampleProps = ComponentProps<typeof TimelineSummary> & {
   sample: SampleEvent[];
   sampleLanes: TimelineLane[];
   sampleMarkers?: TimelineMarker[];
+  /** Counts the episodes found in all of `sample` again in only these events. */
+  sampleFocus?: (event: SampleEvent) => boolean;
 };
 
 /*
@@ -97,21 +104,33 @@ function Sample({
   sample,
   sampleLanes,
   sampleMarkers = [],
+  sampleFocus,
   onEpisodePick,
   ...args
 }: SampleProps) {
   const bounds = useMemo(() => boundsOf(sample), [sample]);
   const episodes = useMemo(() => {
     const bucketMs = bucketFor(bounds.end - bounds.start, STRIP_PX);
-    return episodesOf(
+    const found = episodesOf(
       foldBars(sample, bounds, bucketMs),
       foldLanes(sampleLanes, sample, bounds, bucketMs),
     );
-  }, [sample, sampleLanes, bounds]);
+    if (!sampleFocus) {
+      return found;
+    }
+    const focused = sample.filter(sampleFocus);
+    return episodesIn(
+      found,
+      foldBars(focused, bounds, bucketMs),
+      foldLanes(sampleLanes, focused, bounds, bucketMs),
+    );
+  }, [sample, sampleLanes, sampleFocus, bounds]);
   const [active, setActive] = useState<number | null>(null);
 
   const rows = [
-    ...episodes.map((episode, i) => ({ at: episode.start, episode, i })),
+    ...episodes.flatMap((episode, i) =>
+      episode.total > 0 ? [{ at: episode.start, episode, i }] : [],
+    ),
     ...sampleMarkers.map((marker) => ({ at: marker.at, marker })),
   ].sort((a, b) => a.at - b.at);
   const total = episodes.reduce((n, e) => n + e.total, 0);
@@ -130,7 +149,8 @@ function Sample({
     >
       <TimelineSummaryMeta>
         <span className="di-quiet">
-          {episodes.length} episodes holding {count.format(total)} events over{" "}
+          {episodes.filter((e) => e.total > 0).length} episodes holding{" "}
+          {count.format(total)} events over{" "}
           {duration(bounds.end - bounds.start)}
         </span>
       </TimelineSummaryMeta>
@@ -149,7 +169,7 @@ function Sample({
               {count.format(row.episode.total)} events ·{" "}
               {duration(row.episode.end - row.episode.start)}
               {row.episode.danger
-                ? ` · ${count.format(row.episode.danger)} severe`
+                ? ` · ${count.format(row.episode.danger)} critical`
                 : ""}
             </TimelineSummaryDetail>
           </TimelineSummaryEpisode>
@@ -197,7 +217,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const start = INTRUSION[0]?.at ?? NOW;
+const start = ACTIVITY[0]?.at ?? NOW;
 
 /**
  * The same three days `EventTimeline` draws, told as the few stretches that
@@ -209,8 +229,8 @@ export const Default: Story = {
   render: (args) => (
     <Sample
       {...args}
-      sample={INTRUSION}
-      sampleLanes={intrusionLanes}
+      sample={ACTIVITY}
+      sampleLanes={activityLanes}
       sampleMarkers={[
         { at: start + HOUR, label: "opened" },
         { at: start + 15.5 * HOUR, label: "under review" },
@@ -234,27 +254,29 @@ export const Default: Story = {
 };
 
 /**
- * The same three days with only the severe events: what a reader narrows
- * to when they want the dangerous part alone. The caller filters; the
- * summary folds whatever it is given.
+ * The same three days with only the critical events: what a reader narrows
+ * to when they want the worst part alone. The episodes are the ones
+ * found in all events, counted again, so each keeps its number; one with
+ * no critical event is left out and its number skipped.
  */
-export const SevereOnly: Story = {
+export const CriticalOnly: Story = {
   render: (args) => (
     <Sample
       {...args}
-      sample={INTRUSION.filter((e) => e.tone === "danger")}
-      sampleLanes={intrusionLanes}
+      sample={ACTIVITY}
+      sampleLanes={activityLanes}
+      sampleFocus={isCritical}
     />
   ),
 };
 
-/** A request every minute for twelve hours never goes quiet, so it is one episode. */
+/** A health check every minute for twelve hours never goes quiet, so it is one episode. */
 export const Steady: Story = {
   render: (args) => (
     <Sample
       {...args}
       sample={RHYTHM}
-      sampleLanes={[{ id: "c2", label: "Command and control" }]}
+      sampleLanes={[{ id: "health", label: "Health checks" }]}
     />
   ),
 };

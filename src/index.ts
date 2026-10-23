@@ -95,7 +95,10 @@ export {
   TimelineSummaryMeta,
   TimelineSummaryTime,
 } from "./components/timeline/summary/TimelineSummary";
-export { episodesOf as timelineEpisodes } from "./components/timeline/summary/episodes";
+export {
+  episodesIn as timelineEpisodesIn,
+  episodesOf as timelineEpisodes,
+} from "./components/timeline/summary/episodes";
 export type { TimelineEpisode } from "./components/timeline/summary/episodes";
 export type {
   TimelineBar,

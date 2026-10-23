@@ -77,23 +77,23 @@ function generate(start: number, phases: Phase[], seed: number): SampleEvent[] {
   return events.sort((a, b) => a.at - b.at);
 }
 
-const host = (i: number) => `host-${String((i % 36) + 1).padStart(2, "0")}`;
+const node = (i: number) => `node-${String((i % 36) + 1).padStart(2, "0")}`;
 
-export const intrusionLanes: TimelineLane[] = [
-  { id: "recon", label: "Reconnaissance" },
-  { id: "access", label: "Initial access" },
-  { id: "credentials", label: "Credential access" },
-  { id: "lateral", label: "Lateral movement" },
-  { id: "exfil", label: "Exfiltration" },
+export const activityLanes: TimelineLane[] = [
+  { id: "config", label: "Configuration" },
+  { id: "intake", label: "Intake" },
+  { id: "checks", label: "Checks" },
+  { id: "sync", label: "Replication" },
+  { id: "export", label: "Export" },
 ];
 
-/** Three days of an invented intrusion, with a spray of hundreds of logons inside minutes. */
-export function intrusion(end: number): SampleEvent[] {
+/** Three days of an invented pipeline, with a spray of hundreds of retries inside minutes. */
+export function activity(end: number): SampleEvent[] {
   return generate(
     end - 72 * HOUR,
     [
       {
-        lane: "recon",
+        lane: "config",
         count: 14,
         startH: 0,
         durationH: 9,
@@ -101,10 +101,10 @@ export function intrusion(end: number): SampleEvent[] {
           ["warn", 3],
           ["danger", 1],
         ],
-        text: () => "Address listed in a credential dump",
+        text: () => "Setting changed outside the change window",
       },
       {
-        lane: "credentials",
+        lane: "intake",
         count: 60,
         startH: 8,
         durationH: 6,
@@ -112,10 +112,10 @@ export function intrusion(end: number): SampleEvent[] {
           ["neutral", 3],
           ["warn", 2],
         ],
-        text: (i) => `Failed sign-in on the gateway for user-${i % 5}`,
+        text: (i) => `Late batch from source-${i % 5}`,
       },
       {
-        lane: "access",
+        lane: "checks",
         count: 18,
         startH: 14,
         durationH: 3,
@@ -123,10 +123,10 @@ export function intrusion(end: number): SampleEvent[] {
           ["danger", 3],
           ["warn", 1],
         ],
-        text: () => "Sign-in from an address never seen for this account",
+        text: () => "Row count outside the expected range",
       },
       {
-        lane: "lateral",
+        lane: "sync",
         count: 160,
         startH: 20,
         durationH: 30,
@@ -134,10 +134,10 @@ export function intrusion(end: number): SampleEvent[] {
           ["danger", 3],
           ["warn", 1],
         ],
-        text: (i) => `Remote logon to ${host(i)}`,
+        text: (i) => `Replica behind on ${node(i)}`,
       },
       {
-        lane: "lateral",
+        lane: "sync",
         count: 420,
         startH: 40,
         durationH: 0.3,
@@ -146,16 +146,16 @@ export function intrusion(end: number): SampleEvent[] {
           ["danger", 5],
           ["warn", 2],
         ],
-        text: (i) => `Admin-share logon to ${host(i)}, one of dozens within seconds`,
+        text: (i) => `Retry on ${node(i)}, one of dozens within seconds`,
       },
       {
-        lane: "exfil",
+        lane: "export",
         count: 180,
         startH: 66,
         durationH: 0.4,
         rhythm: { bursts: 5, spreadS: 20 },
         tones: [["danger", 3]],
-        text: () => "Chunked upload to external storage",
+        text: () => "Export chunk rejected by the receiving end",
       },
     ],
     2041,
@@ -168,7 +168,7 @@ export function rhythm(end: number): SampleEvent[] {
     end - 12 * HOUR,
     [
       {
-        lane: "c2",
+        lane: "health",
         count: 720,
         startH: 0,
         durationH: 12,
@@ -177,7 +177,7 @@ export function rhythm(end: number): SampleEvent[] {
           ["neutral", 6],
           ["warn", 1],
         ],
-        text: () => "HTTPS request to the same address, every minute",
+        text: () => "Health check from the same client, every minute",
       },
     ],
     2044,
@@ -190,7 +190,7 @@ export function sparse(end: number): SampleEvent[] {
     end - 30 * HOUR,
     [
       {
-        lane: "recon",
+        lane: "notes",
         count: 9,
         startH: 0,
         durationH: 30,
@@ -199,7 +199,7 @@ export function sparse(end: number): SampleEvent[] {
           ["warn", 1],
           ["danger", 1],
         ],
-        text: () => "Domain named on a forum",
+        text: () => "Manual correction to a record",
       },
     ],
     2017,

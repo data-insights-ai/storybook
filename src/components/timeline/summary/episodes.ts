@@ -149,6 +149,30 @@ export function episodesOf(
   );
 }
 
+/**
+ * The same episodes, counted again from other bars of the same record,
+ * such as only its severe events. Their spans, kinds and order stay, so an
+ * episode keeps its number whichever set is shown; one the bars do not
+ * reach keeps its place with nothing in it.
+ */
+export function episodesIn(
+  episodes: TimelineEpisode[],
+  bars: TimelineBar[],
+  lanes: TimelineLane[] = [],
+): TimelineEpisode[] {
+  const sorted = bars
+    .filter((b) => totalOf(b) > 0)
+    .sort((a, b) => a.start - b.start);
+  return episodes.map((episode) =>
+    episodeOf(
+      episode,
+      episode.kind,
+      sorted.filter((b) => b.start >= episode.start && b.start < episode.end),
+      lanes,
+    ),
+  );
+}
+
 function episodeOf(
   span: TimelineSpan,
   kind: TimelineEpisode["kind"],
@@ -187,7 +211,11 @@ function episodeOf(
   });
   const stretches: TimelineEpisode["stretches"] = [];
   for (const bar of run) {
-    const tone: TimelineTone = bar.danger ? "danger" : bar.warn ? "warn" : "neutral";
+    const tone: TimelineTone = bar.danger
+      ? "danger"
+      : bar.warn
+        ? "warn"
+        : "neutral";
     const open = stretches.at(-1);
     // Touching bars of one tone are one stretch; any gap, however short, shows.
     if (open && open.tone === tone && bar.start <= open.end) {

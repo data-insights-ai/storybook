@@ -93,7 +93,11 @@
 
   .di-tsummary-stretch.is-neutral,
   .di-tsummary-swatch.is-neutral {
-    background: color-mix(in srgb, var(--di-chart-series) 45%, var(--di-bg-surface));
+    background: color-mix(
+      in srgb,
+      var(--di-chart-series) 45%,
+      var(--di-bg-surface)
+    );
   }
 
   .di-tsummary-stretch.is-warn,

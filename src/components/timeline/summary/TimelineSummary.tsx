@@ -40,7 +40,9 @@ const SummaryPlace = createContext<Place | null>(null);
  * who wants to know what happened, not to look through every event.
  *
  * `episodes` come from `timelineEpisodes`, folded from the same bars and
- * lanes the full timeline is drawn from. A block's height grows with the
+ * lanes the full timeline is drawn from, or from `timelineEpisodesIn` to
+ * count the same episodes again in a filtered set. An episode with nothing
+ * in it keeps its ordinal and is not drawn. A block's height grows with the
  * square root of its rate, so a burst stands tall and the steady activity
  * between bursts lies low. It is filled in each tone only where events of
  * that tone fell and stays faint where it was quiet, so a long stretch
@@ -129,7 +131,8 @@ export function TimelineSummary({
         width - w,
       );
       const centre = left + w / 2;
-      const labelled = centre - lastLabel >= LABEL_PX;
+      const empty = episode.total === 0;
+      const labelled = !empty && centre - lastLabel >= LABEL_PX;
       if (labelled) {
         lastLabel = centre;
       }
@@ -140,6 +143,7 @@ export function TimelineSummary({
         left,
         width: w,
         height,
+        empty,
         labelled,
         stretches: episode.stretches.map((s) => ({
           tone: s.tone,
@@ -168,39 +172,41 @@ export function TimelineSummary({
         <div ref={strip} className="di-tsummary-strip" aria-hidden>
           <span className="di-tsummary-track" />
           {width > 0
-            ? blocks.map((block, i) => (
-                <span
-                  key={block.key}
-                  className={cx(
-                    "di-tsummary-block",
-                    i === active && "is-active",
-                    i === hovered && "is-hovered",
-                    pick && "is-pickable",
-                  )}
-                  style={{ left: block.left, width: block.width }}
-                  onPointerEnter={() => hover(i)}
-                  onPointerLeave={() => hover(null)}
-                  onClick={pick ? () => pick(i) : undefined}
-                >
-                  {block.labelled ? (
-                    <span className="di-tsummary-block-index">
-                      {ordinal(i)}
-                    </span>
-                  ) : null}
+            ? blocks.map((block, i) =>
+                block.empty ? null : (
                   <span
-                    className="di-tsummary-block-fill"
-                    style={{ height: block.height }}
+                    key={block.key}
+                    className={cx(
+                      "di-tsummary-block",
+                      i === active && "is-active",
+                      i === hovered && "is-hovered",
+                      pick && "is-pickable",
+                    )}
+                    style={{ left: block.left, width: block.width }}
+                    onPointerEnter={() => hover(i)}
+                    onPointerLeave={() => hover(null)}
+                    onClick={pick ? () => pick(i) : undefined}
                   >
-                    {block.stretches.map((stretch) => (
-                      <span
-                        key={stretch.left}
-                        className={`di-tsummary-stretch is-${stretch.tone}`}
-                        style={{ left: stretch.left, width: stretch.width }}
-                      />
-                    ))}
+                    {block.labelled ? (
+                      <span className="di-tsummary-block-index">
+                        {ordinal(i)}
+                      </span>
+                    ) : null}
+                    <span
+                      className="di-tsummary-block-fill"
+                      style={{ height: block.height }}
+                    >
+                      {block.stretches.map((stretch) => (
+                        <span
+                          key={stretch.left}
+                          className={`di-tsummary-stretch is-${stretch.tone}`}
+                          style={{ left: stretch.left, width: stretch.width }}
+                        />
+                      ))}
+                    </span>
                   </span>
-                </span>
-              ))
+                ),
+              )
             : null}
           {width > 0
             ? markers.map((marker) => {

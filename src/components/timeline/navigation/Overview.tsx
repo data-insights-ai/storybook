@@ -11,7 +11,7 @@ const MIN_BRUSH = 6;
 
 type Drag = { mode: "move" | "start" | "end" | "new"; x: number; view: Span; moved: boolean };
 
-// The whole case, always: where the view sits in it, and a handle to move it by.
+// The whole record, always: where the view sits in it, and a handle to move it by.
 export function Overview({
   bars,
   bounds,
@@ -29,7 +29,7 @@ export function Overview({
   const drag = useRef<Drag | null>(null);
   const peak = useMemo(() => Math.max(0, ...bars.map(totalOf)), [bars]);
 
-  // A view of a few seconds in a case of days would be a hairline; the brush stays wide enough to grab.
+  // A view of a few seconds in a record of days would be a hairline; the brush stays wide enough to grab.
   const centre = (scale.x(view.start) + scale.x(view.end)) / 2;
   const width = Math.max(MIN_BRUSH, scale.x(view.end) - scale.x(view.start));
   const left = Math.min(Math.max(0, centre - width / 2), plotPx - width);
