@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { PeriodTimeline } from "./PeriodTimeline";
 
-const short = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+const short = (iso: string, { year }: { year: boolean }) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: year ? "numeric" : undefined, timeZone: "UTC" });
 
 const meta = {
   title: "Blocks/PeriodTimeline",
@@ -50,4 +51,24 @@ export const TodayAtTheEnd: Story = {
     ],
   },
   play: async ({ canvasElement }) => todayInside(canvasElement),
+};
+
+/** Within one year the ends name day and month only. */
+export const WithinAYear: Story = {
+  args: {
+    today: "2026-03-01",
+    periods: [{ id: "a", label: "Professional", start: "2026-02-01", end: "2026-06-30", tone: "ok", caption: "valid until 30 Jun 2026" }],
+  },
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText("1 Feb")).toBeVisible();
+    await expect(within(canvasElement).getByText("30 Jun")).toBeVisible();
+  },
+};
+
+/** An axis across a year names the year at both ends. */
+export const AcrossAYear: Story = {
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByText("22 Oct 2026")).toBeVisible();
+    await expect(within(canvasElement).getByText("1 Jun 2027")).toBeVisible();
+  },
 };
