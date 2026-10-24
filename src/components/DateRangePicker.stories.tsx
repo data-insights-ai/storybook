@@ -373,3 +373,32 @@ export const DesktopPopover: Story = {
     await userEvent.keyboard("{Escape}");
   },
 };
+
+/**
+ * A product keeps the period in the URL. Choosing waits until the sheet's history entry is gone, so the product's
+ * navigation to the new period stays, and back then leaves the page as usual.
+ */
+export const PhoneChoiceKeepsNavigation: Story = {
+  ...phone,
+  args: {
+    timeZone: "UTC",
+    // A router navigates a moment after the change, as TanStack Router does.
+    onChange: fn((next: DateRangeValue) => {
+      setTimeout(() => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("range", next.preset ?? "custom");
+        window.history.pushState(null, "", url);
+      });
+    }),
+  },
+  play: async ({ canvasElement }) => {
+    const { doc, page } = await openSheet(canvasElement);
+    const win = doc.defaultView!;
+    await userEvent.click(page.getByRole("option", { name: "Last 30 days" }));
+    await waitFor(() => expect(doc.querySelector(".di-date-range-sheet")).toBeNull());
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    await expect(new URL(win.location.href).searchParams.get("range")).toBe("30d");
+    win.history.back();
+    await waitFor(() => expect(new URL(win.location.href).searchParams.get("range")).toBeNull());
+  },
+};

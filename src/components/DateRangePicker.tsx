@@ -160,25 +160,39 @@ function useNarrow(): boolean {
 
 // The sheet closes when the reader goes back, as an app's sheet does: its
 // opening adds a history entry, and closing it otherwise takes that entry
-// away again.
-function useBackCloses(open: boolean, close: () => void) {
+// away again. A choice waits until the entry is gone (`leave`), so the
+// product's own navigation to the new period is not undone by it.
+function useBackCloses(open: boolean, close: () => void): (then: () => void) => void {
   const closeRef = useRef(close);
   closeRef.current = close;
+  const entry = useRef<{ id: number; then?: () => void } | null>(null);
   useEffect(() => {
     if (!open) return;
-    const marker = { diDateRangeSheet: Math.random() };
-    window.history.pushState({ ...window.history.state, ...marker }, "");
-    let popped = false;
+    const id = Math.random();
+    window.history.pushState({ ...window.history.state, diDateRangeSheet: id }, "");
+    entry.current = { id };
     const onPop = () => {
-      popped = true;
-      closeRef.current();
+      const left = entry.current;
+      entry.current = null;
+      window.removeEventListener("popstate", onPop);
+      if (left?.then) left.then();
+      else closeRef.current();
     };
     window.addEventListener("popstate", onPop);
     return () => {
       window.removeEventListener("popstate", onPop);
-      if (!popped && window.history.state?.diDateRangeSheet === marker.diDateRangeSheet) window.history.back();
+      if (!entry.current) return;
+      entry.current = null;
+      if (window.history.state?.diDateRangeSheet === id) window.history.back();
     };
   }, [open]);
+  return (then) => {
+    const current = entry.current;
+    if (current && window.history.state?.diDateRangeSheet === current.id) {
+      current.then = then;
+      window.history.back();
+    } else then();
+  };
 }
 
 // Dragging the sheet's handle down by more than a quarter of its height, or
@@ -282,7 +296,7 @@ export function DateRangePicker({
     container?: HTMLElement;
   }>({});
   const sheet = useRef<HTMLDivElement>(null);
-  useBackCloses(open && narrow, () => setOpen(false));
+  const leave = useBackCloses(open && narrow, () => setOpen(false));
   const drag = useDragToClose(sheet, () => setOpen(false));
 
   // The popover is portalled: it keeps a nested theme and stays inside a
@@ -309,10 +323,11 @@ export function DateRangePicker({
     }
     setOpen(next);
   };
-  const choose = (next: DateRangeValue) => {
-    onChange(next);
-    setOpen(false);
-  };
+  const choose = (next: DateRangeValue) =>
+    leave(() => {
+      onChange(next);
+      setOpen(false);
+    });
   const typedRange = typedDraft({ ...typed, openEnd });
   const draft: Draft = typedRange.state === "ready" ? { start: typedRange.start, end: typedRange.end } : null;
   const applied = !draft
