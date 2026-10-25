@@ -106,6 +106,22 @@ const preview: Preview = {
           name: "Wide (1440)",
           styles: { width: "1440px", height: "960px" },
         },
+        fullhd: {
+          name: "Full HD (1920)",
+          styles: { width: "1920px", height: "1080px" },
+        },
+        qhd: {
+          name: "QHD (2560)",
+          styles: { width: "2560px", height: "1440px" },
+        },
+        ultrawide: {
+          name: "Ultrawide (3440)",
+          styles: { width: "3440px", height: "1440px" },
+        },
+        phone: {
+          name: "Phone (390)",
+          styles: { width: "390px", height: "844px" },
+        },
       },
     },
   },

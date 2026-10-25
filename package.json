@@ -35,7 +35,7 @@
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "check": "pnpm typecheck && pnpm lint:tokens && pnpm test",
-    "test": "vitest run --project=unit --project=storybook",
+    "test": "vitest run --project=unit --project=layout --project=storybook",
     "prepublishOnly": "pnpm build"
   },
   "dependencies": {
