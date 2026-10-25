@@ -7,6 +7,7 @@
     min-width: 0;
   }
 
+  /* The measures grow at 1920px and 2560px (component tokens). */
   .di-page[data-width="detail"] {
     max-width: var(--di-measure-detail);
   }
@@ -15,13 +16,63 @@
     max-width: var(--di-measure-form);
   }
 
+  /* A list of a few columns reads across a large screen badly: it stops at
+     the list measure. A table with six or more columns uses the frame. */
+  .di-page[data-width="list"]:has(.di-table):not(:has(.di-table thead th:nth-child(6))) {
+    max-width: var(--di-measure-list);
+  }
+
   /* The header sits closer to what it introduces than sections sit to each other. */
   .di-page > .di-page-head {
     margin-bottom: calc(var(--di-rhythm-header) - var(--di-rhythm-section));
   }
 
   /* A list page: the toolbar belongs to the list under it. */
-  .di-page > .di-list-toolbar + * {
+  .di-page > .di-list-toolbar + *,
+  .di-page-body > .di-list-toolbar + * {
     margin-top: calc(var(--di-rhythm-toolbar) - var(--di-rhythm-section));
+  }
+
+  .di-page-body,
+  .di-page-aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-rhythm-section);
+    min-width: 0;
+  }
+
+  /* Beside the sections: the record keeps its measure and the aside is added
+     to it, so a wide screen shows more of the record instead of longer lines. */
+  @media (min-width: 1920px) {
+    .di-page[data-aside] {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--di-aside-width);
+      grid-template-areas:
+        "head head"
+        "body aside";
+      align-items: start;
+      column-gap: var(--di-space-32);
+      row-gap: var(--di-rhythm-section);
+    }
+
+    .di-page[data-aside][data-width="detail"] {
+      max-width: calc(var(--di-measure-detail) + var(--di-aside-width) + var(--di-space-32));
+    }
+
+    .di-page[data-aside][data-width="form"] {
+      max-width: calc(var(--di-measure-form) + var(--di-aside-width) + var(--di-space-32));
+    }
+
+    .di-page[data-aside] > .di-page-head {
+      grid-area: head;
+    }
+
+    .di-page[data-aside] > .di-page-body {
+      grid-area: body;
+    }
+
+    .di-page[data-aside] > .di-page-aside {
+      grid-area: aside;
+    }
   }
 }

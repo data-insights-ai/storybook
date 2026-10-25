@@ -159,7 +159,7 @@ export {
   NoticeText,
   NoticeTitle,
 } from "./components/Notice";
-export { Page } from "./components/Page";
+export { Page, PageAside } from "./components/Page";
 export { Pagination } from "./components/Pagination";
 export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/Panel";
 export { PrivacyBadge } from "./components/PrivacyBadge";
