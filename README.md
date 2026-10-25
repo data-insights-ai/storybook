@@ -46,6 +46,8 @@ import { Button } from "@data-insights-ai/ui";
 
 Import the stylesheet once. It carries the tokens, the base rules, and the woff2 faces. Importing a component pulls in that component and its own stylesheet, and leaves the unused components out. The app supplies React 18.3 or newer. Strings are props. `data-theme="dark"` on a parent switches the semantic tokens.
 
+The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. React Aria (in `ComboBox` and `DateRangePicker`) adds one style element for pressable controls; give it the page's nonce in `<meta property="csp-nonce" content="…">` and allow `style-src 'self' 'nonce-…'`.
+
 ## Context and repeated views
 
 Place persistent context controls in an `AppShellContext` directly inside `AppShellRail`. It appears below the brand and before navigation in both visual and keyboard order; `AppShellFoot` retains its footer position. The context is a dark token boundary, matching the rail even when the page is light, so composed controls resolve their own readable fills. The application owns selection state and authorization.
