@@ -5,7 +5,10 @@
  * deliberately rather than binding to roles that would flip under it.
  */
 @layer components {
-  /* A solid navy sheet. No gradient, no blur: contrast has to be measurable. */
+  /*
+   * A solid navy sheet that fills the viewport whatever the page around it
+   * sets as height. No gradient, no blur: contrast has to be measurable.
+   */
   .di-login {
     display: flex;
     flex: 1;
@@ -13,8 +16,14 @@
     justify-content: center;
     align-self: stretch;
     width: 100%;
-    min-height: 100%;
+    min-height: 100dvh;
     padding: var(--di-space-48) var(--di-space-16);
+    background: var(--di-navy-900);
+  }
+
+  /* The document behind the sheet is navy too, so overscroll shows no paper. */
+  html:has(.di-login),
+  html:has(.di-login) body {
     background: var(--di-navy-900);
   }
 
