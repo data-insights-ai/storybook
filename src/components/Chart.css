@@ -3,7 +3,7 @@
   .di-chart {
     container-type: inline-size;
     width: 100%;
-    height: 240px;
+    height: var(--di-chart-height);
     color: var(--di-text-muted);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
