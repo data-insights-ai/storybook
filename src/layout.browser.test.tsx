@@ -110,7 +110,7 @@ describe("large screens", () => {
       );
     expect(box(list(3).querySelector(".di-page")).width).toBe(1600);
     document.body.replaceChildren();
-    expect(box(list(7).querySelector(".di-page")).width).toBe(2560 - 96);
+    expect(box(list(9).querySelector(".di-page")).width).toBe(2560 - 96);
   });
 
   test("at 2560px a chart is taller than at 1440px", async () => {

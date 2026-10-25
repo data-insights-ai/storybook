@@ -65,7 +65,7 @@
        table uses the whole frame. */
     --di-measure-form: 720px;
     --di-measure-detail: 1040px;
-    /* A list of a few columns (five or fewer) stops here; more columns use
+    /* A list of a few columns (seven or fewer) stops here; more columns use
        the whole frame. */
     --di-measure-list: 1440px;
     --di-measure-prose: 62ch;
