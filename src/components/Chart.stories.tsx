@@ -125,6 +125,11 @@ export const Series: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("group", { name: "Recorded entries by quarter" })).toBeVisible();
+    // The series colours ride on the element's style, never a style element,
+    // so a strict Content-Security-Policy still shows them.
+    const chart = canvas.getByRole("group", { name: "Recorded entries by quarter" });
+    await expect(chart.querySelector("style")).toBeNull();
+    await expect(chart.style.getPropertyValue("--color-value")).not.toBe("");
   },
 };
 

@@ -7,6 +7,7 @@ import {
   useState,
   type ComponentProps,
   type ComponentType,
+  type CSSProperties,
   type RefObject,
 } from "react";
 import {
@@ -71,19 +72,21 @@ export function Chart({
   const chartId = `di-chart-${useId().replace(/:/g, "")}`;
   const frame = useRef<HTMLDivElement>(null);
   const dismissed = useTipDismissal(frame);
-  const rules = Object.entries(config)
-    .flatMap(([key, item]) => {
+  // The series colours are custom properties on the chart's element, set
+  // through its style object rather than a style element, so a page with a
+  // strict Content-Security-Policy (no inline style elements) shows them.
+  const colors = Object.fromEntries(
+    Object.entries(config).flatMap(([key, item]) => {
       if (!item.color || !/^[\w-]+$/.test(key)) return [];
       const color = cssColor(item.color);
-      return color ? [`--color-${key}: ${color};`] : [];
-    })
-    .join("");
+      return color ? [[`--color-${key}`, color]] : [];
+    }),
+  ) as CSSProperties;
 
   return (
     <ChartContext.Provider value={config}>
       <TooltipDismissedContext.Provider value={dismissed}>
-        <div ref={frame} className={cx("di-chart", className)} data-chart={chartId} role="group" aria-label={label}>
-          {rules ? <style>{`[data-chart="${chartId}"] { ${rules} }`}</style> : null}
+        <div ref={frame} className={cx("di-chart", className)} data-chart={chartId} role="group" aria-label={label} style={colors}>
           <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 320, height: 220 }}>
             {children}
           </ResponsiveContainer>
