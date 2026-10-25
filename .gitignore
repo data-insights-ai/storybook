@@ -17,3 +17,5 @@ ds-bundle/
 .design-sync/learnings/
 .design-sync/.cache/
 .design-sync/node_modules
+__screenshots__/
+.vitest-attachments/

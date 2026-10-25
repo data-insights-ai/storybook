@@ -17,6 +17,8 @@
   .di-stack[data-gap="64"] { gap: var(--di-space-64); }
   .di-stack[data-gap="96"] { gap: var(--di-space-96); }
 
+  /* Columns of at least the minimum, as many as fit: a wider page gets more
+     columns, not wider cards, and a short last row shares the width. */
   .di-grid {
     display: grid;
     gap: var(--di-space-12);

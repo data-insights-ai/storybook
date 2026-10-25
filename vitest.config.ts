@@ -22,6 +22,18 @@ export default defineConfig({
         },
       },
       {
+        test: {
+          name: "layout",
+          include: ["src/**/*.browser.test.tsx"],
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright({}),
+            instances: [{ browser: "chromium" }],
+          },
+        },
+      },
+      {
         extends: true,
         plugins: [
           storybookTest({
