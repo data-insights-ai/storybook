@@ -11,7 +11,7 @@ const meta = {
   title: "Blocks/SignIn",
   component: SignIn,
   tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  parameters: { layout: "fullscreen", docs: { story: { inline: false, height: "720px" } } },
   args: {
     kicker: "datAInsights",
     eyebrow: "Sealed workspace",
@@ -22,13 +22,6 @@ const meta = {
     onSubmit: fn(),
     children: null,
   },
-  decorators: [
-    (Story) => (
-      <div style={{ display: "flex", minHeight: "100vh" }}>
-        <Story />
-      </div>
-    ),
-  ],
   argTypes: {
     kicker: { control: "text" },
     eyebrow: { control: "text" },
@@ -69,6 +62,9 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Sign in" }));
     await expect(args.onSubmit).toHaveBeenCalledOnce();
+    const sheet = canvasElement.querySelector(".di-login")!;
+    await expect(sheet.getBoundingClientRect().height).toBeGreaterThanOrEqual(window.innerHeight);
+    await expect(getComputedStyle(document.documentElement).backgroundColor).toBe(getComputedStyle(sheet).backgroundColor);
   },
 };
 
