@@ -94,10 +94,11 @@ export const Product: Story = {
 };
 
 /**
- * `width="full"`: the page follows the window instead of stopping at
- * 1440px, for a console whose registers and charts use every column.
+ * `width="contained"`: the page stops widening at 1440px. The default,
+ * `full`, follows the window; `Page` keeps records and forms at their
+ * measure and `Grid` adds columns on large screens.
  */
-export const FullWidth: Story = {
+export const Contained: Story = {
   render: (args) => (
     <AppShell {...args}>
       <AppShellRail
@@ -112,8 +113,8 @@ export const FullWidth: Story = {
         <AppShellBar>
           <Breadcrumb label="Breadcrumb" items={[{ label: "WS-01", href: "#/overview" }, { label: "findings" }]} />
         </AppShellBar>
-        <AppShellContent width="full">
-          <PageHeader eyebrow="Record" lede="The page runs to the edge of the window.">
+        <AppShellContent width="contained">
+          <PageHeader eyebrow="Record" lede="The page stops at 1440px.">
             <PageHeaderTitle>Findings</PageHeaderTitle>
           </PageHeader>
         </AppShellContent>
@@ -122,7 +123,7 @@ export const FullWidth: Story = {
   ),
   play: async ({ canvasElement }) => {
     const main = within(canvasElement).getByRole("main");
-    await expect(getComputedStyle(main).maxWidth).toBe("none");
+    await expect(getComputedStyle(main).maxWidth).toBe("1440px");
   },
 };
 

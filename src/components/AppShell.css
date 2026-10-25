@@ -516,8 +516,10 @@
     font-size: var(--di-font-size-200);
   }
 
-  /* Past 1440px the page stops widening; a table scrolls in its own frame.
-     The page is a vertical flow: its blocks are spaced by the container, so a
+  /* The page follows the window: a list or table uses every column, a
+     dashboard's Grid adds columns, and a record or form keeps its measure
+     (Page). `contained` stops at 1440px for a product that wants it. The
+     page is a vertical flow: its blocks are spaced by the container, so a
      screen gets the console rhythm without wrapping everything in a Stack. */
   .di-content {
     flex: 1;
@@ -526,12 +528,11 @@
     gap: var(--di-space-24);
     width: 100%;
     min-width: 0;
-    max-width: 1440px;
-    padding: var(--di-space-24) var(--di-space-24) var(--di-space-32);
+    padding: var(--di-space-24) var(--di-content-pad) var(--di-space-32);
   }
 
-  .di-content.is-full {
-    max-width: none;
+  .di-content.is-contained {
+    max-width: 1440px;
   }
 
   .di-content:focus {

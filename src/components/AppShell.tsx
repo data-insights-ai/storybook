@@ -219,18 +219,19 @@ export function AppShellBarEnd({ children }: { children: ReactNode }) {
 /**
  * The page. The skip link lands here.
  *
- * `contained` stops widening at 1440px. `full` follows the window, for a
- * console whose registers and charts use every column they are given.
+ * `full` (the default) follows the window: lists, registers, dashboards and
+ * charts use every column they are given, and `Page` keeps a record or a form
+ * at its measure. `contained` stops widening at 1440px.
  */
 export function AppShellContent({
-  width = "contained",
+  width = "full",
   children,
 }: {
   width?: "contained" | "full";
   children: ReactNode;
 }) {
   return (
-    <main id="di-content" className={cx("di-content", width === "full" && "is-full")} tabIndex={-1}>
+    <main id="di-content" className={cx("di-content", width === "contained" && "is-contained")} tabIndex={-1}>
       {children}
     </main>
   );
