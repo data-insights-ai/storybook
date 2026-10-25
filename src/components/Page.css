@@ -17,8 +17,8 @@
   }
 
   /* A list of a few columns reads across a large screen badly: it stops at
-     the list measure. A table with six or more columns uses the frame. */
-  .di-page[data-width="list"]:has(.di-table):not(:has(.di-table thead th:nth-child(6))) {
+     the list measure. A table with eight or more columns uses the frame. */
+  .di-page[data-width="list"]:has(.di-table):not(:has(.di-table thead th:nth-child(8))) {
     max-width: var(--di-measure-list);
   }
 
