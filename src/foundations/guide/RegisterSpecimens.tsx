@@ -1,5 +1,5 @@
-import { Panel, PanelMeta } from "../../components/Panel";
-import { SealMark } from "../../components/Seal";
+import { Panel, PanelMeta } from "../../components/layout/Panel";
+import { SealMark } from "../../components/data/marks/Seal";
 import "./RegisterSpecimens.css";
 
 const seals = [

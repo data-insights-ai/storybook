@@ -1,6 +1,6 @@
 import { Maximize2, Undo2, ZoomIn, ZoomOut, type LucideIcon } from "lucide-react";
-import { Button } from "../../Button";
-import { Toolbar } from "../../Layout";
+import { Button } from "../../actions/Button";
+import { Toolbar } from "../../layout/Layout";
 import { covers, MIN_SPAN, widthOf, zoomAround } from "../scale/viewport";
 import type { TimelineNavigation } from "./useTimelineView";
 

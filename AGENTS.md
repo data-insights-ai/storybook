@@ -12,7 +12,7 @@ Components carry no outer margin; spacing belongs to the container. A product sc
 - Inside a block, group with `Stack` (`gap={8|12|16|24|32}`); a section of related blocks is one `Stack`, so the page sees it as a single child.
 - A form is a `Stack gap={16}` of fields, followed by `Actions` for its buttons. A one-line form (pick a value and apply it) is a `Toolbar`: the fields, then the button. A toolbar that contains fields aligns every control on the control row, so buttons line up with inputs and an error line does not move them.
 - Fields stretch to their container. Constrain a form's width by placing it in a `Panel` or a `Grid` column, not by sizing the controls.
-- Large screens (1920px and 2560px) are part of the layout, not an afterthought: `AppShellContent` follows the window, so a list or table uses every column; `Page width="detail"` and `"form"` keep their measure (it grows at 1920 and 2560) and put what accompanies the record in a `PageAside` beside the sections; a dashboard is a `Grid`, which adds columns as the page widens; a `Chart` grows taller. `pnpm test` checks these at 1920, 2560, 3440 and 390 (`src/layout.browser.test.tsx`).
+- Large screens (1920px and 2560px) are part of the layout, not an afterthought: `AppShellContent` follows the window, so a list or table uses every column; `Page width="detail"` and `"form"` keep their measure (it grows at 1920 and 2560) and put what accompanies the record in a `PageAside` beside the sections; a dashboard is a `Grid`, which adds columns as the page widens; a `Chart` grows taller. `pnpm test` checks these at 1920, 2560, 3440 and 390 (`src/components/layout/layout.browser.test.tsx`).
 - A `DataTable` with no rows is not rendered empty: show an `EmptyState` instead.
 - A record's detail page with heavy sub-lists or more than about three sections is split into tabs (`TabNav`), each tab its own URL, so it is deep-linkable, keyboard navigable and kept on back: the record's settings tab holds its sections and, last, its `DangerZone`.
 - A tabbed page's header (eyebrow, title, one description of the page) never holds a tab's action. Every tab panel starts with the same `ListToolbar`: the search on the left, the tab's one primary action in `ListToolbarEnd` with its `n` key, an optional `ListToolbarNote` under it; no heading of its own. A page without tabs keeps its primary action in `PageHeaderAside`, with the same key. Each tab shows the same `EmptyState` style.
@@ -47,7 +47,7 @@ Sample people use invented names. Their email addresses are `name@data-insights.
 | --- | --- |
 | Colour, type, radius | `src/styles/tokens` |
 | A control’s look | that component’s CSS, using semantic `--di-*` tokens |
-| A new reusable control | `src/components`, a story beside it, an export from `src/index.ts` |
+| A new reusable control | its concept folder in `src/components`, a story beside it, an export from `src/index.ts` |
 | A chart | `Chart` wraps one Recharts chart. `ChartConfig` names each series and sets its colour; `Chart` exposes that colour as `--color-<key>`. `ChartTooltip` and `ChartLegend` read the same config. Colours are `--di-chart-series`, `--di-chart-highlight` (the one value, poppy), `--di-chart-compare` (the series the recorded one is measured against, cornflower — also `LevelMeter`'s comparison track), `--di-chart-muted`, and `--di-chart-band`; an ordered status scale (low → warn → danger, a stacked severity, a meter's zones) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Do not draw a one-off SVG chart. The one drawn chart is `EventTimeline`, because Recharts zooms by index rather than time and cannot pan or pinch at the rate a gesture asks for; a chart that needs that is a change to `EventTimeline`, not a second drawing. `TimelineSummary` tells the same bars as a few episodes on one strip, for the reader who does not need to zoom; it folds them with `timelineEpisodes` rather than drawing them again. |
 | An icon | `Icon`, with one Lucide icon as its child. Import that icon by name from `lucide-react` (`import { Search } from "lucide-react"`). `Icon` does not import the set, so the app keeps only the icons it renders. Do not import `lucide-react`’s `icons` namespace, and do not add a `name` prop that maps to every icon. |
 | A console example | `src/screens`, composed from components |
@@ -88,7 +88,24 @@ The sign-in card pins the daylight colours, including in the dark theme, because
 
 ## Stories and components
 
-Every component lives in `src/components`; the story `title` decides where it lands in the sidebar, and there are five groups:
+Every component lives in `src/components`, in the folder of its concept, with its stylesheet, its story and its tests beside it:
+
+| Folder | Holds |
+| --- | --- |
+| `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
+| `navigation/` | Breadcrumb, Pagination, Stepper, Tabs, TabNav, Menu, CommandBar, TextLink, SkipLink; `sidebar/` the sidebar and its parts; `shortcuts/` the key scheme and ShortcutHelp |
+| `forms/` | the labelled controls and their field frame; `dates/` DateRangePicker and its range logic |
+| `data/` | records and figures (KeyValues, FactList, Stat, Metric, the cards, Channel, Session); `table/` DataTable, InfiniteTable, ListToolbar; `marks/` Badge, StatusPill, Chip, Tag, Seal, Highlight, Icon, IconTile, VersionTag |
+| `feedback/` | Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `waiting/` the loaders, progress and skeletons |
+| `overlays/` | Modal, ConfirmDialog, Drawer, Sheet, Flyout, CreateFlow |
+| `inference/` | Explain, Confirm, Confidence, Privacy |
+| `layout/` | Stack, Grid, Page, Panel, Split, Stage, the headers, Disclosure, DetailSection; `shell/` AppShell, Theme, SignIn |
+| `charts/` | Chart, ChartCard, TrendChart and the drawn measures (Bars, Sparkline, Distribution, LevelMeter, CoverageMatrix, Seismograph) |
+| `timeline/` | EventTimeline and its parts, ChainTimeline, PeriodTimeline, WeekTimeline; `summary/` TimelineSummary |
+
+A folder names what a component is about; the story `title` is a different axis, what can go inside it. Sample data that only a story or a screen reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `layout/shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
+
+The story `title` decides where a component lands in the sidebar, and there are five groups:
 
 - `Primitives/` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it. Button, Badge, StatusPill, Chip, Highlight, Icon, IconTile, Seal, Eyebrow, Kbd, TickRule, TextLink, VersionTag, KeyValues, PullQuote, Bars, Sparkline, Distribution, Pagination, Breadcrumb, Stepper, Tooltip, Waiting/{AppLoader,Progress,RouteProgress,Skeleton,SkeletonPage,Spinner}.
 - `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl, DateRangePicker, FieldHint.
@@ -100,7 +117,7 @@ The test is one question: **can another component go inside it?** `KeyValues` ho
 
 One sidebar entry is one component, and **one module is one component**. An independent component does not share a file with another one: `pnpm build` emits a module per file, so `Breadcrumb` living in `Tabs.tsx` means a product importing a breadcrumb also ships `Tabs` and `Stepper`. Where several are one family they get a folder rather than one merged entry (`Primitives/Waiting/Progress`, `/Skeleton`, `/Spinner`; `Blocks/Inference/Explain`, `/Confirm`, `/Confidence`, `/Privacy`; `Patterns/Layout/Stack`, `/Grid`, `/Numbered`, `/Toolbar`).
 
-A component whose drawing takes more than one module keeps the parts in a folder of its own, and only the component and its slots are exported: `timeline/` holds `EventTimeline` and the scale, marks and navigation it is drawn from, and `timeline/summary/` holds `TimelineSummary` and the episodes it is told in.
+A component whose drawing takes more than one module keeps the parts in a folder of its own, and only the component and its slots are exported: `timeline/` holds `EventTimeline` and the scale, marks and navigation it is drawn from (beside the other timelines), and `timeline/summary/` holds `TimelineSummary` and the episodes it is told in.
 
 A sub-component that only exists inside its parent — `TableCell`, `NoticeTitle`, `PanelFooter`, `ModalIcon` — stays in the parent's file and the parent's entry. The test is whether anything else imports it: `FactList` sat in `Modal.tsx` until the Register screen used it inside a `Drawer`, which is the moment it stopped being Modal's.
 

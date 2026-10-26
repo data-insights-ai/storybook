@@ -8,9 +8,9 @@ import {
   Server,
   Stamp,
 } from "lucide-react";
-import { Console } from "../components/AppShell";
-import { Button } from "../components/Button";
-import { Chip } from "../components/Chip";
+import { Console } from "../components/layout/shell/AppShell";
+import { Button } from "../components/actions/Button";
+import { Chip } from "../components/data/marks/Chip";
 import {
   CellIcon,
   CellLead,
@@ -24,19 +24,19 @@ import {
   TableIndex,
   TableRow,
   TableToolbar,
-} from "../components/DataTable";
-import { Drawer, DrawerFooter } from "../components/Drawer";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
-import { Grid, Stack } from "../components/Layout";
-import { Menu, MenuDivider, MenuItem } from "../components/Menu";
-import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
-import { Pagination } from "../components/Pagination";
-import { SealValue } from "../components/Seal";
-import { SearchField } from "../components/SearchField";
-import { StatTile, StatTileDelta } from "../components/StatTile";
-import { StatusPill } from "../components/StatusPill";
-import { sampleChrome } from "../sample/chrome";
-import { Fact, FactList } from "../components/FactList";
+} from "../components/data/table/DataTable";
+import { Drawer, DrawerFooter } from "../components/overlays/Drawer";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/Heading";
+import { Grid, Stack } from "../components/layout/Layout";
+import { Menu, MenuDivider, MenuItem } from "../components/navigation/Menu";
+import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
+import { Pagination } from "../components/navigation/Pagination";
+import { SealValue } from "../components/data/marks/Seal";
+import { SearchField } from "../components/forms/SearchField";
+import { StatTile, StatTileDelta } from "../components/data/StatTile";
+import { StatusPill } from "../components/data/marks/StatusPill";
+import { sampleChrome } from "../components/layout/shell/chrome.sample";
+import { Fact, FactList } from "../components/data/FactList";
 
 type Source = {
   ordinal: string;

@@ -11,8 +11,8 @@ import {
   useRef,
   type ReactNode,
 } from "react";
-import { Kbd } from "../Seal";
-import { Spinner } from "../Spinner";
+import { Kbd } from "../data/marks/Seal";
+import { Spinner } from "../feedback/waiting/Spinner";
 import { Events, nearestEvent, reachOf } from "./marks/Events";
 import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";
 import { Markers } from "./marks/Markers";

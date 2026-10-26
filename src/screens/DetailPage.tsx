@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Console } from "../components/AppShell";
-import { Breadcrumb } from "../components/Breadcrumb";
-import { Button } from "../components/Button";
-import { ConfirmDialog } from "../components/ConfirmDialog";
-import { CopyValue } from "../components/CopyValue";
-import { DangerAction, DangerZone } from "../components/DangerZone";
-import { DetailSection, DetailSectionForm } from "../components/DetailSection";
-import { Fact, FactList } from "../components/FactList";
+import { Console } from "../components/layout/shell/AppShell";
+import { Breadcrumb } from "../components/navigation/Breadcrumb";
+import { Button } from "../components/actions/Button";
+import { ConfirmDialog } from "../components/overlays/ConfirmDialog";
+import { CopyValue } from "../components/actions/CopyValue";
+import { DangerAction, DangerZone } from "../components/feedback/DangerZone";
+import { DetailSection, DetailSectionForm } from "../components/layout/DetailSection";
+import { Fact, FactList } from "../components/data/FactList";
 import {
   PageHeader,
   PageHeaderAside,
@@ -14,13 +14,13 @@ import {
   PageHeaderFacts,
   PageHeaderStatus,
   PageHeaderTitle,
-} from "../components/Heading";
-import { Page } from "../components/Page";
-import { SaveBar } from "../components/SaveBar";
-import { StatusPill } from "../components/StatusPill";
-import { Switch } from "../components/Switch";
-import { TextField } from "../components/TextField";
-import { sampleChrome } from "../sample/chrome";
+} from "../components/layout/Heading";
+import { Page } from "../components/layout/Page";
+import { SaveBar } from "../components/forms/SaveBar";
+import { StatusPill } from "../components/data/marks/StatusPill";
+import { Switch } from "../components/forms/Switch";
+import { TextField } from "../components/forms/TextField";
+import { sampleChrome } from "../components/layout/shell/chrome.sample";
 
 /** A detail page: summary header, sections that read until Edit, the danger zone last. */
 export function DetailPageScreen() {

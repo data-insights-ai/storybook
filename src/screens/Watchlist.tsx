@@ -1,11 +1,11 @@
 import { Building2, Globe, Mail, Plus, ShieldCheck, UserRound } from "lucide-react";
-import { Button } from "../components/Button";
-import { Console } from "../components/AppShell";
-import { sampleChrome } from "../sample/chrome";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
-import { IconTile } from "../components/IconTile";
-import { Grid, Stack, Actions } from "../components/Layout";
-import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
+import { Button } from "../components/actions/Button";
+import { Console } from "../components/layout/shell/AppShell";
+import { sampleChrome } from "../components/layout/shell/chrome.sample";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/Heading";
+import { IconTile } from "../components/data/marks/IconTile";
+import { Grid, Stack, Actions } from "../components/layout/Layout";
+import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import {
   RecordCard,
   RecordCount,
@@ -14,10 +14,10 @@ import {
   RecordLines,
   RecordMark,
   RecordStatus,
-} from "../components/RecordCard";
-import { Stat, StatRow } from "../components/Stat";
-import { StatusPill } from "../components/StatusPill";
-import { TextLink } from "../components/TextLink";
+} from "../components/data/RecordCard";
+import { Stat, StatRow } from "../components/data/Stat";
+import { StatusPill } from "../components/data/marks/StatusPill";
+import { TextLink } from "../components/navigation/TextLink";
 import {
   CellStack,
   DataTable,
@@ -27,8 +27,8 @@ import {
   TableColumn,
   TableHead,
   TableRow,
-} from "../components/DataTable";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/SectionTitle";
+} from "../components/data/table/DataTable";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";
 
 type Identity = {
   id: string;

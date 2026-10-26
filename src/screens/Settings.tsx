@@ -1,18 +1,18 @@
 import { LogOut, Mail, ShieldCheck, Webhook } from "lucide-react";
-import { Button } from "../components/Button";
-import { Card } from "../components/Card";
-import { Console } from "../components/AppShell";
-import { sampleChrome } from "../sample/chrome";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
-import { Grid, Numbered, Stack } from "../components/Layout";
-import { Metric, MetricNote } from "../components/Metric";
-import { Bars } from "../components/Bars";
-import { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "../components/Channel";
-import { Session, SessionDetail, SessionAction, SessionMark, SessionTag } from "../components/Session";
-import { IconTile } from "../components/IconTile";
-import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
-import { StatusPill } from "../components/StatusPill";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/SectionTitle";
+import { Button } from "../components/actions/Button";
+import { Card } from "../components/data/Card";
+import { Console } from "../components/layout/shell/AppShell";
+import { sampleChrome } from "../components/layout/shell/chrome.sample";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/Heading";
+import { Grid, Numbered, Stack } from "../components/layout/Layout";
+import { Metric, MetricNote } from "../components/data/Metric";
+import { Bars } from "../components/charts/Bars";
+import { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "../components/data/Channel";
+import { Session, SessionDetail, SessionAction, SessionMark, SessionTag } from "../components/data/Session";
+import { IconTile } from "../components/data/marks/IconTile";
+import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
+import { StatusPill } from "../components/data/marks/StatusPill";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";
 
 const days = [46, 62, 70, 80, 58, 90, 84, 76, 88, 64, 72, 86, 91, 77, 69, 95, 100, 82, 74, 88, 93, 70, 81, 96, 85, 78, 90, 87, 73, 92];
 
