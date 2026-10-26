@@ -1,21 +1,21 @@
 import { useState } from "react";
 import { Globe, MoreVertical, Radar, Search, Settings2, ShieldCheck, Timer } from "lucide-react";
-import { Console } from "../components/AppShell";
-import { Button } from "../components/Button";
-import { CommandBar, CommandGroup, CommandRow } from "../components/CommandBar";
-import { PageHeader, PageHeaderTitle } from "../components/Heading";
-import { ConfidenceField } from "../components/ConfidenceField";
-import { ConfirmActions, ConfirmPanel } from "../components/ConfirmPanel";
-import { ExplainFooter, ExplainPanel, ExplainRow } from "../components/ExplainPanel";
-import { PrivacyBadge } from "../components/PrivacyBadge";
-import { Grid, Stack } from "../components/Layout";
-import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "../components/LivingCard";
-import { Panel, PanelMeta } from "../components/Panel";
-import { StatTile, StatTileDelta } from "../components/StatTile";
-import { Toast, ToastAction } from "../components/Toast";
-import { sampleChrome } from "../sample/chrome";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/SectionTitle";
-import { Sparkline } from "../components/Sparkline";
+import { Console } from "../components/layout/shell/AppShell";
+import { Button } from "../components/actions/Button";
+import { CommandBar, CommandGroup, CommandRow } from "../components/navigation/CommandBar";
+import { PageHeader, PageHeaderTitle } from "../components/layout/Heading";
+import { ConfidenceField } from "../components/inference/ConfidenceField";
+import { ConfirmActions, ConfirmPanel } from "../components/inference/ConfirmPanel";
+import { ExplainFooter, ExplainPanel, ExplainRow } from "../components/inference/ExplainPanel";
+import { PrivacyBadge } from "../components/inference/PrivacyBadge";
+import { Grid, Stack } from "../components/layout/Layout";
+import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "../components/data/LivingCard";
+import { Panel, PanelMeta } from "../components/layout/Panel";
+import { StatTile, StatTileDelta } from "../components/data/StatTile";
+import { Toast, ToastAction } from "../components/feedback/Toast";
+import { sampleChrome } from "../components/layout/shell/chrome.sample";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";
+import { Sparkline } from "../components/charts/Sparkline";
 
 const bars = [
   { percent: 38 },

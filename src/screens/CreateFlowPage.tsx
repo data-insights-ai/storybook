@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { Building2, KeyRound, Network } from "lucide-react";
-import { Console } from "../components/AppShell";
-import { Breadcrumb } from "../components/Breadcrumb";
-import { ChoiceCards } from "../components/ChoiceCards";
-import { CreateFlow } from "../components/CreateFlow";
-import { Fact, FactList } from "../components/FactList";
-import { PageHeader, PageHeaderCrumbs, PageHeaderTitle } from "../components/Heading";
-import { Page } from "../components/Page";
-import { TextField } from "../components/TextField";
-import { sampleChrome } from "../sample/chrome";
+import { Console } from "../components/layout/shell/AppShell";
+import { Breadcrumb } from "../components/navigation/Breadcrumb";
+import { ChoiceCards } from "../components/forms/ChoiceCards";
+import { CreateFlow } from "../components/overlays/CreateFlow";
+import { Fact, FactList } from "../components/data/FactList";
+import { PageHeader, PageHeaderCrumbs, PageHeaderTitle } from "../components/layout/Heading";
+import { Page } from "../components/layout/Page";
+import { TextField } from "../components/forms/TextField";
+import { sampleChrome } from "../components/layout/shell/chrome.sample";
 
 const kinds = [
   { value: "oidc", label: "OpenID Connect", description: "Any identity provider that speaks OIDC.", icon: <KeyRound /> },

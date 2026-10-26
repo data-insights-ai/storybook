@@ -1,5 +1,5 @@
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, XAxis, YAxis, type ActiveDotProps, type DotItemDotProps } from "recharts";
-import { Chart, ChartLegend, ChartTooltip, type ChartConfig } from "../../components/Chart";
+import { Chart, ChartLegend, ChartTooltip, type ChartConfig } from "../../components/charts/Chart";
 
 const series = [
   { period: "Q1", value: 32, estimate: null as number | null },

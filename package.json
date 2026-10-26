@@ -30,7 +30,7 @@
   },
   "scripts": {
     "storybook": "storybook dev -p 4500",
-    "build": "node scripts/lint-tokens.mjs && vite build --config vite.lib.config.ts && node scripts/build-styles.mjs && node scripts/check-treeshake.mjs",
+    "build": "node scripts/lint-tokens.mjs && vite build --config vite.lib.config.ts && node scripts/build-styles.mjs && node scripts/check-treeshake.mjs && node scripts/check-api.mjs",
     "build-storybook": "storybook build --output-dir dist/storybook",
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/lint-tokens.mjs",

@@ -10,12 +10,12 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import type { ReactNode } from "react";
-import { Button } from "../components/Button";
-import { Grid, Stack, Toolbar, ToolbarEnd } from "../components/Layout";
-import { Card } from "../components/Card";
-import { Chip } from "../components/Chip";
-import { Console } from "../components/AppShell";
-import { sampleChrome } from "../sample/chrome";
+import { Button } from "../components/actions/Button";
+import { Grid, Stack, Toolbar, ToolbarEnd } from "../components/layout/Layout";
+import { Card } from "../components/data/Card";
+import { Chip } from "../components/data/marks/Chip";
+import { Console } from "../components/layout/shell/AppShell";
+import { sampleChrome } from "../components/layout/shell/chrome.sample";
 import {
   CellIcon,
   CellLead,
@@ -27,12 +27,12 @@ import {
   TableColumn,
   TableHead,
   TableRow,
-} from "../components/DataTable";
-import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
-import { Pagination } from "../components/Pagination";
-import { SearchField } from "../components/SearchField";
-import { StatusPill, type StatusTone } from "../components/StatusPill";
-import { SectionTitle, SectionTitleHeading } from "../components/SectionTitle";
+} from "../components/data/table/DataTable";
+import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
+import { Pagination } from "../components/navigation/Pagination";
+import { SearchField } from "../components/forms/SearchField";
+import { StatusPill, type StatusTone } from "../components/data/marks/StatusPill";
+import { SectionTitle, SectionTitleHeading } from "../components/layout/SectionTitle";
 
 type Source = {
   id: string;

@@ -7,17 +7,17 @@ import {
   ShieldCheck,
   Workflow,
 } from "lucide-react";
-import { Button } from "../components/Button";
-import { Console } from "../components/AppShell";
-import { sampleChrome } from "../sample/chrome";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/Heading";
-import { Grid, Numbered, Stack } from "../components/Layout";
-import { Metric, MetricNote } from "../components/Metric";
-import { Stage, StageFooter, StageIcon, StageTrack } from "../components/Stage";
-import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/Notice";
-import { StatusPill } from "../components/StatusPill";
-import { KeyValue, KeyValues } from "../components/KeyValues";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/SectionTitle";
+import { Button } from "../components/actions/Button";
+import { Console } from "../components/layout/shell/AppShell";
+import { sampleChrome } from "../components/layout/shell/chrome.sample";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/Heading";
+import { Grid, Numbered, Stack } from "../components/layout/Layout";
+import { Metric, MetricNote } from "../components/data/Metric";
+import { Stage, StageFooter, StageIcon, StageTrack } from "../components/layout/Stage";
+import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
+import { StatusPill } from "../components/data/marks/StatusPill";
+import { KeyValue, KeyValues } from "../components/data/KeyValues";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";
 
 const stages = [
   {

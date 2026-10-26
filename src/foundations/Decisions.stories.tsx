@@ -7,8 +7,8 @@ import {
   TableHead,
   TableIndex,
   TableRow,
-} from "../components/DataTable";
-import { StatusPill } from "../components/StatusPill";
+} from "../components/data/table/DataTable";
+import { StatusPill } from "../components/data/marks/StatusPill";
 import { Page, Section } from "./guide/Guide";
 import "./foundations.css";
 
