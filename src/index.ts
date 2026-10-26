@@ -193,7 +193,7 @@ export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "
 export { Sidebar } from "./components/navigation/sidebar/Sidebar";
 export { SidebarBrand } from "./components/navigation/sidebar/SidebarBrand";
 export { useShortcut } from "./components/navigation/shortcuts/useShortcut";
-export { ShortcutHelp } from "./components/navigation/shortcuts/ShortcutHelp";
+export { ShortcutHelp, type AppShortcut } from "./components/navigation/shortcuts/ShortcutHelp";
 export { Tag, TagList } from "./components/data/marks/Tag";
 export { useSidebar } from "./components/navigation/sidebar/SidebarContext";
 export type { SidebarState } from "./components/navigation/sidebar/SidebarContext";

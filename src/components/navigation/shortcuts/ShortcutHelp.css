@@ -7,9 +7,15 @@
 
   .di-shortcut-help-row {
     display: grid;
-    grid-template-columns: 48px minmax(0, 1fr);
+    grid-template-columns: minmax(48px, max-content) minmax(0, 1fr);
     align-items: baseline;
     gap: var(--di-space-12);
+  }
+
+  .di-shortcut-help-row dt {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-4);
   }
 
   .di-shortcut-help-row dd {

@@ -6,22 +6,28 @@ import { shortcutLabel, shortcutTarget } from "./shortcutKeys";
 import { useShortcut } from "./useShortcut";
 import "./ShortcutHelp.css";
 
-type Row = { key: string; what: string; target?: string };
+type Row = { keys: string[]; what: string; target?: string };
+
+/** A key the product answers everywhere, such as ⌘K; several spellings are alternatives. */
+export type AppShortcut = { keys: string[]; what: string };
 
 /**
  * `?` lists the keys the current page answers: the page keys whose
  * control is on screen right now (`/`, `n`, `e`), then `?` and Esc. Mount
  * it once in the app shell; the copy comes translated from the product.
+ * `appKeys` come first: the product's own keys, such as ⌘K or j/k on a list.
  */
 export function ShortcutHelp({
   title,
   closeLabel,
   labels,
+  appKeys = [],
 }: {
   title: string;
   closeLabel: string;
   /** What each key does, in the reader's language. */
   labels: { search: string; create: string; edit: string; help: string; close: string };
+  appKeys?: AppShortcut[];
 }) {
   const titleId = useId();
   const [rows, setRows] = useState<Row[] | null>(null);
@@ -33,9 +39,14 @@ export function ShortcutHelp({
       ["e", labels.edit],
     ] as const) {
       const el = shortcutTarget(key);
-      if (el) page.push({ key, what, target: shortcutLabel(el) });
+      if (el) page.push({ keys: [key], what, target: shortcutLabel(el) });
     }
-    setRows([...page, { key: "?", what: labels.help }, { key: "Esc", what: labels.close }]);
+    setRows([
+      ...appKeys,
+      ...page,
+      { keys: ["?"], what: labels.help },
+      { keys: ["Esc"], what: labels.close },
+    ]);
   });
   return (
     <Modal open={rows !== null} onClose={() => setRows(null)} labelledBy={titleId}>
@@ -45,9 +56,11 @@ export function ShortcutHelp({
           <ModalBody>
             <dl className="di-shortcut-help">
               {(rows ?? []).map((r) => (
-                <div key={r.key} className="di-shortcut-help-row">
+                <div key={r.keys.join(" ")} className="di-shortcut-help-row">
                   <dt>
-                    <Kbd>{r.key === "Esc" ? r.key : r.key.toUpperCase()}</Kbd>
+                    {r.keys.map((key) => (
+                      <Kbd key={key}>{key.length === 1 ? key.toUpperCase() : key}</Kbd>
+                    ))}
                   </dt>
                   <dd>
                     {r.what}

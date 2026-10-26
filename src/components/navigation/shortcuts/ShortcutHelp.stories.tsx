@@ -11,6 +11,10 @@ const meta = {
     title: "Keyboard shortcuts",
     closeLabel: "Close",
     labels: { search: "Search", create: "Create", edit: "Edit", help: "Show the shortcuts", close: "Close a dialog" },
+    appKeys: [
+      { keys: ["⌘K", "Ctrl+K"], what: "Search everything" },
+      { keys: ["⌘B", "Ctrl+B"], what: "Toggle navigation" },
+    ],
   },
 } satisfies Meta<typeof ShortcutHelp>;
 
@@ -34,6 +38,7 @@ export const OnAPage: Story = {
     await userEvent.keyboard("?");
     const dialog = await within(document.body).findByRole("dialog");
     await expect(within(dialog).getByText("New source")).toBeInTheDocument();
+    await expect(within(dialog).getByText("Search everything")).toBeInTheDocument();
     await userEvent.keyboard("{Escape}");
   },
 };
