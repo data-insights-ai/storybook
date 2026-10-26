@@ -118,6 +118,20 @@ export const Disabled: Story = {
 };
 
 /**
+ * A shortcut shows its key beside the label. Screen readers hear it through
+ * `aria-keyshortcuts`, so the key never becomes part of the button's name.
+ */
+export const Shortcut: Story = {
+  args: { shortcut: "n", children: "New entry" },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole("button", { name: "New entry" });
+    await expect(button).toHaveAttribute("aria-keyshortcuts", "n");
+    await expect(button).toHaveTextContent("New entryN");
+  },
+};
+
+/**
  * An `href` makes it an `<a>`: same control, and the browser's own
  * navigation — open in a new tab, copy the address, a real status bar.
  */

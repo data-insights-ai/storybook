@@ -41,7 +41,12 @@ export function Button(props: ButtonProps | LinkProps) {
   const { variant = "primary", size = "md", iconOnly = false, loading = false, disabled = false, shortcut } = props;
   useShortcutKeys(Boolean(shortcut));
   const keyed = shortcut ? { "data-di-shortcut": shortcut, "aria-keyshortcuts": shortcut } : {};
-  const hint = shortcut && !iconOnly ? <kbd className="di-btn-kbd">{shortcut.toUpperCase()}</kbd> : null;
+  const hint =
+    shortcut && !iconOnly ? (
+      <kbd className="di-btn-kbd" aria-hidden="true">
+        {shortcut.toUpperCase()}
+      </kbd>
+    ) : null;
 
   const className = cx(
     "di-btn",
@@ -78,16 +83,21 @@ export function Button(props: ButtonProps | LinkProps) {
     );
   }
 
-  const { type = "button", variant: _v, size: _s, iconOnly: _i, loading: _l, disabled: _d, className: _c, href: _h, shortcut: _k, children, ...rest } = props;
+  const {
+    type = "button",
+    variant: _v,
+    size: _s,
+    iconOnly: _i,
+    loading: _l,
+    disabled: _d,
+    className: _c,
+    href: _h,
+    shortcut: _k,
+    children,
+    ...rest
+  } = props;
   return (
-    <button
-      {...rest}
-      {...keyed}
-      type={type}
-      disabled={disabled || loading}
-      aria-busy={loading || undefined}
-      className={className}
-    >
+    <button {...rest} {...keyed} type={type} disabled={disabled || loading} aria-busy={loading || undefined} className={className}>
       {loading ? <span className="di-btn-spinner" aria-hidden /> : null}
       {children}
       {hint}
