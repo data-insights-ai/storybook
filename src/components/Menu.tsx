@@ -46,6 +46,16 @@ export function Menu({
   changeOpen.current = onOpenChange;
   const [triggerNode, setTriggerNode] = useState<HTMLButtonElement | null>(null);
   const [place, setPlace] = useState<CSSProperties>();
+  const [up, setUp] = useState(false);
+
+  // Near the viewport's bottom, such as in a sidebar's footer, the plane
+  // opens upwards so it is never pushed off screen.
+  useLayoutEffect(() => {
+    if (!open || !triggerNode || triggerNode.closest(".di-table-wrap")) return setUp(false);
+    const at = triggerNode.getBoundingClientRect();
+    const height = list.current?.offsetHeight ?? 0;
+    setUp(at.bottom + 4 + height > window.innerHeight && at.top - 4 - height > 0);
+  }, [open, triggerNode]);
 
   // In a table, whose frame clips its overflow, the plane is fixed to the
   // viewport so it is never cut off; near the bottom it opens upwards. It
@@ -153,7 +163,7 @@ export function Menu({
           role="menu"
           tabIndex={-1}
           aria-label={label}
-          className={cx("di-menu", align === "start" && "di-menu-start", place && "is-placed")}
+          className={cx("di-menu", align === "start" && "di-menu-start", up && "di-menu-up", place && "is-placed")}
           style={place}
           onKeyDown={onKeyDown}
           onBlur={(event) => {

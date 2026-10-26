@@ -30,10 +30,23 @@
     right: auto;
   }
 
+  .di-menu-up {
+    top: auto;
+    bottom: calc(100% + 4px);
+    animation-name: di-menu-in-up;
+  }
+
   @keyframes di-menu-in {
     from {
       opacity: 0;
       translate: 0 -4px;
+    }
+  }
+
+  @keyframes di-menu-in-up {
+    from {
+      opacity: 0;
+      translate: 0 4px;
     }
   }
 
