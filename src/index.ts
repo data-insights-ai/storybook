@@ -210,6 +210,10 @@ export {
   SidebarHeader,
 } from "./components/SidebarSections";
 export { SidebarTrigger } from "./components/SidebarTrigger";
+export { SidebarThemeChoice, themeLabels } from "./components/SidebarThemeChoice";
+export type { ThemeLabels } from "./components/SidebarThemeChoice";
+export { ThemeProvider, themeChoices, useTheme } from "./components/Theme";
+export type { ResolvedTheme, ThemeChoice } from "./components/Theme";
 export { SkipLink } from "./components/SkipLink";
 export { SignIn, SignInVersion } from "./components/SignIn";
 export { SkeletonTable } from "./components/SkeletonTable";
