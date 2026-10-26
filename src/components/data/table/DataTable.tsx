@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type KeyboardEvent,
   type ReactNode,
   type Ref,
 } from "react";
@@ -87,10 +88,18 @@ export function DataTable({
     <div className={cx("di-table-wrap", stack && "is-stackable", overflowing && "is-overflowing", className)}>
       {toolbar}
       {/*
-        The frame scrolls, not the page. A scrollable region has to be
-        reachable from the keyboard, so it takes a tab stop and a name.
+        The frame scrolls, not the page. A region that scrolls has to be
+        reachable from the keyboard, so it takes a tab stop then, and only
+        then: a frame that fits would be a stop that does nothing.
       */}
-      <div ref={scroll} className="di-table-scroll" tabIndex={0} role="region" aria-label={caption}>
+      <div
+        ref={scroll}
+        className="di-table-scroll"
+        tabIndex={overflowing ? 0 : undefined}
+        role="region"
+        aria-label={caption}
+        onKeyDown={moveBetweenRows}
+      >
         {/* A stacked row is no longer laid out as a table, so it says what it is. */}
         <table
           className={cx("di-table", indexed && "is-indexed", widths && "is-measured")}
@@ -113,6 +122,36 @@ export function DataTable({
       {foot}
     </div>
   );
+}
+
+/**
+ * Up and Down move between rows, Home and End to the first and the last,
+ * keeping the column: focus goes to the control in the same place in the
+ * next row (its identifier link, its menu), so a register reads with the
+ * arrows and Enter opens the row. Fields and open menus keep their keys.
+ */
+function moveBetweenRows(event: KeyboardEvent<HTMLDivElement>) {
+  if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) return;
+  const target = event.target as HTMLElement;
+  if (target.closest("input, textarea, select, [contenteditable], [role=menu], [role=listbox]")) return;
+  const row = target.closest("tbody tr");
+  if (!row) return;
+  const rows = Array.from(event.currentTarget.querySelectorAll("tbody tr")).filter((r) => controls(r).length > 0);
+  const at = rows.indexOf(row);
+  const next =
+    event.key === "Home" ? rows[0] : event.key === "End" ? rows[rows.length - 1] : rows[at + (event.key === "ArrowDown" ? 1 : -1)];
+  if (!next || next === row) return;
+  event.preventDefault();
+  const column = Math.max(0, controls(row).indexOf(target));
+  const into = controls(next);
+  const focus = into[Math.min(column, into.length - 1)];
+  focus.focus();
+  focus.scrollIntoView?.({ block: "nearest" });
+}
+
+function controls(row: Element) {
+  return Array.from(row.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), [tabindex=\"0\"]"));
 }
 
 const StackContext = createContext(false);
@@ -274,8 +313,9 @@ export function TableBody({ children }: { children: ReactNode }) {
  *
  * `onSelect` makes the whole row the pointer target for that pane. A row is
  * not a control a keyboard can reach, so the row still carries one — a
- * `TextLink` on its identifier — that selects it too; the row only widens
- * where a pointer can press. A click on any control inside the row is left
+ * `TextLink plain` on its identifier — that selects it too; the row only
+ * widens where a pointer can press. Up and Down move between the rows'
+ * controls, so Enter opens the next row without tabbing through every cell. A click on any control inside the row is left
  * to that control.
  */
 export function TableRow({

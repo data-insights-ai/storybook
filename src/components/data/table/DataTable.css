@@ -37,11 +37,9 @@
     border-bottom: 1px solid var(--di-border);
     background: var(--di-bg-page);
     text-align: left;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    font-weight: var(--di-weight-medium);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-300);
+    font-weight: var(--di-weight-semibold);
     color: var(--di-text-muted);
     white-space: nowrap;
   }
