@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { cx } from "../../cx";
 import { SealMark } from "../data/marks/Seal";
+import { fixedOrigin, menuBounds, placeMenu, type MenuDirection } from "./menuPlacement";
 import "./Menu.css";
 
 /**
@@ -45,30 +46,38 @@ export function Menu({
   const changeOpen = useRef(onOpenChange);
   changeOpen.current = onOpenChange;
   const [triggerNode, setTriggerNode] = useState<HTMLButtonElement | null>(null);
-  const [place, setPlace] = useState<CSSProperties>();
-  const [up, setUp] = useState(false);
+  const [direction, setDirection] = useState<MenuDirection>("down");
 
-  // Near the viewport's bottom, such as in a sidebar's footer, the plane
-  // opens upwards so it is never pushed off screen.
+  // The plane opens in the top layer (a manual popover), placed beside its
+  // trigger, so no ancestor that clips, transforms or stacks it (a table's
+  // frame, a collapsed sidebar) cuts it off, while it stays in the trigger's
+  // subtree for focus, outside clicks and the theme. Without popovers it is
+  // fixed in the box its ancestors give it. In a collapsed sidebar's rail it
+  // opens to the right, near the viewport's bottom upwards. It follows the
+  // trigger while the page scrolls rather than closing, because opening it
+  // can scroll the trigger into view.
   useLayoutEffect(() => {
-    if (!open || !triggerNode || triggerNode.closest(".di-table-wrap")) return setUp(false);
-    const at = triggerNode.getBoundingClientRect();
-    const height = list.current?.offsetHeight ?? 0;
-    setUp(at.bottom + 4 + height > window.innerHeight && at.top - 4 - height > 0);
-  }, [open, triggerNode]);
-
-  // In a table, whose frame clips its overflow, the plane is fixed to the
-  // viewport so it is never cut off; near the bottom it opens upwards. It
-  // follows the trigger while the page scrolls rather than closing, because
-  // opening it can scroll the trigger into view.
-  useLayoutEffect(() => {
-    if (!open || !triggerNode?.closest(".di-table-wrap")) return setPlace(undefined);
+    const plane = list.current;
+    if (!open || !triggerNode || !plane || !anchor.current) return;
+    const container = anchor.current;
+    const topLayer = typeof plane.showPopover === "function";
+    if (topLayer && !plane.matches(":popover-open")) plane.showPopover();
+    const beside = triggerNode.closest('.di-sb[data-state="collapsed"]') !== null;
     const measure = () => {
-      const at = triggerNode.getBoundingClientRect();
-      const height = list.current?.offsetHeight ?? 0;
-      const below = at.bottom + 4;
-      const top = below + height > window.innerHeight && at.top - 4 - height > 0 ? at.top - 4 - height : below;
-      setPlace(align === "start" ? { top, left: at.left } : { top, right: window.innerWidth - at.right });
+      const viewport = { width: document.documentElement.clientWidth, height: window.innerHeight };
+      const bounds = menuBounds(beside ? null : triggerNode, viewport.width);
+      plane.style.setProperty("--di-menu-room", `${bounds.right - bounds.left}px`);
+      plane.style.setProperty("--di-menu-anchor-width", `${container.offsetWidth}px`);
+      const place = placeMenu(
+        triggerNode.getBoundingClientRect(),
+        { width: plane.offsetWidth, height: plane.offsetHeight },
+        viewport,
+        { align, beside, bounds },
+      );
+      const origin = topLayer ? { x: 0, y: 0 } : fixedOrigin(container);
+      plane.style.top = `${place.top - origin.y}px`;
+      plane.style.left = `${place.left - origin.x}px`;
+      setDirection(place.direction);
     };
     measure();
     window.addEventListener("scroll", measure, { capture: true, passive: true });
@@ -160,11 +169,11 @@ export function Menu({
         <div
           id={id}
           ref={list}
+          popover="manual"
           role="menu"
           tabIndex={-1}
           aria-label={label}
-          className={cx("di-menu", align === "start" && "di-menu-start", up && "di-menu-up", place && "is-placed")}
-          style={place}
+          className={cx("di-menu", `is-${direction}`)}
           onKeyDown={onKeyDown}
           onBlur={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) onOpenChange(false);

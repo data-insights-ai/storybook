@@ -4,14 +4,18 @@
     display: inline-flex;
   }
 
+  /* Placed by Menu from the trigger, in the top layer as a popover (whose
+   * defaults it resets) or else fixed to the viewport. */
   .di-menu {
-    position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    overflow: visible;
+    color: var(--di-text);
     z-index: 20;
     width: max-content;
     min-width: min(188px, calc(100vw - var(--di-space-32)));
-    max-width: min(360px, calc(100vw - var(--di-space-32)));
+    max-width: min(360px, var(--di-menu-room, calc(100vw - var(--di-space-32))));
     padding: var(--di-space-4);
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-control);
@@ -20,20 +24,12 @@
     animation: di-menu-in var(--di-duration) var(--di-ease) both;
   }
 
-  .di-menu.is-placed {
-    position: fixed;
-    bottom: auto;
-  }
-
-  .di-menu-start {
-    left: 0;
-    right: auto;
-  }
-
-  .di-menu-up {
-    top: auto;
-    bottom: calc(100% + 4px);
+  .di-menu.is-up {
     animation-name: di-menu-in-up;
+  }
+
+  .di-menu:is(.is-right, .is-right-up) {
+    animation-name: di-menu-in-side;
   }
 
   @keyframes di-menu-in {
@@ -47,6 +43,13 @@
     from {
       opacity: 0;
       translate: 0 4px;
+    }
+  }
+
+  @keyframes di-menu-in-side {
+    from {
+      opacity: 0;
+      translate: -4px 0;
     }
   }
 

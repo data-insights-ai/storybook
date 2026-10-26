@@ -283,9 +283,10 @@
     min-width: 0;
   }
 
+  /* As wide as the context control it opens from (Menu measures it). */
   .di-sidebar-context .di-menu {
-    min-width: 100%;
-    max-width: 100%;
+    min-width: var(--di-menu-anchor-width);
+    max-width: var(--di-menu-anchor-width);
   }
 
   .di-nav {

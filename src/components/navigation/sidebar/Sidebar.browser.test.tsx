@@ -64,3 +64,41 @@ describe("sidebar items", () => {
     expect(menu.iconCentre).toBeCloseTo(link.iconCentre, 0);
   });
 });
+
+// An item is shown when a pointer over its middle reaches it: nothing clips or covers it.
+function reachable(item: Element) {
+  const at = item.getBoundingClientRect();
+  return item.contains(document.elementFromPoint(at.left + at.width / 2, at.top + at.height / 2));
+}
+
+async function openThemeMenu(expanded: boolean) {
+  renderSidebar(expanded);
+  const trigger = document.querySelector<HTMLButtonElement>('button[aria-haspopup="menu"]')!;
+  trigger.click();
+  await new Promise((done) => requestAnimationFrame(done));
+  const menu = document.querySelector('[role="menu"]')!;
+  return {
+    trigger: trigger.getBoundingClientRect(),
+    menu: menu.getBoundingClientRect(),
+    sidebar: document.querySelector(".di-sb")!.getBoundingClientRect(),
+    items: [...menu.querySelectorAll('[role="menuitemradio"]')],
+  };
+}
+
+describe("the theme menu in the sidebar's footer", () => {
+  test("in the collapsed rail it opens beside the item, whole and on screen", async () => {
+    const { trigger, menu, sidebar, items } = await openThemeMenu(false);
+    expect(menu.left).toBeGreaterThanOrEqual(trigger.right);
+    expect(menu.right).toBeGreaterThan(sidebar.right);
+    expect(menu.bottom).toBeLessThanOrEqual(window.innerHeight);
+    expect(items).toHaveLength(3);
+    expect(items.every(reachable)).toBe(true);
+  });
+
+  test("in the expanded sidebar it opens above the item at the footer, whole and on screen", async () => {
+    const { trigger, menu, items } = await openThemeMenu(true);
+    expect(menu.bottom).toBeLessThanOrEqual(trigger.top);
+    expect(menu.top).toBeGreaterThanOrEqual(0);
+    expect(items.every(reachable)).toBe(true);
+  });
+});
