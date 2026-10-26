@@ -12,6 +12,11 @@
     min-width: 0;
   }
 
+  /* A menu's anchor hugs its trigger elsewhere; an item's trigger spans the sidebar like every other item. */
+  .di-sb-menu-item > .di-menu-anchor {
+    display: flex;
+  }
+
   .di-sb-button {
     position: relative;
     display: flex;
