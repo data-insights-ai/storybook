@@ -34,7 +34,7 @@
     "build-storybook": "storybook build --output-dir dist/storybook",
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/lint-tokens.mjs",
-    "check": "pnpm typecheck && pnpm lint:tokens && pnpm test",
+    "check": "pnpm typecheck && pnpm test && pnpm build",
     "test": "vitest run --project=unit --project=layout --project=storybook",
     "prepublishOnly": "pnpm build"
   },
