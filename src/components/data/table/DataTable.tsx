@@ -151,7 +151,7 @@ function moveBetweenRows(event: KeyboardEvent<HTMLDivElement>) {
 }
 
 function controls(row: Element) {
-  return Array.from(row.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), [tabindex=\"0\"]"));
+  return Array.from(row.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), summary, [tabindex=\"0\"]"));
 }
 
 const StackContext = createContext(false);

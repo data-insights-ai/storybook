@@ -99,3 +99,37 @@ test("a stacked row names its cells in the interface's type too", () => {
   expect(label.content).toContain("Seen");
   expect(label.textTransform).toBe("none");
 });
+
+test("a row's disclosure is a column the arrows keep", async () => {
+  const host = document.createElement("div");
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Changes" indexed={false}>
+        <TableHead>
+          <TableColumn>Record</TableColumn>
+          <TableColumn width="fill">Change</TableColumn>
+        </TableHead>
+        <TableBody>
+          {["C-1", "C-2"].map((id) => (
+            <TableRow key={id}>
+              <TableCell>
+                <a href={`#${id}`}>{id}</a>
+              </TableCell>
+              <TableCell>
+                <details>
+                  <summary>Change to {id}</summary>
+                  <p>Fields</p>
+                </details>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  host.querySelector<HTMLElement>("summary")!.focus();
+  await userEvent.keyboard("{ArrowDown}");
+  expect(document.activeElement?.textContent).toBe("Change to C-2");
+});
