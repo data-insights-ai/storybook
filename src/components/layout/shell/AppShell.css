@@ -410,11 +410,10 @@
     align-items: center;
     gap: 0;
     margin: 0;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--di-text-muted);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    color: var(--di-label-color);
   }
 
   .di-crumb-part {

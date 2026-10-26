@@ -49,9 +49,7 @@
   .di-chart-tip-label {
     margin: 0 0 var(--di-space-6);
     font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
   }
 
