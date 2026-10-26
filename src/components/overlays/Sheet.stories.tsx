@@ -18,7 +18,10 @@ const meta = {
     onClose: () => {},
     children: null,
   },
-  argTypes: { size: { control: "radio", options: ["md", "lg", "xl"] }, children: { control: false } },
+  argTypes: {
+    size: { control: "radio", options: ["md", "lg", "xl"] },
+    children: { control: false },
+  },
 } satisfies Meta<typeof Sheet>;
 
 export default meta;
@@ -57,6 +60,46 @@ export const Record: Story = {
     await expect(getComputedStyle(canvasElement.ownerDocument.body).overflow).toBe("hidden");
     await waitFor(() => expect(dialog).toBeVisible());
     await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(opener).toHaveFocus());
+  },
+};
+
+function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Edit watchlist
+      </Button>
+      {open ? (
+        <Sheet {...args} open onClose={() => setOpen(false)}>
+          <p>Rendered only while open, as a product often does.</p>
+          <SheetFooter>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+          </SheetFooter>
+        </Sheet>
+      ) : null}
+    </>
+  );
+}
+
+/** A sheet the product removes on close still returns focus to its opener. */
+export const RemovedOnClose: Story = {
+  render: (args) => <MountedWhileOpen {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    const opener = canvas.getByRole("button", { name: "Edit watchlist" });
+    await userEvent.click(opener);
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(opener).toHaveFocus());
+    await userEvent.click(opener);
+    await userEvent.click(await body.findByRole("button", { name: "Cancel" }));
+    await waitFor(() => expect(opener).toHaveFocus());
+    await userEvent.click(opener);
+    await userEvent.click(await body.findByRole("button", { name: "Close" }));
     await waitFor(() => expect(opener).toHaveFocus());
   },
 };

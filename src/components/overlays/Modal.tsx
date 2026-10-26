@@ -1,5 +1,5 @@
-import { Children, isValidElement, useEffect, useRef, type ReactNode } from "react";
-import { focusFirstField } from "../navigation/shortcuts/shortcutKeys";
+import { Children, isValidElement, useRef, type ReactNode } from "react";
+import { useModalDialog } from "./useModalDialog";
 import "./Modal.css";
 
 /**
@@ -24,15 +24,7 @@ export function Modal({
 }) {
   const ref = useRef<HTMLDialogElement>(null);
 
-  useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog) return;
-    if (open && !dialog.open) {
-      dialog.showModal();
-      focusFirstField(dialog);
-    }
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
+  useModalDialog(ref, open);
 
   return (
     <dialog ref={ref} className="di-modal" role="dialog" aria-modal="true" aria-labelledby={labelledBy} onCancel={onClose} onClose={onClose}>

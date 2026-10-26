@@ -1,6 +1,6 @@
-import { Children, isValidElement, useEffect, useId, useRef, type ReactNode } from "react";
+import { Children, isValidElement, useId, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
-import { focusFirstField } from "../navigation/shortcuts/shortcutKeys";
+import { useModalDialog } from "./useModalDialog";
 import "./Sheet.css";
 
 /**
@@ -36,15 +36,7 @@ export function Sheet({
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
-  useEffect(() => {
-    const dialog = ref.current;
-    if (!dialog) return;
-    if (open && !dialog.open) {
-      dialog.showModal();
-      focusFirstField(dialog);
-    }
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
+  useModalDialog(ref, open);
 
   const footer: ReactNode[] = [];
   const body: ReactNode[] = [];
