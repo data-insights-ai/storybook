@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
-import { page } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import "../../styles.css";
@@ -98,5 +98,19 @@ describe("menu inside what clips or contains it", () => {
     expect(menu.left).toBeGreaterThanOrEqual(box.left);
     expect(menu.right).toBeLessThanOrEqual(box.right);
     expect(items.every(reachable)).toBe(true);
+  });
+});
+
+describe("menu keys", () => {
+  test("a letter jumps to the next item that starts with it, wrapping", async () => {
+    openMenuAt("top");
+    const item = (name: string) => Array.from(document.querySelectorAll<HTMLElement>('[role="menuitem"]')).find((el) => el.textContent === name);
+    item("Auto")!.focus();
+    await userEvent.keyboard("d");
+    expect(document.activeElement).toBe(item("Dark"));
+    await userEvent.keyboard("l");
+    expect(document.activeElement).toBe(item("Light"));
+    await userEvent.keyboard("a");
+    expect(document.activeElement).toBe(item("Auto"));
   });
 });

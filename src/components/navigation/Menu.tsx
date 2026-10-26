@@ -7,8 +7,9 @@ import "./Menu.css";
 
 /**
  * A row's actions, kept out of the row until asked for. Arrow keys move
- * between the items, Home and End jump the ends, Escape closes and
- * returns focus to the trigger — the roving focus a `role="menu"` owes
+ * between the items, Home and End jump the ends, a letter jumps to the
+ * next item that starts with it, Escape closes and returns focus to the
+ * trigger — the roving focus a `role="menu"` owes
  * its user.
  *
  * Controlled by the caller, because what the menu does usually needs a
@@ -142,6 +143,15 @@ export function Menu({
     } else if (event.key === "End") {
       event.preventDefault();
       all[all.length - 1]?.focus();
+    } else if (event.key.length === 1 && event.key !== " " && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      const letter = event.key.toLocaleLowerCase();
+      const next = [...all.slice(at + 1), ...all.slice(0, at + 1)].find((item) =>
+        (item.textContent ?? "").trim().toLocaleLowerCase().startsWith(letter),
+      );
+      if (next) {
+        event.preventDefault();
+        next.focus();
+      }
     }
   }
 
