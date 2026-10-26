@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
+import { StrictMode, useEffect, useRef, useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../actions/Button";
 import { Fact, FactList } from "../data/FactList";
@@ -64,6 +64,17 @@ export const Record: Story = {
   },
 };
 
+// Content that takes focus as it mounts, before the sheet's own effects run.
+function FocusOnMount() {
+  const field = useRef<HTMLInputElement>(null);
+  useEffect(() => field.current?.focus(), []);
+  return (
+    <label>
+      Name <input ref={field} />
+    </label>
+  );
+}
+
 function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: string }) {
   const [open, setOpen] = useState(false);
   return (
@@ -73,7 +84,7 @@ function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: stri
       </Button>
       {open ? (
         <Sheet {...args} open onClose={() => setOpen(false)}>
-          <p>Rendered only while open, as a product often does.</p>
+          <FocusOnMount />
           <SheetFooter>
             <Button variant="secondary" onClick={() => setOpen(false)}>
               Cancel
@@ -87,7 +98,11 @@ function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: stri
 
 /** A sheet the product removes on close still returns focus to its opener. */
 export const RemovedOnClose: Story = {
-  render: (args) => <MountedWhileOpen {...args} />,
+  render: (args) => (
+    <StrictMode>
+      <MountedWhileOpen {...args} />
+    </StrictMode>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
