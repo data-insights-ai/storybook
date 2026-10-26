@@ -106,7 +106,7 @@ export function ComboBox({
       <ListBox className="di-combobox-list" renderEmptyState={() => <p className="di-combobox-empty">{emptyLabel}</p>}>
         {(item: ComboBoxSuggestion) => <ListBoxItem id={item.value} textValue={item.value} className="di-combobox-option">
           <span className="di-combobox-label">{item.label}</span>
-          <span className="di-combobox-value">{item.value}</span>
+          {item.value === item.label ? null : <span className="di-combobox-value">{item.value}</span>}
         </ListBoxItem>}
       </ListBox>
     </Popover>
