@@ -19,7 +19,7 @@ export function Select({
   hintTone = "neutral",
   labelTrack = "record",
   hideLabel = false,
-  mono = true,
+  mono = false,
   className,
   disabled = false,
   required = false,
@@ -39,7 +39,7 @@ export function Select({
    * column or row already names it, such as a role picker in a table.
    */
   hideLabel?: boolean;
-  /** A select usually holds an identifier or a range, so mono is the default. */
+  /** Mono when the options are identifiers a machine wrote; words stay in the UI track. */
   mono?: boolean;
   disabled?: boolean;
   required?: boolean;

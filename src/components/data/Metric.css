@@ -1,10 +1,11 @@
 @layer components {
   .di-metric-label {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--di-text-muted);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--di-label-color);
   }
 
   .di-metric-figure {

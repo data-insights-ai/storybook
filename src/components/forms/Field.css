@@ -16,21 +16,19 @@
   /*
    * Two tracks, and the label says which surface the field is on.
    *
-   * `record` is the console default: the mono micro-caps a register
-   * labels its columns with. `prose` is a form a person fills in for
-   * themselves — an account, a sign-up — where the label is a sentence
-   * they read, so it runs in the prose track at the body step and in ink.
-   * One prop, because weight, case, size and family all move together;
-   * a label at 13px still uppercase and still letterspaced is not a
-   * heavier console label, it is a broken one.
+   * `record` is the console default: the one interface label style
+   * (`--di-label-*`), the UI track at the label step in sentence case.
+   * `prose` is a form a person fills in for themselves — an account, a
+   * sign-up — where the label is a sentence they read at the body step
+   * and in ink.
    */
   .di-field-label {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    font-weight: var(--di-weight-medium);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--di-text-muted);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--di-label-color);
   }
 
   .di-field-label-prose {

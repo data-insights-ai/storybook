@@ -33,8 +33,8 @@ export function TextField({
   /** What that line is. `error` also marks the control invalid. */
   hintTone?: HintTone;
   /**
-   * Which track the label runs in. `record` is the console's mono
-   * micro-caps; `prose` is the body step in ink, for a form a person
+   * Which track the label runs in. `record` is the interface label
+   * style (`--di-label-*`); `prose` is the body step in ink, for a form a person
    * fills in for themselves.
    */
   labelTrack?: LabelTrack;

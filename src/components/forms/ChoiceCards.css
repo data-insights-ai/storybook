@@ -22,11 +22,12 @@
 
   .di-choicecards-group-label {
     margin-bottom: var(--di-space-8);
-    font-size: var(--di-font-size-200);
-    font-weight: var(--di-weight-medium);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--di-text-muted);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--di-label-color);
   }
 
   /* The grid fills the measure; a row's cards share its height. */

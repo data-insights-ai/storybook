@@ -26,8 +26,8 @@
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
     color: var(--di-text-muted);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
     cursor: pointer;
     transition:
       border-color var(--di-duration) var(--di-ease),

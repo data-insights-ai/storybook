@@ -24,6 +24,14 @@
        it rather than the eyebrow guessing which head it sits in. */
     --di-eyebrow-gap: var(--di-space-12);
 
+    /* One style for every interface label: a field, a stat, a legend, a
+       segment, a section's meta. Labels are prose a person reads, so they
+       run in the UI track; mono is for what a machine wrote. */
+    --di-label-family: var(--di-font-ui);
+    --di-label-size: var(--di-font-size-300);
+    --di-label-weight: var(--di-weight-medium);
+    --di-label-color: var(--di-text-muted);
+
     --di-field-bg: var(--di-bg-surface);
     --di-field-border: var(--di-border-input);
     --di-field-radius: var(--di-radius-micro);
