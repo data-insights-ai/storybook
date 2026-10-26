@@ -1,15 +1,15 @@
 @layer components {
+  /* One grid for every row, so all descriptions start on the same edge. */
   .di-shortcut-help {
     display: grid;
-    gap: var(--di-space-8);
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--di-space-8) var(--di-space-16);
     margin: 0;
   }
 
   .di-shortcut-help-row {
-    display: grid;
-    grid-template-columns: minmax(48px, max-content) minmax(0, 1fr);
-    align-items: baseline;
-    gap: var(--di-space-12);
+    display: contents;
   }
 
   .di-shortcut-help-row dt {
@@ -19,13 +19,6 @@
   }
 
   .di-shortcut-help-row dd {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--di-space-4) var(--di-space-8);
     margin: 0;
-  }
-
-  .di-shortcut-help-target {
-    color: var(--di-text-muted);
   }
 }
