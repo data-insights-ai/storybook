@@ -75,15 +75,16 @@ function FocusOnMount() {
   );
 }
 
-function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: string }) {
+function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: string; shortcut?: string }) {
+  const { shortcut, ...sheet } = args;
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button variant="secondary" onClick={() => setOpen(true)}>
+      <Button variant="secondary" shortcut={shortcut} onClick={() => setOpen(true)}>
         Edit watchlist
       </Button>
       {open ? (
-        <Sheet {...args} open onClose={() => setOpen(false)}>
+        <Sheet {...sheet} open onClose={() => setOpen(false)}>
           <FocusOnMount />
           <SheetFooter>
             <Button variant="secondary" onClick={() => setOpen(false)}>
@@ -95,6 +96,24 @@ function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: stri
     </>
   );
 }
+
+/** A sheet opened by its page key returns focus to the control the key pressed. */
+export const OpenedByShortcut: Story = {
+  render: (args) => (
+    <StrictMode>
+      <MountedWhileOpen {...args} shortcut="n" />
+    </StrictMode>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const opener = canvas.getByRole("button", { name: "Edit watchlist" });
+    (canvasElement.ownerDocument.activeElement as HTMLElement | null)?.blur();
+    await userEvent.keyboard("n");
+    await waitFor(() => expect(within(canvasElement.ownerDocument.body).getByRole("dialog")).toBeVisible());
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(opener).toHaveFocus());
+  },
+};
 
 /** A sheet the product removes on close still returns focus to its opener. */
 export const RemovedOnClose: Story = {

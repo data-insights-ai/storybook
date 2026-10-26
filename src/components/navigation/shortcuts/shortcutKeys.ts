@@ -30,7 +30,10 @@ function onKeyDown(event: KeyboardEvent) {
   if (!target) return;
   event.preventDefault();
   if (target instanceof HTMLInputElement) target.focus();
-  else target.click();
+  else {
+    target.focus({ preventScroll: true });
+    target.click();
+  }
 }
 
 let users = 0;
