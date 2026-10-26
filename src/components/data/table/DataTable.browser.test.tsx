@@ -73,3 +73,29 @@ test("the head reads in the interface's type, not as a shouted eyebrow", () => {
   expect(head.textTransform).toBe("none");
   expect(head.letterSpacing).toBe("normal");
 });
+
+test("a stacked row names its cells in the interface's type too", () => {
+  const host = document.createElement("div");
+  host.style.width = "360px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Events" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn>Event</TableColumn>
+          <TableColumn>Seen</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Published</TableCell>
+            <TableCell label="Seen">today</TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  const label = getComputedStyle(document.querySelector("td.is-labelled")!, "::before");
+  expect(label.content).toContain("Seen");
+  expect(label.textTransform).toBe("none");
+});

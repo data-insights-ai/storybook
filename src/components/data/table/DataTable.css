@@ -382,10 +382,9 @@
 
     .di-table-wrap.is-stackable td.is-labelled::before {
       content: attr(data-label) / "";
-      font-family: var(--di-font-code);
-      font-size: var(--di-font-size-200);
-      letter-spacing: var(--di-tracking-eyebrow);
-      text-transform: uppercase;
+      font-family: var(--di-font-ui);
+      font-size: var(--di-font-size-300);
+      font-weight: var(--di-weight-semibold);
       color: var(--di-text-muted);
       white-space: normal;
     }
