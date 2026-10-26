@@ -34,11 +34,10 @@
     align-items: center;
     gap: var(--di-space-8);
     margin-bottom: var(--di-space-8);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--di-text-muted);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    color: var(--di-label-color);
   }
 
   .di-channel-title {
@@ -70,10 +69,9 @@
     flex-wrap: wrap;
     gap: var(--di-space-8) var(--di-space-16);
     margin-top: var(--di-space-8);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--di-text-muted);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    color: var(--di-label-color);
   }
 }

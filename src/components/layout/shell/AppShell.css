@@ -177,13 +177,17 @@
 
   .di-brand-product,
   .di-instance,
-  .di-nav-label,
   .di-nav-code,
-  .di-sidebar-foot,
-  .di-operator-role {
+  .di-sidebar-foot {
     font-family: var(--di-font-code);
     letter-spacing: 0.12em;
     text-transform: uppercase;
+  }
+
+  .di-nav-label,
+  .di-operator-role {
+    font-family: var(--di-label-family);
+    font-weight: var(--di-label-weight);
   }
 
   .di-brand-product,

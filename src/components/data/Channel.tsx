@@ -30,7 +30,7 @@ export function ChannelValue({ children }: { children: ReactNode }) {
   return <div className="di-channel-value">{children}</div>;
 }
 
-/** The terms behind the value, in the mono track. */
+/** The terms behind the value; their labels in the interface label style. */
 export function ChannelSpecs({ children }: { children: ReactNode }) {
   return <div className="di-channel-specs">{children}</div>;
 }

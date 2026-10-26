@@ -21,10 +21,9 @@
   }
 
   .di-explain-title {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
     color: var(--di-ai-ink);
   }
 
@@ -57,11 +56,10 @@
   .di-explain-label {
     width: 104px;
     flex: none;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--di-text-subtle);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    color: var(--di-label-color);
   }
 
   .di-explain-value {
