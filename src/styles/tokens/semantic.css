@@ -309,4 +309,18 @@
     --di-badge-seal-bg: #4a3d1c;
     --di-badge-seal-fg: #f0d48a;
   }
+
+  /*
+   * An app that follows the device writes `data-theme="auto"` on its root in
+   * the page itself; `ThemeProvider` replaces it with the resolved sheet
+   * before it draws anything. Until then only the page ground shows, and it
+   * follows the device, so a dark one does not flash paper while the
+   * script loads.
+   */
+  @media (prefers-color-scheme: dark) {
+    :root[data-theme="auto"] {
+      color-scheme: dark;
+      --di-bg-page: var(--di-night-950);
+    }
+  }
 }
