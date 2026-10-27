@@ -121,7 +121,11 @@ jobs:
           pwd
           cls -1 storybook.data-insights.ai/public
           set cmd:fail-exit yes
-          # Hashed asset names change only with their content, so size is enough to skip unchanged files.
+          # Hashed asset names change only with their content, so size is enough to skip those. The
+          # unhashed entry files (html, json) can keep their size while their references change, so
+          # they are always replaced; old assets are deleted only after the new entries are in place.
+          mirror --reverse --verbose --parallel=8 --ignore-time --exclude-glob .htaccess --exclude-glob .well-known/ --exclude-glob *.html --exclude-glob *.json dist/storybook storybook.data-insights.ai/public
+          mirror --reverse --verbose --parallel=8 --include-glob *.html --include-glob *.json dist/storybook storybook.data-insights.ai/public
           mirror --reverse --verbose --parallel=8 --ignore-time --delete --exclude-glob .htaccess --exclude-glob .well-known/ dist/storybook storybook.data-insights.ai/public
           bye
           EOF
