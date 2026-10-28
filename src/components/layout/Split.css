@@ -26,7 +26,7 @@
 
   @media (min-width: 1024px) {
     .di-split:not(.is-preview) {
-      grid-template-columns: minmax(0, 1fr) 320px;
+      grid-template-columns: minmax(0, 1fr) var(--di-rail-width);
     }
 
     .di-split.is-aside-first:not(.is-preview) .di-split-aside {

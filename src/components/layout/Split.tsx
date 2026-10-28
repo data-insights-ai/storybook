@@ -20,7 +20,7 @@ export function Split({
   children,
 }: {
   asideFirst?: boolean;
-  /** `rail`: a 320px aside from 1024px. `preview`: a wide aside from 1280px. */
+  /** `rail`: an aside at `--di-rail-width` from 1024px. `preview`: a wide aside from 1280px. */
   variant?: "rail" | "preview";
   className?: string;
   /** One `SplitMain` and one `SplitAside`. */

@@ -33,6 +33,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
       <Rule>The toolbar and the table head stay in view while the list scrolls.</Rule>
       <Rule>Entries pushed in realtime appear in place in a sorted list; in a newest-first list they wait behind the `n new` notice while the reader is further down.</Rule>
       <Rule>The first load is a skeleton, not a spinner. An empty result names why and offers one way out: clear the filters, or create the first entry.</Rule>
+      <Rule>A row's detail and a create or edit form open in a `Sheet`. Where the page has its side column an `md` sheet docks there and the list keeps working beside it; narrower, and always at `lg` and `xl`, the sheet covers the page. A confirmation stays a `Modal` or `ConfirmDialog`.</Rule>
     </Rules>
     <Columns>
       <Lines title="Do" items={["The create form opens in a Sheet or its own page from the header action.", "Filters are selects whose first option names them: All roles.", "One EmptyState, no eyebrow, an icon and the one action."]} />
@@ -75,7 +76,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
     lede="A page is as wide as what it holds. Spacing between blocks belongs to the page, never to the block."
   >
     <Rules>
-      <Rule>Width: lists and tables use the frame (`list`, up to 1440px); a record with sections `--di-measure-detail` (1040px); a form `--di-measure-form` (720px); prose `--di-measure-prose` (62ch).</Rule>
+      <Rule>Width: a list (`list`), a record or settings (`detail`) share one frame: from a page width of 1280px the content takes all but a side column at `--di-rail-width` (320px) on the right, which holds the record's `PageAside` or the list's open row and otherwise stays empty; narrower the content takes the whole width. An overview or dashboard is `full`, the whole frame. A create flow is `form`, `--di-measure-form` (720px). Prose stays at `--di-measure-prose` (62ch).</Rule>
       <Rule>Rhythm: header to content `--di-rhythm-header` (24), toolbar to its list `--di-rhythm-toolbar` (12), section to section `--di-rhythm-section` (32), field to field `--di-rhythm-field` (16). `Page` applies them.</Rule>
       <Rule>Fields by content: text, an email or a URL spans the form column; a select is as wide as its options; a number is short (`FieldStack`). On one line, the first field grows and the button sits on the control row (`InlineForm`).</Rule>
       <Rule>Headings: one `h1` per page. Section titles only where there are several sections. No eyebrow repeated inside cards, empty states or dialogs on a page that already has one.</Rule>

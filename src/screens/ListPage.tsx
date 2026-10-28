@@ -13,10 +13,10 @@ import { InfiniteTable, type InfiniteRowPlace } from "../components/data/table/I
 import { ListToolbar, ListToolbarEnd } from "../components/data/table/ListToolbar";
 import { Menu, MenuItem } from "../components/navigation/Menu";
 import { Page } from "../components/layout/Page";
+import { Sheet } from "../components/overlays/Sheet";
 import { RowActions } from "../components/actions/RowActions";
 import { SearchField } from "../components/forms/SearchField";
 import { Select } from "../components/forms/Select";
-import { Sheet } from "../components/overlays/Sheet";
 import { StatusPill } from "../components/data/marks/StatusPill";
 import { TextLink } from "../components/navigation/TextLink";
 import { useShortcut } from "../components/navigation/shortcuts/useShortcut";
@@ -41,10 +41,20 @@ const members: Member[] = [
   seat: seat as boolean,
 }));
 
-function MemberRow({ member, place, onOpen }: { member: Member; place: InfiniteRowPlace; onOpen: () => void }) {
+function MemberRow({
+  member,
+  place,
+  active,
+  onOpen,
+}: {
+  member: Member;
+  place: InfiniteRowPlace;
+  active: boolean;
+  onOpen: () => void;
+}) {
   const [menu, setMenu] = useState(false);
   return (
-    <TableRow rowIndex={place.rowIndex} ref={place.ref} onSelect={onOpen}>
+    <TableRow rowIndex={place.rowIndex} ref={place.ref} active={active} onSelect={onOpen}>
       <TableCell>
         <TextLink onClick={onOpen}>{member.name}</TextLink>
       </TableCell>
@@ -74,7 +84,7 @@ function MemberRow({ member, place, onOpen }: { member: Member; place: InfiniteR
   );
 }
 
-/** A list page: header with the primary action, a sticky toolbar, the list, the record in a sheet. */
+/** A list page: header with the primary action, a sticky toolbar, the list, the open record in a sheet beside it. */
 export function ListPageScreen() {
   const search = useRef<HTMLInputElement>(null);
   const [q, setQ] = useState("");
@@ -144,7 +154,15 @@ export function ListPageScreen() {
             loadingLabel="Loading more members"
             footerLabel={(n) => `All ${n} shown`}
             newEntriesLabel={(n) => `${n} new members`}
-            renderRow={(i, place) => <MemberRow key={place.key} member={shown[i]} place={place} onOpen={() => setOpen(shown[i])} />}
+            renderRow={(i, place) => (
+              <MemberRow
+                key={place.key}
+                member={shown[i]}
+                place={place}
+                active={open?.id === shown[i].id}
+                onOpen={() => setOpen(shown[i])}
+              />
+            )}
           >
             <TableHead>
               <TableColumn width="fill">Name</TableColumn>
@@ -155,35 +173,35 @@ export function ListPageScreen() {
             </TableHead>
           </InfiniteTable>
         )}
+        <Sheet
+          open={open !== undefined}
+          onClose={() => (setOpen(undefined), setEditing(false))}
+          title={open?.name ?? ""}
+          lede={open?.email}
+          closeLabel="Close"
+        >
+          <DetailSection title="Role" editLabel="Change role" editing={editing} onEdit={() => setEditing(true)}>
+            <FactList layout="columns">
+              <Fact label="Role">{open?.role}</Fact>
+              <Fact label="Seat">{open?.seat ? "Assigned" : "None"}</Fact>
+            </FactList>
+            <DetailSectionForm saveLabel="Save" cancelLabel="Cancel" onSubmit={() => setEditing(false)} onCancel={() => setEditing(false)}>
+              <Select id="screen-member-role" label="Role" mono={false} defaultValue={open?.role}>
+                <option>Owner</option>
+                <option>Administrator</option>
+                <option>Member</option>
+              </Select>
+            </DetailSectionForm>
+          </DetailSection>
+          <DangerZone title="Danger zone">
+            <DangerAction title="Remove from organization" body="They lose access to the organization and its products at once.">
+              <Button variant="danger" onClick={() => setConfirm(true)}>
+                Remove
+              </Button>
+            </DangerAction>
+          </DangerZone>
+        </Sheet>
       </Page>
-      <Sheet
-        open={open !== undefined}
-        onClose={() => (setOpen(undefined), setEditing(false))}
-        title={open?.name ?? ""}
-        lede={open?.email}
-        closeLabel="Close"
-      >
-        <DetailSection title="Role" editLabel="Change role" editing={editing} onEdit={() => setEditing(true)}>
-          <FactList layout="columns">
-            <Fact label="Role">{open?.role}</Fact>
-            <Fact label="Seat">{open?.seat ? "Assigned" : "None"}</Fact>
-          </FactList>
-          <DetailSectionForm saveLabel="Save" cancelLabel="Cancel" onSubmit={() => setEditing(false)} onCancel={() => setEditing(false)}>
-            <Select id="screen-member-role" label="Role" mono={false} defaultValue={open?.role}>
-              <option>Owner</option>
-              <option>Administrator</option>
-              <option>Member</option>
-            </Select>
-          </DetailSectionForm>
-        </DetailSection>
-        <DangerZone title="Danger zone">
-          <DangerAction title="Remove from organization" body="They lose access to the organization and its products at once.">
-            <Button variant="danger" onClick={() => setConfirm(true)}>
-              Remove
-            </Button>
-          </DangerAction>
-        </DangerZone>
-      </Sheet>
       <ConfirmDialog
         open={confirm}
         title={`Remove ${open?.name ?? ""}?`}

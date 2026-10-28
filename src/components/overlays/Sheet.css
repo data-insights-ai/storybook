@@ -156,4 +156,60 @@
       padding-inline: var(--di-space-16);
     }
   }
+
+  /* Docked in a page's side column: a panel beside the content, no shadow,
+     no scrim; it arrives in place and the page stays as it was. */
+  .di-sheet-docked {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    opacity: 1;
+    transition: opacity var(--di-duration-slow) var(--di-ease);
+  }
+
+  @starting-style {
+    .di-sheet-docked {
+      opacity: 0;
+    }
+  }
+
+  .di-sheet-docked > .di-sheet-frame {
+    flex: 0 1 auto;
+    height: auto;
+    min-height: 0;
+  }
+
+  .di-sheet-docked .di-sheet-head {
+    padding: var(--di-space-12) var(--di-space-8) var(--di-space-12) var(--di-space-16);
+  }
+
+  .di-sheet-docked .di-sheet-title {
+    font-size: var(--di-font-size-500);
+  }
+
+  .di-sheet-docked .di-sheet-close {
+    width: 28px;
+    height: 28px;
+  }
+
+  .di-sheet-docked .di-sheet-close > svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .di-sheet-docked .di-sheet-body {
+    flex: 0 1 auto;
+    padding: var(--di-space-16);
+  }
+
+  .di-sheet-docked .di-sheet-footer {
+    padding: var(--di-space-12) var(--di-space-16);
+    border-bottom-left-radius: var(--di-radius-surface);
+    border-bottom-right-radius: var(--di-radius-surface);
+  }
 }

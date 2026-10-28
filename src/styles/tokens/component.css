@@ -68,14 +68,9 @@
     --di-pill-radius: var(--di-radius-pill);
     --di-pill-height: 20px;
 
-    /* Page layout. How wide a page reads, by what it holds: a form is read
-       down one column, a record with its sections a little wider, a list or
-       table uses the whole frame. */
+    /* Page layout. A form is read down one column; a list, a record or
+       settings take the frame beside the side column (`Page`). */
     --di-measure-form: 720px;
-    --di-measure-detail: 1040px;
-    /* A list of a few columns (seven or fewer) stops here; more columns use
-       the whole frame. */
-    --di-measure-list: 1440px;
     --di-measure-prose: 62ch;
 
     /* The vertical rhythm of a console page: from the header to what
@@ -86,11 +81,14 @@
     --di-rhythm-section: var(--di-space-32);
     --di-rhythm-field: var(--di-space-16);
 
-    /* The frame around a page, a chart's plot height and a page's side
-       panel. They grow on large screens (below). */
+    /* The frame around a page and a chart's plot height. They grow on large
+       screens (below). */
     --di-content-pad: var(--di-space-24);
     --di-chart-height: 240px;
-    --di-aside-width: 360px;
+    /* A page's side column: triage beside a case, what accompanies a
+       record, a list's open row. It keeps its width on every screen: what
+       grows is the content beside it. */
+    --di-rail-width: 320px;
 
     /* Where a sticky toolbar or table head stops: under the app bar. */
     --di-sticky-top: 59px;
@@ -99,30 +97,24 @@
   /*
    * Large screens. The breakpoints are 1920px (wide) and 2560px (ultra);
    * media queries cannot read custom properties, so every rule that depends
-   * on them writes the number. Lists and dashboards follow the window
-   * (AppShellContent); what grows here is what must not stretch: the
-   * measure of a record or form, the frame, a chart's height and the side
-   * panel beside a record.
+   * on them writes the number. Pages follow the window (AppShellContent);
+   * what grows here is the measure of a form, the frame and a chart's
+   * height.
    */
   @media (min-width: 1920px) {
     :root,
     [data-theme] {
       --di-measure-form: 800px;
-      --di-measure-detail: 1200px;
       --di-content-pad: var(--di-space-32);
       --di-chart-height: 300px;
-      --di-aside-width: 400px;
     }
   }
 
   @media (min-width: 2560px) {
     :root,
     [data-theme] {
-      --di-measure-detail: 1360px;
-      --di-measure-list: 1600px;
       --di-content-pad: var(--di-space-48);
       --di-chart-height: 360px;
-      --di-aside-width: 440px;
     }
   }
 }
