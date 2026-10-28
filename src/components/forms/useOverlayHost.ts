@@ -1,0 +1,28 @@
+import { useLayoutEffect, useState, type RefObject } from "react";
+
+type OverlayHost = { theme?: string; container?: HTMLElement };
+
+// Portals must retain a nested theme and stay inside a native modal's inert
+// boundary. This bridges presentation only; React Aria still owns the popup.
+export function useOverlayHost(root: RefObject<HTMLElement | null>, open: boolean) {
+  const [host, setHost] = useState<OverlayHost>({});
+  const update = () => {
+    const element = root.current;
+    if (!element) return;
+    const theme = element.closest<HTMLElement>("[data-theme]")?.dataset.theme;
+    const container = element.closest("dialog") ?? undefined;
+    setHost((old) => (old.theme === theme && old.container === container ? old : { theme, container }));
+  };
+  useLayoutEffect(() => {
+    if (!open || !root.current) return;
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(root.current.ownerDocument.documentElement, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ["data-theme"],
+    });
+    return () => observer.disconnect();
+  }, [open]);
+  return { host, update };
+}

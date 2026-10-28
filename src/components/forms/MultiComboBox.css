@@ -1,0 +1,64 @@
+@layer components {
+  .di-multicombo-control {
+    position: relative;
+    padding-right: var(--di-h-ctl);
+  }
+
+  /* The input takes what the entries leave on their line, and only wraps
+     when even a few characters no longer fit beside them. */
+  .di-multicombo-control .di-token-input {
+    flex: 1 1 var(--di-space-32);
+    min-width: var(--di-space-32);
+  }
+
+  /* Disabled, the entries keep their contrast; the ground says the field is off. */
+  .di-multicombo-control.is-disabled {
+    opacity: 1;
+    background: var(--di-bg-disabled);
+    cursor: not-allowed;
+  }
+
+  .di-multicombo-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: var(--di-h-ctl);
+    padding: 0;
+    border: 0;
+    border-radius: var(--di-radius-control);
+    background: transparent;
+    color: var(--di-text-muted);
+  }
+
+  .di-multicombo-toggle > svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .di-multicombo-toggle[data-disabled] {
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .di-multicombo-option {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--di-space-8);
+  }
+
+  .di-multicombo-check {
+    display: inline-flex;
+    flex: none;
+    width: 16px;
+    height: 16px;
+    color: var(--di-text);
+  }
+
+  .di-multicombo-check > svg {
+    width: 16px;
+    height: 16px;
+  }
+}

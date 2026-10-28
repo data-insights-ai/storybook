@@ -36,6 +36,8 @@ export { Chip } from "./components/data/marks/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/navigation/CommandBar";
 export { ComboBox } from "./components/forms/ComboBox";
 export type { ComboBoxSuggestion } from "./components/forms/ComboBox";
+export { MultiComboBox } from "./components/forms/MultiComboBox";
+export type { MultiComboBoxOption } from "./components/forms/MultiComboBox";
 export { DateRangePicker, defaultDateRangeLabels } from "./components/forms/dates/DateRangePicker";
 export type { DateRangeLabels } from "./components/forms/dates/DateRangePicker";
 export {

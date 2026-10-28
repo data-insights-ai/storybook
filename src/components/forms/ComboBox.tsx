@@ -9,6 +9,7 @@ import { Popover } from "react-aria-components/Popover";
 import { cx } from "../../cx";
 import type { LabelTrack } from "./Field";
 import { FieldHint, type HintTone } from "./FieldHint";
+import { useOverlayHost } from "./useOverlayHost";
 import "./Field.css";
 import "./ComboBox.css";
 
@@ -64,24 +65,7 @@ export function ComboBox({
   const byValue = new Map(suggestions.map((item) => [item.value, item]));
   const root = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const [overlay, setOverlay] = useState<{ theme?: string; container?: HTMLElement }>({});
-  function updateOverlay() {
-    const element = root.current;
-    if (!element) return;
-    const theme = element.closest<HTMLElement>("[data-theme]")?.dataset.theme;
-    const container = element.closest("dialog") ?? undefined;
-    setOverlay((old) => old.theme === theme && old.container === container ? old : { theme, container });
-  }
-  // Portals must retain a nested theme and stay inside a native modal's inert
-  // boundary. This bridges presentation only; React Aria still owns the popup.
-  useLayoutEffect(() => {
-    if (!open || !root.current) return;
-    const element = root.current;
-    updateOverlay();
-    const observer = new MutationObserver(updateOverlay);
-    observer.observe(element.ownerDocument.documentElement, { attributes: true, subtree: true, attributeFilter: ["data-theme"] });
-    return () => observer.disconnect();
-  }, [open]);
+  const { host: overlay, update: updateOverlay } = useOverlayHost(root, open);
   const invalid = hint !== "" && hintTone === "error";
   return <AriaComboBox ref={root} id={id} className={cx("di-field", "di-combobox", className)}
     inputValue={value} value={byValue.has(value) ? value : null} defaultItems={suggestions}
