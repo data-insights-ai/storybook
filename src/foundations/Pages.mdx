@@ -62,10 +62,11 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
   <Section
     eyebrow="Create flow"
     title="Choose, fill in, review, create."
-    lede="`CreateFlow` with a `Stepper`: the type as `ChoiceCards`, then the details, then a review of what will be created. On its own page at `width='form'`, or in a `Sheet` when it is short."
+    lede="`CreateFlow` with a `Stepper`: the type as `ChoiceCards`, then the details, then a review of what will be created. On its own page (`Page width='detail'`, `CreateFlow width='page'`) or in a `Sheet` when it is short."
   >
     <Rules>
       <Rule>Enter moves on, Back keeps what was entered, Next stays disabled until the step is complete.</Rule>
+      <Rule>On a page the steps run in one line from the content's left edge, each name beside its number, and the step is a panel like a record's section: its title, one lede, its body, the actions as its footer. The type's cards, a grid or a preview beside the fields use the panel's width; a lone field, a switch and a list of terms keep the form measure.</Rule>
       <Rule>After creating, land on the new record's detail page, with a toast.</Rule>
     </Rules>
   </Section>
@@ -76,7 +77,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
     lede="A page is as wide as what it holds. Spacing between blocks belongs to the page, never to the block."
   >
     <Rules>
-      <Rule>Width: a list (`list`), a record or settings (`detail`) share one frame: from a page width of 1280px the content takes all but a side column at `--di-rail-width` (320px) on the right, which holds the record's `PageAside` or the list's open row and otherwise stays empty; narrower the content takes the whole width. An overview or dashboard is `full`, the whole frame. A create flow is `form`, `--di-measure-form` (720px). Prose stays at `--di-measure-prose` (62ch).</Rule>
+      <Rule>Width: a list (`list`), a record or settings (`detail`) share one frame: from a page width of 1280px the content takes all but a side column at `--di-rail-width` (320px) on the right, which holds the record's `PageAside` or the list's open row and otherwise stays empty; narrower the content takes the whole width. An overview or dashboard is `full`, the whole frame. A create flow on its own page is `detail` too, its step a panel in the content; `form`, `--di-measure-form` (720px), is a single column of fields. Prose stays at `--di-measure-prose` (62ch).</Rule>
       <Rule>Rhythm: header to content `--di-rhythm-header` (24), toolbar to its list `--di-rhythm-toolbar` (12), section to section `--di-rhythm-section` (32), field to field `--di-rhythm-field` (16). `Page` applies them.</Rule>
       <Rule>Fields by content: text, an email or a URL spans the form column; a select is as wide as its options; a number is short (`FieldStack`). On one line, the first field grows and the button sits on the control row (`InlineForm`).</Rule>
       <Rule>Headings: one `h1` per page. Section titles only where there are several sections. No eyebrow repeated inside cards, empty states or dialogs on a page that already has one.</Rule>

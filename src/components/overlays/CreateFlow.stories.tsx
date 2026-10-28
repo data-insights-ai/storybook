@@ -5,8 +5,10 @@ import { ChoiceCards } from "../forms/ChoiceCards";
 import { CreateFlow } from "./CreateFlow";
 import { Fact, FactList } from "../data/FactList";
 import { TextField } from "../forms/TextField";
+import { Page } from "../layout/Page";
 
 const steps = ["Choose a type", "Details", "Review"];
+const ledes = ["", "How the platform reaches your identity provider.", "The connection is active once it is created."];
 const kinds = [
   { value: "oidc", label: "OpenID Connect", description: "Any identity provider that speaks OIDC." },
   { value: "saml", label: "SAML 2.0", description: "A provider that signs SAML assertions." },
@@ -50,6 +52,7 @@ function Flow(args: Parameters<typeof CreateFlow>[0]) {
     <CreateFlow
       {...args}
       step={step}
+      lede={args.width === "page" ? ledes[step] : undefined}
       canAdvance={step !== 1 || name.trim() !== ""}
       onBack={() => setStep((s) => s - 1)}
       onNext={() => setStep((s) => s + 1)}
@@ -84,4 +87,17 @@ export const NewConnection: Story = {
     await userEvent.click(canvas.getByRole("button", { name: "Create connection" }));
     await expect(canvas.getByText("Created Head office.")).toBeVisible();
   },
+};
+
+/** On its own page (`width="page"`): the step is a panel with its lede, and the cards use the page's width. */
+export const OnAPage: Story = {
+  args: { width: "page" },
+  parameters: { layout: "fullscreen" },
+  render: (args) => (
+    <div style={{ padding: 32 }}>
+      <Page width="detail">
+        <Flow {...args} />
+      </Page>
+    </div>
+  ),
 };

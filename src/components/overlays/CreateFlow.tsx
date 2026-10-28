@@ -16,7 +16,14 @@ import "./CreateFlow.css";
  * The stepper spans the flow, a completed step is pressed to return to it
  * (`onBack` once per step), and the actions sit in a footer that stays in
  * view: Back and Cancel at the left, the one action that moves on at the
- * right. It sits on a page (`width="page"`) or in a `Sheet`.
+ * right.
+ *
+ * It sits in a `Sheet` (`width="form"`) or on a page (`width="page"`).
+ * On a page the steps run in one line from the left edge, and the step is
+ * a panel, like a section of a record: its title and
+ * lede, its body, the actions as its footer. A single field, a switch and
+ * prose keep the form measure there; cards, a grid, a split or a table take
+ * the panel's width, so a type's cards use a large screen.
  */
 export function CreateFlow({
   label,
@@ -30,6 +37,7 @@ export function CreateFlow({
   canAdvance = true,
   busy = false,
   error = "",
+  lede = "",
   width = "form",
   onBack,
   onNext,
@@ -53,7 +61,9 @@ export function CreateFlow({
   canAdvance?: boolean;
   busy?: boolean;
   error?: string;
-  /** `form` keeps the flow at the form measure; `page` lets it fill the page it sits on. */
+  /** One line under the current step's title: what this step decides. */
+  lede?: string;
+  /** `form` keeps the flow at the form measure; `page` sets the step on a panel that fills the page. */
   width?: "form" | "page";
   onBack: () => void;
   onNext: () => void;
@@ -93,39 +103,45 @@ export function CreateFlow({
         label={label}
         stateLabels={stateLabels}
         onStep={goTo}
+        layout={width === "page" ? "inline" : "spread"}
         steps={steps.map((title, i) => ({
           label: title,
           state: i < step ? "done" : i === step ? "current" : "upcoming",
         }))}
       />
-      <div className="di-create-flow-step">
-        <h2 className="di-create-flow-title" id={headingId} ref={heading} tabIndex={-1}>
-          {steps[step]}
-        </h2>
-        <div className="di-field-stack" ref={fields}>
-          {children}
+      <div className="di-create-flow-panel">
+        <div className="di-create-flow-step">
+          <div className="di-create-flow-head">
+            <h2 className="di-create-flow-title" id={headingId} ref={heading} tabIndex={-1}>
+              {steps[step]}
+            </h2>
+            {lede ? <p className="di-create-flow-lede">{lede}</p> : null}
+          </div>
+          <div className="di-field-stack" ref={fields}>
+            {children}
+          </div>
         </div>
-      </div>
-      {error ? (
-        <p className="di-create-flow-error" role="alert">
-          {error}
-        </p>
-      ) : null}
-      <div className="di-create-flow-actions">
-        {step > 0 ? (
-          <Button variant="secondary" onClick={onBack} disabled={busy}>
-            {backLabel}
-          </Button>
+        {error ? (
+          <p className="di-create-flow-error" role="alert">
+            {error}
+          </p>
         ) : null}
-        {cancelLabel !== "" && onCancel ? (
-          <Button variant="ghost" onClick={onCancel} disabled={busy}>
-            {cancelLabel}
+        <div className="di-create-flow-actions">
+          {step > 0 ? (
+            <Button variant="secondary" onClick={onBack} disabled={busy}>
+              {backLabel}
+            </Button>
+          ) : null}
+          {cancelLabel !== "" && onCancel ? (
+            <Button variant="ghost" onClick={onCancel} disabled={busy}>
+              {cancelLabel}
+            </Button>
+          ) : null}
+          <span className="di-create-flow-spacer" />
+          <Button type="submit" loading={busy} disabled={!canAdvance}>
+            {last ? submitLabel : nextLabel}
           </Button>
-        ) : null}
-        <span className="di-create-flow-spacer" />
-        <Button type="submit" loading={busy} disabled={!canAdvance}>
-          {last ? submitLabel : nextLabel}
-        </Button>
+        </div>
       </div>
     </form>
   );

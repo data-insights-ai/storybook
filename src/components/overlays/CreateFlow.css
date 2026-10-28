@@ -12,6 +12,13 @@
     max-width: none;
   }
 
+  .di-create-flow-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-24);
+    min-width: 0;
+  }
+
   .di-create-flow-step {
     display: flex;
     flex-direction: column;
@@ -29,6 +36,14 @@
 
   .di-create-flow-title:focus {
     outline: none;
+  }
+
+  .di-create-flow-lede {
+    max-width: var(--di-measure-prose);
+    margin-top: var(--di-space-4);
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
   }
 
   .di-create-flow-error {
@@ -52,5 +67,54 @@
 
   .di-create-flow-spacer {
     flex: 1;
+  }
+
+  /* On a page the step is a panel, as a record's sections are, and its
+     actions are the panel's footer. */
+  .di-create-flow[data-width="page"] .di-create-flow-panel {
+    gap: 0;
+    border: 1px solid var(--di-panel-border);
+    border-radius: var(--di-panel-radius);
+    background: var(--di-panel-bg);
+  }
+
+  .di-create-flow[data-width="page"] .di-create-flow-step {
+    padding: var(--di-space-16);
+  }
+
+  .di-create-flow[data-width="page"] .di-create-flow-error {
+    padding: 0 var(--di-space-16) var(--di-space-12);
+  }
+
+  .di-create-flow[data-width="page"] .di-create-flow-actions {
+    padding: var(--di-space-12) var(--di-space-16);
+    border-radius: 0 0 var(--di-panel-radius) var(--di-panel-radius);
+    background: var(--di-panel-bg);
+  }
+
+  /* Cards, a grid or a split use the panel's width; a lone field, prose, a
+     switch and a list of terms stay at the measure a person reads a form at,
+     so a switch or a value never drifts to the far edge. */
+  .di-create-flow[data-width="page"] .di-field-stack {
+    max-width: none;
+  }
+
+  .di-create-flow[data-width="page"] .di-field-stack > :is(.di-field, p),
+  .di-create-flow[data-width="page"] .di-field-stack :is(.di-switch-row, .di-kv) {
+    max-width: var(--di-measure-form);
+  }
+
+  @media (max-width: 600px) {
+    .di-create-flow[data-width="page"] .di-create-flow-step {
+      padding: var(--di-space-12);
+    }
+
+    .di-create-flow[data-width="page"] .di-create-flow-error {
+      padding: 0 var(--di-space-12) var(--di-space-12);
+    }
+
+    .di-create-flow[data-width="page"] .di-create-flow-actions {
+      padding: var(--di-space-12);
+    }
   }
 }

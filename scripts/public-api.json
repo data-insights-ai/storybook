@@ -491,6 +491,8 @@
     "di-create-flow",
     "di-create-flow-actions",
     "di-create-flow-error",
+    "di-create-flow-lede",
+    "di-create-flow-panel",
     "di-create-flow-spacer",
     "di-create-flow-step",
     "di-create-flow-title",

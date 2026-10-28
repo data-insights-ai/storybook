@@ -10,6 +10,9 @@ import { Sheet } from "../overlays/Sheet";
 import { Page, PageAside } from "./Page";
 import { PageHeader, PageHeaderTitle } from "./Heading";
 import { Grid } from "./Layout";
+import { CreateFlow } from "../overlays/CreateFlow";
+import { ChoiceCards } from "../forms/ChoiceCards";
+import { TextField } from "../forms/TextField";
 
 let root: Root | undefined;
 
@@ -220,6 +223,42 @@ describe("large screens", () => {
       </AppShellContent>,
     );
     expect(box(host.querySelector(".section")).width).toBe(2560 - 96);
+  });
+
+  test("at 1920px a create flow's step is a panel whose cards fill it, while a lone field keeps the form measure", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(
+      <AppShellContent>
+        <Page width="detail">
+          <CreateFlow
+            label="Steps"
+            steps={["Type", "Details"]}
+            step={0}
+            stateLabels={{ done: "done", current: "current", upcoming: "upcoming" }}
+            backLabel="Back"
+            nextLabel="Next"
+            submitLabel="Create"
+            width="page"
+            onBack={() => {}}
+            onNext={() => {}}
+            onSubmit={() => {}}
+          >
+            <ChoiceCards
+              name="kind"
+              legend="Type"
+              options={["a", "b", "c", "d", "e", "f"].map((v) => ({ value: v, label: v }))}
+              value="a"
+              onChange={() => {}}
+            />
+            <TextField id="flow-name" label="Name" value="" onChange={() => {}} />
+          </CreateFlow>
+        </Page>
+      </AppShellContent>,
+    );
+    const panel = box(host.querySelector(".di-create-flow-panel"));
+    expect(Math.round(panel.width)).toBe(1920 - 64 - 320 - 24);
+    expect(new Set([...host.querySelectorAll(".di-choicecard")].map((c) => Math.round(box(c).top))).size).toBe(2);
+    expect(box(host.querySelector(".di-field")).width).toBeLessThanOrEqual(800);
   });
 
   test("at 2560px a chart is taller than at 1440px", async () => {

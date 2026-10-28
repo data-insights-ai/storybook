@@ -106,6 +106,56 @@
     font-weight: var(--di-weight-medium);
   }
 
+  /* Inline: the steps start at the content's edge, each name on one line
+     beside its bullet, joined by a short line that gives way first. */
+  .di-stepper[data-layout="inline"] {
+    display: flex;
+    align-items: center;
+    container-type: inline-size;
+  }
+
+  .di-stepper[data-layout="inline"] .di-step {
+    flex: none;
+    align-items: center;
+  }
+
+  .di-stepper[data-layout="inline"] .di-step:not(:first-child) {
+    flex: 0 1 auto;
+  }
+
+  .di-stepper[data-layout="inline"] .di-step:not(:first-child)::before {
+    position: static;
+    flex: 0 1 auto;
+    width: var(--di-space-32);
+    min-width: var(--di-space-16);
+    margin: 0 var(--di-space-8);
+  }
+
+  .di-stepper[data-layout="inline"] .di-step-button {
+    flex: none;
+    flex-direction: row;
+    gap: var(--di-space-8);
+    max-width: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  .di-stepper[data-layout="inline"] .di-step-label {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  /* Too narrow for every name on one line: the others are their numbers. */
+  @container (max-width: 800px) {
+    .di-stepper[data-layout="inline"] .di-step:not([aria-current]) .di-step-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+  }
+
   /* On a phone only the current step keeps its name; the others are their numbers. */
   @media (max-width: 600px) {
     .di-step:not([aria-current]) .di-step-label {

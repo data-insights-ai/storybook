@@ -105,3 +105,17 @@ export const ConnectorsClearTheCircles: StoryObj<typeof meta> = {
     }
   },
 };
+
+/** Inline: one line from the left edge, each name beside its bullet, for a wide page. */
+export const Inline: StoryObj<typeof meta> = {
+  args: { layout: "inline" },
+  play: async ({ canvasElement }) => {
+    const list = canvasElement.querySelector<HTMLElement>(".di-stepper")!.getBoundingClientRect();
+    const bullets = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-step-bullet")).map((b) =>
+      b.getBoundingClientRect(),
+    );
+    await expect(Math.round(bullets[0].left)).toBe(Math.round(list.left));
+    for (const bullet of bullets) await expect(Math.round(bullet.top)).toBe(Math.round(bullets[0].top));
+    await expect(bullets[bullets.length - 1].left - bullets[0].left).toBeLessThan(600);
+  },
+};

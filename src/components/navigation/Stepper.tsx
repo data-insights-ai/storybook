@@ -3,8 +3,10 @@ import "./Stepper.css";
 
 /**
  * A bounded process, and only that. A stepper never stands in for the
- * rail or the breadcrumb. It spans the width of what it heads, the steps
- * spread evenly, each a numbered bullet with its name beneath. The state
+ * rail or the breadcrumb. `spread` spans the width of what it heads, the
+ * steps spread evenly, each a numbered bullet with its name beneath.
+ * `inline` sets the steps in one line from the left edge, each name beside
+ * its bullet, for a page wide enough that spread steps would drift apart. The state
  * is a word for a screen reader, not only a filled bullet. With `onStep`
  * a completed step is a button that returns to it.
  */
@@ -13,6 +15,7 @@ export function Stepper({
   steps,
   stateLabels,
   onStep,
+  layout = "spread",
   className,
 }: {
   label: string;
@@ -21,10 +24,11 @@ export function Stepper({
   stateLabels: { done: string; current: string; upcoming: string };
   /** Called with a completed step's index when it is pressed. */
   onStep?: (index: number) => void;
+  layout?: "spread" | "inline";
   className?: string;
 }) {
   return (
-    <ol className={cx("di-stepper", className)} aria-label={label}>
+    <ol className={cx("di-stepper", className)} data-layout={layout} aria-label={label}>
       {steps.map((step, i) => {
         const inner = (
           <>

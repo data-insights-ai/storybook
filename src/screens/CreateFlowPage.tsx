@@ -16,6 +16,7 @@ const kinds = [
   { value: "ldap", label: "LDAP", description: "A directory reached through a relay.", icon: <Network /> },
 ];
 const steps = ["Choose a type", "Details", "Review"];
+const ledes = ["", "How the platform reaches your identity provider.", "The connection is active once it is created."];
 
 /** A create flow on its own page: choose the type, fill in the details, review, create. */
 export function CreateFlowPageScreen() {
@@ -27,7 +28,7 @@ export function CreateFlowPageScreen() {
 
   return (
     <Console title="New connection" crumb={["Sign-in", "New connection"]} active="settings" chrome={sampleChrome}>
-      <Page width="form">
+      <Page width="detail">
         <PageHeader lede="People at your domains sign in through your identity provider.">
           <PageHeaderCrumbs>
             <Breadcrumb label="Breadcrumb" items={[{ label: "Sign-in", href: "#" }, { label: "New connection" }]} />
@@ -38,6 +39,8 @@ export function CreateFlowPageScreen() {
           label="Steps"
           steps={steps}
           step={step}
+          lede={ledes[step]}
+          width="page"
           stateLabels={{ done: "done", current: "current step", upcoming: "upcoming" }}
           backLabel="Back"
           nextLabel="Next"
