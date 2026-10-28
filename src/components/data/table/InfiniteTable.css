@@ -20,5 +20,14 @@
       top: calc(var(--di-sticky-top) + var(--di-list-toolbar-h, 0px));
       z-index: 1;
     }
+
+    /*
+     * The pinned name cells and index cells below would tie with the head
+     * and, coming later, paint over its first columns. Nothing scrolls
+     * sideways here, so they only need to stay under the head.
+     */
+    .di-infinite .di-table-wrap:not(.is-overflowing) .di-table tbody :is(td.is-pinned, .di-table-index) {
+      z-index: 0;
+    }
   }
 }
