@@ -9,8 +9,11 @@ import {
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
   type ReactNode,
 } from "react";
+import { ChevronRight } from "lucide-react";
+import { cx } from "../../cx";
 import { Kbd } from "../data/marks/Seal";
 import { Spinner } from "../feedback/waiting/Spinner";
 import { Events, nearestEvent, reachOf } from "./marks/Events";
@@ -53,7 +56,8 @@ const ReadoutPlace = createContext<{ x: number; flipped: boolean } | null>(null)
  * Many events on one clock, from weeks down to the millisecond: bars that
  * fold the events into buckets, mirrored and ringed by tone with the
  * severest at the core, and the events themselves once they are far enough
- * apart. Lanes split them by kind underneath, markers carry what happened
+ * apart. Lanes split them by kind underneath, folded until the reader opens
+ * them, since the bars already tell the shape; markers carry what happened
  * to the record, and an optional score runs above on the same clock.
  *
  * The caller owns the data and the view: `useTimelineView` holds the view,
@@ -87,6 +91,7 @@ export function EventTimeline({
   overviewBars = NO_BARS,
   events,
   lanes = NO_LANES,
+  lanesLabel = "",
   markers = NO_MARKERS,
   score,
   activeEventId,
@@ -115,6 +120,8 @@ export function EventTimeline({
   overviewBars?: TimelineBar[];
   events?: TimelineEvent[];
   lanes?: TimelineLane[];
+  /** What the lanes are, on the toggle that opens them, such as "Attack phases". */
+  lanesLabel?: string;
   markers?: TimelineMarker[];
   score?: TimelineScore;
   activeEventId?: string;
@@ -124,6 +131,7 @@ export function EventTimeline({
   children?: ReactNode;
 }) {
   const id = useId();
+  const [lanesOpen, setLanesOpen] = useState(false);
   const [frame, plotPx] = useWidth<HTMLDivElement>();
   const { view, bounds, change, measure } = navigation;
   useEffect(() => measure(plotPx), [plotPx, measure]);
@@ -204,8 +212,7 @@ export function EventTimeline({
   const waveTop = score ? SCORE_H + GAP : 0;
   const mid = waveTop + WAVE_H / 2;
   const half = WAVE_H / 2 - 4;
-  const lanesTop = waveTop + WAVE_H + GAP;
-  const axisTop = lanesTop + lanes.length * LANE_H + 4;
+  const axisTop = waveTop + WAVE_H + GAP + 4;
   const highlighted = events?.filter(
     (e) => e.id === activeEventId || (target?.kind === "event" && target.event.id === e.id),
   );
@@ -293,14 +300,6 @@ export function EventTimeline({
                     />
                   );
                 })}
-                <Lanes
-                  lanes={lanes}
-                  cells={cells}
-                  counts={counts}
-                  scale={scale}
-                  plotPx={plotPx}
-                  top={lanesTop}
-                />
                 <g transform={`translate(0 ${waveTop})`}>
                   <Markers
                     markers={markers}
@@ -339,6 +338,50 @@ export function EventTimeline({
               ) : null}
             </div>
           </>
+        ) : null}
+        {lanes.length > 0 ? (
+          <div className="di-timeline-lanes-block">
+            <button
+              type="button"
+              className="di-timeline-lanes-toggle"
+              aria-expanded={lanesOpen}
+              onClick={() => setLanesOpen((open) => !open)}
+            >
+              <ChevronRight className="di-timeline-lanes-chevron" aria-hidden />
+              {lanesLabel}
+            </button>
+            {/* Kept drawn while folded, so closing can run the same motion as opening. */}
+            <div className={cx("di-timeline-lanes-fold", lanesOpen && "is-open")}>
+              <div className="di-timeline-lanes-inner">
+                {plotPx > 0 ? (
+                  <svg
+                    width={plotPx}
+                    height={lanes.length * LANE_H}
+                    className="di-timeline-svg"
+                    aria-hidden
+                  >
+                    <Lanes
+                      lanes={lanes}
+                      cells={cells}
+                      counts={counts}
+                      scale={scale}
+                      plotPx={plotPx}
+                      top={0}
+                    />
+                    {hoverPx !== null && !gestures.brush ? (
+                      <line
+                        x1={hoverPx}
+                        x2={hoverPx}
+                        y1={0}
+                        y2={lanes.length * LANE_H}
+                        className="di-timeline-cursor"
+                      />
+                    ) : null}
+                  </svg>
+                ) : null}
+              </div>
+            </div>
+          </div>
         ) : null}
       </div>
 

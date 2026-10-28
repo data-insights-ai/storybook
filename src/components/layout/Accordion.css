@@ -1,0 +1,157 @@
+@layer components {
+  .di-accordion {
+    container: di-accordion / inline-size;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--di-panel-border);
+    border-radius: var(--di-panel-radius);
+    background: var(--di-panel-bg);
+  }
+
+  .di-accordion-item + .di-accordion-item {
+    border-top: 1px solid var(--di-rule-hairline);
+  }
+
+  .di-accordion-heading {
+    margin: 0;
+    font: inherit;
+  }
+
+  .di-accordion-toggle {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "chevron title meta"
+      ". detail meta";
+    align-items: center;
+    gap: var(--di-space-2) var(--di-space-12);
+    width: 100%;
+    padding: var(--di-space-12) var(--di-space-16);
+    border: 0;
+    background: transparent;
+    color: var(--di-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-accordion-item:first-child .di-accordion-toggle {
+    border-radius: var(--di-panel-radius) var(--di-panel-radius) 0 0;
+  }
+
+  .di-accordion-item:last-child:not(.is-open) .di-accordion-toggle {
+    border-radius: 0 0 var(--di-panel-radius) var(--di-panel-radius);
+  }
+
+  .di-accordion-item:only-child:not(.is-open) .di-accordion-toggle {
+    border-radius: var(--di-panel-radius);
+  }
+
+  .di-accordion-toggle:hover {
+    background: var(--di-bg-row-hover);
+  }
+
+  .di-accordion-toggle:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: -2px;
+  }
+
+  .di-accordion-chevron {
+    grid-area: chevron;
+    width: 16px;
+    height: 16px;
+    color: var(--di-text-muted);
+    transition: transform var(--di-duration) var(--di-ease);
+  }
+
+  .di-accordion-item.is-open .di-accordion-chevron {
+    transform: rotate(90deg);
+  }
+
+  .di-accordion-title {
+    grid-area: title;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: var(--di-font-size-500);
+    font-weight: var(--di-weight-semibold);
+    letter-spacing: var(--di-tracking-tight);
+    line-height: 1.3;
+  }
+
+  .di-accordion-detail {
+    grid-area: detail;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-muted);
+  }
+
+  .di-accordion-meta {
+    grid-area: meta;
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--di-space-8);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-400);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-muted);
+  }
+
+  /*
+   * Folds by a grid row, which can animate to the content's height where
+   * height: auto cannot. Folded, it turns invisible once the motion ends, so
+   * nothing inside is focusable or read; opening shows it at once.
+   */
+  .di-accordion-fold {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--di-duration-slow) var(--di-ease),
+      visibility 0s linear var(--di-duration-slow);
+  }
+
+  .di-accordion-item.is-open .di-accordion-fold {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows var(--di-duration-slow) var(--di-ease),
+      visibility 0s;
+  }
+
+  /* clip, not hidden: it does not become a scroll container, so a table's sticky head still sticks. */
+  .di-accordion-clip {
+    min-height: 0;
+    overflow: clip;
+  }
+
+  .di-accordion-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-16);
+    min-width: 0;
+    padding: var(--di-space-4) var(--di-space-16) var(--di-space-16);
+  }
+
+  /* A narrow list puts the meta under the detail rather than squeezing the title. */
+  @container di-accordion (max-width: 480px) {
+    .di-accordion-toggle {
+      grid-template-columns: 16px minmax(0, 1fr);
+      grid-template-areas:
+        "chevron title"
+        ". detail"
+        ". meta";
+    }
+
+    .di-accordion-meta {
+      justify-content: flex-start;
+      margin-top: var(--di-space-4);
+    }
+  }
+}

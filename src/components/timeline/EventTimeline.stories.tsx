@@ -176,6 +176,7 @@ const meta = {
     zoomOutLabel: "Zoom out",
     backLabel: "Back to the previous view",
     wholeLabel: "Show everything",
+    lanesLabel: "Stages",
     toneLabels: { danger: "critical", warn: "warning", neutral: "routine" },
     scaleNote: "",
     locale: "en",
@@ -201,8 +202,8 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * Three days with a spray of hundreds of retries inside minutes. The score runs
- * above on the same clock; the lanes read as a staircase in the order the
- * stages started.
+ * above on the same clock; the lanes, opened under the plot, read as a
+ * staircase in the order the stages started.
  */
 export const Default: Story = {
   render: (args) => (
@@ -217,6 +218,13 @@ export const Default: Story = {
     await waitFor(() => expect(back).toBeEnabled());
     await userEvent.click(back);
     await waitFor(() => expect(back).toBeDisabled());
+    const lanes = canvas.getByRole("button", { name: "Stages" });
+    await expect(lanes).toHaveAttribute("aria-expanded", "false");
+    const fold = canvasElement.querySelector(".di-timeline-lanes-inner");
+    await expect(fold?.getBoundingClientRect().height).toBe(0);
+    await userEvent.click(lanes);
+    await expect(lanes).toHaveAttribute("aria-expanded", "true");
+    await waitFor(() => expect(fold?.getBoundingClientRect().height).toBeGreaterThan(0));
   },
 };
 

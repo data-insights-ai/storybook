@@ -2,7 +2,9 @@ import { memo } from "react";
 import type { Scale, Span } from "../scale/viewport";
 import type { TimelineCell, TimelineEvent, TimelineLane, TimelineTone } from "../types";
 
-export const LANE_H = 18;
+export const LANE_H = 34;
+const LABEL_Y = 8;
+const TRACK_Y = 18;
 const CELL_H = 10;
 const MIN_CELL = 2;
 const SHADES = 4;
@@ -46,6 +48,7 @@ function lanePaths(cells: TimelineCell[], scale: Scale, plotPx: number, y: numbe
 }
 
 // One row per lane in the caller's order, so the order lanes started in reads as a staircase.
+// The name and its count sit on a line of their own, so no bar runs under the words.
 export const Lanes = memo(function Lanes({
   lanes,
   cells,
@@ -64,7 +67,8 @@ export const Lanes = memo(function Lanes({
   return (
     <g className="di-timeline-lanes" transform={`translate(0 ${top})`}>
       {lanes.map((lane, i) => {
-        const y = i * LANE_H + (LANE_H - CELL_H) / 2;
+        const row = i * LANE_H;
+        const y = row + TRACK_Y;
         const count = counts.get(lane.id);
         return (
           <g key={lane.id}>
@@ -78,14 +82,16 @@ export const Lanes = memo(function Lanes({
               />
             ))}
             <text
-              x={4}
-              y={y + CELL_H / 2}
+              x={0}
+              y={row + LABEL_Y}
               className={count ? "di-timeline-lane-label" : "di-timeline-lane-label is-quiet"}
             >
               {lane.label}
-            </text>
-            <text x={plotPx - 4} y={y + CELL_H / 2} className="di-timeline-lane-count">
-              {count}
+              {count ? (
+                <tspan dx={8} className="di-timeline-lane-count">
+                  {count}
+                </tspan>
+              ) : null}
             </text>
           </g>
         );

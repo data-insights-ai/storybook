@@ -1,3 +1,4 @@
+export { Accordion, AccordionDetail, AccordionItem, AccordionMeta } from "./components/layout/Accordion";
 export {
   AppShell,
   AppShellBar,
