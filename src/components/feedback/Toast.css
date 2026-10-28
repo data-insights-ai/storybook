@@ -121,7 +121,13 @@
     pointer-events: none;
   }
 
+  /*
+   * A child sized by its container, such as a Notice, has no width of its
+   * own and would shrink to its border here.
+   */
   .di-toast-region > * {
+    min-width: min(100%, 320px);
+    max-width: 480px;
     pointer-events: auto;
   }
 }
