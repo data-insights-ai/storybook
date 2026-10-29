@@ -228,10 +228,10 @@ An exception has to say why, in a comment the lint reads:
 
 Every story meta carries one layer tag, `layer:foundation`, `layer:primitive`, `layer:form`, `layer:block`, `layer:pattern` or `layer:screen`, and a module never imports one from a higher layer. `pnpm lint:structure` checks that and the rest of the structure, and `pnpm build` runs it:
 
-- `.dependency-cruiser.cjs`, run by `scripts/lint-deps.mjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component or a shared module only through its `index.ts`, while a component's own subfolders reach each other directly; screens import from the package root. Sample data (`*.sample.ts`) is not package code and is exempt.
+- `.dependency-cruiser.cjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component or a shared module only through its `index.ts`, while a component's own subfolders reach each other directly; screens import from the package root. Sample data (`*.sample.ts`) is not package code and is exempt.
 - `scripts/lint-layers.mjs`: the layer tags and their direction; a story file, its folder and its meta component share one name and the title mirrors the folder; a module is one sidebar entry; every public component is rendered in a story (as JSX or as its meta component) and has a doc comment; every title's group is one `storySort` lists; no two concept folders import each other.
 
-Both report what `.dependency-cruiser-known-violations.json` and `scripts/lint-layers.baseline.json` record, and the baselines only shrink: a new finding fails, and so does a recorded one that is gone, until `node scripts/lint-deps.mjs --write` and `node scripts/lint-layers.mjs --write` record the smaller set. A write refuses when a check would record more findings than before; a move renames findings without adding any, so it passes. The one way past that is `--accept-growth`, for a change that adds findings it cannot avoid (a split that adds import edges the next move removes), and the commit says why. The restructure shrinks the baselines until they are deleted.
+Both fail on any finding; there is no list of tolerated ones. A change that cannot pass them changes the structure, or the rule with a reason, never the check's input.
 
 ## Checks
 

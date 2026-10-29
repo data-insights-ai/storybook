@@ -1,9 +1,8 @@
 /**
  * The package's dependency direction (AGENTS.md, "Structure"): internal helpers under
  * components, components under screens and the Storybook chrome, and a component reached
- * from another folder only through its index.ts. `pnpm lint:structure` runs it; violations
- * already recorded in .dependency-cruiser-known-violations.json are reported, not failed,
- * until the restructure removes them.
+ * from another folder only through its index.ts. `pnpm lint:structure` runs it and
+ * fails on any violation.
  */
 module.exports = {
   forbidden: [
