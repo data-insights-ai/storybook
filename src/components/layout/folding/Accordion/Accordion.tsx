@@ -1,6 +1,6 @@
 import { Children, isValidElement, useId, type ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./Accordion.css";
 
 /**

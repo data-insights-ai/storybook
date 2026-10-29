@@ -1,4 +1,4 @@
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./SegmentedControl.css";
 
 /**

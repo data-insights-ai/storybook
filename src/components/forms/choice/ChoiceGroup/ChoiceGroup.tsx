@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./ChoiceGroup.css";
 
 /** A fieldset with a visible legend. A radio group needs both. */

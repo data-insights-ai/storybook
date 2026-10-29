@@ -1,10 +1,5 @@
 import { LockKeyhole } from "lucide-react";
-import { ConsoleFrame } from "../components/layout/shell/AppShell";
-import { Button } from "../components/actions/Button";
-import { SignIn, SignInVersion } from "../components/layout/shell/SignIn";
-import { TextField } from "../components/forms/text/TextField";
-import { TextLink } from "../components/navigation/TextLink";
-import { VersionTag } from "../components/data/marks/VersionTag";
+import { Button, ConsoleFrame, SignIn, SignInVersion, TextField, TextLink, VersionTag } from "../index";
 
 export function LoginScreen() {
   return (

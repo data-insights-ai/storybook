@@ -6,7 +6,7 @@ import { Input } from "react-aria-components/Input";
 import { Label } from "react-aria-components/Label";
 import { ListBox, ListBoxItem } from "react-aria-components/ListBox";
 import { Popover } from "react-aria-components/Popover";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";

@@ -1,26 +1,40 @@
 import { useRef, useState } from "react";
 import { Download, MoreHorizontal, UserPlus } from "lucide-react";
-import { Console } from "../components/layout/shell/AppShell";
-import { Button } from "../components/actions/Button";
-import { ConfirmDialog } from "../components/overlays/ConfirmDialog";
-import { TableCell, TableColumn, TableHead, TableRow } from "../components/data/table/DataTable";
-import { DangerAction, DangerZone } from "../components/feedback/DangerZone";
-import { DetailSection, DetailSectionForm } from "../components/layout/page/DetailSection";
-import { EmptyState, EmptyStateAction } from "../components/feedback/EmptyState";
-import { Fact, FactList } from "../components/data/records/FactList";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/page/PageHeader";
-import { InfiniteTable, type InfiniteRowPlace } from "../components/data/table/InfiniteTable";
-import { ListToolbar, ListToolbarEnd } from "../components/data/table/ListToolbar";
-import { Menu, MenuItem } from "../components/navigation/Menu";
-import { Page } from "../components/layout/page/Page";
-import { Sheet } from "../components/overlays/Sheet";
-import { RowActions } from "../components/actions/RowActions";
-import { SearchField } from "../components/forms/text/SearchField";
-import { Select } from "../components/forms/select/Select";
-import { StatusPill } from "../components/data/marks/StatusPill";
-import { TextLink } from "../components/navigation/TextLink";
-import { useShortcut } from "../components/navigation/shortcuts/useShortcut";
-import { sampleChrome } from "../components/layout/shell/chrome.sample";
+import {
+  Button,
+  ConfirmDialog,
+  Console,
+  DangerAction,
+  DangerZone,
+  DetailSection,
+  DetailSectionForm,
+  EmptyState,
+  EmptyStateAction,
+  Fact,
+  FactList,
+  InfiniteTable,
+  ListToolbar,
+  ListToolbarEnd,
+  Menu,
+  MenuItem,
+  Page,
+  PageHeader,
+  PageHeaderAside,
+  PageHeaderTitle,
+  RowActions,
+  SearchField,
+  Select,
+  Sheet,
+  StatusPill,
+  TableCell,
+  TableColumn,
+  TableHead,
+  TableRow,
+  TextLink,
+  useShortcut,
+} from "../index";
+import type { InfiniteRowPlace } from "../index";
+import { sampleChrome } from "../components/shell/chrome.sample";
 
 type Member = { id: string; name: string; email: string; role: "Owner" | "Administrator" | "Member"; seat: boolean };
 

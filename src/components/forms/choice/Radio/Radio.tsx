@@ -1,4 +1,4 @@
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import { ChoiceText, type ChoiceProps } from "../Choice";
 
 /** A native radio. Group them with a shared `name` inside a `ChoiceGroup`. */

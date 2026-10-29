@@ -1,7 +1,7 @@
 import { Children, isValidElement, useEffect, useId, useRef, type FormEvent, type ReactNode } from "react";
 import { Pencil } from "lucide-react";
 import { Button } from "../../../actions/Button";
-import { focusFirstField, useShortcutKeys } from "../../../navigation/shortcuts/shortcutKeys";
+import { focusFirstField, useShortcutKeys } from "../../../navigation/useShortcut";
 import "./DetailSection.css";
 
 /**

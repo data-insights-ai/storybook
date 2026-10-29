@@ -88,22 +88,23 @@ The sign-in card pins the daylight colours, including in the dark theme, because
 
 ## Stories and components
 
-Every component lives in `src/components`, under the folder of its concept, in a folder of its own named after it: `forms/text/TextField/` holds `TextField.tsx`, `TextField.css`, `TextField.stories.tsx`, its tests and an `index.ts`. Another folder imports the component through that `index.ts`, never a file inside it. A module several components share (the field frame, the choice frame, the date range arithmetic) gets a folder and an `index.ts` the same way; a shared stylesheet (`forms/dates/Calendar.css`) sits beside the components that import it, and a helper that draws nothing sits in `src/internal`. The folders are being moved one concept at a time; the rows below without subfolders are still flat:
+Every component lives in `src/components`, under the folder of its concept, in a folder of its own named after it: `forms/text/TextField/` holds `TextField.tsx`, `TextField.css`, `TextField.stories.tsx`, its tests and an `index.ts`. Another folder imports the component through that `index.ts`, never a file inside it. A module several components share (the field frame, the choice frame, the date range arithmetic) gets a folder and an `index.ts` the same way; a shared stylesheet (`forms/dates/Calendar.css`) sits beside the components that import it, and a helper that draws nothing sits in `src/internal`. Screens import what a product imports, the package root (`../index`). The concepts:
 
 | Folder | Holds |
 | --- | --- |
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
-| `navigation/` | Breadcrumb, Pagination, Stepper, Tabs, TabNav, Menu, CommandBar, TextLink, SkipLink; `sidebar/` the sidebar and its parts; `shortcuts/` the key scheme and ShortcutHelp |
+| `navigation/` | Breadcrumb, CommandBar, Menu, Pagination, SkipLink, Stepper, Tabs, TabNav, TextLink, ShortcutHelp; `Sidebar/` the sidebar and its parts behind one index; `useShortcut/` the key scheme (`shortcutKeys`) and the hook |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, DateField, TimeField, DateRangePicker |
 | `data/` | `records/` Card, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` Metric, Stat, StatTile; `marks/` Badge, Chip, StatusPill, Tag, VersionTag, SealValue, Icon, IconTile; `text/` Eyebrow, Highlight, Kbd, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
-| `feedback/` | Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `waiting/` the loaders, progress and skeletons |
-| `overlays/` | Modal, ConfirmDialog, Drawer, Sheet, Flyout, CreateFlow |
-| `inference/` | Explain, Confirm, Confidence, Privacy |
-| `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, Split, FieldStack, InlineForm, Actions; `page/` Page, PageHeader, SectionTitle, Panel, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure; `shell/` AppShell, ThemeProvider, SignIn |
-| `charts/` | Chart, ChartCard, TrendChart and the drawn measures (Bars, Sparkline, Distribution, LevelMeter, CoverageMatrix, Seismograph) |
-| `timeline/` | EventTimeline and its parts, ChainTimeline, PeriodTimeline, WeekTimeline; `summary/` TimelineSummary |
+| `feedback/` | DangerZone, Delayed, EmptyState, Notice, Toast, Tooltip, TooltipTarget; `waiting/` AppLoader, Progress, RouteProgress, SkeletonPage, SkeletonTable, Spinner |
+| `overlays/` | ConfirmDialog, CreateFlow, Drawer, Flyout, Modal, Sheet; `useModalDialog/` the dialog behaviour Modal and Sheet share |
+| `inference/` | ConfidenceField, ConfirmPanel, ExplainPanel, PrivacyBadge, and the `Inference.css` they share |
+| `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, Split, FieldStack, InlineForm, Actions; `page/` Page, PageHeader, SectionTitle, Panel, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure |
+| `charts/` | Bars, Chart, ChartCard, CoverageMatrix, Distribution, LevelMeter, Seismograph, Sparkline, TrendChart |
+| `timeline/` | ChainTimeline, EventTimeline (with its `marks/` and `navigation/`), PeriodTimeline, WeekTimeline, TimelineSummary; `scale/` and `types/`, shared by EventTimeline and TimelineSummary |
+| `shell/` | AppShell, SignIn, ThemeProvider |
 
-A folder names what a component is about, and the story `title` follows it; what can go inside a component is its layer tag. Sample data that only a story or a screen reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `layout/shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
+A folder names what a component is about, and the story `title` follows it; what can go inside a component is its layer tag. Sample data that only a story or a screen reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
 
 The story `title` decides where a component lands in the sidebar, and it is grouped by purpose: where a person would look for the component's job. The title is `<Group>/<Subgroup>/<Component>`, ends in the meta component's name, and mirrors the component's folder. `.storybook/preview.tsx` sorts the groups in this order:
 
@@ -225,7 +226,7 @@ An exception has to say why, in a comment the lint reads:
 
 Every story meta carries one layer tag, `layer:foundation`, `layer:primitive`, `layer:form`, `layer:block`, `layer:pattern` or `layer:screen`, and a module never imports one from a higher layer. `pnpm lint:structure` checks that and the rest of the structure, and `pnpm build` runs it:
 
-- `.dependency-cruiser.cjs`, run by `scripts/lint-deps.mjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component only through its `index.ts`; screens import from the package root.
+- `.dependency-cruiser.cjs`, run by `scripts/lint-deps.mjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component or a shared module only through its `index.ts`, while a component's own subfolders reach each other directly; screens import from the package root. Sample data (`*.sample.ts`) is not package code and is exempt.
 - `scripts/lint-layers.mjs`: the layer tags and their direction; a story file, its folder and its meta component share one name and the title mirrors the folder; a module is one sidebar entry; every public component is rendered in a story (as JSX or as its meta component) and has a doc comment; every title's group is one `storySort` lists; no two concept folders import each other.
 
 Both report what `.dependency-cruiser-known-violations.json` and `scripts/lint-layers.baseline.json` record, and the baselines only shrink: a new finding fails, and so does a recorded one that is gone, until `node scripts/lint-deps.mjs --write` and `node scripts/lint-layers.mjs --write` record the smaller set. A write refuses when a check would record more findings than before; a move renames findings without adding any, so it passes. The one way past that is `--accept-growth`, for a change that adds findings it cannot avoid (a split that adds import edges the next move removes), and the commit says why. The restructure shrinks the baselines until they are deleted.

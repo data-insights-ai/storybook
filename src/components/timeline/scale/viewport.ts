@@ -1,5 +1,6 @@
-/** A stretch of time in epoch milliseconds; `end` is exclusive. */
-export type Span = { start: number; end: number };
+import type { Span } from "../types";
+
+export type { Span };
 
 // Narrower than two seconds, even a burst of hundreds has nothing more to show.
 export const MIN_SPAN = 2_000;

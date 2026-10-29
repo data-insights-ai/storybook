@@ -1,22 +1,39 @@
 import { useState } from "react";
 import { Globe, MoreVertical, Radar, Search, Settings2, ShieldCheck, Timer } from "lucide-react";
-import { Console } from "../components/layout/shell/AppShell";
-import { Button } from "../components/actions/Button";
-import { CommandBar, CommandGroup, CommandRow } from "../components/navigation/CommandBar";
-import { PageHeader, PageHeaderTitle } from "../components/layout/page/PageHeader";
-import { ConfidenceField } from "../components/inference/ConfidenceField";
-import { ConfirmActions, ConfirmPanel } from "../components/inference/ConfirmPanel";
-import { ExplainFooter, ExplainPanel, ExplainRow } from "../components/inference/ExplainPanel";
-import { PrivacyBadge } from "../components/inference/PrivacyBadge";
-import { Grid } from "../components/layout/arrangement/Grid";
-import { Stack } from "../components/layout/arrangement/Stack";
-import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "../components/data/records/LivingCard";
-import { Panel, PanelMeta } from "../components/layout/page/Panel";
-import { StatTile, StatTileDelta } from "../components/data/figures/StatTile";
-import { Toast, ToastAction } from "../components/feedback/Toast";
-import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/page/SectionTitle";
-import { Sparkline } from "../components/charts/Sparkline";
+import {
+  Button,
+  CommandBar,
+  CommandGroup,
+  CommandRow,
+  ConfidenceField,
+  ConfirmActions,
+  ConfirmPanel,
+  Console,
+  ExplainFooter,
+  ExplainPanel,
+  ExplainRow,
+  Grid,
+  LivingActions,
+  LivingBasis,
+  LivingBody,
+  LivingCard,
+  LivingInsight,
+  PageHeader,
+  PageHeaderTitle,
+  Panel,
+  PanelMeta,
+  PrivacyBadge,
+  SectionTitle,
+  SectionTitleHeading,
+  SectionTitleMeta,
+  Sparkline,
+  Stack,
+  StatTile,
+  StatTileDelta,
+  Toast,
+  ToastAction,
+} from "../index";
+import { sampleChrome } from "../components/shell/chrome.sample";
 
 const bars = [
   { percent: 38 },

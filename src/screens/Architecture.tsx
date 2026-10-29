@@ -7,19 +7,35 @@ import {
   ShieldCheck,
   Workflow,
 } from "lucide-react";
-import { Button } from "../components/actions/Button";
-import { Console } from "../components/layout/shell/AppShell";
-import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/page/PageHeader";
-import { Grid } from "../components/layout/arrangement/Grid";
-import { Numbered } from "../components/layout/arrangement/Numbered";
-import { Stack } from "../components/layout/arrangement/Stack";
-import { Metric, MetricNote } from "../components/data/figures/Metric";
-import { Stage, StageFooter, StageIcon, StageTrack } from "../components/layout/page/Stage";
-import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
-import { StatusPill } from "../components/data/marks/StatusPill";
-import { KeyValue, KeyValues } from "../components/data/records/KeyValues";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/page/SectionTitle";
+import {
+  Button,
+  Console,
+  Grid,
+  KeyValue,
+  KeyValues,
+  Metric,
+  MetricNote,
+  Notice,
+  NoticeAction,
+  NoticeBody,
+  NoticeIcon,
+  NoticeText,
+  NoticeTitle,
+  Numbered,
+  PageHeader,
+  PageHeaderAside,
+  PageHeaderTitle,
+  SectionTitle,
+  SectionTitleHeading,
+  SectionTitleMeta,
+  Stack,
+  Stage,
+  StageFooter,
+  StageIcon,
+  StageTrack,
+  StatusPill,
+} from "../index";
+import { sampleChrome } from "../components/shell/chrome.sample";
 
 const stages = [
   {

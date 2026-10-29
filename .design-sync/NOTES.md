@@ -40,7 +40,7 @@ installing the package, not just to the converter.
   import, so a product tree-shaking `FieldHint` shipped it unstyled.
   Audited once: it was the only one. A naive scan also flags DataTable, Notice
   (`di-mono`) and Seal (`di-tick-rule`) — false positives, those classes live in
-  `base.css`, which always ships. Scan `src/components/*.css` only.
+  `base.css`, which always ships. Scan `src/components/**/*.css` only.
 
 `cfg.buildCmd` is `pnpm build`, which runs `pnpm lint:tokens` **first**. A sync
 dying in `stages.build` with a list of `space` / `radius` / `type` / `colour` /
@@ -191,7 +191,7 @@ the region instead of setting the global, then drop the skip. Until then the
 design agent has no worked example of either component after dark — the skip
 removes the story from `<Name>.prompt.md` too.
 
-`grep -n 'theme: "dark"' src/components/*.stories.tsx` finds any new one.
+`grep -rn 'theme: "dark"' src/components --include='*.stories.tsx'` finds any new one.
 
 ### A top-layer `<dialog>` cannot be photographed on either side
 
@@ -266,7 +266,7 @@ so faking it destroys the fidelity being verified. If one ever must grade
 
 `Button`'s props are `ButtonProps | LinkProps`, where the button branch carries
 `href?: never` and the link branch `href: string`.
-`dist/lib/components/Button.d.ts` holds the union correctly, but `lib/dts.mjs`
+`dist/lib/components/actions/Button/Button.d.ts` holds the union correctly, but `lib/dts.mjs`
 calls `type.getApparentType().getProperties()` on it and emitted **only**
 `href?: never` — telling the design agent the exact opposite of the capability,
 in both `Button.d.ts` and `Button.prompt.md`. Nothing warned: no `[DTS_PARSE]`,

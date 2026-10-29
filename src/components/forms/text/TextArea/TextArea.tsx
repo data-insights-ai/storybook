@@ -1,5 +1,5 @@
 import type { ReactNode, TextareaHTMLAttributes } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
 import "../../field/Field/Field.css";

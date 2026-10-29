@@ -11,7 +11,7 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./DataTable.css";
 
 /**

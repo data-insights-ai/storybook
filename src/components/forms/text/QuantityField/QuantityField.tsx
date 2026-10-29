@@ -1,6 +1,6 @@
 import { Minus, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import "../../field/Field/Field.css";
 import "./QuantityField.css";

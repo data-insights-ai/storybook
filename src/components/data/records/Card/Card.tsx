@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./Card.css";
 
 export function Card({

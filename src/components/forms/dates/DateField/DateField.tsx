@@ -16,7 +16,7 @@ import {
 import { Dialog } from "react-aria-components/Dialog";
 import { Heading } from "react-aria-components/Heading";
 import { I18nProvider } from "react-aria-components/I18nProvider";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";

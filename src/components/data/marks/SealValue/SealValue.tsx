@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./SealValue.css";
 
 export type SealState = "sealed" | "inferred" | "absent";

@@ -8,36 +8,48 @@ import {
   Server,
   Stamp,
 } from "lucide-react";
-import { Console } from "../components/layout/shell/AppShell";
-import { Button } from "../components/actions/Button";
-import { Chip } from "../components/data/marks/Chip";
 import {
+  Button,
   CellIcon,
   CellLead,
   CellStack,
+  Chip,
+  Console,
   DataTable,
+  Drawer,
+  DrawerFooter,
+  Fact,
+  FactList,
+  Grid,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  Notice,
+  NoticeAction,
+  NoticeBody,
+  NoticeIcon,
+  NoticeText,
+  NoticeTitle,
+  PageHeader,
+  PageHeaderAside,
+  PageHeaderTitle,
+  Pagination,
+  SealValue,
+  SearchField,
+  Stack,
+  StatTile,
+  StatTileDelta,
+  StatusPill,
   TableBody,
   TableCell,
-  TableFooter,
   TableColumn,
+  TableFooter,
   TableHead,
   TableIndex,
   TableRow,
   TableToolbar,
-} from "../components/data/table/DataTable";
-import { Drawer, DrawerFooter } from "../components/overlays/Drawer";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/page/PageHeader";
-import { Grid } from "../components/layout/arrangement/Grid";
-import { Stack } from "../components/layout/arrangement/Stack";
-import { Menu, MenuDivider, MenuItem } from "../components/navigation/Menu";
-import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
-import { Pagination } from "../components/navigation/Pagination";
-import { SealValue } from "../components/data/marks/SealValue";
-import { SearchField } from "../components/forms/text/SearchField";
-import { StatTile, StatTileDelta } from "../components/data/figures/StatTile";
-import { StatusPill } from "../components/data/marks/StatusPill";
-import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { Fact, FactList } from "../components/data/records/FactList";
+} from "../index";
+import { sampleChrome } from "../components/shell/chrome.sample";
 
 type Source = {
   ordinal: string;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { cx } from "../cx";
+import { cx } from "../internal/cx";
 import logo from "../assets/logo.svg";
 import logoInverse from "../assets/logo-inverse.svg";
 import logoMono from "../assets/logo-mono.svg";

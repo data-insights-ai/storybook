@@ -1,26 +1,29 @@
 import { useState } from "react";
-import { Console } from "../components/layout/shell/AppShell";
-import { Breadcrumb } from "../components/navigation/Breadcrumb";
-import { Button } from "../components/actions/Button";
-import { ConfirmDialog } from "../components/overlays/ConfirmDialog";
-import { CopyValue } from "../components/actions/CopyValue";
-import { DangerAction, DangerZone } from "../components/feedback/DangerZone";
-import { DetailSection, DetailSectionForm } from "../components/layout/page/DetailSection";
-import { Fact, FactList } from "../components/data/records/FactList";
 import {
+  Breadcrumb,
+  Button,
+  ConfirmDialog,
+  Console,
+  CopyValue,
+  DangerAction,
+  DangerZone,
+  DetailSection,
+  DetailSectionForm,
+  Fact,
+  FactList,
+  Page,
   PageHeader,
   PageHeaderAside,
   PageHeaderCrumbs,
   PageHeaderFacts,
   PageHeaderStatus,
   PageHeaderTitle,
-} from "../components/layout/page/PageHeader";
-import { Page } from "../components/layout/page/Page";
-import { SaveBar } from "../components/forms/field/SaveBar";
-import { StatusPill } from "../components/data/marks/StatusPill";
-import { Switch } from "../components/forms/choice/Switch";
-import { TextField } from "../components/forms/text/TextField";
-import { sampleChrome } from "../components/layout/shell/chrome.sample";
+  SaveBar,
+  StatusPill,
+  Switch,
+  TextField,
+} from "../index";
+import { sampleChrome } from "../components/shell/chrome.sample";
 
 /** A detail page: summary header, sections that read until Edit, the danger zone last. */
 export function DetailPageScreen() {

@@ -6,7 +6,7 @@ import type {
   TimelineSpan,
   TimelineTone,
 } from "./types";
-import { boundsAround } from "./scale/viewport";
+import { boundsAround } from "./scale";
 
 /*
  * Invented activity for the EventTimeline stories. A product loads bars from

@@ -1,5 +1,5 @@
 import type { InputHTMLAttributes } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./Choice.css";
 
 export type ChoiceProps = {

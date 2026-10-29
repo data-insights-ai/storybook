@@ -10,8 +10,8 @@ export {
   AppShellRail,
   Console,
   ConsoleFrame,
-} from "./components/layout/shell/AppShell";
-export type { ConsoleChrome, NavGroup, NavItem } from "./components/layout/shell/AppShell";
+} from "./components/shell/AppShell";
+export type { ConsoleChrome, NavGroup, NavItem } from "./components/shell/AppShell";
 export { Badge } from "./components/data/marks/Badge";
 export { Bars } from "./components/charts/Bars";
 export { BulkActionBar } from "./components/actions/BulkActionBar";
@@ -92,13 +92,10 @@ export {
   EventTimelineMeta,
   EventTimelineReadout,
 } from "./components/timeline/EventTimeline";
-export { useTimelineView } from "./components/timeline/navigation/useTimelineView";
-export type { TimelineNavigation } from "./components/timeline/navigation/useTimelineView";
-export {
-  bucketFor as timelineBucketFor,
-  eventsReadable as timelineEventsReadable,
-} from "./components/timeline/scale/resolution";
-export { boundsAround as timelineBounds } from "./components/timeline/scale/viewport";
+export { useTimelineView } from "./components/timeline/EventTimeline/navigation/useTimelineView";
+export type { TimelineNavigation } from "./components/timeline/EventTimeline/navigation/useTimelineView";
+export { bucketFor as timelineBucketFor, eventsReadable as timelineEventsReadable } from "./components/timeline/scale";
+export { boundsAround as timelineBounds } from "./components/timeline/scale";
 export {
   TimelineSummary,
   TimelineSummaryDetail,
@@ -106,12 +103,12 @@ export {
   TimelineSummaryMarker,
   TimelineSummaryMeta,
   TimelineSummaryTime,
-} from "./components/timeline/summary/TimelineSummary";
+} from "./components/timeline/TimelineSummary";
 export {
   episodesIn as timelineEpisodesIn,
   episodesOf as timelineEpisodes,
-} from "./components/timeline/summary/episodes";
-export type { TimelineEpisode } from "./components/timeline/summary/episodes";
+} from "./components/timeline/TimelineSummary/episodes";
+export type { TimelineEpisode } from "./components/timeline/TimelineSummary/episodes";
 export type {
   TimelineBar,
   TimelineCell,
@@ -210,32 +207,32 @@ export { SegmentedControl } from "./components/forms/choice/SegmentedControl";
 export { Select } from "./components/forms/select/Select";
 export { Sheet, SheetFooter } from "./components/overlays/Sheet";
 export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/data/records/Session";
-export { Sidebar } from "./components/navigation/sidebar/Sidebar";
-export { SidebarBrand } from "./components/navigation/sidebar/SidebarBrand";
-export { useShortcut } from "./components/navigation/shortcuts/useShortcut";
-export { ShortcutHelp, type AppShortcut } from "./components/navigation/shortcuts/ShortcutHelp";
-export { Tag, TagList } from "./components/data/marks/Tag";
-export { useSidebar } from "./components/navigation/sidebar/SidebarContext";
-export type { SidebarState } from "./components/navigation/sidebar/SidebarContext";
-export { SidebarInset } from "./components/navigation/sidebar/SidebarInset";
-export { SidebarMenu, SidebarMenuItem } from "./components/navigation/sidebar/SidebarMenu";
-export { SidebarMenuButton } from "./components/navigation/sidebar/SidebarMenuButton";
-export type { SidebarMenuButtonProps } from "./components/navigation/sidebar/SidebarMenuButton";
-export { SidebarProvider } from "./components/navigation/sidebar/SidebarProvider";
 export {
+  Sidebar,
+  SidebarBrand,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
-} from "./components/navigation/sidebar/SidebarSections";
-export { SidebarTrigger } from "./components/navigation/sidebar/SidebarTrigger";
-export { SidebarThemeChoice, themeLabels } from "./components/navigation/sidebar/SidebarThemeChoice";
-export type { ThemeLabels } from "./components/navigation/sidebar/SidebarThemeChoice";
-export { ThemeProvider, themeChoices, useTheme } from "./components/layout/shell/ThemeProvider";
-export type { ResolvedTheme, ThemeChoice } from "./components/layout/shell/ThemeProvider";
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarThemeChoice,
+  SidebarTrigger,
+  themeLabels,
+  useSidebar,
+} from "./components/navigation/Sidebar";
+export type { SidebarMenuButtonProps, SidebarState, ThemeLabels } from "./components/navigation/Sidebar";
+export { useShortcut } from "./components/navigation/useShortcut";
+export { ShortcutHelp, type AppShortcut } from "./components/navigation/ShortcutHelp";
+export { Tag, TagList } from "./components/data/marks/Tag";
+export { ThemeProvider, themeChoices, useTheme } from "./components/shell/ThemeProvider";
+export type { ResolvedTheme, ThemeChoice } from "./components/shell/ThemeProvider";
 export { SkipLink } from "./components/navigation/SkipLink";
-export { SignIn, SignInVersion } from "./components/layout/shell/SignIn";
+export { SignIn, SignInVersion } from "./components/shell/SignIn";
 export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
 export { SkeletonPage } from "./components/feedback/waiting/SkeletonPage";
 export type { SkeletonPageVariant } from "./components/feedback/waiting/SkeletonPage";

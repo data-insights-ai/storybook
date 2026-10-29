@@ -9,32 +9,41 @@ import {
   Rss,
   SlidersHorizontal,
 } from "lucide-react";
-import type { ReactNode } from "react";
-import { Button } from "../components/actions/Button";
-import { Grid } from "../components/layout/arrangement/Grid";
-import { Stack } from "../components/layout/arrangement/Stack";
-import { Toolbar, ToolbarEnd } from "../components/layout/arrangement/Toolbar";
-import { Card } from "../components/data/records/Card";
-import { Chip } from "../components/data/marks/Chip";
-import { Console } from "../components/layout/shell/AppShell";
-import { sampleChrome } from "../components/layout/shell/chrome.sample";
+import type { ComponentProps, ReactNode } from "react";
 import {
+  Button,
+  Card,
   CellIcon,
   CellLead,
   CellStack,
+  Chip,
+  Console,
   DataTable,
+  Grid,
+  Notice,
+  NoticeAction,
+  NoticeBody,
+  NoticeIcon,
+  NoticeText,
+  NoticeTitle,
+  Pagination,
+  SearchField,
+  SectionTitle,
+  SectionTitleHeading,
+  Stack,
+  StatusPill,
   TableBody,
   TableCell,
-  TableFooter,
   TableColumn,
+  TableFooter,
   TableHead,
   TableRow,
-} from "../components/data/table/DataTable";
-import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
-import { Pagination } from "../components/navigation/Pagination";
-import { SearchField } from "../components/forms/text/SearchField";
-import { StatusPill, type StatusTone } from "../components/data/marks/StatusPill";
-import { SectionTitle, SectionTitleHeading } from "../components/layout/page/SectionTitle";
+  Toolbar,
+  ToolbarEnd,
+} from "../index";
+import { sampleChrome } from "../components/shell/chrome.sample";
+
+type StatusTone = NonNullable<ComponentProps<typeof StatusPill>["tone"]>;
 
 type Source = {
   id: string;

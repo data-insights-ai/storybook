@@ -44,17 +44,24 @@ module.exports = {
     },
     {
       name: "components-through-their-index",
-      comment: "Another folder reaches a component only through that component's index.ts.",
+      comment: "Another folder reaches a component only through that component's index.ts; a component's own subfolders reach each other directly.",
       severity: "error",
-      from: { path: "^src/components/(.+)/[^/]+$" },
-      to: { path: "^src/components/", pathNot: ["^src/components/$1/", "/index\\.ts$", "\\.css$"] },
+      from: { path: "^src/components/([^/]+/[A-Z][^/]*|[^/]+/[^/]+/[A-Z][^/]*)/" },
+      to: { path: "^src/components/", pathNot: ["^src/components/$1/", "/index\\.ts$", "\\.css$", "\\.sample\\.ts$"] },
+    },
+    {
+      name: "shared-modules-through-their-index",
+      comment: "A shared module outside any component folder reaches other folders only through their index.ts.",
+      severity: "error",
+      from: { path: "^src/components/(.+)/[^/]+$", pathNot: "^src/components/([^/]+/[A-Z]|[^/]+/[^/]+/[A-Z])" },
+      to: { path: "^src/components/", pathNot: ["^src/components/$1/", "/index\\.ts$", "\\.css$", "\\.sample\\.ts$"] },
     },
     {
       name: "screens-through-the-package",
       comment: "Screens import what a product imports: the package root.",
       severity: "error",
       from: { path: "^src/screens" },
-      to: { path: "^src/(components|internal)" },
+      to: { path: "^src/(components|internal)", pathNot: "\\.sample\\.ts$" },
     },
   ],
   options: {

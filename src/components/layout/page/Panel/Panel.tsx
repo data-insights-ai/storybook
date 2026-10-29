@@ -1,5 +1,5 @@
 import { Children, isValidElement, type ReactNode } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./Panel.css";
 
 /**

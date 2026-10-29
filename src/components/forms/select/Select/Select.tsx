@@ -1,6 +1,6 @@
 import type { ReactNode, SelectHTMLAttributes } from "react";
 import { ChevronDown } from "lucide-react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
 import "../../field/Field/Field.css";

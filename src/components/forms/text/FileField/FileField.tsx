@@ -1,6 +1,6 @@
 import { FileText, Upload, X } from "lucide-react";
 import { type DragEvent, useId, useRef, useState } from "react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import { Button } from "../../../actions/Button";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";

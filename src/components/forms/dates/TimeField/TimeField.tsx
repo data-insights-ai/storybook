@@ -3,7 +3,7 @@ import { Clock } from "lucide-react";
 import { type Time, parseTime } from "@internationalized/date";
 import { I18nProvider } from "react-aria-components/I18nProvider";
 import { TimeField as AriaTimeField, DateInput, DateSegment, Label } from "react-aria-components/TimeField";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import "../../field/Field/Field.css";

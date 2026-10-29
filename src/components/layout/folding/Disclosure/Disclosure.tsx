@@ -1,6 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
-import { cx } from "../../../../cx";
+import { cx } from "../../../../internal/cx";
 import "./Disclosure.css";
 
 /**
