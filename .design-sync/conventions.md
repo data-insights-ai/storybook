@@ -2,9 +2,9 @@
 
 The system is a **Register**: the surface is a record, not a dashboard. Everything below follows from that.
 
-### Setup — there is no provider
+### Setup — styles first, then two providers
 
-There is no theme provider and no React context. Components read CSS custom properties from `:root`, so they are styled the moment `styles.css` is loaded. Do not wrap the tree in anything.
+Components read CSS custom properties from `:root`, so they are styled the moment `styles.css` is loaded; nothing has to wrap the tree for them to render. Two providers carry state an app owns. **`ThemeProvider`** themes the document root from the person's choice (`light`, `dark` or `auto`, which follows the device) before the first paint, and `useTheme` reads it back. **`SidebarProvider`** holds whether the `Sidebar` is expanded, for the sidebar family and its trigger. Other contexts (inside `AppShell`, `Page`, `Sidebar`) are internal to their components; a product does not mount them.
 
 Light is the bare `:root` default. Dark is a remap under `[data-theme="dark"]`. **Theme the document root** — that is what a product does:
 
