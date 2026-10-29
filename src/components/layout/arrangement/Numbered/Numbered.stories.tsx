@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Card } from "../../../data/records/Card";
+import { Panel } from "../../page/Panel";
 import { Numbered } from "./Numbered";
 import { Stack } from "../Stack";
 
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <Numbered {...args}>
-      <Card>A numbered block, carrying the register's ordinal.</Card>
+      <Panel>A numbered block, carrying the register's ordinal.</Panel>
     </Numbered>
   ),
   play: async ({ canvasElement }) => {
@@ -37,13 +37,13 @@ export const Run: Story = {
   render: () => (
     <Stack>
       <Numbered index="01">
-        <Card>The session, and what it is allowed to do.</Card>
+        <Panel>The session, and what it is allowed to do.</Panel>
       </Numbered>
       <Numbered index="02">
-        <Card>The channels it reports through.</Card>
+        <Panel>The channels it reports through.</Panel>
       </Numbered>
       <Numbered index="03">
-        <Card>What it measured while doing so.</Card>
+        <Panel>What it measured while doing so.</Panel>
       </Numbered>
     </Stack>
   ),

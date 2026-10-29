@@ -2,7 +2,6 @@ import { LogOut, Mail, ShieldCheck, Webhook } from "lucide-react";
 import {
   Bars,
   Button,
-  Card,
   Channel,
   ChannelSpecs,
   ChannelStatus,
@@ -10,8 +9,6 @@ import {
   Console,
   Grid,
   IconTile,
-  Metric,
-  MetricNote,
   Notice,
   NoticeAction,
   NoticeBody,
@@ -32,6 +29,8 @@ import {
   SessionTag,
   Stack,
   StatusPill,
+  Panel,
+  StatTile,
 } from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
@@ -137,14 +136,9 @@ export function SettingsScreen() {
           </SectionTitle>
         </Numbered>
 
-        <Card>
+        <Panel>
           <Grid min="220px">
-            <Metric label="Notification availability" figure="99.98%">
-              <MetricNote>
-                Availability of the notification service over the last 30 days, across every
-                configured channel.
-              </MetricNote>
-            </Metric>
+            <StatTile label="Notification availability, last 30 days, every channel" value="99.98%" />
             <Bars
               values={days}
               highlight={16}
@@ -153,7 +147,7 @@ export function SettingsScreen() {
               endLabel="Today"
             />
           </Grid>
-        </Card>
+        </Panel>
 
         <SectionTitle>
           <SectionTitleHeading>Security status: checked</SectionTitleHeading>

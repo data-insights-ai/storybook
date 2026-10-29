@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Card } from "../../../data/records/Card";
+import { Panel } from "../../page/Panel";
 import { Stack } from "./Stack";
 
 const meta = {
@@ -21,9 +21,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <Stack {...args}>
-      <Card>One block</Card>
-      <Card>The next block</Card>
-      <Card>And the one after it</Card>
+      <Panel>One block</Panel>
+      <Panel>The next block</Panel>
+      <Panel>And the one after it</Panel>
     </Stack>
   ),
   play: async ({ canvasElement }) => {
@@ -41,9 +41,9 @@ export const Tight: Story = {
   args: { gap: 12 },
   render: (args) => (
     <Stack {...args}>
-      <Card>Source</Card>
-      <Card>Window</Card>
-      <Card>Reviewer</Card>
+      <Panel>Source</Panel>
+      <Panel>Window</Panel>
+      <Panel>Reviewer</Panel>
     </Stack>
   ),
 };
@@ -57,8 +57,8 @@ export const Brand: Story = {
   args: { gap: 64 },
   render: (args) => (
     <Stack {...args}>
-      <Card>The first part of the argument</Card>
-      <Card>The second</Card>
+      <Panel>The first part of the argument</Panel>
+      <Panel>The second</Panel>
     </Stack>
   ),
 };

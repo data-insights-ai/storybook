@@ -12,7 +12,6 @@ import {
 import type { ComponentProps, ReactNode } from "react";
 import {
   Button,
-  Card,
   CellIcon,
   CellLead,
   CellStack,
@@ -40,6 +39,7 @@ import {
   TableRow,
   Toolbar,
   ToolbarEnd,
+  Panel,
 } from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
@@ -238,24 +238,24 @@ export function CoverageScreen() {
             <SectionTitleHeading>Method and collection</SectionTitleHeading>
           </SectionTitle>
           <Grid min="220px">
-            <Card>
+            <Panel>
               <SectionTitle>
                 <SectionTitleHeading>Full history</SectionTitleHeading>
               </SectionTitle>
               <p>Archive data is kept in full, so older entries stay traceable.</p>
-            </Card>
-            <Card>
+            </Panel>
+            <Panel>
               <SectionTitle>
                 <SectionTitleHeading>Automatic matching</SectionTitleHeading>
               </SectionTitle>
               <p>New finds are matched against the watchlist — terms, domains, and identities — and reported.</p>
-            </Card>
-            <Card>
+            </Panel>
+            <Panel>
               <SectionTitle>
                 <SectionTitleHeading>Privacy</SectionTitleHeading>
               </SectionTitle>
               <p>Records are held under the applicable privacy rules. Review uses encrypted logs.</p>
-            </Card>
+            </Panel>
           </Grid>
         </section>
       </Stack>

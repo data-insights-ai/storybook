@@ -10,7 +10,7 @@ import { Fact, FactList } from "../../data/records/FactList";
 const meta = {
   title: "Overlays/Drawer",
   component: Drawer,
-  tags: ["layer:block", "autodocs"],
+  tags: ["layer:block", "autodocs", "status:deprecated"],
   args: {
     index: "03",
     eyebrow: "Source · WS-01",

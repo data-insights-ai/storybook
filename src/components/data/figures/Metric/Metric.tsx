@@ -5,6 +5,8 @@ import "./Metric.css";
 /**
  * One figure on a card. `label` and `figure` are read as text, so they
  * stay props; what the figure is qualified by is a slot.
+ *
+ * @deprecated Removed in 0.10.0. Use `StatTile` without an `index`.
  */
 export function Metric({
   label,
@@ -29,6 +31,9 @@ export function Metric({
  * The line under the figure: the window it covers, the source, the seal.
  * A slot, because each of those is a value the library already draws —
  * a bare string cannot carry the mono track or the mark.
+ *
+ * @deprecated Removed in 0.10.0 with `Metric`. Put what qualifies the figure in
+ * `StatTile`'s children.
  */
 export function MetricNote({ children }: { children: ReactNode }) {
   return <p className="di-metric-note">{children}</p>;

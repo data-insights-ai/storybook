@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Card } from "../../../data/records/Card";
+import { Panel } from "../../page/Panel";
 import { Grid } from "./Grid";
 
 const meta = {
@@ -24,10 +24,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <Grid {...args}>
-      <Card>One</Card>
-      <Card>Two</Card>
-      <Card>Three</Card>
-      <Card>Four</Card>
+      <Panel>One</Panel>
+      <Panel>Two</Panel>
+      <Panel>Three</Panel>
+      <Panel>Four</Panel>
     </Grid>
   ),
   play: async ({ canvasElement }) => {
@@ -41,9 +41,9 @@ export const Wide: Story = {
   args: { min: "300px" },
   render: (args) => (
     <Grid {...args}>
-      <Card>One</Card>
-      <Card>Two</Card>
-      <Card>Three</Card>
+      <Panel>One</Panel>
+      <Panel>Two</Panel>
+      <Panel>Three</Panel>
     </Grid>
   ),
 };

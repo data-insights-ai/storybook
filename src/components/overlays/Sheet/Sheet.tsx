@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { PageSide } from "../../layout/page/pageSide";
 import { focusFirstField } from "../../../internal/shortcutKeys";
 import { useShortcut } from "../../../internal/useShortcut";
+import { cx } from "../../../internal/cx";
 import { useModalDialog } from "../useModalDialog";
 import "./Sheet.css";
 
@@ -12,6 +13,13 @@ type SheetProps = {
   onClose: () => void;
   title: string;
   lede?: string;
+  /**
+   * The ordinal of the row the sheet opened from, in an index column, so
+   * the row and its detail read as one object. Omit for a create or invite.
+   */
+  index?: string;
+  /** A line above the title naming what kind of record it is, such as `Source · WS-01`. */
+  eyebrow?: string;
   /** The close button's accessible name. */
   closeLabel: string;
   /** `md` is a form or a record; `lg` holds a table or two columns; `xl` a record read field by field beside its source. */
@@ -46,7 +54,7 @@ export function SheetFooter({ children }: { children: ReactNode }) {
   return <div className="di-sheet-footer">{children}</div>;
 }
 
-function ModalSheet({ open, onClose, title, lede, closeLabel, size = "md", children }: SheetProps) {
+function ModalSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, size = "md", children }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -75,7 +83,7 @@ function ModalSheet({ open, onClose, title, lede, closeLabel, size = "md", child
       }}
     >
       {open ? (
-        <SheetFrame titleId={titleId} title={title} lede={lede} closeLabel={closeLabel} onClose={onClose}>
+        <SheetFrame titleId={titleId} title={title} lede={lede} index={index} eyebrow={eyebrow} closeLabel={closeLabel} onClose={onClose}>
           {children}
         </SheetFrame>
       ) : null}
@@ -83,7 +91,7 @@ function ModalSheet({ open, onClose, title, lede, closeLabel, size = "md", child
   );
 }
 
-function DockedSheet({ open, onClose, title, lede, closeLabel, children, side }: SheetProps & { side: HTMLElement }) {
+function DockedSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, children, side }: SheetProps & { side: HTMLElement }) {
   const ref = useRef<HTMLElement>(null);
   const titleId = useId();
   const opener = useRef<HTMLElement | null>(null);
@@ -122,7 +130,7 @@ function DockedSheet({ open, onClose, title, lede, closeLabel, children, side }:
         onClose();
       }}
     >
-      <SheetFrame titleId={titleId} title={title} lede={lede} closeLabel={closeLabel} onClose={onClose}>
+      <SheetFrame titleId={titleId} title={title} lede={lede} index={index} eyebrow={eyebrow} closeLabel={closeLabel} onClose={onClose}>
         {children}
       </SheetFrame>
     </section>,
@@ -134,10 +142,12 @@ function SheetFrame({
   titleId,
   title,
   lede,
+  index,
+  eyebrow,
   closeLabel,
   onClose,
   children,
-}: Pick<SheetProps, "title" | "lede" | "closeLabel" | "onClose" | "children"> & { titleId: string }) {
+}: Pick<SheetProps, "title" | "lede" | "index" | "eyebrow" | "closeLabel" | "onClose" | "children"> & { titleId: string }) {
   const footer: ReactNode[] = [];
   const body: ReactNode[] = [];
   Children.forEach(children, (child) => {
@@ -145,9 +155,16 @@ function SheetFrame({
     else body.push(child);
   });
   return (
-    <div className="di-sheet-frame">
+    <div className={cx("di-sheet-frame", index !== undefined && "has-index")}>
+      {index === undefined ? null : (
+        <div className="di-sheet-index">
+          <span className="di-sheet-index-label">{index}</span>
+          <span className="di-sheet-index-rule" aria-hidden />
+        </div>
+      )}
       <header className="di-sheet-head">
         <div className="di-sheet-heading">
+          {eyebrow ? <p className="di-sheet-eyebrow">{eyebrow}</p> : null}
           <h2 className="di-sheet-title" id={titleId}>
             {title}
           </h2>

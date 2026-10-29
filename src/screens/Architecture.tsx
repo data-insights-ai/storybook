@@ -13,8 +13,6 @@ import {
   Grid,
   KeyValue,
   KeyValues,
-  Metric,
-  MetricNote,
   Notice,
   NoticeAction,
   NoticeBody,
@@ -34,6 +32,7 @@ import {
   StageIcon,
   StageTrack,
   StatusPill,
+  StatTile,
 } from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
@@ -151,30 +150,30 @@ export function ArchitectureScreen() {
             <SectionTitleMeta>Updated: today, 08:37 CEST</SectionTitleMeta>
           </SectionTitle>
           <Grid min="220px">
-            <Metric label="API and service status" figure="Version 4.18">
-              <MetricNote>Node 22 LTS</MetricNote>
+            <StatTile label="API and service status" value="Version 4.18">
               <KeyValues>
+                <KeyValue term="Runtime" value="Node 22 LTS" />
                 <KeyValue term="Uptime" value="99.98%" />
                 <KeyValue term="Protocol" value="HTTPS / TLS 1.3" />
                 <KeyValue term="Cluster" value="West-1 · active" />
               </KeyValues>
-            </Metric>
-            <Metric label="Indexing and queue" figure="0 waiting">
-              <MetricNote>No backlog</MetricNote>
+            </StatTile>
+            <StatTile label="Indexing and queue" value="0 waiting">
               <KeyValues>
+                <KeyValue term="Backlog" value="No backlog" />
                 <KeyValue term="Events today" value="19 processed" />
                 <KeyValue term="Queue status" value="Optimal" />
                 <KeyValue term="Sync" value="No errors" />
               </KeyValues>
-            </Metric>
-            <Metric label="Latency and performance" figure="Response 2 ms">
-              <MetricNote>Normal (12%)</MetricNote>
+            </StatTile>
+            <StatTile label="Latency and performance" value="Response 2 ms">
               <KeyValues>
+                <KeyValue term="Load" value="Normal (12%)" />
                 <KeyValue term="Memory" value="1.4 GB / 8 GB" />
                 <KeyValue term="State" value="Stable" />
                 <KeyValue term="24h average" value="3 ms" />
               </KeyValues>
-            </Metric>
+            </StatTile>
           </Grid>
           <Notice>
             <NoticeText>

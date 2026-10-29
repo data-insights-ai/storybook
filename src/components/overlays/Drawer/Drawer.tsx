@@ -14,6 +14,8 @@ import "./Drawer.css";
  * stays inside and a screen reader leaves the page behind alone. With
  * `modal={false}` the register behind stays reachable from the keyboard,
  * for a pane read beside the rows it came from.
+ *
+ * @deprecated Removed in 0.10.0. Use `Sheet` with `index` and `eyebrow`.
  */
 export function Drawer({
   index,
@@ -70,7 +72,11 @@ export function Drawer({
   );
 }
 
-/** The controls at the foot of the pane. */
+/**
+ * The controls at the foot of the pane.
+ *
+ * @deprecated Removed in 0.10.0 with `Drawer`. Use `SheetFooter`.
+ */
 export function DrawerFooter({ children }: { children: ReactNode }) {
   return <div className="di-drawer-footer">{children}</div>;
 }

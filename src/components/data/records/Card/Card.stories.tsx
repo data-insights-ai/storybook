@@ -5,7 +5,7 @@ import { Card } from "./Card";
 const meta = {
   title: "Data/Records/Card",
   component: Card,
-  tags: ["layer:block", "autodocs"],
+  tags: ["layer:block", "autodocs", "status:deprecated"],
   args: {
     padded: true,
     children: "A surface for content. A border, not a shadow, so the console stays flat.",

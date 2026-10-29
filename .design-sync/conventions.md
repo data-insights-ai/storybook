@@ -28,7 +28,7 @@ Build from the components in this system. **If something you need is missing, sa
 
 `Screens/*` are **not** in this bundle. The register, watchlist and other example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `Panel`, `DataTable` and the rest.
 
-A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav. `Console` and `ConsoleFrame` are the same shell inside a Storybook window. They are deprecated and removed in 0.10.0: never use them in a design.
+A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav. `Console` and `ConsoleFrame` are the same shell inside a Storybook window. They are deprecated and removed in 0.10.0: never use them in a design. The same goes for `Card` (use `Panel`), `Metric` (use `StatTile`) and `Drawer` (use `Sheet`).
 
 ### Where a component sits
 
@@ -37,10 +37,10 @@ The Storybook sidebar is grouped by the job a component does:
 - `Foundations/`: the brand, the tokens and the reasoning behind them. No component lives here.
 - `Actions/`: what a person presses: `Button`, `CountButton`, `CopyValue`, `RowActions`, `BulkActionBar`.
 - `Forms/`: labelled controls: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `Switch`, `Checkbox` and the date fields.
-- `Data/`: what a person reads: records (`Card`, `RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`Stat`, `StatTile`, `Metric`), text (`Eyebrow`, `Highlight`, `Kbd`, `CodeBlock`, `PullQuote`) and `DataTable`.
+- `Data/`: what a person reads: records (`RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`Stat`, `StatTile`), text (`Eyebrow`, `Highlight`, `Kbd`, `CodeBlock`, `PullQuote`) and `DataTable`.
 - `Marks/`: what every other component draws with: `Badge`, `StatusPill`, `Chip`, `Tag`, `VersionTag`, `SealValue`, `Icon`, `IconTile`.
 - `Feedback/`: `Notice`, `Toast`, `EmptyState`, `DangerZone`, `Tooltip`, and the loaders, progress bars and skeletons.
-- `Overlays/`: what opens over the page: `Modal`, `ConfirmDialog`, `Drawer`, `Sheet`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
+- `Overlays/`: what opens over the page: `Modal`, `ConfirmDialog`, `Sheet`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
 - `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Menu`, `CommandBar`, `Pagination`, `Stepper`, `TextLink`.
 - `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `Toolbar`, `Accordion`, `Disclosure`.
 - `Charts/`, `Timeline/`, `Inference/`: what a screen measures, what happened when, and what the system inferred.
@@ -50,10 +50,11 @@ The Storybook sidebar is grouped by the job a component does:
 
 | Job | Use | Not |
 | --- | --- | --- |
-| A titled, indexed block of a record | `Panel` | `Card`, which is a plain bordered surface for content that stands on its own |
-| One measured value with its index or trend | `StatTile` | `Stat`, the small labelled figure for a row of them (`StatRow`) |
-| One large figure on a card | `Metric` | |
-| The detail of one row, keeping its index | `Drawer` | `Sheet`, which is for work that needs room: a multi-field create or invite |
+| A block of a record, or a plain bordered surface | `Panel`, with a `title` and an `index` when it is one of a sequence, with neither for a plain surface | `Card`, deprecated |
+| One measured value on its own surface | `StatTile`, with an `index`, a `StatTileDelta` or a `Sparkline` when it has them | `Metric`, deprecated |
+| A small labelled figure set in a row inside something else | `Stat` in a `StatRow` | |
+| The detail of one row | `Sheet` with the row's `index` and an `eyebrow` naming the kind of record | `Drawer`, deprecated |
+| Work that needs more room than an inline form: a multi-field create or invite | `Sheet` | |
 | An irreversible action | `Modal` or `ConfirmDialog` | a modal for anything reversible |
 | A panel dropping from a topbar control | `Flyout` | |
 | Views of one record | `Tabs` | `TabNav`, whose tabs are places with their own URL |
@@ -101,7 +102,7 @@ Rules that make output look native rather than approximate:
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
 - **`--di-font-code` (JetBrains Mono) is for anything a machine wrote**: identifiers, hashes, timestamps, measured values, section numbers. Prose is `--di-font-ui`. Which track a string sits in says where it came from.
 - **Depth is a 1px rule.** Only a detached plane — menu, modal, toast — gets a shadow (`--di-shadow-plane`). No blur behind text.
-- **Indexed records carry a 38px index column** (`--di-index-col`) holding an ordinal or a letter, wherever sequence or record identity matters — panels, tables, drawers, notices. A drawer keeps the ordinal of the row it opened from; a failure keeps its ordinal, tinted. An ordinary form, a first-use empty state, and a panel or `StatTile` that is not one of a sequence (a row of different measures, the facts on one record) omit it; never invent a number to fill a decorative rail.
+- **Indexed records carry a 38px index column** (`--di-index-col`) holding an ordinal or a letter, wherever sequence or record identity matters — panels, tables, sheets opened from a row, notices. A sheet opened from a row keeps that row's ordinal; a failure keeps its ordinal, tinted. An ordinary form, a first-use empty state, and a panel or `StatTile` that is not one of a sequence (a row of different measures, the facts on one record) omit it; never invent a number to fill a decorative rail.
 - Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
 
 ### API shape
@@ -116,7 +117,7 @@ Rules that make output look native rather than approximate:
 - **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. A blocked link (`disabled` or `loading`) drops its `href` and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined in-text control and stays a `<button>` — it is for acting, not for going somewhere.
 - **`Icon` takes one Lucide icon as its child**: `<Icon label="Search"><Search aria-hidden /></Icon>`.
 - **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, poppy), `--di-chart-compare` (the comparison series, cornflower — also `LevelMeter`'s comparison track), `--di-chart-muted`, `--di-chart-band`. An ordered status scale (low → warn → danger: a stacked severity, a meter's zones, a `Distribution` row's `tone`) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Never draw a one-off SVG chart.
-- **A page or section heading is a slot, because it can hold a `Highlight`**: `<PageHeader eyebrow="…" lede="…"><PageHeaderTitle>…</PageHeaderTitle><PageHeaderAside>…</PageHeaderAside></PageHeader>`, and `SectionTitleHeading` / `SectionTitleMeta` the same way. A `Panel`, `Modal` or `Card` title stays a string — the page marks one place, and it is never a panel's title.
+- **A page or section heading is a slot, because it can hold a `Highlight`**: `<PageHeader eyebrow="…" lede="…"><PageHeaderTitle>…</PageHeaderTitle><PageHeaderAside>…</PageHeaderAside></PageHeader>`, and `SectionTitleHeading` / `SectionTitleMeta` the same way. A `Panel`, `Modal` or `Sheet` title stays a string — the page marks one place, and it is never a panel's title.
 - Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first.
 
 ### Exploring a variation
@@ -143,7 +144,7 @@ use, and nothing else.
 | Display | `--di-font-size-1000` | Space Grotesk | 56px | 700 | Brand page title |
 | Title | `--di-font-size-800` | Space Grotesk | 34px | 700 | Brand page section |
 | Page | `--di-font-size-700` | Space Grotesk | 28px | 700 | `PageHeader tier="console"` |
-| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `SectionTitle tier="console"`, `Metric` figure |
+| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `SectionTitle tier="console"` |
 | Brand lede | `--di-font-size-550` | Space Grotesk | 18px | 400 | `PageHeader tier="brand"` lede |
 | Lede | `--di-font-size-500` | Space Grotesk | 16px | 400 | Section lede, a stated fact |
 | **Body** | `--di-font-size-400` | Space Grotesk | **13px** | 400 | The console body — `base.css` |
@@ -185,9 +186,9 @@ primary action, the command bar, the tab strip. 40 is a table row.
 
 **The index column** — 38px (`--di-index-col`), or 26px (`--di-index-col-sm`)
 where the block is too short to give up the full width. It is carried by
-`Panel`, `DataTable`, `Drawer`, `Notice`, `EmptyState`, `Modal`, `SignIn`,
-`StatTile` and `SkeletonTable`. `Card`, `Toast`, `Stage`, `Session` and `Metric`
-carry none — they report, they are not entries.
+`Panel`, `DataTable`, `Sheet` (opened from a row), `Notice`, `EmptyState`, `Modal`,
+`SignIn`, `StatTile` and `SkeletonTable`. `Toast`, `Stage` and `Session` carry
+none — they report, they are not entries.
 
 ### What this system refuses
 
@@ -303,4 +304,4 @@ else, which is what keeps the tier honest.
 
 `TableHead` holds `TableColumn` (props: `index`, `sort`, `align`) — there is no `as="th"`. `TableRow` takes `active` and `tone`; `TableCell` takes `align` and `mono`. A cell's lead is `CellLead` + `CellIcon` + `CellStack`.
 
-**A line that reports a measured value is a slot, not a string.** A count, a timestamp, a version, a delta, a caveat or a basis routinely arrives sealed, in the mono track, or with a state beside it, and a `string` prop can carry none of that. These are the slots: `PanelMeta`, `StageFooter`, `ExplainFooter`, `MetricNote`, `RecordCount`, `SessionDetail`, `StatTileDelta`, `LivingBasis`, `SignInVersion`. Text a person reads as prose — `title`, `label`, `caption`, `legend`, `body`, and every `*Label` accessible name — stays a string prop.
+**A line that reports a measured value is a slot, not a string.** A count, a timestamp, a version, a delta, a caveat or a basis routinely arrives sealed, in the mono track, or with a state beside it, and a `string` prop can carry none of that. These are the slots: `PanelMeta`, `StageFooter`, `ExplainFooter`, `RecordCount`, `SessionDetail`, `StatTileDelta`, `LivingBasis`, `SignInVersion`. Text a person reads as prose — `title`, `label`, `caption`, `legend`, `body`, and every `*Label` accessible name — stays a string prop.

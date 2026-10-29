@@ -61,6 +61,50 @@
     height: 100%;
   }
 
+  /* The index column runs the full height beside the head, the body and the footer. */
+  .di-sheet-frame.has-index {
+    display: grid;
+    grid-template-columns: var(--di-index-col) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .di-sheet-frame.has-index > :not(.di-sheet-index) {
+    grid-column: 2;
+  }
+
+  .di-sheet-index {
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--di-space-16) 0;
+    border-right: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+  }
+
+  .di-sheet-index-label {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-subtle);
+  }
+
+  .di-sheet-index-rule {
+    width: 1px;
+    flex: 1;
+    margin-top: var(--di-space-8);
+    background: var(--di-rule);
+  }
+
+  .di-sheet-eyebrow {
+    margin-bottom: var(--di-space-4);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    letter-spacing: var(--di-tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--di-text-subtle);
+  }
+
   .di-sheet-head {
     display: flex;
     align-items: flex-start;

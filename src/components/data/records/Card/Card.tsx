@@ -7,6 +7,9 @@ import "./Card.css";
  * other cards. `padded` gives it the card's inner spacing; turn it off when
  * what it holds brings its own. A titled, indexed block of a record is a
  * `Panel`.
+ *
+ * @deprecated Removed in 0.10.0. Use `Panel`: with no `index` and no `title` it
+ * draws the same surface, and `padded` works the same way.
  */
 export function Card({
   className,
