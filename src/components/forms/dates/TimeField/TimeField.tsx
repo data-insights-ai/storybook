@@ -1,25 +1,12 @@
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { Clock } from "lucide-react";
-import { type Time, parseTime } from "@internationalized/date";
-import { I18nProvider } from "react-aria-components/I18nProvider";
-import { TimeField as AriaTimeField, DateInput, DateSegment, Label } from "react-aria-components/TimeField";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
+import { SegmentedInput, emptySegmentLabels } from "../segments";
 import "../../field/Field/Field.css";
 import "../Calendar.css";
 import "../DateField/DateField.css";
-
-function timeOf(value: string): Time | null {
-  if (!value) return null;
-  try {
-    return parseTime(value);
-  } catch {
-    return null;
-  }
-}
-
-const twoDigits = (n: number) => String(n).padStart(2, "0");
 
 /**
  * A time of day in hours and minutes, typed in segments: 24 or 12 hours as
@@ -40,6 +27,7 @@ export function TimeField({
   disabled = false,
   readOnly = false,
   required = false,
+  emptyLabel = emptySegmentLabels.en,
   className,
   children,
 }: {
@@ -62,40 +50,52 @@ export function TimeField({
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
+  /** What a screen reader says for an empty segment; `emptySegmentLabels` has it in English, German and Spanish. */
+  emptyLabel?: string;
   className?: string;
   /** Slot beside the label. */
   children?: ReactNode;
 }) {
+  const labelId = `${useId()}-label`;
   const invalid = hint !== "" && hintTone === "error";
+  const describedBy = hint === "" ? undefined : `${id}-hint`;
   return (
-    <I18nProvider locale={locale}>
-      <AriaTimeField
+    <div className={cx("di-field", "di-time-field", className)}>
+      <div className={cx("di-field-row", hideLabel && "di-sr")}>
+        <span id={labelId} className={cx("di-field-label", `di-field-label-${labelTrack}`)}>
+          {label}
+        </span>
+        {children}
+      </div>
+      <div
         id={id}
-        className={cx("di-field", "di-time-field", className)}
-        value={timeOf(value)}
-        onChange={(time) => onChange(time ? `${twoDigits(time.hour)}:${twoDigits(time.minute)}` : "")}
-        name={name}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        isRequired={required}
-        isInvalid={invalid}
-        shouldForceLeadingZeros
-        aria-describedby={hint === "" ? undefined : `${id}-hint`}
+        role="group"
+        aria-labelledby={labelId}
+        aria-describedby={describedBy}
+        className="di-control di-date-control"
+        data-disabled={disabled || undefined}
+        data-invalid={invalid || undefined}
       >
-        <div className={cx("di-field-row", hideLabel && "di-sr")}>
-          <Label className={cx("di-field-label", `di-field-label-${labelTrack}`)}>{label}</Label>
-          {children}
-        </div>
-        <div className="di-control di-date-control">
-          <DateInput className="di-date-input">
-            {(segment) => <DateSegment segment={segment} className="di-date-segment" />}
-          </DateInput>
-          <Clock className="di-time-field-icon" aria-hidden />
-        </div>
-        <FieldHint id={`${id}-hint`} tone={hintTone}>
-          {hint}
-        </FieldHint>
-      </AriaTimeField>
-    </I18nProvider>
+        <SegmentedInput
+          kind="time"
+          className="di-date-input"
+          locale={locale}
+          value={value}
+          onChange={onChange}
+          labelledBy={labelId}
+          describedBy={describedBy}
+          name={name}
+          invalid={invalid}
+          disabled={disabled}
+          readOnly={readOnly}
+          required={required}
+          emptyLabel={emptyLabel}
+        />
+        <Clock className="di-time-field-icon" aria-hidden />
+      </div>
+      <FieldHint id={`${id}-hint`} tone={hintTone}>
+        {hint}
+      </FieldHint>
+    </div>
   );
 }

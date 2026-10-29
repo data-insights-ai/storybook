@@ -1,4 +1,11 @@
-import { type CalendarDate, fromAbsolute, startOfMonth, toCalendarDate, toZoned } from "@internationalized/date";
+import {
+  type CalendarDate,
+  fromAbsolute,
+  parseDate,
+  startOfMonth,
+  toCalendarDate,
+  toZoned,
+} from "@internationalized/date";
 
 /** The periods a list offers in one click, newest first. */
 export const dateRangePresets = ["24h", "7d", "30d", "thisMonth", "lastMonth"] as const;
@@ -93,4 +100,14 @@ export function isDateRangeSet(value: DateRangeValue): boolean {
 export function weekStartName(weekStartsOn: number): "sun" | "mon" | "tue" | "wed" | "thu" | "fri" | "sat" {
   const names = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"] as const;
   return names[((Math.trunc(weekStartsOn) % 7) + 7) % 7];
+}
+
+/** A typed calendar day (`YYYY-MM-DD`), or null while it is empty, partial or not a day. */
+export function parseTypedDate(text: string): CalendarDate | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return null;
+  try {
+    return parseDate(text);
+  } catch {
+    return null;
+  }
 }

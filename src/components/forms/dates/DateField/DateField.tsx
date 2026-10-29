@@ -1,26 +1,14 @@
-import { useRef, useState, type ReactNode } from "react";
-import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
-import { type CalendarDate, parseDate } from "@internationalized/date";
-import {
-  Button as AriaButton,
-  Calendar,
-  CalendarCell,
-  CalendarGrid,
-  DateInput,
-  DatePicker,
-  DateSegment,
-  Group,
-  Label,
-  Popover,
-} from "react-aria-components/DatePicker";
-import { Dialog } from "react-aria-components/Dialog";
-import { Heading } from "react-aria-components/Heading";
-import { I18nProvider } from "react-aria-components/I18nProvider";
+import { useId, useRef, useState, type ReactNode } from "react";
+import { CalendarDays } from "lucide-react";
+import { getLocalTimeZone, today } from "@internationalized/date";
+import { Popover } from "@base-ui/react/popover";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
-import { weekStartName } from "../dateRange";
+import { MonthCalendar } from "../calendar";
+import { SegmentedInput, emptySegmentLabels } from "../segments";
+import { parseTypedDate } from "../dateRange";
 import "../../field/Field/Field.css";
 import "../Calendar.css";
 import "./DateField.css";
@@ -38,22 +26,13 @@ export const defaultDateFieldLabels = {
   next: "Next month",
 } satisfies DateFieldLabels;
 
-function calendarDate(value: string | undefined): CalendarDate | null {
-  if (!value) return null;
-  try {
-    return parseDate(value);
-  } catch {
-    return null;
-  }
-}
-
 /**
  * One day, typed or picked. The day, month and year are typed in segments in
  * the order of the `locale`; the button at the end opens a month calendar in
  * the same look as `DateRangePicker`. The value is an ISO day (`2026-10-29`)
- * or empty, as a native date input gives it, so it can replace one. React
- * Aria owns the segments, the popover and the calendar grid: arrows move by
- * day, Page Up and Page Down by month, Enter picks, Esc closes.
+ * or empty, as a native date input gives it, so it can replace one. In the
+ * calendar arrows move by day, Page Up and Page Down by month, Home and End
+ * to the month's first and last day, Enter picks, Esc closes.
  */
 export function DateField({
   id,
@@ -73,6 +52,7 @@ export function DateField({
   readOnly = false,
   required = false,
   labels: labelOverrides = {},
+  emptyLabel = emptySegmentLabels.en,
   className,
   children,
 }: {
@@ -102,78 +82,108 @@ export function DateField({
   readOnly?: boolean;
   required?: boolean;
   labels?: Partial<DateFieldLabels>;
+  /** What a screen reader says for an empty segment; `emptySegmentLabels` has it in English, German and Spanish. */
+  emptyLabel?: string;
   className?: string;
   /** Slot beside the label. */
   children?: ReactNode;
 }) {
   const labels = { ...defaultDateFieldLabels, ...labelOverrides };
-  const root = useRef<HTMLDivElement>(null);
+  const labelId = `${useId()}-label`;
+  const control = useRef<HTMLDivElement>(null);
+  const popup = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const { host, update } = useOverlayHost(root, open);
+  const { host, update } = useOverlayHost(control, open);
   const invalid = hint !== "" && hintTone === "error";
+  const describedBy = hint === "" ? undefined : `${id}-hint`;
+  const day = parseTypedDate(value);
   return (
-    <I18nProvider locale={locale}>
-      <DatePicker
-        ref={root}
-        id={id}
-        className={cx("di-field", "di-date-field", className)}
-        value={calendarDate(value)}
-        onChange={(day) => onChange(day ? day.toString() : "")}
-        minValue={calendarDate(min)}
-        maxValue={calendarDate(max)}
-        firstDayOfWeek={weekStartName(weekStartsOn)}
-        name={name}
-        isDisabled={disabled}
-        isReadOnly={readOnly}
-        isRequired={required}
-        isInvalid={invalid}
-        shouldForceLeadingZeros
-        aria-describedby={hint === "" ? undefined : `${id}-hint`}
-        onOpenChange={(next) => {
-          if (next) update();
-          setOpen(next);
-        }}
-      >
+    <Popover.Root
+      open={open}
+      onOpenChange={(next) => {
+        if (next) update();
+        setOpen(next);
+      }}
+    >
+      <div className={cx("di-field", "di-date-field", className)}>
         <div className={cx("di-field-row", hideLabel && "di-sr")}>
-          <Label className={cx("di-field-label", `di-field-label-${labelTrack}`)}>{label}</Label>
+          <span id={labelId} className={cx("di-field-label", `di-field-label-${labelTrack}`)}>
+            {label}
+          </span>
           {children}
         </div>
-        <Group className="di-control di-date-control">
-          <DateInput className="di-date-input">
-            {(segment) => <DateSegment segment={segment} className="di-date-segment" />}
-          </DateInput>
-          <AriaButton className="di-date-field-toggle" aria-label={labels.calendar}>
+        <div
+          ref={control}
+          id={id}
+          role="group"
+          aria-labelledby={labelId}
+          aria-describedby={describedBy}
+          className="di-control di-date-control"
+          data-disabled={disabled || undefined}
+          data-invalid={invalid || undefined}
+        >
+          <SegmentedInput
+            kind="date"
+            className="di-date-input"
+            locale={locale}
+            value={value}
+            onChange={onChange}
+            labelledBy={labelId}
+            describedBy={describedBy}
+            name={name}
+            invalid={invalid}
+            disabled={disabled}
+            readOnly={readOnly}
+            required={required}
+            emptyLabel={emptyLabel}
+          />
+          <Popover.Trigger
+            className="di-date-field-toggle"
+            aria-label={labels.calendar}
+            disabled={disabled || readOnly}
+          >
             <CalendarDays aria-hidden />
-          </AriaButton>
-        </Group>
+          </Popover.Trigger>
+        </div>
         <FieldHint id={`${id}-hint`} tone={hintTone}>
           {hint}
         </FieldHint>
-        <Popover
-          className="di-date-field-popover"
+      </div>
+      <Popover.Portal container={host.container}>
+        <Popover.Positioner
+          anchor={control}
           data-theme={host.theme}
-          UNSTABLE_portalContainer={host.container}
-          placement="bottom start"
-          offset={4}
+          side="bottom"
+          align="start"
+          sideOffset={4}
+          style={{ zIndex: 100 }}
         >
-          <Dialog className="di-date-field-dialog" aria-label={labels.calendar}>
-            <Calendar className="di-date-field-calendar">
-              <header className="di-calendar-head">
-                <AriaButton slot="previous" className="di-calendar-nav" aria-label={labels.previous}>
-                  <ChevronLeft aria-hidden />
-                </AriaButton>
-                <Heading className="di-calendar-heading" />
-                <AriaButton slot="next" className="di-calendar-nav" aria-label={labels.next}>
-                  <ChevronRight aria-hidden />
-                </AriaButton>
-              </header>
-              <CalendarGrid className="di-calendar-grid">
-                {(date) => <CalendarCell date={date} className="di-calendar-cell" />}
-              </CalendarGrid>
-            </Calendar>
-          </Dialog>
-        </Popover>
-      </DatePicker>
-    </I18nProvider>
+          <Popover.Popup
+            ref={popup}
+            className="di-date-field-popover"
+            aria-label={labels.calendar}
+            initialFocus={() => popup.current?.querySelector<HTMLElement>('[role="grid"] [tabindex="0"]') ?? true}
+          >
+            <div className="di-date-field-dialog">
+              <MonthCalendar
+                className="di-date-field-calendar"
+                locale={locale}
+                weekStartsOn={weekStartsOn}
+                today={today(getLocalTimeZone())}
+                min={parseTypedDate(min ?? "")}
+                max={parseTypedDate(max ?? "")}
+                selected={day ? { start: day, end: day } : null}
+                focusDay={day ?? today(getLocalTimeZone())}
+                onSelect={({ start }) => {
+                  onChange(start.toString());
+                  setOpen(false);
+                }}
+                labels={labels}
+              />
+            </div>
+          </Popover.Popup>
+        </Popover.Positioner>
+      </Popover.Portal>
+    </Popover.Root>
   );
 }

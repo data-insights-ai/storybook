@@ -32,16 +32,16 @@
     height: 16px;
   }
 
-  .di-calendar-nav[data-hovered] {
+  .di-calendar-nav:hover:where(:not(:disabled)) {
     border-color: var(--di-border);
   }
 
-  .di-calendar-nav[data-focus-visible] {
+  .di-calendar-nav:focus-visible {
     outline: 2px solid var(--di-focus);
     outline-offset: 1px;
   }
 
-  .di-calendar-nav[data-disabled] {
+  .di-calendar-nav:disabled {
     color: var(--di-text-disabled);
     cursor: default;
   }
@@ -66,7 +66,12 @@
     place-items: center;
     width: var(--di-h-ctl);
     height: var(--di-h-ctl);
+    margin: 0;
+    padding: 0;
+    border: 0;
     border-radius: var(--di-radius-micro);
+    background: transparent;
+    color: inherit;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
     font-variant-numeric: tabular-nums;
@@ -74,11 +79,7 @@
     outline: none;
   }
 
-  .di-calendar-cell[data-outside-month] {
-    visibility: hidden;
-  }
-
-  .di-calendar-cell[data-hovered] {
+  .di-calendar-cell:hover:where(:not(:disabled)) {
     background: var(--di-bg-page);
   }
 
@@ -91,13 +92,12 @@
     color: var(--di-text-on-strong);
   }
 
-  .di-calendar-cell[data-unavailable],
   .di-calendar-cell[data-disabled] {
     color: var(--di-text-disabled);
     cursor: default;
   }
 
-  .di-calendar-cell[data-focus-visible] {
+  .di-calendar-cell:focus-visible {
     outline: 2px solid var(--di-focus);
     outline-offset: -2px;
   }
@@ -105,6 +105,11 @@
   .di-date-input {
     display: inline-flex;
     align-items: center;
+    font-family: var(--di-font-code);
+  }
+
+  /* A typed field that is also a .di-control keeps the code face whichever sheet loads last. */
+  .di-control.di-date-input {
     font-family: var(--di-font-code);
   }
 
@@ -123,7 +128,7 @@
     color: var(--di-text-subtle);
   }
 
-  .di-date-segment[data-focused] {
+  .di-date-segment:focus {
     background: var(--di-fill-strong);
     color: var(--di-text-on-strong);
   }

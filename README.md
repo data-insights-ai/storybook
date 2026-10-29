@@ -46,7 +46,7 @@ import { Button } from "@data-insights-ai/ui";
 
 Import the stylesheet once. It carries the tokens, the base rules, and the woff2 faces. Importing a component pulls in that component and its own stylesheet, and leaves the unused components out. The app supplies React 18.3 or newer. Strings are props. `data-theme="dark"` on a parent switches the semantic tokens.
 
-The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. React Aria (in the date and time fields) adds one style element for pressable controls; give it the page's nonce in `<meta property="csp-nonce" content="…">` and allow `style-src 'self' 'nonce-…'`.
+The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
 ## Context and repeated views
 
@@ -87,7 +87,7 @@ Gold is one moment per view: the tittle in the mark, or the page eyebrow. Paused
 
 Sansation is display and figures. IBM Plex Sans is the interface. IBM Plex Mono is identifiers, timestamps, and eyebrows.
 
-Buttons, fields, and tables are native elements. Where a control needs roving focus or a popup beyond that, the headless library is Base UI (`@base-ui/react`); `react-aria-components` still draws the date and time fields until they move to Base UI.
+Buttons, fields, and tables are native elements. Where a control needs roving focus or a popup beyond that, the headless library is Base UI (`@base-ui/react`), the only one. The date calendars draw their month grid with `react-day-picker`; the typed day and time segments are the package's own.
 
 Component stories take string args, so Controls can change the copy. Icons, actions, table cells, and other elements are children, filled in `render`, not edited as controls. Stories are in English. The Get started checklist in the sidebar is turned off.
 

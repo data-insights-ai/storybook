@@ -44,7 +44,7 @@
     "@internationalized/date": "^3.12.4",
     "@tanstack/react-virtual": "3.14.17",
     "lucide-react": "^0.544.0",
-    "react-aria-components": "1.22.1",
+    "react-day-picker": "10.0.2",
     "recharts": "^3.10.1"
   },
   "peerDependencies": {

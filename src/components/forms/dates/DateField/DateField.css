@@ -50,17 +50,17 @@
     height: 16px;
   }
 
-  .di-date-field-toggle[data-hovered] {
+  .di-date-field-toggle:hover:where(:not(:disabled)) {
     border-color: var(--di-border);
     color: var(--di-text);
   }
 
-  .di-date-field-toggle[data-focus-visible] {
+  .di-date-field-toggle:focus-visible {
     outline: 2px solid var(--di-focus);
     outline-offset: -2px;
   }
 
-  .di-date-field-toggle[data-disabled] {
+  .di-date-field-toggle:disabled {
     color: var(--di-text-disabled);
     cursor: not-allowed;
   }
@@ -87,7 +87,7 @@
     box-shadow: var(--di-shadow-plane);
   }
 
-  .di-date-field-popover[data-entering] {
+  .di-date-field-popover[data-open] {
     animation: di-date-field-drop var(--di-duration) var(--di-ease);
   }
 

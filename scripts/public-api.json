@@ -306,6 +306,7 @@
     "dateRangePresets",
     "defaultDateFieldLabels",
     "defaultDateRangeLabels",
+    "emptySegmentLabels",
     "heldCount",
     "isDateRangeSet",
     "parseDateRange",

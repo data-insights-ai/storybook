@@ -1,15 +1,5 @@
-import { type CalendarDate, type Time, parseDate, toCalendarDateTime, toZoned } from "@internationalized/date";
-import type { DateRangeValue } from "../dateRange";
-
-/** A typed calendar day (`YYYY-MM-DD`), or null while it is empty, partial or not a day. */
-export function parseTypedDate(text: string): CalendarDate | null {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return null;
-  try {
-    return parseDate(text);
-  } catch {
-    return null;
-  }
-}
+import { type CalendarDate, type Time, toCalendarDateTime, toZoned } from "@internationalized/date";
+import { type DateRangeValue, parseTypedDate } from "../dateRange";
 
 export type TypedRange = {
   from: string;

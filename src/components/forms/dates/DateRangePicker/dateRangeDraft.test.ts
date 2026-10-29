@@ -1,6 +1,7 @@
 import { parseDate, Time } from "@internationalized/date";
 import { describe, expect, it } from "vitest";
-import { openEndedRange, parseTypedDate, typedDraft } from "./dateRangeDraft";
+import { openEndedRange, typedDraft } from "./dateRangeDraft";
+import { parseTypedDate } from "../dateRange";
 
 describe("typed dates", () => {
   it("reads a whole day and nothing else, without throwing", () => {

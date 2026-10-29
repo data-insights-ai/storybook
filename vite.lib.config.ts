@@ -33,8 +33,7 @@ export default defineConfig({
           id.startsWith("react/") ||
           id === "lucide-react" ||
           id.startsWith("@base-ui/react/") ||
-          id === "react-aria-components" ||
-          id.startsWith("react-aria-components/") ||
+          id === "react-day-picker" ||
           id === "@tanstack/react-virtual" ||
           id === "@internationalized/date" ||
           id === "recharts" ||

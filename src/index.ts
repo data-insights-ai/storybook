@@ -44,6 +44,7 @@ export { DateField, defaultDateFieldLabels } from "./components/forms/dates/Date
 export type { DateFieldLabels } from "./components/forms/dates/DateField";
 export { DateRangePicker, defaultDateRangeLabels } from "./components/forms/dates/DateRangePicker";
 export type { DateRangeLabels } from "./components/forms/dates/DateRangePicker";
+export { emptySegmentLabels } from "./components/forms/dates/segments";
 export {
   dateRangePresets,
   isDateRangeSet,

@@ -13,16 +13,16 @@
     cursor: pointer;
   }
 
-  .di-date-range[data-hovered]:not([data-disabled]) {
+  .di-date-range:hover:not(:disabled) {
     border-color: var(--di-border-strong);
   }
 
-  .di-date-range[data-focus-visible] {
+  .di-date-range:focus-visible {
     outline: 2px solid var(--di-focus);
     outline-offset: 1px;
   }
 
-  .di-date-range[data-disabled] {
+  .di-date-range:disabled {
     background: var(--di-bg-disabled);
     color: var(--di-text-disabled);
     cursor: not-allowed;
@@ -55,7 +55,7 @@
     box-shadow: var(--di-shadow-plane);
   }
 
-  .di-date-range-popover[data-entering] {
+  .di-date-range-popover[data-open] {
     animation: di-date-range-drop var(--di-duration) var(--di-ease);
   }
 
@@ -93,7 +93,7 @@
     cursor: pointer;
   }
 
-  .di-date-range-preset[data-hovered] {
+  .di-date-range-preset:hover {
     background: var(--di-bg-page);
   }
 
@@ -103,7 +103,7 @@
     font-weight: 600;
   }
 
-  .di-date-range-preset[data-focus-visible] {
+  .di-date-range-preset:focus-visible {
     outline: 2px solid var(--di-focus);
     outline-offset: -2px;
   }
@@ -157,7 +157,7 @@
     width: auto;
   }
 
-  .di-date-range-time-input[data-focus-within] {
+  .di-date-range-time-input:focus-within {
     border-color: var(--di-focus);
   }
 
@@ -193,16 +193,14 @@
     position: fixed;
     inset: 0;
     z-index: 100;
-    display: flex;
-    align-items: flex-end;
     background: var(--di-scrim);
   }
 
-  .di-date-range-scrim[data-entering] {
+  .di-date-range-scrim[data-open] {
     animation: di-date-range-fade var(--di-duration-slow) var(--di-ease);
   }
 
-  .di-date-range-scrim[data-exiting] {
+  .di-date-range-scrim[data-ending-style] {
     animation: di-date-range-fade var(--di-duration) var(--di-ease) reverse;
   }
 
@@ -213,6 +211,9 @@
   }
 
   .di-date-range-sheet {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 100;
     display: flex;
     width: 100%;
     max-height: 92dvh;
@@ -229,11 +230,11 @@
     transition: none;
   }
 
-  .di-date-range-sheet[data-entering] {
+  .di-date-range-sheet[data-open] {
     animation: di-date-range-rise var(--di-duration-slow) var(--di-ease);
   }
 
-  .di-date-range-sheet[data-exiting] {
+  .di-date-range-sheet[data-ending-style] {
     animation: di-date-range-rise var(--di-duration) var(--di-ease) reverse;
   }
 
