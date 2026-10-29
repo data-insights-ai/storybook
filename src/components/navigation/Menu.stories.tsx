@@ -7,7 +7,7 @@ import { DataTable, TableBody, TableCell, TableRow } from "../data/table/DataTab
 import { Menu, MenuDivider, MenuGroup, MenuItem } from "./Menu";
 
 const meta = {
-  title: "Blocks/Menu",
+  title: "Navigation/Menu",
   component: Menu,
   tags: ["layer:block", "autodocs"],
   args: {

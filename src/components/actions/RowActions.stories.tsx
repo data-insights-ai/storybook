@@ -6,7 +6,7 @@ import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } fro
 import { RowActions } from "./RowActions";
 
 const meta = {
-  title: "Blocks/RowActions",
+  title: "Actions/RowActions",
   component: RowActions,
   tags: ["layer:block", "autodocs"],
   args: { children: null },

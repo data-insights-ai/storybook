@@ -8,7 +8,7 @@ import { VersionTag } from "../../data/marks/VersionTag";
 import { TextLink } from "../../navigation/TextLink";
 
 const meta = {
-  title: "Blocks/SignIn",
+  title: "Shell/SignIn",
   component: SignIn,
   tags: ["layer:block", "autodocs"],
   parameters: { layout: "fullscreen", docs: { story: { inline: false, height: "720px" } } },

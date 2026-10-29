@@ -4,7 +4,7 @@ import { CopyValue } from "./CopyValue";
 import { Fact, FactList } from "../data/FactList";
 
 const meta = {
-  title: "Primitives/CopyValue",
+  title: "Actions/CopyValue",
   component: CopyValue,
   tags: ["layer:primitive", "autodocs"],
   args: {

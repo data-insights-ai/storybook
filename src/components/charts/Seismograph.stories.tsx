@@ -16,7 +16,7 @@ const points: SeismographPoint[] = [
 const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 
 const meta = {
-  title: "Blocks/Seismograph",
+  title: "Charts/Seismograph",
   tags: ["layer:block"],
   component: Seismograph,
   args: {

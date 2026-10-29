@@ -7,7 +7,7 @@ import { RouteProgress } from "./RouteProgress";
 import { SkeletonPage } from "./SkeletonPage";
 
 const meta = {
-  title: "Primitives/Waiting/RouteProgress",
+  title: "Feedback/Waiting/RouteProgress",
   component: RouteProgress,
   tags: ["layer:primitive", "autodocs"],
   args: { active: true, label: "Loading page", delay: 150 },

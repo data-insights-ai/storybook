@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { VersionTag } from "./VersionTag";
 
 const meta = {
-  title: "Primitives/VersionTag",
+  title: "Data/Marks/VersionTag",
   component: VersionTag,
   tags: ["layer:primitive", "autodocs"],
   args: { children: "v4.18.2" },

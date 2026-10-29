@@ -3,7 +3,7 @@ import { expect, waitFor, within } from "storybook/test";
 import { SkeletonPage } from "./SkeletonPage";
 
 const meta = {
-  title: "Primitives/Waiting/SkeletonPage",
+  title: "Feedback/Waiting/SkeletonPage",
   component: SkeletonPage,
   tags: ["layer:primitive", "autodocs"],
   args: { variant: "list", label: "Loading the page", rows: 6, heading: true, delay: 150 },

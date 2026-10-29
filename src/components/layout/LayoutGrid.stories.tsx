@@ -4,7 +4,7 @@ import { Card } from "../data/Card";
 import { Grid } from "./Layout";
 
 const meta = {
-  title: "Patterns/Layout/Grid",
+  title: "Layout/Arrangement/Grid",
   component: Grid,
   tags: ["layer:pattern", "autodocs"],
   args: { min: "180px", children: null },

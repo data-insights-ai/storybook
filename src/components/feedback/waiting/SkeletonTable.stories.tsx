@@ -16,7 +16,7 @@ import { SkeletonTable } from "./SkeletonTable";
 import { StatusPill } from "../../data/marks/StatusPill";
 
 const meta = {
-  title: "Primitives/Waiting/Skeleton",
+  title: "Feedback/Waiting/SkeletonTable",
   component: SkeletonTable,
   tags: ["layer:primitive", "autodocs"],
   args: { rows: 5, label: "Loading the register" },

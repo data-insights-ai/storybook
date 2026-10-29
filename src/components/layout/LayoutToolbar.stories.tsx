@@ -8,7 +8,7 @@ import { Select } from "../forms/Select";
 import { TextField } from "../forms/TextField";
 
 const meta = {
-  title: "Patterns/Layout/Toolbar",
+  title: "Layout/Arrangement/Toolbar",
   component: Toolbar,
   tags: ["layer:pattern", "autodocs"],
   args: { children: null },

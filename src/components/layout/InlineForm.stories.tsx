@@ -6,7 +6,7 @@ import { Select } from "../forms/Select";
 import { TextField } from "../forms/TextField";
 
 const meta = {
-  title: "Patterns/Layout/InlineForm",
+  title: "Layout/Arrangement/InlineForm",
   component: InlineForm,
   tags: ["layer:pattern", "autodocs"],
   args: { children: null },

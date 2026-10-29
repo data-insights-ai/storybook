@@ -8,7 +8,7 @@ import { Select } from "../forms/Select";
 import { TextField } from "../forms/TextField";
 
 const meta = {
-  title: "Blocks/DetailSection",
+  title: "Layout/Page/DetailSection",
   component: DetailSection,
   tags: ["layer:block", "autodocs"],
   args: {

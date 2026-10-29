@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Bars } from "./Bars";
 
 const meta = {
-  title: "Primitives/Bars",
+  title: "Charts/Bars",
   component: Bars,
   tags: ["layer:primitive", "autodocs"],
   args: {

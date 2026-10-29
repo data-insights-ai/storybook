@@ -32,7 +32,7 @@ import { Icon } from "./Icon";
 import { IconSet } from "../../../foundations/guide/IconSet";
 
 const meta = {
-  title: "Primitives/Icon",
+  title: "Data/Marks/Icon",
   tags: ["layer:primitive"],
   component: Icon,
   args: {

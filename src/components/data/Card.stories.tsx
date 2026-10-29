@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Card } from "./Card";
 
 const meta = {
-  title: "Blocks/Card",
+  title: "Data/Records/Card",
   component: Card,
   tags: ["layer:block", "autodocs"],
   args: {

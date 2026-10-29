@@ -5,7 +5,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { CommandBar, CommandChip, CommandGroup, CommandRow } from "./CommandBar";
 
 const meta = {
-  title: "Blocks/CommandBar",
+  title: "Navigation/CommandBar",
   component: CommandBar,
   tags: ["layer:block", "autodocs"],
   args: {

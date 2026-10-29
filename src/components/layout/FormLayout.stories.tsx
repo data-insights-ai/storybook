@@ -7,7 +7,7 @@ import { Select } from "../forms/Select";
 import { TextField } from "../forms/TextField";
 
 const meta = {
-  title: "Patterns/Layout/FieldStack",
+  title: "Layout/Arrangement/FieldStack",
   component: FieldStack,
   tags: ["layer:pattern", "autodocs"],
   args: { children: null },

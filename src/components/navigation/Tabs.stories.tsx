@@ -4,7 +4,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { TabPanel, Tabs } from "./Tabs";
 
 const meta = {
-  title: "Blocks/Tabs",
+  title: "Navigation/Tabs",
   component: Tabs,
   tags: ["layer:block", "autodocs"],
   args: {

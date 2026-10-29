@@ -14,7 +14,7 @@ const days = [
 ];
 
 const meta = {
-  title: "Forms/ToggleGroup",
+  title: "Forms/Choice/ToggleGroup",
   component: ToggleGroup,
   tags: ["layer:form", "autodocs"],
   args: { legend: "Days", options: days, value: [], onChange: () => {} },

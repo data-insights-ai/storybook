@@ -12,7 +12,7 @@ import { Sheet, SheetFooter } from "../overlays/Sheet";
 import { Page, PageAside } from "./Page";
 
 const meta = {
-  title: "Patterns/Layout/Page",
+  title: "Layout/Page/Page",
   component: Page,
   tags: ["layer:pattern", "autodocs"],
   args: { width: "detail", children: null },

@@ -186,7 +186,7 @@ function Sample({
 }
 
 const meta = {
-  title: "Blocks/TimelineSummary",
+  title: "Timeline/TimelineSummary",
   component: TimelineSummary,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -18,7 +18,7 @@ const usage = days.map((at, i) => ({ at, soc: 20 + ((i * 7) % 13), reports: 4 + 
 const seats = days.map((at, i) => ({ at, used: Math.min(5, 2 + Math.floor(i / 8)), capacity: 5 }));
 
 const meta = {
-  title: "Blocks/ChartCard",
+  title: "Charts/ChartCard",
   component: ChartCard,
   tags: ["layer:block", "autodocs"],
   args: { title: "Credit", children: null },

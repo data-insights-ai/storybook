@@ -3,7 +3,7 @@ import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { ChoiceGroup, Radio } from "./Choice";
 
 const meta = {
-  title: "Forms/Radio",
+  title: "Forms/Choice/Radio",
   component: Radio,
   tags: ["layer:form", "autodocs"],
   args: {

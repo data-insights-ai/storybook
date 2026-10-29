@@ -6,7 +6,7 @@ import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } fro
 import { ShortcutHelp } from "./ShortcutHelp";
 
 const meta = {
-  title: "Patterns/ShortcutHelp",
+  title: "Navigation/ShortcutHelp",
   tags: ["layer:pattern"],
   component: ShortcutHelp,
   args: {

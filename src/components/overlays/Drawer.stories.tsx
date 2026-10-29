@@ -8,7 +8,7 @@ import { StatusPill } from "../data/marks/StatusPill";
 import { Fact, FactList } from "../data/FactList";
 
 const meta = {
-  title: "Blocks/Drawer",
+  title: "Overlays/Drawer",
   component: Drawer,
   tags: ["layer:block", "autodocs"],
   args: {

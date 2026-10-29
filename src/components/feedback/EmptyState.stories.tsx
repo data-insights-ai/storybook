@@ -5,7 +5,7 @@ import { UserPlus } from "lucide-react";
 import { EmptyState, EmptyStateAction, EmptyStateIcon } from "./EmptyState";
 
 const meta = {
-  title: "Blocks/EmptyState",
+  title: "Feedback/EmptyState",
   component: EmptyState,
   tags: ["layer:block", "autodocs"],
   args: {

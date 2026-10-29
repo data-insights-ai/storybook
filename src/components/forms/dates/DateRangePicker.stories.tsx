@@ -22,7 +22,7 @@ const clearYear = async (screen: Screen, label: string) => {
 };
 
 const meta = {
-  title: "Forms/DateRangePicker",
+  title: "Forms/Dates/DateRangePicker",
   tags: ["layer:form"],
   component: DateRangePicker,
   args: {

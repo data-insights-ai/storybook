@@ -10,7 +10,7 @@ import { StatusPill } from "../data/marks/StatusPill";
 import { TextLink } from "../navigation/TextLink";
 
 const meta = {
-  title: "Blocks/Flyout",
+  title: "Overlays/Flyout",
   component: Flyout,
   tags: ["layer:block", "autodocs"],
 } satisfies Meta<typeof Flyout>;

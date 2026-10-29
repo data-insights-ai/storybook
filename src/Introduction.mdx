@@ -18,16 +18,15 @@ import { Page, Rule, Rules, Section } from "./foundations/guide/Guide";
 
   <Section
     eyebrow="The sidebar"
-    title="Five groups, sorted by one question."
-    lede="Can another component go inside it? That is the whole test, and size is not the axis."
+    title="Grouped by what a component is for."
+    lede="Look for a component where you would look for its job. What it may hold is a tag on every story, not a place in the sidebar."
   >
     <Rules>
-      <Rule>**Foundations** — colour, type, scale, the mark, voice, motion, the Register rules, and the decision record behind them.</Rule>
-      <Rule>**Primitives** — a leaf. It renders the text and marks it was handed, and nothing else fits inside.</Rule>
-      <Rule>**Forms** — a labelled control.</Rule>
-      <Rule>**Blocks** — it holds something: it composes other components, or exposes a slot for them.</Rule>
-      <Rule>**Patterns** — a whole arrangement: the shell, the layout primitives.</Rule>
+      <Rule>**Foundations** — colour, type, scale, the mark, voice, motion, the Register rules, brand pages, and the decision record behind them.</Rule>
+      <Rule>**Actions, Forms, Data, Feedback, Overlays, Navigation** — what a person presses, fills in, reads, is told, opens and moves through.</Rule>
+      <Rule>**Layout, Charts, Timeline, Inference, Shell** — how a screen is arranged, what it measures, what happened when, what the system inferred, and the frame around it all.</Rule>
       <Rule>**Screens** — a console example, composed from all of the above.</Rule>
+      <Rule>The tag `layer:primitive`, `layer:form`, `layer:block` or `layer:pattern` answers one question: can another component go inside it? A component never imports one from a higher layer.</Rule>
     </Rules>
   </Section>
 

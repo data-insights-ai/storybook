@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Tooltip } from "./Tooltip";
 
 const meta = {
-  title: "Primitives/Tooltip",
+  title: "Feedback/Tooltip",
   component: Tooltip,
   tags: ["layer:primitive", "autodocs"],
   args: { children: "sealed 09:12:04Z" },

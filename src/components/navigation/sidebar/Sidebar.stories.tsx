@@ -129,7 +129,7 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
 }
 
 const meta = {
-  title: "Patterns/Sidebar",
+  title: "Navigation/Sidebar",
   tags: ["layer:pattern"],
   component: Sidebar,
   parameters: { layout: "fullscreen" },

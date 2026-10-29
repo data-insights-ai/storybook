@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Kbd } from "./Seal";
 
 const meta = {
-  title: "Primitives/Kbd",
+  title: "Data/Text/Kbd",
   component: Kbd,
   tags: ["layer:primitive", "autodocs"],
   args: { children: "⌘K" },

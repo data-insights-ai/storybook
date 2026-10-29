@@ -5,7 +5,7 @@ import { SealValue } from "./marks/Seal";
 import { StatusPill } from "./marks/StatusPill";
 
 const meta = {
-  title: "Blocks/FactList",
+  title: "Data/Records/FactList",
   component: FactList,
   tags: ["layer:block", "autodocs"],
   args: { layout: "rows", children: null },

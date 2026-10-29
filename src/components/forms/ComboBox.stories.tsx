@@ -11,7 +11,7 @@ const suggestions = [
   { value: "WR-03", label: "Western register" },
 ];
 const meta = {
-  title: "Forms/ComboBox",
+  title: "Forms/Select/ComboBox",
   tags: ["layer:form"],
   component: ComboBox,
   args: {

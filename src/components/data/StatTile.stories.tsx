@@ -4,7 +4,7 @@ import { Sparkline } from "../charts/Sparkline";
 import { StatTile, StatTileDelta } from "./StatTile";
 
 const meta = {
-  title: "Blocks/StatTile",
+  title: "Data/Figures/StatTile",
   component: StatTile,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -19,7 +19,7 @@ const events = [
 ];
 
 const meta = {
-  title: "Blocks/ChainTimeline",
+  title: "Timeline/ChainTimeline",
   component: ChainTimeline,
   tags: ["layer:block", "autodocs"],
   args: {

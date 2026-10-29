@@ -9,7 +9,7 @@ import { SealValue } from "./marks/Seal";
 import { StatusPill } from "./marks/StatusPill";
 
 const meta = {
-  title: "Blocks/Session",
+  title: "Data/Records/Session",
   component: Session,
   tags: ["layer:block", "autodocs"],
   args: {

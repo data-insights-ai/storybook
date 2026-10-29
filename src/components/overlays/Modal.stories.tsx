@@ -16,7 +16,7 @@ import {
 import { TextField } from "../forms/TextField";
 
 const meta = {
-  title: "Blocks/Modal",
+  title: "Overlays/Modal",
   component: Modal,
   tags: ["layer:block", "autodocs"],
   parameters: {

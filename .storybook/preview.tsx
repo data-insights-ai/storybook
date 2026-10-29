@@ -45,10 +45,17 @@ const preview: Preview = {
         const sections = [
           "Introduction",
           "Foundations",
-          "Primitives",
+          "Actions",
           "Forms",
-          "Blocks",
-          "Patterns",
+          "Data",
+          "Feedback",
+          "Overlays",
+          "Navigation",
+          "Layout",
+          "Charts",
+          "Timeline",
+          "Inference",
+          "Shell",
           "Screens",
         ];
         // Read top to bottom: what the system is, then what it is made of,
@@ -66,6 +73,7 @@ const preview: Preview = {
           "Mark",
           "Practice",
           "Surfaces",
+          "Pages",
           "Decisions",
         ];
         // Listed items sort in list order; anything unlisted falls to the end.

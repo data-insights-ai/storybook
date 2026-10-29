@@ -6,7 +6,7 @@ import { Disclosure, DisclosureLead } from "./Disclosure";
 import { Stack } from "./Layout";
 
 const meta = {
-  title: "Blocks/Disclosure",
+  title: "Layout/Folding/Disclosure",
   component: Disclosure,
   tags: ["layer:block", "autodocs"],
 } satisfies Meta<typeof Disclosure>;

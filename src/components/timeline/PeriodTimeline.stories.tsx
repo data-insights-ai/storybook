@@ -6,7 +6,7 @@ const short = (iso: string, { year }: { year: boolean }) =>
   new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: year ? "numeric" : undefined, timeZone: "UTC" });
 
 const meta = {
-  title: "Blocks/PeriodTimeline",
+  title: "Timeline/PeriodTimeline",
   component: PeriodTimeline,
   tags: ["layer:block", "autodocs"],
   args: {

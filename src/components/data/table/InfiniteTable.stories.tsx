@@ -6,7 +6,7 @@ import { InfiniteTable } from "./InfiniteTable";
 import { StatusPill } from "../marks/StatusPill";
 
 const meta = {
-  title: "Blocks/InfiniteTable",
+  title: "Data/Table/InfiniteTable",
   component: InfiniteTable,
   tags: ["layer:block", "autodocs"],
 } satisfies Meta<typeof InfiniteTable>;

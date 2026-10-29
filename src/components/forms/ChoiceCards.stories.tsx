@@ -5,7 +5,7 @@ import { expect, userEvent, within } from "storybook/test";
 import { ChoiceCards } from "./ChoiceCards";
 
 const meta = {
-  title: "Forms/ChoiceCards",
+  title: "Forms/Choice/ChoiceCards",
   component: ChoiceCards,
   tags: ["layer:form", "autodocs"],
 } satisfies Meta<typeof ChoiceCards>;

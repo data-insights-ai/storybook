@@ -4,7 +4,7 @@ import { expect, userEvent, within } from "storybook/test";
 import { TabNav, TabNavLink } from "./TabNav";
 
 const meta = {
-  title: "Blocks/TabNav",
+  title: "Navigation/TabNav",
   component: TabNav,
   tags: ["layer:block", "autodocs"],
   args: { label: "Access", children: null },

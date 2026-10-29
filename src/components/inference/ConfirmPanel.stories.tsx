@@ -5,7 +5,7 @@ import { ConfirmActions, ConfirmPanel } from "./ConfirmPanel";
 import { ExplainRow } from "./ExplainPanel";
 
 const meta = {
-  title: "Blocks/Inference/Confirm",
+  title: "Inference/ConfirmPanel",
   component: ConfirmPanel,
   tags: ["layer:block", "autodocs"],
   args: {

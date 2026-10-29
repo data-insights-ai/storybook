@@ -3,7 +3,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Stepper } from "./Stepper";
 
 const meta = {
-  title: "Primitives/Stepper",
+  title: "Navigation/Stepper",
   component: Stepper,
   tags: ["layer:primitive", "autodocs"],
   args: {

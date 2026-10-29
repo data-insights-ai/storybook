@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Eyebrow } from "./Seal";
 
 const meta = {
-  title: "Primitives/Eyebrow",
+  title: "Data/Text/Eyebrow",
   component: Eyebrow,
   tags: ["layer:primitive", "autodocs"],
   args: { children: "04 — Coverage", variant: "sealed" },

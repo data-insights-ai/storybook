@@ -3,7 +3,7 @@ import { expect, userEvent, within } from "storybook/test";
 import { Select } from "./Select";
 
 const meta = {
-  title: "Forms/Select",
+  title: "Forms/Select/Select",
   component: Select,
   tags: ["layer:form", "autodocs"],
   args: {

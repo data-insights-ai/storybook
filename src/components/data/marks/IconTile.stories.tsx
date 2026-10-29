@@ -5,7 +5,7 @@ import { Icon } from "./Icon";
 import { IconTile } from "./IconTile";
 
 const meta = {
-  title: "Primitives/IconTile",
+  title: "Data/Marks/IconTile",
   component: IconTile,
   tags: ["layer:primitive", "autodocs"],
   args: {

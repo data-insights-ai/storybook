@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
-  title: "Primitives/StatusPill",
+  title: "Data/Marks/StatusPill",
   component: StatusPill,
   tags: ["layer:primitive", "autodocs"],
   args: {

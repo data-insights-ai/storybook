@@ -7,7 +7,7 @@ import { Modal, ModalContent, ModalTitle } from "../../overlays/Modal";
 import { Button } from "../../actions/Button";
 
 const meta = {
-  title: "Forms/DateField",
+  title: "Forms/Dates/DateField",
   component: DateField,
   tags: ["layer:form", "autodocs"],
   args: {

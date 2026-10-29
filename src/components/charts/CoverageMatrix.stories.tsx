@@ -40,7 +40,7 @@ const COLUMNS: CoverageMatrixColumn[] = [
 ];
 
 const meta = {
-  title: "Primitives/CoverageMatrix",
+  title: "Charts/CoverageMatrix",
   component: CoverageMatrix,
   tags: ["layer:primitive", "autodocs"],
   args: {

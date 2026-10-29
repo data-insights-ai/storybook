@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { SealMark, SealValue } from "./Seal";
 
 const meta = {
-  title: "Primitives/Seal",
+  title: "Data/Marks/SealValue",
   component: SealValue,
   tags: ["layer:primitive", "autodocs"],
   args: {

@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { KeyValue, KeyValues } from "./KeyValues";
 
 const meta = {
-  title: "Primitives/KeyValues",
+  title: "Data/Records/KeyValues",
   component: KeyValues,
   tags: ["layer:primitive", "autodocs"],
   args: { children: null },

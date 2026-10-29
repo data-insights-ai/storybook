@@ -4,7 +4,7 @@ import { SealValue } from "../data/marks/Seal";
 import { ExplainFooter, ExplainPanel, ExplainRow } from "./ExplainPanel";
 
 const meta = {
-  title: "Blocks/Inference/Explain",
+  title: "Inference/ExplainPanel",
   component: ExplainPanel,
   tags: ["layer:block", "autodocs"],
   args: {

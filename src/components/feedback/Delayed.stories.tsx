@@ -6,7 +6,7 @@ import { Delayed } from "./Delayed";
 import { Spinner } from "./waiting/Spinner";
 
 const meta = {
-  title: "Blocks/Delayed",
+  title: "Feedback/Delayed",
   component: Delayed,
   tags: ["layer:block", "autodocs"],
   args: { delay: 150, children: null },

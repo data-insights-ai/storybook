@@ -5,7 +5,7 @@ import { Button } from "../actions/Button";
 import { Toast, ToastAction } from "./Toast";
 
 const meta = {
-  title: "Blocks/Toast",
+  title: "Feedback/Toast",
   component: Toast,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -5,7 +5,7 @@ import { Button } from "../../actions/Button";
 import { Progress } from "./Progress";
 
 const meta = {
-  title: "Primitives/Waiting/Progress",
+  title: "Feedback/Waiting/Progress",
   component: Progress,
   tags: ["layer:primitive", "autodocs"],
   args: {

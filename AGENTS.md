@@ -103,20 +103,33 @@ Every component lives in `src/components`, in the folder of its concept, with it
 | `charts/` | Chart, ChartCard, TrendChart and the drawn measures (Bars, Sparkline, Distribution, LevelMeter, CoverageMatrix, Seismograph) |
 | `timeline/` | EventTimeline and its parts, ChainTimeline, PeriodTimeline, WeekTimeline; `summary/` TimelineSummary |
 
-A folder names what a component is about; the story `title` is a different axis, what can go inside it. Sample data that only a story or a screen reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `layout/shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
+A folder names what a component is about, and the story `title` follows it; what can go inside a component is its layer tag. Sample data that only a story or a screen reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `layout/shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
 
-The story `title` decides where a component lands in the sidebar, and there are six groups:
+The story `title` decides where a component lands in the sidebar, and it is grouped by purpose: where a person would look for the component's job. The title is `<Group>/<Subgroup>/<Component>`, ends in the meta component's name, and mirrors the component's folder. `.storybook/preview.tsx` sorts the groups in this order:
 
-- `Foundations/` — the brand, the tokens and the reasoning behind them (Essence, Register, Color, Type, Scale, Logo, Decisions and the rest), after the `Introduction` page. No package component lives here.
-- `Primitives/` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it. Button, Badge, StatusPill, Chip, Highlight, Icon, IconTile, Seal, Eyebrow, Kbd, TickRule, TextLink, VersionTag, KeyValues, PullQuote, Bars, Sparkline, Distribution, Pagination, Breadcrumb, Stepper, Tooltip, Waiting/{AppLoader,Progress,RouteProgress,Skeleton,SkeletonPage,Spinner}.
-- `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl, DateField, TimeField, DateRangePicker, FieldHint.
-- `Blocks/` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, FactList, Drawer, Menu, Tabs, EmptyState, StatTile, Metric, LivingCard, CommandBar, SignIn and the rest.
-- `Patterns/` — a whole arrangement: AppShell, Sidebar, ShortcutHelp, Theme, and `Layout/` (Stack, Grid, Numbered, Toolbar, FieldStack, InlineForm, Page, Split). A product renders `AppShell` full-bleed from its slots; `Console` is the same shell inside its Storybook window, with the sample chrome the screens share, and no product renders it.
+- `Introduction`, then `Foundations/` — the brand, the tokens and the reasoning behind them (Essence, Register, Color, Type, Scale, Logo, Pages, Decisions and the rest). No package component lives here.
+- `Actions/` — what a person presses: Button, CountButton, CopyValue, RowActions, BulkActionBar.
+- `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
+- `Data/` — what a person reads: `Records/` (the cards, FactList, KeyValues, Channel, Session), `Figures/` (Stat, StatTile, Metric), `Marks/` (Badge, StatusPill, Chip, Tag, SealValue, Icon), `Text/` (Eyebrow, Highlight, Kbd, CodeBlock, PullQuote) and `Table/`.
+- `Feedback/` — Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `Waiting/` the loaders, progress and skeletons.
+- `Overlays/`, `Navigation/` — what opens over the page, and how a person moves through it.
+- `Layout/` — `Arrangement/` (Stack, Grid, Numbered, Toolbar, Split, FieldStack, InlineForm), `Page/` (Page, the headers, Panel, Stage, DetailSection), `Folding/` (Accordion, Disclosure).
+- `Charts/`, `Timeline/`, `Inference/` — what a screen measures, what happened when, and what the system inferred.
+- `Shell/` — AppShell, SignIn, ThemeProvider. A product renders `AppShell` full-bleed from its slots; `Console` is the same shell inside its Storybook window, with the sample chrome the screens share, and no product renders it.
 - `Screens/` — a console example, composed from the above.
 
-The test is one question: **can another component go inside it?** `KeyValues` holds `KeyValue`, and `KeyValue` takes two strings — nothing else fits, so it is a Primitive. `Stat` looks just as small, but its `children` holds a `StatusPill` on the Watchlist screen, so it is a Block. `Pagination` and `SkeletonTable` are bulky and still Primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
+A group holds about eight entries; past that it gets subgroups. Inside a group, entries sort alphabetically by title.
 
-One sidebar entry is one component, and **one module is one component**. An independent component does not share a file with another one: `pnpm build` emits a module per file, so `Breadcrumb` living in `Tabs.tsx` means a product importing a breadcrumb also ships `Tabs` and `Stepper`. Where several are one family they get a folder rather than one merged entry (`Primitives/Waiting/Progress`, `/Skeleton`, `/Spinner`; `Blocks/Inference/Explain`, `/Confirm`, `/Confidence`, `/Privacy`; `Patterns/Layout/Stack`, `/Grid`, `/Numbered`, `/Toolbar`, `/FieldStack`, `/InlineForm`, `/Page`, `/Split`).
+What a component may hold is a second axis, and it is a tag on its story meta, not a place in the sidebar: `layer:primitive`, `layer:form`, `layer:block` or `layer:pattern` (and `layer:foundation`, `layer:screen`). A component never imports one from a higher layer.
+
+- `layer:primitive` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it: Button, Badge, StatusPill, Pagination, Breadcrumb, Tooltip, the loaders.
+- `layer:form` — a labelled control.
+- `layer:block` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, Drawer, Menu, Tabs, StatTile, SignIn.
+- `layer:pattern` — a whole arrangement: AppShell, Sidebar, ShortcutHelp, ThemeProvider and the arrangement components.
+
+The test is one question: **can another component go inside it?** `KeyValues` holds `KeyValue`, and `KeyValue` takes two strings — nothing else fits, so it is a primitive. `Stat` looks just as small, but its `children` holds a `StatusPill` on the Watchlist screen, so it is a block. `Pagination` and `SkeletonTable` are bulky and still primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
+
+One sidebar entry is one component, and **one module is one component**. An independent component does not share a file with another one: `pnpm build` emits a module per file, so `Breadcrumb` living in `Tabs.tsx` means a product importing a breadcrumb also ships `Tabs` and `Stepper`. Where several are one family they get a subgroup rather than one merged entry (`Feedback/Waiting/Progress`, `/SkeletonTable`, `/Spinner`; `Layout/Arrangement/Stack`, `/Grid`, `/Numbered`, `/Toolbar`).
 
 A component whose drawing takes more than one module keeps the parts in a folder of its own, and only the component and its slots are exported: `timeline/` holds `EventTimeline` and the scale, marks and navigation it is drawn from (beside the other timelines), and `timeline/summary/` holds `TimelineSummary` and the episodes it is told in.
 
@@ -126,11 +139,11 @@ Every export in `src/index.ts` appears in a story. An export with no story is in
 
 There is one name per thing. `RingDot` was an alias for `<SealMark state="inferred" />`; two names for one mark is the same failure as two props for one line of hint text.
 
-A Drawer belongs in `Blocks/` because it contains Buttons and StatusPills; a Button belongs in `Primitives/` because it contains nothing. When a component grows to hold another one, move its title.
+A Drawer is `layer:block` because it contains Buttons and StatusPills; a Button is `layer:primitive` because it contains nothing. When a component grows to hold another one, change its tag.
 
-`.storybook/preview.tsx` sorts those groups in that order and everything inside them alphabetically **by title, not by file name** — `Choice.stories.tsx` is titled `Forms/Checkbox`. Stories inside one file keep the order the file declares. Storybook reads that comparator out of the file and evaluates it on its own, so it has to be plain JavaScript with no type annotations and no references to anything outside it.
+`.storybook/preview.tsx` sorts the entries of a group alphabetically **by title, not by file name**. Stories inside one file keep the order the file declares. Storybook reads that comparator out of the file and evaluates it on its own, so it has to be plain JavaScript with no type annotations and no references to anything outside it.
 
-Anything with a transition gets a story that runs it: `Blocks/Toast` → Arriving, `Blocks/Modal` → Transition, `Blocks/Drawer` → Transition, `Primitives/Waiting/Skeleton` → Resolving, `Primitives/Waiting/Progress` → Counting, `Primitives/Waiting/RouteProgress` → Navigating, `Blocks/Delayed` → Appearing. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
+Anything with a transition gets a story that runs it: `Feedback/Toast` → Arriving, `Overlays/Modal` → Transition, `Overlays/Drawer` → Transition, `Feedback/Waiting/SkeletonTable` → Resolving, `Feedback/Waiting/Progress` → Counting, `Feedback/Waiting/RouteProgress` → Navigating, `Feedback/Delayed` → Appearing. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
 
 ### The one API rule
 

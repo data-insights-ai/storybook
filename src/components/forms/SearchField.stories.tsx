@@ -3,7 +3,7 @@ import { expect, userEvent, within } from "storybook/test";
 import { SearchField } from "./SearchField";
 
 const meta = {
-  title: "Forms/SearchField",
+  title: "Forms/Text/SearchField",
   component: SearchField,
   tags: ["layer:form", "autodocs"],
   args: {

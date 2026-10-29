@@ -6,7 +6,7 @@ import { Fact, FactList } from "../data/FactList";
 import { Sheet, SheetFooter } from "./Sheet";
 
 const meta = {
-  title: "Blocks/Sheet",
+  title: "Overlays/Sheet",
   component: Sheet,
   tags: ["layer:block", "autodocs"],
   args: {

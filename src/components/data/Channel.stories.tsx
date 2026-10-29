@@ -6,7 +6,7 @@ import { StatusPill } from "./marks/StatusPill";
 import { KeyValue, KeyValues } from "./KeyValues";
 
 const meta = {
-  title: "Blocks/Channel",
+  title: "Data/Records/Channel",
   component: Channel,
   tags: ["layer:block", "autodocs"],
   args: {

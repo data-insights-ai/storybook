@@ -3,7 +3,7 @@ import { expect, fn, within } from "storybook/test";
 import { ConfidenceField } from "./ConfidenceField";
 
 const meta = {
-  title: "Blocks/Inference/Confidence",
+  title: "Inference/ConfidenceField",
   component: ConfidenceField,
   tags: ["layer:block", "autodocs"],
   args: {

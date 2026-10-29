@@ -16,7 +16,7 @@ const kinds = [
 ];
 
 const meta = {
-  title: "Blocks/CreateFlow",
+  title: "Overlays/CreateFlow",
   component: CreateFlow,
   tags: ["layer:block", "autodocs"],
   args: {

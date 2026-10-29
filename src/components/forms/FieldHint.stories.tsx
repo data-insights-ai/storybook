@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { FieldHint } from "./FieldHint";
 
 const meta = {
-  title: "Forms/FieldHint",
+  title: "Forms/Field/FieldHint",
   component: FieldHint,
   tags: ["layer:form", "autodocs"],
   args: {

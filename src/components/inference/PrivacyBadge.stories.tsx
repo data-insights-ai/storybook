@@ -4,7 +4,7 @@ import { expect, within } from "storybook/test";
 import { PrivacyBadge } from "./PrivacyBadge";
 
 const meta = {
-  title: "Blocks/Inference/Privacy",
+  title: "Inference/PrivacyBadge",
   component: PrivacyBadge,
   tags: ["layer:block", "autodocs"],
   args: { scope: "local", children: null },

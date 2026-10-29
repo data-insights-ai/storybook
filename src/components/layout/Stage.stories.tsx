@@ -6,7 +6,7 @@ import { Spinner } from "../feedback/waiting/Spinner";
 import { Stage, StageFooter, StageIcon, StageTrack } from "./Stage";
 
 const meta = {
-  title: "Blocks/Stage",
+  title: "Layout/Page/Stage",
   component: Stage,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -6,7 +6,7 @@ import { FileField } from "./FileField";
 import { Toolbar } from "../layout/Layout";
 
 const meta = {
-  title: "Forms/FileField",
+  title: "Forms/Text/FileField",
   component: FileField,
   tags: ["layer:form", "autodocs"],
   args: {

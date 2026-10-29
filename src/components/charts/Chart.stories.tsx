@@ -62,7 +62,7 @@ const rangeConfig = {
 } satisfies ChartConfig;
 
 const meta = {
-  title: "Blocks/Chart",
+  title: "Charts/Chart",
   component: Chart,
   tags: ["layer:block", "autodocs"],
   args: {

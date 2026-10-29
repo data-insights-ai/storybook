@@ -5,7 +5,7 @@ import { KeyValue, KeyValues } from "./KeyValues";
 import { SealValue } from "./marks/Seal";
 
 const meta = {
-  title: "Blocks/Metric",
+  title: "Data/Figures/Metric",
   component: Metric,
   tags: ["layer:block", "autodocs"],
   args: {

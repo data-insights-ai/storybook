@@ -4,7 +4,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Switch } from "./Switch";
 
 const meta = {
-  title: "Forms/Switch",
+  title: "Forms/Choice/Switch",
   component: Switch,
   tags: ["layer:form", "autodocs"],
   args: {

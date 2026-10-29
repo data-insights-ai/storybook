@@ -3,7 +3,7 @@ import { Stat, StatRow } from "./Stat";
 import { StatusPill } from "./marks/StatusPill";
 
 const meta = {
-  title: "Blocks/Stat",
+  title: "Data/Figures/Stat",
   tags: ["layer:block"],
   component: Stat,
   args: { label: "Active entries", value: "08", suffix: " / 08" },

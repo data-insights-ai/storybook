@@ -7,7 +7,7 @@ const night = [
 ];
 
 const meta = {
-  title: "Primitives/WeekTimeline",
+  title: "Timeline/WeekTimeline",
   component: WeekTimeline,
   tags: ["layer:primitive", "autodocs"],
   args: {

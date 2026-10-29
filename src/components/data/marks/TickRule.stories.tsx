@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TickRule } from "./Seal";
 
 const meta = {
-  title: "Primitives/TickRule",
+  title: "Data/Text/TickRule",
   component: TickRule,
   tags: ["layer:primitive", "autodocs"],
 } satisfies Meta<typeof TickRule>;

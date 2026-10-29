@@ -5,7 +5,7 @@ import { TimeField } from "./TimeField";
 import { Grid } from "../../layout/Layout";
 
 const meta = {
-  title: "Forms/TimeField",
+  title: "Forms/Dates/TimeField",
   component: TimeField,
   tags: ["layer:form", "autodocs"],
   args: {

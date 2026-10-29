@@ -3,7 +3,7 @@ import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { ConfirmDialog } from "./ConfirmDialog";
 
 const meta = {
-  title: "Blocks/ConfirmDialog",
+  title: "Overlays/ConfirmDialog",
   component: ConfirmDialog,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -5,7 +5,7 @@ import { Button } from "../actions/Button";
 import { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./LevelMeter";
 
 const meta = {
-  title: "Primitives/LevelMeter",
+  title: "Charts/LevelMeter",
   component: LevelMeter,
   tags: ["layer:primitive", "autodocs"],
   args: {

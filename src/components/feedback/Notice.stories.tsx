@@ -6,7 +6,7 @@ import { TextLink } from "../navigation/TextLink";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./Notice";
 
 const meta = {
-  title: "Blocks/Notice",
+  title: "Feedback/Notice",
   component: Notice,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { PullQuote } from "./PullQuote";
 
 const meta = {
-  title: "Primitives/PullQuote",
+  title: "Data/Text/PullQuote",
   component: PullQuote,
   tags: ["layer:primitive", "autodocs"],
   args: { children: "If you cannot cite it, we cannot say it." },

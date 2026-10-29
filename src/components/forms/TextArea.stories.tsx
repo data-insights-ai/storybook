@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TextArea } from "./TextField";
 
 const meta = {
-  title: "Forms/TextArea",
+  title: "Forms/Text/TextArea",
   component: TextArea,
   tags: ["layer:form", "autodocs"],
   args: { id: "ca", label: "Server CA", mono: true, rows: 6, placeholder: "-----BEGIN CERTIFICATE-----" },

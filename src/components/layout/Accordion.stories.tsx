@@ -7,7 +7,7 @@ import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } fro
 import { Accordion, AccordionDetail, AccordionItem, AccordionMeta } from "./Accordion";
 
 const meta = {
-  title: "Blocks/Accordion",
+  title: "Layout/Folding/Accordion",
   component: Accordion,
   tags: ["layer:block", "autodocs"],
   args: { label: "Signals by attack phase", children: null },

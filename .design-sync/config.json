@@ -8,12 +8,6 @@
   "buildCmd": "pnpm build",
   "entry": "dist/lib/index.js",
   "titleMap": {
-    "Confidence": "ConfidenceField",
-    "Confirm": "ConfirmPanel",
-    "Explain": "ExplainPanel",
-    "Privacy": "PrivacyBadge",
-    "Seal": "SealValue",
-    "Skeleton": "SkeletonTable",
     "Architecture": null,
     "Color": null,
     "Coverage": null,
@@ -33,9 +27,9 @@
       "cardMode": "single",
       "primaryStory": "Confirm",
       "skip": [
-        "blocks-modal--confirm",
-        "blocks-modal--type-to-confirm",
-        "blocks-modal--plain"
+        "overlays-modal--confirm",
+        "overlays-modal--type-to-confirm",
+        "overlays-modal--plain"
       ]
     },
     "Session": {
@@ -46,7 +40,7 @@
     },
     "FieldHint": {
       "skip": [
-        "forms-fieldhint--empty"
+        "forms-field-fieldhint--empty"
       ]
     },
     "Chart": {
@@ -55,12 +49,12 @@
     "AppShell": {
       "cardMode": "column",
       "skip": [
-        "patterns-appshell--mobile-navigation-night"
+        "shell-appshell--mobile-navigation-night"
       ]
     },
     "ComboBox": {
       "skip": [
-        "forms-combobox--night"
+        "forms-select-combobox--night"
       ]
     }
   },

@@ -15,7 +15,7 @@ const people = [
 ];
 
 const meta = {
-  title: "Forms/MultiComboBox",
+  title: "Forms/Select/MultiComboBox",
   tags: ["layer:form"],
   component: MultiComboBox,
   args: {

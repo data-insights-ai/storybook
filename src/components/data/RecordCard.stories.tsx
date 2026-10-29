@@ -16,7 +16,7 @@ import {
 import { StatusPill } from "./marks/StatusPill";
 
 const meta = {
-  title: "Blocks/RecordCard",
+  title: "Data/Records/RecordCard",
   component: RecordCard,
   tags: ["layer:block", "autodocs"],
   args: {

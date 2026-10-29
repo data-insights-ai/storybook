@@ -4,7 +4,7 @@ import { Card } from "../data/Card";
 import { Numbered, Stack } from "./Layout";
 
 const meta = {
-  title: "Patterns/Layout/Numbered",
+  title: "Layout/Arrangement/Numbered",
   component: Numbered,
   tags: ["layer:pattern", "autodocs"],
   args: { index: "01", children: null },

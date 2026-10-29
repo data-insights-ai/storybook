@@ -9,7 +9,7 @@ import { Select } from "../../forms/Select";
 import { useShortcut } from "../../navigation/shortcuts/useShortcut";
 
 const meta = {
-  title: "Blocks/ListToolbar",
+  title: "Data/Table/ListToolbar",
   component: ListToolbar,
   tags: ["layer:block", "autodocs"],
   args: { label: "Filter members", sticky: false, children: null },

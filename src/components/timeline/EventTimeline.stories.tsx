@@ -156,7 +156,7 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
 }
 
 const meta = {
-  title: "Blocks/EventTimeline",
+  title: "Timeline/EventTimeline",
   component: EventTimeline,
   tags: ["layer:block", "autodocs"],
   args: {

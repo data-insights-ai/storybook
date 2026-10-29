@@ -4,7 +4,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { SegmentedControl } from "./SegmentedControl";
 
 const meta = {
-  title: "Forms/SegmentedControl",
+  title: "Forms/Choice/SegmentedControl",
   component: SegmentedControl,
   tags: ["layer:form", "autodocs"],
   args: {

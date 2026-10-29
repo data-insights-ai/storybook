@@ -3,7 +3,7 @@ import { expect, waitFor, within } from "storybook/test";
 import { AppLoader } from "./AppLoader";
 
 const meta = {
-  title: "Primitives/Waiting/AppLoader",
+  title: "Feedback/Waiting/AppLoader",
   component: AppLoader,
   tags: ["layer:primitive", "autodocs"],
   parameters: { layout: "fullscreen" },

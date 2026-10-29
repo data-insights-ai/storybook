@@ -5,7 +5,7 @@ import { StatusPill } from "../data/marks/StatusPill";
 import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./SectionTitle";
 
 const meta = {
-  title: "Blocks/SectionTitle",
+  title: "Layout/Page/SectionTitle",
   component: SectionTitle,
   tags: ["layer:block", "autodocs"],
   args: {

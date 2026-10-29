@@ -6,7 +6,7 @@ import { TokenField } from "./TokenField";
 const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const meta = {
-  title: "Forms/TokenField",
+  title: "Forms/Text/TokenField",
   component: TokenField,
   tags: ["layer:form", "autodocs"],
   args: {

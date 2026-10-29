@@ -18,7 +18,7 @@ const bars = [
 ];
 
 const meta = {
-  title: "Blocks/LivingCard",
+  title: "Data/Records/LivingCard",
   component: LivingCard,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -15,7 +15,7 @@ import { Highlight } from "../data/marks/Highlight";
 import { StatusPill } from "../data/marks/StatusPill";
 
 const meta = {
-  title: "Blocks/PageHeader",
+  title: "Layout/Page/PageHeader",
   component: PageHeader,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -6,7 +6,7 @@ import { ConfirmDialog } from "../overlays/ConfirmDialog";
 import { DangerAction, DangerZone } from "./DangerZone";
 
 const meta = {
-  title: "Blocks/DangerZone",
+  title: "Feedback/DangerZone",
   component: DangerZone,
   tags: ["layer:block", "autodocs"],
   args: { title: "Danger zone", lede: "These actions remove access and cannot be undone.", children: null },

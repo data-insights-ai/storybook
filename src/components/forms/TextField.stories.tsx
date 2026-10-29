@@ -5,7 +5,7 @@ import { TextField } from "./TextField";
 import { TextLink } from "../navigation/TextLink";
 
 const meta = {
-  title: "Forms/TextField",
+  title: "Forms/Text/TextField",
   component: TextField,
   tags: ["layer:form", "autodocs"],
   args: {

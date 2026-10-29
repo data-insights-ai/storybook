@@ -3,7 +3,7 @@ import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Checkbox, ChoiceGroup } from "./Choice";
 
 const meta = {
-  title: "Forms/Checkbox",
+  title: "Forms/Choice/Checkbox",
   component: Checkbox,
   tags: ["layer:form", "autodocs"],
   args: {

@@ -46,7 +46,7 @@ const sources: Source[] = [
 ];
 
 const meta = {
-  title: "Blocks/DataTable",
+  title: "Data/Table/DataTable",
   component: DataTable,
   tags: ["layer:block", "autodocs"],
   args: {

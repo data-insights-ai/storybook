@@ -4,7 +4,7 @@ import { Button } from "../actions/Button";
 import { SaveBar } from "./SaveBar";
 
 const meta = {
-  title: "Forms/SaveBar",
+  title: "Forms/Field/SaveBar",
   component: SaveBar,
   tags: ["layer:form", "autodocs"],
   args: { label: "Unsaved changes", message: "2 unsaved changes", children: null },

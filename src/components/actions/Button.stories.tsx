@@ -4,7 +4,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "./Button";
 
 const meta = {
-  title: "Primitives/Button",
+  title: "Actions/Button",
   component: Button,
   tags: ["layer:primitive", "autodocs"],
   args: {

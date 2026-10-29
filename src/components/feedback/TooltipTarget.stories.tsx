@@ -3,7 +3,7 @@ import { expect, userEvent, waitFor } from "storybook/test";
 import { TooltipTarget } from "./TooltipTarget";
 
 const meta = {
-  title: "Primitives/TooltipTarget",
+  title: "Feedback/TooltipTarget",
   component: TooltipTarget,
   tags: ["layer:primitive", "autodocs"],
   args: { text: "RFC 3161", label: "Trusted timestamp protocol" },

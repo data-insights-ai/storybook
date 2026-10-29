@@ -52,7 +52,7 @@ function Actions() {
 }
 
 const meta = {
-  title: "Blocks/BulkActionBar",
+  title: "Actions/BulkActionBar",
   component: BulkActionBar,
   tags: ["layer:block", "autodocs"],
   args: {

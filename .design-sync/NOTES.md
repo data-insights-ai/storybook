@@ -73,10 +73,10 @@ values.
   directly needs this, or the duplicate instance breaks anything inspecting
   child component types.
 - **`titleMap` keys are title SEGMENTS, not full titles**, and the card group is
-  the segment *before* the matched one — `Blocks/Inference/Confirm` → export
-  `ConfirmPanel`, group `inference`. Renames: Confidence→ConfidenceField,
-  Confirm→ConfirmPanel, Explain→ExplainPanel, Privacy→PrivacyBadge,
-  Seal→SealValue, Skeleton→SkeletonTable.
+  the segment *before* the matched one — `Inference/ConfirmPanel` → export
+  `ConfirmPanel`, group `inference`. Since 2026-10-29 every title ends in its
+  meta component's name, so the six renames (Confidence, Confirm, Explain,
+  Privacy, Seal, Skeleton) were removed.
   `AppShell→Console` was **removed 2026-10-16**: `Patterns/AppShell` became the
   slot-based `AppShell` a product renders (meta `component: AppShell`), and
   `Console` is now the Storybook-window variant no product renders and no story

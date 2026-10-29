@@ -4,7 +4,7 @@ import { Card } from "../data/Card";
 import { Stack } from "./Layout";
 
 const meta = {
-  title: "Patterns/Layout/Stack",
+  title: "Layout/Arrangement/Stack",
   component: Stack,
   tags: ["layer:pattern", "autodocs"],
   args: { gap: 16, children: null },

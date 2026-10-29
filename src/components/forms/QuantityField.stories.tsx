@@ -23,7 +23,7 @@ function Controlled({ labelHidden = false, disabled = false }: { labelHidden?: b
 }
 
 const meta = {
-  title: "Forms/QuantityField",
+  title: "Forms/Text/QuantityField",
   component: Controlled,
   tags: ["layer:form", "autodocs"],
   args: { labelHidden: false, disabled: false },

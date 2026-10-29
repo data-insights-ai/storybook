@@ -6,7 +6,7 @@ import { SealValue } from "../data/marks/Seal";
 import { StatusPill } from "../data/marks/StatusPill";
 
 const meta = {
-  title: "Blocks/Panel",
+  title: "Layout/Page/Panel",
   component: Panel,
   tags: ["layer:block", "autodocs"],
   args: {

@@ -3,7 +3,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { TextLink } from "./TextLink";
 
 const meta = {
-  title: "Primitives/TextLink",
+  title: "Navigation/TextLink",
   component: TextLink,
   tags: ["layer:primitive", "autodocs"],
   args: {

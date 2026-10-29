@@ -14,7 +14,7 @@ const bars = [
 ];
 
 const meta = {
-  title: "Primitives/Sparkline",
+  title: "Charts/Sparkline",
   component: Sparkline,
   tags: ["layer:primitive", "autodocs"],
   args: {
