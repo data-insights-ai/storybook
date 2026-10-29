@@ -27,4 +27,84 @@
     pointer-events: none;
     color: var(--di-text-muted);
   }
+
+  /*
+   * Where the browser lets a select's list be styled and a pointer opens it,
+   * the list is drawn like a ComboBox's. A phone keeps its own picker, which
+   * suits a finger better than any list drawn here.
+   */
+  @media (pointer: fine) {
+    @supports (appearance: base-select) {
+      .di-select-control,
+      .di-select-control::picker(select) {
+        appearance: base-select;
+      }
+
+      .di-select-control {
+        align-items: center;
+      }
+
+      /* A drawn select is as wide as its choice, which would move a table's column on every pick. */
+      .di-table td .di-select-control {
+        appearance: none;
+      }
+
+      .di-select-control::picker-icon {
+        display: none;
+      }
+
+      .di-select-control::picker(select) {
+        max-block-size: 320px;
+        margin-block: var(--di-space-4);
+        padding: var(--di-space-4);
+        border: 1px solid var(--di-border-strong);
+        border-radius: var(--di-radius-control);
+        background: var(--di-bg-surface);
+        color: var(--di-text);
+        box-shadow: var(--di-shadow-plane);
+      }
+
+      .di-select-control option {
+        min-block-size: var(--di-h-ctl);
+        padding: var(--di-space-6) var(--di-space-8);
+        border-radius: var(--di-radius-micro);
+        font-weight: inherit;
+        overflow-wrap: anywhere;
+        cursor: pointer;
+      }
+
+      .di-select-control option::checkmark {
+        display: none;
+      }
+
+      .di-select-control option:checked,
+      .di-select-control option:hover {
+        background: var(--di-bg-page);
+      }
+
+      .di-select-control option:focus-visible {
+        background: var(--di-bg-page);
+        outline: 2px solid var(--di-focus);
+        outline-offset: -2px;
+      }
+
+      .di-select-control option:disabled {
+        background: transparent;
+        color: var(--di-text-disabled);
+        cursor: not-allowed;
+      }
+
+      .di-select-control optgroup {
+        padding-block-start: var(--di-space-4);
+        color: var(--di-text-muted);
+        font-size: var(--di-font-size-300);
+        font-weight: inherit;
+      }
+
+      .di-select-control optgroup option {
+        color: var(--di-text);
+        font-size: var(--di-font-size-400);
+      }
+    }
+  }
 }

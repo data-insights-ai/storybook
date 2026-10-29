@@ -118,3 +118,30 @@ export const HiddenLabel: Story = {
     </Select>
   ),
 };
+
+/**
+ * Options under headings, one of them unavailable. Opened with a mouse or a
+ * trackpad, the list is drawn like a ComboBox's where the browser allows it;
+ * a phone shows its own picker.
+ */
+export const Grouped: Story = {
+  args: { id: "grant", label: "Grant", mono: false, defaultValue: "operator" },
+  render: (args) => (
+    <Select {...args}>
+      <optgroup label="Roles">
+        <option value="operator">Operator</option>
+        <option value="auditor">Auditor</option>
+      </optgroup>
+      <optgroup label="Single permission">
+        <option value="cases.read">Read cases</option>
+        <option value="cases.delete" disabled>
+          Delete cases
+        </option>
+      </optgroup>
+    </Select>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("option", { name: "Delete cases" })).toBeDisabled();
+  },
+};

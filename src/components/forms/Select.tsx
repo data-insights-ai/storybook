@@ -8,7 +8,9 @@ import "./Select.css";
 
 /**
  * A native select. The caller maps its own data into `option` children,
- * so the control never owns a list it cannot see.
+ * so the control never owns a list it cannot see. Opened with a pointer
+ * where the browser allows it, the list is drawn like a `ComboBox`'s; a
+ * phone keeps its own picker.
  *
  * The line under it follows `TextField`: one `hint`, one `hintTone`.
  */
