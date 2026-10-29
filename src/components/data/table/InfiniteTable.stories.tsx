@@ -8,7 +8,7 @@ import { StatusPill } from "../marks/StatusPill";
 const meta = {
   title: "Blocks/InfiniteTable",
   component: InfiniteTable,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
 } satisfies Meta<typeof InfiniteTable>;
 
 export default meta;

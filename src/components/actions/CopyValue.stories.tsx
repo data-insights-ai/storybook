@@ -6,7 +6,7 @@ import { Fact, FactList } from "../data/FactList";
 const meta = {
   title: "Primitives/CopyValue",
   component: CopyValue,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     value: "6f1c2a9e-4b7d-4e0a-9c55-2f3d8a71b0c4",
     copyLabel: "Copy organization ID",

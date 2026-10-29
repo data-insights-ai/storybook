@@ -30,6 +30,7 @@ const linkedGroups: NavGroup[] = sampleChrome.groups.map((group) => ({
 
 const meta = {
   title: "Patterns/AppShell",
+  tags: ["layer:pattern"],
   component: AppShell,
   parameters: { layout: "fullscreen" },
   args: { skipLabel: "Skip to content", children: null },

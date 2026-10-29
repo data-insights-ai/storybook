@@ -11,7 +11,7 @@ import { StatusPill } from "./marks/StatusPill";
 const meta = {
   title: "Blocks/Session",
   component: Session,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     name: "MacBook Pro · Vienna",
     children: null,

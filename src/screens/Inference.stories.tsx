@@ -4,6 +4,7 @@ import { InferenceScreen } from "./Inference";
 
 const meta = {
   title: "Screens/Inference",
+  tags: ["layer:screen"],
   component: InferenceScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof InferenceScreen>;

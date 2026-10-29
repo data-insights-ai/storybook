@@ -6,7 +6,7 @@ import { Stack } from "./Layout";
 const meta = {
   title: "Patterns/Layout/Stack",
   component: Stack,
-  tags: ["autodocs"],
+  tags: ["layer:pattern", "autodocs"],
   args: { gap: 16, children: null },
   argTypes: {
     gap: { control: "select", options: [8, 12, 16, 24, 32, 48, 64, 96] },

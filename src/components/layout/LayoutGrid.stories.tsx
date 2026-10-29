@@ -6,7 +6,7 @@ import { Grid } from "./Layout";
 const meta = {
   title: "Patterns/Layout/Grid",
   component: Grid,
-  tags: ["autodocs"],
+  tags: ["layer:pattern", "autodocs"],
   args: { min: "180px", children: null },
   argTypes: {
     min: { control: "text" },

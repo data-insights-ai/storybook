@@ -7,7 +7,7 @@ import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./SectionTi
 const meta = {
   title: "Blocks/SectionTitle",
   component: SectionTitle,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     eyebrow: "",
     lede: "Active endpoints for security events",

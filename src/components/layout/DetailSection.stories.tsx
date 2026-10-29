@@ -10,7 +10,7 @@ import { TextField } from "../forms/TextField";
 const meta = {
   title: "Blocks/DetailSection",
   component: DetailSection,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     title: "General",
     lede: "The name members and partners see.",

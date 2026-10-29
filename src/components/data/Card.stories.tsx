@@ -4,7 +4,7 @@ import { Card } from "./Card";
 const meta = {
   title: "Blocks/Card",
   component: Card,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     padded: true,
     children: "A surface for content. A border, not a shadow, so the console stays flat.",

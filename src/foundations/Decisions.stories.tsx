@@ -151,7 +151,7 @@ function Decisions() {
   );
 }
 
-const meta = { title: "Foundations/Decisions" } satisfies Meta;
+const meta = { title: "Foundations/Decisions", tags: ["layer:foundation"] } satisfies Meta;
 export default meta;
 
 export const Record: StoryObj = {

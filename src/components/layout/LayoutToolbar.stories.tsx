@@ -10,7 +10,7 @@ import { TextField } from "../forms/TextField";
 const meta = {
   title: "Patterns/Layout/Toolbar",
   component: Toolbar,
-  tags: ["autodocs"],
+  tags: ["layer:pattern", "autodocs"],
   args: { children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof Toolbar>;

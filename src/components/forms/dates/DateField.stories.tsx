@@ -9,7 +9,7 @@ import { Button } from "../../actions/Button";
 const meta = {
   title: "Forms/DateField",
   component: DateField,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "first-day",
     label: "First day",

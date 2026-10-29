@@ -8,7 +8,7 @@ import { StatusPill } from "../data/marks/StatusPill";
 const meta = {
   title: "Blocks/Panel",
   component: Panel,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     index: "01",
     indexSize: "md",

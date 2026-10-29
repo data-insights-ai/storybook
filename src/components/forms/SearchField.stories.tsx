@@ -5,7 +5,7 @@ import { SearchField } from "./SearchField";
 const meta = {
   title: "Forms/SearchField",
   component: SearchField,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "search",
     label: "Search the register",

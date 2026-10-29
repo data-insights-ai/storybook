@@ -18,7 +18,7 @@ import { TextField } from "../forms/TextField";
 const meta = {
   title: "Blocks/Modal",
   component: Modal,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   parameters: {
     /*
      * `showModal()` puts the dialog in the browser's top layer and makes the

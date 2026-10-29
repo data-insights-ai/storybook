@@ -7,7 +7,7 @@ import { SealValue } from "./marks/Seal";
 const meta = {
   title: "Blocks/Metric",
   component: Metric,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     label: "Entries sealed",
     figure: "4,182",

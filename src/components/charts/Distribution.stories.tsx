@@ -12,7 +12,7 @@ const rows = [
 const meta = {
   title: "Primitives/Distribution",
   component: Distribution,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { rows, totalLabel: "Total", totalValue: "4,182" },
   argTypes: {
     rows: { control: false },

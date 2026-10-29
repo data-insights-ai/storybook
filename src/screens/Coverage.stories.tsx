@@ -3,6 +3,7 @@ import { CoverageScreen } from "./Coverage";
 
 const meta = {
   title: "Screens/Coverage",
+  tags: ["layer:screen"],
   component: CoverageScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof CoverageScreen>;

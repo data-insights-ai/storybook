@@ -5,7 +5,7 @@ import { Checkbox, ChoiceGroup } from "./Choice";
 const meta = {
   title: "Forms/Checkbox",
   component: Checkbox,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "seal-on-ingest",
     label: "Seal on ingest",

@@ -4,6 +4,7 @@ import { ListPageScreen } from "./ListPage";
 
 const meta = {
   title: "Screens/List page",
+  tags: ["layer:screen"],
   component: ListPageScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof ListPageScreen>;

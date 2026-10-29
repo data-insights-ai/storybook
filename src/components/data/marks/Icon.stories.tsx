@@ -33,6 +33,7 @@ import { IconSet } from "../../../foundations/guide/IconSet";
 
 const meta = {
   title: "Primitives/Icon",
+  tags: ["layer:primitive"],
   component: Icon,
   args: {
     size: 24,

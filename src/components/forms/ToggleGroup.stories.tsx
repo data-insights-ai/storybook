@@ -16,7 +16,7 @@ const days = [
 const meta = {
   title: "Forms/ToggleGroup",
   component: ToggleGroup,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: { legend: "Days", options: days, value: [], onChange: () => {} },
 } satisfies Meta<typeof ToggleGroup>;
 

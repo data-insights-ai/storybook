@@ -7,7 +7,7 @@ import { CommandBar, CommandChip, CommandGroup, CommandRow } from "./CommandBar"
 const meta = {
   title: "Blocks/CommandBar",
   component: CommandBar,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     id: "command",
     label: "Navigate, search or ask",

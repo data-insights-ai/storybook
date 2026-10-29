@@ -7,7 +7,7 @@ import { Toast, ToastAction } from "./Toast";
 const meta = {
   title: "Blocks/Toast",
   component: Toast,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     title: "Four sources revoked.",
     body: "They were removed from the register at 09:14:22Z.",

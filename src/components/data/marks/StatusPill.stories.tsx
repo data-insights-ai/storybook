@@ -5,7 +5,7 @@ import { StatusPill } from "./StatusPill";
 const meta = {
   title: "Primitives/StatusPill",
   component: StatusPill,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     tone: "ok",
     dot: true,

@@ -5,7 +5,7 @@ import { Stepper } from "./Stepper";
 const meta = {
   title: "Primitives/Stepper",
   component: Stepper,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     label: "Source registration",
     stateLabels: { done: "Done", current: "Current step", upcoming: "Not started" },

@@ -6,7 +6,7 @@ import { StatTile, StatTileDelta } from "./StatTile";
 const meta = {
   title: "Blocks/StatTile",
   component: StatTile,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     index: "01",
     label: "Entries sealed",

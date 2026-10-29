@@ -8,7 +8,7 @@ const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const meta = {
   title: "Forms/TokenField",
   component: TokenField,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "invite-emails",
     label: "Email addresses",

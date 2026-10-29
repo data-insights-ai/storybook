@@ -208,13 +208,22 @@ An exception has to say why, in a comment the lint reads:
 
 `di-lint-allow <rule>: <reason>` covers the block it sits above; `di-lint-allow-file <rule>: <reason>` at the top covers the file. Two files use it: `SignIn.css`, which must not follow the theme, and the Foundations specimen stylesheets, which show literal brand colours because that is what they are showing. A rule with no stated reason is drift with a comment on it.
 
+## Structure
+
+Every story meta carries one layer tag, `layer:foundation`, `layer:primitive`, `layer:form`, `layer:block`, `layer:pattern` or `layer:screen`, and a module never imports one from a higher layer. `pnpm lint:structure` checks that and the rest of the structure, and `pnpm build` runs it:
+
+- `.dependency-cruiser.cjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component only through its `index.ts`; screens import from the package root.
+- `scripts/lint-layers.mjs`: the layer tags and their direction; a story file, its folder and its meta component share one name and the title mirrors the folder; a module is one sidebar entry; every public component is rendered in a story and has a doc comment; no two concept folders import each other.
+
+Both report what `.dependency-cruiser-known-violations.json` and `scripts/lint-layers.baseline.json` record and fail on anything new. The restructure shrinks them until they are deleted; after fixing a recorded finding, rewrite them with `pnpm exec depcruise src --config .dependency-cruiser.cjs --output-type baseline --output-to .dependency-cruiser-known-violations.json` and `node scripts/lint-layers.mjs --write`, and never write one to admit a new finding.
+
 ## Checks
 
 Visible text meets WCAG AA. Status is a word plus a mark, not colour alone. An icon-only button has an accessible name. Focus is visible: navy on ivory, gold on the navy sidebar.
 
 A screen has one `main` and one `h1`. Component stories get that wrapper from `.storybook/preview.tsx` when the story does not render its own heading. `pnpm test` fails on axe violations. The Accessibility panel also counts inconclusive results, so a gradient or a dotted background behind text still counts as a failure to fix in the markup.
 
-Before handing work back, run `pnpm check` — typecheck, `lint:tokens`, the story tests, and the unit tests beside pure modules (`src/**/*.test.ts`, for arithmetic a story cannot show). Run `pnpm build` when a public component or `src/index.ts` changed.
+Before handing work back, run `pnpm check` — typecheck, `lint:structure`, `lint:tokens`, the story tests, and the unit tests beside pure modules (`src/**/*.test.ts`, for arithmetic a story cannot show). Run `pnpm build` when a public component or `src/index.ts` changed.
 
 ## Release
 

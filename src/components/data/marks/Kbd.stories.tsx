@@ -5,7 +5,7 @@ import { Kbd } from "./Seal";
 const meta = {
   title: "Primitives/Kbd",
   component: Kbd,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { children: "⌘K" },
   argTypes: { children: { control: "text" } },
 } satisfies Meta<typeof Kbd>;

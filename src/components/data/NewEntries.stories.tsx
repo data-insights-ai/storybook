@@ -5,7 +5,7 @@ import { NewEntries } from "./NewEntries";
 const meta = {
   title: "Primitives/NewEntries",
   component: NewEntries,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { label: "4 new entries", onShow: fn() },
 } satisfies Meta<typeof NewEntries>;
 

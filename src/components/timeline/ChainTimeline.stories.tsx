@@ -21,7 +21,7 @@ const events = [
 const meta = {
   title: "Blocks/ChainTimeline",
   component: ChainTimeline,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     label: "Attack chain over three devices, 08:12 to 08:34",
     lanes,

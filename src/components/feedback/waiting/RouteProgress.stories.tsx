@@ -9,7 +9,7 @@ import { SkeletonPage } from "./SkeletonPage";
 const meta = {
   title: "Primitives/Waiting/RouteProgress",
   component: RouteProgress,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { active: true, label: "Loading page", delay: 150 },
   argTypes: {
     active: { control: "boolean" },

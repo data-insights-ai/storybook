@@ -6,7 +6,7 @@ import { PrivacyBadge } from "./PrivacyBadge";
 const meta = {
   title: "Blocks/Inference/Privacy",
   component: PrivacyBadge,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { scope: "local", children: null },
   argTypes: {
     scope: { control: "radio", options: ["local", "external", "retention"] },

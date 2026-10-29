@@ -48,7 +48,7 @@ function Lockups() {
   );
 }
 
-const meta = { title: "Foundations/Logo" } satisfies Meta;
+const meta = { title: "Foundations/Logo", tags: ["layer:foundation"] } satisfies Meta;
 export default meta;
 
 export const Lockup: StoryObj = { render: () => <Lockups /> };

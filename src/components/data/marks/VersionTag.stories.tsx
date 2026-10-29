@@ -5,7 +5,7 @@ import { VersionTag } from "./VersionTag";
 const meta = {
   title: "Primitives/VersionTag",
   component: VersionTag,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { children: "v4.18.2" },
   argTypes: { children: { control: "text" } },
 } satisfies Meta<typeof VersionTag>;

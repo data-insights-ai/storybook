@@ -48,7 +48,7 @@ const sources: Source[] = [
 const meta = {
   title: "Blocks/DataTable",
   component: DataTable,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     caption: "Sources on record",
     indexed: true,

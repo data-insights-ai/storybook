@@ -64,7 +64,7 @@ const rangeConfig = {
 const meta = {
   title: "Blocks/Chart",
   component: Chart,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     label: "Recorded entries by quarter",
     config: seriesConfig,

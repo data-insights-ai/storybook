@@ -6,7 +6,7 @@ import { Numbered, Stack } from "./Layout";
 const meta = {
   title: "Patterns/Layout/Numbered",
   component: Numbered,
-  tags: ["autodocs"],
+  tags: ["layer:pattern", "autodocs"],
   args: { index: "01", children: null },
   argTypes: {
     index: { control: "text" },

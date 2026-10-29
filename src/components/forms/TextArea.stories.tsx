@@ -4,7 +4,7 @@ import { TextArea } from "./TextField";
 const meta = {
   title: "Forms/TextArea",
   component: TextArea,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: { id: "ca", label: "Server CA", mono: true, rows: 6, placeholder: "-----BEGIN CERTIFICATE-----" },
 } satisfies Meta<typeof TextArea>;
 

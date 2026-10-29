@@ -11,7 +11,7 @@ import { useShortcut } from "../../navigation/shortcuts/useShortcut";
 const meta = {
   title: "Blocks/ListToolbar",
   component: ListToolbar,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { label: "Filter members", sticky: false, children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof ListToolbar>;

@@ -3,6 +3,7 @@ import { ArchitectureScreen } from "./Architecture";
 
 const meta = {
   title: "Screens/Architecture",
+  tags: ["layer:screen"],
   component: ArchitectureScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof ArchitectureScreen>;

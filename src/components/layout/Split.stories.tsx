@@ -10,7 +10,7 @@ import { Split, SplitAside, SplitMain } from "./Split";
 const meta = {
   title: "Patterns/Layout/Split",
   component: Split,
-  tags: ["autodocs"],
+  tags: ["layer:pattern", "autodocs"],
   args: { asideFirst: false, children: null },
   argTypes: { children: { control: false } },
   render: (args) => (

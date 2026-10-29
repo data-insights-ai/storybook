@@ -5,7 +5,7 @@ import { TooltipTarget } from "./TooltipTarget";
 const meta = {
   title: "Primitives/TooltipTarget",
   component: TooltipTarget,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { text: "RFC 3161", label: "Trusted timestamp protocol" },
   argTypes: { text: { control: "text" }, label: { control: "text" } },
 } satisfies Meta<typeof TooltipTarget>;

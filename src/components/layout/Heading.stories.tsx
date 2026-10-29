@@ -17,7 +17,7 @@ import { StatusPill } from "../data/marks/StatusPill";
 const meta = {
   title: "Blocks/PageHeader",
   component: PageHeader,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     eyebrow: "Watchlist",
     lede: "Manage the people, companies, domains, and email addresses under automatic watch.",

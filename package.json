@@ -30,13 +30,14 @@
   },
   "scripts": {
     "storybook": "storybook dev -p 4500",
-    "build": "node scripts/lint-tokens.mjs && vite build --config vite.lib.config.ts && node scripts/build-styles.mjs && node scripts/check-treeshake.mjs && node scripts/check-api.mjs",
+    "build": "pnpm lint:structure && node scripts/lint-tokens.mjs && vite build --config vite.lib.config.ts && node scripts/build-styles.mjs && node scripts/check-treeshake.mjs && node scripts/check-api.mjs",
     "build-storybook": "storybook build --output-dir dist/storybook",
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "check": "pnpm typecheck && pnpm test && pnpm build",
     "test": "vitest run --project=unit --project=layout --project=storybook",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "lint:structure": "depcruise src --config .dependency-cruiser.cjs --ignore-known --output-type err && node scripts/lint-layers.mjs"
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",
@@ -68,6 +69,7 @@
     "@vitest/browser": "^4.1.11",
     "@vitest/browser-playwright": "^4.1.11",
     "@vitest/coverage-v8": "^4.1.11",
+    "dependency-cruiser": "18.6.0",
     "playwright": "^1.63.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

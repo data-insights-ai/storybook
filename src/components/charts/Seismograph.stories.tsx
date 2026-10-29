@@ -17,6 +17,7 @@ const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", t
 
 const meta = {
   title: "Blocks/Seismograph",
+  tags: ["layer:block"],
   component: Seismograph,
   args: {
     label: "Records per day, by measured severity",

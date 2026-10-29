@@ -8,7 +8,7 @@ import { RowActions } from "./RowActions";
 const meta = {
   title: "Blocks/RowActions",
   component: RowActions,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof RowActions>;

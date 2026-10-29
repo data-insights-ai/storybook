@@ -5,7 +5,7 @@ import { ConfirmDialog } from "./ConfirmDialog";
 const meta = {
   title: "Blocks/ConfirmDialog",
   component: ConfirmDialog,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     open: true,
     title: "Remove Jonas Brandt?",

@@ -20,7 +20,7 @@ const bars = [
 const meta = {
   title: "Blocks/LivingCard",
   component: LivingCard,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     title: "Unsealed entries",
     insightLabel: "ai insight",

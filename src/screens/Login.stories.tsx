@@ -3,6 +3,7 @@ import { LoginScreen } from "./Login";
 
 const meta = {
   title: "Screens/Login",
+  tags: ["layer:screen"],
   component: LoginScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof LoginScreen>;

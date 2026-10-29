@@ -5,7 +5,7 @@ import { TextLink } from "./TextLink";
 const meta = {
   title: "Primitives/TextLink",
   component: TextLink,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     children: "Open the record",
     quiet: false,

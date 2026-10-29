@@ -14,7 +14,7 @@ import { Page, PageAside } from "./Page";
 const meta = {
   title: "Patterns/Layout/Page",
   component: Page,
-  tags: ["autodocs"],
+  tags: ["layer:pattern", "autodocs"],
   args: { width: "detail", children: null },
   argTypes: {
     width: { control: "radio", options: ["list", "detail", "full", "form"] },

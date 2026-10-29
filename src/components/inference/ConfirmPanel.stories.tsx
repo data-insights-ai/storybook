@@ -7,7 +7,7 @@ import { ExplainRow } from "./ExplainPanel";
 const meta = {
   title: "Blocks/Inference/Confirm",
   component: ConfirmPanel,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     eyebrow: "Proposed action",
     question: "Merge entry 07 into entry 03?",

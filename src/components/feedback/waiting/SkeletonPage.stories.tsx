@@ -5,7 +5,7 @@ import { SkeletonPage } from "./SkeletonPage";
 const meta = {
   title: "Primitives/Waiting/SkeletonPage",
   component: SkeletonPage,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { variant: "list", label: "Loading the page", rows: 6, heading: true, delay: 150 },
   argTypes: {
     variant: { control: "inline-radio", options: ["list", "detail", "form"] },

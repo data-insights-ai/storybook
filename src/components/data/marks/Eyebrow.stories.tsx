@@ -5,7 +5,7 @@ import { Eyebrow } from "./Seal";
 const meta = {
   title: "Primitives/Eyebrow",
   component: Eyebrow,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { children: "04 — Coverage", variant: "sealed" },
   argTypes: {
     children: { control: "text" },

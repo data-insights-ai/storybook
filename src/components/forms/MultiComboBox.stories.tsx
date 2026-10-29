@@ -16,6 +16,7 @@ const people = [
 
 const meta = {
   title: "Forms/MultiComboBox",
+  tags: ["layer:form"],
   component: MultiComboBox,
   args: {
     id: "notify-members",

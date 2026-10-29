@@ -5,7 +5,7 @@ import { SealMark, SealValue } from "./Seal";
 const meta = {
   title: "Primitives/Seal",
   component: SealValue,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     state: "sealed",
     stateLabel: "Sealed",

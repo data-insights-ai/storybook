@@ -287,6 +287,7 @@ function Board() {
 
 const meta = {
   title: "Foundations/Color",
+  tags: ["layer:foundation"],
 } satisfies Meta;
 
 export default meta;

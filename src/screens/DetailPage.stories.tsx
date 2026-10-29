@@ -4,6 +4,7 @@ import { DetailPageScreen } from "./DetailPage";
 
 const meta = {
   title: "Screens/Detail page",
+  tags: ["layer:screen"],
   component: DetailPageScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof DetailPageScreen>;

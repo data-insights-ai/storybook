@@ -8,7 +8,7 @@ import { Toolbar } from "../layout/Layout";
 const meta = {
   title: "Forms/FileField",
   component: FileField,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "certificate",
     label: "Certificate",

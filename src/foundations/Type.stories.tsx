@@ -117,7 +117,7 @@ function Rows({ rows }: { rows: Row[] }) {
   );
 }
 
-const meta = { title: "Foundations/Type" } satisfies Meta;
+const meta = { title: "Foundations/Type", tags: ["layer:foundation"] } satisfies Meta;
 export default meta;
 
 /** The scale, with the token each step is set in and where it is used. */

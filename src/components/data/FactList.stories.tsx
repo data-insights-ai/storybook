@@ -7,7 +7,7 @@ import { StatusPill } from "./marks/StatusPill";
 const meta = {
   title: "Blocks/FactList",
   component: FactList,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { layout: "rows", children: null },
   argTypes: {
     layout: { control: "radio", options: ["rows", "grid", "columns", "inline"] },

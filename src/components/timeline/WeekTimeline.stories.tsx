@@ -9,7 +9,7 @@ const night = [
 const meta = {
   title: "Primitives/WeekTimeline",
   component: WeekTimeline,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     summary: "Quiet every night from 21:00 to 07:00 and all weekend",
     rows: [

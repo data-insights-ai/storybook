@@ -6,7 +6,7 @@ import { SaveBar } from "./SaveBar";
 const meta = {
   title: "Forms/SaveBar",
   component: SaveBar,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: { label: "Unsaved changes", message: "2 unsaved changes", children: null },
 } satisfies Meta<typeof SaveBar>;
 

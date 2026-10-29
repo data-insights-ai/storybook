@@ -15,7 +15,7 @@ const record = {
 const meta = {
   title: "Primitives/CodeBlock",
   component: CodeBlock,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { label: "Raw record", children: JSON.stringify(record, null, 2) },
   argTypes: { children: { control: "text" } },
 } satisfies Meta<typeof CodeBlock>;

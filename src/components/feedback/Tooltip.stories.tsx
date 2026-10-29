@@ -5,7 +5,7 @@ import { Tooltip } from "./Tooltip";
 const meta = {
   title: "Primitives/Tooltip",
   component: Tooltip,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { children: "sealed 09:12:04Z" },
   argTypes: { children: { control: "text" } },
 } satisfies Meta<typeof Tooltip>;

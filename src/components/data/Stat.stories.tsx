@@ -4,6 +4,7 @@ import { StatusPill } from "./marks/StatusPill";
 
 const meta = {
   title: "Blocks/Stat",
+  tags: ["layer:block"],
   component: Stat,
   args: { label: "Active entries", value: "08", suffix: " / 08" },
 } satisfies Meta<typeof Stat>;

@@ -5,7 +5,7 @@ import { Highlight } from "./Highlight";
 const meta = {
   title: "Primitives/Highlight",
   component: Highlight,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { variant: "passage", children: "without a new source" },
   argTypes: {
     variant: { control: "radio", options: ["passage", "figure"] },

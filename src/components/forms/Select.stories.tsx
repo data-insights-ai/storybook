@@ -5,7 +5,7 @@ import { Select } from "./Select";
 const meta = {
   title: "Forms/Select",
   component: Select,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "window",
     label: "Window",

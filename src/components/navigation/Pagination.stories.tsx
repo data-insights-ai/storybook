@@ -6,7 +6,7 @@ import { Pagination } from "./Pagination";
 const meta = {
   title: "Primitives/Pagination",
   component: Pagination,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     page: 1,
     pages: 5,

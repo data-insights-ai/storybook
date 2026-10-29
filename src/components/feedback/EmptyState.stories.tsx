@@ -7,7 +7,7 @@ import { EmptyState, EmptyStateAction, EmptyStateIcon } from "./EmptyState";
 const meta = {
   title: "Blocks/EmptyState",
   component: EmptyState,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     index: "00",
     eyebrow: "No results",

@@ -5,7 +5,7 @@ import { ConfidenceField } from "./ConfidenceField";
 const meta = {
   title: "Blocks/Inference/Confidence",
   component: ConfidenceField,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     id: "confidence",
     label: "Resolved operator",

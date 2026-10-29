@@ -7,6 +7,7 @@ import { ShortcutHelp } from "./ShortcutHelp";
 
 const meta = {
   title: "Patterns/ShortcutHelp",
+  tags: ["layer:pattern"],
   component: ShortcutHelp,
   args: {
     title: "Keyboard shortcuts",

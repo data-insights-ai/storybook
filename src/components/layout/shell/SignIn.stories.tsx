@@ -10,7 +10,7 @@ import { TextLink } from "../../navigation/TextLink";
 const meta = {
   title: "Blocks/SignIn",
   component: SignIn,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   parameters: { layout: "fullscreen", docs: { story: { inline: false, height: "720px" } } },
   args: {
     kicker: "datAInsights",

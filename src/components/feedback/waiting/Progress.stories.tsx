@@ -7,7 +7,7 @@ import { Progress } from "./Progress";
 const meta = {
   title: "Primitives/Waiting/Progress",
   component: Progress,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     id: "ingest",
     label: "Ingesting sources",

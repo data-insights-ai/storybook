@@ -12,6 +12,7 @@ const suggestions = [
 ];
 const meta = {
   title: "Forms/ComboBox",
+  tags: ["layer:form"],
   component: ComboBox,
   args: {
     id: "register-code", name: "register", label: "Register code", value: "",

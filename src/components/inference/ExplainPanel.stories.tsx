@@ -6,7 +6,7 @@ import { ExplainFooter, ExplainPanel, ExplainRow } from "./ExplainPanel";
 const meta = {
   title: "Blocks/Inference/Explain",
   component: ExplainPanel,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     heading: "Why this was proposed",
     children: null,

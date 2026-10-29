@@ -5,7 +5,7 @@ import { Badge } from "./Badge";
 const meta = {
   title: "Primitives/Badge",
   component: Badge,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     tone: "neutral",
     children: "08",

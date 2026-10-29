@@ -5,7 +5,7 @@ import { Bars } from "./Bars";
 const meta = {
   title: "Primitives/Bars",
   component: Bars,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     values: [34, 41, 38, 52, 47, 63, 58],
     highlight: 6,

@@ -8,7 +8,7 @@ import { Spinner } from "./waiting/Spinner";
 const meta = {
   title: "Blocks/Delayed",
   component: Delayed,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { delay: 150, children: null },
   argTypes: { delay: { control: { type: "number" } }, children: { control: false } },
 } satisfies Meta<typeof Delayed>;

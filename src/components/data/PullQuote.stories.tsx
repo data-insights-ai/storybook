@@ -5,7 +5,7 @@ import { PullQuote } from "./PullQuote";
 const meta = {
   title: "Primitives/PullQuote",
   component: PullQuote,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { children: "If you cannot cite it, we cannot say it." },
   argTypes: { children: { control: "text" } },
 } satisfies Meta<typeof PullQuote>;

@@ -74,6 +74,7 @@ function Sample({ initial, language }: { initial: ThemeChoice; language: keyof t
 
 const meta = {
   title: "Patterns/Theme",
+  tags: ["layer:pattern"],
   component: Sample,
   parameters: { layout: "fullscreen" },
   args: { initial: "auto", language: "en" },

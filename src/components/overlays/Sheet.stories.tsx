@@ -8,7 +8,7 @@ import { Sheet, SheetFooter } from "./Sheet";
 const meta = {
   title: "Blocks/Sheet",
   component: Sheet,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     open: false,
     title: "Jonas Brandt",

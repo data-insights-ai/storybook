@@ -5,7 +5,7 @@ import { AppLoader } from "./AppLoader";
 const meta = {
   title: "Primitives/Waiting/AppLoader",
   component: AppLoader,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   parameters: { layout: "fullscreen" },
   args: { label: "Loading", delay: 150 },
   argTypes: { label: { control: "text" }, delay: { control: { type: "number" } } },

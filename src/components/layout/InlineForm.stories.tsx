@@ -8,7 +8,7 @@ import { TextField } from "../forms/TextField";
 const meta = {
   title: "Patterns/Layout/InlineForm",
   component: InlineForm,
-  tags: ["autodocs"],
+  tags: ["layer:pattern", "autodocs"],
   args: { children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof InlineForm>;

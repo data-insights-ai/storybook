@@ -7,7 +7,7 @@ import { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./LevelMeter";
 const meta = {
   title: "Primitives/LevelMeter",
   component: LevelMeter,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     label: "Level now",
     value: 72,

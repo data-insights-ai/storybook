@@ -9,7 +9,7 @@ import { Accordion, AccordionDetail, AccordionItem, AccordionMeta } from "./Acco
 const meta = {
   title: "Blocks/Accordion",
   component: Accordion,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { label: "Signals by attack phase", children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof Accordion>;

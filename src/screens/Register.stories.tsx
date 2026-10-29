@@ -4,6 +4,7 @@ import { RegisterScreen } from "./Register";
 
 const meta = {
   title: "Screens/Register",
+  tags: ["layer:screen"],
   component: RegisterScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof RegisterScreen>;

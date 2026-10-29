@@ -60,7 +60,7 @@ function Ramp({
   );
 }
 
-const meta = { title: "Foundations/Scale" } satisfies Meta;
+const meta = { title: "Foundations/Scale", tags: ["layer:foundation"] } satisfies Meta;
 export default meta;
 
 /** Space, radius and control height — the three ramps a screen is built on. */

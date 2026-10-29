@@ -5,7 +5,7 @@ import { Breadcrumb } from "./Breadcrumb";
 const meta = {
   title: "Primitives/Breadcrumb",
   component: Breadcrumb,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     label: "Breadcrumb",
     items: [

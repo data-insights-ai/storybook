@@ -6,7 +6,7 @@ import { SegmentedControl } from "./SegmentedControl";
 const meta = {
   title: "Forms/SegmentedControl",
   component: SegmentedControl,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     name: "density",
     legend: "Row density",

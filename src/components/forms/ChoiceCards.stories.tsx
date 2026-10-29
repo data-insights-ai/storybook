@@ -7,7 +7,7 @@ import { ChoiceCards } from "./ChoiceCards";
 const meta = {
   title: "Forms/ChoiceCards",
   component: ChoiceCards,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
 } satisfies Meta<typeof ChoiceCards>;
 
 export default meta;

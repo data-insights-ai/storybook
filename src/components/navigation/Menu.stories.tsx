@@ -9,7 +9,7 @@ import { Menu, MenuDivider, MenuGroup, MenuItem } from "./Menu";
 const meta = {
   title: "Blocks/Menu",
   component: Menu,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     open: false,
     label: "Actions for entry 04",

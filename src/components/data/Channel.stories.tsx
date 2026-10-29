@@ -8,7 +8,7 @@ import { KeyValue, KeyValues } from "./KeyValues";
 const meta = {
   title: "Blocks/Channel",
   component: Channel,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     title: "registry.example.org",
     children: null,

@@ -6,7 +6,7 @@ import { Chip } from "./Chip";
 const meta = {
   title: "Primitives/Chip",
   component: Chip,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     children: "severity: high",
     active: true,

@@ -5,7 +5,7 @@ import { ChoiceGroup, Radio } from "./Choice";
 const meta = {
   title: "Forms/Radio",
   component: Radio,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "retention-30",
     name: "retention",

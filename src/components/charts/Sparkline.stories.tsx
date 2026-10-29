@@ -16,7 +16,7 @@ const bars = [
 const meta = {
   title: "Primitives/Sparkline",
   component: Sparkline,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     bars,
     label: "Unsealed entries over the last eight hours, rising sharply in the last two.",

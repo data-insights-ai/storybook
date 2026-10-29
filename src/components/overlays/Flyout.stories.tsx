@@ -12,7 +12,7 @@ import { TextLink } from "../navigation/TextLink";
 const meta = {
   title: "Blocks/Flyout",
   component: Flyout,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
 } satisfies Meta<typeof Flyout>;
 
 export default meta;

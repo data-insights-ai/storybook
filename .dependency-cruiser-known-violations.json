@@ -1,0 +1,5344 @@
+[
+  {
+    "type": "dependency",
+    "from": "src/components/actions/BulkActionBar.stories.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/actions/BulkActionBar.stories.tsx",
+    "to": "src/components/navigation/Menu.tsx",
+    "unresolvedTo": "../navigation/Menu",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/actions/BulkActionBar.stories.tsx",
+    "to": "src/components/overlays/Flyout.tsx",
+    "unresolvedTo": "../overlays/Flyout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/actions/BulkActionBar.tsx",
+    "to": "src/components/navigation/shortcuts/useShortcut.ts",
+    "unresolvedTo": "../navigation/shortcuts/useShortcut",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/actions/Button.tsx",
+    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
+    "unresolvedTo": "../navigation/shortcuts/shortcutKeys",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/actions/CopyValue.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/actions/RowActions.stories.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/charts/ChartCard.stories.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/charts/ChartCard.stories.tsx",
+    "to": "src/components/timeline/PeriodTimeline.tsx",
+    "unresolvedTo": "../timeline/PeriodTimeline",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/charts/CoverageMatrix.tsx",
+    "to": "src/components/feedback/TooltipTarget.tsx",
+    "unresolvedTo": "../feedback/TooltipTarget",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/charts/LevelMeter.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/LivingCard.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/LivingCard.stories.tsx",
+    "to": "src/components/charts/Sparkline.tsx",
+    "unresolvedTo": "../charts/Sparkline",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/NewEntries.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/RecordCard.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/Session.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/StatTile.stories.tsx",
+    "to": "src/components/charts/Sparkline.tsx",
+    "unresolvedTo": "../charts/Sparkline",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/charts/LevelMeter.tsx",
+    "unresolvedTo": "../../charts/LevelMeter",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/data/marks/Chip.tsx",
+    "unresolvedTo": "../marks/Chip",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/forms/SearchField.tsx",
+    "unresolvedTo": "../../forms/SearchField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../../forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/navigation/Pagination.tsx",
+    "unresolvedTo": "../../navigation/Pagination",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/DataTable.stories.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../../navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/InfiniteTable.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/InfiniteTable.tsx",
+    "to": "src/components/data/NewEntries.tsx",
+    "unresolvedTo": "../NewEntries",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/InfiniteTable.tsx",
+    "to": "src/components/feedback/waiting/Spinner.tsx",
+    "unresolvedTo": "../../feedback/waiting/Spinner",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/ListToolbar.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/ListToolbar.stories.tsx",
+    "to": "src/components/forms/SearchField.tsx",
+    "unresolvedTo": "../../forms/SearchField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/ListToolbar.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../../forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/table/ListToolbar.stories.tsx",
+    "to": "src/components/navigation/shortcuts/useShortcut.ts",
+    "unresolvedTo": "../../navigation/shortcuts/useShortcut",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/DangerZone.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/DangerZone.stories.tsx",
+    "to": "src/components/overlays/ConfirmDialog.tsx",
+    "unresolvedTo": "../overlays/ConfirmDialog",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/Delayed.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/EmptyState.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/Notice.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/Notice.stories.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/Toast.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/Toast.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/AppLoader.tsx",
+    "to": "src/components/feedback/useDelayed.ts",
+    "unresolvedTo": "../useDelayed",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/Progress.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/RouteProgress.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/RouteProgress.stories.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../../layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/SkeletonPage.tsx",
+    "to": "src/components/feedback/useDelayed.ts",
+    "unresolvedTo": "../useDelayed",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/SkeletonTable.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/SkeletonTable.stories.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/SkeletonTable.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/SkeletonTable.stories.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/feedback/waiting/SkeletonTable.tsx",
+    "to": "src/components/feedback/useDelayed.ts",
+    "unresolvedTo": "../useDelayed",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/ComboBox.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/ComboBox.stories.tsx",
+    "to": "src/components/overlays/Modal.tsx",
+    "unresolvedTo": "../overlays/Modal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateField.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateField.stories.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../../layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateField.stories.tsx",
+    "to": "src/components/overlays/Modal.tsx",
+    "unresolvedTo": "../../overlays/Modal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateField.tsx",
+    "to": "src/components/forms/Field.ts",
+    "unresolvedTo": "../Field",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateField.tsx",
+    "to": "src/components/forms/FieldHint.tsx",
+    "unresolvedTo": "../FieldHint",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateField.tsx",
+    "to": "src/components/forms/useOverlayHost.ts",
+    "unresolvedTo": "../useOverlayHost",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateRangePicker.stories.tsx",
+    "to": "src/components/data/table/ListToolbar.tsx",
+    "unresolvedTo": "../../data/table/ListToolbar",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateRangePicker.stories.tsx",
+    "to": "src/components/forms/SearchField.tsx",
+    "unresolvedTo": "../SearchField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateRangePicker.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateRangePicker.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/DateRangePicker.tsx",
+    "to": "src/components/forms/Choice.tsx",
+    "unresolvedTo": "../Choice",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/TimeField.stories.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../../layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/TimeField.tsx",
+    "to": "src/components/forms/Field.ts",
+    "unresolvedTo": "../Field",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/TimeField.tsx",
+    "to": "src/components/forms/FieldHint.tsx",
+    "unresolvedTo": "../FieldHint",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/dates/TypedDay.tsx",
+    "to": "src/components/forms/FieldHint.tsx",
+    "unresolvedTo": "../FieldHint",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/FieldHint.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/FileField.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/FileField.stories.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/FileField.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/FileField.tsx",
+    "to": "src/components/data/marks/Icon.tsx",
+    "unresolvedTo": "../data/marks/Icon",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/MultiComboBox.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/MultiComboBox.stories.tsx",
+    "to": "src/components/overlays/Modal.tsx",
+    "unresolvedTo": "../overlays/Modal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/SaveBar.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/SearchField.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/SearchField.tsx",
+    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
+    "unresolvedTo": "../navigation/shortcuts/shortcutKeys",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/Select.browser.test.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/TextField.stories.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/TextField.stories.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/inference/ConfidenceField.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/inference/ConfirmPanel.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/inference/ConfirmPanel.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/inference/ExplainPanel.stories.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/inference/ExplainPanel.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Accordion.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Accordion.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Accordion.stories.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/DetailSection.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/DetailSection.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/DetailSection.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/DetailSection.stories.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/DetailSection.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/DetailSection.tsx",
+    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
+    "unresolvedTo": "../navigation/shortcuts/shortcutKeys",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Disclosure.stories.tsx",
+    "to": "src/components/forms/Choice.tsx",
+    "unresolvedTo": "../forms/Choice",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/FormLayout.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/FormLayout.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/FormLayout.stories.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Heading.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Heading.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Heading.stories.tsx",
+    "to": "src/components/data/marks/Highlight.tsx",
+    "unresolvedTo": "../data/marks/Highlight",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Heading.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Heading.stories.tsx",
+    "to": "src/components/navigation/Breadcrumb.tsx",
+    "unresolvedTo": "../navigation/Breadcrumb",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Heading.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/InlineForm.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/InlineForm.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/InlineForm.stories.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/layout.browser.test.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/layout.browser.test.tsx",
+    "to": "src/components/data/table/ListToolbar.tsx",
+    "unresolvedTo": "../data/table/ListToolbar",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/layout.browser.test.tsx",
+    "to": "src/components/forms/ChoiceCards.tsx",
+    "unresolvedTo": "../forms/ChoiceCards",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/layout.browser.test.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/layout.browser.test.tsx",
+    "to": "src/components/overlays/CreateFlow.tsx",
+    "unresolvedTo": "../overlays/CreateFlow",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/layout.browser.test.tsx",
+    "to": "src/components/overlays/Sheet.tsx",
+    "unresolvedTo": "../overlays/Sheet",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/LayoutGrid.stories.tsx",
+    "to": "src/components/data/Card.tsx",
+    "unresolvedTo": "../data/Card",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/LayoutNumbered.stories.tsx",
+    "to": "src/components/data/Card.tsx",
+    "unresolvedTo": "../data/Card",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/LayoutStack.stories.tsx",
+    "to": "src/components/data/Card.tsx",
+    "unresolvedTo": "../data/Card",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/LayoutToolbar.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/LayoutToolbar.stories.tsx",
+    "to": "src/components/data/marks/Chip.tsx",
+    "unresolvedTo": "../data/marks/Chip",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/LayoutToolbar.stories.tsx",
+    "to": "src/components/forms/SearchField.tsx",
+    "unresolvedTo": "../forms/SearchField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/LayoutToolbar.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/LayoutToolbar.stories.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Page.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Page.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Page.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Page.stories.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Page.stories.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Page.stories.tsx",
+    "to": "src/components/overlays/Sheet.tsx",
+    "unresolvedTo": "../overlays/Sheet",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Panel.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Panel.stories.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Panel.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/SectionTitle.stories.tsx",
+    "to": "src/components/data/marks/Highlight.tsx",
+    "unresolvedTo": "../data/marks/Highlight",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/SectionTitle.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/SectionTitle.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../../forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.stories.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.stories.tsx",
+    "to": "src/components/navigation/Breadcrumb.tsx",
+    "unresolvedTo": "../../navigation/Breadcrumb",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.stories.tsx",
+    "to": "src/components/navigation/Menu.tsx",
+    "unresolvedTo": "../../navigation/Menu",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.tsx",
+    "to": "src/components/data/marks/Badge.tsx",
+    "unresolvedTo": "../../data/marks/Badge",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/AppShell.tsx",
+    "to": "src/components/navigation/SkipLink.tsx",
+    "unresolvedTo": "../../navigation/SkipLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/SignIn.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/SignIn.stories.tsx",
+    "to": "src/components/data/marks/VersionTag.tsx",
+    "unresolvedTo": "../../data/marks/VersionTag",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/SignIn.stories.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/SignIn.stories.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../../navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/SignIn.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/layout/Panel.tsx",
+    "unresolvedTo": "../Panel",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/navigation/sidebar/Sidebar.tsx",
+    "unresolvedTo": "../../navigation/sidebar/Sidebar",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/navigation/sidebar/SidebarInset.tsx",
+    "unresolvedTo": "../../navigation/sidebar/SidebarInset",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/navigation/sidebar/SidebarMenu.tsx",
+    "unresolvedTo": "../../navigation/sidebar/SidebarMenu",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/navigation/sidebar/SidebarMenuButton.tsx",
+    "unresolvedTo": "../../navigation/sidebar/SidebarMenuButton",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/navigation/sidebar/SidebarProvider.tsx",
+    "unresolvedTo": "../../navigation/sidebar/SidebarProvider",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/navigation/sidebar/SidebarSections.tsx",
+    "unresolvedTo": "../../navigation/sidebar/SidebarSections",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/shell/Theme.stories.tsx",
+    "to": "src/components/navigation/sidebar/SidebarThemeChoice.tsx",
+    "unresolvedTo": "../../navigation/sidebar/SidebarThemeChoice",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Split.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Split.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Split.stories.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Stage.stories.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/layout/Stage.stories.tsx",
+    "to": "src/components/feedback/waiting/Spinner.tsx",
+    "unresolvedTo": "../feedback/waiting/Spinner",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/CommandBar.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/Menu.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/Menu.stories.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/Menu.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/shortcuts/ShortcutHelp.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/shortcuts/ShortcutHelp.stories.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/shortcuts/ShortcutHelp.stories.tsx",
+    "to": "src/components/forms/SearchField.tsx",
+    "unresolvedTo": "../../forms/SearchField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/shortcuts/ShortcutHelp.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/shortcuts/ShortcutHelp.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/shortcuts/ShortcutHelp.tsx",
+    "to": "src/components/overlays/Modal.tsx",
+    "unresolvedTo": "../../overlays/Modal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/Sidebar.stories.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../../layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/Sidebar.stories.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../../layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/Sidebar.stories.tsx",
+    "to": "src/components/navigation/Breadcrumb.tsx",
+    "unresolvedTo": "../Breadcrumb",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/Sidebar.stories.tsx",
+    "to": "src/components/navigation/Menu.tsx",
+    "unresolvedTo": "../Menu",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/SidebarMenuButton.tsx",
+    "to": "src/components/data/marks/Badge.tsx",
+    "unresolvedTo": "../../data/marks/Badge",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/SidebarProvider.tsx",
+    "to": "src/components/navigation/SkipLink.tsx",
+    "unresolvedTo": "../SkipLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/SidebarRailTooltip.tsx",
+    "to": "src/components/data/marks/Badge.tsx",
+    "unresolvedTo": "../../data/marks/Badge",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/SidebarThemeChoice.tsx",
+    "to": "src/components/layout/shell/Theme.tsx",
+    "unresolvedTo": "../../layout/shell/Theme",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/SidebarThemeChoice.tsx",
+    "to": "src/components/navigation/Menu.tsx",
+    "unresolvedTo": "../Menu",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/navigation/sidebar/SidebarTrigger.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/ConfirmDialog.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/CreateFlow.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/CreateFlow.stories.tsx",
+    "to": "src/components/forms/ChoiceCards.tsx",
+    "unresolvedTo": "../forms/ChoiceCards",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/CreateFlow.stories.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/CreateFlow.stories.tsx",
+    "to": "src/components/layout/Page.tsx",
+    "unresolvedTo": "../layout/Page",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/CreateFlow.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/CreateFlow.tsx",
+    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
+    "unresolvedTo": "../navigation/shortcuts/shortcutKeys",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/CreateFlow.tsx",
+    "to": "src/components/navigation/Stepper.tsx",
+    "unresolvedTo": "../navigation/Stepper",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Drawer.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Drawer.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Drawer.stories.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Drawer.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Flyout.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Flyout.stories.tsx",
+    "to": "src/components/actions/CountButton.tsx",
+    "unresolvedTo": "../actions/CountButton",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Flyout.stories.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Flyout.stories.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Flyout.stories.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Modal.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Modal.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Modal.stories.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Sheet.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Sheet.stories.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Sheet.tsx",
+    "to": "src/components/layout/pageSide.ts",
+    "unresolvedTo": "../layout/pageSide",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Sheet.tsx",
+    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
+    "unresolvedTo": "../navigation/shortcuts/shortcutKeys",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/Sheet.tsx",
+    "to": "src/components/navigation/shortcuts/useShortcut.ts",
+    "unresolvedTo": "../navigation/shortcuts/useShortcut",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/useDialogFocus.ts",
+    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
+    "unresolvedTo": "../navigation/shortcuts/shortcutKeys",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/overlays/useModalDialog.ts",
+    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
+    "unresolvedTo": "../navigation/shortcuts/shortcutKeys",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/EventTimeline.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/EventTimeline.tsx",
+    "to": "src/components/feedback/waiting/Spinner.tsx",
+    "unresolvedTo": "../feedback/waiting/Spinner",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Events.tsx",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Events.tsx",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Lanes.tsx",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Lanes.tsx",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Markers.tsx",
+    "to": "src/components/timeline/scale/labels.ts",
+    "unresolvedTo": "../scale/labels",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Markers.tsx",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Markers.tsx",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/ScoreTrack.tsx",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/ScoreTrack.tsx",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/TimeAxis.tsx",
+    "to": "src/components/timeline/scale/labels.ts",
+    "unresolvedTo": "../scale/labels",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/TimeAxis.tsx",
+    "to": "src/components/timeline/scale/ticks.ts",
+    "unresolvedTo": "../scale/ticks",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/TimeAxis.tsx",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Waveform.tsx",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/marks/Waveform.tsx",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/Controls.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/Controls.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../../layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/Controls.tsx",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/Overview.tsx",
+    "to": "src/components/timeline/marks/Waveform.tsx",
+    "unresolvedTo": "../marks/Waveform",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/Overview.tsx",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/Overview.tsx",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/useGestures.ts",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/useTimelineView.ts",
+    "to": "src/components/timeline/scale/resolution.ts",
+    "unresolvedTo": "../scale/resolution",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/navigation/useTimelineView.ts",
+    "to": "src/components/timeline/scale/viewport.ts",
+    "unresolvedTo": "../scale/viewport",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/scale/resolution.ts",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/summary/episodes.test.ts",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/summary/episodes.ts",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/summary/TimelineSummary.stories.tsx",
+    "to": "src/components/timeline/scale/resolution.ts",
+    "unresolvedTo": "../scale/resolution",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/summary/TimelineSummary.stories.tsx",
+    "to": "src/components/timeline/timeline.sample.ts",
+    "unresolvedTo": "../timeline.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/summary/TimelineSummary.stories.tsx",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/summary/TimelineSummary.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../../data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/summary/TimelineSummary.tsx",
+    "to": "src/components/timeline/types.ts",
+    "unresolvedTo": "../types",
+    "dependencyTypes": [
+      "local",
+      "type-only",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/timeline/summary/TimelineSummary.tsx",
+    "to": "src/components/timeline/useWidth.ts",
+    "unresolvedTo": "../useWidth",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/data/marks/Icon.stories.tsx",
+    "to": "src/foundations/guide/IconSet.tsx",
+    "unresolvedTo": "../../../foundations/guide/IconSet",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-without-foundations"
+    }
+  },
+  {
+    "type": "cycle",
+    "from": "src/components/navigation/sidebar/SidebarMenuButton.tsx",
+    "to": "src/components/navigation/sidebar/SidebarRailTooltip.tsx",
+    "unresolvedTo": "./SidebarRailTooltip",
+    "dependencyTypes": [
+      "local",
+      "dynamic-import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "no-cycles"
+    },
+    "cycle": [
+      {
+        "name": "src/components/navigation/sidebar/SidebarRailTooltip.tsx",
+        "dependencyTypes": [
+          "local",
+          "dynamic-import"
+        ]
+      },
+      {
+        "name": "src/components/navigation/sidebar/SidebarMenuButton.tsx",
+        "dependencyTypes": [
+          "local",
+          "type-only",
+          "import"
+        ]
+      }
+    ]
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/data/KeyValues.tsx",
+    "unresolvedTo": "../components/data/KeyValues",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../components/data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/data/Metric.tsx",
+    "unresolvedTo": "../components/data/Metric",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/feedback/Notice.tsx",
+    "unresolvedTo": "../components/feedback/Notice",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../components/layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../components/layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/layout/SectionTitle.tsx",
+    "unresolvedTo": "../components/layout/SectionTitle",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Architecture.tsx",
+    "to": "src/components/layout/Stage.tsx",
+    "unresolvedTo": "../components/layout/Stage",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/data/Card.tsx",
+    "unresolvedTo": "../components/data/Card",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/data/marks/Chip.tsx",
+    "unresolvedTo": "../components/data/marks/Chip",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../components/data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../components/data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/feedback/Notice.tsx",
+    "unresolvedTo": "../components/feedback/Notice",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/forms/SearchField.tsx",
+    "unresolvedTo": "../components/forms/SearchField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../components/layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/layout/SectionTitle.tsx",
+    "unresolvedTo": "../components/layout/SectionTitle",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Coverage.tsx",
+    "to": "src/components/navigation/Pagination.tsx",
+    "unresolvedTo": "../components/navigation/Pagination",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../components/data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/forms/ChoiceCards.tsx",
+    "unresolvedTo": "../components/forms/ChoiceCards",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../components/forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../components/layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/layout/Page.tsx",
+    "unresolvedTo": "../components/layout/Page",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/navigation/Breadcrumb.tsx",
+    "unresolvedTo": "../components/navigation/Breadcrumb",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/CreateFlowPage.tsx",
+    "to": "src/components/overlays/CreateFlow.tsx",
+    "unresolvedTo": "../components/overlays/CreateFlow",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/actions/CopyValue.tsx",
+    "unresolvedTo": "../components/actions/CopyValue",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../components/data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../components/data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/feedback/DangerZone.tsx",
+    "unresolvedTo": "../components/feedback/DangerZone",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/forms/SaveBar.tsx",
+    "unresolvedTo": "../components/forms/SaveBar",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/forms/Switch.tsx",
+    "unresolvedTo": "../components/forms/Switch",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../components/forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/layout/DetailSection.tsx",
+    "unresolvedTo": "../components/layout/DetailSection",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../components/layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/layout/Page.tsx",
+    "unresolvedTo": "../components/layout/Page",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/navigation/Breadcrumb.tsx",
+    "unresolvedTo": "../components/navigation/Breadcrumb",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/DetailPage.tsx",
+    "to": "src/components/overlays/ConfirmDialog.tsx",
+    "unresolvedTo": "../components/overlays/ConfirmDialog",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/charts/Sparkline.tsx",
+    "unresolvedTo": "../components/charts/Sparkline",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/data/LivingCard.tsx",
+    "unresolvedTo": "../components/data/LivingCard",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/data/StatTile.tsx",
+    "unresolvedTo": "../components/data/StatTile",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/feedback/Toast.tsx",
+    "unresolvedTo": "../components/feedback/Toast",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/inference/ConfidenceField.tsx",
+    "unresolvedTo": "../components/inference/ConfidenceField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/inference/ConfirmPanel.tsx",
+    "unresolvedTo": "../components/inference/ConfirmPanel",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/inference/ExplainPanel.tsx",
+    "unresolvedTo": "../components/inference/ExplainPanel",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/inference/PrivacyBadge.tsx",
+    "unresolvedTo": "../components/inference/PrivacyBadge",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../components/layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../components/layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/layout/Panel.tsx",
+    "unresolvedTo": "../components/layout/Panel",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/layout/SectionTitle.tsx",
+    "unresolvedTo": "../components/layout/SectionTitle",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Inference.tsx",
+    "to": "src/components/navigation/CommandBar.tsx",
+    "unresolvedTo": "../components/navigation/CommandBar",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/actions/RowActions.tsx",
+    "unresolvedTo": "../components/actions/RowActions",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../components/data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../components/data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../components/data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/data/table/InfiniteTable.tsx",
+    "unresolvedTo": "../components/data/table/InfiniteTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/data/table/ListToolbar.tsx",
+    "unresolvedTo": "../components/data/table/ListToolbar",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/feedback/DangerZone.tsx",
+    "unresolvedTo": "../components/feedback/DangerZone",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/feedback/EmptyState.tsx",
+    "unresolvedTo": "../components/feedback/EmptyState",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/forms/SearchField.tsx",
+    "unresolvedTo": "../components/forms/SearchField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/forms/Select.tsx",
+    "unresolvedTo": "../components/forms/Select",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/layout/DetailSection.tsx",
+    "unresolvedTo": "../components/layout/DetailSection",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../components/layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/layout/Page.tsx",
+    "unresolvedTo": "../components/layout/Page",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/navigation/Menu.tsx",
+    "unresolvedTo": "../components/navigation/Menu",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/navigation/shortcuts/useShortcut.ts",
+    "unresolvedTo": "../components/navigation/shortcuts/useShortcut",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../components/navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/overlays/ConfirmDialog.tsx",
+    "unresolvedTo": "../components/overlays/ConfirmDialog",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/ListPage.tsx",
+    "to": "src/components/overlays/Sheet.tsx",
+    "unresolvedTo": "../components/overlays/Sheet",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Login.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Login.tsx",
+    "to": "src/components/data/marks/VersionTag.tsx",
+    "unresolvedTo": "../components/data/marks/VersionTag",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Login.tsx",
+    "to": "src/components/forms/TextField.tsx",
+    "unresolvedTo": "../components/forms/TextField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Login.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Login.tsx",
+    "to": "src/components/layout/shell/SignIn.tsx",
+    "unresolvedTo": "../components/layout/shell/SignIn",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Login.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../components/navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/data/FactList.tsx",
+    "unresolvedTo": "../components/data/FactList",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/data/marks/Chip.tsx",
+    "unresolvedTo": "../components/data/marks/Chip",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/data/marks/Seal.tsx",
+    "unresolvedTo": "../components/data/marks/Seal",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../components/data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/data/StatTile.tsx",
+    "unresolvedTo": "../components/data/StatTile",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../components/data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/feedback/Notice.tsx",
+    "unresolvedTo": "../components/feedback/Notice",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/forms/SearchField.tsx",
+    "unresolvedTo": "../components/forms/SearchField",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../components/layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../components/layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/navigation/Menu.tsx",
+    "unresolvedTo": "../components/navigation/Menu",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/navigation/Pagination.tsx",
+    "unresolvedTo": "../components/navigation/Pagination",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Register.tsx",
+    "to": "src/components/overlays/Drawer.tsx",
+    "unresolvedTo": "../components/overlays/Drawer",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/charts/Bars.tsx",
+    "unresolvedTo": "../components/charts/Bars",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/data/Card.tsx",
+    "unresolvedTo": "../components/data/Card",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/data/Channel.tsx",
+    "unresolvedTo": "../components/data/Channel",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/data/marks/IconTile.tsx",
+    "unresolvedTo": "../components/data/marks/IconTile",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../components/data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/data/Metric.tsx",
+    "unresolvedTo": "../components/data/Metric",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/data/Session.tsx",
+    "unresolvedTo": "../components/data/Session",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/feedback/Notice.tsx",
+    "unresolvedTo": "../components/feedback/Notice",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../components/layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../components/layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/layout/SectionTitle.tsx",
+    "unresolvedTo": "../components/layout/SectionTitle",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Settings.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../components/actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/data/marks/IconTile.tsx",
+    "unresolvedTo": "../components/data/marks/IconTile",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/data/marks/StatusPill.tsx",
+    "unresolvedTo": "../components/data/marks/StatusPill",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/data/RecordCard.tsx",
+    "unresolvedTo": "../components/data/RecordCard",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/data/Stat.tsx",
+    "unresolvedTo": "../components/data/Stat",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/data/table/DataTable.tsx",
+    "unresolvedTo": "../components/data/table/DataTable",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/feedback/Notice.tsx",
+    "unresolvedTo": "../components/feedback/Notice",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/layout/Heading.tsx",
+    "unresolvedTo": "../components/layout/Heading",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/layout/Layout.tsx",
+    "unresolvedTo": "../components/layout/Layout",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/layout/SectionTitle.tsx",
+    "unresolvedTo": "../components/layout/SectionTitle",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/layout/shell/AppShell.tsx",
+    "unresolvedTo": "../components/layout/shell/AppShell",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/layout/shell/chrome.sample.ts",
+    "unresolvedTo": "../components/layout/shell/chrome.sample",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/screens/Watchlist.tsx",
+    "to": "src/components/navigation/TextLink.tsx",
+    "unresolvedTo": "../components/navigation/TextLink",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "screens-through-the-package"
+    }
+  }
+]

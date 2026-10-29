@@ -6,7 +6,7 @@ import { Switch } from "./Switch";
 const meta = {
   title: "Forms/Switch",
   component: Switch,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "demo-data",
     on: false,

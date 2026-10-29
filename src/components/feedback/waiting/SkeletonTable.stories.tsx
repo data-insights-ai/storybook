@@ -18,7 +18,7 @@ import { StatusPill } from "../../data/marks/StatusPill";
 const meta = {
   title: "Primitives/Waiting/Skeleton",
   component: SkeletonTable,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { rows: 5, label: "Loading the register" },
   argTypes: {
     rows: { control: { type: "number" } },

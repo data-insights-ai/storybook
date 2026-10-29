@@ -4,6 +4,7 @@ import { CreateFlowPageScreen } from "./CreateFlowPage";
 
 const meta = {
   title: "Screens/Create flow",
+  tags: ["layer:screen"],
   component: CreateFlowPageScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof CreateFlowPageScreen>;

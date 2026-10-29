@@ -1,0 +1,193 @@
+import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import path from "node:path";
+import ts from "typescript";
+
+/*
+ * The structure dependency-cruiser cannot see (AGENTS.md, "Structure"): every story
+ * meta carries one layer tag and no module imports a higher layer; a story file, its
+ * folder and its meta component share one name, and its title mirrors its folder; a
+ * module is one sidebar entry (its slots stay with it); every public
+ * component is rendered in a story and a doc comment; no two concept folders import each other.
+ *
+ * Findings recorded in lint-layers.baseline.json are reported and do not fail; a new
+ * one fails. `--write` records the current findings, which the restructure shrinks
+ * until the baseline is deleted.
+ */
+const baselineFile = path.join("scripts", "lint-layers.baseline.json");
+const layers = ["foundation", "primitive", "form", "block", "pattern", "screen"];
+const isStory = (f) => f.endsWith(".stories.tsx");
+const isTest = (f) => /\.(test|browser\.test)\.tsx?$/.test(f);
+const isSample = (f) => /\.sample\.tsx?$/.test(f);
+
+function files(dir) {
+  return readdirSync(dir).flatMap((name) => {
+    const file = path.join(dir, name);
+    if (statSync(file).isDirectory()) return files(file);
+    return /\.tsx?$/.test(name) && !name.endsWith(".d.ts") ? [file] : [];
+  });
+}
+
+function parse(file) {
+  return ts.createSourceFile(file, readFileSync(file, "utf8"), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+}
+
+function resolve(from, spec) {
+  if (!spec.startsWith(".")) return undefined;
+  const base = path.normalize(path.join(path.dirname(from), spec));
+  for (const ext of ["", ".tsx", ".ts", "/index.ts", "/index.tsx"]) {
+    if (existsSync(base + ext) && statSync(base + ext).isFile()) return base + ext;
+  }
+  return undefined;
+}
+
+/** Relative imports of a module: the module each named import comes from. */
+function importsOf(sf) {
+  const out = [];
+  for (const st of sf.statements) {
+    if (!ts.isImportDeclaration(st) && !ts.isExportDeclaration(st)) continue;
+    const spec = st.moduleSpecifier && ts.isStringLiteral(st.moduleSpecifier) ? st.moduleSpecifier.text : undefined;
+    const target = spec && resolve(sf.fileName, spec);
+    if (!target || target.endsWith(".css")) continue;
+    const names = [];
+    const bindings = ts.isImportDeclaration(st) ? st.importClause?.namedBindings : undefined;
+    if (bindings && ts.isNamedImports(bindings)) bindings.elements.forEach((e) => names.push(e.name.text));
+    out.push({ target, names });
+  }
+  return out;
+}
+
+const pascal = (name) => /^[A-Z]/.test(name);
+const exported = (node) => node.modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
+const documented = (node, sf) =>
+  (ts.getLeadingCommentRanges(sf.text, node.getFullStart()) ?? []).some((r) => sf.text.startsWith("/**", r.pos));
+
+/** Exported components of a module: PascalCase functions, and consts bound to a function or a call. */
+function componentsOf(sf) {
+  const out = [];
+  for (const st of sf.statements) {
+    if (!exported(st)) continue;
+    if (ts.isFunctionDeclaration(st) && st.name && pascal(st.name.text)) out.push({ name: st.name.text, doc: documented(st, sf) });
+    if (ts.isVariableStatement(st)) {
+      for (const d of st.declarationList.declarations) {
+        const init = d.initializer;
+        const callable = init && (ts.isArrowFunction(init) || ts.isFunctionExpression(init) || ts.isCallExpression(init));
+        if (ts.isIdentifier(d.name) && pascal(d.name.text) && callable) out.push({ name: d.name.text, doc: documented(st, sf) });
+      }
+    }
+  }
+  return out;
+}
+
+/** A story file's meta: title, tags and the module its component comes from. */
+function metaOf(sf) {
+  let literal;
+  const visit = (node) => {
+    if (literal) return;
+    if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === "meta" && node.initializer) {
+      let init = node.initializer;
+      while (ts.isSatisfiesExpression(init) || ts.isAsExpression(init)) init = init.expression;
+      if (ts.isObjectLiteralExpression(init)) literal = init;
+    }
+    if (ts.isExportAssignment(node) && ts.isObjectLiteralExpression(node.expression)) literal = node.expression;
+    ts.forEachChild(node, visit);
+  };
+  visit(sf);
+  if (!literal) return undefined;
+  const prop = (name) => literal.properties.find((p) => ts.isPropertyAssignment(p) && p.name.getText(sf) === name)?.initializer;
+  const title = prop("title");
+  const tags = prop("tags");
+  const component = prop("component");
+  return {
+    title: title && ts.isStringLiteral(title) ? title.text : undefined,
+    tags: tags && ts.isArrayLiteralExpression(tags) ? tags.elements.filter(ts.isStringLiteral).map((e) => e.text) : [],
+    component: component && ts.isIdentifier(component) ? component.text : undefined,
+  };
+}
+
+const all = files("src");
+const parsed = new Map(all.map((f) => [f, parse(f)]));
+const modules = all.filter((f) => !isStory(f) && !isTest(f) && !isSample(f));
+const findings = [];
+const find = (check, text) => findings.push(`${check}: ${text}`);
+
+// Story metas: one layer tag; file, folder and component share a name; the title mirrors the folder.
+const layerOfModule = new Map();
+const storied = new Set();
+const metaComponents = new Map();
+const shown = new Set();
+for (const file of all.filter(isStory)) {
+  const meta = metaOf(parsed.get(file));
+  for (const i of importsOf(parsed.get(file))) i.names.forEach((n) => shown.add(`${i.target}#${n}`));
+  if (!meta?.title) continue;
+  const tagged = meta.tags.filter((t) => t.startsWith("layer:")).map((t) => t.slice(6));
+  if (tagged.length !== 1 || !layers.includes(tagged[0])) find("layer-tag", `${file} carries ${tagged.length ? tagged.join(", ") : "no layer tag"}`);
+  if (!meta.component) continue;
+  const name = path.basename(file, ".stories.tsx");
+  if (name !== meta.component) find("story-name", `${file} renders ${meta.component}`);
+  if (path.basename(path.dirname(file)) !== meta.component) find("component-folder", `${meta.component} is not in a folder of its own (${path.dirname(file)})`);
+  const rel = path.relative(path.join("src", "components"), path.dirname(file)).split(path.sep);
+  if (!rel[0].startsWith("..")) {
+    const folders = rel.at(-1) === meta.component ? rel.slice(0, -1) : rel;
+    const wanted = [...folders, meta.component].map((s) => s.toLowerCase()).join("/");
+    const got = meta.title.split("/").map((s) => s.toLowerCase().replaceAll(" ", "")).join("/");
+    if (got !== wanted) find("title-path", `${file} is titled ${meta.title}, its folder says ${wanted}`);
+  }
+  const source = importsOf(parsed.get(file)).find((i) => i.names.includes(meta.component));
+  if (!source) continue;
+  storied.add(`${source.target}#${meta.component}`);
+  if (!metaComponents.has(source.target)) metaComponents.set(source.target, new Set());
+  metaComponents.get(source.target).add(meta.component);
+  const rank = layers.indexOf(tagged[0]);
+  const before = layerOfModule.get(source.target);
+  if (rank >= 0 && (before === undefined || rank > before)) layerOfModule.set(source.target, rank);
+}
+
+// Layer direction, one component per module, folder cycles.
+const folderEdges = new Map();
+for (const file of modules) {
+  const sf = parsed.get(file);
+  for (const { target } of importsOf(sf)) {
+    const from = layerOfModule.get(file);
+    const to = layerOfModule.get(target);
+    if (from !== undefined && to !== undefined && to > from) find("layer-direction", `${file} (${layers[from]}) imports ${target} (${layers[to]})`);
+    const [fa, fb] = [file, target].map((f) => path.relative(path.join("src", "components"), f).split(path.sep)[0]);
+    if (!fa.startsWith("..") && !fb.startsWith("..") && fa !== fb && !fa.includes(".") && !fb.includes(".")) {
+      if (!folderEdges.has(fa)) folderEdges.set(fa, new Set());
+      folderEdges.get(fa).add(fb);
+    }
+  }
+  const entries = [...(metaComponents.get(file) ?? [])].sort();
+  if (entries.length > 1) find("one-component-per-module", `${file} holds ${entries.join(", ")}`);
+}
+const reach = (a, b, seen = new Set()) =>
+  [...(folderEdges.get(a) ?? [])].some((n) => n === b || (!seen.has(n) && seen.add(n) && reach(n, b, seen)));
+for (const [a, targets] of folderEdges) {
+  for (const b of targets) if (a < b && reach(b, a)) find("folder-cycle", `components/${a} and components/${b} import each other`);
+}
+
+// Every public component has a story (its own, or its parent's when it is a slot) and a doc comment.
+const entry = parse(path.join("src", "index.ts"));
+for (const st of entry.statements) {
+  if (!ts.isExportDeclaration(st) || st.isTypeOnly || !st.exportClause || !ts.isNamedExports(st.exportClause)) continue;
+  const target = resolve(entry.fileName, st.moduleSpecifier.text);
+  const components = new Map(componentsOf(parsed.get(target)).map((c) => [c.name, c]));
+  for (const el of st.exportClause.elements) {
+    const c = components.get(el.name.text);
+    if (!c) continue;
+    if (!shown.has(`${target}#${c.name}`)) find("public-story", `${c.name} (${target}) has no story`);
+    if (!c.doc) find("public-doc", `${c.name} (${target}) has no doc comment`);
+  }
+}
+
+findings.sort();
+const write = process.argv.includes("--write");
+if (write) writeFileSync(baselineFile, `${JSON.stringify(findings, null, 2)}\n`);
+const known = new Set(existsSync(baselineFile) ? JSON.parse(readFileSync(baselineFile, "utf8")) : []);
+const fresh = findings.filter((f) => !known.has(f));
+const stale = [...known].filter((f) => !findings.includes(f));
+const counts = {};
+for (const f of findings) counts[f.split(":")[0]] = (counts[f.split(":")[0]] ?? 0) + 1;
+console.log(`structure: ${findings.length} findings (${Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${findings.length - fresh.length} known`);
+if (stale.length) console.log(`structure: ${stale.length} recorded findings are gone; run with --write to shrink the baseline`);
+for (const f of fresh) console.error(`new ${f}`);
+process.exit(fresh.length ? 1 : 0);

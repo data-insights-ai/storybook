@@ -6,7 +6,7 @@ import { TabPanel, Tabs } from "./Tabs";
 const meta = {
   title: "Blocks/Tabs",
   component: Tabs,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     label: "Entry views",
     value: "record",

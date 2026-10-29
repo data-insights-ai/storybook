@@ -5,7 +5,7 @@ import { FieldHint } from "./FieldHint";
 const meta = {
   title: "Forms/FieldHint",
   component: FieldHint,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "hint",
     tone: "neutral",

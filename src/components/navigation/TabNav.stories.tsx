@@ -6,7 +6,7 @@ import { TabNav, TabNavLink } from "./TabNav";
 const meta = {
   title: "Blocks/TabNav",
   component: TabNav,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { label: "Access", children: null },
 } satisfies Meta<typeof TabNav>;
 

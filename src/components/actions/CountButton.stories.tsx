@@ -6,7 +6,7 @@ import { CountButton } from "./CountButton";
 const meta = {
   title: "Primitives/CountButton",
   component: CountButton,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: {
     label: "Notifications, 3 unread",
     count: 3,

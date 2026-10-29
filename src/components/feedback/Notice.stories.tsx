@@ -8,7 +8,7 @@ import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle }
 const meta = {
   title: "Blocks/Notice",
   component: Notice,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     tone: "neutral",
     size: "md",

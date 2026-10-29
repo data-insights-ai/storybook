@@ -5,7 +5,7 @@ import { Spinner } from "./Spinner";
 const meta = {
   title: "Primitives/Waiting/Spinner",
   component: Spinner,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { label: "verifying manifest" },
   argTypes: { label: { control: "text" } },
 } satisfies Meta<typeof Spinner>;

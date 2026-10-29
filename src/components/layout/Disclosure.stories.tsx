@@ -8,7 +8,7 @@ import { Stack } from "./Layout";
 const meta = {
   title: "Blocks/Disclosure",
   component: Disclosure,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
 } satisfies Meta<typeof Disclosure>;
 
 export default meta;

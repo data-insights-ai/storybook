@@ -8,7 +8,7 @@ import { DangerAction, DangerZone } from "./DangerZone";
 const meta = {
   title: "Blocks/DangerZone",
   component: DangerZone,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { title: "Danger zone", lede: "These actions remove access and cannot be undone.", children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof DangerZone>;

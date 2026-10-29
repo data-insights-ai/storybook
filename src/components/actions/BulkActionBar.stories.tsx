@@ -54,7 +54,7 @@ function Actions() {
 const meta = {
   title: "Blocks/BulkActionBar",
   component: BulkActionBar,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     label: "Actions on the selected assets",
     selectedLabel: "2 selected",

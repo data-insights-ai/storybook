@@ -3,6 +3,7 @@ import { WatchlistScreen } from "./Watchlist";
 
 const meta = {
   title: "Screens/Watchlist",
+  tags: ["layer:screen"],
   component: WatchlistScreen,
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof WatchlistScreen>;

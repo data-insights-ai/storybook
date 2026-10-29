@@ -7,7 +7,7 @@ import { Grid } from "../../layout/Layout";
 const meta = {
   title: "Forms/TimeField",
   component: TimeField,
-  tags: ["autodocs"],
+  tags: ["layer:form", "autodocs"],
   args: {
     id: "send-at",
     label: "Send at",

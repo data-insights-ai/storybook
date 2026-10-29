@@ -4,7 +4,7 @@ import { TickRule } from "./Seal";
 const meta = {
   title: "Primitives/TickRule",
   component: TickRule,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
 } satisfies Meta<typeof TickRule>;
 
 export default meta;

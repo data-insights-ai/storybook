@@ -20,7 +20,7 @@ const seats = days.map((at, i) => ({ at, used: Math.min(5, 2 + Math.floor(i / 8)
 const meta = {
   title: "Blocks/ChartCard",
   component: ChartCard,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: { title: "Credit", children: null },
 } satisfies Meta<typeof ChartCard>;
 

@@ -8,7 +8,7 @@ import { Stage, StageFooter, StageIcon, StageTrack } from "./Stage";
 const meta = {
   title: "Blocks/Stage",
   component: Stage,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     step: "01",
     title: "Connect",

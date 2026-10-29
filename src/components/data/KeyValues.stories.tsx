@@ -5,7 +5,7 @@ import { KeyValue, KeyValues } from "./KeyValues";
 const meta = {
   title: "Primitives/KeyValues",
   component: KeyValues,
-  tags: ["autodocs"],
+  tags: ["layer:primitive", "autodocs"],
   args: { children: null },
   argTypes: { children: { control: false } },
   decorators: [

@@ -8,7 +8,7 @@ const short = (iso: string, { year }: { year: boolean }) =>
 const meta = {
   title: "Blocks/PeriodTimeline",
   component: PeriodTimeline,
-  tags: ["autodocs"],
+  tags: ["layer:block", "autodocs"],
   args: {
     label: "Licenses over time",
     todayLabel: "Today",
