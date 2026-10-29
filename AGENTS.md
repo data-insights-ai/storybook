@@ -196,6 +196,8 @@ Before using a component, call `docs-list`, then `docs-show` for that component.
 
 Controls, viewport, measure, and outline are already part of Storybook itself. Do not add `@storybook/addon-essentials`, `@storybook/addon-links`, or a coverage or Chromatic addon unless someone asks. Those either duplicate what is already here or send the workbench to another service.
 
+`.design-sync/conventions.md` is the header the DesignSync tool sends to the design agent on claude.ai, which cannot read this file. It is written for someone composing screens (which component for which job, slots, tones, tokens, layout, the mark) and holds no implementation rule. When a component or a sidebar group is added, renamed or removed, update it in the same change.
+
 ## Compose, never invent
 
 Build a screen from the components that exist. When something is missing, **add it to the library** — a component in `src/components`, a story beside it, an export from `src/index.ts` — rather than writing one-off markup inside a screen. One-off markup binds to no token, skips the dark remap, carries no focus treatment and no accessible name, and is invisible to `pnpm test`.
@@ -231,9 +233,10 @@ An exception has to say why, in a comment the lint reads:
 Every story meta carries one layer tag, `layer:foundation`, `layer:primitive`, `layer:form`, `layer:block`, `layer:pattern` or `layer:screen`, and a module never imports one from a higher layer. `pnpm lint:structure` checks that and the rest of the structure, and `pnpm build` runs it:
 
 - `.dependency-cruiser.cjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component or a shared module only through its `index.ts`, while a component's own subfolders reach each other directly; screens import from the package root. Sample data (`*.sample.ts`) is not package code and is exempt.
+- `scripts/lint-conventions.mjs`: every component `.design-sync/conventions.md` names is exported, every group and story title it names exists, and it lists every sidebar group.
 - `scripts/lint-layers.mjs`: the layer tags and their direction; a story file, its folder and its meta component share one name and the title mirrors the folder; a module is one sidebar entry; every public component is rendered in a story (as JSX or as its meta component) and has a doc comment; every title's group is one `storySort` lists; no two concept folders import each other.
 
-Both fail on any finding; there is no list of tolerated ones. A change that cannot pass them changes the structure, or the rule with a reason, never the check's input.
+All three fail on any finding; there is no list of tolerated ones. A change that cannot pass them changes the structure, or the rule with a reason, never the check's input.
 
 ## Checks
 

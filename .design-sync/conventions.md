@@ -6,6 +6,8 @@ The system is a **Register**: the surface is a record, not a dashboard. Everythi
 
 Components read CSS custom properties from `:root`, so they are styled the moment `styles.css` is loaded; nothing has to wrap the tree for them to render. Two providers carry state an app owns. **`ThemeProvider`** themes the document root from the person's choice (`light`, `dark` or `auto`, which follows the device) before the first paint, and `useTheme` reads it back. **`SidebarProvider`** holds whether the `Sidebar` is expanded, for the sidebar family and its trigger. Other contexts (inside `AppShell`, `Page`, `Sidebar`) are internal to their components; a product does not mount them.
 
+The interactive components (menus, dialogs, selects, comboboxes, date pickers, tabs) take their focus handling, keyboard movement and accessible names from Base UI's headless primitives. That behaviour comes with the component: never rebuild one of them from raw markup to change how it looks.
+
 Light is the bare `:root` default. Dark is a remap under `[data-theme="dark"]`. **Theme the document root** — that is what a product does:
 
 ```jsx
@@ -24,15 +26,52 @@ This exists so a page can show both themes at once — `Foundations/Color` puts 
 
 Build from the components in this system. **If something you need is missing, say so — do not approximate it with raw markup.** A missing control is a code change in the library (a new component, with its own story and an export), not something a design invents. A hand-rolled substitute looks right in the design and cannot ship: it has no tokens, no dark theme, no focus handling and no accessible name.
 
-`Screens/*` are **not** in this bundle. `RegisterScreen`, `WatchlistScreen` and the rest exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `Panel`, `DataTable` and the rest.
+`Screens/*` are **not** in this bundle. The register, watchlist and other example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `Panel`, `DataTable` and the rest.
 
-A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav. `Console` and `ConsoleFrame` are the same shell inside a Storybook window — no product renders them.
+A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav. `Console` and `ConsoleFrame` are the same shell inside a Storybook window. They are deprecated and removed in 0.10.0: never use them in a design.
+
+### Where a component sits
+
+The Storybook sidebar is grouped by the job a component does:
+
+- `Foundations/`: the brand, the tokens and the reasoning behind them. No component lives here.
+- `Actions/`: what a person presses: `Button`, `CountButton`, `CopyValue`, `RowActions`, `BulkActionBar`.
+- `Forms/`: labelled controls: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `Switch`, `Checkbox` and the date fields.
+- `Data/`: what a person reads: records (`Card`, `RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`Stat`, `StatTile`, `Metric`), text (`Eyebrow`, `Highlight`, `Kbd`, `CodeBlock`, `PullQuote`) and `DataTable`.
+- `Marks/`: what every other component draws with: `Badge`, `StatusPill`, `Chip`, `Tag`, `VersionTag`, `SealValue`, `Icon`, `IconTile`.
+- `Feedback/`: `Notice`, `Toast`, `EmptyState`, `DangerZone`, `Tooltip`, and the loaders, progress bars and skeletons.
+- `Overlays/`: what opens over the page: `Modal`, `ConfirmDialog`, `Drawer`, `Sheet`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
+- `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Menu`, `CommandBar`, `Pagination`, `Stepper`, `TextLink`.
+- `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `Toolbar`, `Accordion`, `Disclosure`.
+- `Charts/`, `Timeline/`, `Inference/`: what a screen measures, what happened when, and what the system inferred.
+- `Shell/`: the frame of the app: `AppShell`, `SignIn`, `ThemeProvider`.
+
+### Which component for which job
+
+| Job | Use | Not |
+| --- | --- | --- |
+| A titled, indexed block of a record | `Panel` | `Card`, which is a plain bordered surface for content that stands on its own |
+| One measured value with its index or trend | `StatTile` | `Stat`, the small labelled figure for a row of them (`StatRow`) |
+| One large figure on a card | `Metric` | |
+| The detail of one row, keeping its index | `Drawer` | `Sheet`, which is for work that needs room: a multi-field create or invite |
+| An irreversible action | `Modal` or `ConfirmDialog` | a modal for anything reversible |
+| A panel dropping from a topbar control | `Flyout` | |
+| Views of one record | `Tabs` | `TabNav`, whose tabs are places with their own URL |
+| A row's actions | `Menu` or `RowActions` | buttons repeated in every row |
+| A message that stays on the page | `Notice` | `Toast`, the receipt of an action that already ran |
+| Nothing to show yet | `EmptyState` | an empty table |
+| A label for a control without one | `Tooltip` | a tooltip holding a fact that is nowhere else |
+| A record read beside the decisions about it | `Split` | |
+| A record's detail page, edited section by section | `DetailSection` | |
+| A term and its value | `FactList`, or `KeyValues` for a short list | |
+| A status | `StatusPill` | a coloured word, or colour alone |
+| A recorded or inferred value | `SealValue` | a gold word |
 
 ### Styling idiom — tokens, not utility classes
 
 There is no utility-class system. Style your own layout glue with `var(--di-*)`; never hand-write a `di-*` class, those belong to the components.
 
-**Every dimension is a token too.** Spacing is `--di-space-2|4|6|8|12|16|24|32|48|64|96`, named by value; radius is `--di-radius-micro|control|surface|container|pill`; type is `--di-font-size-100`…`-1000`. `pnpm lint:tokens` fails on a raw px in `gap`, `padding`, `margin`, `border-radius` or `font-size`, and on a component binding to a primitive.
+**Every dimension is a token too.** Spacing is `--di-space-2|4|6|8|12|16|24|32|48|64|96`, named by value; radius is `--di-radius-micro|control|surface|container|pill`; type is `--di-font-size-100`…`-1000`. A raw px in `gap`, `padding`, `margin`, `border-radius` or `font-size` does not ship.
 
 **Never write a raw colour.** No `#0A1F44`, no `rgb()`, no named colours — only `var(--di-*)`. This is not housekeeping: navy is both the ink and the action, and **after dark the action fill turns gold**. A hardcoded navy is correct in daylight and *invisible on the night sheet*, because navy cannot act against a navy ground. The token flips; a hex literal cannot.
 
@@ -89,9 +128,9 @@ To try different colour, override token **values** — never swap a component's 
 :root[data-theme="dark"] { --di-fill-strong: #D8BE81; }
 ```
 
-Keep the names and keep the roles: `--di-seal` stays the *recorded* mark, `--di-ai-ring` stays *inferred*, a status `-bg` stays a pale wash its `-fg` reads on. Redefining what a token **means** breaks the register even when the colour is pretty. When handing back, say which tokens you changed — engineering pastes the values into `src/styles/tokens/`.
+Keep the names and keep the roles: `--di-seal` stays the *recorded* mark, `--di-ai-ring` stays *inferred*, a status `-bg` stays a pale wash its `-fg` reads on. Redefining what a token **means** breaks the register even when the colour is pretty. When handing back, say which tokens you changed; engineering sets those values in the token files.
 
-These rules are enforced in the repository, not merely requested: `pnpm test` fails on axe violations, visible text must meet WCAG AA, and status must be a word plus a mark rather than colour alone. A design that follows them ships as-is.
+These rules are enforced in the library, not merely requested: an axe violation fails its tests, visible text must meet WCAG AA, and status must be a word plus a mark rather than colour alone. A design that follows them ships as-is.
 
 ### The type scale
 
@@ -125,8 +164,8 @@ updates.
 ### The dimensional ramps
 
 `Foundations/Scale` draws these. It is a rendered page, not markdown, so it
-cannot ship as a guideline — this is the copy of it, and it is checked by
-`pnpm lint:tokens`, which fails on any value off these ramps.
+cannot ship as a guideline — this is the copy of it, and the library refuses
+any value off these ramps.
 
 **Space** — 2, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96. Fine at the bottom, coarse
 at the top, because that is where the density is: a 28px control cannot be padded
@@ -220,8 +259,8 @@ is the other value.
   `SectionTitle` render from their `eyebrow` string. A page that repeated the
   sealed one would be claiming a seal per heading.
 
-`src/foundations/guide/Guide.tsx` renders the Foundations pages from exactly
-these components and nothing else, which is what keeps the tier honest.
+The Foundations pages are rendered from exactly these components and nothing
+else, which is what keeps the tier honest.
 
 ### A build
 
