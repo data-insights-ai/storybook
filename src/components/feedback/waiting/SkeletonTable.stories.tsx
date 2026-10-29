@@ -11,7 +11,7 @@ import {
   TableIndex,
   TableRow,
 } from "../../data/table/DataTable";
-import { SealValue } from "../../data/marks/Seal";
+import { SealValue } from "../../data/marks/SealValue";
 import { SkeletonTable } from "./SkeletonTable";
 import { StatusPill } from "../../data/marks/StatusPill";
 

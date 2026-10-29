@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Fact, FactList } from "./FactList";
-import { SealValue } from "./marks/Seal";
+import { SealValue } from "./marks/SealValue";
 import { StatusPill } from "./marks/StatusPill";
 
 const meta = {

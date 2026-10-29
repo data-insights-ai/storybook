@@ -22,7 +22,7 @@ import { Popover } from "react-aria-components/Popover";
 import { DateInput, DateSegment, Label, TimeField } from "react-aria-components/TimeField";
 import { cx } from "../../../cx";
 import { Button } from "../../actions/Button";
-import { Checkbox } from "../Choice";
+import { Checkbox } from "../Checkbox";
 import { openEndedRange, typedDraft } from "./dateRangeDraft";
 import { TypedDay } from "./TypedDay";
 import {

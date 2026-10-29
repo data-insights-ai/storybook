@@ -4,7 +4,7 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Archive, Bell, Building2, FileSearch, Gauge, Settings, ShieldAlert, UserRound } from "lucide-react";
 import { AppShellBar, AppShellContent } from "../../layout/shell/AppShell";
 import { Breadcrumb } from "../Breadcrumb";
-import { PageHeader, PageHeaderTitle } from "../../layout/Heading";
+import { PageHeader, PageHeaderTitle } from "../../layout/PageHeader";
 import { Menu, MenuGroup, MenuItem } from "../Menu";
 import { Sidebar } from "./Sidebar";
 import { SidebarBrand } from "./SidebarBrand";

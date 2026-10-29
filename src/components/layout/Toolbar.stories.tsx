@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Actions, Toolbar, ToolbarEnd } from "./Layout";
+import { Actions } from "./Actions";
+import { Toolbar, ToolbarEnd } from "./Toolbar";
 import { Button } from "../actions/Button";
 import { Chip } from "../data/marks/Chip";
 import { SearchField } from "../forms/SearchField";

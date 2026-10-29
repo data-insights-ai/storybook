@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cx } from "../../cx";
-import { Eyebrow } from "../data/marks/Seal";
-import "./Heading.css";
+import { Eyebrow } from "../data/marks/Eyebrow";
+import "./PageHeader.css";
 
 /**
  * The h1 of a page, in one of two tiers.

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Card } from "../data/Card";
-import { Numbered, Stack } from "./Layout";
+import { Numbered } from "./Numbered";
+import { Stack } from "./Stack";
 
 const meta = {
   title: "Layout/Arrangement/Numbered",

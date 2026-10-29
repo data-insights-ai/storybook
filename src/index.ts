@@ -29,7 +29,9 @@ export { PeriodTimeline } from "./components/timeline/PeriodTimeline";
 export type { Period } from "./components/timeline/PeriodTimeline";
 export { TrendChart } from "./components/charts/TrendChart";
 export type { TrendMarker, TrendSeries, TrendTone } from "./components/charts/TrendChart";
-export { Checkbox, ChoiceGroup, Radio } from "./components/forms/Choice";
+export { Checkbox } from "./components/forms/Checkbox";
+export { ChoiceGroup } from "./components/forms/ChoiceGroup";
+export { Radio } from "./components/forms/Radio";
 export { ChoiceCards } from "./components/forms/ChoiceCards";
 export type { ChoiceCard } from "./components/forms/ChoiceCards";
 export { Chip } from "./components/data/marks/Chip";
@@ -50,7 +52,12 @@ export {
   serializeDateRange,
   weekStartName,
 } from "./components/forms/dates/dateRange";
-export type { DateRangePreset, DateRangeSearch, DateRangeValue, ResolvedDateRange } from "./components/forms/dates/dateRange";
+export type {
+  DateRangePreset,
+  DateRangeSearch,
+  DateRangeValue,
+  ResolvedDateRange,
+} from "./components/forms/dates/dateRange";
 export { ConfidenceField } from "./components/inference/ConfidenceField";
 export { ConfirmDialog } from "./components/overlays/ConfirmDialog";
 export { CountButton } from "./components/actions/CountButton";
@@ -122,7 +129,8 @@ export { Fact, FactList } from "./components/data/FactList";
 export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/Field";
 export { FieldHint } from "./components/forms/FieldHint";
-export { FieldStack, InlineForm } from "./components/layout/FormLayout";
+export { FieldStack } from "./components/layout/FieldStack";
+export { InlineForm } from "./components/layout/InlineForm";
 export { FileField } from "./components/forms/FileField";
 export type { HintTone } from "./components/forms/FieldHint";
 export {
@@ -132,7 +140,7 @@ export {
   PageHeaderFacts,
   PageHeaderStatus,
   PageHeaderTitle,
-} from "./components/layout/Heading";
+} from "./components/layout/PageHeader";
 export { Highlight } from "./components/data/marks/Highlight";
 export { Icon } from "./components/data/marks/Icon";
 export { IconTile } from "./components/data/marks/IconTile";
@@ -141,7 +149,11 @@ export type { InfiniteRowPlace } from "./components/data/table/InfiniteTable";
 export { KeyValue, KeyValues } from "./components/data/KeyValues";
 export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/charts/LevelMeter";
 export type { LevelBands } from "./components/charts/LevelMeter";
-export { Actions, Grid, Numbered, Stack, Toolbar, ToolbarEnd } from "./components/layout/Layout";
+export { Actions } from "./components/layout/Actions";
+export { Grid } from "./components/layout/Grid";
+export { Numbered } from "./components/layout/Numbered";
+export { Stack } from "./components/layout/Stack";
+export { Toolbar, ToolbarEnd } from "./components/layout/Toolbar";
 export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/data/LivingCard";
 export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/data/table/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/navigation/Menu";
@@ -184,8 +196,11 @@ export {
   RecordMark,
   RecordStatus,
 } from "./components/data/RecordCard";
-export { Eyebrow, Kbd, SealMark, SealValue, TickRule } from "./components/data/marks/Seal";
-export type { SealState } from "./components/data/marks/Seal";
+export { Eyebrow } from "./components/data/marks/Eyebrow";
+export { Kbd } from "./components/data/marks/Kbd";
+export { SealMark, SealValue } from "./components/data/marks/SealValue";
+export { TickRule } from "./components/data/marks/TickRule";
+export type { SealState } from "./components/data/marks/SealValue";
 export { SaveBar } from "./components/forms/SaveBar";
 export { SearchField } from "./components/forms/SearchField";
 export { Seismograph } from "./components/charts/Seismograph";
@@ -217,8 +232,8 @@ export {
 export { SidebarTrigger } from "./components/navigation/sidebar/SidebarTrigger";
 export { SidebarThemeChoice, themeLabels } from "./components/navigation/sidebar/SidebarThemeChoice";
 export type { ThemeLabels } from "./components/navigation/sidebar/SidebarThemeChoice";
-export { ThemeProvider, themeChoices, useTheme } from "./components/layout/shell/Theme";
-export type { ResolvedTheme, ThemeChoice } from "./components/layout/shell/Theme";
+export { ThemeProvider, themeChoices, useTheme } from "./components/layout/shell/ThemeProvider";
+export type { ResolvedTheme, ThemeChoice } from "./components/layout/shell/ThemeProvider";
 export { SkipLink } from "./components/navigation/SkipLink";
 export { SignIn, SignInVersion } from "./components/layout/shell/SignIn";
 export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
@@ -236,7 +251,8 @@ export { Switch } from "./components/forms/Switch";
 export { TabPanel, Tabs } from "./components/navigation/Tabs";
 export { TabNav, TabNavLink } from "./components/navigation/TabNav";
 export type { TabNavLinkProps } from "./components/navigation/TabNav";
-export { TextArea, TextField } from "./components/forms/TextField";
+export { TextArea } from "./components/forms/TextArea";
+export { TextField } from "./components/forms/TextField";
 export { TextLink } from "./components/navigation/TextLink";
 export { TimeField } from "./components/forms/dates/TimeField";
 export { Toast, ToastAction, ToastRegion } from "./components/feedback/Toast";

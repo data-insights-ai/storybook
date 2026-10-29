@@ -14,7 +14,7 @@ import {
   PageHeaderFacts,
   PageHeaderStatus,
   PageHeaderTitle,
-} from "../components/layout/Heading";
+} from "../components/layout/PageHeader";
 import { Page } from "../components/layout/Page";
 import { SaveBar } from "../components/forms/SaveBar";
 import { StatusPill } from "../components/data/marks/StatusPill";

@@ -1,0 +1,10 @@
+@layer components {
+  /* Columns of at least the minimum, as many as fit: a wider page gets more
+     columns, not wider cards, and a short last row shares the width. */
+  .di-grid {
+    display: grid;
+    gap: var(--di-space-12);
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--di-grid-min), 100%), 1fr));
+    min-width: 0;
+  }
+}

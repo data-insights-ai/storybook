@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Gauge, LogOut, UserRound } from "lucide-react";
 import { AppShellContent } from "./AppShell";
-import { PageHeader, PageHeaderTitle } from "../Heading";
+import { PageHeader, PageHeaderTitle } from "../PageHeader";
 import { Panel } from "../Panel";
 import { Sidebar } from "../../navigation/sidebar/Sidebar";
 import { SidebarInset } from "../../navigation/sidebar/SidebarInset";
@@ -12,7 +12,7 @@ import { SidebarMenuButton } from "../../navigation/sidebar/SidebarMenuButton";
 import { SidebarProvider } from "../../navigation/sidebar/SidebarProvider";
 import { SidebarContent, SidebarFooter } from "../../navigation/sidebar/SidebarSections";
 import { SidebarThemeChoice, themeLabels } from "../../navigation/sidebar/SidebarThemeChoice";
-import { ThemeProvider, useTheme, type ThemeChoice } from "./Theme";
+import { ThemeProvider, useTheme, type ThemeChoice } from "./ThemeProvider";
 
 function Shown() {
   const { choice, resolved } = useTheme();
@@ -72,13 +72,17 @@ function Sample({ initial, language }: { initial: ThemeChoice; language: keyof t
   );
 }
 
+type SampleArgs = ComponentProps<typeof ThemeProvider> & { language: keyof typeof themeLabels };
+
 const meta = {
   title: "Shell/ThemeProvider",
   tags: ["layer:pattern"],
-  component: Sample,
+  component: ThemeProvider,
   parameters: { layout: "fullscreen" },
-  args: { initial: "auto", language: "en" },
-} satisfies Meta<typeof Sample>;
+  args: { value: "auto", language: "en", children: null },
+  argTypes: { value: { control: "radio", options: ["auto", "light", "dark"] }, children: { control: false } },
+  render: ({ value = "auto", language }) => <Sample initial={value} language={language} />,
+} satisfies Meta<SampleArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -108,7 +112,7 @@ export const Choice: Story = {
 
 /** The words come with the control in the apps' three languages. */
 export const German: Story = {
-  args: { initial: "dark", language: "de" },
+  args: { value: "dark", language: "de" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Chosen: dark. Showing: dark.")).toBeVisible();

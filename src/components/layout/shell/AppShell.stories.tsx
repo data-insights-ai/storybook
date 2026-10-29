@@ -5,7 +5,7 @@ import { Button } from "../../actions/Button";
 import { Menu, MenuGroup, MenuItem } from "../../navigation/Menu";
 import { useState } from "react";
 import { Breadcrumb } from "../../navigation/Breadcrumb";
-import { PageHeader, PageHeaderTitle } from "../Heading";
+import { PageHeader, PageHeaderTitle } from "../PageHeader";
 import { Select } from "../../forms/Select";
 import { StatusPill } from "../../data/marks/StatusPill";
 import {

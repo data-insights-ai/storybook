@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Kbd } from "./Seal";
+import { Kbd } from "./Kbd";
 
 const meta = {
   title: "Data/Text/Kbd",

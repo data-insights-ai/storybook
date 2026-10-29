@@ -10,8 +10,10 @@ import {
 import { Button } from "../components/actions/Button";
 import { Console } from "../components/layout/shell/AppShell";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/Heading";
-import { Grid, Numbered, Stack } from "../components/layout/Layout";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/PageHeader";
+import { Grid } from "../components/layout/Grid";
+import { Numbered } from "../components/layout/Numbered";
+import { Stack } from "../components/layout/Stack";
 import { Metric, MetricNote } from "../components/data/Metric";
 import { Stage, StageFooter, StageIcon, StageTrack } from "../components/layout/Stage";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";

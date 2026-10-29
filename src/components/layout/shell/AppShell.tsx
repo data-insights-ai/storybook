@@ -4,7 +4,7 @@ import logoInverse from "../../../assets/logo-inverse.svg";
 import { cx } from "../../../cx";
 import { Badge } from "../../data/marks/Badge";
 import { Button } from "../../actions/Button";
-import { SealMark } from "../../data/marks/Seal";
+import { SealMark } from "../../data/marks/SealValue";
 import { SkipLink } from "../../navigation/SkipLink";
 import "./AppShell.css";
 

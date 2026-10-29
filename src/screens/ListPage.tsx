@@ -8,7 +8,7 @@ import { DangerAction, DangerZone } from "../components/feedback/DangerZone";
 import { DetailSection, DetailSectionForm } from "../components/layout/DetailSection";
 import { EmptyState, EmptyStateAction } from "../components/feedback/EmptyState";
 import { Fact, FactList } from "../components/data/FactList";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/Heading";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/PageHeader";
 import { InfiniteTable, type InfiniteRowPlace } from "../components/data/table/InfiniteTable";
 import { ListToolbar, ListToolbarEnd } from "../components/data/table/ListToolbar";
 import { Menu, MenuItem } from "../components/navigation/Menu";

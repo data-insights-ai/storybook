@@ -1,6 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../../cx";
-import { SealMark } from "../data/marks/Seal";
+import { SealMark } from "../data/marks/SealValue";
 import "./Inference.css";
 import "./ConfirmPanel.css";
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Moon, Sun, SunMoon } from "lucide-react";
 import { Menu, MenuGroup, MenuItem } from "../Menu";
 import { SidebarMenuButton } from "./SidebarMenuButton";
-import { themeChoices, type ThemeChoice } from "../../layout/shell/Theme";
+import { themeChoices, type ThemeChoice } from "../../layout/shell/ThemeProvider";
 
 export type ThemeLabels = {
   /** Names the choice: the menu and, with the current value, the item. */

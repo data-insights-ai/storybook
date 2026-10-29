@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
-import { Checkbox } from "../forms/Choice";
+import { Checkbox } from "../forms/Checkbox";
 import { Disclosure, DisclosureLead } from "./Disclosure";
-import { Stack } from "./Layout";
+import { Stack } from "./Stack";
 
 const meta = {
   title: "Layout/Folding/Disclosure",

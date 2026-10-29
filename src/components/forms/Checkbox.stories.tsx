@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
-import { Checkbox, ChoiceGroup } from "./Choice";
+import { Checkbox } from "./Checkbox";
+import { ChoiceGroup } from "./ChoiceGroup";
 
 const meta = {
   title: "Forms/Choice/Checkbox",

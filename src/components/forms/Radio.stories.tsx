@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
-import { ChoiceGroup, Radio } from "./Choice";
+import { ChoiceGroup } from "./ChoiceGroup";
+import { Radio } from "./Radio";
 
 const meta = {
   title: "Forms/Choice/Radio",

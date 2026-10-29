@@ -1,24 +1,4 @@
 @layer components {
-  .di-field-stack {
-    display: flex;
-    flex-direction: column;
-    gap: var(--di-rhythm-field);
-    width: 100%;
-    max-width: var(--di-measure-form);
-    min-width: 0;
-  }
-
-  /* A select is as wide as its options, a number as wide as a number. */
-  .di-field-stack > .di-field:has(select) {
-    width: fit-content;
-    min-width: min(14rem, 100%);
-    max-width: 100%;
-  }
-
-  .di-field-stack > .di-field:has(input[type="number"]) {
-    width: min(10rem, 100%);
-  }
-
   .di-inline-form {
     container-type: inline-size;
     width: 100%;

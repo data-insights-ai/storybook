@@ -10,7 +10,7 @@ import {
   PageHeaderFacts,
   PageHeaderStatus,
   PageHeaderTitle,
-} from "./Heading";
+} from "./PageHeader";
 import { Highlight } from "../data/marks/Highlight";
 import { StatusPill } from "../data/marks/StatusPill";
 

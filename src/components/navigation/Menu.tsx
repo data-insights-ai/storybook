@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { cx } from "../../cx";
-import { SealMark } from "../data/marks/Seal";
+import { SealMark } from "../data/marks/SealValue";
 import { fixedOrigin, menuBounds, placeMenu, type MenuDirection } from "./menuPlacement";
 import "./Menu.css";
 

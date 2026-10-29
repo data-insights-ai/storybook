@@ -2,9 +2,11 @@ import { Building2, Globe, Mail, Plus, ShieldCheck, UserRound } from "lucide-rea
 import { Button } from "../components/actions/Button";
 import { Console } from "../components/layout/shell/AppShell";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/Heading";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/PageHeader";
 import { IconTile } from "../components/data/marks/IconTile";
-import { Grid, Stack, Actions } from "../components/layout/Layout";
+import { Grid } from "../components/layout/Grid";
+import { Stack } from "../components/layout/Stack";
+import { Actions } from "../components/layout/Actions";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import {
   RecordCard,

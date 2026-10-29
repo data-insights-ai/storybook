@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { TickRule } from "./Seal";
+import { TickRule } from "./TickRule";
 
 const meta = {
   title: "Data/Text/TickRule",

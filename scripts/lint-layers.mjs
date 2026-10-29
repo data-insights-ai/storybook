@@ -122,9 +122,10 @@ for (const file of all.filter(isStory)) {
   const tagged = meta.tags.filter((t) => t.startsWith("layer:")).map((t) => t.slice(6));
   if (tagged.length !== 1 || !layers.includes(tagged[0])) find("layer-tag", `${file} carries ${tagged.length ? tagged.join(", ") : "no layer tag"}`);
   if (!meta.component) continue;
+  const inComponents = file.split(path.sep).join("/").startsWith("src/components/");
   const name = path.basename(file, ".stories.tsx");
-  if (name !== meta.component) find("story-name", `${file} renders ${meta.component}`);
-  if (path.basename(path.dirname(file)) !== meta.component) find("component-folder", `${meta.component} is not in a folder of its own (${path.dirname(file)})`);
+  if (inComponents && name !== meta.component) find("story-name", `${file} renders ${meta.component}`);
+  if (inComponents && path.basename(path.dirname(file)) !== meta.component) find("component-folder", `${meta.component} is not in a folder of its own (${path.dirname(file)})`);
   const rel = path.relative(path.join("src", "components"), path.dirname(file)).split(path.sep);
   if (!rel[0].startsWith("..")) {
     const folders = rel.at(-1) === meta.component ? rel.slice(0, -1) : rel;

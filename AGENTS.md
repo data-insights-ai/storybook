@@ -95,11 +95,11 @@ Every component lives in `src/components`, in the folder of its concept, with it
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
 | `navigation/` | Breadcrumb, Pagination, Stepper, Tabs, TabNav, Menu, CommandBar, TextLink, SkipLink; `sidebar/` the sidebar and its parts; `shortcuts/` the key scheme and ShortcutHelp |
 | `forms/` | the labelled controls and their field frame; `dates/` DateField, TimeField, DateRangePicker and its range logic |
-| `data/` | records and figures (KeyValues, FactList, Stat, Metric, the cards, Channel, Session); `table/` DataTable, InfiniteTable, ListToolbar; `marks/` Badge, StatusPill, Chip, Tag, Seal, Highlight, Icon, IconTile, VersionTag |
+| `data/` | records and figures (KeyValues, FactList, Stat, Metric, the cards, Channel, Session); `table/` DataTable, InfiniteTable, ListToolbar; `marks/` Badge, StatusPill, Chip, Tag, SealValue, Eyebrow, Kbd, TickRule, Highlight, Icon, IconTile, VersionTag |
 | `feedback/` | Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `waiting/` the loaders, progress and skeletons |
 | `overlays/` | Modal, ConfirmDialog, Drawer, Sheet, Flyout, CreateFlow |
 | `inference/` | Explain, Confirm, Confidence, Privacy |
-| `layout/` | Stack, Grid, Page, Panel, Split, Stage, the headers, Disclosure, Accordion, DetailSection; `shell/` AppShell, Theme, SignIn |
+| `layout/` | Stack, Grid, Toolbar, Numbered, FieldStack, InlineForm, Page, Panel, Split, Stage, the headers, Disclosure, Accordion, DetailSection; `shell/` AppShell, ThemeProvider, SignIn |
 | `charts/` | Chart, ChartCard, TrendChart and the drawn measures (Bars, Sparkline, Distribution, LevelMeter, CoverageMatrix, Seismograph) |
 | `timeline/` | EventTimeline and its parts, ChainTimeline, PeriodTimeline, WeekTimeline; `summary/` TimelineSummary |
 

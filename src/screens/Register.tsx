@@ -26,12 +26,13 @@ import {
   TableToolbar,
 } from "../components/data/table/DataTable";
 import { Drawer, DrawerFooter } from "../components/overlays/Drawer";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/Heading";
-import { Grid, Stack } from "../components/layout/Layout";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/PageHeader";
+import { Grid } from "../components/layout/Grid";
+import { Stack } from "../components/layout/Stack";
 import { Menu, MenuDivider, MenuItem } from "../components/navigation/Menu";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import { Pagination } from "../components/navigation/Pagination";
-import { SealValue } from "../components/data/marks/Seal";
+import { SealValue } from "../components/data/marks/SealValue";
 import { SearchField } from "../components/forms/SearchField";
 import { StatTile, StatTileDelta } from "../components/data/StatTile";
 import { StatusPill } from "../components/data/marks/StatusPill";

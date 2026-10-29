@@ -1,6 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../../cx";
-import { SealMark } from "./marks/Seal";
+import { SealMark } from "./marks/SealValue";
 import { StatusPill } from "./marks/StatusPill";
 import "./LivingCard.css";
 

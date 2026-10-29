@@ -5,7 +5,7 @@ import { Breadcrumb } from "../components/navigation/Breadcrumb";
 import { ChoiceCards } from "../components/forms/ChoiceCards";
 import { CreateFlow } from "../components/overlays/CreateFlow";
 import { Fact, FactList } from "../components/data/FactList";
-import { PageHeader, PageHeaderCrumbs, PageHeaderTitle } from "../components/layout/Heading";
+import { PageHeader, PageHeaderCrumbs, PageHeaderTitle } from "../components/layout/PageHeader";
 import { Page } from "../components/layout/Page";
 import { TextField } from "../components/forms/TextField";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";

@@ -3,12 +3,13 @@ import { Globe, MoreVertical, Radar, Search, Settings2, ShieldCheck, Timer } fro
 import { Console } from "../components/layout/shell/AppShell";
 import { Button } from "../components/actions/Button";
 import { CommandBar, CommandGroup, CommandRow } from "../components/navigation/CommandBar";
-import { PageHeader, PageHeaderTitle } from "../components/layout/Heading";
+import { PageHeader, PageHeaderTitle } from "../components/layout/PageHeader";
 import { ConfidenceField } from "../components/inference/ConfidenceField";
 import { ConfirmActions, ConfirmPanel } from "../components/inference/ConfirmPanel";
 import { ExplainFooter, ExplainPanel, ExplainRow } from "../components/inference/ExplainPanel";
 import { PrivacyBadge } from "../components/inference/PrivacyBadge";
-import { Grid, Stack } from "../components/layout/Layout";
+import { Grid } from "../components/layout/Grid";
+import { Stack } from "../components/layout/Stack";
 import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "../components/data/LivingCard";
 import { Panel, PanelMeta } from "../components/layout/Panel";
 import { StatTile, StatTileDelta } from "../components/data/StatTile";

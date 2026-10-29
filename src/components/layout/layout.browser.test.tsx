@@ -8,8 +8,8 @@ import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } fro
 import { ListToolbar } from "../data/table/ListToolbar";
 import { Sheet } from "../overlays/Sheet";
 import { Page, PageAside } from "./Page";
-import { PageHeader, PageHeaderTitle } from "./Heading";
-import { Grid } from "./Layout";
+import { PageHeader, PageHeaderTitle } from "./PageHeader";
+import { Grid } from "./Grid";
 import { CreateFlow } from "../overlays/CreateFlow";
 import { ChoiceCards } from "../forms/ChoiceCards";
 import { TextField } from "../forms/TextField";

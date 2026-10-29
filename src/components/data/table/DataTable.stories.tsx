@@ -23,7 +23,7 @@ import { LevelMeter } from "../../charts/LevelMeter";
 import { Pagination } from "../../navigation/Pagination";
 import { SearchField } from "../../forms/SearchField";
 import { Select } from "../../forms/Select";
-import { SealValue } from "../marks/Seal";
+import { SealValue } from "../marks/SealValue";
 import { StatusPill } from "../marks/StatusPill";
 import { TextLink } from "../../navigation/TextLink";
 

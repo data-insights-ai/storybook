@@ -6,7 +6,7 @@ import { Fact, FactList } from "../data/FactList";
 import { StatusPill } from "../data/marks/StatusPill";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../data/table/DataTable";
 import { TextLink } from "../navigation/TextLink";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "./Heading";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "./PageHeader";
 import { DetailSection } from "./DetailSection";
 import { Sheet, SheetFooter } from "../overlays/Sheet";
 import { Page, PageAside } from "./Page";

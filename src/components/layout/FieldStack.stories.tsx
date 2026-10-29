@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../actions/Button";
-import { FieldStack } from "./FormLayout";
-import { Actions } from "./Layout";
+import { FieldStack } from "./FieldStack";
+import { Actions } from "./Actions";
 import { Select } from "../forms/Select";
 import { TextField } from "../forms/TextField";
 

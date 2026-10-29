@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../../cx";
-import { TickRule } from "./marks/Seal";
+import { TickRule } from "./marks/TickRule";
 import "./StatTile.css";
 
 /**

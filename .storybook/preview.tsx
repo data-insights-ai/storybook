@@ -33,9 +33,8 @@ const preview: Preview = {
       /*
        * The sections run in a fixed order, and Foundations keeps its curated
        * one because those pages are meant to be read top to bottom. The rest
-       * sort alphabetically by title rather than by file name: Choice.stories
-       * is titled Checkbox and Heading.stories is PageHeader, so file order
-       * puts both in the wrong place.
+       * sort alphabetically by title, which mirrors the folder a component
+       * lives in.
        *
        * Storybook reads this function out of the file and evaluates it on its
        * own, so it has to be plain JavaScript and carry its own lists —

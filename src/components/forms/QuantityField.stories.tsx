@@ -1,33 +1,41 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { QuantityField } from "./QuantityField";
-
-function Controlled({ labelHidden = false, disabled = false }: { labelHidden?: boolean; disabled?: boolean }) {
-  const [value, setValue] = useState(2);
-  return (
-    <QuantityField
-      id="seats"
-      label="Quantity"
-      decrementLabel="One fewer"
-      incrementLabel="One more"
-      invalidHint="Enter a whole number from 1 to 20."
-      max={20}
-      value={value}
-      onChange={setValue}
-      hint={`${value} × 25 seats = ${value * 25} seats`}
-      labelHidden={labelHidden}
-      disabled={disabled}
-    />
-  );
-}
 
 const meta = {
   title: "Forms/Text/QuantityField",
-  component: Controlled,
+  component: QuantityField,
   tags: ["layer:form", "autodocs"],
-  args: { labelHidden: false, disabled: false },
-} satisfies Meta<typeof Controlled>;
+  args: {
+    id: "seats",
+    label: "Quantity",
+    decrementLabel: "One fewer",
+    incrementLabel: "One more",
+    invalidHint: "Enter a whole number from 1 to 20.",
+    min: 1,
+    max: 20,
+    value: 2,
+    hint: "",
+    labelHidden: false,
+    disabled: false,
+    onChange: fn(),
+  },
+  render: function Render(args) {
+    const [value, setValue] = useState(args.value);
+    return (
+      <QuantityField
+        {...args}
+        value={value}
+        onChange={(next) => {
+          setValue(next);
+          args.onChange(next);
+        }}
+        hint={`${value} × 25 seats = ${value * 25} seats`}
+      />
+    );
+  },
+} satisfies Meta<typeof QuantityField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

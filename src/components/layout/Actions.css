@@ -1,0 +1,8 @@
+@layer components {
+  .di-inline-actions {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: var(--di-space-6);
+  }
+}
