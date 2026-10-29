@@ -123,6 +123,7 @@ export const Contained: Story = {
  * Storybook shares: an operator, a demo-data switch, a refresh, the seal.
  */
 export const Chrome: Story = {
+  tags: ["status:deprecated"],
   parameters: { controls: { disable: true } },
   render: () => (
     <Console title="Overview" crumb={["Monitor", "Overview"]} active="overview" chrome={sampleChrome}>
@@ -138,6 +139,7 @@ export const Chrome: Story = {
  * reads as one object rather than as the page itself.
  */
 export const Frame: Story = {
+  tags: ["status:deprecated"],
   parameters: { controls: { disable: true } },
   render: () => (
     <ConsoleFrame title="Overview" lang="en">
@@ -339,6 +341,7 @@ export const ReflowTabletNight: Story = narrowReflow("dark", 768);
 
 /** The framed console's older crumb composition obeys the same reflow bounds. */
 export const ReflowConsole: Story = {
+  tags: ["status:deprecated"],
   parameters: { viewport: { options: { reflow: { name: "Reflow", styles: { width: "390px", height: "844px" }, type: "mobile" } } } },
   globals: { viewport: { value: "reflow", isRotated: false } },
   render: () => <Console title={reflowName} crumb={["Example studio " + reflowName, reflowName]} active="overview" chrome={{ ...sampleChrome, workspace: reflowName, operator: { ...sampleChrome.operator, name: reflowName } }}>

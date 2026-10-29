@@ -27,6 +27,9 @@ export type ConsoleChrome = {
 /**
  * The canvas and the window. The dotted ground is what a console sits
  * on in these stories; a product renders `AppShell` alone, full-bleed.
+ *
+ * @deprecated Removed in 0.10.0: Storybook chrome, no product renders it.
+ * Compose `AppShell` directly.
  */
 export function ConsoleFrame({
   title,
@@ -55,6 +58,9 @@ export function ConsoleFrame({
  * The shell inside its window, with the sample chrome the screens share:
  * an operator, a demo-data switch, a refresh and the sealed mark. It is
  * how these stories show a console; a product composes `AppShell` itself.
+ *
+ * @deprecated Removed in 0.10.0: Storybook chrome, no product renders it.
+ * Compose `AppShell` with `AppShellRail`, `AppShellMain` and `AppShellBar`.
  */
 export function Console({
   title,

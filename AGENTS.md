@@ -130,6 +130,8 @@ What a component may hold is a second axis, and it is a tag on its story meta, n
 - `layer:block` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, Drawer, Menu, Tabs, StatTile, SignIn.
 - `layer:pattern` — a whole arrangement: AppShell, Sidebar, ShortcutHelp, ThemeProvider and the arrangement components.
 
+A deprecated export says so in its doc comment, `@deprecated Removed in <version>: <why>`, with what to use instead, and every story that shows it carries the tag `status:deprecated`. Console and ConsoleFrame are deprecated and go in 0.10.0.
+
 The test is one question: **can another component go inside it?** `KeyValues` holds `KeyValue`, and `KeyValue` takes two strings — nothing else fits, so it is a primitive. `Stat` looks just as small, but its `children` holds a `StatusPill` on the Watchlist screen, so it is a block. `Pagination` and `SkeletonTable` are bulky and still primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
 
 One sidebar entry is one component, and **one module is one component**. An independent component does not share a file with another one: `pnpm build` emits a module per file, so `Breadcrumb` living in `Tabs.tsx` means a product importing a breadcrumb also ships `Tabs` and `Stepper`. Where several are one family they get a subgroup rather than one merged entry (`Feedback/Waiting/Progress`, `/SkeletonTable`, `/Spinner`; `Layout/Arrangement/Stack`, `/Grid`, `/Numbered`, `/Toolbar`).
