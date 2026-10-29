@@ -33,6 +33,7 @@ import {
   resolveDateRange,
   weekStartName,
 } from "./dateRange";
+import "./Calendar.css";
 import "./DateRangePicker.css";
 
 /** Every word the picker shows; a product passes its own language. */
@@ -432,19 +433,19 @@ export function DateRangePicker({
             setOpenEnd(false);
           }}
         >
-          <header className="di-date-range-head">
-            <AriaButton slot="previous" className="di-date-range-nav" aria-label={labels.previous}>
+          <header className="di-calendar-head">
+            <AriaButton slot="previous" className="di-calendar-nav" aria-label={labels.previous}>
               <ChevronLeft aria-hidden />
             </AriaButton>
-            <Heading className="di-date-range-heading" />
-            <AriaButton slot="next" className="di-date-range-nav" aria-label={labels.next}>
+            <Heading className="di-calendar-heading" />
+            <AriaButton slot="next" className="di-calendar-nav" aria-label={labels.next}>
               <ChevronRight aria-hidden />
             </AriaButton>
           </header>
           <div className="di-date-range-months">
             {Array.from({ length: narrow ? 1 : 2 }, (_, month) => (
-              <CalendarGrid key={month} offset={{ months: month }} className="di-date-range-grid">
-                {(date) => <CalendarCell date={date} className="di-date-range-cell" />}
+              <CalendarGrid key={month} offset={{ months: month }} className="di-calendar-grid">
+                {(date) => <CalendarCell date={date} className="di-calendar-cell" />}
               </CalendarGrid>
             ))}
           </div>
@@ -465,8 +466,8 @@ export function DateRangePicker({
                   onChange={(from) => setTimes({ ...times, from })}
                 >
                   <Label className="di-field-label di-field-label-record">{labels.fromTime}</Label>
-                  <DateInput className="di-control di-date-range-time-input">
-                    {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
+                  <DateInput className="di-control di-date-input di-date-range-time-input">
+                    {(segment) => <DateSegment segment={segment} className="di-date-segment" />}
                   </DateInput>
                 </TimeField>
                 {openEnd ? null : (
@@ -476,8 +477,8 @@ export function DateRangePicker({
                     onChange={(to) => setTimes({ ...times, to })}
                   >
                     <Label className="di-field-label di-field-label-record">{labels.toTime}</Label>
-                    <DateInput className="di-control di-date-range-time-input">
-                      {(segment) => <DateSegment segment={segment} className="di-date-range-segment" />}
+                    <DateInput className="di-control di-date-input di-date-range-time-input">
+                      {(segment) => <DateSegment segment={segment} className="di-date-segment" />}
                     </DateInput>
                   </TimeField>
                 )}

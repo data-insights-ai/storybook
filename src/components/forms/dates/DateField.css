@@ -1,0 +1,111 @@
+@layer components {
+  /* The segments run on the control row; the toggle or the clock sits at its end. */
+  .di-date-control {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-4);
+    padding-right: var(--di-space-4);
+  }
+
+  .di-date-control .di-date-input {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .di-date-control:has(.di-date-segment:focus) {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-date-control:is([data-disabled], :has([data-disabled])) {
+    cursor: not-allowed;
+    border-color: var(--di-field-border);
+    background: var(--di-bg-disabled);
+    color: var(--di-text-disabled);
+  }
+
+  .di-date-control:is([data-invalid], :has([data-invalid])) {
+    border-color: var(--di-status-danger-dot);
+  }
+
+  .di-date-field-toggle {
+    display: grid;
+    flex: none;
+    place-items: center;
+    align-self: stretch;
+    aspect-ratio: 1;
+    margin-block: var(--di-space-4);
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--di-radius-micro);
+    background: transparent;
+    color: var(--di-text-muted);
+    cursor: pointer;
+  }
+
+  .di-date-field-toggle > svg,
+  .di-time-field-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .di-date-field-toggle[data-hovered] {
+    border-color: var(--di-border);
+    color: var(--di-text);
+  }
+
+  .di-date-field-toggle[data-focus-visible] {
+    outline: 2px solid var(--di-focus);
+    outline-offset: -2px;
+  }
+
+  .di-date-field-toggle[data-disabled] {
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .di-time-field-icon {
+    flex: none;
+    margin-right: var(--di-space-4);
+    color: var(--di-text-muted);
+  }
+
+  .di-date-control:has([data-disabled]) .di-time-field-icon {
+    color: var(--di-text-disabled);
+  }
+
+  .di-date-field-popover {
+    max-width: calc(100vw - var(--di-space-24));
+    max-height: var(--available-height);
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    box-shadow: var(--di-shadow-plane);
+  }
+
+  .di-date-field-popover[data-entering] {
+    animation: di-date-field-drop var(--di-duration) var(--di-ease);
+  }
+
+  @keyframes di-date-field-drop {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+
+  .di-date-field-dialog {
+    padding: var(--di-space-12);
+    outline: none;
+  }
+
+  .di-date-field-calendar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+  }
+}

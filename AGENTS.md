@@ -94,7 +94,7 @@ Every component lives in `src/components`, in the folder of its concept, with it
 | --- | --- |
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
 | `navigation/` | Breadcrumb, Pagination, Stepper, Tabs, TabNav, Menu, CommandBar, TextLink, SkipLink; `sidebar/` the sidebar and its parts; `shortcuts/` the key scheme and ShortcutHelp |
-| `forms/` | the labelled controls and their field frame; `dates/` DateRangePicker and its range logic |
+| `forms/` | the labelled controls and their field frame; `dates/` DateField, TimeField, DateRangePicker and its range logic |
 | `data/` | records and figures (KeyValues, FactList, Stat, Metric, the cards, Channel, Session); `table/` DataTable, InfiniteTable, ListToolbar; `marks/` Badge, StatusPill, Chip, Tag, Seal, Highlight, Icon, IconTile, VersionTag |
 | `feedback/` | Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `waiting/` the loaders, progress and skeletons |
 | `overlays/` | Modal, ConfirmDialog, Drawer, Sheet, Flyout, CreateFlow |
@@ -108,7 +108,7 @@ A folder names what a component is about; the story `title` is a different axis,
 The story `title` decides where a component lands in the sidebar, and there are five groups:
 
 - `Primitives/` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it. Button, Badge, StatusPill, Chip, Highlight, Icon, IconTile, Seal, Eyebrow, Kbd, TickRule, TextLink, VersionTag, KeyValues, PullQuote, Bars, Sparkline, Distribution, Pagination, Breadcrumb, Stepper, Tooltip, Waiting/{AppLoader,Progress,RouteProgress,Skeleton,SkeletonPage,Spinner}.
-- `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl, DateRangePicker, FieldHint.
+- `Forms/` — a labelled control: TextField, SearchField, Select, Checkbox, Radio, Switch, SegmentedControl, DateField, TimeField, DateRangePicker, FieldHint.
 - `Blocks/` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, FactList, Drawer, Menu, Tabs, EmptyState, StatTile, Metric, LivingCard, CommandBar, SignIn and the rest.
 - `Patterns/` — a whole arrangement: AppShell, Layout. A product renders `AppShell` full-bleed from its slots; `Console` is the same shell inside its Storybook window, with the sample chrome the screens share, and no product renders it.
 - `Screens/` — a console example, composed from the above.

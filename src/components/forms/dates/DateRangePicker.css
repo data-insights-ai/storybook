@@ -116,110 +116,17 @@
     padding: var(--di-space-12);
   }
 
-  .di-date-range-head {
-    display: flex;
-    align-items: center;
-    gap: var(--di-space-8);
-  }
-
-  .di-date-range-heading {
-    flex: 1;
-    margin: 0;
-    font-size: var(--di-font-size-400);
-    font-weight: 600;
-    text-align: center;
-  }
-
-  .di-date-range-nav {
-    display: grid;
-    place-items: center;
-    width: var(--di-h-ctl);
-    height: var(--di-h-ctl);
-    padding: 0;
-    border: 1px solid transparent;
-    border-radius: var(--di-radius-control);
-    background: transparent;
-    color: var(--di-text);
-    cursor: pointer;
-  }
-
-  .di-date-range-nav > svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .di-date-range-nav[data-hovered] {
-    border-color: var(--di-border);
-  }
-
-  .di-date-range-nav[data-focus-visible] {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 1px;
+  /* Between the first and last day: a band, the two ends filled. */
+  .di-date-range-calendar .di-calendar-cell[data-selected]:not([data-selection-start], [data-selection-end]) {
+    border-radius: 0;
+    background: var(--di-status-recorded-bg);
+    color: var(--di-status-recorded-fg);
   }
 
   .di-date-range-months {
     display: flex;
     align-items: flex-start;
     gap: var(--di-space-24);
-  }
-
-  .di-date-range-grid {
-    border-collapse: collapse;
-  }
-
-  .di-date-range-grid th {
-    padding: 0 0 var(--di-space-4);
-    color: var(--di-text-muted);
-    font-size: var(--di-font-size-200);
-    font-weight: 500;
-  }
-
-  .di-date-range-grid td {
-    padding: 0;
-  }
-
-  .di-date-range-cell {
-    display: grid;
-    place-items: center;
-    width: var(--di-h-ctl);
-    height: var(--di-h-ctl);
-    border-radius: var(--di-radius-micro);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-300);
-    font-variant-numeric: tabular-nums;
-    cursor: pointer;
-    outline: none;
-  }
-
-  .di-date-range-cell[data-outside-month] {
-    visibility: hidden;
-  }
-
-  .di-date-range-cell[data-hovered] {
-    background: var(--di-bg-page);
-  }
-
-  .di-date-range-cell[data-selected] {
-    border-radius: 0;
-    background: var(--di-status-recorded-bg);
-    color: var(--di-status-recorded-fg);
-  }
-
-  .di-date-range-cell:is([data-selection-start], [data-selection-end]) {
-    border-radius: var(--di-radius-micro);
-    background: var(--di-fill-strong);
-    color: var(--di-text-on-strong);
-  }
-
-  .di-date-range-cell[data-unavailable],
-  .di-date-range-cell[data-disabled] {
-    color: var(--di-text-disabled);
-    cursor: default;
-  }
-
-  .di-date-range-cell[data-focus-visible] {
-    outline: 2px solid var(--di-focus);
-    outline-offset: -2px;
   }
 
   .di-date-range-times {
@@ -247,34 +154,11 @@
   }
 
   .di-date-range-time-input {
-    display: inline-flex;
-    align-items: center;
     width: auto;
-    font-family: var(--di-font-code);
   }
 
   .di-date-range-time-input[data-focus-within] {
     border-color: var(--di-focus);
-  }
-
-  .di-date-range-segment {
-    padding: 0 var(--di-space-2);
-    border-radius: var(--di-radius-micro);
-    font-variant-numeric: tabular-nums;
-    outline: none;
-  }
-
-  .di-date-range-segment[data-type="literal"] {
-    padding: 0;
-  }
-
-  .di-date-range-segment[data-placeholder] {
-    color: var(--di-text-subtle);
-  }
-
-  .di-date-range-segment[data-focused] {
-    background: var(--di-fill-strong);
-    color: var(--di-text-on-strong);
   }
 
   .di-date-range-foot {

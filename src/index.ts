@@ -38,6 +38,8 @@ export { ComboBox } from "./components/forms/ComboBox";
 export type { ComboBoxSuggestion } from "./components/forms/ComboBox";
 export { MultiComboBox } from "./components/forms/MultiComboBox";
 export type { MultiComboBoxOption } from "./components/forms/MultiComboBox";
+export { DateField, defaultDateFieldLabels } from "./components/forms/dates/DateField";
+export type { DateFieldLabels } from "./components/forms/dates/DateField";
 export { DateRangePicker, defaultDateRangeLabels } from "./components/forms/dates/DateRangePicker";
 export type { DateRangeLabels } from "./components/forms/dates/DateRangePicker";
 export {
@@ -236,6 +238,7 @@ export { TabNav, TabNavLink } from "./components/navigation/TabNav";
 export type { TabNavLinkProps } from "./components/navigation/TabNav";
 export { TextArea, TextField } from "./components/forms/TextField";
 export { TextLink } from "./components/navigation/TextLink";
+export { TimeField } from "./components/forms/dates/TimeField";
 export { Toast, ToastAction, ToastRegion } from "./components/feedback/Toast";
 export { ToggleGroup, type ToggleOption } from "./components/forms/ToggleGroup";
 export { WeekTimeline, type WeekTimelineRow } from "./components/timeline/WeekTimeline";
