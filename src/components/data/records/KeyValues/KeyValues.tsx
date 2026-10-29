@@ -15,6 +15,11 @@ export function KeyValue({ term, value }: { term: string; value: string }) {
   );
 }
 
+/**
+ * A short list of `KeyValue` pairs, a term and its value each, as a
+ * description list. For a longer set of facts read down a page, use
+ * `FactList`.
+ */
 export function KeyValues({ children }: { children: ReactNode }) {
   return <dl className="di-kv">{children}</dl>;
 }

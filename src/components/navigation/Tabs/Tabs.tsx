@@ -92,6 +92,11 @@ function tabId(kind: "tab" | "panel", value: string, prefix?: string) {
   return `${prefix === undefined ? "" : `${encode(prefix)}:`}${kind}-${encode(value)}`;
 }
 
+/**
+ * The content of one tab in `Tabs`, shown while its tab is selected. `value`
+ * matches its tab, and `idPrefix` matches the `Tabs` it belongs to when a page
+ * holds more than one.
+ */
 export function TabPanel({ value, idPrefix, children }: { value: string; idPrefix?: string; children: ReactNode }) {
   return (
     <div role="tabpanel" id={tabId("panel", value, idPrefix)} aria-labelledby={tabId("tab", value, idPrefix)} tabIndex={0} className="di-tabpanel">

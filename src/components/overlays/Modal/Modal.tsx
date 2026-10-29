@@ -77,6 +77,10 @@ export function ModalContent({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * The modal's heading. Its `id` is what `ModalFrame` names the dialog by, so
+ * the two must match; `eyebrow` is an optional line above it.
+ */
 export function ModalTitle({ id, eyebrow, children }: { id: string; eyebrow?: string; children: ReactNode }) {
   return (
     <>
@@ -95,6 +99,10 @@ export function ModalTitle({ id, eyebrow, children }: { id: string; eyebrow?: st
 export function ModalBody({ children }: { children: ReactNode }) {
   return <div className="di-modal-text">{children}</div>;
 }
+/**
+ * The modal's closing row of actions, set at its end. The primary action comes
+ * last.
+ */
 export function ModalFooter({ children }: { children: ReactNode }) {
   return <div className="di-modal-footer">{children}</div>;
 }

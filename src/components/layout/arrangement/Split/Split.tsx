@@ -33,6 +33,9 @@ export function Split({
   );
 }
 
+/**
+ * The main column of a `Split`: the record, which scrolls.
+ */
 export function SplitMain({ children }: { children: ReactNode }) {
   return <div className="di-split-main">{children}</div>;
 }

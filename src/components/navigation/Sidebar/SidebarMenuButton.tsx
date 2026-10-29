@@ -33,6 +33,13 @@ export type SidebarMenuButtonProps = Omit<HTMLAttributes<HTMLElement>, "children
   menu?: boolean;
 };
 
+/**
+ * One sidebar item: its icon (the child) and `label`, a link with `href` or
+ * `render`, otherwise a button. `active` marks the current page with
+ * `aria-current`. In the collapsed rail only the icon shows and `label`
+ * becomes its tooltip, with `badge` beside it; `menu` adds a chevron for an
+ * item that opens a menu.
+ */
 export function SidebarMenuButton({
   label,
   children,

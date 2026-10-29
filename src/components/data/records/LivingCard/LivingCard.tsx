@@ -41,6 +41,10 @@ export function LivingActions({ children }: { children: ReactNode }) {
   return <div className="di-living-actions">{children}</div>;
 }
 
+/**
+ * The card's main text: what the living record says now, above its
+ * `LivingInsight` and `LivingBasis`.
+ */
 export function LivingBody({ children }: { children: ReactNode }) {
   return <div className="di-living-body">{children}</div>;
 }

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 import { WeekTimeline } from "./WeekTimeline";
 
 const night = [
@@ -26,4 +27,8 @@ const meta = {
 
 export default meta;
 
-export const QuietHours: StoryObj<typeof meta> = {};
+export const QuietHours: StoryObj<typeof meta> = {
+  play: async ({ canvasElement, args }) => {
+    await expect(within(canvasElement).getByRole("img", { name: args.summary })).toBeVisible();
+  },
+};

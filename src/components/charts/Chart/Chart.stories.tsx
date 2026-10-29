@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, waitFor, within } from "storybook/test";
 import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, XAxis, YAxis } from "recharts";
-import { Chart, ChartLegend, ChartTooltip, ChartTooltipContent, type ChartConfig } from "./Chart";
+import { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig } from "./Chart";
 
 /*
  * The stories compose `Chart` directly rather than rendering a prepared
@@ -251,6 +251,30 @@ export const Legend: Story = {
           dot={false}
           connectNulls={false}
         />
+      </ComposedChart>
+    </Chart>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("Recorded")).toBeVisible();
+    await expect(canvas.getByText("Estimate")).toBeVisible();
+  },
+};
+
+/**
+ * `ChartLegendContent` given to `ChartLegend` as its content, when the
+ * legend takes props of its own: here it sits above the chart.
+ */
+export const LegendAbove: Story = {
+  render: (args) => (
+    <Chart {...args}>
+      <ComposedChart data={series} margin={{ top: 0, right: 12, bottom: 0, left: 0 }}>
+        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+        <XAxis dataKey="period" tickLine={false} axisLine={false} interval={0} />
+        <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
+        <ChartLegend verticalAlign="top" content={<ChartLegendContent />} />
+        <Line dataKey="estimate" stroke="var(--color-estimate)" strokeWidth={1.6} strokeDasharray="4 3" dot={false} />
+        <Line dataKey="value" stroke="var(--color-value)" strokeWidth={1.6} dot={false} connectNulls={false} />
       </ComposedChart>
     </Chart>
   ),

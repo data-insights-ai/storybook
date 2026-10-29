@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 import {
   Building2,
   Bug,
@@ -52,7 +53,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Mark: Story = {};
+export const Mark: Story = {
+  play: async ({ canvasElement }) => {
+    const svg = canvasElement.querySelector("svg");
+    await expect(svg?.closest("[aria-hidden='true']")).not.toBeNull();
+    await expect(within(canvasElement).queryByRole("img")).toBeNull();
+  },
+};
 
 const consoleIcons: { name: string; icon: ReactNode }[] = [
   { name: "Building2", icon: <Building2 /> },

@@ -7,6 +7,14 @@ import { useToggleShortcut } from "./useToggleShortcut";
 import { SkipLink } from "../../shell/SkipLink";
 import "./Sidebar.css";
 
+/**
+ * Holds whether the sidebar is expanded, for `Sidebar`, `SidebarTrigger` and
+ * `useSidebar`. Uncontrolled by default, starting at `defaultExpanded`; pass
+ * `expanded` and `onExpandedChange` to own the state, or `storageKey` to keep
+ * the person's choice. `shortcut` toggles it from the keyboard (`b` unless set
+ * to `false`), and `skipLabel` renders the skip link that jumps past the
+ * sidebar.
+ */
 export function SidebarProvider({
   defaultExpanded = true,
   expanded: controlledExpanded,

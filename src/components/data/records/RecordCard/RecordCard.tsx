@@ -58,6 +58,9 @@ export function RecordLines({ children }: { children: ReactNode }) {
   return <ul className="di-record-list">{children}</ul>;
 }
 
+/**
+ * One line in a `RecordLines` list: the entry, in bold, and a detail after it.
+ */
 export function RecordLine({ primary, detail }: { primary: string; detail: string }) {
   return (
     <li>

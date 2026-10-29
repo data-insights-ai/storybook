@@ -2,6 +2,10 @@ import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
 import "./Stage.css";
 
+/**
+ * A row of `Stage`s, the steps of one process in order, which wraps on a
+ * narrow page.
+ */
 export function StageTrack({ children }: { children: ReactNode }) {
   return <div className="di-stage-track">{children}</div>;
 }

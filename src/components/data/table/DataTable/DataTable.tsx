@@ -225,6 +225,9 @@ export function TableFooter({ children }: { children: ReactNode }) {
   return <div className="di-table-foot">{children}</div>;
 }
 
+/**
+ * The header row of a `DataTable`, holding one `TableColumn` per column.
+ */
 export function TableHead({ children }: { children: ReactNode }) {
   const group = useRole("rowgroup");
   const row = useRole("row");
@@ -304,6 +307,9 @@ export function TableColumn({
   );
 }
 
+/**
+ * The rows of a `DataTable`, each a `TableRow`.
+ */
 export function TableBody({ children }: { children: ReactNode }) {
   return <tbody role={useRole("rowgroup")}>{children}</tbody>;
 }
@@ -382,6 +388,12 @@ export function TableIndex({ children }: { children: ReactNode }) {
   return <td role={useRole("cell")} className="di-table-index">{children}</td>;
 }
 
+/**
+ * One value in a `TableRow`. `align="end"` for figures, `mono` for
+ * identifiers, timestamps and measured values. `label` names the value when a
+ * narrow table stacks its rows as cards, and `pinned` keeps it at the left
+ * edge with its column.
+ */
 export function TableCell({
   children,
   align = "start",
@@ -455,10 +467,18 @@ export function CellStack({
   );
 }
 
+/**
+ * The icon in a `CellLead`: one lucide icon, hidden from assistive technology
+ * by the icon itself, before the cell's text.
+ */
 export function CellIcon({ children }: { children: ReactNode }) {
   return <span className="di-cell-icon">{children}</span>;
 }
 
+/**
+ * The leading content of a row's name cell: a `CellIcon` beside a `CellStack`,
+ * kept on one baseline.
+ */
 export function CellLead({ children }: { children: ReactNode }) {
   return <span className="di-cell-lead">{children}</span>;
 }

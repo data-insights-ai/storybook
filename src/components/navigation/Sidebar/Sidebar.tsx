@@ -6,6 +6,13 @@ import "./Sidebar.css";
  * swipe code out of a desktop page's first load. */
 const SidebarDrawer = lazy(() => import("./SidebarDrawer"));
 
+/**
+ * The app's collapsible navigation, inside a `SidebarProvider`. Wide, it is a
+ * `nav` named by `label` that collapses to a rail of icons; on a phone it is a
+ * drawer that opens from `SidebarTrigger` and is closed with `closeLabel`'s
+ * button or Escape. Its parts are `SidebarHeader`, `SidebarContent` and
+ * `SidebarFooter`.
+ */
 export function Sidebar({ label, closeLabel, children }: { label: string; closeLabel: string; children: ReactNode }) {
   const { expanded, mobile, sidebarId } = useSidebar();
 

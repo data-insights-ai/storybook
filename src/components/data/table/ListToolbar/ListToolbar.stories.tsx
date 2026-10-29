@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Download } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { ListToolbar, ListToolbarEnd } from "./ListToolbar";
+import { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./ListToolbar";
 import { SearchField } from "../../../forms/text/SearchField";
 import { Select } from "../../../forms/select/Select";
 import { useShortcut } from "../../../../internal/useShortcut";
@@ -63,5 +63,19 @@ export const Members: Story = {
     await userEvent.click(canvasElement);
     await userEvent.keyboard("/");
     await waitFor(() => expect(canvas.getByLabelText("Search members")).toHaveFocus());
+  },
+};
+
+/** With a note under it: one muted line saying what this tab holds. */
+export const WithNote: Story = {
+  render: (args) => (
+    <>
+      <Toolbar {...args} />
+      <ListToolbarNote>People with a seat in this workspace, and the invitations still open.</ListToolbarNote>
+    </>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("People with a seat in this workspace, and the invitations still open.")).toBeVisible();
   },
 };

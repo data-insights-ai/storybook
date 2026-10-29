@@ -97,6 +97,10 @@ export function CommandChip({
   );
 }
 
+/**
+ * A labelled set of `CommandRow`s inside a `CommandBar`. `label` is shown
+ * above the rows.
+ */
 export function CommandGroup({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="di-command-group">

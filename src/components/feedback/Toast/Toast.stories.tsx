@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
-import { Toast, ToastAction } from "./Toast";
+import { Toast, ToastAction, ToastRegion } from "./Toast";
 
 const meta = {
   title: "Feedback/Toast",
@@ -44,6 +44,20 @@ export const WithoutAudit: Story = {
     title: "Filters cleared.",
     body: "The register is showing every source again.",
     auditId: "",
+  },
+};
+
+/** In its region, fixed at the bottom of the view, where a product mounts the current receipt. */
+export const InItsRegion: Story = {
+  render: (args) => (
+    <ToastRegion>
+      <Toast {...args} />
+    </ToastRegion>
+  ),
+  play: async ({ canvasElement }) => {
+    const region = canvasElement.querySelector(".di-toast-region");
+    await waitFor(() => expect(within(canvasElement).getByRole("status")).toBeVisible());
+    await expect(region?.contains(within(canvasElement).getByRole("status"))).toBe(true);
   },
 };
 
