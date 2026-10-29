@@ -5,7 +5,7 @@ import { Fact, FactList } from "../data/FactList";
 import { Actions } from "./Actions";
 import { Stack } from "./Stack";
 import { Panel } from "./Panel";
-import { Select } from "../forms/Select";
+import { Select } from "../forms/select/Select";
 import { Split, SplitAside, SplitMain } from "./Split";
 
 const meta = {

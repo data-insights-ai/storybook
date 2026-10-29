@@ -32,7 +32,7 @@ import {
 } from "../components/data/table/DataTable";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import { Pagination } from "../components/navigation/Pagination";
-import { SearchField } from "../components/forms/SearchField";
+import { SearchField } from "../components/forms/text/SearchField";
 import { StatusPill, type StatusTone } from "../components/data/marks/StatusPill";
 import { SectionTitle, SectionTitleHeading } from "../components/layout/SectionTitle";
 

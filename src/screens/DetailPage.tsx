@@ -16,10 +16,10 @@ import {
   PageHeaderTitle,
 } from "../components/layout/PageHeader";
 import { Page } from "../components/layout/Page";
-import { SaveBar } from "../components/forms/SaveBar";
+import { SaveBar } from "../components/forms/field/SaveBar";
 import { StatusPill } from "../components/data/marks/StatusPill";
-import { Switch } from "../components/forms/Switch";
-import { TextField } from "../components/forms/TextField";
+import { Switch } from "../components/forms/choice/Switch";
+import { TextField } from "../components/forms/text/TextField";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
 
 /** A detail page: summary header, sections that read until Edit, the danger zone last. */

@@ -13,7 +13,7 @@ import {
   ModalIcon,
   ModalTitle,
 } from "./Modal";
-import { TextField } from "../forms/TextField";
+import { TextField } from "../forms/text/TextField";
 
 const meta = {
   title: "Overlays/Modal",

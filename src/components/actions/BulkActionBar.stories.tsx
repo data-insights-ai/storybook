@@ -6,7 +6,7 @@ import { BulkActionBar } from "./BulkActionBar";
 import { Button } from "./Button";
 import { Flyout, FlyoutFooter, FlyoutTrigger } from "../overlays/Flyout";
 import { Menu, MenuItem } from "../navigation/Menu";
-import { TextField } from "../forms/TextField";
+import { TextField } from "../forms/text/TextField";
 
 function Actions() {
   const [level, setLevel] = useState(false);

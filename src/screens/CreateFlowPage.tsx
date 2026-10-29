@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Building2, KeyRound, Network } from "lucide-react";
 import { Console } from "../components/layout/shell/AppShell";
 import { Breadcrumb } from "../components/navigation/Breadcrumb";
-import { ChoiceCards } from "../components/forms/ChoiceCards";
+import { ChoiceCards } from "../components/forms/choice/ChoiceCards";
 import { CreateFlow } from "../components/overlays/CreateFlow";
 import { Fact, FactList } from "../components/data/FactList";
 import { PageHeader, PageHeaderCrumbs, PageHeaderTitle } from "../components/layout/PageHeader";
 import { Page } from "../components/layout/Page";
-import { TextField } from "../components/forms/TextField";
+import { TextField } from "../components/forms/text/TextField";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
 
 const kinds = [

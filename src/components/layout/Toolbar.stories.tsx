@@ -4,9 +4,9 @@ import { Actions } from "./Actions";
 import { Toolbar, ToolbarEnd } from "./Toolbar";
 import { Button } from "../actions/Button";
 import { Chip } from "../data/marks/Chip";
-import { SearchField } from "../forms/SearchField";
-import { Select } from "../forms/Select";
-import { TextField } from "../forms/TextField";
+import { SearchField } from "../forms/text/SearchField";
+import { Select } from "../forms/select/Select";
+import { TextField } from "../forms/text/TextField";
 
 const meta = {
   title: "Layout/Arrangement/Toolbar",

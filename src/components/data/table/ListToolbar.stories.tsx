@@ -4,8 +4,8 @@ import { Download } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { ListToolbar, ListToolbarEnd } from "./ListToolbar";
-import { SearchField } from "../../forms/SearchField";
-import { Select } from "../../forms/Select";
+import { SearchField } from "../../forms/text/SearchField";
+import { Select } from "../../forms/select/Select";
 import { useShortcut } from "../../navigation/shortcuts/useShortcut";
 
 const meta = {

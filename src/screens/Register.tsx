@@ -33,7 +33,7 @@ import { Menu, MenuDivider, MenuItem } from "../components/navigation/Menu";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import { Pagination } from "../components/navigation/Pagination";
 import { SealValue } from "../components/data/marks/SealValue";
-import { SearchField } from "../components/forms/SearchField";
+import { SearchField } from "../components/forms/text/SearchField";
 import { StatTile, StatTileDelta } from "../components/data/StatTile";
 import { StatusPill } from "../components/data/marks/StatusPill";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";

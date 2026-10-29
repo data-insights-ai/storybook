@@ -2,20 +2,6 @@
   {
     "type": "dependency",
     "from": "src/components/actions/BulkActionBar.stories.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../forms/TextField",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/actions/BulkActionBar.stories.tsx",
     "to": "src/components/navigation/Menu.tsx",
     "unresolvedTo": "../navigation/Menu",
     "dependencyTypes": [
@@ -310,34 +296,6 @@
   {
     "type": "dependency",
     "from": "src/components/data/table/DataTable.stories.tsx",
-    "to": "src/components/forms/SearchField.tsx",
-    "unresolvedTo": "../../forms/SearchField",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/data/table/DataTable.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../../forms/Select",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/data/table/DataTable.stories.tsx",
     "to": "src/components/navigation/Pagination.tsx",
     "unresolvedTo": "../../navigation/Pagination",
     "dependencyTypes": [
@@ -410,34 +368,6 @@
     "from": "src/components/data/table/ListToolbar.stories.tsx",
     "to": "src/components/actions/Button.tsx",
     "unresolvedTo": "../../actions/Button",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/data/table/ListToolbar.stories.tsx",
-    "to": "src/components/forms/SearchField.tsx",
-    "unresolvedTo": "../../forms/SearchField",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/data/table/ListToolbar.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../../forms/Select",
     "dependencyTypes": [
       "local",
       "import"
@@ -715,9 +645,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/ComboBox.stories.tsx",
+    "from": "src/components/forms/dates/DateField/DateField.stories.tsx",
     "to": "src/components/actions/Button.tsx",
-    "unresolvedTo": "../actions/Button",
+    "unresolvedTo": "../../../actions/Button",
     "dependencyTypes": [
       "local",
       "import"
@@ -729,37 +659,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/ComboBox.stories.tsx",
-    "to": "src/components/overlays/Modal.tsx",
-    "unresolvedTo": "../overlays/Modal",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/DateField.stories.tsx",
-    "to": "src/components/actions/Button.tsx",
-    "unresolvedTo": "../../actions/Button",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/DateField.stories.tsx",
+    "from": "src/components/forms/dates/DateField/DateField.stories.tsx",
     "to": "src/components/layout/Grid.tsx",
-    "unresolvedTo": "../../layout/Grid",
+    "unresolvedTo": "../../../layout/Grid",
     "dependencyTypes": [
       "local",
       "import"
@@ -771,9 +673,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/dates/DateField.stories.tsx",
+    "from": "src/components/forms/dates/DateField/DateField.stories.tsx",
     "to": "src/components/overlays/Modal.tsx",
-    "unresolvedTo": "../../overlays/Modal",
+    "unresolvedTo": "../../../overlays/Modal",
     "dependencyTypes": [
       "local",
       "import"
@@ -785,52 +687,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/dates/DateField.tsx",
-    "to": "src/components/forms/Field.ts",
-    "unresolvedTo": "../Field",
-    "dependencyTypes": [
-      "local",
-      "type-only",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/DateField.tsx",
-    "to": "src/components/forms/FieldHint.tsx",
-    "unresolvedTo": "../FieldHint",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/DateField.tsx",
-    "to": "src/components/forms/useOverlayHost.ts",
-    "unresolvedTo": "../useOverlayHost",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/DateRangePicker.stories.tsx",
+    "from": "src/components/forms/dates/DateRangePicker/DateRangePicker.stories.tsx",
     "to": "src/components/data/table/ListToolbar.tsx",
-    "unresolvedTo": "../../data/table/ListToolbar",
+    "unresolvedTo": "../../../data/table/ListToolbar",
     "dependencyTypes": [
       "local",
       "import"
@@ -842,37 +701,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/dates/DateRangePicker.stories.tsx",
-    "to": "src/components/forms/SearchField.tsx",
-    "unresolvedTo": "../SearchField",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/DateRangePicker.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../Select",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/DateRangePicker.tsx",
+    "from": "src/components/forms/dates/DateRangePicker/DateRangePicker.tsx",
     "to": "src/components/actions/Button.tsx",
-    "unresolvedTo": "../../actions/Button",
+    "unresolvedTo": "../../../actions/Button",
     "dependencyTypes": [
       "local",
       "import"
@@ -884,23 +715,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/dates/DateRangePicker.tsx",
-    "to": "src/components/forms/Checkbox.tsx",
-    "unresolvedTo": "../Checkbox",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/TimeField.stories.tsx",
+    "from": "src/components/forms/dates/TimeField/TimeField.stories.tsx",
     "to": "src/components/layout/Grid.tsx",
-    "unresolvedTo": "../../layout/Grid",
+    "unresolvedTo": "../../../layout/Grid",
     "dependencyTypes": [
       "local",
       "import"
@@ -912,52 +729,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/dates/TimeField.tsx",
-    "to": "src/components/forms/Field.ts",
-    "unresolvedTo": "../Field",
-    "dependencyTypes": [
-      "local",
-      "type-only",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/TimeField.tsx",
-    "to": "src/components/forms/FieldHint.tsx",
-    "unresolvedTo": "../FieldHint",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/dates/TypedDay.tsx",
-    "to": "src/components/forms/FieldHint.tsx",
-    "unresolvedTo": "../FieldHint",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/FieldHint.tsx",
+    "from": "src/components/forms/field/FieldHint/FieldHint.tsx",
     "to": "src/components/data/marks/SealValue.tsx",
-    "unresolvedTo": "../data/marks/SealValue",
+    "unresolvedTo": "../../../data/marks/SealValue",
     "dependencyTypes": [
       "local",
       "import"
@@ -969,9 +743,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/FileField.stories.tsx",
+    "from": "src/components/forms/field/SaveBar/SaveBar.stories.tsx",
     "to": "src/components/actions/Button.tsx",
-    "unresolvedTo": "../actions/Button",
+    "unresolvedTo": "../../../actions/Button",
     "dependencyTypes": [
       "local",
       "import"
@@ -983,23 +757,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/FileField.stories.tsx",
-    "to": "src/components/layout/Toolbar.tsx",
-    "unresolvedTo": "../layout/Toolbar",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/FileField.tsx",
+    "from": "src/components/forms/select/ComboBox/ComboBox.stories.tsx",
     "to": "src/components/actions/Button.tsx",
-    "unresolvedTo": "../actions/Button",
+    "unresolvedTo": "../../../actions/Button",
     "dependencyTypes": [
       "local",
       "import"
@@ -1011,37 +771,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/FileField.tsx",
-    "to": "src/components/data/marks/Icon.tsx",
-    "unresolvedTo": "../data/marks/Icon",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/MultiComboBox.stories.tsx",
-    "to": "src/components/actions/Button.tsx",
-    "unresolvedTo": "../actions/Button",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/MultiComboBox.stories.tsx",
+    "from": "src/components/forms/select/ComboBox/ComboBox.stories.tsx",
     "to": "src/components/overlays/Modal.tsx",
-    "unresolvedTo": "../overlays/Modal",
+    "unresolvedTo": "../../../overlays/Modal",
     "dependencyTypes": [
       "local",
       "import"
@@ -1053,9 +785,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/SaveBar.stories.tsx",
+    "from": "src/components/forms/select/MultiComboBox/MultiComboBox.stories.tsx",
     "to": "src/components/actions/Button.tsx",
-    "unresolvedTo": "../actions/Button",
+    "unresolvedTo": "../../../actions/Button",
     "dependencyTypes": [
       "local",
       "import"
@@ -1067,9 +799,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/SearchField.tsx",
-    "to": "src/components/data/marks/Kbd.tsx",
-    "unresolvedTo": "../data/marks/Kbd",
+    "from": "src/components/forms/select/MultiComboBox/MultiComboBox.stories.tsx",
+    "to": "src/components/overlays/Modal.tsx",
+    "unresolvedTo": "../../../overlays/Modal",
     "dependencyTypes": [
       "local",
       "import"
@@ -1081,23 +813,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/SearchField.tsx",
-    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
-    "unresolvedTo": "../navigation/shortcuts/shortcutKeys",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/forms/Select.browser.test.tsx",
+    "from": "src/components/forms/select/Select/Select.browser.test.tsx",
     "to": "src/components/data/table/DataTable.tsx",
-    "unresolvedTo": "../data/table/DataTable",
+    "unresolvedTo": "../../../data/table/DataTable",
     "dependencyTypes": [
       "local",
       "import"
@@ -1109,9 +827,93 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/TextField.stories.tsx",
+    "from": "src/components/forms/text/FileField/FileField.stories.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/text/FileField/FileField.stories.tsx",
+    "to": "src/components/layout/Toolbar.tsx",
+    "unresolvedTo": "../../../layout/Toolbar",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/text/FileField/FileField.tsx",
+    "to": "src/components/actions/Button.tsx",
+    "unresolvedTo": "../../../actions/Button",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/text/FileField/FileField.tsx",
+    "to": "src/components/data/marks/Icon.tsx",
+    "unresolvedTo": "../../../data/marks/Icon",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/text/SearchField/SearchField.tsx",
+    "to": "src/components/data/marks/Kbd.tsx",
+    "unresolvedTo": "../../../data/marks/Kbd",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/text/SearchField/SearchField.tsx",
+    "to": "src/components/navigation/shortcuts/shortcutKeys.ts",
+    "unresolvedTo": "../../../navigation/shortcuts/shortcutKeys",
+    "dependencyTypes": [
+      "local",
+      "import"
+    ],
+    "rule": {
+      "severity": "error",
+      "name": "components-through-their-index"
+    }
+  },
+  {
+    "type": "dependency",
+    "from": "src/components/forms/text/TextField/TextField.stories.tsx",
     "to": "src/components/layout/Stack.tsx",
-    "unresolvedTo": "../layout/Stack",
+    "unresolvedTo": "../../../layout/Stack",
     "dependencyTypes": [
       "local",
       "import"
@@ -1123,9 +925,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/forms/TextField.stories.tsx",
+    "from": "src/components/forms/text/TextField/TextField.stories.tsx",
     "to": "src/components/navigation/TextLink.tsx",
-    "unresolvedTo": "../navigation/TextLink",
+    "unresolvedTo": "../../../navigation/TextLink",
     "dependencyTypes": [
       "local",
       "import"
@@ -1277,34 +1079,6 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/layout/DetailSection.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../forms/Select",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/DetailSection.stories.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../forms/TextField",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/components/layout/DetailSection.tsx",
     "to": "src/components/actions/Button.tsx",
     "unresolvedTo": "../actions/Button",
@@ -1333,51 +1107,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/layout/Disclosure.stories.tsx",
-    "to": "src/components/forms/Checkbox.tsx",
-    "unresolvedTo": "../forms/Checkbox",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/components/layout/FieldStack.stories.tsx",
     "to": "src/components/actions/Button.tsx",
     "unresolvedTo": "../actions/Button",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/FieldStack.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../forms/Select",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/FieldStack.stories.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../forms/TextField",
     "dependencyTypes": [
       "local",
       "import"
@@ -1417,34 +1149,6 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/layout/InlineForm.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../forms/Select",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/InlineForm.stories.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../forms/TextField",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/components/layout/layout.browser.test.tsx",
     "to": "src/components/data/table/DataTable.tsx",
     "unresolvedTo": "../data/table/DataTable",
@@ -1462,34 +1166,6 @@
     "from": "src/components/layout/layout.browser.test.tsx",
     "to": "src/components/data/table/ListToolbar.tsx",
     "unresolvedTo": "../data/table/ListToolbar",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/layout.browser.test.tsx",
-    "to": "src/components/forms/ChoiceCards.tsx",
-    "unresolvedTo": "../forms/ChoiceCards",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/layout.browser.test.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../forms/TextField",
     "dependencyTypes": [
       "local",
       "import"
@@ -1824,20 +1500,6 @@
   {
     "type": "dependency",
     "from": "src/components/layout/shell/AppShell.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../../forms/Select",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/shell/AppShell.stories.tsx",
     "to": "src/components/layout/PageHeader.tsx",
     "unresolvedTo": "../PageHeader",
     "dependencyTypes": [
@@ -1952,20 +1614,6 @@
     "from": "src/components/layout/shell/SignIn.stories.tsx",
     "to": "src/components/data/marks/VersionTag.tsx",
     "unresolvedTo": "../../data/marks/VersionTag",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/shell/SignIn.stories.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../../forms/TextField",
     "dependencyTypes": [
       "local",
       "import"
@@ -2173,20 +1821,6 @@
   },
   {
     "type": "dependency",
-    "from": "src/components/layout/Split.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../forms/Select",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/components/layout/Stack.stories.tsx",
     "to": "src/components/data/Card.tsx",
     "unresolvedTo": "../data/Card",
@@ -2246,48 +1880,6 @@
     "from": "src/components/layout/Toolbar.stories.tsx",
     "to": "src/components/data/marks/Chip.tsx",
     "unresolvedTo": "../data/marks/Chip",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/Toolbar.stories.tsx",
-    "to": "src/components/forms/SearchField.tsx",
-    "unresolvedTo": "../forms/SearchField",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/Toolbar.stories.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../forms/Select",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/layout/Toolbar.stories.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../forms/TextField",
     "dependencyTypes": [
       "local",
       "import"
@@ -2386,20 +1978,6 @@
     "from": "src/components/navigation/shortcuts/ShortcutHelp.stories.tsx",
     "to": "src/components/data/table/DataTable.tsx",
     "unresolvedTo": "../../data/table/DataTable",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/navigation/shortcuts/ShortcutHelp.stories.tsx",
-    "to": "src/components/forms/SearchField.tsx",
-    "unresolvedTo": "../../forms/SearchField",
     "dependencyTypes": [
       "local",
       "import"
@@ -2622,34 +2200,6 @@
   {
     "type": "dependency",
     "from": "src/components/overlays/CreateFlow.stories.tsx",
-    "to": "src/components/forms/ChoiceCards.tsx",
-    "unresolvedTo": "../forms/ChoiceCards",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/overlays/CreateFlow.stories.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../forms/TextField",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/overlays/CreateFlow.stories.tsx",
     "to": "src/components/layout/Page.tsx",
     "unresolvedTo": "../layout/Page",
     "dependencyTypes": [
@@ -2848,20 +2398,6 @@
     "from": "src/components/overlays/Modal.stories.tsx",
     "to": "src/components/data/FactList.tsx",
     "unresolvedTo": "../data/FactList",
-    "dependencyTypes": [
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "components-through-their-index"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/components/overlays/Modal.stories.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../forms/TextField",
     "dependencyTypes": [
       "local",
       "import"
@@ -3776,8 +3312,8 @@
   {
     "type": "dependency",
     "from": "src/screens/Coverage.tsx",
-    "to": "src/components/forms/SearchField.tsx",
-    "unresolvedTo": "../components/forms/SearchField",
+    "to": "src/components/forms/text/SearchField/index.ts",
+    "unresolvedTo": "../components/forms/text/SearchField",
     "dependencyTypes": [
       "local",
       "import"
@@ -3902,8 +3438,8 @@
   {
     "type": "dependency",
     "from": "src/screens/CreateFlowPage.tsx",
-    "to": "src/components/forms/ChoiceCards.tsx",
-    "unresolvedTo": "../components/forms/ChoiceCards",
+    "to": "src/components/forms/choice/ChoiceCards/index.ts",
+    "unresolvedTo": "../components/forms/choice/ChoiceCards",
     "dependencyTypes": [
       "local",
       "import"
@@ -3916,8 +3452,8 @@
   {
     "type": "dependency",
     "from": "src/screens/CreateFlowPage.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../components/forms/TextField",
+    "to": "src/components/forms/text/TextField/index.ts",
+    "unresolvedTo": "../components/forms/text/TextField",
     "dependencyTypes": [
       "local",
       "import"
@@ -4084,8 +3620,8 @@
   {
     "type": "dependency",
     "from": "src/screens/DetailPage.tsx",
-    "to": "src/components/forms/SaveBar.tsx",
-    "unresolvedTo": "../components/forms/SaveBar",
+    "to": "src/components/forms/choice/Switch/index.ts",
+    "unresolvedTo": "../components/forms/choice/Switch",
     "dependencyTypes": [
       "local",
       "import"
@@ -4098,8 +3634,8 @@
   {
     "type": "dependency",
     "from": "src/screens/DetailPage.tsx",
-    "to": "src/components/forms/Switch.tsx",
-    "unresolvedTo": "../components/forms/Switch",
+    "to": "src/components/forms/field/SaveBar/index.ts",
+    "unresolvedTo": "../components/forms/field/SaveBar",
     "dependencyTypes": [
       "local",
       "import"
@@ -4112,8 +3648,8 @@
   {
     "type": "dependency",
     "from": "src/screens/DetailPage.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../components/forms/TextField",
+    "to": "src/components/forms/text/TextField/index.ts",
+    "unresolvedTo": "../components/forms/text/TextField",
     "dependencyTypes": [
       "local",
       "import"
@@ -4588,8 +4124,8 @@
   {
     "type": "dependency",
     "from": "src/screens/ListPage.tsx",
-    "to": "src/components/forms/SearchField.tsx",
-    "unresolvedTo": "../components/forms/SearchField",
+    "to": "src/components/forms/select/Select/index.ts",
+    "unresolvedTo": "../components/forms/select/Select",
     "dependencyTypes": [
       "local",
       "import"
@@ -4602,8 +4138,8 @@
   {
     "type": "dependency",
     "from": "src/screens/ListPage.tsx",
-    "to": "src/components/forms/Select.tsx",
-    "unresolvedTo": "../components/forms/Select",
+    "to": "src/components/forms/text/SearchField/index.ts",
+    "unresolvedTo": "../components/forms/text/SearchField",
     "dependencyTypes": [
       "local",
       "import"
@@ -4784,8 +4320,8 @@
   {
     "type": "dependency",
     "from": "src/screens/Login.tsx",
-    "to": "src/components/forms/TextField.tsx",
-    "unresolvedTo": "../components/forms/TextField",
+    "to": "src/components/forms/text/TextField/index.ts",
+    "unresolvedTo": "../components/forms/text/TextField",
     "dependencyTypes": [
       "local",
       "import"
@@ -4952,8 +4488,8 @@
   {
     "type": "dependency",
     "from": "src/screens/Register.tsx",
-    "to": "src/components/forms/SearchField.tsx",
-    "unresolvedTo": "../components/forms/SearchField",
+    "to": "src/components/forms/text/SearchField/index.ts",
+    "unresolvedTo": "../components/forms/text/SearchField",
     "dependencyTypes": [
       "local",
       "import"

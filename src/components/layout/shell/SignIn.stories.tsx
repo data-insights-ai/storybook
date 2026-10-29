@@ -3,7 +3,7 @@ import { LockKeyhole } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { SignIn, SignInVersion } from "./SignIn";
-import { TextField } from "../../forms/TextField";
+import { TextField } from "../../forms/text/TextField";
 import { VersionTag } from "../../data/marks/VersionTag";
 import { TextLink } from "../../navigation/TextLink";
 

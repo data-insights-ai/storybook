@@ -88,13 +88,13 @@ The sign-in card pins the daylight colours, including in the dark theme, because
 
 ## Stories and components
 
-Every component lives in `src/components`, in the folder of its concept, with its stylesheet, its story and its tests beside it:
+Every component lives in `src/components`, under the folder of its concept, in a folder of its own named after it: `forms/text/TextField/` holds `TextField.tsx`, `TextField.css`, `TextField.stories.tsx`, its tests and an `index.ts`. Another folder imports the component through that `index.ts`, never a file inside it. A module several components share (the field frame, the choice frame, the date range arithmetic) gets a folder and an `index.ts` the same way; a shared stylesheet (`forms/dates/Calendar.css`) sits beside the components that import it, and a helper that draws nothing sits in `src/internal`. The folders are being moved one concept at a time; the rows below without subfolders are still flat:
 
 | Folder | Holds |
 | --- | --- |
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
 | `navigation/` | Breadcrumb, Pagination, Stepper, Tabs, TabNav, Menu, CommandBar, TextLink, SkipLink; `sidebar/` the sidebar and its parts; `shortcuts/` the key scheme and ShortcutHelp |
-| `forms/` | the labelled controls and their field frame; `dates/` DateField, TimeField, DateRangePicker and its range logic |
+| `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, DateField, TimeField, DateRangePicker |
 | `data/` | records and figures (KeyValues, FactList, Stat, Metric, the cards, Channel, Session); `table/` DataTable, InfiniteTable, ListToolbar; `marks/` Badge, StatusPill, Chip, Tag, SealValue, Eyebrow, Kbd, TickRule, Highlight, Icon, IconTile, VersionTag |
 | `feedback/` | Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `waiting/` the loaders, progress and skeletons |
 | `overlays/` | Modal, ConfirmDialog, Drawer, Sheet, Flyout, CreateFlow |

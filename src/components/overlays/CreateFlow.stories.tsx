@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { ChoiceCards } from "../forms/ChoiceCards";
+import { ChoiceCards } from "../forms/choice/ChoiceCards";
 import { CreateFlow } from "./CreateFlow";
 import { Fact, FactList } from "../data/FactList";
-import { TextField } from "../forms/TextField";
+import { TextField } from "../forms/text/TextField";
 import { Page } from "../layout/Page";
 
 const steps = ["Choose a type", "Details", "Review"];

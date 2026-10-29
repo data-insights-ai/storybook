@@ -3,8 +3,8 @@ import { expect, within } from "storybook/test";
 import { Button } from "../actions/Button";
 import { FieldStack } from "./FieldStack";
 import { Actions } from "./Actions";
-import { Select } from "../forms/Select";
-import { TextField } from "../forms/TextField";
+import { Select } from "../forms/select/Select";
+import { TextField } from "../forms/text/TextField";
 
 const meta = {
   title: "Layout/Arrangement/FieldStack",

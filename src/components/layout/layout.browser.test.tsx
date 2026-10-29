@@ -11,8 +11,8 @@ import { Page, PageAside } from "./Page";
 import { PageHeader, PageHeaderTitle } from "./PageHeader";
 import { Grid } from "./Grid";
 import { CreateFlow } from "../overlays/CreateFlow";
-import { ChoiceCards } from "../forms/ChoiceCards";
-import { TextField } from "../forms/TextField";
+import { ChoiceCards } from "../forms/choice/ChoiceCards";
+import { TextField } from "../forms/text/TextField";
 
 let root: Root | undefined;
 
