@@ -47,6 +47,7 @@ const preview: Preview = {
           "Actions",
           "Forms",
           "Data",
+          "Marks",
           "Feedback",
           "Overlays",
           "Navigation",

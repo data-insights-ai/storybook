@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, within } from "storybook/test";
 import { Card } from "./Card";
 
 const meta = {
@@ -18,4 +19,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Surface: Story = {};
+export const Surface: Story = {
+  play: async ({ canvasElement }) => {
+    const text = within(canvasElement).getByText(/A surface for content/);
+    await expect(text).toBeVisible();
+    await expect(text).toHaveClass("di-card-pad");
+  },
+};

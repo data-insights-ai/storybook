@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 
@@ -9,12 +9,7 @@ import ts from "typescript";
  * module is one sidebar entry (its slots stay with it); every public component is
  * rendered in a story (as JSX or as its meta component) and has a doc comment; every
  * title's group is one storySort lists; no two concept folders import each other.
- *
- * Findings recorded in lint-layers.baseline.json are reported and do not fail; a new
- * one fails, and so does a recorded one that is gone, until `--write` records the
- * smaller set. `--write` refuses when a check would record more findings than before.
  */
-const baselineFile = path.join("scripts", "lint-layers.baseline.json");
 const layers = ["foundation", "primitive", "form", "block", "pattern", "screen"];
 const isStory = (f) => f.endsWith(".stories.tsx");
 const isTest = (f) => /\.(test|browser\.test)\.tsx?$/.test(f);
@@ -231,28 +226,6 @@ for (const st of entry.statements) {
 }
 
 findings.sort();
-const recorded = existsSync(baselineFile) ? JSON.parse(readFileSync(baselineFile, "utf8")) : [];
-const countBy = (list) => list.reduce((c, f) => ({ ...c, [f.split(":")[0]]: (c[f.split(":")[0]] ?? 0) + 1 }), {});
-const counts = countBy(findings);
-const before = countBy(recorded);
-const summary = Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(", ") || "none";
-
-if (process.argv.includes("--write")) {
-  // A move renames findings without adding any, so the test is the count per check.
-  const grown = Object.entries(counts).filter(([k, v]) => v > (before[k] ?? 0));
-  if (grown.length && !process.argv.includes("--accept-growth")) {
-    for (const [k, v] of grown) console.error(`structure: ${k} would grow from ${before[k] ?? 0} to ${v}`);
-    console.error("structure: a baseline never admits a new finding; fix it, or pass --accept-growth and say why in the commit");
-    process.exit(1);
-  }
-  writeFileSync(baselineFile, `${JSON.stringify(findings, null, 2)}\n`);
-  console.log(`structure: recorded ${findings.length} findings (was ${recorded.length}): ${summary}`);
-  process.exit(0);
-}
-const known = new Set(recorded);
-const fresh = findings.filter((f) => !known.has(f));
-const gone = recorded.filter((f) => !findings.includes(f));
-console.log(`structure: ${findings.length} findings (${summary}), ${findings.length - fresh.length} known`);
-for (const f of fresh) console.error(`new ${f}`);
-if (gone.length) console.error(`structure: ${gone.length} recorded findings are gone; run node scripts/lint-layers.mjs --write to shrink the baseline`);
-process.exit(fresh.length || gone.length ? 1 : 0);
+for (const f of findings) console.error(f);
+console.log(`structure: ${findings.length} findings`);
+process.exit(findings.length ? 1 : 0);

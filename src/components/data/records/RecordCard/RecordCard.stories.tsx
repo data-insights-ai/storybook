@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Boxes } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { Icon } from "../../marks/Icon";
-import { IconTile } from "../../marks/IconTile";
+import { Icon } from "../../../marks/Icon";
+import { IconTile } from "../../../marks/IconTile";
 import {
   RecordCard,
   RecordCount,
@@ -13,7 +13,7 @@ import {
   RecordMark,
   RecordStatus,
 } from "./RecordCard";
-import { StatusPill } from "../../marks/StatusPill";
+import { StatusPill } from "../../../marks/StatusPill";
 
 const meta = {
   title: "Data/Records/RecordCard",

@@ -7,20 +7,10 @@ import { useState } from "react";
 import { Breadcrumb } from "../../navigation/Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Select } from "../../forms/select/Select";
-import { StatusPill } from "../../data/marks/StatusPill";
-import {
-  AppShell,
-  AppShellBar,
-  AppShellBarEnd,
-  AppShellContent,
-  AppShellContext,
-  AppShellFoot,
-  AppShellMain,
-  AppShellRail,
-  Console,
-  ConsoleFrame,
-  type NavGroup,
-} from "./AppShell";
+import { StatusPill } from "../../marks/StatusPill";
+import { AppShell, AppShellBar, AppShellBarEnd, AppShellContent, AppShellMain } from "./AppShell";
+import { AppShellContext, AppShellFoot, AppShellRail, type NavGroup } from "./AppShellRail";
+import { Console, ConsoleFrame } from "./Console";
 
 /* The sample sections, as a product hands them over: every item a link. */
 const linkedGroups: NavGroup[] = sampleChrome.groups.map((group) => ({
@@ -133,6 +123,7 @@ export const Contained: Story = {
  * Storybook shares: an operator, a demo-data switch, a refresh, the seal.
  */
 export const Chrome: Story = {
+  tags: ["status:deprecated"],
   parameters: { controls: { disable: true } },
   render: () => (
     <Console title="Overview" crumb={["Monitor", "Overview"]} active="overview" chrome={sampleChrome}>
@@ -148,6 +139,7 @@ export const Chrome: Story = {
  * reads as one object rather than as the page itself.
  */
 export const Frame: Story = {
+  tags: ["status:deprecated"],
   parameters: { controls: { disable: true } },
   render: () => (
     <ConsoleFrame title="Overview" lang="en">
@@ -349,6 +341,7 @@ export const ReflowTabletNight: Story = narrowReflow("dark", 768);
 
 /** The framed console's older crumb composition obeys the same reflow bounds. */
 export const ReflowConsole: Story = {
+  tags: ["status:deprecated"],
   parameters: { viewport: { options: { reflow: { name: "Reflow", styles: { width: "390px", height: "844px" }, type: "mobile" } } } },
   globals: { viewport: { value: "reflow", isRotated: false } },
   render: () => <Console title={reflowName} crumb={["Example studio " + reflowName, reflowName]} active="overview" chrome={{ ...sampleChrome, workspace: reflowName, operator: { ...sampleChrome.operator, name: reflowName } }}>

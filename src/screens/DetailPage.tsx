@@ -22,7 +22,7 @@ import {
   StatusPill,
   Switch,
   TextField,
-} from "../index";
+} from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
 /** A detail page: summary header, sections that read until Edit, the danger zone last. */

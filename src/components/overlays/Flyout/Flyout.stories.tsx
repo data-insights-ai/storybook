@@ -6,7 +6,7 @@ import { Button } from "../../actions/Button";
 import { CountButton } from "../../actions/CountButton";
 import { CellStack, DataTable, TableBody, TableCell, TableRow } from "../../data/table/DataTable";
 import { Flyout, FlyoutFooter, FlyoutTrigger } from "./Flyout";
-import { StatusPill } from "../../data/marks/StatusPill";
+import { StatusPill } from "../../marks/StatusPill";
 import { TextLink } from "../../navigation/TextLink";
 
 const meta = {

@@ -4,7 +4,7 @@ import { cx } from "../../../../internal/cx";
 import { Button } from "../../../actions/Button";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
-import { Icon } from "../../../data/marks/Icon";
+import { Icon } from "../../../marks/Icon";
 import "../../field/Field/Field.css";
 import "./FileField.css";
 

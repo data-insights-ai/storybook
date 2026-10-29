@@ -1,6 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
-import { SealMark } from "../../data/marks/SealValue";
+import { SealMark } from "../../marks/SealValue";
 import "../Inference.css";
 
 /**
@@ -44,6 +44,11 @@ export function ExplainFooter({ children }: { children: ReactNode }) {
   return <p className="di-explain-foot">{children}</p>;
 }
 
+/**
+ * One input to an inference and what it contributed, as a term and its value
+ * in the panel's list. An input the model did not use is still listed, marked
+ * `ignored`, so nothing about the inference is hidden.
+ */
 export function ExplainRow({
   label,
   ignored = false,

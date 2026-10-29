@@ -12,7 +12,7 @@ import {
   PageHeaderCrumbs,
   PageHeaderTitle,
   TextField,
-} from "../index";
+} from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
 const kinds = [

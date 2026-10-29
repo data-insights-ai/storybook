@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent, within } from "storybook/test";
 import { TextArea } from "./TextArea";
 
 const meta = {
@@ -10,7 +11,14 @@ const meta = {
 
 export default meta;
 
-export const Certificate: StoryObj<typeof meta> = {};
+export const Certificate: StoryObj<typeof meta> = {
+  play: async ({ canvasElement }) => {
+    const field = within(canvasElement).getByLabelText("Server CA");
+    await expect(field.tagName).toBe("TEXTAREA");
+    await userEvent.type(field, "-----BEGIN CERTIFICATE-----");
+    await expect(field).toHaveValue("-----BEGIN CERTIFICATE-----");
+  },
+};
 export const Invalid: StoryObj<typeof meta> = {
   args: { value: "not a certificate", hint: "Not a PEM certificate.", hintTone: "error", onChange: () => {} },
 };

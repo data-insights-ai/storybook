@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import { TickRule } from "./TickRule";
 
 const meta = {
@@ -26,4 +27,7 @@ export const Default: Story = {
       </p>
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelector(".di-tick-rule")).toHaveAttribute("aria-hidden", "true");
+  },
 };

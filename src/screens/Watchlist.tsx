@@ -37,7 +37,7 @@ import {
   TableHead,
   TableRow,
   TextLink,
-} from "../index";
+} from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
 type Identity = {

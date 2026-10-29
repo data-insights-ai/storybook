@@ -21,6 +21,13 @@ type LinkProps = Common & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "type"> 
 type RenderProps = Common &
   Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "type" | "href"> & { href?: never; render: useRender.RenderProp };
 
+/**
+ * A link inside a line of text: an `<a>` with `href`, a router link with
+ * `render`, otherwise a button that looks like a link. `quiet` drops the
+ * colour until hover; `plain` drops the underline too, for a link whose place
+ * already says it is one. A link that looks like a button is a `Button` with
+ * `href`.
+ */
 export function TextLink(props: ButtonProps | LinkProps | RenderProps) {
   const { quiet = false, plain = false, className, render, ...rest } = props;
   const classes = cx("di-textlink", quiet && "is-quiet", plain && "is-plain", className);

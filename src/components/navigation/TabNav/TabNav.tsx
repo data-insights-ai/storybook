@@ -29,6 +29,11 @@ export type TabNavLinkProps = Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "chi
   children: ReactNode;
 };
 
+/**
+ * One tab of a `TabNav`: a link, or a router link through `render`. `active`
+ * marks the current page with `aria-current="page"`; `badge` is a count after
+ * the label.
+ */
 export function TabNavLink({ active = false, badge, render, className, children, ...rest }: TabNavLinkProps) {
   return useRender({
     render,

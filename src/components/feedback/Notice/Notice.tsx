@@ -36,18 +36,32 @@ export function Notice({
   );
 }
 
+/**
+ * The notice's icon column: one lucide icon, which the notice's tone colours.
+ */
 export function NoticeIcon({ children }: { children: ReactNode }) {
   return <span className="di-notice-icon">{children}</span>;
 }
 
+/**
+ * The notice's text column: a block with `NoticeTitle` and `NoticeBody`, then
+ * an optional `NoticeAction`, so the action stays inside the padding.
+ */
 export function NoticeText({ children }: { children: ReactNode }) {
   return <div className="di-notice-copy">{children}</div>;
 }
 
+/**
+ * The notice's first line, what happened, in one sentence.
+ */
 export function NoticeTitle({ children }: { children: ReactNode }) {
   return <p className="di-notice-title">{children}</p>;
 }
 
+/**
+ * The notice's message under its `NoticeTitle`. `mono` sets it in the mono
+ * track, for an identifier or a command.
+ */
 export function NoticeBody({ mono = false, children }: { mono?: boolean; children: ReactNode }) {
   return <div className={cx("di-notice-body", mono && "di-mono")}>{children}</div>;
 }

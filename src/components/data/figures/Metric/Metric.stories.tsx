@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Metric, MetricNote } from "./Metric";
 import { KeyValue, KeyValues } from "../../records/KeyValues";
-import { SealValue } from "../../marks/SealValue";
+import { SealValue } from "../../../marks/SealValue";
 
 const meta = {
   title: "Data/Figures/Metric",

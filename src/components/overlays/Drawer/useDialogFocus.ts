@@ -1,5 +1,5 @@
 import { useEffect, useRef, type RefObject } from "react";
-import { focusFirstField } from "../../navigation/useShortcut";
+import { focusFirstField } from "../../../internal/shortcutKeys";
 
 const focusable =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';

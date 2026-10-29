@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Actions } from "../Actions";
 import { Toolbar, ToolbarEnd } from "./Toolbar";
 import { Button } from "../../../actions/Button";
-import { Chip } from "../../../data/marks/Chip";
+import { Chip } from "../../../marks/Chip";
 import { SearchField } from "../../../forms/text/SearchField";
 import { Select } from "../../../forms/select/Select";
 import { TextField } from "../../../forms/text/TextField";

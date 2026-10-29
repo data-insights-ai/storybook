@@ -1,6 +1,6 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, Ref } from "react";
 import { cx } from "../../../internal/cx";
-import { useShortcutKeys } from "../../navigation/useShortcut";
+import { useShortcutKeys } from "../../../internal/shortcutKeys";
 import "./Button.css";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "seal" | "inferred";

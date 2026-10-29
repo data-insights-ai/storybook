@@ -1,5 +1,5 @@
 import { useEffect, useRef, type RefObject } from "react";
-import { focusFirstField } from "../../navigation/useShortcut";
+import { focusFirstField } from "../../../internal/shortcutKeys";
 
 /**
  * Opens and closes a native modal `<dialog>` with `open`, and returns focus

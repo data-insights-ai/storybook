@@ -93,16 +93,17 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | Folder | Holds |
 | --- | --- |
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
-| `navigation/` | Breadcrumb, CommandBar, Menu, Pagination, SkipLink, Stepper, Tabs, TabNav, TextLink, ShortcutHelp; `Sidebar/` the sidebar and its parts behind one index; `useShortcut/` the key scheme (`shortcutKeys`) and the hook |
+| `navigation/` | Breadcrumb, CommandBar, Menu, Pagination, Stepper, Tabs, TabNav, TextLink; `Sidebar/` the sidebar and its parts behind one index |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, DateField, TimeField, DateRangePicker |
-| `data/` | `records/` Card, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` Metric, Stat, StatTile; `marks/` Badge, Chip, StatusPill, Tag, VersionTag, SealValue, Icon, IconTile; `text/` Eyebrow, Highlight, Kbd, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
+| `data/` | `records/` Card, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` Metric, Stat, StatTile; `text/` Eyebrow, Highlight, Kbd, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
+| `marks/` | Badge, Chip, StatusPill, Tag, VersionTag, SealValue, Icon (with the `IconSet` gallery the docs show), IconTile |
 | `feedback/` | DangerZone, Delayed, EmptyState, Notice, Toast, Tooltip, TooltipTarget; `waiting/` AppLoader, Progress, RouteProgress, SkeletonPage, SkeletonTable, Spinner |
-| `overlays/` | ConfirmDialog, CreateFlow, Drawer, Flyout, Modal, Sheet; `useModalDialog/` the dialog behaviour Modal and Sheet share |
+| `overlays/` | ConfirmDialog, CreateFlow, Drawer, Flyout, Modal, Sheet, ShortcutHelp; `useModalDialog/` the dialog behaviour Modal and Sheet share |
 | `inference/` | ConfidenceField, ConfirmPanel, ExplainPanel, PrivacyBadge, and the `Inference.css` they share |
 | `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, Split, FieldStack, InlineForm, Actions; `page/` Page, PageHeader, SectionTitle, Panel, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure |
 | `charts/` | Bars, Chart, ChartCard, CoverageMatrix, Distribution, LevelMeter, Seismograph, Sparkline, TrendChart |
 | `timeline/` | ChainTimeline, EventTimeline (with its `marks/` and `navigation/`), PeriodTimeline, WeekTimeline, TimelineSummary; `scale/` and `types/`, shared by EventTimeline and TimelineSummary |
-| `shell/` | AppShell, SignIn, ThemeProvider |
+| `shell/` | AppShell, SignIn, SkipLink, ThemeProvider |
 
 A folder names what a component is about, and the story `title` follows it; what can go inside a component is its layer tag. Sample data that only a story or a screen reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
 
@@ -111,7 +112,8 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Introduction`, then `Foundations/` — the brand, the tokens and the reasoning behind them (Essence, Register, Color, Type, Scale, Logo, Pages, Decisions and the rest). No package component lives here.
 - `Actions/` — what a person presses: Button, CountButton, CopyValue, RowActions, BulkActionBar.
 - `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
-- `Data/` — what a person reads: `Records/` (the cards, FactList, KeyValues, Channel, Session), `Figures/` (Stat, StatTile, Metric), `Marks/` (Badge, StatusPill, Chip, Tag, SealValue, Icon), `Text/` (Eyebrow, Highlight, Kbd, CodeBlock, PullQuote) and `Table/`.
+- `Data/` — what a person reads: `Records/` (the cards, FactList, KeyValues, Channel, Session), `Figures/` (Stat, StatTile, Metric), `Text/` (Eyebrow, Highlight, Kbd, CodeBlock, PullQuote) and `Table/`.
+- `Marks/` — what every other component draws with: Badge, StatusPill, Chip, Tag, VersionTag, SealValue, Icon, IconTile. A mark imports no other component, so it sits below them all.
 - `Feedback/` — Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `Waiting/` the loaders, progress and skeletons.
 - `Overlays/`, `Navigation/` — what opens over the page, and how a person moves through it.
 - `Layout/` — `Arrangement/` (Stack, Grid, Numbered, Toolbar, Split, FieldStack, InlineForm), `Page/` (Page, the headers, Panel, Stage, DetailSection), `Folding/` (Accordion, Disclosure).
@@ -127,6 +129,8 @@ What a component may hold is a second axis, and it is a tag on its story meta, n
 - `layer:form` — a labelled control.
 - `layer:block` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, Drawer, Menu, Tabs, StatTile, SignIn.
 - `layer:pattern` — a whole arrangement: AppShell, Sidebar, ShortcutHelp, ThemeProvider and the arrangement components.
+
+A deprecated export says so in its doc comment, `@deprecated Removed in <version>: <why>`, with what to use instead, and every story that shows it carries the tag `status:deprecated`. Console and ConsoleFrame are deprecated and go in 0.10.0.
 
 The test is one question: **can another component go inside it?** `KeyValues` holds `KeyValue`, and `KeyValue` takes two strings — nothing else fits, so it is a primitive. `Stat` looks just as small, but its `children` holds a `StatusPill` on the Watchlist screen, so it is a block. `Pagination` and `SkeletonTable` are bulky and still primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
 
@@ -192,6 +196,8 @@ Before using a component, call `docs-list`, then `docs-show` for that component.
 
 Controls, viewport, measure, and outline are already part of Storybook itself. Do not add `@storybook/addon-essentials`, `@storybook/addon-links`, or a coverage or Chromatic addon unless someone asks. Those either duplicate what is already here or send the workbench to another service.
 
+`.design-sync/conventions.md` is the header the DesignSync tool sends to the design agent on claude.ai, which cannot read this file. It is written for someone composing screens (which component for which job, slots, tones, tokens, layout, the mark) and holds no implementation rule. When a component or a sidebar group is added, renamed or removed, update it in the same change.
+
 ## Compose, never invent
 
 Build a screen from the components that exist. When something is missing, **add it to the library** — a component in `src/components`, a story beside it, an export from `src/index.ts` — rather than writing one-off markup inside a screen. One-off markup binds to no token, skips the dark remap, carries no focus treatment and no accessible name, and is invisible to `pnpm test`.
@@ -226,10 +232,11 @@ An exception has to say why, in a comment the lint reads:
 
 Every story meta carries one layer tag, `layer:foundation`, `layer:primitive`, `layer:form`, `layer:block`, `layer:pattern` or `layer:screen`, and a module never imports one from a higher layer. `pnpm lint:structure` checks that and the rest of the structure, and `pnpm build` runs it:
 
-- `.dependency-cruiser.cjs`, run by `scripts/lint-deps.mjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component or a shared module only through its `index.ts`, while a component's own subfolders reach each other directly; screens import from the package root. Sample data (`*.sample.ts`) is not package code and is exempt.
+- `.dependency-cruiser.cjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component or a shared module only through its `index.ts`, while a component's own subfolders reach each other directly; screens import from the package root. Sample data (`*.sample.ts`) is not package code and is exempt.
+- `scripts/lint-conventions.mjs`: every component `.design-sync/conventions.md` names is exported, every group and story title it names exists, and it lists every sidebar group.
 - `scripts/lint-layers.mjs`: the layer tags and their direction; a story file, its folder and its meta component share one name and the title mirrors the folder; a module is one sidebar entry; every public component is rendered in a story (as JSX or as its meta component) and has a doc comment; every title's group is one `storySort` lists; no two concept folders import each other.
 
-Both report what `.dependency-cruiser-known-violations.json` and `scripts/lint-layers.baseline.json` record, and the baselines only shrink: a new finding fails, and so does a recorded one that is gone, until `node scripts/lint-deps.mjs --write` and `node scripts/lint-layers.mjs --write` record the smaller set. A write refuses when a check would record more findings than before; a move renames findings without adding any, so it passes. The one way past that is `--accept-growth`, for a change that adds findings it cannot avoid (a split that adds import edges the next move removes), and the commit says why. The restructure shrinks the baselines until they are deleted.
+All three fail on any finding; there is no list of tolerated ones. A change that cannot pass them changes the structure, or the rule with a reason, never the check's input.
 
 ## Checks
 

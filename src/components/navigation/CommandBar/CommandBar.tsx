@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Search, ShieldCheck } from "lucide-react";
 import { cx } from "../../../internal/cx";
 import { Kbd } from "../../data/text/Kbd";
-import { SealMark } from "../../data/marks/SealValue";
+import { SealMark } from "../../marks/SealValue";
 import "./CommandBar.css";
 
 /**
@@ -97,6 +97,10 @@ export function CommandChip({
   );
 }
 
+/**
+ * A labelled set of `CommandRow`s inside a `CommandBar`. `label` is shown
+ * above the rows.
+ */
 export function CommandGroup({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="di-command-group">

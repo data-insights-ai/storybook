@@ -34,7 +34,7 @@ import {
   StageIcon,
   StageTrack,
   StatusPill,
-} from "../index";
+} from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
 const stages = [

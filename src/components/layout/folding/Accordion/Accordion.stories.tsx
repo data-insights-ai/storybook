@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Fact, FactList } from "../../../data/records/FactList";
-import { StatusPill } from "../../../data/marks/StatusPill";
+import { StatusPill } from "../../../marks/StatusPill";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
 import { Accordion, AccordionDetail, AccordionItem, AccordionMeta } from "./Accordion";
 

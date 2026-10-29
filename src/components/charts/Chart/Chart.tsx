@@ -55,6 +55,12 @@ function cssColor(value: string): string | null {
   return /[;{}<>]/.test(value) ? null : value;
 }
 
+/**
+ * The frame for one Recharts chart. `config` names every series and its
+ * colour, which the marks read back as `var(--color-<key>)` and which
+ * `ChartTooltip` and `ChartLegend` read for their labels. `label` is the
+ * chart's accessible name. Never draw a one-off SVG chart instead.
+ */
 export function Chart({
   label,
   config,
@@ -116,6 +122,11 @@ function useTipDismissal(frame: RefObject<HTMLDivElement | null>) {
 
 type TipProps = Partial<TooltipContentProps<ValueType, NameType>>;
 
+/**
+ * Recharts' tooltip, drawn with `ChartTooltipContent` and the series names
+ * from the chart's `config`. A tap outside the chart dismisses it on a touch
+ * screen.
+ */
 export function ChartTooltip({
   content = <ChartTooltipContent />,
   animationDuration = 160,
@@ -205,10 +216,20 @@ export function ChartTooltipContent({
   );
 }
 
+/**
+ * Recharts' legend, drawn with `ChartLegendContent`. Pass `verticalAlign` and
+ * the rest of Recharts' legend props to place it.
+ */
 export function ChartLegend(props: Omit<LegendProps, "ref">) {
   return <Legend content={<ChartLegendContent />} {...props} />;
 }
 
+/**
+ * The legend's rows: each series in the chart's `config` order, with its
+ * colour swatch (dashed for a dashed series) or its own icon, and its label.
+ * Give it to `ChartLegend` as `content` when the legend needs props of its
+ * own.
+ */
 export function ChartLegendContent({ payload }: { payload?: ReadonlyArray<LegendPayload> }) {
   const config = useChart();
   if (!payload?.length) return null;

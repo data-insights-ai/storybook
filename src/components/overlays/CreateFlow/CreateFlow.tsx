@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, type FormEvent, type ReactNode } from "react";
 import { Button } from "../../actions/Button";
 import { Stepper } from "../../navigation/Stepper";
-import { focusFirstField } from "../../navigation/useShortcut";
+import { focusFirstField } from "../../../internal/shortcutKeys";
 import "./CreateFlow.css";
 
 /**

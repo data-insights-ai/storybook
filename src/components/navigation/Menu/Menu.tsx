@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { cx } from "../../../internal/cx";
-import { SealMark } from "../../data/marks/SealValue";
+import { SealMark } from "../../marks/SealValue";
 import { fixedOrigin, menuBounds, placeMenu, type MenuDirection } from "./menuPlacement";
 import "./Menu.css";
 
@@ -196,6 +196,12 @@ export function Menu({
   );
 }
 
+/**
+ * One action in a `Menu`, chosen with a click or Enter. `tone="danger"` marks
+ * a destructive one; `inferred` puts the hollow ring before an item a model
+ * proposed. Give one item of a labelled group `checked` to make the group a
+ * set of mutually exclusive choices.
+ */
 export function MenuItem({
   onSelect,
   tone = "neutral",
@@ -243,6 +249,9 @@ export function MenuGroup({ label, children }: { label: string; children: ReactN
   );
 }
 
+/**
+ * A rule between groups of items in a `Menu`, announced as a separator.
+ */
 export function MenuDivider() {
   return <div className="di-menu-divider" role="separator" />;
 }

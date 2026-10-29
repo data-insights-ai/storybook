@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../internal/cx";
-import { SealMark } from "../../data/marks/SealValue";
+import { SealMark } from "../../marks/SealValue";
 import "../../forms/field/Field/Field.css";
 import "../ConfirmPanel/ConfirmPanel.css";
 import "./ConfidenceField.css";

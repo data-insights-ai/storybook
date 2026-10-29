@@ -12,7 +12,7 @@ export {
   ConsoleFrame,
 } from "./components/shell/AppShell";
 export type { ConsoleChrome, NavGroup, NavItem } from "./components/shell/AppShell";
-export { Badge } from "./components/data/marks/Badge";
+export { Badge } from "./components/marks/Badge";
 export { Bars } from "./components/charts/Bars";
 export { BulkActionBar } from "./components/actions/BulkActionBar";
 export { Breadcrumb } from "./components/navigation/Breadcrumb";
@@ -34,7 +34,7 @@ export { ChoiceGroup } from "./components/forms/choice/ChoiceGroup";
 export { Radio } from "./components/forms/choice/Radio";
 export { ChoiceCards } from "./components/forms/choice/ChoiceCards";
 export type { ChoiceCard } from "./components/forms/choice/ChoiceCards";
-export { Chip } from "./components/data/marks/Chip";
+export { Chip } from "./components/marks/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/navigation/CommandBar";
 export { ComboBox } from "./components/forms/select/ComboBox";
 export type { ComboBoxSuggestion } from "./components/forms/select/ComboBox";
@@ -139,8 +139,8 @@ export {
   PageHeaderTitle,
 } from "./components/layout/page/PageHeader";
 export { Highlight } from "./components/data/text/Highlight";
-export { Icon } from "./components/data/marks/Icon";
-export { IconTile } from "./components/data/marks/IconTile";
+export { Icon } from "./components/marks/Icon";
+export { IconTile } from "./components/marks/IconTile";
 export { InfiniteTable, heldCount } from "./components/data/table/InfiniteTable";
 export type { InfiniteRowPlace } from "./components/data/table/InfiniteTable";
 export { KeyValue, KeyValues } from "./components/data/records/KeyValues";
@@ -195,9 +195,9 @@ export {
 } from "./components/data/records/RecordCard";
 export { Eyebrow } from "./components/data/text/Eyebrow";
 export { Kbd } from "./components/data/text/Kbd";
-export { SealMark, SealValue } from "./components/data/marks/SealValue";
+export { SealMark, SealValue } from "./components/marks/SealValue";
 export { TickRule } from "./components/data/text/TickRule";
-export type { SealState } from "./components/data/marks/SealValue";
+export type { SealState } from "./components/marks/SealValue";
 export { SaveBar } from "./components/forms/field/SaveBar";
 export { SearchField } from "./components/forms/text/SearchField";
 export { Seismograph } from "./components/charts/Seismograph";
@@ -226,12 +226,12 @@ export {
   useSidebar,
 } from "./components/navigation/Sidebar";
 export type { SidebarMenuButtonProps, SidebarState, ThemeLabels } from "./components/navigation/Sidebar";
-export { useShortcut } from "./components/navigation/useShortcut";
-export { ShortcutHelp, type AppShortcut } from "./components/navigation/ShortcutHelp";
-export { Tag, TagList } from "./components/data/marks/Tag";
+export { useShortcut } from "./internal/useShortcut";
+export { ShortcutHelp, type AppShortcut } from "./components/overlays/ShortcutHelp";
+export { Tag, TagList } from "./components/marks/Tag";
 export { ThemeProvider, themeChoices, useTheme } from "./components/shell/ThemeProvider";
 export type { ResolvedTheme, ThemeChoice } from "./components/shell/ThemeProvider";
-export { SkipLink } from "./components/navigation/SkipLink";
+export { SkipLink } from "./components/shell/SkipLink";
 export { SignIn, SignInVersion } from "./components/shell/SignIn";
 export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
 export { SkeletonPage } from "./components/feedback/waiting/SkeletonPage";
@@ -242,7 +242,7 @@ export { Spinner } from "./components/feedback/waiting/Spinner";
 export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/page/Stage";
 export { Stat, StatRow } from "./components/data/figures/Stat";
 export { StatTile, StatTileDelta } from "./components/data/figures/StatTile";
-export { StatusPill } from "./components/data/marks/StatusPill";
+export { StatusPill } from "./components/marks/StatusPill";
 export { Stepper } from "./components/navigation/Stepper";
 export { Switch } from "./components/forms/choice/Switch";
 export { TabPanel, Tabs } from "./components/navigation/Tabs";
@@ -258,4 +258,4 @@ export { WeekTimeline, type WeekTimelineRow } from "./components/timeline/WeekTi
 export { TokenField } from "./components/forms/text/TokenField";
 export { Tooltip } from "./components/feedback/Tooltip";
 export { TooltipTarget } from "./components/feedback/TooltipTarget";
-export { VersionTag } from "./components/data/marks/VersionTag";
+export { VersionTag } from "./components/marks/VersionTag";

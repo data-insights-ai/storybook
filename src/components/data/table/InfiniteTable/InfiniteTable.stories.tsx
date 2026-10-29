@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { expect, waitFor, within } from "storybook/test";
 import { TableCell, TableColumn, TableHead, TableRow } from "../DataTable";
 import { InfiniteTable } from "./InfiniteTable";
-import { StatusPill } from "../../marks/StatusPill";
+import { StatusPill } from "../../../marks/StatusPill";
 
 const meta = {
   title: "Data/Table/InfiniteTable",

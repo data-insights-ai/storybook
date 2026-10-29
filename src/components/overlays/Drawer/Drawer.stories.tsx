@@ -3,8 +3,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Drawer, DrawerFooter } from "./Drawer";
-import { SealValue } from "../../data/marks/SealValue";
-import { StatusPill } from "../../data/marks/StatusPill";
+import { SealValue } from "../../marks/SealValue";
+import { StatusPill } from "../../marks/StatusPill";
 import { Fact, FactList } from "../../data/records/FactList";
 
 const meta = {
