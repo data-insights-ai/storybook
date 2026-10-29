@@ -37,7 +37,7 @@
     "check": "pnpm typecheck && pnpm test && pnpm build",
     "test": "vitest run --project=unit --project=layout --project=storybook",
     "prepublishOnly": "pnpm build",
-    "lint:structure": "depcruise src --config .dependency-cruiser.cjs --ignore-known --output-type err && node scripts/lint-layers.mjs"
+    "lint:structure": "node scripts/lint-deps.mjs && node scripts/lint-layers.mjs"
   },
   "dependencies": {
     "@base-ui/react": "1.9.0",

@@ -6,12 +6,13 @@ import ts from "typescript";
  * The structure dependency-cruiser cannot see (AGENTS.md, "Structure"): every story
  * meta carries one layer tag and no module imports a higher layer; a story file, its
  * folder and its meta component share one name, and its title mirrors its folder; a
- * module is one sidebar entry (its slots stay with it); every public
- * component is rendered in a story and a doc comment; no two concept folders import each other.
+ * module is one sidebar entry (its slots stay with it); every public component is
+ * rendered in a story (as JSX or as its meta component) and has a doc comment; every
+ * title's group is one storySort lists; no two concept folders import each other.
  *
  * Findings recorded in lint-layers.baseline.json are reported and do not fail; a new
- * one fails. `--write` records the current findings, which the restructure shrinks
- * until the baseline is deleted.
+ * one fails, and so does a recorded one that is gone, until `--write` records the
+ * smaller set. `--write` refuses when a check would record more findings than before.
  */
 const baselineFile = path.join("scripts", "lint-layers.baseline.json");
 const layers = ["foundation", "primitive", "form", "block", "pattern", "screen"];
@@ -78,6 +79,25 @@ function componentsOf(sf) {
   return out;
 }
 
+/** Names a story renders as JSX elements. */
+function jsxNames(sf) {
+  const names = new Set();
+  const visit = (node) => {
+    if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) names.add(node.tagName.getText(sf));
+    ts.forEachChild(node, visit);
+  };
+  visit(sf);
+  return names;
+}
+
+/** The sidebar's top-level sections, in the order storySort lists them. */
+function storySortSections() {
+  const preview = readFileSync(path.join(".storybook", "preview.tsx"), "utf8");
+  const list = preview.match(/const sections = \[([^\]]*)\]/);
+  if (!list) throw new Error(".storybook/preview.tsx no longer lists its sections in `const sections = [...]`");
+  return [...list[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+}
+
 /** A story file's meta: title, tags and the module its component comes from. */
 function metaOf(sf) {
   let literal;
@@ -115,10 +135,14 @@ const layerOfModule = new Map();
 const storied = new Set();
 const metaComponents = new Map();
 const shown = new Set();
+const titles = [];
 for (const file of all.filter(isStory)) {
   const meta = metaOf(parsed.get(file));
-  for (const i of importsOf(parsed.get(file))) i.names.forEach((n) => shown.add(`${i.target}#${n}`));
+  const rendered = jsxNames(parsed.get(file));
+  if (meta?.component) rendered.add(meta.component);
+  for (const i of importsOf(parsed.get(file))) i.names.filter((n) => rendered.has(n)).forEach((n) => shown.add(`${i.target}#${n}`));
   if (!meta?.title) continue;
+  titles.push([file, meta.title]);
   const tagged = meta.tags.filter((t) => t.startsWith("layer:")).map((t) => t.slice(6));
   if (tagged.length !== 1 || !layers.includes(tagged[0])) find("layer-tag", `${file} carries ${tagged.length ? tagged.join(", ") : "no layer tag"}`);
   if (!meta.component) continue;
@@ -141,6 +165,17 @@ for (const file of all.filter(isStory)) {
   const rank = layers.indexOf(tagged[0]);
   const before = layerOfModule.get(source.target);
   if (rank >= 0 && (before === undefined || rank > before)) layerOfModule.set(source.target, rank);
+}
+
+// Every top-level group is one storySort sorts; an unlisted one falls to the end of the sidebar.
+const walkMdx = (dir) => readdirSync(dir).flatMap((n) => { const f = path.join(dir, n); return statSync(f).isDirectory() ? walkMdx(f) : n.endsWith(".mdx") ? [f] : []; });
+for (const file of walkMdx("src")) {
+  const title = readFileSync(file, "utf8").match(/<Meta[^>]*title="([^"]+)"/)?.[1];
+  if (title) titles.push([file, title]);
+}
+const sections = storySortSections();
+for (const [file, title] of titles) {
+  if (!sections.includes(title.split("/")[0])) find("sidebar-section", `${file} is titled ${title}, whose group storySort does not list`);
 }
 
 // Layer direction, one component per module, folder cycles.
@@ -181,14 +216,28 @@ for (const st of entry.statements) {
 }
 
 findings.sort();
-const write = process.argv.includes("--write");
-if (write) writeFileSync(baselineFile, `${JSON.stringify(findings, null, 2)}\n`);
-const known = new Set(existsSync(baselineFile) ? JSON.parse(readFileSync(baselineFile, "utf8")) : []);
+const recorded = existsSync(baselineFile) ? JSON.parse(readFileSync(baselineFile, "utf8")) : [];
+const countBy = (list) => list.reduce((c, f) => ({ ...c, [f.split(":")[0]]: (c[f.split(":")[0]] ?? 0) + 1 }), {});
+const counts = countBy(findings);
+const before = countBy(recorded);
+const summary = Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(", ") || "none";
+
+if (process.argv.includes("--write")) {
+  // A move renames findings without adding any, so the test is the count per check.
+  const grown = Object.entries(counts).filter(([k, v]) => v > (before[k] ?? 0));
+  if (grown.length && !process.argv.includes("--accept-growth")) {
+    for (const [k, v] of grown) console.error(`structure: ${k} would grow from ${before[k] ?? 0} to ${v}`);
+    console.error("structure: a baseline never admits a new finding; fix it, or pass --accept-growth and say why in the commit");
+    process.exit(1);
+  }
+  writeFileSync(baselineFile, `${JSON.stringify(findings, null, 2)}\n`);
+  console.log(`structure: recorded ${findings.length} findings (was ${recorded.length}): ${summary}`);
+  process.exit(0);
+}
+const known = new Set(recorded);
 const fresh = findings.filter((f) => !known.has(f));
-const stale = [...known].filter((f) => !findings.includes(f));
-const counts = {};
-for (const f of findings) counts[f.split(":")[0]] = (counts[f.split(":")[0]] ?? 0) + 1;
-console.log(`structure: ${findings.length} findings (${Object.entries(counts).map(([k, v]) => `${k} ${v}`).join(", ") || "none"}), ${findings.length - fresh.length} known`);
-if (stale.length) console.log(`structure: ${stale.length} recorded findings are gone; run with --write to shrink the baseline`);
+const gone = recorded.filter((f) => !findings.includes(f));
+console.log(`structure: ${findings.length} findings (${summary}), ${findings.length - fresh.length} known`);
 for (const f of fresh) console.error(`new ${f}`);
-process.exit(fresh.length ? 1 : 0);
+if (gone.length) console.error(`structure: ${gone.length} recorded findings are gone; run node scripts/lint-layers.mjs --write to shrink the baseline`);
+process.exit(fresh.length || gone.length ? 1 : 0);
