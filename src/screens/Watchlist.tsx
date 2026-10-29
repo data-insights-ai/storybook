@@ -2,11 +2,11 @@ import { Building2, Globe, Mail, Plus, ShieldCheck, UserRound } from "lucide-rea
 import { Button } from "../components/actions/Button";
 import { Console } from "../components/layout/shell/AppShell";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/PageHeader";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/page/PageHeader";
 import { IconTile } from "../components/data/marks/IconTile";
-import { Grid } from "../components/layout/Grid";
-import { Stack } from "../components/layout/Stack";
-import { Actions } from "../components/layout/Actions";
+import { Grid } from "../components/layout/arrangement/Grid";
+import { Stack } from "../components/layout/arrangement/Stack";
+import { Actions } from "../components/layout/arrangement/Actions";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import {
   RecordCard,
@@ -30,7 +30,7 @@ import {
   TableHead,
   TableRow,
 } from "../components/data/table/DataTable";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/page/SectionTitle";
 
 type Identity = {
   id: string;

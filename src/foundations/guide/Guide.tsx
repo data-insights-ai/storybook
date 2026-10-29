@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { PageHeader, PageHeaderTitle } from "../../components/layout/PageHeader";
-import { SectionTitle, SectionTitleHeading } from "../../components/layout/SectionTitle";
+import { PageHeader, PageHeaderTitle } from "../../components/layout/page/PageHeader";
+import { SectionTitle, SectionTitleHeading } from "../../components/layout/page/SectionTitle";
 import logo from "../../assets/logo.svg";
 import mark from "../../assets/mark.svg";
 import "./Guide.css";

@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "../components/actions/Button";
-import { Grid } from "../components/layout/Grid";
-import { Stack } from "../components/layout/Stack";
-import { Toolbar, ToolbarEnd } from "../components/layout/Toolbar";
+import { Grid } from "../components/layout/arrangement/Grid";
+import { Stack } from "../components/layout/arrangement/Stack";
+import { Toolbar, ToolbarEnd } from "../components/layout/arrangement/Toolbar";
 import { Card } from "../components/data/records/Card";
 import { Chip } from "../components/data/marks/Chip";
 import { Console } from "../components/layout/shell/AppShell";
@@ -34,7 +34,7 @@ import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle }
 import { Pagination } from "../components/navigation/Pagination";
 import { SearchField } from "../components/forms/text/SearchField";
 import { StatusPill, type StatusTone } from "../components/data/marks/StatusPill";
-import { SectionTitle, SectionTitleHeading } from "../components/layout/SectionTitle";
+import { SectionTitle, SectionTitleHeading } from "../components/layout/page/SectionTitle";
 
 type Source = {
   id: string;

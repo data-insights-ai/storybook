@@ -5,7 +5,7 @@ import { Button } from "../components/actions/Button";
 import { ConfirmDialog } from "../components/overlays/ConfirmDialog";
 import { CopyValue } from "../components/actions/CopyValue";
 import { DangerAction, DangerZone } from "../components/feedback/DangerZone";
-import { DetailSection, DetailSectionForm } from "../components/layout/DetailSection";
+import { DetailSection, DetailSectionForm } from "../components/layout/page/DetailSection";
 import { Fact, FactList } from "../components/data/records/FactList";
 import {
   PageHeader,
@@ -14,8 +14,8 @@ import {
   PageHeaderFacts,
   PageHeaderStatus,
   PageHeaderTitle,
-} from "../components/layout/PageHeader";
-import { Page } from "../components/layout/Page";
+} from "../components/layout/page/PageHeader";
+import { Page } from "../components/layout/page/Page";
 import { SaveBar } from "../components/forms/field/SaveBar";
 import { StatusPill } from "../components/data/marks/StatusPill";
 import { Switch } from "../components/forms/choice/Switch";

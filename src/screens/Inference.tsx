@@ -3,19 +3,19 @@ import { Globe, MoreVertical, Radar, Search, Settings2, ShieldCheck, Timer } fro
 import { Console } from "../components/layout/shell/AppShell";
 import { Button } from "../components/actions/Button";
 import { CommandBar, CommandGroup, CommandRow } from "../components/navigation/CommandBar";
-import { PageHeader, PageHeaderTitle } from "../components/layout/PageHeader";
+import { PageHeader, PageHeaderTitle } from "../components/layout/page/PageHeader";
 import { ConfidenceField } from "../components/inference/ConfidenceField";
 import { ConfirmActions, ConfirmPanel } from "../components/inference/ConfirmPanel";
 import { ExplainFooter, ExplainPanel, ExplainRow } from "../components/inference/ExplainPanel";
 import { PrivacyBadge } from "../components/inference/PrivacyBadge";
-import { Grid } from "../components/layout/Grid";
-import { Stack } from "../components/layout/Stack";
+import { Grid } from "../components/layout/arrangement/Grid";
+import { Stack } from "../components/layout/arrangement/Stack";
 import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "../components/data/records/LivingCard";
-import { Panel, PanelMeta } from "../components/layout/Panel";
+import { Panel, PanelMeta } from "../components/layout/page/Panel";
 import { StatTile, StatTileDelta } from "../components/data/figures/StatTile";
 import { Toast, ToastAction } from "../components/feedback/Toast";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/page/SectionTitle";
 import { Sparkline } from "../components/charts/Sparkline";
 
 const bars = [

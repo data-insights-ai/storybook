@@ -5,7 +5,7 @@ import { ChoiceCards } from "../forms/choice/ChoiceCards";
 import { CreateFlow } from "./CreateFlow";
 import { Fact, FactList } from "../data/records/FactList";
 import { TextField } from "../forms/text/TextField";
-import { Page } from "../layout/Page";
+import { Page } from "../layout/page/Page";
 
 const steps = ["Choose a type", "Details", "Review"];
 const ledes = ["", "How the platform reaches your identity provider.", "The connection is active once it is created."];

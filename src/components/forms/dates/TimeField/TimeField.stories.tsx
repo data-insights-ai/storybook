@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { TimeField } from "./TimeField";
-import { Grid } from "../../../layout/Grid";
+import { Grid } from "../../../layout/arrangement/Grid";
 
 const meta = {
   title: "Forms/Dates/TimeField",

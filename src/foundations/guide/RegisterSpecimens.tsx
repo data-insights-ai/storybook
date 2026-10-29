@@ -1,4 +1,4 @@
-import { Panel, PanelMeta } from "../../components/layout/Panel";
+import { Panel, PanelMeta } from "../../components/layout/page/Panel";
 import { SealMark } from "../../components/data/marks/SealValue";
 import "./RegisterSpecimens.css";
 

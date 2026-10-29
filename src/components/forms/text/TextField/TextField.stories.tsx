@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
-import { Stack } from "../../../layout/Stack";
+import { Stack } from "../../../layout/arrangement/Stack";
 import { TextField } from "./TextField";
 import { TextLink } from "../../../navigation/TextLink";
 

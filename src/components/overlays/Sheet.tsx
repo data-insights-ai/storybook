@@ -1,7 +1,7 @@
 import { Children, isValidElement, useContext, useEffect, useId, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
-import { PageSide } from "../layout/pageSide";
+import { PageSide } from "../layout/page/pageSide";
 import { focusFirstField } from "../navigation/shortcuts/shortcutKeys";
 import { useShortcut } from "../navigation/shortcuts/useShortcut";
 import { useModalDialog } from "./useModalDialog";

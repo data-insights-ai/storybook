@@ -10,16 +10,16 @@ import {
 import { Button } from "../components/actions/Button";
 import { Console } from "../components/layout/shell/AppShell";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/PageHeader";
-import { Grid } from "../components/layout/Grid";
-import { Numbered } from "../components/layout/Numbered";
-import { Stack } from "../components/layout/Stack";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/page/PageHeader";
+import { Grid } from "../components/layout/arrangement/Grid";
+import { Numbered } from "../components/layout/arrangement/Numbered";
+import { Stack } from "../components/layout/arrangement/Stack";
 import { Metric, MetricNote } from "../components/data/figures/Metric";
-import { Stage, StageFooter, StageIcon, StageTrack } from "../components/layout/Stage";
+import { Stage, StageFooter, StageIcon, StageTrack } from "../components/layout/page/Stage";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import { StatusPill } from "../components/data/marks/StatusPill";
 import { KeyValue, KeyValues } from "../components/data/records/KeyValues";
-import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";
+import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/page/SectionTitle";
 
 const stages = [
   {

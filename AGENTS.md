@@ -99,7 +99,7 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | `feedback/` | Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `waiting/` the loaders, progress and skeletons |
 | `overlays/` | Modal, ConfirmDialog, Drawer, Sheet, Flyout, CreateFlow |
 | `inference/` | Explain, Confirm, Confidence, Privacy |
-| `layout/` | Stack, Grid, Toolbar, Numbered, FieldStack, InlineForm, Page, Panel, Split, Stage, the headers, Disclosure, Accordion, DetailSection; `shell/` AppShell, ThemeProvider, SignIn |
+| `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, Split, FieldStack, InlineForm, Actions; `page/` Page, PageHeader, SectionTitle, Panel, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure; `shell/` AppShell, ThemeProvider, SignIn |
 | `charts/` | Chart, ChartCard, TrendChart and the drawn measures (Bars, Sparkline, Distribution, LevelMeter, CoverageMatrix, Seismograph) |
 | `timeline/` | EventTimeline and its parts, ChainTimeline, PeriodTimeline, WeekTimeline; `summary/` TimelineSummary |
 

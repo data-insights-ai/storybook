@@ -26,9 +26,9 @@ import {
   TableToolbar,
 } from "../components/data/table/DataTable";
 import { Drawer, DrawerFooter } from "../components/overlays/Drawer";
-import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/PageHeader";
-import { Grid } from "../components/layout/Grid";
-import { Stack } from "../components/layout/Stack";
+import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layout/page/PageHeader";
+import { Grid } from "../components/layout/arrangement/Grid";
+import { Stack } from "../components/layout/arrangement/Stack";
 import { Menu, MenuDivider, MenuItem } from "../components/navigation/Menu";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import { Pagination } from "../components/navigation/Pagination";

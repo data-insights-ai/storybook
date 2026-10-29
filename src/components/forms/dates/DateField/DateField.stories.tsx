@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateField, defaultDateFieldLabels } from "./DateField";
-import { Grid } from "../../../layout/Grid";
+import { Grid } from "../../../layout/arrangement/Grid";
 import { Modal, ModalContent, ModalTitle } from "../../../overlays/Modal";
 import { Button } from "../../../actions/Button";
 

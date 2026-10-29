@@ -1,4 +1,4 @@
-export { Accordion, AccordionDetail, AccordionItem, AccordionMeta } from "./components/layout/Accordion";
+export { Accordion, AccordionDetail, AccordionItem, AccordionMeta } from "./components/layout/folding/Accordion";
 export {
   AppShell,
   AppShellBar,
@@ -82,8 +82,8 @@ export {
   TableSpacer,
   TableToolbar,
 } from "./components/data/table/DataTable";
-export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/DetailSection";
-export { Disclosure, DisclosureLead } from "./components/layout/Disclosure";
+export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/page/DetailSection";
+export { Disclosure, DisclosureLead } from "./components/layout/folding/Disclosure";
 export { Distribution } from "./components/charts/Distribution";
 export { Drawer, DrawerFooter } from "./components/overlays/Drawer";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
@@ -129,8 +129,8 @@ export { Fact, FactList } from "./components/data/records/FactList";
 export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/field/Field";
 export { FieldHint } from "./components/forms/field/FieldHint";
-export { FieldStack } from "./components/layout/FieldStack";
-export { InlineForm } from "./components/layout/InlineForm";
+export { FieldStack } from "./components/layout/arrangement/FieldStack";
+export { InlineForm } from "./components/layout/arrangement/InlineForm";
 export { FileField } from "./components/forms/text/FileField";
 export type { HintTone } from "./components/forms/field/FieldHint";
 export {
@@ -140,7 +140,7 @@ export {
   PageHeaderFacts,
   PageHeaderStatus,
   PageHeaderTitle,
-} from "./components/layout/PageHeader";
+} from "./components/layout/page/PageHeader";
 export { Highlight } from "./components/data/text/Highlight";
 export { Icon } from "./components/data/marks/Icon";
 export { IconTile } from "./components/data/marks/IconTile";
@@ -149,11 +149,11 @@ export type { InfiniteRowPlace } from "./components/data/table/InfiniteTable";
 export { KeyValue, KeyValues } from "./components/data/records/KeyValues";
 export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/charts/LevelMeter";
 export type { LevelBands } from "./components/charts/LevelMeter";
-export { Actions } from "./components/layout/Actions";
-export { Grid } from "./components/layout/Grid";
-export { Numbered } from "./components/layout/Numbered";
-export { Stack } from "./components/layout/Stack";
-export { Toolbar, ToolbarEnd } from "./components/layout/Toolbar";
+export { Actions } from "./components/layout/arrangement/Actions";
+export { Grid } from "./components/layout/arrangement/Grid";
+export { Numbered } from "./components/layout/arrangement/Numbered";
+export { Stack } from "./components/layout/arrangement/Stack";
+export { Toolbar, ToolbarEnd } from "./components/layout/arrangement/Toolbar";
 export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/data/records/LivingCard";
 export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/data/table/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/navigation/Menu";
@@ -176,9 +176,9 @@ export {
   NoticeText,
   NoticeTitle,
 } from "./components/feedback/Notice";
-export { Page, PageAside } from "./components/layout/Page";
+export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/Pagination";
-export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/layout/Panel";
+export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/layout/page/Panel";
 export { PrivacyBadge } from "./components/inference/PrivacyBadge";
 export { Progress } from "./components/feedback/waiting/Progress";
 export { RouteProgress } from "./components/feedback/waiting/RouteProgress";
@@ -205,7 +205,7 @@ export { SaveBar } from "./components/forms/field/SaveBar";
 export { SearchField } from "./components/forms/text/SearchField";
 export { Seismograph } from "./components/charts/Seismograph";
 export type { SeismographPoint } from "./components/charts/Seismograph";
-export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/layout/SectionTitle";
+export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/layout/page/SectionTitle";
 export { SegmentedControl } from "./components/forms/choice/SegmentedControl";
 export { Select } from "./components/forms/select/Select";
 export { Sheet, SheetFooter } from "./components/overlays/Sheet";
@@ -240,9 +240,9 @@ export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
 export { SkeletonPage } from "./components/feedback/waiting/SkeletonPage";
 export type { SkeletonPageVariant } from "./components/feedback/waiting/SkeletonPage";
 export { Sparkline } from "./components/charts/Sparkline";
-export { Split, SplitAside, SplitMain } from "./components/layout/Split";
+export { Split, SplitAside, SplitMain } from "./components/layout/arrangement/Split";
 export { Spinner } from "./components/feedback/waiting/Spinner";
-export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/Stage";
+export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/page/Stage";
 export { Stat, StatRow } from "./components/data/figures/Stat";
 export { StatTile, StatTileDelta } from "./components/data/figures/StatTile";
 export { StatusPill } from "./components/data/marks/StatusPill";
