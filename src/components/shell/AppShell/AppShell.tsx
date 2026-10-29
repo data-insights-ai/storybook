@@ -2,10 +2,10 @@ import { Children, isValidElement, useId, useLayoutEffect, useRef, useState, use
 import { ChevronsUpDown, Menu as MenuIcon, RefreshCw, ShieldCheck, X } from "lucide-react";
 import logoInverse from "../../../assets/logo-inverse.svg";
 import { cx } from "../../../internal/cx";
-import { Badge } from "../../data/marks/Badge";
+import { Badge } from "../../marks/Badge";
 import { Button } from "../../actions/Button";
-import { SealMark } from "../../data/marks/SealValue";
-import { SkipLink } from "../../navigation/SkipLink";
+import { SealMark } from "../../marks/SealValue";
+import { SkipLink } from "../SkipLink";
 import "./AppShell.css";
 
 export type NavItem = {

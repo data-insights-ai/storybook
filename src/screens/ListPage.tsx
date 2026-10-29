@@ -32,8 +32,8 @@ import {
   TableRow,
   TextLink,
   useShortcut,
-} from "../index";
-import type { InfiniteRowPlace } from "../index";
+} from "..";
+import type { InfiniteRowPlace } from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
 type Member = { id: string; name: string; email: string; role: "Owner" | "Administrator" | "Member"; seat: boolean };

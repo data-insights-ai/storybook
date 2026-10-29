@@ -1,9 +1,9 @@
 import { useId, useState } from "react";
 import { Button } from "../../actions/Button";
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalTitle } from "../../overlays/Modal";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalTitle } from "../Modal";
 import { Kbd } from "../../data/text/Kbd";
-import { shortcutLabel, shortcutTarget } from "../useShortcut";
-import { useShortcut } from "../useShortcut";
+import { shortcutLabel, shortcutTarget } from "../../../internal/shortcutKeys";
+import { useShortcut } from "../../../internal/useShortcut";
 import "./ShortcutHelp.css";
 
 type Row = { keys: string[]; what: string };

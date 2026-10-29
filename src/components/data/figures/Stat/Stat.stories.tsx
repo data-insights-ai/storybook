@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Stat, StatRow } from "./Stat";
-import { StatusPill } from "../../marks/StatusPill";
+import { StatusPill } from "../../../marks/StatusPill";
 
 const meta = {
   title: "Data/Figures/Stat",

@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { Tooltip } from "@base-ui/react/tooltip";
-import { Badge } from "../../data/marks/Badge";
-import type { BadgeTone } from "./SidebarMenuButton";
+import { Badge } from "../../marks/Badge";
+import type { BadgeTone } from "./badgeTone";
 import "../../feedback/Tooltip/Tooltip.css";
 
 export default function SidebarRailTooltip({

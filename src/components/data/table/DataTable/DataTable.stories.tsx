@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Globe, Plus, Server } from "lucide-react";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { Chip } from "../../marks/Chip";
+import { Chip } from "../../../marks/Chip";
 import {
   CellIcon,
   CellLead,
@@ -23,8 +23,8 @@ import { LevelMeter } from "../../../charts/LevelMeter";
 import { Pagination } from "../../../navigation/Pagination";
 import { SearchField } from "../../../forms/text/SearchField";
 import { Select } from "../../../forms/select/Select";
-import { SealValue } from "../../marks/SealValue";
-import { StatusPill } from "../../marks/StatusPill";
+import { SealValue } from "../../../marks/SealValue";
+import { StatusPill } from "../../../marks/StatusPill";
 import { TextLink } from "../../../navigation/TextLink";
 
 type Source = {

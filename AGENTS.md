@@ -93,16 +93,17 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | Folder | Holds |
 | --- | --- |
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
-| `navigation/` | Breadcrumb, CommandBar, Menu, Pagination, SkipLink, Stepper, Tabs, TabNav, TextLink, ShortcutHelp; `Sidebar/` the sidebar and its parts behind one index; `useShortcut/` the key scheme (`shortcutKeys`) and the hook |
+| `navigation/` | Breadcrumb, CommandBar, Menu, Pagination, Stepper, Tabs, TabNav, TextLink; `Sidebar/` the sidebar and its parts behind one index |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, DateField, TimeField, DateRangePicker |
-| `data/` | `records/` Card, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` Metric, Stat, StatTile; `marks/` Badge, Chip, StatusPill, Tag, VersionTag, SealValue, Icon, IconTile; `text/` Eyebrow, Highlight, Kbd, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
+| `data/` | `records/` Card, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` Metric, Stat, StatTile; `text/` Eyebrow, Highlight, Kbd, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
+| `marks/` | Badge, Chip, StatusPill, Tag, VersionTag, SealValue, Icon (with the `IconSet` gallery the docs show), IconTile |
 | `feedback/` | DangerZone, Delayed, EmptyState, Notice, Toast, Tooltip, TooltipTarget; `waiting/` AppLoader, Progress, RouteProgress, SkeletonPage, SkeletonTable, Spinner |
-| `overlays/` | ConfirmDialog, CreateFlow, Drawer, Flyout, Modal, Sheet; `useModalDialog/` the dialog behaviour Modal and Sheet share |
+| `overlays/` | ConfirmDialog, CreateFlow, Drawer, Flyout, Modal, Sheet, ShortcutHelp; `useModalDialog/` the dialog behaviour Modal and Sheet share |
 | `inference/` | ConfidenceField, ConfirmPanel, ExplainPanel, PrivacyBadge, and the `Inference.css` they share |
 | `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, Split, FieldStack, InlineForm, Actions; `page/` Page, PageHeader, SectionTitle, Panel, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure |
 | `charts/` | Bars, Chart, ChartCard, CoverageMatrix, Distribution, LevelMeter, Seismograph, Sparkline, TrendChart |
 | `timeline/` | ChainTimeline, EventTimeline (with its `marks/` and `navigation/`), PeriodTimeline, WeekTimeline, TimelineSummary; `scale/` and `types/`, shared by EventTimeline and TimelineSummary |
-| `shell/` | AppShell, SignIn, ThemeProvider |
+| `shell/` | AppShell, SignIn, SkipLink, ThemeProvider |
 
 A folder names what a component is about, and the story `title` follows it; what can go inside a component is its layer tag. Sample data that only a story or a screen reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
 
@@ -111,7 +112,8 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Introduction`, then `Foundations/` — the brand, the tokens and the reasoning behind them (Essence, Register, Color, Type, Scale, Logo, Pages, Decisions and the rest). No package component lives here.
 - `Actions/` — what a person presses: Button, CountButton, CopyValue, RowActions, BulkActionBar.
 - `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
-- `Data/` — what a person reads: `Records/` (the cards, FactList, KeyValues, Channel, Session), `Figures/` (Stat, StatTile, Metric), `Marks/` (Badge, StatusPill, Chip, Tag, SealValue, Icon), `Text/` (Eyebrow, Highlight, Kbd, CodeBlock, PullQuote) and `Table/`.
+- `Data/` — what a person reads: `Records/` (the cards, FactList, KeyValues, Channel, Session), `Figures/` (Stat, StatTile, Metric), `Text/` (Eyebrow, Highlight, Kbd, CodeBlock, PullQuote) and `Table/`.
+- `Marks/` — what every other component draws with: Badge, StatusPill, Chip, Tag, VersionTag, SealValue, Icon, IconTile. A mark imports no other component, so it sits below them all.
 - `Feedback/` — Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `Waiting/` the loaders, progress and skeletons.
 - `Overlays/`, `Navigation/` — what opens over the page, and how a person moves through it.
 - `Layout/` — `Arrangement/` (Stack, Grid, Numbered, Toolbar, Split, FieldStack, InlineForm), `Page/` (Page, the headers, Panel, Stage, DetailSection), `Folding/` (Accordion, Disclosure).

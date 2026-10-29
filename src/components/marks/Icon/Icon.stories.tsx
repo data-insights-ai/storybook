@@ -29,10 +29,10 @@ import {
   X,
 } from "lucide-react";
 import { Icon } from "./Icon";
-import { IconSet } from "../../../../foundations/guide/IconSet";
+import { IconSet } from "./IconSet.sample";
 
 const meta = {
-  title: "Data/Marks/Icon",
+  title: "Marks/Icon",
   tags: ["layer:primitive"],
   component: Icon,
   args: {

@@ -2,7 +2,8 @@ import { Children, isValidElement, useContext, useEffect, useId, useRef, type Re
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { PageSide } from "../../layout/page/pageSide";
-import { focusFirstField, useShortcut } from "../../navigation/useShortcut";
+import { focusFirstField } from "../../../internal/shortcutKeys";
+import { useShortcut } from "../../../internal/useShortcut";
 import { useModalDialog } from "../useModalDialog";
 import "./Sheet.css";
 

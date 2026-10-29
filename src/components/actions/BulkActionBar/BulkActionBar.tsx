@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 import { Button } from "../Button";
-import { editable } from "../../navigation/useShortcut";
+import { editable } from "../../../internal/useShortcut";
 import "./BulkActionBar.css";
 
 /**

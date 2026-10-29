@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileCheck2, Link2, Radio, Stamp } from "lucide-react";
 import { expect, within } from "storybook/test";
-import { SealValue } from "../../../data/marks/SealValue";
+import { SealValue } from "../../../marks/SealValue";
 import { Spinner } from "../../../feedback/waiting/Spinner";
 import { Stage, StageFooter, StageIcon, StageTrack } from "./Stage";
 

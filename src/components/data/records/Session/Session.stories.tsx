@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Laptop, Smartphone } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { Icon } from "../../marks/Icon";
-import { IconTile } from "../../marks/IconTile";
+import { Icon } from "../../../marks/Icon";
+import { IconTile } from "../../../marks/IconTile";
 import { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./Session";
-import { SealValue } from "../../marks/SealValue";
-import { StatusPill } from "../../marks/StatusPill";
+import { SealValue } from "../../../marks/SealValue";
+import { StatusPill } from "../../../marks/StatusPill";
 
 const meta = {
   title: "Data/Records/Session",

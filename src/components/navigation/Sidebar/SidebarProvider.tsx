@@ -4,7 +4,7 @@ import { SidebarContext } from "./SidebarContext";
 import { readStoredExpanded, usePersistExpanded } from "./sidebarStorage";
 import { useNarrowViewport } from "./useNarrowViewport";
 import { useToggleShortcut } from "./useToggleShortcut";
-import { SkipLink } from "../SkipLink";
+import { SkipLink } from "../../shell/SkipLink";
 import "./Sidebar.css";
 
 export function SidebarProvider({

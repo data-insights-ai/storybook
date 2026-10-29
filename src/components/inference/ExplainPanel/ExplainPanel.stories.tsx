@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { SealValue } from "../../data/marks/SealValue";
+import { SealValue } from "../../marks/SealValue";
 import { ExplainFooter, ExplainPanel, ExplainRow } from "./ExplainPanel";
 
 const meta = {

@@ -32,7 +32,7 @@ import {
   StatTileDelta,
   Toast,
   ToastAction,
-} from "../index";
+} from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
 const bars = [

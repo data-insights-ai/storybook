@@ -1,7 +1,7 @@
 import logo from "../../assets/logo.svg";
 import markInverse from "../../assets/mark-inverse.svg";
 import "./Guide.css";
-export { IconSet } from "./IconSet";
+export { IconSet } from "../../components/marks/Icon/IconSet.sample";
 
 const misuses = [
   { tone: "is-skew", title: "Don’t stretch or skew.", detail: "Scale it uniformly." },

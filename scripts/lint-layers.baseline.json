@@ -1,9 +1,4 @@
 [
-  "folder-cycle: components/actions and components/navigation import each other",
-  "folder-cycle: components/data and components/feedback import each other",
-  "folder-cycle: components/layout and components/navigation import each other",
-  "folder-cycle: components/navigation and components/overlays import each other",
-  "folder-cycle: components/navigation and components/shell import each other",
   "public-doc: Bars (src/components/charts/Bars/Bars.tsx) has no doc comment",
   "public-doc: Card (src/components/data/records/Card/Card.tsx) has no doc comment",
   "public-doc: CellIcon (src/components/data/table/DataTable/DataTable.tsx) has no doc comment",
@@ -14,7 +9,7 @@
   "public-doc: ChartTooltip (src/components/charts/Chart/Chart.tsx) has no doc comment",
   "public-doc: CommandGroup (src/components/navigation/CommandBar/CommandBar.tsx) has no doc comment",
   "public-doc: ExplainRow (src/components/inference/ExplainPanel/ExplainPanel.tsx) has no doc comment",
-  "public-doc: IconTile (src/components/data/marks/IconTile/IconTile.tsx) has no doc comment",
+  "public-doc: IconTile (src/components/marks/IconTile/IconTile.tsx) has no doc comment",
   "public-doc: KeyValues (src/components/data/records/KeyValues/KeyValues.tsx) has no doc comment",
   "public-doc: LivingBody (src/components/data/records/LivingCard/LivingCard.tsx) has no doc comment",
   "public-doc: MenuDivider (src/components/navigation/Menu/Menu.tsx) has no doc comment",
@@ -49,6 +44,6 @@
   "public-doc: TextLink (src/components/navigation/TextLink/TextLink.tsx) has no doc comment",
   "public-story: ChartLegendContent (src/components/charts/Chart/Chart.tsx) has no story",
   "public-story: ListToolbarNote (src/components/data/table/ListToolbar/ListToolbar.tsx) has no story",
-  "public-story: SkipLink (src/components/navigation/SkipLink/SkipLink.tsx) has no story",
+  "public-story: SkipLink (src/components/shell/SkipLink/SkipLink.tsx) has no story",
   "public-story: ToastRegion (src/components/feedback/Toast/Toast.tsx) has no story"
 ]

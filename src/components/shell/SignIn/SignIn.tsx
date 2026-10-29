@@ -1,6 +1,6 @@
 import { Children, isValidElement, type FormEvent, type ReactNode } from "react";
 import logoInverse from "../../../assets/logo-inverse.svg";
-import { SealMark } from "../../data/marks/SealValue";
+import { SealMark } from "../../marks/SealValue";
 import { TickRule } from "../../data/text/TickRule";
 import "./SignIn.css";
 

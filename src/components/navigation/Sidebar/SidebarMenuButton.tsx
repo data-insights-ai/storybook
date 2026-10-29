@@ -4,15 +4,16 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { ChevronsUpDown } from "lucide-react";
 import { cx } from "../../../internal/cx";
-import { Badge } from "../../data/marks/Badge";
+import { Badge } from "../../marks/Badge";
 import { useSidebar, useSidebarRail } from "./SidebarContext";
+import type { BadgeTone } from "./badgeTone";
 import "./SidebarMenu.css";
 
 /* Only the collapsed rail shows tooltips; loading them with the rail keeps
  * the tooltip and positioning code out of an expanded sidebar's first load. */
 const SidebarRailTooltip = lazy(() => import("./SidebarRailTooltip"));
 
-export type BadgeTone = "neutral" | "alert" | "seal";
+export type { BadgeTone };
 
 export type SidebarMenuButtonProps = Omit<HTMLAttributes<HTMLElement>, "children"> & {
   label: string;

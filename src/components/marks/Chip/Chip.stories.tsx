@@ -4,7 +4,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Chip } from "./Chip";
 
 const meta = {
-  title: "Data/Marks/Chip",
+  title: "Marks/Chip",
   component: Chip,
   tags: ["layer:primitive", "autodocs"],
   args: {

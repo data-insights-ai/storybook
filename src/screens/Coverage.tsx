@@ -40,7 +40,7 @@ import {
   TableRow,
   Toolbar,
   ToolbarEnd,
-} from "../index";
+} from "..";
 import { sampleChrome } from "../components/shell/chrome.sample";
 
 type StatusTone = NonNullable<ComponentProps<typeof StatusPill>["tone"]>;

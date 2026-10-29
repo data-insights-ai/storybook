@@ -6,7 +6,7 @@ import { Button } from "../../../actions/Button";
 import { ListToolbar, ListToolbarEnd } from "./ListToolbar";
 import { SearchField } from "../../../forms/text/SearchField";
 import { Select } from "../../../forms/select/Select";
-import { useShortcut } from "../../../navigation/useShortcut";
+import { useShortcut } from "../../../../internal/useShortcut";
 
 const meta = {
   title: "Data/Table/ListToolbar",

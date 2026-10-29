@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Breadcrumb } from "../../navigation/Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Select } from "../../forms/select/Select";
-import { StatusPill } from "../../data/marks/StatusPill";
+import { StatusPill } from "../../marks/StatusPill";
 import {
   AppShell,
   AppShellBar,

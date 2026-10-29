@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { cx } from "../../../internal/cx";
-import { StatusPill } from "../../data/marks/StatusPill";
+import { StatusPill } from "../../marks/StatusPill";
 import type { TimelineMarker, TimelineSpan, TimelineTone } from "../types";
 import { useWidth } from "../../../internal/useWidth";
 import type { TimelineEpisode } from "./episodes";
