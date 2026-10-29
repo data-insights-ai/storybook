@@ -130,3 +130,135 @@ export const InModal: Story = {
     );
   },
 };
+
+const focused = (element: HTMLElement) => element.ownerDocument.activeElement as HTMLElement;
+
+/** Keyboard only: Tab walks the day, month and year, then the calendar button; arrows step
+ * a segment and wrap at its ends, Left and Right move between segments. */
+export const KeyboardSegments: Story = {
+  args: { value: "2026-10-31" },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const [day, month, year] = canvas.getAllByRole("spinbutton");
+    await userEvent.tab();
+    await expect(day).toHaveFocus();
+    await userEvent.tab();
+    await expect(month).toHaveFocus();
+    await userEvent.tab();
+    await expect(year).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole("button", { name: /Choose a date/ })).toHaveFocus();
+    day.focus();
+    await userEvent.keyboard("{ArrowUp}");
+    await expect(args.onChange).toHaveBeenLastCalledWith("2026-10-01");
+    await userEvent.keyboard("{ArrowDown}{ArrowDown}");
+    await expect(args.onChange).toHaveBeenLastCalledWith("2026-10-30");
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(month).toHaveFocus();
+    await userEvent.keyboard("{ArrowUp}");
+    await expect(args.onChange).toHaveBeenLastCalledWith("2026-11-30");
+    await userEvent.keyboard("{ArrowLeft}");
+    await expect(day).toHaveFocus();
+    await expect(month).toHaveAttribute("aria-valuenow", "11");
+    await expect(year).toHaveAttribute("aria-valuenow", "2026");
+  },
+};
+
+/** German types day, month, year; the segments are named in German. */
+export const KeyboardGerman: Story = {
+  args: { locale: "de-DE", label: "Erster Tag" },
+  play: async ({ canvasElement, args }) => {
+    const segments = within(canvasElement).getAllByRole("spinbutton");
+    await expect(segments[0]).toHaveAccessibleName(/^Tag/);
+    await expect(segments[1]).toHaveAccessibleName(/^Monat/);
+    await expect(segments[2]).toHaveAccessibleName(/^Jahr/);
+    await userEvent.click(segments[0]);
+    await userEvent.keyboard("29102026");
+    await expect(args.onChange).toHaveBeenLastCalledWith("2026-10-29");
+    await expect(segments[1]).toHaveAttribute("aria-valuetext", expect.stringContaining("Oktober"));
+  },
+};
+
+/** Spanish types day, month, year too; the segments are named in Spanish. */
+export const KeyboardSpanish: Story = {
+  args: { locale: "es-ES", label: "Primer día" },
+  play: async ({ canvasElement, args }) => {
+    const segments = within(canvasElement).getAllByRole("spinbutton");
+    await expect(segments[0]).toHaveAccessibleName(/^día/i);
+    await expect(segments[1]).toHaveAccessibleName(/^mes/i);
+    await expect(segments[2]).toHaveAccessibleName(/^año/i);
+    await userEvent.click(segments[0]);
+    await userEvent.keyboard("05032027");
+    await expect(args.onChange).toHaveBeenLastCalledWith("2027-03-05");
+  },
+};
+
+/** US English types the month first. */
+export const KeyboardUsEnglish: Story = {
+  args: { locale: "en-US", weekStartsOn: 0 },
+  play: async ({ canvasElement, args }) => {
+    const segments = within(canvasElement).getAllByRole("spinbutton");
+    await expect(segments[0]).toHaveAccessibleName(/^month/i);
+    await userEvent.click(segments[0]);
+    await userEvent.keyboard("10292026");
+    await expect(args.onChange).toHaveBeenLastCalledWith("2026-10-29");
+  },
+};
+
+/** Backspace empties a segment digit by digit; the segment then has no value. */
+export const KeyboardBackspace: Story = {
+  args: { value: "2026-10-29" },
+  play: async ({ canvasElement }) => {
+    const [day] = within(canvasElement).getAllByRole("spinbutton");
+    await userEvent.click(day);
+    await userEvent.keyboard("{Backspace}");
+    await expect(day).toHaveAttribute("aria-valuenow", "2");
+    await userEvent.keyboard("{Backspace}");
+    await expect(day).not.toHaveAttribute("aria-valuenow");
+  },
+};
+
+/** The calendar by keyboard: Enter opens it on the chosen day, arrows move by day and week,
+ * Page Up and Down by month, Shift with them by year, Home and End to the month's first and last day,
+ * Enter picks and closes back onto the button. */
+export const KeyboardCalendar: Story = {
+  args: { value: "2026-10-29" },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const toggle = canvas.getByRole("button", { name: /Choose a date/ });
+    toggle.focus();
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(focused(canvasElement)).toHaveAccessibleName(/29 October 2026/));
+    await userEvent.keyboard("{ArrowRight}");
+    await expect(focused(canvasElement)).toHaveAccessibleName(/30 October 2026/);
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(focused(canvasElement)).toHaveAccessibleName(/6 November 2026/);
+    await userEvent.keyboard("{PageUp}");
+    await expect(focused(canvasElement)).toHaveAccessibleName(/6 October 2026/);
+    await userEvent.keyboard("{Home}");
+    await expect(focused(canvasElement)).toHaveAccessibleName(/1 October 2026/);
+    await userEvent.keyboard("{End}");
+    await expect(focused(canvasElement)).toHaveAccessibleName(/31 October 2026/);
+    await userEvent.keyboard("{Shift>}{PageDown}{/Shift}");
+    await expect(focused(canvasElement)).toHaveAccessibleName(/31 October 2027/);
+    await userEvent.keyboard("{Enter}");
+    await expect(args.onChange).toHaveBeenLastCalledWith("2027-10-31");
+    await waitFor(() => expect(within(canvasElement.ownerDocument.body).queryByRole("dialog")).toBeNull());
+    await waitFor(() => expect(toggle).toHaveFocus());
+  },
+};
+
+/** Escape closes the calendar without a change and returns to the button. */
+export const KeyboardEscape: Story = {
+  args: { value: "2026-10-29" },
+  play: async ({ canvasElement, args }) => {
+    const toggle = within(canvasElement).getByRole("button", { name: /Choose a date/ });
+    toggle.focus();
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(focused(canvasElement)).toHaveAccessibleName(/29 October 2026/));
+    await userEvent.keyboard("{ArrowRight}{Escape}");
+    await waitFor(() => expect(within(canvasElement.ownerDocument.body).queryByRole("dialog")).toBeNull());
+    await waitFor(() => expect(toggle).toHaveFocus());
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};

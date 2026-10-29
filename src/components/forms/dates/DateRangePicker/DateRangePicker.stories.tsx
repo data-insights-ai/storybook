@@ -233,10 +233,9 @@ export const ReversedDates: Story = {
     const dialog = within(canvasElement.ownerDocument.body);
     await typeDay(dialog, "Through date", "20092026");
     await waitFor(() => expect(dialog.getByText("The last day comes before the first.")).toBeVisible());
-    await expect(within(dialog.getByRole("group", { name: "Through date" })).getAllByRole("spinbutton")[0]).toHaveAttribute(
-      "aria-invalid",
-      "true",
-    );
+    await expect(
+      within(dialog.getByRole("group", { name: "Through date" })).getAllByRole("spinbutton")[0],
+    ).toHaveAttribute("aria-invalid", "true");
     await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
     await typeDay(dialog, "Through date", "04102026");
     await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
@@ -422,5 +421,32 @@ export const PhoneChoiceKeepsNavigation: Story = {
     await expect(new URL(win.location.href).searchParams.get("range")).toBe("30d");
     win.history.back();
     await waitFor(() => expect(new URL(win.location.href).searchParams.get("range")).toBeNull());
+  },
+};
+
+/** The range calendar by keyboard: its focus starts on the last day; Page Up and Down move by month,
+ * Home and End to the month's first and last day, arrows by day and week. */
+export const KeyboardCalendar: Story = {
+  args: { timeZone: "UTC", value: { from: "2026-10-01T00:00:00.000Z", to: "2026-10-16T00:00:00.000Z" } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    const focused = () => canvasElement.ownerDocument.activeElement as HTMLElement;
+    canvas.getByRole("button", { name: /^Period: / }).focus();
+    await userEvent.keyboard("{Enter}");
+    const grid = (await page.findAllByRole("grid"))[0];
+    grid.querySelector<HTMLElement>('[tabindex="0"]')!.focus();
+    await waitFor(() => expect(focused()).toHaveAccessibleName(/15 October 2026/));
+    await userEvent.keyboard("{PageDown}");
+    await expect(focused()).toHaveAccessibleName(/15 November 2026/);
+    await userEvent.keyboard("{Home}");
+    await expect(focused()).toHaveAccessibleName(/1 November 2026/);
+    await userEvent.keyboard("{End}");
+    await expect(focused()).toHaveAccessibleName(/30 November 2026/);
+    await userEvent.keyboard("{ArrowUp}{ArrowLeft}");
+    await expect(focused()).toHaveAccessibleName(/22 November 2026/);
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(page.queryByRole("listbox", { name: "Periods" })).toBeNull());
+    await waitFor(() => expect(canvas.getByRole("button", { name: /^Period: / })).toHaveFocus());
   },
 };

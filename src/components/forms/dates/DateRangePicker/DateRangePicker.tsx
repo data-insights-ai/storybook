@@ -236,7 +236,7 @@ function useDragToClose(sheet: React.RefObject<HTMLElement | null>, close: () =>
  * first day follow the `locale`, `weekStartsOn` and `timeZone` the product
  * passes from its settings; the popover names the zone. React Aria owns the
  * popover, the calendar grid and the time fields, so arrows move by day,
- * Page Up and Page Down by month, Home and End to the week's edges, Enter
+ * Page Up and Page Down by month, Home and End to the month's first and last day, Enter
  * picks, and Esc closes and returns to the control. Below 640px it opens
  * as a bottom sheet instead: full width with a drag handle, the periods as
  * a list, then the calendar and the typed days, Cancel and Apply pinned to

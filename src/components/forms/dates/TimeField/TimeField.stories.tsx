@@ -86,3 +86,52 @@ export const Window: Story = {
     );
   },
 };
+
+/** Keyboard only: Tab walks the hours and minutes, arrows wrap at the ends, digits type a time. */
+export const KeyboardSegments: Story = {
+  args: { value: "00:59" },
+  play: async ({ canvasElement, args }) => {
+    const [hour, minute] = within(canvasElement).getAllByRole("spinbutton");
+    await userEvent.tab();
+    await expect(hour).toHaveFocus();
+    await userEvent.tab();
+    await expect(minute).toHaveFocus();
+    await userEvent.keyboard("{ArrowUp}");
+    await expect(args.onChange).toHaveBeenLastCalledWith("00:00");
+    await userEvent.keyboard("{ArrowLeft}");
+    await expect(hour).toHaveFocus();
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(args.onChange).toHaveBeenLastCalledWith("23:00");
+    await userEvent.keyboard("0930");
+    await expect(args.onChange).toHaveBeenLastCalledWith("09:30");
+  },
+};
+
+/** In 12 hours a third segment holds AM or PM; typing P moves the time past noon. */
+export const KeyboardTwelveHours: Story = {
+  args: { locale: "en-US", value: "06:30" },
+  play: async ({ canvasElement, args }) => {
+    const segments = within(canvasElement).getAllByRole("spinbutton");
+    await expect(segments).toHaveLength(3);
+    await expect(segments[0]).toHaveAttribute("aria-valuetext", expect.stringMatching(/6/));
+    await userEvent.click(segments[2]);
+    await userEvent.keyboard("p");
+    await expect(args.onChange).toHaveBeenLastCalledWith("18:30");
+    await userEvent.keyboard("{ArrowUp}");
+    await expect(args.onChange).toHaveBeenLastCalledWith("06:30");
+  },
+};
+
+/** German counts in 24 hours and names the segments in German. */
+export const KeyboardGerman: Story = {
+  args: { locale: "de-DE", label: "Senden um", value: "" },
+  play: async ({ canvasElement, args }) => {
+    const segments = within(canvasElement).getAllByRole("spinbutton");
+    await expect(segments).toHaveLength(2);
+    await expect(segments[0]).toHaveAccessibleName(/^Stunde/);
+    await expect(segments[1]).toHaveAccessibleName(/^Minute/);
+    await userEvent.click(segments[0]);
+    await userEvent.keyboard("1745");
+    await expect(args.onChange).toHaveBeenLastCalledWith("17:45");
+  },
+};
