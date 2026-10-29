@@ -140,7 +140,9 @@ for (const file of all.filter(isStory)) {
   const meta = metaOf(parsed.get(file));
   const rendered = jsxNames(parsed.get(file));
   if (meta?.component) rendered.add(meta.component);
-  for (const i of importsOf(parsed.get(file))) i.names.filter((n) => rendered.has(n)).forEach((n) => shown.add(`${i.target}#${n}`));
+  for (const i of importsOf(parsed.get(file))) {
+    for (const module of reexported(i.target)) i.names.filter((n) => rendered.has(n)).forEach((n) => shown.add(`${module}#${n}`));
+  }
   if (!meta?.title) continue;
   titles.push([file, meta.title]);
   const tagged = meta.tags.filter((t) => t.startsWith("layer:")).map((t) => t.slice(6));
@@ -201,17 +203,30 @@ for (const [a, targets] of folderEdges) {
   for (const b of targets) if (a < b && reach(b, a)) find("folder-cycle", `components/${a} and components/${b} import each other`);
 }
 
+/** The modules a module's exports come from: itself, and whatever an index.ts re-exports. */
+function reexported(file) {
+  const sf = parsed.get(file);
+  if (!sf) return [file];
+  const from = sf.statements
+    .filter((st) => ts.isExportDeclaration(st) && st.moduleSpecifier && ts.isStringLiteral(st.moduleSpecifier))
+    .map((st) => resolve(file, st.moduleSpecifier.text))
+    .filter(Boolean);
+  return [file, ...from.flatMap(reexported)];
+}
+
 // Every public component has a story (its own, or its parent's when it is a slot) and a doc comment.
 const entry = parse(path.join("src", "index.ts"));
 for (const st of entry.statements) {
   if (!ts.isExportDeclaration(st) || st.isTypeOnly || !st.exportClause || !ts.isNamedExports(st.exportClause)) continue;
-  const target = resolve(entry.fileName, st.moduleSpecifier.text);
-  const components = new Map(componentsOf(parsed.get(target)).map((c) => [c.name, c]));
+  const components = new Map();
+  for (const module of reexported(resolve(entry.fileName, st.moduleSpecifier.text))) {
+    for (const c of componentsOf(parsed.get(module))) components.set(c.name, { ...c, module });
+  }
   for (const el of st.exportClause.elements) {
     const c = components.get(el.name.text);
     if (!c) continue;
-    if (!shown.has(`${target}#${c.name}`)) find("public-story", `${c.name} (${target}) has no story`);
-    if (!c.doc) find("public-doc", `${c.name} (${target}) has no doc comment`);
+    if (!shown.has(`${c.module}#${c.name}`)) find("public-story", `${c.name} (${c.module}) has no story`);
+    if (!c.doc) find("public-doc", `${c.name} (${c.module}) has no doc comment`);
   }
 }
 
