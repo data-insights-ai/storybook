@@ -8,19 +8,9 @@ import { Breadcrumb } from "../../navigation/Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Select } from "../../forms/select/Select";
 import { StatusPill } from "../../marks/StatusPill";
-import {
-  AppShell,
-  AppShellBar,
-  AppShellBarEnd,
-  AppShellContent,
-  AppShellContext,
-  AppShellFoot,
-  AppShellMain,
-  AppShellRail,
-  Console,
-  ConsoleFrame,
-  type NavGroup,
-} from "./AppShell";
+import { AppShell, AppShellBar, AppShellBarEnd, AppShellContent, AppShellMain } from "./AppShell";
+import { AppShellContext, AppShellFoot, AppShellRail, type NavGroup } from "./AppShellRail";
+import { Console, ConsoleFrame } from "./Console";
 
 /* The sample sections, as a product hands them over: every item a link. */
 const linkedGroups: NavGroup[] = sampleChrome.groups.map((group) => ({
