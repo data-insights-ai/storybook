@@ -16,8 +16,8 @@ import {
   RecordLines,
   RecordMark,
   RecordStatus,
-} from "../components/data/RecordCard";
-import { Stat, StatRow } from "../components/data/Stat";
+} from "../components/data/records/RecordCard";
+import { Stat, StatRow } from "../components/data/figures/Stat";
 import { StatusPill } from "../components/data/marks/StatusPill";
 import { TextLink } from "../components/navigation/TextLink";
 import {

@@ -5,7 +5,7 @@ import { Button } from "../actions/Button";
 import { Drawer, DrawerFooter } from "./Drawer";
 import { SealValue } from "../data/marks/SealValue";
 import { StatusPill } from "../data/marks/StatusPill";
-import { Fact, FactList } from "../data/FactList";
+import { Fact, FactList } from "../data/records/FactList";
 
 const meta = {
   title: "Overlays/Drawer",

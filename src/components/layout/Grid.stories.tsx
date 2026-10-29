@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Card } from "../data/Card";
+import { Card } from "../data/records/Card";
 import { Grid } from "./Grid";
 
 const meta = {

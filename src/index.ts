@@ -17,11 +17,11 @@ export { Bars } from "./components/charts/Bars";
 export { BulkActionBar } from "./components/actions/BulkActionBar";
 export { Breadcrumb } from "./components/navigation/Breadcrumb";
 export { Button } from "./components/actions/Button";
-export { Card } from "./components/data/Card";
-export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components/data/Channel";
+export { Card } from "./components/data/records/Card";
+export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components/data/records/Channel";
 export { ChainTimeline } from "./components/timeline/ChainTimeline";
 export type { ChainTimelineEvent, ChainTimelineLane } from "./components/timeline/ChainTimeline";
-export { CodeBlock } from "./components/data/CodeBlock";
+export { CodeBlock } from "./components/data/text/CodeBlock";
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/charts/Chart";
 export type { ChartConfig, ChartTooltipDetail } from "./components/charts/Chart";
 export { ChartCard, ChartCardAction, ChartCardGrid } from "./components/charts/ChartCard";
@@ -125,7 +125,7 @@ export type {
   TimelineTone,
 } from "./components/timeline/types";
 export { ExplainFooter, ExplainPanel, ExplainRow } from "./components/inference/ExplainPanel";
-export { Fact, FactList } from "./components/data/FactList";
+export { Fact, FactList } from "./components/data/records/FactList";
 export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/field/Field";
 export { FieldHint } from "./components/forms/field/FieldHint";
@@ -141,12 +141,12 @@ export {
   PageHeaderStatus,
   PageHeaderTitle,
 } from "./components/layout/PageHeader";
-export { Highlight } from "./components/data/marks/Highlight";
+export { Highlight } from "./components/data/text/Highlight";
 export { Icon } from "./components/data/marks/Icon";
 export { IconTile } from "./components/data/marks/IconTile";
 export { InfiniteTable, heldCount } from "./components/data/table/InfiniteTable";
 export type { InfiniteRowPlace } from "./components/data/table/InfiniteTable";
-export { KeyValue, KeyValues } from "./components/data/KeyValues";
+export { KeyValue, KeyValues } from "./components/data/records/KeyValues";
 export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/charts/LevelMeter";
 export type { LevelBands } from "./components/charts/LevelMeter";
 export { Actions } from "./components/layout/Actions";
@@ -154,10 +154,10 @@ export { Grid } from "./components/layout/Grid";
 export { Numbered } from "./components/layout/Numbered";
 export { Stack } from "./components/layout/Stack";
 export { Toolbar, ToolbarEnd } from "./components/layout/Toolbar";
-export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/data/LivingCard";
+export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/data/records/LivingCard";
 export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/data/table/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/navigation/Menu";
-export { Metric, MetricNote } from "./components/data/Metric";
+export { Metric, MetricNote } from "./components/data/figures/Metric";
 export {
   Modal,
   ModalBody,
@@ -167,7 +167,7 @@ export {
   ModalIcon,
   ModalTitle,
 } from "./components/overlays/Modal";
-export { NewEntries } from "./components/data/NewEntries";
+export { NewEntries } from "./components/data/records/NewEntries";
 export {
   Notice,
   NoticeAction,
@@ -184,7 +184,7 @@ export { Progress } from "./components/feedback/waiting/Progress";
 export { RouteProgress } from "./components/feedback/waiting/RouteProgress";
 export { AppLoader } from "./components/feedback/waiting/AppLoader";
 export { Delayed } from "./components/feedback/Delayed";
-export { PullQuote } from "./components/data/PullQuote";
+export { PullQuote } from "./components/data/text/PullQuote";
 export { QuantityField } from "./components/forms/text/QuantityField";
 export { RowActions } from "./components/actions/RowActions";
 export {
@@ -195,11 +195,11 @@ export {
   RecordLines,
   RecordMark,
   RecordStatus,
-} from "./components/data/RecordCard";
-export { Eyebrow } from "./components/data/marks/Eyebrow";
-export { Kbd } from "./components/data/marks/Kbd";
+} from "./components/data/records/RecordCard";
+export { Eyebrow } from "./components/data/text/Eyebrow";
+export { Kbd } from "./components/data/text/Kbd";
 export { SealMark, SealValue } from "./components/data/marks/SealValue";
-export { TickRule } from "./components/data/marks/TickRule";
+export { TickRule } from "./components/data/text/TickRule";
 export type { SealState } from "./components/data/marks/SealValue";
 export { SaveBar } from "./components/forms/field/SaveBar";
 export { SearchField } from "./components/forms/text/SearchField";
@@ -209,7 +209,7 @@ export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./component
 export { SegmentedControl } from "./components/forms/choice/SegmentedControl";
 export { Select } from "./components/forms/select/Select";
 export { Sheet, SheetFooter } from "./components/overlays/Sheet";
-export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/data/Session";
+export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/data/records/Session";
 export { Sidebar } from "./components/navigation/sidebar/Sidebar";
 export { SidebarBrand } from "./components/navigation/sidebar/SidebarBrand";
 export { useShortcut } from "./components/navigation/shortcuts/useShortcut";
@@ -243,8 +243,8 @@ export { Sparkline } from "./components/charts/Sparkline";
 export { Split, SplitAside, SplitMain } from "./components/layout/Split";
 export { Spinner } from "./components/feedback/waiting/Spinner";
 export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/Stage";
-export { Stat, StatRow } from "./components/data/Stat";
-export { StatTile, StatTileDelta } from "./components/data/StatTile";
+export { Stat, StatRow } from "./components/data/figures/Stat";
+export { StatTile, StatTileDelta } from "./components/data/figures/StatTile";
 export { StatusPill } from "./components/data/marks/StatusPill";
 export { Stepper } from "./components/navigation/Stepper";
 export { Switch } from "./components/forms/choice/Switch";

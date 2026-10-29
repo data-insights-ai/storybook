@@ -6,7 +6,7 @@ import { ConfirmDialog } from "../components/overlays/ConfirmDialog";
 import { CopyValue } from "../components/actions/CopyValue";
 import { DangerAction, DangerZone } from "../components/feedback/DangerZone";
 import { DetailSection, DetailSectionForm } from "../components/layout/DetailSection";
-import { Fact, FactList } from "../components/data/FactList";
+import { Fact, FactList } from "../components/data/records/FactList";
 import {
   PageHeader,
   PageHeaderAside,

@@ -14,7 +14,7 @@ import {
 } from "react";
 import { ChevronRight } from "lucide-react";
 import { cx } from "../../cx";
-import { Kbd } from "../data/marks/Kbd";
+import { Kbd } from "../data/text/Kbd";
 import { Spinner } from "../feedback/waiting/Spinner";
 import { Events, nearestEvent, reachOf } from "./marks/Events";
 import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";

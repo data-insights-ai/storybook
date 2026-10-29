@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../actions/Button";
-import { Fact, FactList } from "../data/FactList";
+import { Fact, FactList } from "../data/records/FactList";
 import { Actions } from "./Actions";
 import { Stack } from "./Stack";
 import { Panel } from "./Panel";

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { ChoiceCards } from "../forms/choice/ChoiceCards";
 import { CreateFlow } from "./CreateFlow";
-import { Fact, FactList } from "../data/FactList";
+import { Fact, FactList } from "../data/records/FactList";
 import { TextField } from "../forms/text/TextField";
 import { Page } from "../layout/Page";
 

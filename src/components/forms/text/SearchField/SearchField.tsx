@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes, Ref } from "react";
 import { Search } from "lucide-react";
 import { cx } from "../../../../cx";
-import { Kbd } from "../../../data/marks/Kbd";
+import { Kbd } from "../../../data/text/Kbd";
 import { useShortcutKeys } from "../../../navigation/shortcuts/shortcutKeys";
 import "../../field/Field/Field.css";
 import "./SearchField.css";

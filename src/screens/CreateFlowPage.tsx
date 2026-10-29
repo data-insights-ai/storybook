@@ -4,7 +4,7 @@ import { Console } from "../components/layout/shell/AppShell";
 import { Breadcrumb } from "../components/navigation/Breadcrumb";
 import { ChoiceCards } from "../components/forms/choice/ChoiceCards";
 import { CreateFlow } from "../components/overlays/CreateFlow";
-import { Fact, FactList } from "../components/data/FactList";
+import { Fact, FactList } from "../components/data/records/FactList";
 import { PageHeader, PageHeaderCrumbs, PageHeaderTitle } from "../components/layout/PageHeader";
 import { Page } from "../components/layout/Page";
 import { TextField } from "../components/forms/text/TextField";

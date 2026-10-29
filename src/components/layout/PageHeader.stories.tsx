@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Breadcrumb } from "../navigation/Breadcrumb";
 import { Button } from "../actions/Button";
-import { Fact, FactList } from "../data/FactList";
+import { Fact, FactList } from "../data/records/FactList";
 import {
   PageHeader,
   PageHeaderAside,
@@ -11,7 +11,7 @@ import {
   PageHeaderStatus,
   PageHeaderTitle,
 } from "./PageHeader";
-import { Highlight } from "../data/marks/Highlight";
+import { Highlight } from "../data/text/Highlight";
 import { StatusPill } from "../data/marks/StatusPill";
 
 const meta = {

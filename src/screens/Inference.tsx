@@ -10,9 +10,9 @@ import { ExplainFooter, ExplainPanel, ExplainRow } from "../components/inference
 import { PrivacyBadge } from "../components/inference/PrivacyBadge";
 import { Grid } from "../components/layout/Grid";
 import { Stack } from "../components/layout/Stack";
-import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "../components/data/LivingCard";
+import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "../components/data/records/LivingCard";
 import { Panel, PanelMeta } from "../components/layout/Panel";
-import { StatTile, StatTileDelta } from "../components/data/StatTile";
+import { StatTile, StatTileDelta } from "../components/data/figures/StatTile";
 import { Toast, ToastAction } from "../components/feedback/Toast";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
 import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";

@@ -14,11 +14,11 @@ import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../components/layo
 import { Grid } from "../components/layout/Grid";
 import { Numbered } from "../components/layout/Numbered";
 import { Stack } from "../components/layout/Stack";
-import { Metric, MetricNote } from "../components/data/Metric";
+import { Metric, MetricNote } from "../components/data/figures/Metric";
 import { Stage, StageFooter, StageIcon, StageTrack } from "../components/layout/Stage";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../components/feedback/Notice";
 import { StatusPill } from "../components/data/marks/StatusPill";
-import { KeyValue, KeyValues } from "../components/data/KeyValues";
+import { KeyValue, KeyValues } from "../components/data/records/KeyValues";
 import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "../components/layout/SectionTitle";
 
 const stages = [

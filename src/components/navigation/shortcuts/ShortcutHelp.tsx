@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 import { Button } from "../../actions/Button";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalTitle } from "../../overlays/Modal";
-import { Kbd } from "../../data/marks/Kbd";
+import { Kbd } from "../../data/text/Kbd";
 import { shortcutLabel, shortcutTarget } from "./shortcutKeys";
 import { useShortcut } from "./useShortcut";
 import "./ShortcutHelp.css";

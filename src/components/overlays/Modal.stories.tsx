@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AlertTriangle } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../actions/Button";
-import { Fact, FactList } from "../data/FactList";
+import { Fact, FactList } from "../data/records/FactList";
 import {
   Modal,
   ModalBody,

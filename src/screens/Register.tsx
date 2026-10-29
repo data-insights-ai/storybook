@@ -34,10 +34,10 @@ import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle }
 import { Pagination } from "../components/navigation/Pagination";
 import { SealValue } from "../components/data/marks/SealValue";
 import { SearchField } from "../components/forms/text/SearchField";
-import { StatTile, StatTileDelta } from "../components/data/StatTile";
+import { StatTile, StatTileDelta } from "../components/data/figures/StatTile";
 import { StatusPill } from "../components/data/marks/StatusPill";
 import { sampleChrome } from "../components/layout/shell/chrome.sample";
-import { Fact, FactList } from "../components/data/FactList";
+import { Fact, FactList } from "../components/data/records/FactList";
 
 type Source = {
   ordinal: string;

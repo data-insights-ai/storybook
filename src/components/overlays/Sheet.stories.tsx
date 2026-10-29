@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StrictMode, useEffect, useRef, useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../actions/Button";
-import { Fact, FactList } from "../data/FactList";
+import { Fact, FactList } from "../data/records/FactList";
 import { Sheet, SheetFooter } from "./Sheet";
 
 const meta = {

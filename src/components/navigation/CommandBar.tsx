@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Search, ShieldCheck } from "lucide-react";
 import { cx } from "../../cx";
-import { Kbd } from "../data/marks/Kbd";
+import { Kbd } from "../data/text/Kbd";
 import { SealMark } from "../data/marks/SealValue";
 import "./CommandBar.css";
 

@@ -95,7 +95,7 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
 | `navigation/` | Breadcrumb, Pagination, Stepper, Tabs, TabNav, Menu, CommandBar, TextLink, SkipLink; `sidebar/` the sidebar and its parts; `shortcuts/` the key scheme and ShortcutHelp |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, DateField, TimeField, DateRangePicker |
-| `data/` | records and figures (KeyValues, FactList, Stat, Metric, the cards, Channel, Session); `table/` DataTable, InfiniteTable, ListToolbar; `marks/` Badge, StatusPill, Chip, Tag, SealValue, Eyebrow, Kbd, TickRule, Highlight, Icon, IconTile, VersionTag |
+| `data/` | `records/` Card, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` Metric, Stat, StatTile; `marks/` Badge, Chip, StatusPill, Tag, VersionTag, SealValue, Icon, IconTile; `text/` Eyebrow, Highlight, Kbd, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
 | `feedback/` | Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `waiting/` the loaders, progress and skeletons |
 | `overlays/` | Modal, ConfirmDialog, Drawer, Sheet, Flyout, CreateFlow |
 | `inference/` | Explain, Confirm, Confidence, Privacy |
