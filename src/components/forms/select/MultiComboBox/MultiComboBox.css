@@ -38,7 +38,7 @@
     height: 16px;
   }
 
-  .di-multicombo-toggle[data-disabled] {
+  .di-multicombo-toggle:disabled {
     color: var(--di-text-disabled);
     cursor: not-allowed;
   }

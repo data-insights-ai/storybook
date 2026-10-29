@@ -15,20 +15,47 @@ const meta = {
   tags: ["layer:form"],
   component: ComboBox,
   args: {
-    id: "register-code", name: "register", label: "Register code", value: "",
-    suggestions, toggleLabel: "Show register suggestions", emptyLabel: "No matching suggestions. You can enter another code.",
-    placeholder: "Choose or enter a code", hint: "", hintTone: "neutral", labelTrack: "record", hideLabel: false, mono: true,
-    disabled: false, readOnly: false, required: false, children: null, onValueChange: fn(),
+    id: "register-code",
+    name: "register",
+    label: "Register code",
+    value: "",
+    suggestions,
+    toggleLabel: "Show register suggestions",
+    emptyLabel: "No matching suggestions. You can enter another code.",
+    placeholder: "Choose or enter a code",
+    hint: "",
+    hintTone: "neutral",
+    labelTrack: "record",
+    hideLabel: false,
+    mono: true,
+    disabled: false,
+    readOnly: false,
+    required: false,
+    children: null,
+    onValueChange: fn(),
   },
   argTypes: { children: { control: false } },
   render: function Render(args) {
     const [value, setValue] = useState(args.value);
     useEffect(() => setValue(args.value), [args.value]);
-    return <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
-      <ComboBox {...args} value={value} onValueChange={(next) => { args.onValueChange(next); setValue(next); }} />
-      <Button type="button" variant="ghost" onClick={() => setValue("NR-01")}>Restore recorded code</Button>
-      <Button type="button" variant="ghost" onClick={() => setValue("")}>Clear recorded code</Button>
-    </form>;
+    return (
+      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+        <ComboBox
+          {...args}
+          value={value}
+          onValueChange={(next) => {
+            args.onValueChange(next);
+            setValue(next);
+          }}
+        />
+        <Button type="button" variant="ghost" onClick={() => setValue("NR-01")}>
+          Restore recorded code
+        </Button>
+        <Button type="button" variant="ghost" onClick={() => setValue("")}>
+          Clear recorded code
+        </Button>
+      </form>
+    );
   },
 } satisfies Meta<typeof ComboBox>;
 export default meta;
@@ -39,7 +66,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const KeyboardSelection: Story = {
   play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement), page = within(canvasElement.ownerDocument.body);
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
     const input = canvas.getByRole("combobox", { name: "Register code" });
     await userEvent.type(input, "Southern");
     await expect(page.getByRole("option", { name: /Southern register/ })).toBeVisible();
@@ -63,7 +91,8 @@ export const KeyboardSelection: Story = {
 /** Custom text is exact caller-owned text, including whitespace and punctuation. */
 export const CustomValue: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement), page = within(canvasElement.ownerDocument.body);
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
     const input = canvas.getByRole("combobox", { name: "Register code" });
     await userEvent.type(input, "  local/Extra + 7  ");
     await expect(page.getByText("No matching suggestions. You can enter another code.")).toBeVisible();
@@ -78,7 +107,8 @@ export const CustomValue: Story = {
 export const ExternalReset: Story = {
   args: { value: "SR-02" },
   play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement), page = within(canvasElement.ownerDocument.body);
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
     const input = canvas.getByRole("combobox", { name: "Register code" });
     await expect(input).toHaveValue("SR-02");
     await userEvent.click(canvas.getByRole("button", { name: /^Show register suggestions/ }));
@@ -96,16 +126,18 @@ export const ExternalReset: Story = {
 export const EmptySuggestions: Story = { args: { suggestions: [] }, play: CustomValue.play };
 /** Composition events exercise the maintained IME guard; this is not an OS
  * input-method qualification or an assertion that every browser behaves alike. */
-export const ComposingInput: Story = { play: async ({ canvasElement }) => {
-  const input = within(canvasElement).getByRole("combobox", { name: "Register code" });
-  await userEvent.click(input);
-  fireEvent.compositionStart(input);
-  fireEvent.input(input, { target: { value: "新しい/値" }, isComposing: true });
-  fireEvent.keyDown(input, { key: "Enter", code: "Enter", keyCode: 229, isComposing: true });
-  fireEvent.compositionEnd(input, { data: "新しい/値" });
-  await userEvent.tab();
-  await expect(input).toHaveValue("新しい/値");
-} };
+export const ComposingInput: Story = {
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole("combobox", { name: "Register code" });
+    await userEvent.click(input);
+    fireEvent.compositionStart(input);
+    fireEvent.input(input, { target: { value: "新しい/値" }, isComposing: true });
+    fireEvent.keyDown(input, { key: "Enter", code: "Enter", keyCode: 229, isComposing: true });
+    fireEvent.compositionEnd(input, { data: "新しい/値" });
+    await userEvent.tab();
+    await expect(input).toHaveValue("新しい/値");
+  },
+};
 export const Required: Story = {
   args: { required: true },
   play: async ({ canvasElement }) => {
@@ -116,33 +148,65 @@ export const Required: Story = {
     await expect(input.checkValidity()).toBe(true);
   },
 };
-export const Disabled: Story = { args: { value: "NR-01", disabled: true }, play: async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  await expect(canvas.getByRole("combobox", { name: "Register code" })).toBeDisabled();
-  await expect(canvas.getByRole("button", { name: /^Show register suggestions/ })).toBeDisabled();
-} };
-export const ReadOnly: Story = { args: { value: "NR-01", readOnly: true }, play: async ({ canvasElement, args }) => {
-  const input = within(canvasElement).getByRole("combobox", { name: "Register code" });
-  await userEvent.type(input, "change");
-  await expect(input).toHaveValue("NR-01");
-  await expect(args.onValueChange).not.toHaveBeenCalled();
-} };
+export const Disabled: Story = {
+  args: { value: "NR-01", disabled: true },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("combobox", { name: "Register code" })).toBeDisabled();
+    await expect(canvas.getByRole("button", { name: /^Show register suggestions/ })).toBeDisabled();
+  },
+};
+export const ReadOnly: Story = {
+  args: { value: "NR-01", readOnly: true },
+  play: async ({ canvasElement, args }) => {
+    const input = within(canvasElement).getByRole("combobox", { name: "Register code" });
+    await userEvent.type(input, "change");
+    await expect(input).toHaveValue("NR-01");
+    await expect(args.onValueChange).not.toHaveBeenCalled();
+  },
+};
 /** A recorded value can replace a focused draft and become read only together.
  * The external update must neither reopen suggestions nor hide nearby controls. */
 export const ReadOnlyUpdate: Story = {
   render: function Render(args) {
-    const [value, setValue] = useState(""), [readOnly, setReadOnly] = useState(false);
-    return <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
-      <ComboBox {...args} value={value} readOnly={readOnly}
-        onValueChange={(next) => { args.onValueChange(next); setValue(next); }} />
-      <Button type="button" variant="ghost" onMouseDown={(event) => event.preventDefault()}
-        onClick={() => { setValue("NR-01"); setReadOnly(true); }}>Lock recorded code</Button>
-      <Button type="button" variant="ghost" onMouseDown={(event) => event.preventDefault()}
-        onClick={() => setReadOnly(false)}>Edit recorded code</Button>
-    </form>;
+    const [value, setValue] = useState(""),
+      [readOnly, setReadOnly] = useState(false);
+    return (
+      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+        <ComboBox
+          {...args}
+          value={value}
+          readOnly={readOnly}
+          onValueChange={(next) => {
+            args.onValueChange(next);
+            setValue(next);
+          }}
+        />
+        <Button
+          type="button"
+          variant="ghost"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => {
+            setValue("NR-01");
+            setReadOnly(true);
+          }}
+        >
+          Lock recorded code
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => setReadOnly(false)}
+        >
+          Edit recorded code
+        </Button>
+      </form>
+    );
   },
   play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement), page = within(canvasElement.ownerDocument.body);
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
     const input = canvas.getByRole("combobox", { name: "Register code" });
     const lock = canvas.getByRole("button", { name: "Lock recorded code" });
     await userEvent.type(input, "WR-03");
@@ -174,29 +238,39 @@ export const ReadOnlyUpdate: Story = {
     await expect(args.onValueChange).not.toHaveBeenCalled();
   },
 };
-export const Error: Story = { args: { value: "unknown", hint: "This code is not available here.", hintTone: "error" }, play: async ({ canvasElement }) => {
-  const input = within(canvasElement).getByRole("combobox", { name: "Register code" });
-  await expect(input).toHaveAttribute("aria-invalid", "true");
-  await expect(input).toHaveAccessibleDescription("This code is not available here.");
-} };
+export const Error: Story = {
+  args: { value: "unknown", hint: "This code is not available here.", hintTone: "error" },
+  play: async ({ canvasElement }) => {
+    const input = within(canvasElement).getByRole("combobox", { name: "Register code" });
+    await expect(input).toHaveAttribute("aria-invalid", "true");
+    await expect(input).toHaveAccessibleDescription("This code is not available here.");
+  },
+};
 export const Night: Story = { globals: { theme: "dark" }, play: KeyboardSelection.play };
 
 /** The popup remains inside a native modal, where the rest of the page is inert. */
 export const InDialog: Story = {
   render: function Render(args) {
-    const [open, setOpen] = useState(false), [value, setValue] = useState("");
-    return <>
-      <Button onClick={() => setOpen(true)}>Review code</Button>
-      <Modal open={open} labelledBy="review-code-title" onClose={() => setOpen(false)}>
-        <ModalContent><ModalTitle id="review-code-title">Review the register code</ModalTitle>
-          <ComboBox {...args} value={value} onValueChange={setValue} />
-          <Button variant="secondary" onClick={() => setOpen(false)}>Cancel review</Button>
-        </ModalContent>
-      </Modal>
-    </>;
+    const [open, setOpen] = useState(false),
+      [value, setValue] = useState("");
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}>Review code</Button>
+        <Modal open={open} labelledBy="review-code-title" onClose={() => setOpen(false)}>
+          <ModalContent>
+            <ModalTitle id="review-code-title">Review the register code</ModalTitle>
+            <ComboBox {...args} value={value} onValueChange={setValue} />
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel review
+            </Button>
+          </ModalContent>
+        </Modal>
+      </>
+    );
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement), page = within(canvasElement.ownerDocument.body);
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
     await userEvent.click(canvas.getByRole("button", { name: "Review code" }));
     const dialog = canvas.getByRole("dialog", { name: "Review the register code" });
     await userEvent.click(within(dialog).getByRole("button", { name: /^Show register suggestions/ }));
@@ -205,5 +279,73 @@ export const InDialog: Story = {
     await userEvent.click(within(dialog).getByRole("button", { name: "Cancel review" }));
     await waitFor(() => expect(canvas.queryByRole("dialog")).toBeNull());
     await expect(canvas.getByRole("button", { name: "Review code" })).toHaveFocus();
+  },
+};
+
+/** Keyboard only: Tab reaches the input and skips the toggle, ArrowDown opens every
+ * suggestion, the arrows walk them, Enter takes one and closes the list. */
+export const KeyboardWalk: Story = {
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Register code" });
+    await userEvent.tab();
+    await expect(input).toHaveFocus();
+    await userEvent.keyboard("{ArrowDown}");
+    await waitFor(() => expect(page.getAllByRole("option")).toHaveLength(3));
+    await expect(input).toHaveAttribute("aria-expanded", "true");
+    const active = () => canvasElement.ownerDocument.getElementById(input.getAttribute("aria-activedescendant") ?? "");
+    await waitFor(() => expect(active()).toHaveTextContent("Northern register"));
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(active()).toHaveTextContent("Southern register");
+    await userEvent.keyboard("{ArrowDown}{ArrowUp}");
+    await expect(active()).toHaveTextContent("Southern register");
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(input).toHaveValue("SR-02"));
+    await expect(args.onValueChange).toHaveBeenLastCalledWith("SR-02");
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
+    await expect(input).toHaveFocus();
+    await userEvent.tab();
+    await expect(canvas.getByRole("button", { name: "Restore recorded code" })).toHaveFocus();
+  },
+};
+
+/** Escape closes the list and keeps the typed text and the focus; typing opens it again. */
+export const KeyboardEscape: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Register code" });
+    await userEvent.click(input);
+    await userEvent.type(input, "reg");
+    await waitFor(() => expect(page.getAllByRole("option")).toHaveLength(3));
+    await userEvent.keyboard("{ArrowDown}{Escape}");
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
+    await expect(input).toHaveValue("reg");
+    await expect(input).toHaveFocus();
+    await userEvent.clear(input);
+    await userEvent.type(input, "west");
+    await waitFor(() => expect(page.getAllByRole("option")).toHaveLength(1));
+    await expect(page.getByRole("option", { name: /Western register/ })).toBeVisible();
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
+  },
+};
+
+/** Escape in a modal closes the list and leaves the dialog open. */
+export const EscapeInDialog: Story = {
+  render: InDialog.render,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole("button", { name: "Review code" }));
+    const dialog = canvas.getByRole("dialog", { name: "Review the register code" });
+    const input = within(dialog).getByRole("combobox", { name: "Register code" });
+    await userEvent.type(input, "reg");
+    await waitFor(() => expect(page.getAllByRole("option")).toHaveLength(3));
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
+    await expect(canvas.getByRole("dialog", { name: "Review the register code" })).toBeVisible();
+    await expect(input).toHaveFocus();
   },
 };

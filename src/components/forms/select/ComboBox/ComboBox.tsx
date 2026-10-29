@@ -1,15 +1,11 @@
-import { useContext, useLayoutEffect, useRef, useState, type InputHTMLAttributes, type ReactNode } from "react";
+import { useEffect, useRef, useState, type InputHTMLAttributes, type ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
-import { ComboBox as AriaComboBox, ComboBoxStateContext, useFilter } from "react-aria-components/ComboBox";
-import { Button as AriaButton } from "react-aria-components/Button";
-import { Input } from "react-aria-components/Input";
-import { Label } from "react-aria-components/Label";
-import { ListBox, ListBoxItem } from "react-aria-components/ListBox";
-import { Popover } from "react-aria-components/Popover";
+import { Autocomplete } from "@base-ui/react/autocomplete";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
+import { useListToggle } from "../../../../internal/useListToggle";
 import "../../field/Field/Field.css";
 import "./ComboBox.css";
 
@@ -20,26 +16,32 @@ export type ComboBoxSuggestion = {
   label: string;
 };
 
-// A controlled refresh may lock an already focused/open field. Close only the
-// maintained overlay state; close()/commit() would also commit a draft value.
-function CloseUnavailablePopup({ unavailable }: { unavailable: boolean }) {
-  const state = useContext(ComboBoxStateContext);
-  useLayoutEffect(() => {
-    if (unavailable && state?.isOpen) state.setOpen(false);
-  }, [unavailable, state]);
-  return null;
-}
-
-/** Editable text with suggestions. React Aria owns collection, keyboard, IME,
+/** Editable text with suggestions. Base UI's autocomplete owns keyboard, IME,
  * focus and popup behavior. The caller owns every value and validation rule.
  * The input always shows the exact value, including custom text. Labels appear
  * only in the suggestion list, so selection, blur and form submission cannot
  * silently replace a canonical value with its human-readable label. */
 export function ComboBox({
-  id, label, value, onValueChange, suggestions, toggleLabel, emptyLabel,
-  hint = "", hintTone = "neutral", labelTrack = "record", hideLabel = false, mono = false,
-  disabled = false, readOnly = false, required = false, className, children,
-  name, placeholder, autoComplete,
+  id,
+  label,
+  value,
+  onValueChange,
+  suggestions,
+  toggleLabel,
+  emptyLabel,
+  hint = "",
+  hintTone = "neutral",
+  labelTrack = "record",
+  hideLabel = false,
+  mono = false,
+  disabled = false,
+  readOnly = false,
+  required = false,
+  className,
+  children,
+  name,
+  placeholder,
+  autoComplete,
 }: {
   id: string;
   label: string;
@@ -61,38 +63,114 @@ export function ComboBox({
   /** Slot beside the label. */
   children?: ReactNode;
 } & Pick<InputHTMLAttributes<HTMLInputElement>, "name" | "placeholder" | "autoComplete">) {
-  const { contains } = useFilter({ sensitivity: "base" });
-  const byValue = new Map(suggestions.map((item) => [item.value, item]));
+  const { contains } = Autocomplete.useFilter({ sensitivity: "base" });
   const root = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState(false);
   const { host: overlay, update: updateOverlay } = useOverlayHost(root, open);
+  const locked = readOnly || disabled;
   const invalid = hint !== "" && hintTone === "error";
-  return <AriaComboBox ref={root} id={id} className={cx("di-field", "di-combobox", className)}
-    inputValue={value} value={byValue.has(value) ? value : null} defaultItems={suggestions}
-    allowsCustomValue allowsEmptyCollection isDisabled={disabled} isReadOnly={readOnly} isRequired={required} isInvalid={invalid}
-    menuTrigger={readOnly || disabled ? "manual" : "input"}
-    validationBehavior="native" name={name} onOpenChange={(next) => { if (next) updateOverlay(); setOpen(next); }}
-    onInputChange={onValueChange}
-    onChange={(key) => { if (typeof key === "string" && byValue.has(key)) onValueChange(key); }}
-    defaultFilter={(text, query) => contains(text, query) || contains(byValue.get(text)?.label ?? "", query)}>
-    <CloseUnavailablePopup unavailable={readOnly || disabled} />
-    <div className={cx("di-field-row", hideLabel && "di-sr")}>
-      <Label className={cx("di-field-label", `di-field-label-${labelTrack}`)}>{label}</Label>
-      {children}
+  const matches = (item: ComboBoxSuggestion) =>
+    contains(item.value, value.trim()) || contains(item.label, value.trim());
+  const show = (filtered: boolean) => {
+    if (locked) return;
+    updateOverlay();
+    setTyped(filtered);
+    setOpen(true);
+  };
+  const shown = typed ? suggestions.filter(matches) : suggestions;
+  const control = useRef<HTMLDivElement>(null);
+  const input = useRef<HTMLInputElement>(null);
+  const toggle = useListToggle(input, () => (open ? setOpen(false) : show(false)));
+  const arrowOpened = useRef<string | null>(null);
+  // An arrow that opens the list also highlights its first or last suggestion;
+  // Base UI's autocomplete would wait for a second press.
+  useEffect(() => {
+    const key = arrowOpened.current;
+    arrowOpened.current = null;
+    if (!open || key === null) return;
+    const frame = requestAnimationFrame(() =>
+      input.current?.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true })),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [open]);
+  return (
+    <div ref={root} className={cx("di-field", "di-combobox", className)}>
+      <Autocomplete.Root
+        id={id}
+        name={name}
+        items={suggestions}
+        filteredItems={shown}
+        value={value}
+        disabled={disabled}
+        readOnly={readOnly}
+        required={required}
+        open={open && !locked}
+        openOnInputClick={false}
+        onOpenChange={(next, details) => {
+          if (next) show(details.reason === "input-change");
+          else setOpen(false);
+        }}
+        onValueChange={(next, details) => {
+          if (locked) return;
+          if (details.reason === "input-change") setTyped(true);
+          onValueChange(next);
+        }}
+        itemToStringValue={(item: ComboBoxSuggestion) => item.value}
+      >
+        <div className={cx("di-field-row", hideLabel && "di-sr")}>
+          <label id={`${id}-label`} className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
+            {label}
+          </label>
+          {children}
+        </div>
+        <Autocomplete.InputGroup ref={control} className="di-combobox-control">
+          <Autocomplete.Input
+            ref={input}
+            className={cx("di-control", mono && "di-control-mono")}
+            placeholder={placeholder}
+            autoComplete={autoComplete ?? "off"}
+            aria-labelledby={`${id}-label`}
+            aria-invalid={invalid || undefined}
+            aria-describedby={hint === "" ? undefined : `${id}-hint`}
+            onKeyDown={(event) => {
+              if (!open && !locked && (event.key === "ArrowDown" || event.key === "ArrowUp"))
+                arrowOpened.current = event.key;
+            }}
+          />
+          <button {...toggle} className="di-combobox-toggle" aria-label={toggleLabel} disabled={locked}>
+            <ChevronDown aria-hidden />
+          </button>
+        </Autocomplete.InputGroup>
+        <FieldHint id={`${id}-hint`} tone={hintTone}>
+          {hint}
+        </FieldHint>
+        {/* Unmounted in the render that closes it, so the page behind is readable again at once. */}
+        {open && !locked ? (
+          <Autocomplete.Portal container={overlay.container}>
+            <Autocomplete.Positioner
+              anchor={control}
+              data-theme={overlay.theme}
+              side="bottom"
+              align="start"
+              sideOffset={4}
+              style={{ zIndex: 100 }}
+            >
+              <Autocomplete.Popup className="di-combobox-popover">
+                {shown.length === 0 ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
+                <Autocomplete.List className="di-combobox-list" aria-labelledby={`${id}-label`}>
+                  {(item: ComboBoxSuggestion) => (
+                    <Autocomplete.Item key={item.value} value={item} className="di-combobox-option">
+                      <span className="di-combobox-label">{item.label}</span>
+                      {item.value === item.label ? null : <span className="di-combobox-value">{item.value}</span>}
+                    </Autocomplete.Item>
+                  )}
+                </Autocomplete.List>
+              </Autocomplete.Popup>
+            </Autocomplete.Positioner>
+          </Autocomplete.Portal>
+        ) : null}
+      </Autocomplete.Root>
     </div>
-    <div className="di-combobox-control">
-      <Input className={cx("di-control", mono && "di-control-mono")} placeholder={placeholder} autoComplete={autoComplete}
-        aria-describedby={hint === "" ? undefined : `${id}-hint`} />
-      <AriaButton className="di-combobox-toggle" aria-label={toggleLabel}><ChevronDown aria-hidden /></AriaButton>
-    </div>
-    <FieldHint id={`${id}-hint`} tone={hintTone}>{hint}</FieldHint>
-    <Popover className="di-combobox-popover" data-theme={overlay.theme} UNSTABLE_portalContainer={overlay.container} placement="bottom start" offset={4}>
-      <ListBox className="di-combobox-list" renderEmptyState={() => <p className="di-combobox-empty">{emptyLabel}</p>}>
-        {(item: ComboBoxSuggestion) => <ListBoxItem id={item.value} textValue={item.value} className="di-combobox-option">
-          <span className="di-combobox-label">{item.label}</span>
-          {item.value === item.label ? null : <span className="di-combobox-value">{item.value}</span>}
-        </ListBoxItem>}
-      </ListBox>
-    </Popover>
-  </AriaComboBox>;
+  );
 }

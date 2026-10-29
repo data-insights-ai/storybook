@@ -134,3 +134,30 @@ export const InAModal: Story = {
     await expect(page.getByRole("button", { name: "Remove Jonas Berger" })).toBeVisible();
   },
 };
+
+/** Keyboard only: Tab into the field opens the list, the arrows walk it, Enter
+ * checks a row and the list stays open, Escape closes it and keeps the focus. */
+export const KeyboardWalk: Story = {
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Members" });
+    await userEvent.tab();
+    await expect(input).toHaveFocus();
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "true"));
+    await expect(page.getAllByRole("option")).toHaveLength(6);
+    const active = () => canvasElement.ownerDocument.getElementById(input.getAttribute("aria-activedescendant") ?? "");
+    await userEvent.keyboard("{ArrowDown}");
+    await waitFor(() => expect(active()).toHaveTextContent("Nora Feld"));
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(active()).toHaveTextContent("Jonas Berger");
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["u-jonas"]));
+    await expect(input).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByRole("option", { name: /Jonas Berger/ })).toHaveAttribute("aria-selected", "true");
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
+    await expect(input).toHaveFocus();
+    await expect(canvas.getByRole("button", { name: "Remove Jonas Berger" })).toBeVisible();
+  },
+};

@@ -3,7 +3,7 @@ import { useLayoutEffect, useState, type RefObject } from "react";
 type OverlayHost = { theme?: string; container?: HTMLElement };
 
 // Portals must retain a nested theme and stay inside a native modal's inert
-// boundary. This bridges presentation only; React Aria still owns the popup.
+// boundary. This bridges presentation only; the headless library still owns the popup.
 export function useOverlayHost(root: RefObject<HTMLElement | null>, open: boolean) {
   const [host, setHost] = useState<OverlayHost>({});
   const update = () => {

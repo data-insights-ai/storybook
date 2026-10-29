@@ -1,15 +1,11 @@
 import { useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
 import { Check, ChevronDown, X } from "lucide-react";
-import { ComboBox as AriaComboBox, useFilter } from "react-aria-components/ComboBox";
-import { Button as AriaButton } from "react-aria-components/Button";
-import { Input } from "react-aria-components/Input";
-import { Label } from "react-aria-components/Label";
-import { ListBox, ListBoxItem } from "react-aria-components/ListBox";
-import { Popover } from "react-aria-components/Popover";
+import { Combobox } from "@base-ui/react/combobox";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
+import { useListToggle } from "../../../../internal/useListToggle";
 import "../../field/Field/Field.css";
 import "../ComboBox/ComboBox.css";
 import "../../text/TokenField/TokenField.css";
@@ -66,18 +62,24 @@ export function MultiComboBox({
   disabled?: boolean;
   className?: string;
 }) {
-  const { contains } = useFilter({ sensitivity: "base" });
+  const { contains } = Combobox.useFilter({ sensitivity: "base" });
   const root = useRef<HTMLDivElement>(null);
   const control = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const [width, setWidth] = useState<number>();
   const { host, update } = useOverlayHost(root, open);
   const byValue = new Map(options.map((o) => [o.value, o]));
   const chosen = values.filter((v) => byValue.has(v));
+  const shown = options.filter((o) => contains(o.label, query.trim())).map((o) => o.value);
   const invalid = hint !== "" && hintTone === "error";
 
+  const show = () => {
+    if (disabled) return;
+    update();
+    setOpen(true);
+  };
+  const toggle = useListToggle(input, () => (open ? setOpen(false) : show()));
   const set = (next: string[]) => {
     onChange(next);
     setQuery("");
@@ -91,101 +93,105 @@ export function MultiComboBox({
   };
 
   return (
-    <AriaComboBox
-      ref={root}
-      id={id}
-      className={cx("di-field", "di-combobox", "di-multicombo", className)}
-      selectionMode="multiple"
-      value={chosen}
-      onChange={(keys) => set(keys.map(String))}
-      inputValue={query}
-      onInputChange={setQuery}
-      defaultItems={options}
-      defaultFilter={(text, typed) => contains(text, typed)}
-      allowsEmptyCollection
-      menuTrigger="focus"
-      isDisabled={disabled}
-      isInvalid={invalid}
-      onOpenChange={(next) => {
-        if (next) {
-          update();
-          setWidth(control.current?.offsetWidth);
-        }
-        setOpen(next);
-      }}
-    >
-      <div className="di-field-row">
-        <Label className={cx("di-field-label", `di-field-label-${labelTrack}`)}>{label}</Label>
-      </div>
-      <div
-        ref={control}
-        className={cx("di-token-field", "di-multicombo-control", invalid && "is-invalid", disabled && "is-disabled")}
-        onMouseDown={pressControl}
+    <div ref={root} className={cx("di-field", "di-combobox", "di-multicombo", className)}>
+      <Combobox.Root
+        id={id}
+        multiple
+        items={options.map((o) => o.value)}
+        filteredItems={shown}
+        value={chosen}
+        onValueChange={(next) => set([...next])}
+        inputValue={query}
+        onInputValueChange={(next, details) => {
+          if (details.reason === "input-change") setQuery(next);
+        }}
+        itemToStringLabel={(value: string) => byValue.get(value)?.label ?? value}
+        open={open && !disabled}
+        onOpenChange={(next, details) => {
+          if (details.reason === "item-press") return;
+          if (next) show();
+          else setOpen(false);
+        }}
+        disabled={disabled}
       >
-        <ul className="di-token-list">
-          {chosen.map((value) => {
-            const name = byValue.get(value)!.label;
-            return (
-              <li key={value} className="di-token">
-                <span className="di-token-text">{name}</span>
-                {/* Pointer only: React Aria hides everything but the input and
-                    the list while it is open, and a keyboard drops an entry in
-                    the list or with Backspace. */}
-                <button
-                  type="button"
-                  tabIndex={-1}
-                  className="di-token-remove"
-                  aria-label={removeLabel(name)}
-                  disabled={disabled}
-                  onClick={() => set(chosen.filter((v) => v !== value))}
-                >
-                  <X aria-hidden />
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <Input
-          ref={input}
-          className="di-token-input"
-          placeholder={chosen.length === 0 ? placeholder : ""}
-          aria-describedby={hint === "" ? undefined : `${id}-hint`}
-          onKeyDown={keyDown}
-        />
-        <AriaButton className="di-multicombo-toggle" aria-label={toggleLabel}>
-          <ChevronDown aria-hidden />
-        </AriaButton>
-      </div>
-      <FieldHint id={`${id}-hint`} tone={hintTone}>
-        {hint}
-      </FieldHint>
-      <Popover
-        className="di-combobox-popover"
-        triggerRef={control}
-        style={width ? { width } : undefined}
-        data-theme={host.theme}
-        UNSTABLE_portalContainer={host.container}
-        placement="bottom start"
-        offset={4}
-      >
-        <ListBox
-          className="di-combobox-list"
-          renderEmptyState={() => <p className="di-combobox-empty">{emptyLabel}</p>}
+        <div className="di-field-row">
+          <label id={`${id}-label`} className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
+            {label}
+          </label>
+        </div>
+        <div
+          ref={control}
+          className={cx("di-token-field", "di-multicombo-control", invalid && "is-invalid", disabled && "is-disabled")}
+          onMouseDown={pressControl}
         >
-          {(option: MultiComboBoxOption) => (
-            <ListBoxItem id={option.value} textValue={option.label} className="di-combobox-option di-multicombo-option">
-              {({ isSelected }) => (
-                <>
-                  <span className="di-multicombo-check" aria-hidden>
-                    {isSelected ? <Check /> : null}
-                  </span>
-                  <span className="di-combobox-label">{option.label}</span>
-                </>
-              )}
-            </ListBoxItem>
-          )}
-        </ListBox>
-      </Popover>
-    </AriaComboBox>
+          <ul className="di-token-list">
+            {chosen.map((value) => {
+              const name = byValue.get(value)!.label;
+              return (
+                <li key={value} className="di-token">
+                  <span className="di-token-text">{name}</span>
+                  {/* Pointer only: the page around the open list is hidden from
+                      assistive technology, and a keyboard drops an entry in the
+                      list or with Backspace. */}
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    className="di-token-remove"
+                    aria-label={removeLabel(name)}
+                    disabled={disabled}
+                    onClick={() => set(chosen.filter((v) => v !== value))}
+                  >
+                    <X aria-hidden />
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <Combobox.Input
+            ref={input}
+            className="di-token-input"
+            placeholder={chosen.length === 0 ? placeholder : ""}
+            aria-labelledby={`${id}-label`}
+            aria-invalid={invalid || undefined}
+            aria-describedby={hint === "" ? undefined : `${id}-hint`}
+            onFocus={show}
+            onKeyDown={keyDown}
+          />
+          <button {...toggle} className="di-multicombo-toggle" aria-label={toggleLabel} disabled={disabled}>
+            <ChevronDown aria-hidden />
+          </button>
+        </div>
+        <FieldHint id={`${id}-hint`} tone={hintTone}>
+          {hint}
+        </FieldHint>
+        {/* Unmounted in the render that closes it, so the page behind is readable again at once. */}
+        {open && !disabled ? (
+          <Combobox.Portal container={host.container}>
+            <Combobox.Positioner
+              anchor={control}
+              data-theme={host.theme}
+              side="bottom"
+              align="start"
+              sideOffset={4}
+              style={{ zIndex: 100 }}
+            >
+              <Combobox.Popup className="di-combobox-popover">
+                {shown.length === 0 ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
+                <Combobox.List className="di-combobox-list" aria-labelledby={`${id}-label`}>
+                  {(value: string) => (
+                    <Combobox.Item key={value} value={value} className="di-combobox-option di-multicombo-option">
+                      <span className="di-multicombo-check" aria-hidden>
+                        {chosen.includes(value) ? <Check /> : null}
+                      </span>
+                      <span className="di-combobox-label">{byValue.get(value)!.label}</span>
+                    </Combobox.Item>
+                  )}
+                </Combobox.List>
+              </Combobox.Popup>
+            </Combobox.Positioner>
+          </Combobox.Portal>
+        ) : null}
+      </Combobox.Root>
+    </div>
   );
 }
