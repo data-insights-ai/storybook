@@ -7,6 +7,20 @@ import { ListToolbar } from "../../data/table/ListToolbar";
 import { SearchField } from "../SearchField";
 import { Select } from "../Select";
 
+type Screen = ReturnType<typeof within>;
+
+// Types a day into the segments of a typed date field: day, month, year in en-GB.
+const typeDay = async (screen: Screen, label: string, digits: string) => {
+  await userEvent.click(within(screen.getByRole("group", { name: label })).getAllByRole("spinbutton")[0]);
+  await userEvent.keyboard(digits);
+};
+
+// Empties the year, which leaves the day incomplete.
+const clearYear = async (screen: Screen, label: string) => {
+  await userEvent.click(within(screen.getByRole("group", { name: label })).getAllByRole("spinbutton")[2]);
+  await userEvent.keyboard("{Backspace}{Backspace}{Backspace}{Backspace}");
+};
+
 const meta = {
   title: "Forms/DateRangePicker",
   component: DateRangePicker,
@@ -58,7 +72,7 @@ export const IndependentStart: Story = {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: /Period:/ }));
     const dialog = within(canvasElement.ownerDocument.body);
-    fireEvent.change(dialog.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    await typeDay(dialog, "From date", "03102026");
     await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
     await expect(args.onChange).toHaveBeenLastCalledWith({
       from: "2026-10-03T00:00:00.000Z",
@@ -73,7 +87,7 @@ export const OpenEnded: Story = {
     await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
     const dialog = within(canvasElement.ownerDocument.body);
     await expect(dialog.getByLabelText("Until now")).toBeChecked();
-    fireEvent.change(dialog.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    await typeDay(dialog, "From date", "03102026");
     await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
     await expect(args.onChange).toHaveBeenLastCalledWith({ from: "2026-10-03T00:00:00.000Z" });
   },
@@ -105,6 +119,10 @@ export const German: Story = {
       apply: "Übernehmen",
       cancel: "Abbrechen",
       timeZone: "Zeitzone",
+      fromDate: "Erster Tag",
+      toDate: "Letzter Tag",
+      openEnd: "Bis jetzt",
+      reversed: "Der letzte Tag liegt vor dem ersten.",
     },
   },
 };
@@ -194,10 +212,10 @@ export const PartialDateKeepsOtherEndpoint: Story = {
   play: async ({ canvasElement, args }) => {
     await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
     const dialog = within(canvasElement.ownerDocument.body);
-    fireEvent.change(dialog.getByLabelText("From date"), { target: { value: "" } });
-    await expect(dialog.getByLabelText("Through date")).toHaveValue("2026-10-15");
+    await clearYear(dialog, "From date");
+    await expect(dialog.getByRole("group", { name: "Through date" })).toHaveTextContent(/15\D*10\D*2026/);
     await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
-    fireEvent.input(dialog.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    await typeDay(dialog, "From date", "03102026");
     await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
     await expect(args.onChange).toHaveBeenLastCalledWith({
       from: "2026-10-03T00:00:00.000Z",
@@ -212,11 +230,14 @@ export const ReversedDates: Story = {
   play: async ({ canvasElement, args }) => {
     await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
     const dialog = within(canvasElement.ownerDocument.body);
-    fireEvent.change(dialog.getByLabelText("Through date"), { target: { value: "2026-09-20" } });
+    await typeDay(dialog, "Through date", "20092026");
     await waitFor(() => expect(dialog.getByText("The last day comes before the first.")).toBeVisible());
-    await expect(dialog.getByLabelText("Through date")).toHaveAttribute("aria-invalid", "true");
+    await expect(within(dialog.getByRole("group", { name: "Through date" })).getAllByRole("spinbutton")[0]).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
     await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
-    fireEvent.change(dialog.getByLabelText("Through date"), { target: { value: "2026-10-04" } });
+    await typeDay(dialog, "Through date", "04102026");
     await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
     await expect(args.onChange).toHaveBeenLastCalledWith({
       from: "2026-10-01T00:00:00.000Z",
@@ -233,7 +254,7 @@ export const OpenEndedWithTime: Story = {
     const dialog = within(canvasElement.ownerDocument.body);
     await expect(dialog.getByLabelText("Until now")).toBeChecked();
     await expect(dialog.getByLabelText("Set times")).toBeChecked();
-    await expect(dialog.queryByLabelText("Through date")).toBeNull();
+    await expect(dialog.queryByRole("group", { name: "Through date" })).toBeNull();
     await expect(dialog.queryByText("Until")).toBeNull();
     await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
     await expect(args.onChange).toHaveBeenLastCalledWith({ from: "2026-10-01T09:30:00.000Z" });
@@ -248,9 +269,9 @@ export const NoOpenEnd: Story = {
     const dialog = within(canvasElement.ownerDocument.body);
     await expect(dialog.queryByLabelText("Until now")).toBeNull();
     await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
-    fireEvent.change(dialog.getByLabelText("From date"), { target: { value: "2026-10-03" } });
+    await typeDay(dialog, "From date", "03102026");
     await expect(dialog.getByRole("button", { name: "Apply" })).toBeDisabled();
-    fireEvent.change(dialog.getByLabelText("Through date"), { target: { value: "2026-10-03" } });
+    await typeDay(dialog, "Through date", "03102026");
     await userEvent.click(dialog.getByRole("button", { name: "Apply" }));
     await expect(args.onChange).toHaveBeenLastCalledWith({
       from: "2026-10-03T00:00:00.000Z",
@@ -292,7 +313,7 @@ export const PhoneSheet: Story = {
     const presets = page.getByRole("listbox", { name: "Periods" });
     const calendar = page.getAllByRole("grid")[0];
     await expect(top(presets)).toBeLessThan(top(calendar));
-    await expect(top(calendar)).toBeLessThan(top(page.getByLabelText("From date")));
+    await expect(top(calendar)).toBeLessThan(top(page.getByRole("group", { name: "From date" })));
     await expect(page.getAllByRole("grid")).toHaveLength(1);
     const apply = page.getByRole("button", { name: "Apply" });
     await expect(apply.getBoundingClientRect().bottom).toBeLessThanOrEqual(844);
@@ -318,8 +339,8 @@ export const PhoneChoose: Story = {
     await expect(args.onChange).toHaveBeenLastCalledWith({ preset: "7d" });
     await waitFor(() => expect(doc.querySelector(".di-date-range-sheet")).toBeNull());
     ({ doc, page } = await openSheet(canvasElement));
-    fireEvent.change(page.getByLabelText("From date"), { target: { value: "2026-10-03" } });
-    fireEvent.change(page.getByLabelText("Through date"), { target: { value: "2026-10-05" } });
+    await typeDay(page, "From date", "03102026");
+    await typeDay(page, "Through date", "05102026");
     await userEvent.click(page.getByRole("button", { name: "Apply" }));
     await expect(args.onChange).toHaveBeenLastCalledWith({
       from: "2026-10-03T00:00:00.000Z",

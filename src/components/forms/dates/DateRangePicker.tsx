@@ -23,8 +23,8 @@ import { DateInput, DateSegment, Label, TimeField } from "react-aria-components/
 import { cx } from "../../../cx";
 import { Button } from "../../actions/Button";
 import { Checkbox } from "../Choice";
-import { TextField } from "../TextField";
 import { openEndedRange, typedDraft } from "./dateRangeDraft";
+import { TypedDay } from "./TypedDay";
 import {
   type DateRangePreset,
   type DateRangeValue,
@@ -387,22 +387,19 @@ export function DateRangePicker({
       </ListBox>
       <div className="di-date-range-custom">
         <div className="di-date-range-dates">
-          <TextField
+          <TypedDay
             id={`${id}-from-date`}
-            type="date"
             label={labels.fromDate}
             value={typed.from}
-            onChange={(event) => setTyped({ ...typed, from: event.target.value })}
+            onChange={(from) => setTyped({ ...typed, from })}
           />
           {openEnd ? null : (
-            <TextField
+            <TypedDay
               id={`${id}-to-date`}
-              type="date"
               label={labels.toDate}
               value={typed.to}
-              hint={typedRange.state === "reversed" ? labels.reversed : ""}
-              hintTone="error"
-              onChange={(event) => setTyped({ ...typed, to: event.target.value })}
+              error={typedRange.state === "reversed" ? labels.reversed : ""}
+              onChange={(to) => setTyped({ ...typed, to })}
             />
           )}
         </div>
@@ -462,6 +459,7 @@ export function DateRangePicker({
               <div className="di-date-range-time-fields">
                 <TimeField
                   className="di-date-range-time"
+                  shouldForceLeadingZeros
                   value={times.from}
                   onChange={(from) => setTimes({ ...times, from })}
                 >
@@ -473,6 +471,7 @@ export function DateRangePicker({
                 {openEnd ? null : (
                   <TimeField
                     className="di-date-range-time"
+                    shouldForceLeadingZeros
                     value={times.to}
                     onChange={(to) => setTimes({ ...times, to })}
                   >
