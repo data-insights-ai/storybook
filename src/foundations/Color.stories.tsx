@@ -183,7 +183,7 @@ function Board() {
       >
         <Rules>
           <Rule>In an operational view gold marks one object: the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small pill with navy words that names that object; never gold text.</Rule>
-          <Rule>The seal is gold too, and so it is a brand moment only: sign-in, the brand mark, an empty or onboarding state, a licence or certificate seal. It never appears in an operational view beside the one, and the seal button is never an operational action.</Rule>
+          <Rule>The seal is gold too, and so it is a brand moment only: sign-in, the brand mark, an empty or onboarding state, a licence or certificate seal. It never appears in an operational view beside the one, and the seal button is never an operational action. Components draw the record marks in --di-mark: neutral ink, and gold only inside a data-brand region.</Rule>
         </Rules>
         <div className="di-swatches">
         {families.map((family) => (

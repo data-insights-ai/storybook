@@ -33,7 +33,7 @@
 
   .di-pill-ring {
     background: transparent;
-    border: 1.5px solid var(--di-ai-ring);
+    border: 1.5px solid var(--di-mark-ring);
   }
 
   .di-pill-ok {
@@ -87,8 +87,8 @@
   }
 
   .di-pill-inferred {
-    border-color: var(--di-seal-border);
-    background: var(--di-ai-surface);
-    color: var(--di-ai-ink);
+    border-color: var(--di-mark-border);
+    background: var(--di-mark-surface);
+    color: var(--di-mark-ink);
   }
 }

@@ -120,6 +120,18 @@
     --di-ai-surface: var(--di-gold-50);
     --di-ai-ink: var(--di-navy-600);
 
+    /*
+     * The record mark as components draw it: the same dot and ring, neutral
+     * in an operational view so the one gold object stays alone. A brand
+     * context ([data-brand], below) maps it back to the seal's gold.
+     */
+    --di-mark: var(--di-navy-600);
+    --di-mark-ring: var(--di-navy-500);
+    --di-mark-surface: var(--di-paper-inset);
+    --di-mark-border: var(--di-border-strong);
+    --di-mark-ink: var(--di-navy-600);
+    --di-text-on-mark: var(--di-paper-surface);
+
     /* A plane on navy in either theme: the toast, the tooltip, the sign-in footer. */
     --di-inverse-bg: var(--di-navy-900);
     --di-inverse-raised: var(--di-navy-800);
@@ -127,6 +139,7 @@
     --di-inverse-text: #ffffff;
     --di-inverse-muted: var(--di-night-subtle);
     --di-inverse-seal: var(--di-gold-400);
+    --di-inverse-mark: var(--di-night-subtle);
     --di-inverse-focus: var(--di-cornflower-300);
 
     --di-index-col: 38px;
@@ -278,12 +291,20 @@
     --di-ai-surface: rgba(217, 180, 94, 0.08);
     --di-ai-ink: var(--di-gold-400);
 
+    --di-mark: var(--di-night-muted);
+    --di-mark-ring: var(--di-night-subtle);
+    --di-mark-surface: rgba(168, 182, 210, 0.08);
+    --di-mark-border: rgba(168, 182, 210, 0.36);
+    --di-mark-ink: var(--di-night-muted);
+    --di-text-on-mark: var(--di-night-ground);
+
     --di-inverse-bg: var(--di-night-glow);
     --di-inverse-raised: #24478a;
     --di-inverse-border: #24478a;
     --di-inverse-text: #ffffff;
     --di-inverse-muted: var(--di-night-muted);
     --di-inverse-seal: var(--di-gold-400);
+    --di-inverse-mark: var(--di-night-muted);
     --di-inverse-focus: var(--di-cornflower-300);
 
     --di-sidebar-bg: var(--di-night-chrome);
@@ -339,6 +360,22 @@
     --di-badge-alert-fg: var(--di-night-ink);
     --di-badge-seal-bg: #4a3d1c;
     --di-badge-seal-fg: #f0d48a;
+  }
+
+  /*
+   * A brand moment — sign-in, onboarding, a licence or certificate seal —
+   * maps the record mark back to the seal's gold. Repeated on a themed
+   * region inside it, which would otherwise redeclare the neutral mark.
+   */
+  [data-brand],
+  [data-brand] [data-theme] {
+    --di-mark: var(--di-seal);
+    --di-mark-ring: var(--di-ai-ring);
+    --di-mark-surface: var(--di-ai-surface);
+    --di-mark-border: var(--di-seal-border);
+    --di-mark-ink: var(--di-ai-ink);
+    --di-text-on-mark: var(--di-text-on-seal);
+    --di-inverse-mark: var(--di-inverse-seal);
   }
 
   /*

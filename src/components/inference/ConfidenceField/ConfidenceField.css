@@ -11,7 +11,7 @@
     gap: var(--di-space-8);
     min-height: var(--di-h-ctl);
     padding: 0 var(--di-space-8);
-    border: 1px solid var(--di-ai-ring);
+    border: 1px solid var(--di-mark-ring);
     border-radius: var(--di-field-radius);
     background: var(--di-bg-surface);
     font-family: var(--di-font-code);

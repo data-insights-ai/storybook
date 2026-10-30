@@ -41,7 +41,7 @@ export function Page({
      * sections too, which is where it should have been: the brand pages'
      * body copy was being sized by a Storybook theme.
      */
-    <article className="di-guide sb-unstyled">
+    <article className="di-guide sb-unstyled" data-brand="">
       <PageHeader tier="brand" eyebrow={eyebrow} lede={lede}>
         <PageHeaderTitle>{title}</PageHeaderTitle>
       </PageHeader>

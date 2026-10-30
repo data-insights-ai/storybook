@@ -105,7 +105,7 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | The one thing | `--di-one`, `--di-one-edge`, `--di-one-ink` (navy in daylight, gold after dark) |
 | Selection | `--di-select`, `--di-select-ink`, `--di-bg-selected`, `--di-focus` (cornflower) |
 | Severity | `--di-severity-{critical,high,medium,low,info}` |
-| Record marks | `--di-seal`, `--di-ai-ring` |
+| Record marks | `--di-mark`, `--di-mark-ring`, `--di-mark-surface`, `--di-mark-ink` (neutral; gold inside `data-brand`); `--di-seal` only in a brand moment |
 | Accents | `--di-highlight` (poppy), `--di-highlight-ink`, `--di-highlight-tint`; `--di-signal` (cornflower), `--di-signal-ink`, `--di-signal-tint` — see the rules below before using either |
 | Motion | `--di-duration` (120ms), `--di-duration-slow` (200ms), `--di-ease` |
 | Control height | `--di-h-dense` (28), `--di-h-ctl` (32, the standard), `--di-h-comfort` (36), `--di-h-row` (40) |
@@ -116,7 +116,7 @@ Rules that make output look native rather than approximate:
 - **Navy is the ink and the action.** No accent acts. One filled navy control per view, so it is never unclear which button commits.
 - **Depth is a step in tone, not a line.** A table sits on a surface without a frame of its own.
 - **Poppy marks a passage on a brand page; cornflower selects.** Poppy is only ever `Highlight`. Cornflower is selection, focus and a compared series (`--di-chart-compare`). Neither is a status, so neither is a `tone`, and neither fills a button.
-- **Gold marks the one thing in a view** — the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small gold pill with navy words that names the one item (`emphasisLabel`) — **never gold text and never a gold wash under prose**; after dark gold text is allowed (`--di-one-ink`). The seal is the same gold and so a **brand moment only** — sign-in, the brand mark, empty and onboarding states, licence and certificate seals; never in an operational view beside the one thing, and `Button variant="seal"` is never an operational action. Keep the word beside any mark.
+- **Gold marks the one thing in a view** — the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small gold pill with navy words that names the one item (`emphasisLabel`) — **never gold text and never a gold wash under prose**; after dark gold text is allowed (`--di-one-ink`). The seal is the same gold and so a **brand moment only** — sign-in, the brand mark, empty and onboarding states, licence and certificate seals; never in an operational view beside the one thing, and `Button variant="seal"` is never an operational action. The record marks (`SealValue`, the inferred ring, a done step) are neutral in an operational view and turn gold only inside `data-brand`. Keep the word beside any mark.
 - **Selection and focus are cornflower**, in both themes. Never ring focus in gold. Never remove a focus indicator.
 - **Warn is its own amber**, so it never reads as the gold. Severity after dark runs orange for medium for the same reason.
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.

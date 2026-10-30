@@ -160,8 +160,8 @@
 
   /* Proposed, not chosen: the ring's edge rather than the register's. */
   .di-command-chip.is-suggested {
-    border-color: var(--di-ai-ring);
-    background: var(--di-ai-surface);
-    color: var(--di-ai-ink);
+    border-color: var(--di-mark-ring);
+    background: var(--di-mark-surface);
+    color: var(--di-mark-ink);
   }
 }

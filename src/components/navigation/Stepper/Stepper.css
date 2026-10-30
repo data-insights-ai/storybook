@@ -78,9 +78,9 @@
   }
 
   .di-step-bullet.is-done {
-    border-color: var(--di-seal);
-    background: var(--di-seal);
-    color: var(--di-text-on-seal);
+    border-color: var(--di-mark);
+    background: var(--di-mark);
+    color: var(--di-text-on-mark);
   }
 
   .di-step-check {

@@ -75,6 +75,6 @@
   }
 
   .di-stage.is-current .di-stage-icon {
-    color: var(--di-inverse-seal);
+    color: var(--di-inverse-mark);
   }
 }
