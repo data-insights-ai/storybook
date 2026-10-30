@@ -26,6 +26,7 @@ export const Default: Story = {
     const track = canvasElement.querySelector(".di-split-list-head .di-choice-segments")!.getBoundingClientRect();
     const item = canvasElement.querySelector(".di-split-item")!.getBoundingClientRect();
     await expect(Math.abs(track.left - item.left)).toBeLessThanOrEqual(1);
+    await Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined)));
     const thumb = getComputedStyle(canvasElement.querySelector(".di-choice-segment.is-chosen")!);
     const row = getComputedStyle(canvas.getByRole("button", { current: true }));
     await expect(thumb.backgroundColor).not.toBe(row.backgroundColor);

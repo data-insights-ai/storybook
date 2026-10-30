@@ -163,7 +163,14 @@ export type { LevelBands, LevelTone } from "./components/charts/compare/LevelMet
 export { Actions } from "./components/layout/arrangement/Actions";
 export { Grid } from "./components/layout/arrangement/Grid";
 export { Stack } from "./components/layout/arrangement/Stack";
-export { Toolbar, ToolbarEnd, ToolbarNote, ToolbarSelection, ToolbarStatus } from "./components/actions/Toolbar";
+export {
+  Toolbar,
+  ToolbarAction,
+  ToolbarEnd,
+  ToolbarNote,
+  ToolbarSelection,
+  ToolbarStatus,
+} from "./components/actions/Toolbar";
 export type { ToolbarProps, ToolbarRole } from "./components/actions/Toolbar";
 export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/data/table/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/navigation/Menu";
