@@ -91,6 +91,11 @@
     color: inherit;
   }
 
+  /* An open sidebar is the trigger's normal state, not a pressed one: no tint at rest. */
+  .di-sb-trigger.di-btn-ghost[aria-expanded="true"]:not(:hover, :active) {
+    background: transparent;
+  }
+
   .di-sb .di-sb-trigger.di-btn-ghost:hover {
     background: var(--di-sidebar-raised);
   }

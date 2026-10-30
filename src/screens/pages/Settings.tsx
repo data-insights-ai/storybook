@@ -1,20 +1,19 @@
+import { useState } from "react";
 import { LogOut, Mail, ShieldCheck, Webhook } from "lucide-react";
 import {
-  Sparkline,
   Button,
+  DetailSection,
   Fact,
   FactList,
   Grid,
   IconTile,
   Notice,
-  NoticeAction,
   NoticeBody,
   NoticeIcon,
   NoticeText,
   NoticeTitle,
-  Numbered,
+  Page,
   PageHeader,
-  PageHeaderAside,
   PageHeaderMeta,
   PageHeaderTitle,
   RecordActions,
@@ -23,135 +22,135 @@ import {
   RecordMark,
   RecordStatus,
   RecordValue,
+  Select,
   Stack,
   StatusPill,
-  Panel,
-  Figure,
+  Switch,
+  Toolbar,
+  ToolbarEnd,
+  ToolbarStatus,
 } from "../..";
 
-const days = [
-  46, 62, 70, 80, 58, 90, 84, 76, 88, 64, 72, 86, 91, 77, 69, 95, 100, 82, 74, 88, 93, 70, 81, 96, 85, 78, 90, 87, 73,
-  92,
-];
+type Rules = { keep: string; purge: boolean };
+const stored: Rules = { keep: "90", purge: true };
 
-export function SettingsScreen() {
+/**
+ * A workspace's settings: what it keeps, where it reports, and who is
+ * signed in. A changed rule is held until Save in the bar at the window's
+ * foot; channels a company policy manages say so in their own section.
+ */
+export function SettingsScreen({ changed = false }: { changed?: boolean }) {
+  const [saved, setSaved] = useState<Rules>(stored);
+  const [rules, setRules] = useState<Rules>(changed ? { ...stored, keep: "180" } : stored);
+  const dirty = rules.keep !== saved.keep || rules.purge !== saved.purge;
+
   return (
-    <>
-      <PageHeader eyebrow="Session" lede="The signed-in session, notification channels, and security checks.">
-        <PageHeaderTitle>Settings and session</PageHeaderTitle>
-        <PageHeaderAside>
-          <StatusPill tone="ok">Company environment active</StatusPill>
-        </PageHeaderAside>
+    <Page width="detail">
+      <PageHeader lede="What this workspace keeps, where it reports, and who is signed in.">
+        <PageHeaderTitle>Settings</PageHeaderTitle>
+        <PageHeaderMeta>Last changed 28 Oct, 14:02 by Jonas Brandt</PageHeaderMeta>
       </PageHeader>
 
-      <Stack>
-        <Numbered index="01">
-          <RecordCard title="Nora Feld" layout="row" heading={false}>
-            <RecordDetail>nora.feld@data-insights.ai · Valid until 22 Sep 2026</RecordDetail>
-            <RecordMark>
-              <IconTile variant="inverse">
-                <span aria-hidden>NF</span>
-              </IconTile>
-            </RecordMark>
+      <DetailSection title="Data retention" lede="How long the workspace keeps what its sources send.">
+        <Stack variant="form">
+          <Select
+            id="screen-keep"
+            label="Keep raw events for"
+            hint="Cases keep the events they cite for as long as the case exists."
+            mono={false}
+            value={rules.keep}
+            onChange={(e) => setRules({ ...rules, keep: e.target.value })}
+          >
+            <option value="30">30 days</option>
+            <option value="90">90 days</option>
+            <option value="180">180 days</option>
+          </Select>
+        </Stack>
+        <Switch
+          id="screen-purge"
+          layout="row"
+          title="Delete closed cases after one year"
+          description="The audit log keeps that they existed and who closed them."
+          on={rules.purge}
+          onToggle={(purge) => setRules({ ...rules, purge })}
+        />
+      </DetailSection>
+
+      <DetailSection title="Notification channels" lede="Where security events are sent as they happen.">
+        <Grid min="260px">
+          <RecordCard title="Email" heading={3}>
             <RecordStatus>
-              <StatusPill tone="neutral" dot={false}>
-                Administrator
-              </StatusPill>
+              <StatusPill tone="ok">Delivering</StatusPill>
             </RecordStatus>
-            <RecordActions>
-              <Button variant="secondary" size="sm">
-                <LogOut aria-hidden />
-                Sign out
-              </Button>
-            </RecordActions>
+            <RecordValue>
+              <Mail aria-hidden />
+              soc-team@data-insights.ai
+            </RecordValue>
+            <FactList layout="pairs">
+              <Fact label="Severity">High and above</Fact>
+              <Fact label="Last sent">Today, 09:12</Fact>
+            </FactList>
           </RecordCard>
-          <Notice>
-            <NoticeText>
-              <NoticeBody>Two-factor authentication active · hardware token confirmed</NoticeBody>
-            </NoticeText>
-            <NoticeAction>
-              <StatusPill tone="ok">Conformity checked</StatusPill>
-            </NoticeAction>
-          </Notice>
-        </Numbered>
+          <RecordCard title="Webhook" heading={3}>
+            <RecordStatus>
+              <StatusPill tone="ok">Delivering</StatusPill>
+            </RecordStatus>
+            <RecordValue>
+              <Webhook aria-hidden />
+              https://hooks.data-insights.ai/events
+            </RecordValue>
+            <FactList layout="pairs">
+              <Fact label="Format">JSON</Fact>
+              <Fact label="Signature" mono>
+                HMAC-SHA256
+              </Fact>
+            </FactList>
+          </RecordCard>
+        </Grid>
+        <Notice>
+          <NoticeIcon>
+            <ShieldCheck aria-hidden />
+          </NoticeIcon>
+          <NoticeText>
+            <NoticeTitle>Managed by your company&apos;s security policy</NoticeTitle>
+            <NoticeBody>Channels are added and changed in the security portal, not here.</NoticeBody>
+          </NoticeText>
+        </Notice>
+      </DetailSection>
 
-        <Numbered index="02">
-          <PageHeader level={2} lede="Active endpoints for security events">
-            <PageHeaderTitle>Notification channels</PageHeaderTitle>
-            <PageHeaderMeta>Synced</PageHeaderMeta>
-          </PageHeader>
-          <Grid min="240px">
-            <RecordCard title="Email notifications">
-              <RecordStatus>
-                <StatusPill tone="ok">Enabled</StatusPill>
-              </RecordStatus>
-              <RecordValue>
-                <Mail aria-hidden />
-                n****@data-insights.ai
-              </RecordValue>
-              <FactList layout="pairs">
-                <Fact label="Routing">Primary inbox</Fact>
-                <Fact label="Transport">TLS 1.3</Fact>
-              </FactList>
-            </RecordCard>
-            <RecordCard title="Webhook">
-              <RecordStatus>
-                <StatusPill tone="ok">Enabled</StatusPill>
-              </RecordStatus>
-              <RecordValue>
-                <Webhook aria-hidden />
-                https://hooks.data-insights.ai/events
-              </RecordValue>
-              <FactList layout="pairs">
-                <Fact label="Format">JSON</Fact>
-                <Fact label="Signature" mono>
-                  HMAC-SHA256
-                </Fact>
-              </FactList>
-            </RecordCard>
-          </Grid>
+      <DetailSection title="Your session" lede="Signed in on this device with a hardware key.">
+        <RecordCard title="Nora Feld" layout="row" heading={false}>
+          <RecordMark>
+            <IconTile variant="inverse">
+              <span aria-hidden>NF</span>
+            </IconTile>
+          </RecordMark>
+          <RecordDetail>nora.feld@data-insights.ai · session ends 22:00</RecordDetail>
+          <RecordStatus>
+            <StatusPill tone="neutral" dot={false}>
+              Administrator
+            </StatusPill>
+          </RecordStatus>
+          <RecordActions>
+            <Button variant="secondary" size="sm">
+              <LogOut aria-hidden />
+              Sign out
+            </Button>
+          </RecordActions>
+        </RecordCard>
+      </DetailSection>
 
-          <Notice tone="warn">
-            <NoticeIcon>
-              <ShieldCheck aria-hidden />
-            </NoticeIcon>
-            <NoticeText>
-              <NoticeTitle>Centrally managed policy</NoticeTitle>
-              <NoticeBody>
-                Webhook endpoints are changed in the company security portal. Local editing is off for this tenant.
-              </NoticeBody>
-            </NoticeText>
-          </Notice>
-
-          <PageHeader level={2} lede="New hit on a domain · medium · email sent · webhook received">
-            <PageHeaderTitle>Recent security events</PageHeaderTitle>
-            <PageHeaderMeta>10 Sep 2026, 14:37 CEST</PageHeaderMeta>
-          </PageHeader>
-          <PageHeader level={2} lede="High · email sent · webhook received">
-            <PageHeaderTitle>Security report created</PageHeaderTitle>
-            <PageHeaderMeta>10 Sep 2026, 14:30 CEST</PageHeaderMeta>
-          </PageHeader>
-        </Numbered>
-
-        <Panel>
-          <Grid min="220px">
-            <Figure label="Notification availability, last 30 days, every channel" value="99.98%" />
-            <Sparkline
-              values={days}
-              highlight={16}
-              width="fill"
-              height="md"
-              captions={["30 days ago", "Full operation", "Today"]}
-              label="Notification availability per day over the last 30 days, one dip 16 days ago."
-            />
-          </Grid>
-        </Panel>
-
-        <PageHeader level={2}>
-          <PageHeaderTitle>Security status: checked</PageHeaderTitle>
-          <PageHeaderMeta>ISO/IEC 27001 · privacy rules applied</PageHeaderMeta>
-        </PageHeader>
-      </Stack>
-    </>
+      {dirty ? (
+        <Toolbar label="Unsaved changes" role="region" frame="bar" sticky="bottom">
+          <ToolbarStatus>Retention changed and is not saved yet.</ToolbarStatus>
+          <ToolbarEnd>
+            <Button variant="secondary" onClick={() => setRules(saved)}>
+              Discard
+            </Button>
+            <Button onClick={() => setSaved(rules)}>Save changes</Button>
+          </ToolbarEnd>
+        </Toolbar>
+      ) : null}
+    </Page>
   );
 }
