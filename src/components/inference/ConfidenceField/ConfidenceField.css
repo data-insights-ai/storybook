@@ -55,4 +55,20 @@
   .di-confidence.is-review .di-confidence-label {
     color: var(--di-status-warn-fg);
   }
+
+  .di-confidence-why {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--di-text-muted);
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--di-select);
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .di-confidence-why:hover {
+    color: var(--di-text);
+  }
 }

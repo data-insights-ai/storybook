@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { SealMark } from "../../marks/status/SealValue";
 import "../../forms/field/Field/Field.css";
-import "../ConfirmPanel/ConfirmPanel.css";
 import "./ConfidenceField.css";
 
 /**
@@ -59,7 +58,7 @@ export function ConfidenceField({
         <SealMark state="inferred" size={6} />
         <span className="di-confidence-label">{confidenceLabel}</span>
         {whyLabel === "" || !onWhy ? null : (
-          <button type="button" className="di-confirm-why" onClick={onWhy}>
+          <button type="button" className="di-confidence-why" onClick={onWhy}>
             {whyLabel}
           </button>
         )}
