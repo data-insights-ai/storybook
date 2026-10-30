@@ -76,7 +76,7 @@
     --di-table-shadow: var(--di-elevation-surface);
     --di-table-radius: var(--di-radius-surface);
     --di-table-head-bg: var(--di-bg-subtle);
-    --di-table-edge: var(--di-gap-12);
+    --di-table-edge: var(--di-space-12);
     --di-table-row-height: var(--di-row-h);
     --di-table-rule: var(--di-rule-hairline);
 
@@ -174,8 +174,6 @@
     --di-attention-item-min: 280px;
     --di-attention-rank-bar: 3px;
     --di-attention-clear-dot: 8px;
-    --di-living-trend-min: 160px;
-    --di-session-copy-min: 160px;
     --di-fact-label-min: 96px;
     --di-fact-label-max: 200px;
     --di-facts-grid-min: 360px;
