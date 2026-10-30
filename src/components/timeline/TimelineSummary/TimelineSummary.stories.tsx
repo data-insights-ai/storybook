@@ -211,6 +211,8 @@ export const Default: Story = {
     await expect(first).toHaveAttribute("aria-pressed", "true");
     await userEvent.click(first);
     await expect(args.onEpisodePick).toHaveBeenLastCalledWith(null);
+    // A pointer click leaves no ring; the test's synthetic click would, so the story ends without focus.
+    (document.activeElement as HTMLElement | null)?.blur();
   },
 };
 

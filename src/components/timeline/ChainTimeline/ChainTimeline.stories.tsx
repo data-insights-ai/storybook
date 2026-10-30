@@ -65,6 +65,8 @@ export const Lateral: Story = {
     await expect(canvas.getByRole("group", { name: /attack chain/i })).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: /08:22 remote service started/i }));
     await expect(args.onSelect).toHaveBeenCalledWith("4");
+    // A pointer click leaves no ring; the test's synthetic click would, so the story ends without focus.
+    (document.activeElement as HTMLElement | null)?.blur();
   },
 };
 

@@ -196,6 +196,8 @@ export const Moving: Story = {
     await waitFor(() =>
       expect(canvas.getByRole("meter", { name: "Load 7 days ago" })).toHaveAttribute("aria-valuenow", "41"),
     );
+    // A pointer click leaves no ring; the test's synthetic click would, so the story ends without focus.
+    (document.activeElement as HTMLElement | null)?.blur();
   },
 };
 

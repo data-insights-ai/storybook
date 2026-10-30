@@ -215,6 +215,8 @@ export const Default: Story = {
     await userEvent.click(lanes);
     await expect(lanes).toHaveAttribute("aria-expanded", "true");
     await waitFor(() => expect(fold?.getBoundingClientRect().height).toBeGreaterThan(0));
+    // A pointer click leaves no ring; the test's synthetic click would, so the story ends without focus.
+    (document.activeElement as HTMLElement | null)?.blur();
   },
 };
 
