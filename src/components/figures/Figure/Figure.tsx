@@ -74,7 +74,8 @@ export function Figure({
  * A note under a figure: the change since the last reading, a cause, a
  * comparison. A `tone` colours it, and the words name the direction as
  * well ("down 2.1 points"), so a screen reader hears it, never a colour.
- * A string breaks only between its " · " items.
+ * A string breaks only between its " · " items. It is a phrase, so it is
+ * set in the reading face, with tabular figures, never in the mono track.
  */
 export function FigureNote({ tone, children }: { tone?: "ok" | "warn" | "danger"; children: ReactNode }) {
   return (

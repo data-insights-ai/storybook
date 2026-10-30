@@ -33,6 +33,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Every row holds as many figures as the first (no 2 + 1), and every value stands on one line. */
+async function expectEvenRows(canvasElement: HTMLElement) {
+  await document.fonts.ready;
+  await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+  const figures = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-figure"));
+  const rows = new Map<number, number>();
+  for (const figure of figures) {
+    const top = Math.round(figure.getBoundingClientRect().top);
+    rows.set(top, (rows.get(top) ?? 0) + 1);
+  }
+  await expect(new Set(rows.values()).size).toBe(1);
+  for (const value of canvasElement.querySelectorAll<HTMLElement>(".di-figure-value")) {
+    const height = value.getBoundingClientRect().height;
+    await expect(height).toBeLessThan(parseFloat(getComputedStyle(value).fontSize) * 2);
+    await expect(value.scrollWidth).toBeLessThanOrEqual(value.clientWidth + 1);
+  }
+}
+
 /** Figures without a hero sit on a strip a step below the ground; one description list for the row. */
 export const Strip: Story = {
   play: async ({ canvasElement }) => {
@@ -42,12 +60,19 @@ export const Strip: Story = {
     const first = canvasElement.querySelector(".di-figure") as HTMLElement;
     const list = canvasElement.querySelector(".di-figure-list") as HTMLElement;
     await expect(first.getBoundingClientRect().left).toBeLessThan(list.getBoundingClientRect().left);
+    await expectEvenRows(canvasElement);
+    const note = canvas.getByText("36 in finance");
+    await expect(getComputedStyle(note).fontFamily).toContain("IBM Plex Sans");
+    await expect(getComputedStyle(note).fontVariantNumeric).toBe("tabular-nums");
   },
 };
 
 /** Under a hero the row is its footer: no band, the hero's rule above it. */
 export const Footer: Story = {
   args: { variant: "footer" },
+  play: async ({ canvasElement }) => {
+    await expectEvenRows(canvasElement);
+  },
 };
 
 /** A quiet health line at the foot of a page: values in the body size, amber only on the failing one. */
@@ -63,5 +88,6 @@ export const Compact: Story = {
   play: async ({ canvasElement }) => {
     const value = within(canvasElement).getByText("2 of 2 active");
     await expect(parseFloat(getComputedStyle(value).fontSize)).toBe(14);
+    await expectEvenRows(canvasElement);
   },
 };

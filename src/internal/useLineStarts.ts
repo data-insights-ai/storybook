@@ -4,7 +4,7 @@ import { useLayoutEffect, type RefObject } from "react";
  * Marks every child of the box that begins a visual line with
  * `data-line-start`, so the separator drawn before it can be left out: a
  * wrapped line of facts never starts with "·". Measured again whenever the
- * box changes size or the fonts arrive.
+ * box changes size or a font finishes loading.
  */
 export function useLineStarts(ref: RefObject<HTMLElement | null>, content: unknown) {
   useLayoutEffect(() => {
@@ -22,11 +22,11 @@ export function useLineStarts(ref: RefObject<HTMLElement | null>, content: unkno
     mark();
     const observer = new ResizeObserver(mark);
     observer.observe(box);
-    let live = true;
-    void box.ownerDocument.fonts?.ready.then(() => live && mark());
+    const fonts = box.ownerDocument.fonts;
+    fonts?.addEventListener("loadingdone", mark);
     return () => {
-      live = false;
       observer.disconnect();
+      fonts?.removeEventListener("loadingdone", mark);
     };
   }, [ref, content]);
 }

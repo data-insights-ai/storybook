@@ -51,4 +51,9 @@
       grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--di-figure-min-phone)), 1fr));
     }
   }
+
+  /* Measured: all figures in one row, two even rows, or one column (FigureRow). */
+  .di-figure-row .di-figure-list[data-cols] {
+    grid-template-columns: repeat(var(--di-figure-cols), minmax(0, 1fr));
+  }
 }
