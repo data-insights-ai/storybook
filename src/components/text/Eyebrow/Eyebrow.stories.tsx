@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Eyebrow } from "./Eyebrow";
 
 const meta = {
-  title: "Data/Text/Eyebrow",
+  title: "Text/Eyebrow",
   component: Eyebrow,
   tags: ["layer:primitive", "autodocs"],
   args: { children: "04 — Coverage", variant: "sealed" },

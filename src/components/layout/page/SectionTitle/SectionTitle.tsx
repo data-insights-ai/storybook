@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
-import { Eyebrow } from "../../../data/text/Eyebrow";
+import { Eyebrow } from "../../../text/Eyebrow";
 import "./SectionTitle.css";
 
 /**

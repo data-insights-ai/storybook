@@ -13,7 +13,7 @@ const record = {
 };
 
 const meta = {
-  title: "Data/Text/CodeBlock",
+  title: "Text/CodeBlock",
   component: CodeBlock,
   tags: ["layer:primitive", "autodocs"],
   args: { label: "Raw record", children: JSON.stringify(record, null, 2) },

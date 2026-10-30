@@ -109,7 +109,8 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
 | `navigation/` | Breadcrumb, CommandBar, Menu, TextLink; `views/` Tabs, TabNav; `sequence/` Pagination, Stepper; `Sidebar/` the sidebar and its parts behind one index, in `menu/`, `frame/` and `state/` |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker |
-| `data/` | `records/` AttentionList, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` FigureRow, HeroFigure, StatTile, Stat (deprecated, removed in 0.12.0); `text/` Eyebrow, Highlight, Kbd, MetaLine, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
+| `data/` | `records/` AttentionList, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` FigureRow, HeroFigure, StatTile, Stat (deprecated, removed in 0.12.0); `table/` DataTable, InfiniteTable, ListToolbar |
+| `text/` | Eyebrow, Highlight, Kbd, MetaLine, TickRule, CodeBlock, PullQuote |
 | `marks/` | Badge, Chip, Tag, VersionTag, Icon (with the `IconSet` gallery the docs show), IconTile; `status/` StatusPill, SeverityMark, SealValue |
 | `feedback/` | DangerZone, Delayed, EmptyState, Notice, Toast, Tooltip, TooltipTarget; `waiting/` AppLoader, Progress, RouteProgress, SkeletonPage, SkeletonTable, Spinner |
 | `overlays/` | ConfirmDialog, CreateFlow, Flyout, Modal, Sheet, ShortcutHelp; `useModalDialog/` the dialog behaviour Modal and Sheet share |

@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Highlight } from "./Highlight";
 
 const meta = {
-  title: "Data/Text/Highlight",
+  title: "Text/Highlight",
   component: Highlight,
   tags: ["layer:primitive", "autodocs"],
   args: { variant: "passage", children: "without a new source" },

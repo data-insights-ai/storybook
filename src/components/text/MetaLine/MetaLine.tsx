@@ -1,4 +1,4 @@
-import { cx } from "../../../../internal/cx";
+import { cx } from "../../../internal/cx";
 import "./MetaLine.css";
 
 /**

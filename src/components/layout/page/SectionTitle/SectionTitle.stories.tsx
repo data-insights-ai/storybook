@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Highlight } from "../../../data/text/Highlight";
+import { Highlight } from "../../../text/Highlight";
 import { StatusPill } from "../../../marks/status/StatusPill";
 import { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./SectionTitle";
 

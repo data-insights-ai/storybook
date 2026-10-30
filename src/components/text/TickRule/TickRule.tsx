@@ -1,4 +1,4 @@
-import { cx } from "../../../../internal/cx";
+import { cx } from "../../../internal/cx";
 
 /**
  * The one ornament: an 8px tick scale. It closes a header, or any block

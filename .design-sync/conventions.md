@@ -46,7 +46,8 @@ The Storybook sidebar is grouped by the job a component does:
 - `Foundations/`: the brand, the tokens and the reasoning behind them. No component lives here.
 - `Actions/`: what a person presses: `Button`, `CountButton`, `CopyValue`, `RowActions`, `BulkActionBar`.
 - `Forms/`: labelled controls: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `Switch`, `Checkbox` and the date fields.
-- `Data/`: what a person reads: records (`AttentionList`, `RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`FigureRow`, `HeroFigure`, `Stat`, `StatTile`), text (`Eyebrow`, `Highlight`, `Kbd`, `MetaLine`, `CodeBlock`, `PullQuote`) and `DataTable`.
+- `Data/`: what a person reads: records (`AttentionList`, `RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`FigureRow`, `HeroFigure`, `Stat`, `StatTile`) and `DataTable`.
+- `Text/`: how text is set: `Eyebrow`, `Highlight`, `Kbd`, `MetaLine`, `CodeBlock`, `PullQuote`, `TickRule`.
 - `Marks/`: what every other component draws with: `Badge`, `SeverityMark`, `StatusPill`, `Chip`, `Tag`, `VersionTag`, `SealValue`, `Icon`, `IconTile`.
 - `Feedback/`: `Notice`, `Toast`, `EmptyState`, `DangerZone`, `Tooltip`, and the loaders, progress bars and skeletons.
 - `Overlays/`: what opens over the page: `Modal`, `ConfirmDialog`, `Sheet`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
