@@ -290,16 +290,22 @@ export const WithACount: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const body = within(canvasElement.ownerDocument.body);
     const nav = canvas.getByRole("navigation", { name: "Sections" });
     await expect(nav).toHaveAttribute("data-state", "collapsed");
     for (const item of rail.slice(1)) {
-      const link = within(nav).getByRole("link", { name: new RegExp(item.label) });
-      // The rail loads its tooltips on demand; hover again until they are there.
+      const link = () => within(nav).getByRole("link", { name: new RegExp(item.label) });
+      // The rail loads its tooltips on demand and swaps the item when they are there; find it and hover again.
       const tip = await waitFor(
         async () => {
-          await userEvent.hover(link);
-          const found = await body.findByText(item.label, { selector: ".di-tooltip" }, { timeout: 600 });
+          await userEvent.hover(link());
+          const found = await waitFor(
+            () => {
+              const tip = canvasElement.ownerDocument.querySelector<HTMLElement>(".di-tooltip");
+              if (!tip?.textContent?.startsWith(item.label)) throw new Error("no tooltip yet");
+              return tip;
+            },
+            { timeout: 600 },
+          );
           await expect(found).toBeVisible();
           return found;
         },
@@ -312,7 +318,7 @@ export const WithACount: Story = {
       const pill = getComputedStyle(badge);
       await expect(contrast(pill.backgroundColor, bubble)).toBeGreaterThanOrEqual(3);
       await expect(contrast(pill.color, pill.backgroundColor)).toBeGreaterThanOrEqual(4.5);
-      await userEvent.unhover(link);
+      await userEvent.unhover(link());
     }
   },
 };
