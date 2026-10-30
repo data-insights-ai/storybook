@@ -36,7 +36,7 @@
     /*
      * The night ramp: the steps of a navy ground. The chrome sits one step
      * deeper than the ground, the surfaces lift from it, the plane floats
-     * highest; the glow is the light at the top of the hero zone.
+     * highest; the glow is the hero zone, a clear step above a surface.
      */
     --di-night-chrome: #071733;
     --di-night-ground: #0a1f44;
