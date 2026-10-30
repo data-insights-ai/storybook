@@ -75,6 +75,7 @@ export function ChoiceCards({
                   className={cx("di-choicecard", option.value === value && "is-active")}
                   title={option.more}
                 >
+                  {/* eslint-disable-next-line jsx-a11y/role-supports-aria-props -- aria-description is global in ARIA 1.3, newer than the rule's role table */}
                   <input
                     type="radio"
                     className="di-sr"

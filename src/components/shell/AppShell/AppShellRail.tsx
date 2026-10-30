@@ -68,11 +68,15 @@ export function AppShellRail({
   const mobile = !!mobileNavigation && narrow;
   const [open, setOpen] = useState(false);
   const dialogId = useId();
-  useLayoutEffect(() => {
+  const place = { active, workspaceId, contextKey: mobileNavigation?.contextKey };
+  const [seen, setSeen] = useState(place);
+  if (seen.active !== place.active || seen.workspaceId !== place.workspaceId || seen.contextKey !== place.contextKey) {
+    setSeen(place);
     setOpen(false);
-  }, [active, workspaceId, mobileNavigation?.contextKey]);
+  }
   useLayoutEffect(() => {
     if (!mobile && open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- closing and moving focus to the page are one step, and focus can only move after commit
       setOpen(false);
       document.getElementById("di-content")?.focus();
     }
@@ -119,6 +123,7 @@ export function AppShellRail({
         closeLabel={mobileNavigation?.closeLabel ?? ""}
       >
         {context}
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- listens for a followed link, which Enter also clicks, to close the mobile dialog */}
         <nav
           className="di-nav"
           aria-label={navLabel}
@@ -186,6 +191,7 @@ function RailNavigation({
   }, [mobile, open]);
   if (!mobile) return <div className="di-rail-content">{children}</div>;
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- a press on the backdrop closes it; Esc is the dialog's own cancel
     <dialog
       ref={ref}
       id={id}

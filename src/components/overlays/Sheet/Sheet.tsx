@@ -1,4 +1,13 @@
-import { Children, isValidElement, useContext, useEffect, useId, useRef, type ReactNode } from "react";
+import {
+  Children,
+  isValidElement,
+  useContext,
+  useEffect,
+  useId,
+  useInsertionEffect,
+  useRef,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { PageSide } from "../../layout/page/pageSide";
@@ -61,10 +70,10 @@ function ModalSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, si
   useModalDialog(ref, open);
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc and a press on the backdrop close the dialog
     <dialog
       ref={ref}
       className="di-sheet"
-      role="dialog"
       aria-modal="true"
       data-size={size}
       aria-labelledby={titleId}
@@ -114,12 +123,14 @@ function DockedSheet({
   const titleId = useId();
   const opener = useRef<HTMLElement | null>(null);
   const shown = useRef(false);
-  // Read while rendering, before the sheet takes focus, as the modal does.
-  if (open && !shown.current && typeof document !== "undefined") {
-    const active = document.activeElement;
-    if (active instanceof HTMLElement && active !== document.body) opener.current = active;
-  }
-  shown.current = open;
+  // Read before any other effect, before the sheet takes focus, as the modal does.
+  useInsertionEffect(() => {
+    if (open && !shown.current) {
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && active !== document.body) opener.current = active;
+    }
+    shown.current = open;
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -138,6 +149,7 @@ function DockedSheet({
 
   if (!open) return null;
   return createPortal(
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc inside the docked sheet closes it
     <section
       ref={ref}
       className="di-sheet-docked"

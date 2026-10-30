@@ -30,7 +30,6 @@ export function Modal({
     <dialog
       ref={ref}
       className="di-modal"
-      role="dialog"
       aria-modal="true"
       aria-labelledby={labelledBy}
       onCancel={onClose}

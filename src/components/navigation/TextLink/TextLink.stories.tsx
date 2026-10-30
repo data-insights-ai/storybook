@@ -94,7 +94,10 @@ export const InProse: Story = {
 /** A router's link component renders the anchor; the text link supplies only its look. */
 export const WithRouterLink: Story = {
   parameters: { controls: { disable: true } },
-  render: () => <TextLink render={<a href="#/records/0148" data-router="link" />}>REG-0148</TextLink>,
+  render: () => (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content -- TextLink renders its text into the router's anchor
+    <TextLink render={<a href="#/records/0148" data-router="link" />}>REG-0148</TextLink>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const link = canvas.getByRole("link", { name: "REG-0148" });

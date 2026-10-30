@@ -76,6 +76,7 @@ export function ListDetailItems({ children }: { children: ReactNode }) {
     buttons[next]?.focus();
   };
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the arrow keys move focus between the row buttons inside
     <ul ref={list} className="di-ld-items" onKeyDown={move}>
       {children}
     </ul>

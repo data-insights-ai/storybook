@@ -38,6 +38,7 @@ const records = [
 function RouterLink({
   to,
   onNavigate,
+  children,
   ...rest
 }: AnchorHTMLAttributes<HTMLAnchorElement> & { to: string; onNavigate: (to: string) => void }) {
   return (
@@ -49,7 +50,9 @@ function RouterLink({
         event.preventDefault();
         onNavigate(to);
       }}
-    />
+    >
+      {children}
+    </a>
   );
 }
 

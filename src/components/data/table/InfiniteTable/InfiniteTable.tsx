@@ -4,6 +4,7 @@ import {
   isValidElement,
   useCallback,
   useEffect,
+  useInsertionEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -149,10 +150,12 @@ function remember(key: string, items: VirtualItem[]) {
 /* Where the first row starts in the document; content above the register can move it. */
 function useListStart(top: RefObject<Element | null>) {
   const [start, setStart] = useState(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- content above the register can move it on any render; an unchanged start does not render again
   useLayoutEffect(() => {
     const el = top.current;
     if (!el) return;
     const at = Math.round(el.getBoundingClientRect().top + window.scrollY);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the start is read from layout before paint
     if (Math.abs(at - start) > 1) setStart(at);
   });
   return start;
@@ -175,7 +178,9 @@ function useNearEnd({
   const [target, setTarget] = useState<Element | null>(null);
   const [near, setNear] = useState(false);
   const load = useRef(onLoadMore);
-  load.current = onLoadMore;
+  useInsertionEffect(() => {
+    load.current = onLoadMore;
+  });
   useEffect(() => {
     if (!target) return;
     const observer = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), { rootMargin: ahead });
@@ -216,13 +221,14 @@ function useHeld(keys: string[], enabled: boolean, top: RefObject<Element | null
     window.addEventListener("scroll", check, { passive: true });
     return () => window.removeEventListener("scroll", check);
   }, [enabled, top]);
-  useEffect(() => {
-    if (atTop) setAnchor(undefined);
-    else setAnchor((a) => a ?? first);
-  }, [atTop, first]);
+  const [seen, setSeen] = useState({ atTop, first });
+  if (seen.atTop !== atTop || seen.first !== first) {
+    setSeen({ atTop, first });
+    setAnchor((a) => (atTop ? undefined : (a ?? first)));
+  }
   const show = useCallback(() => {
     setAnchor(undefined);
     window.scrollTo({ top: Math.max(0, start - stickyTop(top.current) - 24), behavior: "smooth" });
-  }, [start]);
+  }, [start, top]);
   return { count: enabled ? heldCount(keys, anchor) : 0, show };
 }

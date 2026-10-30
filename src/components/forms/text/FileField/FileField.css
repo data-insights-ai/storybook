@@ -23,8 +23,8 @@
     background: var(--di-bg-selected);
   }
 
-  .di-file-drop[aria-invalid="true"],
-  .di-file-row[aria-invalid="true"] {
+  .di-file-drop[data-invalid],
+  .di-file-row[data-invalid] {
     border-color: var(--di-field-border-invalid);
   }
 

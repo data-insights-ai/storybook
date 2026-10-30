@@ -1,4 +1,13 @@
-import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useInsertionEffect,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type PointerEvent,
+} from "react";
 import { type FieldKind, type SegmentType, segmentLayout } from "./segmentLayout";
 import {
   type SegmentValues,
@@ -67,11 +76,13 @@ export function SegmentedInput({
   const emitted = useRef(value);
   if (value !== seen) {
     setSeen(value);
-    emitted.current = value;
     setValues(valuesOf(kind, value));
   }
   const latest = useRef(values);
-  latest.current = values;
+  useInsertionEffect(() => {
+    emitted.current = seen;
+    latest.current = values;
+  });
   const buffer = useRef("");
   const segments = useRef<(HTMLSpanElement | null)[]>([]);
   const container = useRef<HTMLDivElement>(null);
@@ -132,7 +143,9 @@ export function SegmentedInput({
   };
 
   const handlers = useRef({ input, erase });
-  handlers.current = { input, erase };
+  useInsertionEffect(() => {
+    handlers.current = { input, erase };
+  });
   useEffect(() => {
     const element = container.current;
     if (!element) return;
@@ -188,7 +201,9 @@ export function SegmentedInput({
     focusAt(empty < 0 ? 0 : empty);
   };
 
-  let index = -1;
+  const segmentAt = layout.parts.map(
+    (_, position) => layout.parts.slice(0, position).filter((part) => part.type !== "literal").length,
+  );
   return (
     <div
       ref={container}
@@ -210,8 +225,7 @@ export function SegmentedInput({
             </span>
           );
         }
-        index += 1;
-        const at = index;
+        const at = segmentAt[position];
         const type = part.type;
         const shown = shownOf(type, values, layout.hour12);
         const limits = limitsOf(type, values, layout.hour12);
@@ -230,6 +244,7 @@ export function SegmentedInput({
               : text;
         const segmentId = `${baseId}-${type}`;
         return (
+          // eslint-disable-next-line jsx-a11y/interactive-supports-focus -- a disabled segment leaves the tab order, as a disabled input does
           <span
             key={position}
             ref={(element) => {

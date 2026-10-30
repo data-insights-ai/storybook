@@ -156,6 +156,7 @@ export default preview;
 function StoryCanvas({ title, name, children }: { title: string; name: string; children: ReactNode }) {
   const body = useRef<HTMLDivElement>(null);
   const [labelled, setLabelled] = useState(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- after every render, since the story may add or drop its own h1; an unchanged value does not render again
   useLayoutEffect(() => {
     setLabelled(Boolean(body.current?.querySelector("h1")));
   });

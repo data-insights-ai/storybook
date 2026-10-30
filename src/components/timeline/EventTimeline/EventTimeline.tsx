@@ -160,7 +160,7 @@ export function EventTimeline({
       change(zoomAround(view, at, 0.25, bounds), true);
     }
   };
-  const gestures = useGestures<HTMLDivElement>({
+  const { ref: stageRef, ...gestures } = useGestures<HTMLDivElement>({
     view,
     bounds,
     plotPx,
@@ -240,9 +240,10 @@ export function EventTimeline({
           <>
             <Overview bars={overviewBars} bounds={bounds} view={view} plotPx={plotPx} onView={change} />
             <div
-              ref={gestures.ref}
+              ref={stageRef}
               className="di-timeline-stage"
               role="group"
+              // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the plot pans and zooms from the keyboard, as its hint says
               tabIndex={0}
               aria-label={label}
               aria-describedby={`${id}-hint`}

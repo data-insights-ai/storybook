@@ -14,13 +14,15 @@ pnpm storybook
 Opens on port 4500. While it is running, agents can read the component catalogue at `http://127.0.0.1:4500/mcp`.
 
 ```bash
+pnpm format:check
+pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
 pnpm build-storybook
 ```
 
-`pnpm test` runs every story in a browser four times — light and dark, at desktop width and at 390px — and fails on an accessibility violation in either, and measures the contrast of all visible text itself, at several points on each line, where axe cannot decide (chart labels, text over a pseudo-element). `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
+`pnpm format` rewrites the files in place; `pnpm lint` is ESLint (typescript-eslint, the React hooks rules, jsx-a11y) at zero findings. `pnpm test` runs every story in a browser four times — light and dark, at desktop width and at 390px — and fails on an accessibility violation in either, and measures the contrast of all visible text itself, at several points on each line, where axe cannot decide (chart labels, text over a pseudo-element). `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
 
 ## Use a released version
 

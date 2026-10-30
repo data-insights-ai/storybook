@@ -1,4 +1,4 @@
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useInsertionEffect, useRef, type RefObject } from "react";
 import { focusFirstField } from "../../../internal/shortcutKeys";
 
 /**
@@ -9,15 +9,17 @@ import { focusFirstField } from "../../../internal/shortcutKeys";
 export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open: boolean) {
   const opener = useRef<HTMLElement | null>(null);
   const shown = useRef(false);
-  // Read while rendering: by the time effects run, the content may already
+  // Read before any layout or passive effect: by then the content may already
   // have moved focus into the dialog. Kept until the next open, so a second
   // effect pass in StrictMode still finds it.
-  if (open && !shown.current && typeof document !== "undefined") {
-    const active = document.activeElement;
-    if (active instanceof HTMLElement && active !== document.body && !ref.current?.contains(active))
-      opener.current = active;
-  }
-  shown.current = open;
+  useInsertionEffect(() => {
+    if (open && !shown.current) {
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && active !== document.body && !ref.current?.contains(active))
+        opener.current = active;
+    }
+    shown.current = open;
+  }, [ref, open]);
 
   useEffect(() => {
     const dialog = ref.current;

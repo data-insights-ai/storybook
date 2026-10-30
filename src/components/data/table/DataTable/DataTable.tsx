@@ -94,6 +94,7 @@ export function DataTable({
         reachable from the keyboard, so it takes a tab stop then, and only
         then: a frame that fits would be a stop that does nothing.
       */}
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the frame takes the arrow keys for the rows inside it */}
       <div
         ref={scroll}
         className="di-table-scroll"
@@ -206,6 +207,7 @@ function useOverflowing(frame: { current: HTMLDivElement | null }) {
  */
 function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: boolean) {
   const [widths, setWidths] = useState<number[]>();
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- measures after every render until the head and a first row exist; once set it stops
   useLayoutEffect(() => {
     const el = frame.current;
     const table = el?.querySelector("table");
@@ -213,6 +215,7 @@ function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: 
     const heads = table.tHead?.rows[0]?.cells;
     const row = table.tBodies[0]?.querySelector("tr:not(.di-table-spacer)");
     if (!heads || !row || getComputedStyle(table).display !== "table") return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- column widths are read from the laid-out table before paint
     setWidths(Array.from(heads, (th) => th.getBoundingClientRect().width));
   });
   useLayoutEffect(() => {
@@ -446,7 +449,8 @@ export function TableCell({
 }) {
   const measured = useContext(MeasuredContext);
   const fill = useContext(FillColumnContext);
-  const fills = fill !== -1 && fill === useContext(ColumnContext);
+  const column = useContext(ColumnContext);
+  const fills = fill !== -1 && fill === column;
   return (
     <td
       role={useRole("cell")}

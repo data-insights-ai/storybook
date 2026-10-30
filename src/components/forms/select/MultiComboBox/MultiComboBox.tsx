@@ -124,6 +124,7 @@ export function MultiComboBox({
         disabled={disabled}
       >
         <FieldLabel id={`${id}-label`} htmlFor={id} label={label} labelTrack={labelTrack} />
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- a press on the frame puts focus in the input, which takes the keys */}
         <div
           ref={control}
           className={cx("di-token-field", "di-multicombo-control", invalid && "is-invalid", disabled && "is-disabled")}

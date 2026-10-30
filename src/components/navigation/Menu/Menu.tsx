@@ -2,6 +2,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useInsertionEffect,
   useLayoutEffect,
   useRef,
   useState,
@@ -54,7 +55,9 @@ export function Menu({
   const anchor = useRef<HTMLDivElement>(null);
   const entry = useRef<"first" | "last">("first");
   const changeOpen = useRef(onOpenChange);
-  changeOpen.current = onOpenChange;
+  useInsertionEffect(() => {
+    changeOpen.current = onOpenChange;
+  });
   const [triggerNode, setTriggerNode] = useState<HTMLButtonElement | null>(null);
   const [direction, setDirection] = useState<MenuDirection>("down");
 
@@ -175,6 +178,7 @@ export function Menu({
         if (open && !event.currentTarget.contains(event.relatedTarget)) onOpenChange(false);
       }}
     >
+      {/* eslint-disable-next-line react-hooks/refs -- the render prop is handed event handlers; they read the refs only when they fire */}
       {trigger({
         "aria-expanded": open,
         "aria-haspopup": "menu",

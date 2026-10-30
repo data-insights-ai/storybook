@@ -55,7 +55,7 @@ const members: Member[] = [
 
 function MemberRow({
   member,
-  place,
+  place: { rowIndex, ref },
   active,
   onOpen,
 }: {
@@ -66,7 +66,7 @@ function MemberRow({
 }) {
   const [menu, setMenu] = useState(false);
   return (
-    <TableRow rowIndex={place.rowIndex} ref={place.ref} active={active} onSelect={onOpen}>
+    <TableRow rowIndex={rowIndex} ref={ref} active={active} onSelect={onOpen}>
       <TableCell>
         <TextLink onClick={onOpen}>{member.name}</TextLink>
       </TableCell>

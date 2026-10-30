@@ -50,6 +50,7 @@ export function Tabs({
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/interactive-supports-focus -- focus roves over the tabs inside; the list itself is not a stop (APG tabs pattern)
     <div ref={strip} role="tablist" aria-label={label} className={cx("di-tabs", className)} onKeyDown={onKeyDown}>
       {items.map((item) => {
         const selected = item.value === value;

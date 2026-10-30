@@ -62,7 +62,7 @@ export const Lateral: Story = {
 
 /** The open step stays marked while its evidence is read beside the chain. */
 export const Selected: Story = {
-  render: (args) => {
+  render: function Render(args) {
     const [selected, setSelected] = useState("3");
     return <ChainTimeline {...args} selected={selected} onSelect={setSelected} />;
   },

@@ -95,6 +95,7 @@ export function ConfirmDialog({
                 value={typed}
                 autoComplete="off"
                 spellCheck={false}
+                // eslint-disable-next-line jsx-a11y/no-autofocus -- a dialog takes focus on open, here in the field the confirmation is typed into
                 autoFocus
                 onChange={(event) => setTyped(event.target.value)}
               />
@@ -105,6 +106,7 @@ export function ConfirmDialog({
               </p>
             ) : null}
             <ModalFooter>
+              {/* eslint-disable-next-line jsx-a11y/no-autofocus -- a dialog takes focus on open, here on Cancel, the choice that changes nothing */}
               <Button variant="secondary" onClick={close} autoFocus={!needsText} disabled={busy}>
                 {cancelLabel}
               </Button>

@@ -5,10 +5,10 @@ import { useLayoutEffect, useRef, type RefObject } from "react";
  * changes. A strip that only scrolled under the reader's own hand would open
  * a page with the current tab out of sight.
  */
-export function useActiveInView(strip: RefObject<HTMLElement | null>) {
+export function useActiveInView(stripRef: RefObject<HTMLElement | null>) {
   const shown = useRef<Element | null>(null);
   useLayoutEffect(() => {
-    const frame = strip.current;
+    const frame = stripRef.current;
     const active = frame?.querySelector(".is-active");
     if (!frame || !active || active === shown.current) return;
     shown.current = active;

@@ -109,7 +109,8 @@ export function TimelineSummary({
     const rateOf = (e: TimelineEpisode) => e.total / Math.max(MINUTE, e.end - e.start);
     const peak = Math.max(Number.MIN_VALUE, ...episodes.map(rateOf));
     let lastLabel = -Infinity;
-    return episodes.map((episode, i) => {
+    const drawn = [];
+    for (const [i, episode] of episodes.entries()) {
       const w = Math.max(MIN_PX, ((episode.end - episode.start) / spanMs) * width);
       const left = Math.min(Math.max(0, ((episode.start - bounds.start) / spanMs) * width), width - w);
       const centre = left + w / 2;
@@ -120,7 +121,7 @@ export function TimelineSummary({
       }
       const height = LOW_PX + (HIGH_PX - LOW_PX) * Math.sqrt(rateOf(episode) / peak);
       const duration = Math.max(1, episode.end - episode.start);
-      return {
+      drawn.push({
         left,
         width: w,
         height,
@@ -132,8 +133,9 @@ export function TimelineSummary({
           width: `${((s.end - s.start) / duration) * 100}%`,
         })),
         key: `${episode.start}-${i}`,
-      };
-    });
+      });
+    }
+    return drawn;
   }, [episodes, bounds, width]);
 
   const slots = Children.toArray(children).filter(isValidElement);
@@ -155,6 +157,7 @@ export function TimelineSummary({
           {width > 0
             ? blocks.map((block, i) =>
                 block.empty ? null : (
+                  // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- a pointer shortcut on the drawing; each episode is a button in the rows below
                   <span
                     key={block.key}
                     className={cx(

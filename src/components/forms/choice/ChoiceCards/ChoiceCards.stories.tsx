@@ -37,7 +37,7 @@ export const Kinds: StoryObj = {
 /** Cards in groups, each description one line, the rest in a tooltip; the legend hidden under a heading that already names the choice. */
 export const Grouped: StoryObj<typeof meta> = {
   args: { name: "source", legend: "Source type", options: [], value: "", onChange: () => undefined },
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState("defender");
     return (
       <ChoiceCards
@@ -91,7 +91,7 @@ export const Grouped: StoryObj<typeof meta> = {
  */
 export const Planned: StoryObj<typeof meta> = {
   args: { name: "source", legend: "Source type", options: [], value: "", onChange: () => undefined },
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState("defender");
     return (
       <ChoiceCards
@@ -154,7 +154,7 @@ const guides: Record<string, string> = {
 export const WithGuide: StoryObj<typeof meta> = {
   name: "With a guide",
   args: { name: "source", legend: "Source type", options: [], value: "", onChange: () => undefined },
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState("defender");
     return (
       <ChoiceCards

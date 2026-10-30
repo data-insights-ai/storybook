@@ -144,7 +144,7 @@ export function FileField({
         onChange={(event) => choose(event.target.files?.[0])}
       />
       {file ? (
-        <div className={cx("di-file-row", disabled && "is-disabled")} aria-invalid={invalid || undefined}>
+        <div className={cx("di-file-row", disabled && "is-disabled")} data-invalid={invalid || undefined}>
           <Icon size={16}>
             <FileText />
           </Icon>
@@ -173,7 +173,7 @@ export function FileField({
           aria-labelledby={labelId}
           aria-describedby={dropId}
           className={cx("di-file-drop", dragging && "is-dragging", disabled && "is-disabled")}
-          aria-invalid={invalid || undefined}
+          data-invalid={invalid || undefined}
           onDragOver={(event) => {
             event.preventDefault();
             setDragging(!disabled);

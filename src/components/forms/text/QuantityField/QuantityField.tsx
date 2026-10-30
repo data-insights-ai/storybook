@@ -1,5 +1,5 @@
 import { Minus, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
@@ -57,7 +57,11 @@ export function QuantityField({
   className?: string;
 }) {
   const [text, setText] = useState(String(value));
-  useEffect(() => setText(String(value)), [value]);
+  const [seen, setSeen] = useState(value);
+  if (value !== seen) {
+    setSeen(value);
+    setText(String(value));
+  }
 
   const parsed = /^\s*\d+\s*$/.test(text) ? Number(text) : NaN;
   const valid = Number.isInteger(parsed) && parsed >= min && parsed <= max;
