@@ -168,7 +168,7 @@ function edgeLabel(name: string, dy: number) {
         x={x}
         y={y + dy}
         textAnchor="end"
-        fill="var(--di-seal-ink)"
+        fill="var(--di-one-ink)"
         fontFamily="var(--di-font-code)"
         fontSize={11}
         letterSpacing="0.08em"

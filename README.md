@@ -80,25 +80,30 @@ One package. Storybook 10, React 19, Vite.
 Tokens are three layers in `src/styles/tokens`:
 
 - **Primitive** — brand-book values. Components do not name these.
-- **Semantic** — page, surface, text, fill, focus, sidebar, status. Light is the console as drawn. Dark remaps the same roles from the toolbar.
+- **Semantic** — the tone steps (chrome, page, surface, inset, strip, plane), text, fill, the one gold, selection and focus, sidebar, status, severity. Dark remaps the same roles onto a navy ramp; it is designed, not inverted.
 - **Component** — slots for one control, such as `--di-button-primary-bg`.
 
-Gold is one moment per view: the tittle in the mark, or the page eyebrow. Paused reuses that gold. Running is `#186D41` and failed is `#AB2E37`, the hues from the console screenshots, each above 5:1 on its wash.
+Depth is a step in tone, not a line. Gold marks the one thing that matters in a view and, in daylight, is never text. Selection and focus are cornflower. Severity is one scale (`SeverityMark`), a filled mark plus the word.
 
-Sansation is display and figures. IBM Plex Sans is the interface. IBM Plex Mono is identifiers, timestamps, and eyebrows.
+Sansation is the page's name, figures and section heads. IBM Plex Sans is the interface, with a 14px body. IBM Plex Mono is identifiers, timestamps and the labels above values.
 
 Buttons, fields, and tables are native elements. Where a control needs roving focus or a popup beyond that, the headless library is Base UI (`@base-ui/react`), the only one. The date calendars draw their month grid with `react-day-picker`; the typed day and time segments are the package's own.
 
 Component stories take string args, so Controls can change the copy. Icons, actions, table cells, and other elements are children, filled in `render`, not edited as controls. Stories are in English. The Get started checklist in the sidebar is turned off.
 
-## Screens
+## Patterns
+
+Whole screens built only from public components. They are examples, not exports.
 
 | Story | What it shows |
 | --- | --- |
-| Screens / Login | Sign-in. A card on a navy field. |
-| Screens / Watchlist | Identities under watch. |
-| Screens / Coverage | A list of connected sources. |
-| Screens / Architecture | A five-stage pipeline. |
-| Screens / Settings | Session, channels, availability. |
+| Patterns / Security overview | Attention list, a navy hero with its figures, severity and sources. |
+| Patterns / Case triage | A list beside its record (`ListDetail`), one view at a time on a phone. |
+| Patterns / Organization home | An organization's home page, one story per role. |
+| Patterns / Login | Sign-in. A card on a navy field. |
+| Patterns / Watchlist | Identities under watch. |
+| Patterns / Coverage | A list of connected sources. |
+| Patterns / Architecture | A five-stage pipeline. |
+| Patterns / Settings | Session, channels, availability. |
 
 Sample copy is English. A product supplies its own strings.
