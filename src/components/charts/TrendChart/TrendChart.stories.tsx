@@ -49,6 +49,11 @@ async function markersClear(canvasElement: HTMLElement) {
     });
     await expect(covered).toHaveLength(0);
   }
+  const boxes = [...canvasElement.querySelectorAll(".di-trend-marker")].map((label) => label.getBoundingClientRect());
+  const overlapping = boxes.flatMap((a, i) =>
+    boxes.slice(i + 1).filter((b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top),
+  );
+  await expect(overlapping).toHaveLength(0);
 }
 
 async function ticksInside(canvasElement: HTMLElement) {
@@ -86,7 +91,7 @@ const meta = {
         component: [
           "**Purpose:** a value over time — a balance, a count per day, seats in use — with the days that matter marked on the axis.",
           "**When to use:** one to three series on one time axis, in a `Panel` beside the `Figure` it explains. **When not to:** a single number with no axis is a `Figure` (with a `Sparkline` beside it); counts above and below a line per period are a `Seismograph`; periods such as licenses are a `PeriodTimeline`; many events on one clock are an `EventTimeline`.",
-          "**Anatomy:** the plot (a hairline grid, the x axis in the mono track, the y axis), the series, dashed `markers` with their label in a band above the plot (centred on the rule, moved inward at the edges, never over the data), and a legend under the plot when there is more than one series.",
+          "**Anatomy:** the plot (a hairline grid, the x axis in the mono track, the y axis), the series, dashed `markers` with their label in a band above the plot (centred on the rule, moved inward at the edges, never over the data; nearby markers stagger onto a second row), and a legend under the plot when there is more than one series.",
           "**Variants:** a series' `kind` is `line` for a level, `area` for an amount, `bar` for a count per period; `dashed` is a projection of the same series; `tone` is `series`, `compare` (what it is measured against), `highlight`, `muted`, or `warn`/`danger` only for a state. `height` is `sm` on a dashboard, `md`, `lg`.",
           "**States:** a `null` value is a gap, not zero. The plot fades in once (120 ms); no series draws itself in, and a marker appears with the data.",
           "**Content:** the product formats the values and the days (`formatX`, `formatValue`); the panel states the key figure in words.",
@@ -262,6 +267,32 @@ export const Markers: Story = {
  * `null` until today, as the measured one is `null` after it. The legend
  * keeps the dash.
  */
+/**
+ * Two markers on nearby days: the expiry and the renewal a day later. Their
+ * labels would overlap on one row, so the second steps up onto a row of its
+ * own; at a width where they fit side by side they share the first.
+ */
+export const NearbyMarkers: Story = {
+  args: {
+    label: "Seats in use by day, with expiry and renewal a day apart",
+    markers: [
+      { at: days[14]!, label: "Expires", tone: "warn" },
+      { at: days[15]!, label: "Renewal", tone: "neutral" },
+    ],
+  },
+  render: (args) => (
+    <Panel title="Seats" heading={2}>
+      <TrendChart {...args} />
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    for (const label of ["Expires", "Renewal"]) await expect(canvas.getByText(label)).toBeInTheDocument();
+    await ticksInside(canvasElement);
+    await markersClear(canvasElement);
+  },
+};
+
 export const Forecast: Story = {
   args: {
     label: "Credit balance by day, with forecast",
