@@ -3,7 +3,6 @@ import { Building2, KeyRound, Network } from "lucide-react";
 import {
   Breadcrumb,
   ChoiceCards,
-  Console,
   CreateFlow,
   Fact,
   FactList,
@@ -13,7 +12,6 @@ import {
   PageHeaderTitle,
   TextField,
 } from "..";
-import { sampleChrome } from "../components/shell/chrome.sample";
 
 const kinds = [
   { value: "oidc", label: "OpenID Connect", description: "Any identity provider that speaks OIDC.", icon: <KeyRound /> },
@@ -32,7 +30,7 @@ export function CreateFlowPageScreen() {
   const ready = step !== 1 || (name.trim() !== "" && issuer.trim() !== "");
 
   return (
-    <Console title="New connection" crumb={["Sign-in", "New connection"]} active="settings" chrome={sampleChrome}>
+    <>
       <Page width="detail">
         <PageHeader lede="People at your domains sign in through your identity provider.">
           <PageHeaderCrumbs>
@@ -80,6 +78,6 @@ export function CreateFlowPageScreen() {
           ) : null}
         </CreateFlow>
       </Page>
-    </Console>
+    </>
   );
 }

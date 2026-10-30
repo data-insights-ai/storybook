@@ -8,7 +8,6 @@ import {
   ConfidenceField,
   ConfirmActions,
   ConfirmPanel,
-  Console,
   ExplainFooter,
   ExplainPanel,
   ExplainRow,
@@ -33,7 +32,6 @@ import {
   Toast,
   ToastAction,
 } from "..";
-import { sampleChrome } from "../components/shell/chrome.sample";
 
 const bars = [
   { percent: 38 },
@@ -56,12 +54,7 @@ export function InferenceScreen() {
   const [receipt, setReceipt] = useState(true);
 
   return (
-    <Console
-      title="Inference"
-      crumb={["WS-01", "Record", "Overview"]}
-      active="overview"
-      chrome={sampleChrome}
-    >
+    <>
       <Stack>
         <PageHeader
           eyebrow="12 — Inference"
@@ -251,6 +244,6 @@ export function InferenceScreen() {
           </Toast>
         ) : null}
       </Stack>
-    </Console>
+    </>
   );
 }

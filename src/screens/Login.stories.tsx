@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { ConsoleFrame } from "../../.storybook/Console";
 import { LoginScreen } from "./Login";
 
 const meta = {
@@ -6,6 +7,13 @@ const meta = {
   tags: ["layer:screen"],
   component: LoginScreen,
   parameters: { layout: "fullscreen" },
+  decorators: [
+    (Story) => (
+      <ConsoleFrame title="Sign in" lang="en">
+        <Story />
+      </ConsoleFrame>
+    ),
+  ],
 } satisfies Meta<typeof LoginScreen>;
 
 export default meta;

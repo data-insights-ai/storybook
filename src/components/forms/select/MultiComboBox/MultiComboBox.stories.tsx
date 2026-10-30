@@ -24,7 +24,7 @@ const meta = {
     options: people,
     values: [],
     toggleLabel: "Show members",
-    emptyLabel: "No member matches.",
+    emptyLabel: "",
     removeLabel: (name: string) => `Remove ${name}`,
     placeholder: "Search members",
     hint: "Each gets the mail at their verified address.",
@@ -85,6 +85,35 @@ export const PickSeveral: Story = {
     await userEvent.keyboard("{Escape}");
     await userEvent.click(canvas.getByRole("button", { name: "Remove Lea Hofmann" }));
     await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["u-nora"]));
+  },
+};
+
+/** Nobody matches what was typed: the list closes rather than covering the line under the field. */
+export const NoMatch: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Members" });
+    await userEvent.click(input);
+    await expect(page.getByRole("option", { name: /Nora Feld/ })).toBeVisible();
+    await userEvent.type(input, "zzz");
+    await waitFor(() => expect(page.queryByRole("listbox")).toBeNull());
+    await expect(canvas.getByText("Each gets the mail at their verified address.")).toBeVisible();
+    await userEvent.clear(input);
+    await expect(page.getByRole("option", { name: /Nora Feld/ })).toBeVisible();
+  },
+};
+
+/** With `emptyLabel` the list stays open and says so. */
+export const EmptyText: Story = {
+  args: { emptyLabel: "No member matches." },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Members" });
+    await userEvent.click(input);
+    await userEvent.type(input, "zzz");
+    await expect(page.getByText("No member matches.")).toBeVisible();
   },
 };
 

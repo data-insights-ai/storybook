@@ -50,8 +50,12 @@ export function MultiComboBox({
   onChange: (values: string[]) => void;
   /** The button that opens the list, e.g. "Show members". */
   toggleLabel: string;
-  /** Shown when nothing matches what was typed. */
-  emptyLabel: string;
+  /**
+   * Shown in the list when nothing matches what was typed. Without it the
+   * list stays closed while nothing matches, so the line under the field
+   * stays readable.
+   */
+  emptyLabel?: string;
   /** The remove button's name for one entry, e.g. (name) => `Remove ${name}`. */
   removeLabel: (label: string) => string;
   hint?: string;
@@ -73,13 +77,14 @@ export function MultiComboBox({
   const chosen = values.filter((v) => byValue.has(v));
   const shown = options.filter((o) => contains(o.label, query.trim())).map((o) => o.value);
   const invalid = hint !== "" && hintTone === "error";
+  const visible = open && !disabled && (shown.length > 0 || Boolean(emptyLabel));
 
   const show = () => {
     if (disabled) return;
     update();
     setOpen(true);
   };
-  const toggle = useListToggle(input, () => (open ? setOpen(false) : show()));
+  const toggle = useListToggle(input, () => (visible ? setOpen(false) : (setQuery(""), show())));
   const set = (next: string[]) => {
     onChange(next);
     setQuery("");
@@ -106,7 +111,7 @@ export function MultiComboBox({
           if (details.reason === "input-change") setQuery(next);
         }}
         itemToStringLabel={(value: string) => byValue.get(value)?.label ?? value}
-        open={open && !disabled}
+        open={visible}
         onOpenChange={(next, details) => {
           if (details.reason === "item-press") return;
           if (next) show();
@@ -155,6 +160,9 @@ export function MultiComboBox({
             aria-invalid={invalid || undefined}
             aria-describedby={hint === "" ? undefined : `${id}-hint`}
             onFocus={show}
+            onBlur={() => {
+              if (!visible) setOpen(false);
+            }}
             onKeyDown={keyDown}
           />
           <button {...toggle} className="di-multicombo-toggle" aria-label={toggleLabel} disabled={disabled}>
@@ -165,7 +173,7 @@ export function MultiComboBox({
           {hint}
         </FieldHint>
         {/* Unmounted in the render that closes it, so the page behind is readable again at once. */}
-        {open && !disabled ? (
+        {visible ? (
           <Combobox.Portal container={host.container}>
             <Combobox.Positioner
               anchor={control}
@@ -176,7 +184,7 @@ export function MultiComboBox({
               style={{ zIndex: 100 }}
             >
               <Combobox.Popup className="di-combobox-popover">
-                {shown.length === 0 ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
+                {shown.length === 0 && emptyLabel ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
                 <Combobox.List className="di-combobox-list" aria-labelledby={`${id}-label`}>
                   {(value: string) => (
                     <Combobox.Item key={value} value={value} className="di-combobox-option di-multicombo-option">

@@ -10,8 +10,9 @@ import "./FileField.css";
 
 /**
  * A field that takes one file: label above, a dashed drop area, one line
- * under it. The area says "Drop the file here or choose a file"; the link
- * opens the picker, the native input stays hidden. A chosen file shows as
+ * under it. The area holds two things that stand alone: a line saying a
+ * file can be dropped there, and a button that opens the picker, which is
+ * also the way in from the keyboard. The native input stays hidden. A chosen file shows as
  * a row with its name, size and a remove button.
  *
  * `accept` and `maxBytes` are checked on the way in: a file that fails is
@@ -26,12 +27,12 @@ export function FileField({
   onFileChange,
   accept,
   maxBytes,
-  dropLabel = "Drop the file here or",
-  chooseLabel = "choose a file",
-  emptyLabel = "No file chosen",
-  clearLabel = "Remove file",
-  wrongTypeLabel = "This kind of file is not accepted here.",
-  tooLargeLabel = "This file is too large.",
+  dropLabel,
+  chooseLabel,
+  emptyLabel,
+  clearLabel,
+  wrongTypeLabel,
+  tooLargeLabel,
   formatSize = defaultSize,
   hint = "",
   hintTone = "neutral",
@@ -48,17 +49,18 @@ export function FileField({
   accept?: string;
   /** The largest file taken, in bytes. */
   maxBytes?: number;
-  /** The words before the link in the drop area. */
-  dropLabel?: string;
-  /** The link that opens the picker. */
-  chooseLabel?: string;
-  /** What a screen reader hears while no file is chosen. */
-  emptyLabel?: string;
-  clearLabel?: string;
+  /** The line in the drop area, a sentence of its own, such as "Drop a file here". */
+  dropLabel: string;
+  /** The button that opens the picker, a button label such as "Choose file". */
+  chooseLabel: string;
+  /** What a screen reader hears after the button while no file is chosen. */
+  emptyLabel: string;
+  /** The remove button's name; the file's name follows it. */
+  clearLabel: string;
   /** The line under the field for a file `accept` refuses. */
-  wrongTypeLabel?: string;
+  wrongTypeLabel: string;
   /** The line under the field for a file over `maxBytes`. */
-  tooLargeLabel?: string;
+  tooLargeLabel: string;
   /** A size as people read it; the default writes kB and MB in the browser's language. */
   formatSize?: (bytes: number) => string;
   /** The line under the field. Empty means none. */
@@ -74,6 +76,8 @@ export function FileField({
   const [dragging, setDragging] = useState(false);
   const [refused, setRefused] = useState("");
   const labelId = useId();
+  const chooseId = useId();
+  const dropId = useId();
   const statusId = useId();
   const line = refused || hint;
   const tone: HintTone = refused ? "error" : hintTone;
@@ -147,6 +151,9 @@ export function FileField({
         </div>
       ) : (
         <div
+          role="group"
+          aria-labelledby={labelId}
+          aria-describedby={dropId}
           className={cx("di-file-drop", dragging && "is-dragging", disabled && "is-disabled")}
           aria-invalid={invalid || undefined}
           onDragOver={(event) => {
@@ -159,21 +166,23 @@ export function FileField({
           <Icon size={24}>
             <Upload />
           </Icon>
-          <span className="di-file-prompt">
-            {dropLabel}{" "}
-            <button
-              type="button"
-              className="di-file-choose"
-              disabled={disabled}
-              aria-labelledby={`${labelId} ${statusId}`}
-              aria-describedby={describedBy}
-              onClick={() => input.current?.click()}
-            >
-              {chooseLabel}
-            </button>
+          <span id={dropId} className="di-file-drop-text">
+            {dropLabel}
           </span>
+          <Button
+            id={chooseId}
+            type="button"
+            variant="secondary"
+            size="dense"
+            disabled={disabled}
+            aria-labelledby={`${chooseId} ${labelId}`}
+            aria-describedby={describedBy ? `${statusId} ${describedBy}` : statusId}
+            onClick={() => input.current?.click()}
+          >
+            {chooseLabel}
+          </Button>
           <span id={statusId} className="di-sr">
-            {chooseLabel}, {emptyLabel}
+            {emptyLabel}
           </span>
         </div>
       )}

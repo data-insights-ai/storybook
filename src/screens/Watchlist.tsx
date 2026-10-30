@@ -3,7 +3,6 @@ import {
   Actions,
   Button,
   CellStack,
-  Console,
   DataTable,
   Grid,
   IconTile,
@@ -38,7 +37,6 @@ import {
   TableRow,
   TextLink,
 } from "..";
-import { sampleChrome } from "../components/shell/chrome.sample";
 
 type Identity = {
   id: string;
@@ -61,7 +59,7 @@ const identities: Identity[] = [
 
 export function WatchlistScreen() {
   return (
-    <Console title="Watchlist" crumb={["Monitor", "Watchlist"]} active="watchlist" chrome={sampleChrome}>
+    <>
       <PageHeader
         eyebrow="Watchlist"
         lede="Manage the people, companies, domains, and email addresses under automatic watch."
@@ -232,6 +230,6 @@ export function WatchlistScreen() {
           </NoticeText>
         </Notice>
       </Stack>
-    </Console>
+    </>
   );
 }

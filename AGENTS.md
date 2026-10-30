@@ -17,7 +17,7 @@ Components carry no outer margin; spacing belongs to the container. A product sc
 - A record's detail page with heavy sub-lists or more than about three sections is split into tabs (`TabNav`), each tab its own URL, so it is deep-linkable, keyboard navigable and kept on back: the record's settings tab holds its sections and, last, its `DangerZone`.
 - A tabbed page's header (eyebrow, title, one description of the page) never holds a tab's action. Every tab panel starts with the same `ListToolbar`: the search on the left, the tab's one primary action in `ListToolbarEnd` with its `n` key, an optional `ListToolbarNote` under it; no heading of its own. A page without tabs keeps its primary action in `PageHeaderAside`, with the same key. Each tab shows the same `EmptyState` style.
 - A list read by date keeps its period in one `DateRangePicker` in its `ListToolbar`, after the filters. The product passes `locale`, `weekStartsOn` and `timeZone` from its settings, keeps the period in the URL (`serializeDateRange`, `parseDateRange`) and sends the server the instants `resolveDateRange` gives; a preset that runs up to now has no end, so new entries still arrive in it.
-- Keys are one scheme on every page and need no binding: a `SearchField` answers `/`, a `Button` with `shortcut="n"` is the primary create action, a `DetailSection` Edit answers `e`, Esc closes, `?` opens `ShortcutHelp` (mounted once in the shell). In a `DataTable` Up and Down move between rows, Home and End to the first and the last, and Enter opens the row. Keys never fire while the reader types. Every `Sheet`, `Modal`, `Drawer`, `CreateFlow` step and section form starts in its first field.
+- Keys are one scheme on every page and need no binding: a `SearchField` answers `/`, a `Button` with `shortcut="n"` is the primary create action, a `DetailSection` Edit answers `e`, Esc closes, `?` opens `ShortcutHelp` (mounted once in the shell). In a `DataTable` Up and Down move between rows, Home and End to the first and the last, and Enter opens the row. Keys never fire while the reader types. Every `Sheet`, `Modal`, `CreateFlow` step and section form starts in its first field.
 
 The screens under `src/screens` follow these rules; copy from them, not from memory.
 
@@ -95,10 +95,10 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
 | `navigation/` | Breadcrumb, CommandBar, Menu, Pagination, Stepper, Tabs, TabNav, TextLink; `Sidebar/` the sidebar and its parts behind one index |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker |
-| `data/` | `records/` Card, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` Metric, Stat, StatTile; `text/` Eyebrow, Highlight, Kbd, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
+| `data/` | `records/` RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` Stat, StatTile; `text/` Eyebrow, Highlight, Kbd, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
 | `marks/` | Badge, Chip, StatusPill, Tag, VersionTag, SealValue, Icon (with the `IconSet` gallery the docs show), IconTile |
 | `feedback/` | DangerZone, Delayed, EmptyState, Notice, Toast, Tooltip, TooltipTarget; `waiting/` AppLoader, Progress, RouteProgress, SkeletonPage, SkeletonTable, Spinner |
-| `overlays/` | ConfirmDialog, CreateFlow, Drawer, Flyout, Modal, Sheet, ShortcutHelp; `useModalDialog/` the dialog behaviour Modal and Sheet share |
+| `overlays/` | ConfirmDialog, CreateFlow, Flyout, Modal, Sheet, ShortcutHelp; `useModalDialog/` the dialog behaviour Modal and Sheet share |
 | `inference/` | ConfidenceField, ConfirmPanel, ExplainPanel, PrivacyBadge, and the `Inference.css` they share |
 | `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, Split, FieldStack, InlineForm, Actions; `page/` Page, PageHeader, SectionTitle, Panel, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure |
 | `charts/` | Bars, Chart, ChartCard, CoverageMatrix, Distribution, LevelMeter, Seismograph, Sparkline, TrendChart |
@@ -112,13 +112,13 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Introduction`, then `Foundations/` — the brand, the tokens and the reasoning behind them (Essence, Register, Color, Type, Scale, Logo, Pages, Decisions and the rest). No package component lives here.
 - `Actions/` — what a person presses: Button, CountButton, CopyValue, RowActions, BulkActionBar.
 - `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
-- `Data/` — what a person reads: `Records/` (the cards, FactList, KeyValues, Channel, Session), `Figures/` (Stat, StatTile, Metric), `Text/` (Eyebrow, Highlight, Kbd, CodeBlock, PullQuote) and `Table/`.
+- `Data/` — what a person reads: `Records/` (the cards, FactList, KeyValues, Channel, Session), `Figures/` (Stat, StatTile), `Text/` (Eyebrow, Highlight, Kbd, CodeBlock, PullQuote) and `Table/`.
 - `Marks/` — what every other component draws with: Badge, StatusPill, Chip, Tag, VersionTag, SealValue, Icon, IconTile. A mark imports no other component, so it sits below them all.
 - `Feedback/` — Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `Waiting/` the loaders, progress and skeletons.
 - `Overlays/`, `Navigation/` — what opens over the page, and how a person moves through it.
 - `Layout/` — `Arrangement/` (Stack, Grid, Numbered, Toolbar, Split, FieldStack, InlineForm), `Page/` (Page, the headers, Panel, Stage, DetailSection), `Folding/` (Accordion, Disclosure).
 - `Charts/`, `Timeline/`, `Inference/` — what a screen measures, what happened when, and what the system inferred.
-- `Shell/` — AppShell, SignIn, ThemeProvider. A product renders `AppShell` full-bleed from its slots; `Console` is the same shell inside its Storybook window, with the sample chrome the screens share, and no product renders it.
+- `Shell/` — AppShell, SignIn, ThemeProvider. A product renders `AppShell` full-bleed from its slots. The Storybook window the screens sit in, with the sample chrome they share, is `.storybook/Console.tsx`: each screen story adds it as a decorator, and it is not in the package.
 - `Screens/` — a console example, composed from the above.
 
 A group gets subgroups only where a natural one exists, and a flat group runs to about eight or ten entries before it needs one (Navigation holds ten). Inside a group, entries sort alphabetically by title.
@@ -130,7 +130,7 @@ What a component may hold is a second axis, and it is a tag on its story meta, n
 - `layer:block` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, Sheet, Menu, Tabs, StatTile, SignIn.
 - `layer:pattern` — a whole arrangement: AppShell, Sidebar, ShortcutHelp, ThemeProvider and the arrangement components.
 
-A deprecated export says so in its doc comment, `@deprecated Removed in <version>: <why>`, with what to use instead, and every story that shows it carries the tag `status:deprecated`. Deprecated now and removed in 0.10.0: Console and ConsoleFrame; Card (use Panel); Metric and MetricNote (use StatTile); Drawer and DrawerFooter (use Sheet with `index` and `eyebrow`, and SheetFooter).
+A deprecated export says so in its doc comment, `@deprecated Removed in <version>: <why>`, with what to use instead, and every story that shows it carries the tag `status:deprecated`.
 
 The test is one question: **can another component go inside it?** `KeyValues` holds `KeyValue`, and `KeyValue` takes two strings — nothing else fits, so it is a primitive. `Stat` looks just as small, but its `children` holds a `StatusPill` on the Watchlist screen, so it is a block. `Pagination` and `SkeletonTable` are bulky and still primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
 
@@ -138,7 +138,7 @@ One sidebar entry is one component, and **one module is one component**. An inde
 
 A component whose drawing takes more than one module keeps the parts in a folder of its own, and only the component and its slots are exported: `timeline/` holds `EventTimeline` and the scale, marks and navigation it is drawn from (beside the other timelines), and `timeline/summary/` holds `TimelineSummary` and the episodes it is told in.
 
-A sub-component that only exists inside its parent — `TableCell`, `NoticeTitle`, `PanelFooter`, `ModalIcon` — stays in the parent's file and the parent's entry. The test is whether anything else imports it: `FactList` sat in `Modal.tsx` until the Register screen used it inside a `Drawer`, which is the moment it stopped being Modal's.
+A sub-component that only exists inside its parent — `TableCell`, `NoticeTitle`, `PanelFooter`, `ModalIcon` — stays in the parent's file and the parent's entry. The test is whether anything else imports it: `FactList` sat in `Modal.tsx` until the Register screen used it inside a drawer, which is the moment it stopped being Modal's.
 
 Every export in `src/index.ts` appears in a story. An export with no story is in the package and invisible to the designer. A story meta's `component` is the component that story renders: three components under one meta make the Docs page and Show code describe the wrong one.
 
@@ -148,7 +148,7 @@ A Sheet is `layer:block` because it contains Buttons and StatusPills; a Button i
 
 `.storybook/preview.tsx` sorts the entries of a group alphabetically **by title, not by file name**. Stories inside one file keep the order the file declares. Storybook reads that comparator out of the file and evaluates it on its own, so it has to be plain JavaScript with no type annotations and no references to anything outside it.
 
-Anything with a transition gets a story that runs it: `Feedback/Toast` → Arriving, `Overlays/Modal` → Transition, `Overlays/Drawer` → Transition, `Feedback/Waiting/SkeletonTable` → Resolving, `Feedback/Waiting/Progress` → Counting, `Feedback/Waiting/RouteProgress` → Navigating, `Feedback/Delayed` → Appearing. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
+Anything with a transition gets a story that runs it: `Feedback/Toast` → Arriving, `Overlays/Modal` → Transition, `Feedback/Waiting/SkeletonTable` → Resolving, `Feedback/Waiting/Progress` → Counting, `Feedback/Waiting/RouteProgress` → Navigating, `Feedback/Delayed` → Appearing. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
 
 ### The one API rule
 

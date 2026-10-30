@@ -21,7 +21,7 @@ const meta = {
     value: "",
     suggestions,
     toggleLabel: "Show register suggestions",
-    emptyLabel: "No matching suggestions. You can enter another code.",
+    emptyLabel: "",
     placeholder: "Choose or enter a code",
     hint: "",
     hintTone: "neutral",
@@ -88,14 +88,28 @@ export const KeyboardSelection: Story = {
   },
 };
 
-/** Custom text is exact caller-owned text, including whitespace and punctuation. */
+/**
+ * Custom text is exact caller-owned text, including whitespace and
+ * punctuation. While nothing matches, no list opens, so the line under the
+ * field stays readable.
+ */
 export const CustomValue: Story = {
+  args: { hint: "A code from the register, or one of your own." },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement),
       page = within(canvasElement.ownerDocument.body);
     const input = canvas.getByRole("combobox", { name: "Register code" });
     await userEvent.type(input, "  local/Extra + 7  ");
-    await expect(page.getByText("No matching suggestions. You can enter another code.")).toBeVisible();
+    await expect(page.queryByRole("listbox")).toBeNull();
+    await expect(input).toHaveAttribute("aria-expanded", "false");
+    await expect(canvas.getByText("A code from the register, or one of your own.")).toBeVisible();
+    await userEvent.clear(input);
+    await userEvent.type(input, "North");
+    await expect(page.getByRole("option", { name: /Northern register/ })).toBeVisible();
+    await userEvent.type(input, "zz");
+    await waitFor(() => expect(page.queryByRole("listbox")).toBeNull());
+    await userEvent.clear(input);
+    await userEvent.type(input, "  local/Extra + 7  ");
     await userEvent.keyboard("{Enter}");
     await userEvent.tab();
     await expect(input).toHaveValue("  local/Extra + 7  ");
@@ -123,7 +137,35 @@ export const ExternalReset: Story = {
   },
 };
 
-export const EmptySuggestions: Story = { args: { suggestions: [] }, play: CustomValue.play };
+/** No suggestions at all: neither typing nor the toggle opens an empty list. */
+export const EmptySuggestions: Story = {
+  args: { suggestions: [] },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Register code" });
+    await userEvent.type(input, "NR-01");
+    await expect(page.queryByRole("listbox")).toBeNull();
+    await userEvent.click(canvas.getByRole("button", { name: "Show register suggestions" }));
+    await expect(page.queryByRole("listbox")).toBeNull();
+    await expect(input).toHaveValue("NR-01");
+  },
+};
+
+/** A product that wants to say nothing matched passes `emptyLabel`; the list then opens with it. */
+export const EmptyText: Story = {
+  args: { emptyLabel: "No matching suggestions. You can enter another code." },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Register code" });
+    await userEvent.type(input, "XX-99");
+    await expect(page.getByText("No matching suggestions. You can enter another code.")).toBeVisible();
+    await expect(input).toHaveAttribute("aria-expanded", "true");
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(page.queryByRole("listbox")).toBeNull());
+  },
+};
 /** Composition events exercise the maintained IME guard; this is not an OS
  * input-method qualification or an assertion that every browser behaves alike. */
 export const ComposingInput: Story = {

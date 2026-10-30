@@ -1,9 +1,9 @@
 import { LockKeyhole } from "lucide-react";
-import { Button, ConsoleFrame, SignIn, SignInVersion, TextField, TextLink, VersionTag } from "..";
+import { Button, SignIn, SignInVersion, TextField, TextLink, VersionTag } from "..";
 
 export function LoginScreen() {
   return (
-    <ConsoleFrame title="Sign in" lang="en">
+    <>
       <SignIn
         kicker="datAInsights"
         eyebrow="Workspace"
@@ -35,6 +35,6 @@ export function LoginScreen() {
           Sign in
         </Button>
       </SignIn>
-    </ConsoleFrame>
+    </>
   );
 }

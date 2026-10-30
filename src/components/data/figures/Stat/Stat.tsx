@@ -4,8 +4,8 @@ import "./Stat.css";
 /**
  * A labelled figure: `label` above, `value` with an optional `suffix` (a unit)
  * below. What qualifies the figure, a `StatusPill` or a note, goes in as
- * children. For a figure with a trend and a delta, use `StatTile`; for a large
- * one in a panel, `Metric`.
+ * children. For a figure on its own surface, with a trend
+ * or a delta, use `StatTile`.
  */
 export function Stat({
   label,

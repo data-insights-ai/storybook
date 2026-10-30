@@ -8,7 +8,7 @@ import {
   ShieldAlert,
   Waypoints,
 } from "lucide-react";
-import type { ConsoleChrome } from "./AppShell";
+import type { ConsoleChrome } from "./Console";
 
 /** English sample chrome. A product replaces this with its own strings. */
 export const sampleChrome: ConsoleChrome = {

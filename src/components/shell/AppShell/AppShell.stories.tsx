@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
-import { sampleChrome } from "../chrome.sample";
+import { sampleChrome } from "../../../../.storybook/chrome.sample";
 import { Button } from "../../actions/Button";
 import { Menu, MenuGroup, MenuItem } from "../../navigation/Menu";
 import { useState } from "react";
@@ -10,7 +10,7 @@ import { Select } from "../../forms/select/Select";
 import { StatusPill } from "../../marks/StatusPill";
 import { AppShell, AppShellBar, AppShellBarEnd, AppShellContent, AppShellMain } from "./AppShell";
 import { AppShellContext, AppShellFoot, AppShellRail, type NavGroup } from "./AppShellRail";
-import { Console, ConsoleFrame } from "./Console";
+import { Console } from "../../../../.storybook/Console";
 
 /* The sample sections, as a product hands them over: every item a link. */
 const linkedGroups: NavGroup[] = sampleChrome.groups.map((group) => ({
@@ -116,39 +116,6 @@ export const Contained: Story = {
     const main = within(canvasElement).getByRole("main");
     await expect(getComputedStyle(main).maxWidth).toBe("1440px");
   },
-};
-
-/**
- * The shell inside its window, with the sample chrome every screen in this
- * Storybook shares: an operator, a demo-data switch, a refresh, the seal.
- */
-export const Chrome: Story = {
-  tags: ["status:deprecated"],
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <Console title="Overview" crumb={["Monitor", "Overview"]} active="overview" chrome={sampleChrome}>
-      <h1 className="di-sr">Overview</h1>
-      <p>The rail, the tenant, and the runtime stay on every page. The content below is what changes.</p>
-    </Console>
-  ),
-};
-
-/**
- * The canvas and the window on their own. A product renders `AppShell`
- * full-bleed; these stories sit it on the dotted ground so the console
- * reads as one object rather than as the page itself.
- */
-export const Frame: Story = {
-  tags: ["status:deprecated"],
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <ConsoleFrame title="Overview" lang="en">
-      <div style={{ padding: 24 }}>
-        <h1 className="di-sr">Console frame</h1>
-        <p>Whatever a product puts in the window goes here.</p>
-      </div>
-    </ConsoleFrame>
-  ),
 };
 
 /** Persistent context stays before navigation in both layout and keyboard order. */
@@ -339,9 +306,8 @@ export const ReflowPhoneNight: Story = narrowReflow("dark", 390);
 export const ReflowTabletNight: Story = narrowReflow("dark", 768);
 
 
-/** The framed console's older crumb composition obeys the same reflow bounds. */
+/** The Storybook window every screen sits in obeys the same reflow bounds. */
 export const ReflowConsole: Story = {
-  tags: ["status:deprecated"],
   parameters: { viewport: { options: { reflow: { name: "Reflow", styles: { width: "390px", height: "844px" }, type: "mobile" } } } },
   globals: { viewport: { value: "reflow", isRotated: false } },
   render: () => <Console title={reflowName} crumb={["Example studio " + reflowName, reflowName]} active="overview" chrome={{ ...sampleChrome, workspace: reflowName, operator: { ...sampleChrome.operator, name: reflowName } }}>
@@ -351,8 +317,8 @@ export const ReflowConsole: Story = {
     const doc = canvasElement.ownerDocument;
     await expect(doc.defaultView!.innerWidth).toBe(390);
     await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
-    await expect(canvasElement.querySelector(".di-window-title > svg")!.getBoundingClientRect().width).toBe(14);
-    for (const element of canvasElement.querySelectorAll<HTMLElement>(".di-canvas, .di-window-title, .di-window, .di-crumb, .di-crumb-part, .di-operator-name")) {
+    await expect(canvasElement.querySelector(".sb-window-title > svg")!.getBoundingClientRect().width).toBe(14);
+    for (const element of canvasElement.querySelectorAll<HTMLElement>(".sb-canvas, .sb-window-title, .sb-window, .sb-crumb, .sb-crumb-part, .sb-operator-name")) {
       await expect(element.scrollWidth, element.className).toBeLessThanOrEqual(element.clientWidth + 1);
     }
   },

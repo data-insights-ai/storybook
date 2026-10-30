@@ -54,12 +54,19 @@ type Story = StoryObj<typeof meta>;
 /** Empty, the segments show the order the locale writes a day in. */
 export const Default: Story = {};
 
-/** The calendar opens on the chosen day; picking another one closes it and returns an ISO day. */
+/**
+ * The calendar opens on the chosen day; picking another one closes it and
+ * returns an ISO day. The month above the grid is announced as it changes,
+ * not offered as a heading of the page.
+ */
 export const PickFromCalendar: Story = {
   args: { value: "2026-10-12" },
   play: async ({ canvasElement, args }) => {
     await userEvent.click(within(canvasElement).getByRole("button", { name: /Choose a date/ }));
     const page = within(canvasElement.ownerDocument.body);
+    const month = page.getByText("October 2026", { selector: ".di-calendar-heading" });
+    await expect(month).toHaveAttribute("aria-live", "polite");
+    await expect(page.getByRole("dialog").querySelector("h1, h2, h3, h4, h5, h6, [role='heading']")).toBeNull();
     await userEvent.click(page.getByRole("button", { name: /20 October 2026/ }));
     await expect(args.onChange).toHaveBeenLastCalledWith("2026-10-20");
     await waitFor(() => expect(page.queryByRole("dialog")).toBeNull());

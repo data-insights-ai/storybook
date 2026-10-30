@@ -8,16 +8,13 @@ export {
   AppShellFoot,
   AppShellMain,
   AppShellRail,
-  Console,
-  ConsoleFrame,
 } from "./components/shell/AppShell";
-export type { ConsoleChrome, NavGroup, NavItem } from "./components/shell/AppShell";
+export type { NavGroup, NavItem } from "./components/shell/AppShell";
 export { Badge } from "./components/marks/Badge";
 export { Bars } from "./components/charts/Bars";
 export { BulkActionBar } from "./components/actions/BulkActionBar";
 export { Breadcrumb } from "./components/navigation/Breadcrumb";
 export { Button } from "./components/actions/Button";
-export { Card } from "./components/data/records/Card";
 export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components/data/records/Channel";
 export { ChainTimeline } from "./components/timeline/ChainTimeline";
 export type { ChainTimelineEvent, ChainTimelineLane } from "./components/timeline/ChainTimeline";
@@ -33,7 +30,7 @@ export { Checkbox } from "./components/forms/choice/Checkbox";
 export { ChoiceGroup } from "./components/forms/choice/ChoiceGroup";
 export { Radio } from "./components/forms/choice/Radio";
 export { ChoiceCards } from "./components/forms/choice/ChoiceCards";
-export type { ChoiceCard } from "./components/forms/choice/ChoiceCards";
+export type { ChoiceCard, ChoiceCardsPlanned } from "./components/forms/choice/ChoiceCards";
 export { Chip } from "./components/marks/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/navigation/CommandBar";
 export { ComboBox } from "./components/forms/select/ComboBox";
@@ -86,7 +83,6 @@ export {
 export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/page/DetailSection";
 export { Disclosure, DisclosureLead } from "./components/layout/folding/Disclosure";
 export { Distribution } from "./components/charts/Distribution";
-export { Drawer, DrawerFooter } from "./components/overlays/Drawer";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
 export {
   EventTimeline,
@@ -155,7 +151,6 @@ export { Toolbar, ToolbarEnd } from "./components/layout/arrangement/Toolbar";
 export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/data/records/LivingCard";
 export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/data/table/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/navigation/Menu";
-export { Metric, MetricNote } from "./components/data/figures/Metric";
 export {
   Modal,
   ModalBody,

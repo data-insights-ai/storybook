@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Mail, MessageSquare, Webhook } from "lucide-react";
+import { Cloud, Database, FileText, Mail, MessageSquare, Server, Shield, Webhook } from "lucide-react";
 import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
 import { ChoiceCards } from "./ChoiceCards";
@@ -58,6 +58,52 @@ export const Grouped: StoryObj<typeof meta> = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Recommended for Microsoft")).toBeVisible();
+    await expect(canvas.getByRole("radio", { name: /Defender/ })).toBeChecked();
+  },
+};
+
+/**
+ * Kinds the product is built for but cannot offer yet, under the cards:
+ * smaller dashed tiles in a list, five a row on a wide page, not radios, so
+ * Tab and the arrow keys pass them by.
+ */
+export const Planned: StoryObj<typeof meta> = {
+  args: { name: "source", legend: "Source type", options: [], value: "", onChange: () => undefined },
+  render: () => {
+    const [value, setValue] = useState("defender");
+    return (
+      <ChoiceCards
+        name="source"
+        legend="Source type"
+        hideLegend
+        options={[
+          { value: "defender", label: "Microsoft Defender XDR", description: "Incidents and alerts as they happen.", icon: <Shield /> },
+          { value: "hub", label: "Azure Event Hub", description: "Streaming API and diagnostic settings.", icon: <Cloud /> },
+          { value: "file", label: "File drop", description: "Exports uploaded by hand.", icon: <FileText /> },
+        ]}
+        value={value}
+        onChange={setValue}
+        planned={{
+          label: "Coming later",
+          lede: "Planned sources, not available yet.",
+          options: [
+            { value: "syslog", label: "Syslog", icon: <Server /> },
+            { value: "s3", label: "Object storage", icon: <Database /> },
+            { value: "mail", label: "Mail gateway", icon: <Mail /> },
+            { value: "chat", label: "Chat audit log", icon: <MessageSquare /> },
+            { value: "hook", label: "Generic webhook", icon: <Webhook /> },
+            { value: "edr", label: "Endpoint agent", icon: <Shield /> },
+          ],
+        }}
+      />
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const list = canvas.getByRole("list", { name: "Coming later" });
+    await expect(within(list).getAllByRole("listitem")).toHaveLength(6);
+    await expect(canvas.getAllByRole("radio")).toHaveLength(3);
+    await expect(within(list).queryByRole("radio")).toBeNull();
     await expect(canvas.getByRole("radio", { name: /Defender/ })).toBeChecked();
   },
 };

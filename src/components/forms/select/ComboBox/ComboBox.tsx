@@ -49,7 +49,12 @@ export function ComboBox({
   onValueChange: (value: string) => void;
   suggestions: readonly ComboBoxSuggestion[];
   toggleLabel: string;
-  emptyLabel: string;
+  /**
+   * Shown in the list when nothing matches what was typed. Without it the
+   * list stays closed while nothing matches, so the line under the field
+   * stays readable.
+   */
+  emptyLabel?: string;
   hint?: string;
   hintTone?: HintTone;
   labelTrack?: LabelTrack;
@@ -79,21 +84,22 @@ export function ComboBox({
     setOpen(true);
   };
   const shown = typed ? suggestions.filter(matches) : suggestions;
+  const visible = open && !locked && (shown.length > 0 || Boolean(emptyLabel));
   const control = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
-  const toggle = useListToggle(input, () => (open ? setOpen(false) : show(false)));
+  const toggle = useListToggle(input, () => (visible ? setOpen(false) : show(false)));
   const arrowOpened = useRef<string | null>(null);
   // An arrow that opens the list also highlights its first or last suggestion;
   // Base UI's autocomplete would wait for a second press.
   useEffect(() => {
     const key = arrowOpened.current;
     arrowOpened.current = null;
-    if (!open || key === null) return;
+    if (!visible || key === null) return;
     const frame = requestAnimationFrame(() =>
       input.current?.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true })),
     );
     return () => cancelAnimationFrame(frame);
-  }, [open]);
+  }, [visible]);
   return (
     <div ref={root} className={cx("di-field", "di-combobox", className)}>
       <Autocomplete.Root
@@ -105,7 +111,7 @@ export function ComboBox({
         disabled={disabled}
         readOnly={readOnly}
         required={required}
-        open={open && !locked}
+        open={visible}
         openOnInputClick={false}
         onOpenChange={(next, details) => {
           if (next) show(details.reason === "input-change");
@@ -133,8 +139,11 @@ export function ComboBox({
             aria-labelledby={`${id}-label`}
             aria-invalid={invalid || undefined}
             aria-describedby={hint === "" ? undefined : `${id}-hint`}
+            onBlur={() => {
+              if (!visible) setOpen(false);
+            }}
             onKeyDown={(event) => {
-              if (!open && !locked && (event.key === "ArrowDown" || event.key === "ArrowUp"))
+              if (!visible && !locked && (event.key === "ArrowDown" || event.key === "ArrowUp"))
                 arrowOpened.current = event.key;
             }}
           />
@@ -146,7 +155,7 @@ export function ComboBox({
           {hint}
         </FieldHint>
         {/* Unmounted in the render that closes it, so the page behind is readable again at once. */}
-        {open && !locked ? (
+        {visible ? (
           <Autocomplete.Portal container={overlay.container}>
             <Autocomplete.Positioner
               anchor={control}
@@ -157,7 +166,7 @@ export function ComboBox({
               style={{ zIndex: 100 }}
             >
               <Autocomplete.Popup className="di-combobox-popover">
-                {shown.length === 0 ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
+                {shown.length === 0 && emptyLabel ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
                 <Autocomplete.List className="di-combobox-list" aria-labelledby={`${id}-label`}>
                   {(item: ComboBoxSuggestion) => (
                     <Autocomplete.Item key={item.value} value={item} className="di-combobox-option">

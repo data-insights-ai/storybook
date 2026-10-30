@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import {
   Button,
-  Console,
   Grid,
   KeyValue,
   KeyValues,
@@ -34,7 +33,6 @@ import {
   StatusPill,
   StatTile,
 } from "..";
-import { sampleChrome } from "../components/shell/chrome.sample";
 
 const stages = [
   {
@@ -86,12 +84,7 @@ const stages = [
 
 export function ArchitectureScreen() {
   return (
-    <Console
-      title="Architecture"
-      crumb={["Operate", "Architecture"]}
-      active="architecture"
-      chrome={sampleChrome}
-    >
+    <>
       <PageHeader
         eyebrow="System overview / infrastructure and pipeline"
         lede="Intake, processing stages, and storage."
@@ -188,7 +181,7 @@ export function ArchitectureScreen() {
           </Notice>
         </Numbered>
       </Stack>
-    </Console>
+    </>
   );
 }
 

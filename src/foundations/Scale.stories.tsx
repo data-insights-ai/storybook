@@ -130,14 +130,14 @@ export const Dimensions: StoryObj = {
       <Section
         eyebrow="The index column"
         title="38 pixels that cost real space."
-        lede="`--di-index-col` is the system's fingerprint: the column down the left of `Panel`, `DataTable`, `Drawer`, `Notice`, `EmptyState`, `Modal`, `SignIn`, `StatTile` and `SkeletonTable`, holding an ordinal or a letter."
+        lede="`--di-index-col` is the system's fingerprint: the column down the left of `Panel`, `DataTable`, `Sheet`, `Notice`, `EmptyState`, `Modal`, `SignIn`, `StatTile` and `SkeletonTable`, holding an ordinal or a letter."
       >
         <Rules>
           <Rule>It is what turns a card into an entry, and gives a row a handle an operator can say out loud.</Rule>
           <Rule>A drawer keeps the ordinal of the row it opened from, so the row and its detail are visibly the same object.</Rule>
           <Rule>A failure keeps its ordinal too, tinted. A failed run is still something the register recorded.</Rule>
           <Rule>`Panel` and `StatTile` can drop to `--di-index-col-sm`, 26px, where the block is too short to give up the full width.</Rule>
-          <Rule>`Card`, `Toast`, `Stage`, `Session` and `Metric` carry no index. They report; they are not entries.</Rule>
+          <Rule>`Toast`, `Stage` and `Session` carry no index. They report; they are not entries.</Rule>
         </Rules>
       </Section>
 

@@ -101,9 +101,9 @@ export function MonthCalendar({
         >
           <ChevronLeft aria-hidden />
         </button>
-        <h2 className="di-calendar-heading" aria-live="polite">
+        <div className="di-calendar-heading" aria-live="polite">
           {text.heading(toDate(month), toDate(last))}
-        </h2>
+        </div>
         <button
           type="button"
           className="di-calendar-nav"

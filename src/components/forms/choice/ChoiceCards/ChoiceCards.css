@@ -102,4 +102,66 @@
     line-height: var(--di-leading-snug);
     color: var(--di-text-subtle);
   }
+
+  /* What cannot be chosen yet: under a rule, smaller, dashed, and not a control. */
+  .di-choicecards-planned {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-8);
+    padding-top: var(--di-space-24);
+    border-top: 1px solid var(--di-border);
+  }
+
+  .di-choicecards-planned-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--di-space-8);
+    margin: 0;
+  }
+
+  .di-choicecards-planned-label {
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    color: var(--di-label-color);
+  }
+
+  .di-choicecards-planned-lede {
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-subtle);
+  }
+
+  /* At most five a row on a wide page, still two a row on a phone. */
+  .di-choicecards-planned-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(max(140px, calc((100% - 4 * var(--di-space-8)) / 5)), 1fr));
+    gap: var(--di-space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-choicecard-planned {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-8);
+    min-width: 0;
+    padding: var(--di-space-8) var(--di-space-12);
+    border: 1px dashed var(--di-border-strong);
+    border-radius: var(--di-radius-container);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
+
+  .di-choicecard-planned-icon {
+    display: inline-flex;
+    flex: none;
+    color: var(--di-text-subtle);
+  }
+
+  .di-choicecard-planned-icon > svg {
+    width: 16px;
+    height: 16px;
+  }
 }

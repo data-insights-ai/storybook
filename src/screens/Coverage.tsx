@@ -16,7 +16,6 @@ import {
   CellLead,
   CellStack,
   Chip,
-  Console,
   DataTable,
   Grid,
   Notice,
@@ -41,7 +40,6 @@ import {
   ToolbarEnd,
   Panel,
 } from "..";
-import { sampleChrome } from "../components/shell/chrome.sample";
 
 type StatusTone = NonNullable<ComponentProps<typeof StatusPill>["tone"]>;
 
@@ -150,7 +148,7 @@ export function CoverageScreen() {
   const visible = sources.slice(start, start + pageSize);
 
   return (
-    <Console title="Coverage" crumb={["Monitor", "Coverage"]} active="coverage" chrome={sampleChrome}>
+    <>
       <h1 className="di-sr">Coverage</h1>
       <Stack>
         <Notice tone="ok">
@@ -259,7 +257,7 @@ export function CoverageScreen() {
           </Grid>
         </section>
       </Stack>
-    </Console>
+    </>
   );
 }
 

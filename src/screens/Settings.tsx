@@ -6,7 +6,6 @@ import {
   ChannelSpecs,
   ChannelStatus,
   ChannelValue,
-  Console,
   Grid,
   IconTile,
   Notice,
@@ -32,13 +31,12 @@ import {
   Panel,
   StatTile,
 } from "..";
-import { sampleChrome } from "../components/shell/chrome.sample";
 
 const days = [46, 62, 70, 80, 58, 90, 84, 76, 88, 64, 72, 86, 91, 77, 69, 95, 100, 82, 74, 88, 93, 70, 81, 96, 85, 78, 90, 87, 73, 92];
 
 export function SettingsScreen() {
   return (
-    <Console title="Settings" crumb={["Operate", "Settings"]} active="settings" chrome={sampleChrome}>
+    <>
       <PageHeader
         eyebrow="Session"
         lede="The signed-in session, notification channels, and security checks."
@@ -154,6 +152,6 @@ export function SettingsScreen() {
           <SectionTitleMeta>ISO/IEC 27001 · privacy rules applied</SectionTitleMeta>
         </SectionTitle>
       </Stack>
-    </Console>
+    </>
   );
 }

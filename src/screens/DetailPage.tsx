@@ -3,7 +3,6 @@ import {
   Breadcrumb,
   Button,
   ConfirmDialog,
-  Console,
   CopyValue,
   DangerAction,
   DangerZone,
@@ -23,7 +22,6 @@ import {
   Switch,
   TextField,
 } from "..";
-import { sampleChrome } from "../components/shell/chrome.sample";
 
 /** A detail page: summary header, sections that read until Edit, the danger zone last. */
 export function DetailPageScreen() {
@@ -37,7 +35,7 @@ export function DetailPageScreen() {
   const dirty = mfa !== saved.mfa || sessions !== saved.sessions;
 
   return (
-    <Console title={name} crumb={["Organization", "Overview"]} active="overview" chrome={sampleChrome}>
+    <>
       <Page width="detail">
         <PageHeader lede="Your organization, its members and the products it uses.">
           <PageHeaderCrumbs>
@@ -130,6 +128,6 @@ export function DetailPageScreen() {
         onConfirm={() => setConfirm(false)}
         onClose={() => setConfirm(false)}
       />
-    </Console>
+    </>
   );
 }

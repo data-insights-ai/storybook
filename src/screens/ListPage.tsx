@@ -3,7 +3,6 @@ import { Download, MoreHorizontal, UserPlus } from "lucide-react";
 import {
   Button,
   ConfirmDialog,
-  Console,
   DangerAction,
   DangerZone,
   DetailSection,
@@ -34,7 +33,6 @@ import {
   useShortcut,
 } from "..";
 import type { InfiniteRowPlace } from "..";
-import { sampleChrome } from "../components/shell/chrome.sample";
 
 type Member = { id: string; name: string; email: string; role: "Owner" | "Administrator" | "Member"; seat: boolean };
 
@@ -113,7 +111,7 @@ export function ListPageScreen() {
   );
 
   return (
-    <Console title="Members" crumb={["Organization", "Members"]} active="overview" chrome={sampleChrome}>
+    <>
       <Page width="list">
         <PageHeader lede="People in this organization and the role each one has.">
           <PageHeaderTitle>Members</PageHeaderTitle>
@@ -225,6 +223,6 @@ export function ListPageScreen() {
         onConfirm={() => (setConfirm(false), setOpen(undefined))}
         onClose={() => setConfirm(false)}
       />
-    </Console>
+    </>
   );
 }

@@ -38,7 +38,7 @@ const prose: Row[] = [
   },
   {
     token: "--di-font-size-600 · 20 · 700",
-    note: "SectionTitle, Metric figure",
+    note: "SectionTitle",
     sample: "Sources on record",
     style: { fontFamily: SANS, fontWeight: 700, fontSize: "var(--di-font-size-600)", letterSpacing: TIGHT, lineHeight: 1.2 },
   },

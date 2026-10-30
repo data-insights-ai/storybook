@@ -28,7 +28,7 @@ Build from the components in this system. **If something you need is missing, sa
 
 `Screens/*` are **not** in this bundle. The register, watchlist and other example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `Panel`, `DataTable` and the rest.
 
-A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav. `Console` and `ConsoleFrame` are the same shell inside a Storybook window. They are deprecated and removed in 0.10.0: never use them in a design. The same goes for `Card` (use `Panel`), `Metric` (use `StatTile`) and `Drawer` (use `Sheet`).
+A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav.
 
 ### Where a component sits
 
@@ -50,11 +50,12 @@ The Storybook sidebar is grouped by the job a component does:
 
 | Job | Use | Not |
 | --- | --- | --- |
-| A block of a record, or a plain bordered surface | `Panel`, with a `title` and an `index` when it is one of a sequence, with neither for a plain surface | `Card`, deprecated |
-| One measured value on its own surface | `StatTile`, with an `index`, a `StatTileDelta` or a `Sparkline` when it has them | `Metric`, deprecated |
+| A block of a record, or a plain bordered surface | `Panel`, with a `title` and an `index` when it is one of a sequence, with neither for a plain surface | |
+| One measured value on its own surface | `StatTile`, with an `index`, a `StatTileDelta` or a `Sparkline` when it has them | |
 | A small labelled figure set in a row inside something else | `Stat` in a `StatRow` | |
-| The detail of one row | `Sheet` with the row's `index` and an `eyebrow` naming the kind of record | `Drawer`, deprecated |
+| The detail of one row | `Sheet` with the row's `index` and an `eyebrow` naming the kind of record | |
 | Work that needs more room than an inline form: a multi-field create or invite | `Sheet` | |
+| The first step of a create flow: one of a handful of kinds | `ChoiceCards`, with `planned` for the kinds that cannot be chosen yet | disabled cards |
 | An irreversible action | `Modal` or `ConfirmDialog` | a modal for anything reversible |
 | A panel dropping from a topbar control | `Flyout` | |
 | Views of one record | `Tabs` | `TabNav`, whose tabs are places with their own URL |

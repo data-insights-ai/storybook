@@ -80,8 +80,8 @@ values.
   `AppShell→Console` was **removed 2026-10-16**: `Patterns/AppShell` became the
   slot-based `AppShell` a product renders (meta `component: AppShell`), and
   `Console` is now the Storybook-window variant no product renders and no story
-  owns. The card is `AppShell`; `Console`/`ConsoleFrame` stay in the bundle as
-  exports with no card.
+  owns. The card is `AppShell`. Since 0.10.0 `Console` and `ConsoleFrame` live in
+  `.storybook/Console.tsx`, outside the bundle.
   `null` excludes: `Foundations/*` (Color, Type, Logo, Scale, Decisions — doc
   pages with no component) and `Screens/*` (Architecture, Coverage, Inference,
   Login, Register, Settings, Watchlist). **A new Foundations page needs a new
