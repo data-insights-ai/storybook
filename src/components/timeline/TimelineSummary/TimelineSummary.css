@@ -12,7 +12,7 @@
   .di-tsummary-head {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: baseline;
     gap: var(--di-gap-4) var(--di-gap-12);
   }
 
@@ -198,12 +198,13 @@
     border-bottom: 1px solid var(--di-rule);
   }
 
+  /* Every episode carries its severity in an end column of one width, so the marks line up down the list. */
   .di-tsummary-row {
     display: grid;
-    grid-template-columns: var(--di-index-col) auto minmax(0, 1fr);
+    grid-template-columns: var(--di-index-col) auto minmax(0, 1fr) var(--di-tsummary-severity);
     grid-template-areas:
-      "index title title"
-      "index time detail";
+      "index title title tone"
+      "index time detail detail";
     align-items: baseline;
     gap: var(--di-space-2) var(--di-gap-12);
     width: 100%;
@@ -213,14 +214,6 @@
     color: var(--di-text);
     font: inherit;
     text-align: left;
-  }
-
-  /* The severity takes a column of one width in every row, so the marks line up down the list. */
-  .di-tsummary-row:has(> .di-tsummary-tone) {
-    grid-template-columns: var(--di-index-col) auto minmax(0, 1fr) var(--di-tsummary-severity);
-    grid-template-areas:
-      "index title title tone"
-      "index time detail detail";
   }
 
   button.di-tsummary-row {
@@ -278,17 +271,15 @@
       grid-template-columns: var(--di-index-col) minmax(0, 1fr);
       grid-template-areas:
         "index title"
+        "index tone"
         "index time"
         "index detail";
     }
 
-    .di-tsummary-row:has(> .di-tsummary-tone) {
-      grid-template-columns: var(--di-index-col) minmax(0, 1fr);
-      grid-template-areas:
-        "index title"
-        "index tone"
-        "index time"
-        "index detail";
+    /* A range too long for the line breaks at its spaces rather than running past the edge. */
+    .di-tsummary-row .di-tsummary-time {
+      white-space: normal;
+      text-wrap: balance;
     }
   }
 
