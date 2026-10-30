@@ -1,6 +1,7 @@
 import { Children, createContext, isValidElement, useContext, useId, useMemo, useState, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { SeverityMark, type Severity } from "../../status/SeverityMark";
+import { ChartKey } from "../../charts/ChartKey";
 import type { TimelineMarker, TimelineSpan, TimelineTone } from "../types";
 import { useWidth } from "../../../internal/useWidth";
 import type { TimelineEpisode } from "./episodes";
@@ -12,6 +13,11 @@ const LOW_PX = 10;
 const HIGH_PX = 28;
 const MINUTE = 60_000;
 const TONES: TimelineTone[] = ["danger", "warn", "neutral"];
+const TONE_COLOR: Record<TimelineTone, string> = {
+  danger: "var(--di-chart-danger)",
+  warn: "var(--di-chart-warn)",
+  neutral: "var(--di-chart-routine)",
+};
 const SEVERITY: Record<TimelineTone, Severity> = { danger: "critical", warn: "medium", neutral: "info" };
 
 const ordinal = (i: number) => String(i + 1).padStart(2, "0");
@@ -205,21 +211,14 @@ export function TimelineSummary({
           <span>{edge.format(bounds.start)}</span>
           <span>{edge.format(bounds.end)}</span>
         </div>
-        <div className="di-tsummary-legend" aria-hidden>
-          {TONES.map((tone) => (
-            <span key={tone} className="di-tsummary-legend-item">
-              <span className={`di-tsummary-swatch is-${tone}`} />
-              {toneLabels[tone]}
-            </span>
-          ))}
-          {markers.length > 0 ? (
-            <span className="di-tsummary-legend-item">
-              <span className="di-tsummary-legend-flag" />
-              {markerLabel}
-            </span>
-          ) : null}
-          <span className="di-tsummary-legend-note">{scaleNote}</span>
-        </div>
+        <ChartKey
+          hidden
+          entries={[
+            ...TONES.map((tone) => ({ key: tone, label: toneLabels[tone], color: TONE_COLOR[tone] })),
+            ...(markers.length > 0 ? [{ key: "marker", label: markerLabel, swatch: "flag" as const }] : []),
+          ]}
+          note={scaleNote}
+        />
       </div>
 
       <SummaryPlace.Provider value={place}>

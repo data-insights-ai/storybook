@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
+import { separatorsAtLineStart } from "../../../../.storybook/tests/lineStart";
 import { MetaLine } from "./MetaLine";
 
 const meta = {
@@ -42,12 +43,30 @@ export const Narrow: Story = {
     await expect(lines.size).toBeGreaterThan(1);
     const heights = new Set(items.map((item) => Math.round(item.getBoundingClientRect().height)));
     await expect(heights.size).toBe(1);
+    await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
   },
 };
 
-/** Against the right edge, as a page header's meta sits on a wide page. */
+/**
+ * Against the right edge, as a page header's meta sits on a wide page; in a
+ * narrow column it wraps, and neither line starts with a separator.
+ */
 export const End: Story = {
   args: { align: "end" },
+  render: (args) => (
+    <div style={{ display: "grid", gap: 24 }}>
+      <MetaLine {...args} />
+      <div style={{ width: "13rem", justifySelf: "end" }}>
+        <MetaLine {...args} />
+      </div>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const [, narrow] = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-meta-line-items"));
+    const lines = new Set(Array.from(narrow.children).map((item) => Math.round(item.getBoundingClientRect().top)));
+    await expect(lines.size).toBeGreaterThan(1);
+    await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
+  },
 };
 
 /** A path: where it entered, what it crossed, where the data went. */
@@ -55,6 +74,7 @@ export const Path: Story = {
   args: { items: ["vpn-gw-01", "ws-fin-014", "srv-fs-02", "192.0.2.88"], separator: "arrow" },
   play: async ({ canvasElement }) => {
     await expect(canvasElement.querySelector(".di-meta-line")).toHaveClass("is-path");
+    await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
   },
 };
 
@@ -77,6 +97,7 @@ export const LongItem: Story = {
     for (const item of canvasElement.querySelectorAll(".di-meta-line-item")) {
       await expect(item.getBoundingClientRect().right).toBeLessThanOrEqual(line.right + 1);
     }
+    await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
   },
 };
 
@@ -94,5 +115,6 @@ export const German: Story = {
     const items = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-meta-line-item"));
     const heights = new Set(items.map((item) => Math.round(item.getBoundingClientRect().height)));
     await expect(heights.size).toBe(1);
+    await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
   },
 };

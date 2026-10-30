@@ -204,6 +204,16 @@ function Cases({ initial = "list" }: { initial?: "list" | "detail" }) {
   );
 }
 
+/** A short list ends with its last item; a long one stops at the window's height and scrolls. */
+async function paneHugsItsItems(canvasElement: HTMLElement) {
+  const pane = canvasElement.querySelector<HTMLElement>(".di-split-list")!;
+  if (getComputedStyle(pane).position !== "sticky") return;
+  const items = pane.querySelectorAll<HTMLElement>(".di-split-item");
+  const last = items[items.length - 1]!.getBoundingClientRect();
+  const inset = parseFloat(getComputedStyle(pane).paddingBottom);
+  await expect(Math.abs(pane.getBoundingClientRect().bottom - inset - last.bottom)).toBeLessThanOrEqual(2);
+}
+
 /** Triage: the list as its own pane, the open record beside it, the current item with the cornflower edge. */
 export const List: Story = {
   globals: { viewport: { value: "wide" } },
@@ -219,6 +229,7 @@ export const List: Story = {
     await expect(canvas.getByRole("button", { name: /Macro document/ })).toHaveFocus();
     await userEvent.keyboard("{Enter}");
     await expect(canvas.getByRole("heading", { level: 2 })).toHaveTextContent("Macro document opened on a workstation");
+    await paneHugsItsItems(canvasElement);
   },
 };
 
@@ -276,5 +287,6 @@ export const ListHeadWrittenLast: Story = {
     const title = canvasElement.querySelector(".di-split-item-title")!.getBoundingClientRect();
     const text = canvasElement.querySelector(".di-split-list-head > span")!.getBoundingClientRect();
     await expect(Math.abs(title.left - text.left)).toBeLessThanOrEqual(1);
+    await paneHugsItsItems(canvasElement);
   },
 };

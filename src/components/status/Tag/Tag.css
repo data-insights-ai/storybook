@@ -126,6 +126,11 @@
     content: "· ";
   }
 
+  /* On its own line under the name the scope needs no separator. */
+  .di-tag-detail[data-line-start]::before {
+    content: none;
+  }
+
   .di-tag-remove {
     position: relative;
     display: inline-flex;
@@ -165,14 +170,21 @@
     }
   }
 
-  /* Compact: one line; a tag that does not fit is cut, never wrapped. */
-  /* The cut reaches a ring width past the tags, so the one in focus keeps its ring. */
+  /* Compact: one line; a tag that does not fit is cut, never wrapped. The
+     list stays inside its column, so the ring of a tag in focus is drawn inside its frame. */
   .di-tag-list.is-compact {
     flex-wrap: nowrap;
     min-width: 0;
-    margin: calc(-1 * var(--di-focus-ring-reach));
-    padding: var(--di-focus-ring-reach);
     overflow: hidden;
+  }
+
+  .di-tag-list.is-compact button.di-tag:focus-visible,
+  .di-tag-list.is-compact .di-tag:has(> .di-tag-press:focus-visible) {
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
+  .di-tag-list.is-compact .di-tag-detail[data-cut] {
+    display: none;
   }
 
   .di-tag-list.is-compact .di-tag {

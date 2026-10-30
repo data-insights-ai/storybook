@@ -52,6 +52,9 @@ export const NoMatch: Story = {
 export const Loading: Story = {
   args: { state: "loading" },
   play: async ({ canvasElement }) => {
-    await expect(await within(canvasElement).findByRole("status")).toHaveTextContent("Loading the tables");
+    const status = await within(canvasElement).findByRole("status", { name: "Loading the tables" });
+    const frame = status.closest(".di-loading-table")!;
+    await expect(within(frame as HTMLElement).getByRole("search")).toBeVisible();
+    await expect(canvasElement.querySelectorAll(".di-loading-table")).toHaveLength(1);
   },
 };

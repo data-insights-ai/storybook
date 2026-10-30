@@ -13,7 +13,10 @@ import { describe, groundOf, hasEdge, opaque, shown } from "./paint";
 const MIN_TEXT = 10;
 const MIN_CONTROL = 8;
 const FULL_BLEED: [selector: string, reason: string][] = [
-  ["table, thead, tbody, tr, td, th", "table rows run to the frame; cells carry their own padding"],
+  [
+    "table, thead, tbody, tr, td, th, .di-loading-table-body",
+    "table rows (and the bars a loading table draws for them) run to the frame; cells carry their own padding",
+  ],
   ["[role=listbox], [role=menu], [role=option], [role=menuitem]", "menu and option rows span their popover"],
   ["img, video, canvas, svg, figure", "media is drawn to the edge"],
   ["input, select, textarea, button, a[href]", "a control is its own frame, not a surface"],

@@ -1,9 +1,48 @@
 @layer components {
+  /*
+   * A lane is a row of --di-row-h with its rule under it. Stacked, a head
+   * above the row holds the lane's name at the full width; the markers and
+   * the links reckon with the pitch and the head, so they follow either.
+   */
   .di-chain {
+    --di-chain-head: 0px;
+    --di-chain-pitch: calc(var(--di-chain-head) + var(--di-row-h));
     display: grid;
     grid-template-columns: clamp(var(--di-chain-label-narrow), 28%, var(--di-chain-label-max)) minmax(0, 1fr);
     grid-template-rows: auto auto;
     column-gap: var(--di-gap-12);
+    min-width: 0;
+  }
+
+  .di-chain.is-stacked {
+    --di-chain-head: calc(var(--di-font-size-300) * var(--di-leading-snug) + var(--di-space-4));
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The name and its detail on one line above the rule, from the content edge: nothing is cut while the line has room. */
+  .di-chain-lane-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--di-gap-8);
+    height: var(--di-chain-head);
+    min-width: 0;
+    margin-inline: calc(-1 * var(--di-space-12));
+  }
+
+  /* The name stays readable where a hop or a tick line passes under it: it is set on the surface it sits on. */
+  .di-chain-lane-head > span {
+    position: relative;
+    z-index: 1;
+    background: var(--di-bg-surface);
+  }
+
+  .di-chain-lane-head .di-chain-lane-label {
+    flex: none;
+    max-width: 100%;
+  }
+
+  .di-chain-lane-head .di-chain-lane-detail {
+    flex: 0 1 auto;
     min-width: 0;
   }
 
@@ -45,7 +84,7 @@
 
   .di-chain-track {
     position: relative;
-    height: calc(var(--di-chain-lanes) * var(--di-row-h));
+    height: calc(var(--di-chain-lanes) * var(--di-chain-pitch));
     min-width: 0;
     padding: 0 var(--di-space-12);
   }
@@ -58,7 +97,7 @@
   }
 
   .di-chain-rule {
-    height: var(--di-row-h);
+    height: var(--di-chain-pitch);
     border-bottom: 1px solid var(--di-rule);
   }
 
@@ -72,20 +111,39 @@
   .di-chain-links {
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
   }
 
-  .di-chain-links path {
-    fill: none;
-    stroke: var(--di-chart-series);
-    stroke-width: 1.5px;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .di-chain-marker {
+  /* A step along a lane, through the middle of its row. */
+  .di-chain-link {
     position: absolute;
+    top: calc(var(--di-chain-row) * var(--di-chain-pitch) + var(--di-chain-head) + var(--di-row-h) / 2);
+    height: 0;
+    border-top: 1.5px solid var(--di-chart-series);
+    translate: 0 -50%;
+  }
+
+  /* A hop to another lane: down from the middle of one row to the middle of the next. */
+  .di-chain-link.is-hop {
+    width: 0;
+    height: calc(var(--di-chain-span) * var(--di-chain-pitch));
+    border-top: 0;
+    border-left: 1.5px solid var(--di-chart-series);
+    translate: -50% 0;
+  }
+
+  /*
+   * Centred on its step, but never past the track: a range marker ("01–02")
+   * is wider than the 12px the track keeps free at either end. Its width is
+   * its figures in the mono face plus its padding.
+   */
+  .di-chain-marker {
+    --di-chain-w: max(var(--di-chain-count), calc(var(--di-chain-chars) * 1ch + 2 * var(--di-gap-6)));
+    position: absolute;
+    left: clamp(
+      calc(var(--di-chain-w) / 2 - var(--di-space-12)),
+      var(--di-chain-at),
+      calc(100% - var(--di-chain-w) / 2 + var(--di-space-12))
+    );
     z-index: 1;
     display: inline-flex;
     align-items: center;
@@ -93,7 +151,7 @@
     min-width: var(--di-chain-count);
     height: var(--di-chain-count);
     padding: 0 var(--di-gap-6);
-    top: calc((var(--di-chain-row) + 0.5) * var(--di-row-h));
+    top: calc(var(--di-chain-row) * var(--di-chain-pitch) + var(--di-chain-head) + var(--di-row-h) / 2);
     translate: -50% -50%;
     border: 1px solid var(--di-chart-series);
     border-radius: var(--di-radius-pill);
@@ -156,9 +214,9 @@
     outline-offset: var(--di-focus-ring-offset);
   }
 
-  /* The axis is read, not copied: absolute ends and relative ticks in the UI font, figures tabular. */
+  /* The axis is read, not copied: one line of ends and ticks in the UI font, figures tabular. */
   .di-chain-axis {
-    grid-column: 2;
+    grid-column: -2;
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -189,6 +247,6 @@
   .di-chain-axis-end {
     position: relative;
     z-index: 1;
-    padding-top: 1lh;
+    white-space: nowrap;
   }
 }

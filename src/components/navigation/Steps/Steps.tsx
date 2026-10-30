@@ -8,6 +8,8 @@ import "./Steps.css";
 export type StepState = "done" | "current" | "upcoming";
 export type StepsVariant = "progress" | "cards" | "list";
 
+export type StepTone = "warn";
+
 type StepsConfig = {
   variant: StepsVariant;
   heading: 2 | 3 | 4;
@@ -48,12 +50,16 @@ const Position = createContext(0);
  *
  * **States:** each `Step` is `done`, `current` or `upcoming`. In `progress`
  * every step has one; in `list` and `cards` it is optional and only
- * `current` changes the look.
+ * `current` changes the look. A step that lags or waits on something takes
+ * `tone="warn"`: an amber edge, never the current step's fill, and its
+ * words (a `StatusPill` in the footer) say why.
  *
  * **Content:** a title is a verb and its object in two or three words in
  * `progress` ("Connect source"), one instruction in `list`, a noun in
  * `cards`. On a narrow page `progress` keeps its bullets on one line and
- * sets the current step's title under them, from the track's start edge.
+ * sets the current step under them, from the track's start edge, as its
+ * position and title ("Step 3 of 4 · Seal", or "3/4 · Seal" without
+ * `stepOf`), so the title is never read as the first bullet's.
  *
  * **Accessibility:** an `ol` named by `label`; the current step carries
  * `aria-current="step"`, and in `progress` each state is read as its word
@@ -67,6 +73,7 @@ export function Steps({
   tone = "tonal",
   heading = 3,
   stateLabels,
+  stepOf,
   onStep,
   className,
   children,
@@ -82,6 +89,8 @@ export function Steps({
   heading?: 2 | 3 | 4;
   /** The word each state is announced as. Needed for `progress`. */
   stateLabels?: { done: string; current: string; upcoming: string };
+  /** `progress` only: the current step's position in words under a narrow track, e.g. "Step 3 of 4"; "3/4" when left out. */
+  stepOf?: (position: number, total: number) => string;
   /** `progress` only: called with a done step's index when it is pressed. */
   onStep?: (index: number) => void;
   className?: string;
@@ -93,13 +102,11 @@ export function Steps({
     if (!isValidElement(child)) return child;
     return <Position.Provider value={position++}>{child}</Position.Provider>;
   });
-  const now =
-    variant === "progress"
-      ? Children.toArray(children).find(
-          (child): child is ReactElement<{ state?: StepState; title?: string }> =>
-            isValidElement<{ state?: StepState; title?: string }>(child) && child.props.state === "current",
-        )?.props.title
-      : undefined;
+  const all = Children.toArray(children).filter((child): child is ReactElement<{ state?: StepState; title?: string }> =>
+    isValidElement<{ state?: StepState; title?: string }>(child),
+  );
+  const at = variant === "progress" ? all.findIndex((child) => child.props.state === "current") : -1;
+  const now = at >= 0 ? all[at].props.title : undefined;
   return (
     <Config.Provider value={{ variant, heading, stateLabels, onStep }}>
       <ol
@@ -113,7 +120,10 @@ export function Steps({
         {/* The current title again, under the track on a narrow page; the step itself is what a screen reader hears. */}
         {now ? (
           <li className="di-steps-now" aria-hidden>
-            {now}
+            <span className="di-steps-now-position">
+              {stepOf ? stepOf(at + 1, all.length) : `${at + 1}/${all.length}`}
+            </span>
+            <span className="di-steps-now-title">{now}</span>
           </li>
         ) : null}
       </ol>
@@ -128,11 +138,14 @@ export function Steps({
  */
 export function Step({
   state,
+  tone,
   index,
   title,
   children,
 }: {
   state?: StepState;
+  /** `warn`: the step lags or waits on something; its words go in the body or footer. */
+  tone?: StepTone;
   /** The ordinal shown; counted from 1 when left out. */
   index?: string;
   title?: string;
@@ -155,7 +168,7 @@ export function Step({
       </>
     );
     return (
-      <li className="di-step" aria-current={current ? "step" : undefined}>
+      <li className={cx("di-step", tone && `is-${tone}`)} aria-current={current ? "step" : undefined}>
         {onStep && settled === "done" ? (
           <button type="button" className="di-step-button" onClick={() => onStep(position)}>
             {inner}
@@ -175,7 +188,7 @@ export function Step({
     const Title = `h${heading}` as const;
     return (
       <li
-        className={cx(surfaceClass({ padded: false }), "di-step-card", current && "is-current")}
+        className={cx(surfaceClass({ padded: false }), "di-step-card", current && "is-current", tone && `is-${tone}`)}
         aria-current={current ? "step" : undefined}
       >
         <div className="di-step-card-head">
@@ -192,7 +205,10 @@ export function Step({
   }
 
   return (
-    <li className={cx("di-step-row", current && "is-current")} aria-current={current ? "step" : undefined}>
+    <li
+      className={cx("di-step-row", current && "is-current", tone && `is-${tone}`)}
+      aria-current={current ? "step" : undefined}
+    >
       <span className="di-step-row-index di-ordinal" aria-hidden>
         {shown}
       </span>

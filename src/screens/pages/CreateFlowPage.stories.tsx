@@ -42,6 +42,11 @@ export const Details: Story = {
     await userEvent.type(canvas.getByRole("textbox", { name: "Issuer URL" }), "https://login.northwind.example");
     await userEvent.click(next);
     await expect(canvas.getByRole("heading", { name: "Review" })).toBeVisible();
+    const now = canvasElement.querySelector<HTMLElement>(".di-steps-now")!;
+    await expect(now.querySelector(".di-steps-now-position")).toHaveTextContent("3/3");
+    await expect(now.querySelector(".di-steps-now-title")).toHaveTextContent("Review");
+    if (window.innerWidth <= 600) await expect(now).toBeVisible();
+    else await expect(now).not.toBeVisible();
   },
 };
 

@@ -1,22 +1,22 @@
 @layer components {
   .di-chart.di-trend-sm {
     --di-trend-h: var(--di-chart-h-sm);
-    height: var(--di-trend-h);
+    --di-chart-height: var(--di-trend-h);
   }
 
   .di-chart.di-trend-md {
     --di-trend-h: var(--di-chart-h-md);
-    height: var(--di-trend-h);
+    --di-chart-height: var(--di-trend-h);
   }
 
   .di-chart.di-trend-lg {
     --di-trend-h: var(--di-chart-h-lg);
-    height: var(--di-trend-h);
+    --di-chart-height: var(--di-trend-h);
   }
 
-  /* The legend sits inside the chart box; it gets room of its own, so a wrapped legend on a phone does not shrink the plot. */
+  /* The legend sits inside the plot box; it gets room of its own, so a wrapped legend on a phone does not shrink the plot. */
   .di-chart.di-trend:has(.recharts-legend-wrapper) {
-    height: calc(var(--di-trend-h) + var(--di-space-48));
+    --di-chart-height: calc(var(--di-trend-h) + var(--di-space-48));
   }
 
   /* A marker's label is text beside its rule: the axis' size, in the status ink it is given. */

@@ -5,6 +5,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Toolbar, ToolbarEnd } from "../../actions/Toolbar";
 import { Tag, TagList } from "./Tag";
+import { separatorsAtLineStart } from "../../../../.storybook/tests/lineStart";
 
 const meta = {
   title: "Status/Tag",
@@ -146,6 +147,20 @@ export const Compact: Story = {
       </TagList>
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    const list = canvasElement.querySelector<HTMLElement>(".di-tag-list")!;
+    const column = list.parentElement!.getBoundingClientRect();
+    await expect(list.getBoundingClientRect().right).toBeLessThanOrEqual(column.right + 0.5);
+    for (const tag of list.children) {
+      await expect(tag.getBoundingClientRect().right).toBeLessThanOrEqual(column.right + 0.5);
+    }
+    for (const detail of list.querySelectorAll<HTMLElement>(".di-tag-detail")) {
+      if (getComputedStyle(detail).display === "none") continue;
+      const room = parseFloat(getComputedStyle(detail).fontSize) * 4;
+      await expect(detail.clientWidth >= room || detail.scrollWidth <= detail.clientWidth).toBe(true);
+    }
+    await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
+  },
 };
 
 /** German wording, the longest the products have: scopes wrap under the name, filters stay whole. */
@@ -181,5 +196,9 @@ export const Narrow: Story = {
   play: async ({ canvasElement }) => {
     const detail = within(canvasElement).getByText("Production");
     await expect(detail.scrollWidth).toBeLessThanOrEqual(detail.clientWidth + 1);
+    await expect(detail.getBoundingClientRect().top).toBeGreaterThan(
+      within(canvasElement).getByText("Workspace administrator").getBoundingClientRect().bottom - 2,
+    );
+    await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
   },
 };

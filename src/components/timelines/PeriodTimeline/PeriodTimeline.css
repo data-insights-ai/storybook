@@ -83,7 +83,7 @@
 
   /* Not started yet: the series ink mixed into the surface, quieter than in force and still 3:1 on the track. */
   .di-period-neutral {
-    --di-period-color: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
+    --di-period-color: var(--di-chart-routine);
   }
 
   .di-period-warn {

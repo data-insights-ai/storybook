@@ -27,8 +27,8 @@ const ALLOW = ALLOWED.map(([selector]) => selector).join(", ");
 
 type Extent = { top: number; bottom: number; bleeds?: Extent };
 
-/* Content that runs to a surface's edge by design: a table's rows, a picture. */
-const EDGE_TO_EDGE = "table, img, video, canvas, figure, .di-table-wrap";
+/* Content that runs to a surface's edge by design: a table's rows (or the bars that stand in for them), a picture. */
+const EDGE_TO_EDGE = "table, img, video, canvas, figure, .di-table-wrap, .di-loading-table-body";
 
 function lineBox(rect: DOMRect, host: Element): Extent {
   /* The outermost box that holds just this one line: an inline mark sits on its block's line, not on its own. */

@@ -449,7 +449,7 @@ function WorkspaceSwitcher() {
   );
 }
 
-/** The header item opens a menu to switch context; the chevron says so. */
+/** The header item opens a menu to switch context; the chevron says so. It sits in the shell, above the sections. */
 export const ContextSwitcher: Story = {
   globals: { viewport: { value: "desk", isRotated: false } },
   render: (args) => (
@@ -462,12 +462,41 @@ export const ContextSwitcher: Story = {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        <SidebarContent>{null}</SidebarContent>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton label="Overview" href="#/overview" active>
+                  <Gauge />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton label="Findings" href="#/findings">
+                  <FileSearch />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
       </Sidebar>
+      <SidebarInset>
+        <AppShellBar>
+          <SidebarTrigger label="Toggle navigation" />
+          <Breadcrumb label="Breadcrumb" items={[{ label: "Overview" }]} />
+        </AppShellBar>
+        <AppShellContent>
+          <PageHeader>
+            <PageHeaderTitle>Overview</PageHeaderTitle>
+          </PageHeader>
+        </AppShellContent>
+      </SidebarInset>
     </SidebarProvider>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await expect(canvas.getByRole("heading", { level: 1, name: "Overview" })).toBeVisible();
+    await expect(canvasElement.querySelector(".di-sb")!.getBoundingClientRect().width).toBeGreaterThan(0);
     await userEvent.click(canvas.getByRole("button", { name: "Northwind Security" }));
     const body = within(canvasElement.ownerDocument.body);
     await userEvent.click(body.getByRole("menuitemradio", { name: "Harbor Labs" }));
@@ -513,5 +542,19 @@ export const FooterWrittenFirst: Story = {
     const content = canvasElement.querySelector(".di-sb-content")!;
     await expect(footer.getBoundingClientRect().top).toBeGreaterThan(content.getBoundingClientRect().top);
     await expect(content.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    // Free text in the footer starts on the same edge as the group label and an item's row content.
+    const textLeft = (el: Element) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      return range.getBoundingClientRect().left;
+    };
+    const label = textLeft(canvasElement.querySelector(".di-sb-group-label")!);
+    await expect(Math.abs(textLeft(within(footer as HTMLElement).getByText("Nora Feld")) - label)).toBeLessThanOrEqual(
+      0.5,
+    );
+    const row = canvasElement.querySelector<HTMLElement>(".di-sb-button")!;
+    await expect(
+      Math.abs(row.getBoundingClientRect().left + parseFloat(getComputedStyle(row).paddingLeft) - label),
+    ).toBeLessThanOrEqual(0.5);
   },
 };

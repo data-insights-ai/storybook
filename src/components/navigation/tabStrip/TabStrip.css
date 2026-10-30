@@ -14,6 +14,29 @@
     box-shadow: inset 0 -1px 0 var(--di-border);
   }
 
+  /*
+   * An edge that hides tabs fades out, so a tab cut at the frame reads as
+   * more to scroll to. While a tab has the keyboard its ring marks the edge
+   * instead. A mask reads only alpha, so any opaque ink does.
+   */
+  .di-tabs.is-more-end:not(:has(:focus-visible)) {
+    mask-image: linear-gradient(to left, transparent, var(--di-text) var(--di-space-32));
+  }
+
+  .di-tabs.is-more-start:not(:has(:focus-visible)) {
+    mask-image: linear-gradient(to right, transparent, var(--di-text) var(--di-space-32));
+  }
+
+  .di-tabs.is-more-start.is-more-end:not(:has(:focus-visible)) {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      var(--di-text) var(--di-space-32),
+      var(--di-text) calc(100% - var(--di-space-32)),
+      transparent
+    );
+  }
+
   .di-tabs::-webkit-scrollbar {
     display: none;
   }

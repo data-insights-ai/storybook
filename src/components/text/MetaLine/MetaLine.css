@@ -1,6 +1,6 @@
 @layer components {
-  /* The separator sits in the gap before each item; the one before the
-     first item of a line falls outside the clipped box. */
+  /* The separator sits in the gap before each item and is left out before
+     an item that starts a line (useLineStarts marks it). */
   .di-meta-line {
     --di-meta-gap: 1.5em;
     display: block;
@@ -48,5 +48,9 @@
   .di-meta-line.is-path .di-meta-line-item::before {
     content: "→" / "";
     color: var(--di-text-subtle);
+  }
+
+  .di-meta-line .di-meta-line-item[data-line-start]::before {
+    content: none;
   }
 }

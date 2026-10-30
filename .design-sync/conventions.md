@@ -35,7 +35,7 @@ Build from the components in this system. **If something you need is missing, sa
 - **A navy hero (`Panel surface="hero"`) only with a signature visual** — the chart that is the screen's argument — closed by `FigureRow variant="footer"`. Figures without a hero sit on `FigureRow variant="strip"`. Rules separate figures and nothing else.
 - **A list beside its record is `Split variant="list"`**: the list pane a step above the ground, the selected row in the selection tint with a cornflower edge; on a phone the two are separate views with `SplitBack`.
 - **Severity is `SeverityMark`**: one scale, a filled mark plus the word.
-- Meta lines (`MetaLine`) break between items; a `Toolbar align="end"` of closing buttons stacks full width on a phone.
+- Meta lines (`MetaLine`) break between items and never start a line with a separator; a date in running text is a `<time>`, which never breaks; a `Toolbar align="end"` of closing buttons stacks full width on a phone.
 
 A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` holding **`AppShellBar`** (the `SidebarTrigger`, a `Breadcrumb`, then `AppShellBarEnd` with app-wide status, which folds into one overflow button on a narrow bar, and `AppShellBarKeep` for the notification bell, which never folds) and **`AppShellContent`**. Below 900px the `Sidebar` is a drawer from the inline start; do not build a second mobile nav.
 

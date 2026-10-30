@@ -3,6 +3,7 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cx } from "../../../internal/cx";
 import { useActiveInView } from "../../../internal/useActiveInView";
+import { useScrollEdges } from "../../../internal/useScrollEdges";
 import { TabCount } from "../tabStrip";
 
 /**
@@ -27,8 +28,13 @@ import { TabCount } from "../tabStrip";
 export function TabNav({ label, className, children }: { label: string; className?: string; children: ReactNode }) {
   const strip = useRef<HTMLElement>(null);
   useActiveInView(strip);
+  const [, edges] = useScrollEdges(strip);
   return (
-    <nav ref={strip} aria-label={label} className={cx("di-tabs", className)}>
+    <nav
+      ref={strip}
+      aria-label={label}
+      className={cx("di-tabs", edges.start && "is-more-start", edges.end && "is-more-end", className)}
+    >
       {children}
     </nav>
   );

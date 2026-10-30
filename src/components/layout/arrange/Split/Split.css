@@ -207,11 +207,11 @@
       gap: var(--di-gap-32);
     }
 
-    /* The list is a pane of its own, a step above the ground and full height. */
+    /* The list is a pane of its own, a step above the ground, as tall as its items up to the window; then it scrolls. */
     .di-split-list {
       position: sticky;
       top: calc(var(--di-sticky-top) + var(--di-space-16));
-      height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
+      max-height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
       overflow: auto;
       /* 8 in both densities: the rows span the pane, a control's width from its edge. */
       padding: var(--di-gap-16) var(--di-space-8);

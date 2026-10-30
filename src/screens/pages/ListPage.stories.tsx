@@ -79,7 +79,13 @@ export const LoadingMembers: Story = {
   name: "Loading",
   args: { state: "loading" },
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByRole("status")).toHaveTextContent("Loading members");
+    const canvas = within(canvasElement);
+    const status = canvas.getByRole("status", { name: "Loading members" });
+    await expect(canvas.getByRole("search")).toBeVisible();
+    await expect(canvas.getByRole("search").getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      status.getBoundingClientRect().top,
+    );
+    await expect(canvasElement.querySelectorAll(".di-loading-table")).toHaveLength(1);
   },
 };
 

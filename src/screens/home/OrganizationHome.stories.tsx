@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
+import { separatorsAtLineStart } from "../../../.storybook/tests/lineStart";
 import { OrganizationHome } from "./OrganizationHome";
 import { allRunning, decisionDue } from "./home.sample";
 
@@ -49,6 +50,10 @@ export const Administrator: Story = {
 export const BillingAdministrator: Story = {
   name: "Billing administrator",
   args: { role: "billing", state: decisionDue },
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelector(".di-meta-line")).not.toBeNull();
+    await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
+  },
 };
 
 /** A member: the line and their products, nothing about team, cost or licences. */

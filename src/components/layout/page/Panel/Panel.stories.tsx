@@ -374,6 +374,15 @@ export const Dashboard: Story = {
     const panels = [...canvasElement.querySelectorAll(".di-panel")].map((el) => el.getBoundingClientRect());
     const grid = canvasElement.querySelector(".di-panel")!.parentElement!.getBoundingClientRect();
     await expect(Math.round(panels[2]!.width)).toBe(Math.round(grid.width));
+    // A panel alone on its row ends where its content does: no empty band under the last block.
+    for (const el of canvasElement.querySelectorAll<HTMLElement>(".di-panel")) {
+      const box = el.getBoundingClientRect();
+      const alone = panels.every((other) => Math.abs(other.top - box.top) > 1 || other.left === box.left);
+      if (!alone) continue;
+      const last = el.querySelector(".di-panel-content")!.lastElementChild!.getBoundingClientRect();
+      const inset = parseFloat(getComputedStyle(el).paddingBottom);
+      await expect(Math.abs(box.bottom - inset - last.bottom)).toBeLessThanOrEqual(2);
+    }
   },
 };
 
@@ -400,8 +409,12 @@ export const WithFooter: Story = {
       <PanelStatus>
         <StatusPill tone="warn">expiring</StatusPill>
       </PanelStatus>
-      <p>{args.children}</p>
-      <PanelFooter>Rotated last on 2025-09-29 by Nora Feld</PanelFooter>
+      <p>
+        The signing key for this workspace expires on <time dateTime="2026-09-29">2026-09-29</time>.
+      </p>
+      <PanelFooter>
+        Rotated last on <time dateTime="2025-09-29">2025-09-29</time> by Nora Feld
+      </PanelFooter>
       <PanelActions>
         <Button variant="secondary" size="sm">
           Rotate now
@@ -420,6 +433,8 @@ export const WithFooter: Story = {
     // The rows are one gap apart: 16px comfortable, 12px compact.
     await expect(footer.top - body.bottom).toBeGreaterThanOrEqual(parseFloat(getComputedStyle(frame).rowGap));
     await expect(Math.round(panel.right - action.right)).toBe(Math.round(footer.left - panel.left));
+    // A date never breaks inside ("2026-" / "09-29").
+    for (const time of canvasElement.querySelectorAll("time")) await expect(time.getClientRects()).toHaveLength(1);
   },
 };
 

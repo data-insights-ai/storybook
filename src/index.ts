@@ -4,7 +4,12 @@ export { Badge } from "./components/status/Badge";
 export { Breadcrumb } from "./components/navigation/Breadcrumb";
 export { Button } from "./components/actions/Button";
 export { ChainTimeline } from "./components/timelines/ChainTimeline";
-export type { ChainTimelineEvent, ChainTimelineLane } from "./components/timelines/ChainTimeline";
+export type {
+  ChainTimelineClock,
+  ChainTimelineEvent,
+  ChainTimelineLane,
+  ChainTimelineTick,
+} from "./components/timelines/ChainTimeline";
 export { CodeBlock } from "./components/text/blocks/CodeBlock";
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/charts/Chart";
 export type { ChartConfig, ChartTooltipDetail } from "./components/charts/Chart";
@@ -237,7 +242,7 @@ export {
 } from "./components/layout/arrange/Split";
 export { StatusPill } from "./components/status/StatusPill";
 export { Step, StepFooter, StepIcon, Steps } from "./components/navigation/Steps";
-export type { StepState, StepsVariant } from "./components/navigation/Steps";
+export type { StepState, StepsVariant, StepTone } from "./components/navigation/Steps";
 export { Switch } from "./components/forms/choice/Switch";
 export { TabPanel, Tabs } from "./components/navigation/Tabs";
 export { TabNav, TabNavLink } from "./components/navigation/TabNav";

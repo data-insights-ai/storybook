@@ -22,13 +22,50 @@ import {
 } from "../../navigation/Sidebar";
 import { ThemeProvider, useTheme, type ThemeChoice } from "./ThemeProvider";
 
-function Shown() {
+const words = {
+  en: {
+    skip: "Skip to content",
+    navigation: "Navigation",
+    close: "Close navigation",
+    toggle: "Toggle navigation",
+    overview: "Overview",
+    signOut: "Sign out",
+    appearance: "Appearance",
+    choice: "Your choice",
+    showing: "Showing",
+  },
+  de: {
+    skip: "Zum Inhalt springen",
+    navigation: "Navigation",
+    close: "Navigation schließen",
+    toggle: "Navigation ein- oder ausblenden",
+    overview: "Übersicht",
+    signOut: "Abmelden",
+    appearance: "Darstellung",
+    choice: "Ihre Wahl",
+    showing: "Angezeigt",
+  },
+  es: {
+    skip: "Ir al contenido",
+    navigation: "Navegación",
+    close: "Cerrar la navegación",
+    toggle: "Mostrar u ocultar la navegación",
+    overview: "Resumen",
+    signOut: "Cerrar sesión",
+    appearance: "Apariencia",
+    choice: "Su elección",
+    showing: "Se muestra",
+  },
+} satisfies Record<keyof typeof themeLabels, Record<string, string>>;
+
+function Shown({ language }: { language: keyof typeof themeLabels }) {
   const { choice, resolved } = useTheme();
+  const t = words[language];
   return (
-    <Panel title="Appearance" heading={2}>
+    <Panel title={t.appearance} heading={2}>
       <FactList layout="pairs">
-        <Fact label="Your choice">{choice}</Fact>
-        <Fact label="Showing">{resolved}</Fact>
+        <Fact label={t.choice}>{choice}</Fact>
+        <Fact label={t.showing}>{resolved}</Fact>
       </FactList>
     </Panel>
   );
@@ -37,14 +74,15 @@ function Shown() {
 /** The app keeps the choice (the person's preference) and hands it to the provider. */
 function Sample({ initial, language }: { initial: ThemeChoice; language: keyof typeof themeLabels }) {
   const [theme, setTheme] = useState<ThemeChoice>(initial);
+  const t = words[language];
   return (
     <ThemeProvider value={theme}>
-      <SidebarProvider skipLabel="Skip to content">
-        <Sidebar label="Navigation" closeLabel="Close navigation">
+      <SidebarProvider skipLabel={t.skip}>
+        <Sidebar label={t.navigation} closeLabel={t.close}>
           <SidebarContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton label="Overview" active>
+                <SidebarMenuButton label={t.overview} active>
                   <Gauge />
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -61,7 +99,7 @@ function Sample({ initial, language }: { initial: ThemeChoice; language: keyof t
                 <SidebarThemeChoice value={theme} onChange={setTheme} labels={themeLabels[language]} />
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton label="Sign out">
+                <SidebarMenuButton label={t.signOut}>
                   <LogOut />
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -70,14 +108,14 @@ function Sample({ initial, language }: { initial: ThemeChoice; language: keyof t
         </Sidebar>
         <SidebarInset>
           <AppShellBar>
-            <SidebarTrigger label="Toggle navigation" />
-            <span>Overview</span>
+            <SidebarTrigger label={t.toggle} />
+            <span>{t.overview}</span>
           </AppShellBar>
           <AppShellContent>
             <PageHeader>
-              <PageHeaderTitle>Overview</PageHeaderTitle>
+              <PageHeaderTitle>{t.overview}</PageHeaderTitle>
             </PageHeader>
-            <Shown />
+            <Shown language={language} />
           </AppShellContent>
         </SidebarInset>
       </SidebarProvider>
@@ -138,13 +176,16 @@ export const Choice: Story = {
   },
 };
 
-/** The words come with the control in the apps' three languages. */
+/** The words come with the control in the apps' three languages; the rest of the page is the product's, here in German too. */
 export const German: Story = {
   globals: { viewport: { value: "desk", isRotated: false } },
   args: { value: "dark", language: "de" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(shown(canvasElement)).toBe("dark dark");
+    await expect(canvas.getByRole("heading", { level: 1, name: "Übersicht" })).toBeVisible();
+    await expect(canvas.getByRole("link", { name: "Zum Inhalt springen" })).toBeInTheDocument();
+    await expect(canvasElement.textContent).not.toMatch(/Overview|Sign out|Appearance|Your choice/);
     await userEvent.click(canvas.getByRole("button", { name: "Darstellung: Dunkel" }));
     await waitFor(() =>
       expect(within(document.body).getByRole("menuitemradio", { name: "Automatisch" })).toBeVisible(),

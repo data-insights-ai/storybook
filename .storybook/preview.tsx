@@ -1,14 +1,26 @@
 import type { Preview } from "@storybook/react-vite";
-import { withThemeByDataAttribute } from "@storybook/addon-themes";
 import { DocsContainer, type DocsContainerProps } from "@storybook/addon-docs/blocks";
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { GLOBALS_UPDATED } from "storybook/internal/core-events";
 import { brandTheme, resolveMode, type Mode } from "./theme";
+import { withThemeRoot } from "./themeRoot";
 import "../src/styles/styles.css";
 import "./preview.css";
 
 const preview: Preview = {
   globalTypes: {
+    theme: {
+      description: "Daylight or after dark",
+      toolbar: {
+        title: "Theme",
+        icon: "mirror",
+        items: [
+          { value: "light", title: "Light" },
+          { value: "dark", title: "Dark" },
+        ],
+        dynamicTitle: true,
+      },
+    },
     density: {
       description: "How much air the components carry",
       toolbar: {
@@ -22,7 +34,7 @@ const preview: Preview = {
       },
     },
   },
-  initialGlobals: { density: "comfortable" },
+  initialGlobals: { theme: resolveMode(undefined), density: "comfortable" },
   parameters: {
     layout: "padded",
     backgrounds: { disable: true },
@@ -121,11 +133,7 @@ const preview: Preview = {
     },
   },
   decorators: [
-    withThemeByDataAttribute({
-      themes: { light: "light", dark: "dark" },
-      defaultTheme: resolveMode(undefined),
-      attributeName: "data-theme",
-    }),
+    withThemeRoot,
     (Story, context) => {
       document.documentElement.setAttribute("data-density", context.globals.density ?? "comfortable");
       return <Story />;

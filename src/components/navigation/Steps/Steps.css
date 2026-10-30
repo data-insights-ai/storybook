@@ -182,6 +182,18 @@
     overflow-wrap: break-word;
   }
 
+  /* The position leads and keeps its separator, so a wrapped title never starts with it. */
+  .di-steps-now-position {
+    font-weight: var(--di-weight-regular);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-muted);
+    white-space: nowrap;
+  }
+
+  .di-steps-now-position::after {
+    content: " · ";
+  }
+
   /*
    * A narrow inline run: every name goes, and the current one is set under
    * the track, so the bullets stay on one line at any width.
@@ -251,6 +263,12 @@
     .di-steps[data-layout="spread"] .di-steps-now {
       display: block;
     }
+  }
+
+  /* A step that lags: an amber line where the current step has its fill, so the two never look alike. */
+  .di-step.is-warn .di-step-bullet {
+    border-color: var(--di-status-warn-dot);
+    box-shadow: 0 0 0 1px var(--di-status-warn-dot);
   }
 
   /* Cards: each step a surface in a row that wraps on a narrow page. */
@@ -341,6 +359,21 @@
 
   .di-step-card.is-current .di-step-icon {
     color: var(--di-inverse-mark);
+  }
+
+  .di-surface.di-step-card.is-warn {
+    box-shadow:
+      inset 0 0 0 1px var(--di-status-warn-dot),
+      var(--di-surface-shadow);
+  }
+
+  .di-step-card.is-warn .di-step-icon,
+  .di-step-row.is-warn .di-step-row-index {
+    color: var(--di-status-warn-fg);
+  }
+
+  .di-step-row.is-warn {
+    box-shadow: inset var(--di-select-edge) 0 0 var(--di-status-warn-dot);
   }
 
   /* List: the ordinal in its own column beside what the step holds. */

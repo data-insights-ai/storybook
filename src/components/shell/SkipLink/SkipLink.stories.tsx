@@ -12,22 +12,52 @@ const meta = {
   parameters: { layout: "fullscreen" },
   args: { label: "Skip to content", target: "di-content" },
   argTypes: { label: { control: "text" }, target: { control: "text" } },
-  render: (args) => (
+  render: (args) => <Frame {...args} words={english} />,
+} satisfies Meta<typeof SkipLink>;
+
+const english = {
+  nav: "Sections",
+  links: ["Overview", "Sources", "Settings"],
+  title: "Sources",
+  lede: "Every host the workspace reads from.",
+};
+
+const german = {
+  nav: "Bereiche",
+  links: ["Übersicht", "Datenquellen", "Einstellungen"],
+  title: "Datenquellen",
+  lede: "Jeder Host, von dem der Arbeitsbereich liest.",
+};
+
+function Frame({ words, ...args }: { label: string; target?: string; words: typeof english }) {
+  return (
     <>
       <SkipLink {...args} />
-      <nav aria-label="Sections" style={{ display: "flex", gap: "var(--di-space-16)", padding: "var(--di-space-16)" }}>
-        <TextLink href="#/overview">Overview</TextLink>
-        <TextLink href="#/sources">Sources</TextLink>
-        <TextLink href="#/settings">Settings</TextLink>
+      <nav aria-label={words.nav} style={{ display: "flex", gap: "var(--di-space-16)", padding: "var(--di-space-16)" }}>
+        {words.links.map((link, i) => (
+          <TextLink key={link} href={`#/${english.links[i].toLowerCase()}`}>
+            {link}
+          </TextLink>
+        ))}
       </nav>
       <AppShellContent>
-        <PageHeader lede="Every host the workspace reads from.">
-          <PageHeaderTitle>Sources</PageHeaderTitle>
+        <PageHeader lede={words.lede}>
+          <PageHeaderTitle>{words.title}</PageHeaderTitle>
         </PageHeader>
       </AppShellContent>
     </>
-  ),
-} satisfies Meta<typeof SkipLink>;
+  );
+}
+
+/** The focused link covers the whole navigation row: no part of a link it covers shows beside it. */
+async function coversTheRow(link: HTMLElement, canvasElement: HTMLElement) {
+  const band = link.getBoundingClientRect();
+  const row = canvasElement.querySelector("nav")!.getBoundingClientRect();
+  await expect(band.left).toBeLessThanOrEqual(row.left);
+  await expect(band.right).toBeGreaterThanOrEqual(row.right);
+  await expect(band.top).toBeLessThanOrEqual(row.top);
+  await expect(band.bottom).toBeGreaterThanOrEqual(row.bottom);
+}
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -39,6 +69,7 @@ export const Default: Story = {
     await userEvent.tab();
     await waitFor(() => expect(link).toHaveFocus());
     await expect(link).toBeVisible();
+    await coversTheRow(link, canvasElement);
   },
 };
 
@@ -55,11 +86,14 @@ export const Skipped: Story = {
   },
 };
 
-/** German: the label is the product's, in its language. */
+/** German: the label is the product's, in its language, like the page behind it. */
 export const German: Story = {
   args: { label: "Zum Inhalt springen" },
+  render: (args) => <Frame {...args} words={german} />,
   play: async ({ canvasElement }) => {
+    const link = within(canvasElement).getByRole("link", { name: "Zum Inhalt springen" });
     await userEvent.tab();
-    await waitFor(() => expect(within(canvasElement).getByRole("link", { name: "Zum Inhalt springen" })).toHaveFocus());
+    await waitFor(() => expect(link).toHaveFocus());
+    await coversTheRow(link, canvasElement);
   },
 };

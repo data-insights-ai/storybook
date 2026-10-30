@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import { CodeBlock, Fact, FactList, Panel } from "../index";
 import { Doc, DocSection, Rules } from "./guide/Doc";
 
@@ -71,4 +72,12 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
-export const Introduction: StoryObj = { render: () => <IntroductionPage /> };
+/** The code samples wrap inside their frame on a phone; none runs past it. */
+export const Introduction: StoryObj = {
+  render: () => <IntroductionPage />,
+  play: async ({ canvasElement }) => {
+    for (const code of canvasElement.querySelectorAll<HTMLElement>(".di-codeblock-scroll")) {
+      await expect(code.scrollWidth).toBeLessThanOrEqual(code.clientWidth + 1);
+    }
+  },
+};

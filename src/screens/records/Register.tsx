@@ -110,7 +110,11 @@ export function RegisterScreen({ state = "ready", lang = "en" }: { state?: Regis
           </Notice>
         ) : null}
 
-        {state === "loading" ? <Loading shape="table" label={words.loading} rows={6} index /> : null}
+        {state === "loading" ? (
+          <Loading shape="table" label={words.loading} rows={6} index>
+            {registerToolbar(words, menu, setMenu)}
+          </Loading>
+        ) : null}
 
         {state === "error" ? (
           <Notice variant="empty" tone="danger">
@@ -196,36 +200,7 @@ function Ready({
 
       <Panel padded={false}>
         <DataTable caption={words.caption}>
-          <Toolbar label={words.filterLabel} role="search">
-            <SearchField id="register-search" label={words.search} placeholder={words.placeholder} size="sm" />
-            <Tag mono pressed onRemove={() => undefined} removeLabel={words.removeFilter}>
-              {words.workspaceFilter}
-            </Tag>
-            <Tag mono onClick={() => undefined}>
-              <Plus aria-hidden />
-              {words.addState}
-            </Tag>
-            <ToolbarEnd>
-              <Menu
-                open={menu}
-                onOpenChange={setMenu}
-                label={words.actions}
-                trigger={(props) => (
-                  <Button {...props} variant="secondary" size="sm" iconOnly={true} aria-label={words.actions}>
-                    <MoreVertical aria-hidden />
-                  </Button>
-                )}
-              >
-                <MenuItem onSelect={() => setMenu(false)}>{words.export}</MenuItem>
-                <MenuItem onSelect={() => setMenu(false)}>{words.sealNow}</MenuItem>
-                <MenuItem onSelect={() => setMenu(false)}>{words.verify}</MenuItem>
-                <MenuDivider />
-                <MenuItem onSelect={() => setMenu(false)} tone="danger">
-                  {words.revoke}
-                </MenuItem>
-              </Menu>
-            </ToolbarEnd>
-          </Toolbar>
+          {registerToolbar(words, menu, setMenu)}
           <TableFooter>
             <span>{words.range}</span>
             <Pagination
@@ -302,5 +277,41 @@ function SourceFacts({ source, words }: { source: Source; words: Words }) {
       </Fact>
       <Fact label={words.facts.reason}>{words.reasons[source.state]}</Fact>
     </FactList>
+  );
+}
+
+/** The list toolbar, the same while the register loads as when it holds rows: a `Toolbar` element, so the table takes it into its head. */
+function registerToolbar(words: Words, menu: boolean, setMenu: (open: boolean) => void) {
+  return (
+    <Toolbar label={words.filterLabel} role="search">
+      <SearchField id="register-search" label={words.search} placeholder={words.placeholder} size="sm" />
+      <Tag mono pressed onRemove={() => undefined} removeLabel={words.removeFilter}>
+        {words.workspaceFilter}
+      </Tag>
+      <Tag mono onClick={() => undefined}>
+        <Plus aria-hidden />
+        {words.addState}
+      </Tag>
+      <ToolbarEnd>
+        <Menu
+          open={menu}
+          onOpenChange={setMenu}
+          label={words.actions}
+          trigger={(props) => (
+            <Button {...props} variant="secondary" size="sm" iconOnly={true} aria-label={words.actions}>
+              <MoreVertical aria-hidden />
+            </Button>
+          )}
+        >
+          <MenuItem onSelect={() => setMenu(false)}>{words.export}</MenuItem>
+          <MenuItem onSelect={() => setMenu(false)}>{words.sealNow}</MenuItem>
+          <MenuItem onSelect={() => setMenu(false)}>{words.verify}</MenuItem>
+          <MenuDivider />
+          <MenuItem onSelect={() => setMenu(false)} tone="danger">
+            {words.revoke}
+          </MenuItem>
+        </Menu>
+      </ToolbarEnd>
+    </Toolbar>
   );
 }

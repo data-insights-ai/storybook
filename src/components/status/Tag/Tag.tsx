@@ -1,6 +1,7 @@
-import { Children, type ReactNode } from "react";
+import { Children, useLayoutEffect, useRef, type ReactNode } from "react";
 import { X } from "lucide-react";
 import { cx } from "../../../internal/cx";
+import { useLineStarts } from "../../../internal/useLineStarts";
 import { SealMark } from "../SealValue";
 import "./Tag.css";
 
@@ -46,6 +47,11 @@ export function Tag({
   inferred?: boolean;
   className?: string;
 }) {
+  const box = useRef<HTMLElement | null>(null);
+  const holdBox = (element: HTMLElement | null) => {
+    box.current = element;
+  };
+  useLineStarts(box, detail);
   const classes = cx(
     "di-tag",
     mono && "is-mono",
@@ -69,15 +75,15 @@ export function Tag({
 
   if (onClick && !onRemove) {
     return (
-      <button type="button" className={classes} title={title} aria-pressed={pressed} onClick={onClick}>
+      <button ref={holdBox} type="button" className={classes} title={title} aria-pressed={pressed} onClick={onClick}>
         {name}
       </button>
     );
   }
   return (
-    <span className={classes} title={title}>
+    <span ref={onClick ? undefined : holdBox} className={classes} title={title}>
       {onClick ? (
-        <button type="button" className="di-tag-press" aria-pressed={pressed} onClick={onClick}>
+        <button ref={holdBox} type="button" className="di-tag-press" aria-pressed={pressed} onClick={onClick}>
           {name}
         </button>
       ) : (
@@ -92,7 +98,8 @@ export function Tag({
  * Tags side by side. In a table cell give `max`: the first tags stay on one
  * line and the rest become one "+N more" tag (`moreLabel`), which calls
  * `onMore` — open the record's side panel there. Without `max` the tags
- * wrap like words.
+ * wrap like words. A scope that would show only its first letters in a
+ * compact list is left out rather than cut to "·…".
  */
 export function TagList({
   children,
@@ -106,12 +113,29 @@ export function TagList({
   moreLabel?: (hidden: number) => string;
   onMore?: () => void;
 }) {
+  const list = useRef<HTMLSpanElement>(null);
+  const compact = max !== undefined;
+  useLayoutEffect(() => {
+    const element = list.current;
+    if (!compact || !element) return;
+    const fit = () => {
+      for (const detail of element.querySelectorAll<HTMLElement>(".di-tag-detail")) {
+        detail.removeAttribute("data-cut");
+        const room = parseFloat(getComputedStyle(detail).fontSize) * 4;
+        if (detail.scrollWidth > detail.clientWidth && detail.clientWidth < room) detail.setAttribute("data-cut", "");
+      }
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [compact, children]);
   const tags = Children.toArray(children);
   const shown = max === undefined ? tags : tags.slice(0, max);
   const hidden = tags.length - shown.length;
   const more = moreLabel ? moreLabel(hidden) : `+${hidden}`;
   return (
-    <span className={cx("di-tag-list", max !== undefined && "is-compact")}>
+    <span ref={list} className={cx("di-tag-list", compact && "is-compact")}>
       {shown}
       {hidden > 0 ? (
         onMore ? (

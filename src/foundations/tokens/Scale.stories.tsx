@@ -172,9 +172,13 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
+/** Token and value cells keep one line, and the code samples wrap inside their frame on a phone. */
 export const Scale: StoryObj = {
   render: () => <ScalePage />,
   play: async ({ canvasElement }) => {
     await expect(brokenTokenCells(canvasElement)).toEqual([]);
+    for (const code of canvasElement.querySelectorAll<HTMLElement>(".di-codeblock-scroll")) {
+      await expect(code.scrollWidth).toBeLessThanOrEqual(code.clientWidth + 1);
+    }
   },
 };

@@ -1,7 +1,7 @@
 @layer components {
   /* The frame holds the block inset; the scroll box inside it clips, so a half-scrolled line stops short of the frame. */
   .di-codeblock {
-    padding-block: var(--di-space-12);
+    padding: var(--di-space-12);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-control);
     background: var(--di-table-bg);
@@ -10,20 +10,51 @@
   .di-codeblock-scroll {
     max-height: calc(var(--di-codeblock-max-h) - 2 * var(--di-space-12));
     margin: 0;
-    padding-inline: var(--di-space-12);
     overflow: auto;
     color: var(--di-text);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     line-height: var(--di-leading-body);
     white-space: break-spaces;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     tab-size: 2;
     outline: none;
   }
 
   .di-codeblock-code {
     font: inherit;
+  }
+
+  /* A wrapped line hangs two characters in from the indent its first row carries. */
+  .di-codeblock-line {
+    display: block;
+    min-block-size: 1lh;
+    padding-inline-start: calc((var(--di-codeblock-indent) + 2) * 1ch);
+    text-indent: calc((var(--di-codeblock-indent) + 2) * -1ch);
+  }
+
+  .di-codeblock.is-log .di-codeblock-scroll {
+    white-space: pre;
+    overflow-wrap: normal;
+  }
+
+  /* The edge that hides more of a line fades out; while the block has focus its ring marks the edge instead. */
+  .di-codeblock-scroll.is-more-end:not(:focus-visible) {
+    mask-image: linear-gradient(to left, transparent, var(--di-text) var(--di-space-48));
+  }
+
+  .di-codeblock-scroll.is-more-start:not(:focus-visible) {
+    mask-image: linear-gradient(to right, transparent, var(--di-text) var(--di-space-48));
+  }
+
+  .di-codeblock-scroll.is-more-start.is-more-end:not(:focus-visible) {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      var(--di-text) var(--di-space-48),
+      var(--di-text) calc(100% - var(--di-space-48)),
+      transparent
+    );
   }
 
   .di-codeblock:has(> .di-codeblock-scroll:focus-visible) {

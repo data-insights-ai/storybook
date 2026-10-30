@@ -16,9 +16,10 @@ import { ChevronRight } from "lucide-react";
 import { cx } from "../../../internal/cx";
 import { Kbd } from "../../text/Kbd";
 import { Loading } from "../../feedback/Loading";
+import { ChartKey } from "../../charts/ChartKey";
 import { Events, nearestEvent, reachOf } from "./marks/Events";
 import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";
-import { MARK_BAND, Markers } from "./marks/Markers";
+import { MARK_BAND, markerRows, Markers } from "./marks/Markers";
 import { gutterOf, SCORE_H, scaleValues, ScoreTrack, valueAt } from "./marks/ScoreTrack";
 import { AXIS_H, TimeAxis } from "./marks/TimeAxis";
 import { totalOf, Waveform } from "./marks/Waveform";
@@ -46,6 +47,11 @@ const GAP = 8;
 const PICK_PX = 10;
 const READOUT_GAP = 12;
 const TONES: TimelineTone[] = ["danger", "warn", "neutral"];
+const TONE_COLOR: Record<TimelineTone, string> = {
+  danger: "var(--di-chart-danger)",
+  warn: "var(--di-chart-warn)",
+  neutral: "var(--di-chart-routine)",
+};
 const NO_BARS: TimelineBar[] = [];
 const NO_LANES: TimelineLane[] = [];
 const NO_MARKERS: TimelineMarker[] = [];
@@ -141,6 +147,7 @@ export function EventTimeline({
   useEffect(() => measure(plotPx), [plotPx, measure]);
 
   const scale = useMemo(() => scaleOf(view, plotPx), [view, plotPx]);
+  const markRows = useMemo(() => markerRows(markers, scaleOf(bounds, plotPx), plotPx), [markers, bounds, plotPx]);
   const clock = useMemo(() => clockFormats(locale, timeZone), [locale, timeZone]);
   const ticks = useMemo(() => ticksFor(view, plotPx, clock.offsetOf), [view, plotPx, clock]);
   const peak = useMemo(() => Math.max(0, ...bars.map(totalOf)), [bars]);
@@ -213,7 +220,7 @@ export function EventTimeline({
   const readout = slots.find((c) => c.type === EventTimelineReadout);
 
   const markTop = score ? SCORE_H + GAP : 0;
-  const waveTop = markTop + (markers.length > 0 ? MARK_BAND : 0);
+  const waveTop = markTop + markRows * MARK_BAND;
   const mid = waveTop + WAVE_H / 2;
   const half = WAVE_H / 2 - 4;
   const axisTop = waveTop + WAVE_H + GAP + 4;
@@ -289,7 +296,13 @@ export function EventTimeline({
                     );
                   })}
                   <g transform={`translate(0 ${markTop})`}>
-                    <Markers markers={markers} scale={scale} plotPx={plotPx} height={axisTop - markTop} />
+                    <Markers
+                      markers={markers}
+                      scale={scale}
+                      plotPx={plotPx}
+                      height={axisTop - markTop}
+                      rows={markRows}
+                    />
                   </g>
                   {gestures.brush ? (
                     <rect
@@ -349,15 +362,10 @@ export function EventTimeline({
         ) : null}
       </div>
 
-      <div className="di-timeline-legend">
-        {TONES.map((tone) => (
-          <span key={tone} className="di-timeline-legend-item">
-            <span className={`di-timeline-swatch is-${tone}`} aria-hidden />
-            {toneLabels[tone]}
-          </span>
-        ))}
-        <span className="di-timeline-note">{scaleNote}</span>
-      </div>
+      <ChartKey
+        entries={TONES.map((tone) => ({ key: tone, label: toneLabels[tone], color: TONE_COLOR[tone] }))}
+        note={scaleNote}
+      />
       <ul id={`${id}-hint`} className="di-timeline-help">
         {instructions.map(({ keys, label: action, pointer }) => (
           <li key={`${action}-${pointer ?? "any"}`} className={pointer ? `is-${pointer}` : undefined}>

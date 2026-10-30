@@ -1,7 +1,5 @@
 @layer components {
-  /* Routine as in EventTimeline: the series ink mixed into the surface, 3:1 on the panel. */
   .di-tsummary {
-    --di-tsummary-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-12);
@@ -100,18 +98,15 @@
     box-shadow: inset 1px 0 0 var(--di-bg-surface);
   }
 
-  .di-tsummary-stretch.is-neutral,
-  .di-tsummary-swatch.is-neutral {
-    background: var(--di-tsummary-routine);
+  .di-tsummary-stretch.is-neutral {
+    background: var(--di-chart-routine);
   }
 
-  .di-tsummary-stretch.is-warn,
-  .di-tsummary-swatch.is-warn {
+  .di-tsummary-stretch.is-warn {
     background: var(--di-chart-warn);
   }
 
-  .di-tsummary-stretch.is-danger,
-  .di-tsummary-swatch.is-danger {
+  .di-tsummary-stretch.is-danger {
     background: var(--di-chart-danger);
   }
 
@@ -135,8 +130,7 @@
 
   /* What happened to the record: a flag under the track. */
   .di-tsummary-flag,
-  .di-tsummary-note-flag,
-  .di-tsummary-legend-flag {
+  .di-tsummary-note-flag {
     width: 0;
     height: 0;
     border-right: 4px solid transparent;
@@ -148,31 +142,6 @@
     position: absolute;
     bottom: calc(-1 * var(--di-space-8));
     transform: translateX(calc(-1 * var(--di-space-4)));
-  }
-
-  .di-tsummary-legend {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--di-gap-4) var(--di-gap-16);
-    font-size: var(--di-font-size-300);
-    color: var(--di-text-muted);
-  }
-
-  .di-tsummary-legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--di-gap-6);
-  }
-
-  .di-tsummary-swatch {
-    width: var(--di-tsummary-swatch);
-    height: var(--di-chart-swatch);
-    border-radius: var(--di-radius-micro);
-  }
-
-  .di-tsummary-legend-note {
-    flex-basis: 100%;
   }
 
   .di-tsummary-edges {

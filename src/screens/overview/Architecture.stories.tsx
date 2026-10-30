@@ -23,12 +23,17 @@ export const Pipeline: Story = {
   },
 };
 
-/** One stage falls behind: it becomes the current step, and the first block says what it costs. */
+/** One stage falls behind: it takes the warn tone (not the current step's navy), and the first block says what it costs. */
 export const Backlog: Story = {
   args: { state: "backlog" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Processing is 41 minutes behind.")).toBeVisible();
-    await expect(canvasElement.querySelector("[aria-current='step']")).toHaveTextContent("Processing");
+    await expect(canvasElement.querySelector("[aria-current='step']")).toBeNull();
+    const lagging = canvasElement.querySelector<HTMLElement>(".di-step-card.is-warn")!;
+    await expect(lagging).toHaveTextContent("Processing");
+    await expect(within(lagging).getByText("12,480 waiting")).toBeVisible();
+    const calm = canvasElement.querySelector<HTMLElement>(".di-step-card:not(.is-warn)")!;
+    await expect(getComputedStyle(lagging).backgroundColor).toBe(getComputedStyle(calm).backgroundColor);
   },
 };

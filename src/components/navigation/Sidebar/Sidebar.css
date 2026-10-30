@@ -73,6 +73,11 @@
     margin-top: auto;
   }
 
+  /* Free content in the footer (a name, a version) starts where an item's row starts its content. */
+  .di-sb-footer > :not(.di-sb-menu) {
+    padding-inline: var(--di-gap-8);
+  }
+
   .di-sb-content {
     display: flex;
     flex: 1;
@@ -92,7 +97,7 @@
   }
 
   .di-sb-group-label {
-    padding: 0 var(--di-space-8) var(--di-space-6);
+    padding: 0 var(--di-gap-8) var(--di-space-6);
     font-family: var(--di-mono-label-family);
     font-size: var(--di-mono-label-size);
     font-weight: var(--di-mono-label-weight);
