@@ -44,6 +44,14 @@
     outline: none;
   }
 
+  /* The key inside the field is a tone, not a second frame, centred on the field's line. */
+  .di-search .di-search-kbd {
+    flex: none;
+    align-self: center;
+    border-color: transparent;
+    background: var(--di-bg-subtle);
+  }
+
   .di-search-input::placeholder {
     color: var(--di-text-subtle);
   }

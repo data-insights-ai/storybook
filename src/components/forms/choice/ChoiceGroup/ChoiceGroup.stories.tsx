@@ -4,7 +4,6 @@ import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Notice, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../../../feedback/Notice";
-import { Grid } from "../../../layout/arrangement/Grid";
 import { Stack } from "../../../layout/arrangement/Stack";
 import { Toolbar, ToolbarEnd } from "../../../layout/arrangement/Toolbar";
 import { PageHeader, PageHeaderTitle } from "../../../layout/page/PageHeader";
@@ -151,48 +150,152 @@ const days: ChoiceOption[] = [
   { value: "sun", label: "Su", name: "Sunday" },
 ];
 
+const tage: ChoiceOption[] = [
+  { value: "mon", label: "Mo", name: "Montag" },
+  { value: "tue", label: "Di", name: "Dienstag" },
+  { value: "wed", label: "Mi", name: "Mittwoch" },
+  { value: "thu", label: "Do", name: "Donnerstag" },
+  { value: "fri", label: "Fr", name: "Freitag" },
+  { value: "sat", label: "Sa", name: "Samstag" },
+  { value: "sun", label: "So", name: "Sonntag" },
+];
+
+type QuietText = { title: string; days: string; from: string; to: string; hint: string };
+
+function QuietHours({ options, text, locale }: { options: ChoiceOption[]; text: QuietText; locale?: string }) {
+  const [value, setValue] = useState(["mon", "tue", "wed", "thu", "fri"]);
+  const [from, setFrom] = useState("22:00");
+  const [to, setTo] = useState("06:30");
+  const time = { flex: "0 1 11rem", minWidth: "9rem" } as const;
+  return (
+    <div style={{ maxWidth: "36rem" }}>
+      <Panel title={text.title}>
+        <Stack gap={16}>
+          <ChoiceGroup
+            appearance="toggles"
+            multiple
+            legend={text.days}
+            name="quiet-days"
+            options={options}
+            value={value}
+            onChange={setValue}
+          />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--di-gap-16)" }}>
+            <div style={time}>
+              <TimeField id="quiet-from" label={text.from} locale={locale} value={from} onChange={setFrom} />
+            </div>
+            <div style={time}>
+              <TimeField id="quiet-to" label={text.to} locale={locale} value={to} onChange={setTo} hint={text.hint} />
+            </div>
+          </div>
+        </Stack>
+      </Panel>
+    </div>
+  );
+}
+
+const luminance = (colour: string) => {
+  const [r, g, b] = (colour.match(/[\d.]+/g) ?? []).slice(0, 3).map((c) => {
+    const v = Number(c) / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a: string, b: string) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+const ground = (element: Element | null): string => {
+  for (let at = element; at; at = at.parentElement) {
+    const bg = getComputedStyle(at).backgroundColor;
+    if (bg !== "transparent" && !bg.endsWith(", 0)")) return bg;
+  }
+  return "rgb(255, 255, 255)";
+};
+
+/** Equal cells, one outline each; chosen and not chosen apart by at least 3:1 at the edge and 4.5:1 in the text. */
+const measureDays = async (canvasElement: HTMLElement) => {
+  const cells = [...canvasElement.querySelectorAll<HTMLElement>(".di-choice-toggle")];
+  const widths = new Set(cells.map((c) => Math.round(c.getBoundingClientRect().width)));
+  await expect([...widths]).toHaveLength(1);
+  const behind = ground(cells[0].parentElement);
+  for (const cell of cells) {
+    const style = getComputedStyle(cell);
+    await expect(style.boxShadow).toBe("none");
+    const fill = style.backgroundColor;
+    await expect(contrast(style.color, fill)).toBeGreaterThanOrEqual(4.5);
+    const edge = cell.classList.contains("is-chosen") ? fill : style.borderTopColor;
+    await expect(contrast(edge, behind)).toBeGreaterThanOrEqual(3);
+  }
+  const on = getComputedStyle(cells.find((c) => c.classList.contains("is-chosen"))!).backgroundColor;
+  const off = getComputedStyle(cells.find((c) => !c.classList.contains("is-chosen"))!).backgroundColor;
+  await expect(contrast(on, off)).toBeGreaterThanOrEqual(3);
+  const row = cells[0].parentElement!.getBoundingClientRect();
+  const field = canvasElement.querySelector("#quiet-from")!.getBoundingClientRect();
+  await expect(Math.round(row.left)).toBe(Math.round(field.left));
+  await expect(Math.round(cells[0].getBoundingClientRect().height)).toBe(Math.round(field.height));
+};
+
 /**
- * Several days of a week beside the two times of one quiet window. The
- * legend is a field label, so the days line up with the time fields.
+ * Several days of a week: `toggles`, a row of separate, equal cells in the
+ * field frame, each chosen day filled. The days take their own row; the two
+ * times of the window sit under them, side by side at a time's width, and
+ * stack on a phone.
  */
 export const Weekdays: Story = {
-  render: function Render() {
-    const [value, setValue] = useState(["mon", "tue", "wed", "thu", "fri", "sun"]);
-    const [from, setFrom] = useState("22:00");
-    const [to, setTo] = useState("06:30");
-    return (
-      <Grid min="200px" gap={16}>
-        <ChoiceGroup
-          appearance="segments"
-          multiple
-          legend="Quiet on"
-          name="quiet-days"
-          options={days}
-          value={value}
-          onChange={setValue}
-        />
-        <TimeField id="quiet-from" label="From" value={from} onChange={setFrom} />
-        <TimeField id="quiet-to" label="To" value={to} onChange={setTo} />
-      </Grid>
-    );
-  },
+  render: () => (
+    <QuietHours
+      options={days}
+      text={{ title: "Quiet hours", days: "Quiet on", from: "From", to: "To", hint: "Ends the next morning." }}
+    />
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("group", { name: "Quiet on" })).toBeVisible();
     await userEvent.click(canvas.getByRole("checkbox", { name: "Saturday" }));
     await expect(canvas.getByRole("checkbox", { name: "Saturday" })).toBeChecked();
-    await userEvent.click(canvas.getByRole("checkbox", { name: "Sunday" }));
-    await expect(canvas.getByRole("checkbox", { name: "Sunday" })).not.toBeChecked();
+    await userEvent.click(canvas.getByRole("checkbox", { name: "Saturday" }));
+    await expect(canvas.getByRole("checkbox", { name: "Saturday" })).not.toBeChecked();
     rest();
-    const legend = canvas.getByText("Quiet on").getBoundingClientRect();
-    const from = canvas.getByText("From").getBoundingClientRect();
-    if (Math.abs(legend.left - from.left) > 1) {
-      await expect(Math.round(legend.top)).toBe(Math.round(from.top));
-      const days = canvasElement.querySelector(".di-choice-segments")!.getBoundingClientRect();
-      const field = canvasElement.querySelector("#quiet-from")!.getBoundingClientRect();
-      await expect(Math.round(days.top)).toBe(Math.round(field.top));
-      await expect(Math.round(days.height)).toBe(Math.round(field.height));
-    }
+    await measureDays(canvasElement);
+  },
+};
+
+/** German day names, and the 24-hour clock German writes. */
+export const WeekdaysGerman: Story = {
+  name: "Weekdays, German",
+  render: () => (
+    <QuietHours
+      options={tage}
+      locale="de-DE"
+      text={{
+        title: "Ruhezeiten",
+        days: "Ruhezeit an diesen Tagen",
+        from: "Von",
+        to: "Bis",
+        hint: "Endet am nächsten Morgen.",
+      }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByRole("checkbox", { name: "Sonntag" })).not.toBeChecked();
+    await measureDays(canvasElement);
+  },
+};
+
+/** In a compact region the cells and the time fields shrink together and stay aligned. */
+export const WeekdaysCompact: Story = {
+  name: "Weekdays, compact",
+  render: () => (
+    <div data-density="compact">
+      <QuietHours
+        options={days}
+        text={{ title: "Quiet hours", days: "Quiet on", from: "From", to: "To", hint: "Ends the next morning." }}
+      />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    await measureDays(canvasElement);
   },
 };
 
@@ -354,7 +457,7 @@ export const Disabled: Story = {
         onChange={() => undefined}
       />
       <ChoiceGroup
-        appearance="segments"
+        appearance="toggles"
         multiple
         legend="Quiet on"
         name="days-locked"
@@ -494,7 +597,9 @@ export const DeprecatedNames: Story = {
     await expect(canvas.getByRole("radio", { name: /Event Hub/ })).toBeChecked();
     const chosen = [...canvasElement.querySelectorAll(".is-chosen")];
     await expect(chosen).toHaveLength(4);
-    const edges = new Set(chosen.map((c) => getComputedStyle(c).boxShadow));
-    await expect(edges.size).toBe(1);
+    const fills = new Set(
+      chosen.filter((c) => !c.classList.contains("di-choice-card")).map((c) => getComputedStyle(c).backgroundColor),
+    );
+    await expect(fills.size).toBe(1);
   },
 };
