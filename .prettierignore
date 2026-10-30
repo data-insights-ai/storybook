@@ -1,0 +1,20 @@
+dist
+storybook-static
+coverage
+test-results
+playwright-report
+__screenshots__
+.vitest-attachments
+.worktrees
+.ds-sync
+ds-bundle
+.design-sync/sb-reference
+.design-sync/learnings
+.design-sync/.cache
+pnpm-lock.yaml
+# Written by scripts/check-api.mjs --write.
+scripts/public-api.json
+# Storybook reads these as MDX 3; Prettier parses only MDX 1 and would rewrite JSX blocks.
+*.mdx
+# Prettier pads every table row to the longest cell, which makes the long-celled tables in the docs unreadable.
+*.md
