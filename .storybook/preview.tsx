@@ -4,6 +4,7 @@ import { DocsContainer, type DocsContainerProps } from "@storybook/addon-docs/bl
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { GLOBALS_UPDATED } from "storybook/internal/core-events";
 import { brandTheme, resolveMode, type Mode } from "./theme";
+import { withThemeRoot } from "./themeRoot";
 import "../src/styles/styles.css";
 import "./preview.css";
 
@@ -126,6 +127,7 @@ const preview: Preview = {
       defaultTheme: resolveMode(undefined),
       attributeName: "data-theme",
     }),
+    withThemeRoot,
     (Story, context) => {
       document.documentElement.setAttribute("data-density", context.globals.density ?? "comfortable");
       return <Story />;
