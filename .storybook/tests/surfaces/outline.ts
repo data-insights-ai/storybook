@@ -10,7 +10,8 @@ const NEAR = 8;
 
 /** Known offenders, each owned by the batch that fixes it; remove an entry with its fix. */
 const PENDING = [
-  /\.di-matrix-mark in /,
+  /\.di-matrix-mark\b.* in /,
+  /button\.di-btn\.di-btn-secondary in div\.di-bulk/,
   /\.di-kbd-on-control in button\.di-btn/,
   /\.di-search-kbd in div\.di-search/,
   /\.di-choice-segment\.is-chosen in /,

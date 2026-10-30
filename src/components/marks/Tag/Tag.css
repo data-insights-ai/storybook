@@ -40,7 +40,6 @@
     display: inline-flex;
     align-items: center;
     gap: var(--di-gap-4);
-    min-width: 0;
   }
 
   .di-tag-name > svg {
@@ -171,7 +170,6 @@
 
   .di-tag-list.is-compact .di-tag-name {
     flex: none;
-    min-width: auto;
   }
 
   .di-tag-list.is-compact .di-tag-detail {
