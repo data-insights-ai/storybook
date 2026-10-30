@@ -87,7 +87,7 @@ function when(episode: TimelineEpisode, { day, clock }: Formats) {
   const from = `${day.format(episode.start)} ${clock.format(episode.start)}`;
   return day.format(episode.start) === day.format(end)
     ? `${from}–${clock.format(end)}`
-    : `${from} – ${day.format(end)} ${clock.format(end)}`;
+    : `${from}\u00a0– ${day.format(end)} ${clock.format(end)}`;
 }
 
 /** The three busiest lanes, read in the order the lanes run. */

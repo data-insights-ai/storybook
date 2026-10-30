@@ -275,6 +275,12 @@
         "index time"
         "index detail";
     }
+
+    /* A range too long for the line breaks at its spaces rather than running past the edge. */
+    .di-tsummary-row .di-tsummary-time {
+      white-space: normal;
+      text-wrap: balance;
+    }
   }
 
   .di-tsummary-note {
