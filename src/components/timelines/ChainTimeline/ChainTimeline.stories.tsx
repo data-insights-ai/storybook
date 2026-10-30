@@ -150,3 +150,22 @@ export const German: Story = {
     for (const box of shown) await expect(box.right).toBeLessThanOrEqual(frame.right + 0.5);
   },
 };
+
+/** On a phone the devices keep a narrow column, so the track keeps room for its steps and both ends of the axis. */
+export const Phone: Story = {
+  args: {
+    startLabel: "Oct 30, 2026, 08:12",
+    endLabel: "08:34",
+  },
+  globals: { viewport: { value: "phone", isRotated: false } },
+  play: async ({ canvasElement }) => {
+    await expect(window.innerWidth).toBe(390);
+    const chain = within(canvasElement).getByRole("group", { name: /attack chain/i });
+    const [devices] = getComputedStyle(chain).gridTemplateColumns.split(" ").map(parseFloat);
+    await expect(devices).toBeLessThanOrEqual(chain.getBoundingClientRect().width * 0.28 + 0.5);
+    for (const end of chain.querySelectorAll(".di-chain-axis-end")) {
+      await expect(end.getClientRects()).toHaveLength(1);
+      await expect(end.getBoundingClientRect().height).toBeLessThan(40);
+    }
+  },
+};

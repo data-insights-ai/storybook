@@ -37,11 +37,23 @@ export function FactList({
 
 /**
  * Labels and values are prose in the UI font. `mono` sets a value that is
- * an identifier or code in the code track.
+ * an identifier or code in the code track. `wide` gives a value that is
+ * longer than a column, such as a URL, the whole row of a `columns` list
+ * instead of breaking it inside a word.
  */
-export function Fact({ label, mono = false, children }: { label: string; mono?: boolean; children: ReactNode }) {
+export function Fact({
+  label,
+  mono = false,
+  wide = false,
+  children,
+}: {
+  label: string;
+  mono?: boolean;
+  wide?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <div className="di-fact">
+    <div className={cx("di-fact", wide && "di-fact-wide")}>
       <dt className="di-fact-label">{label}</dt>
       <dd className={cx("di-fact-value", mono && "di-fact-mono")}>{children}</dd>
     </div>

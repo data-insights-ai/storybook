@@ -114,6 +114,10 @@
     min-width: 0;
   }
 
+  .di-facts-columns .di-fact-wide {
+    grid-column: 1 / -1;
+  }
+
   .di-facts-inline .di-fact-label {
     font-size: var(--di-font-size-200);
     color: var(--di-text-subtle);
