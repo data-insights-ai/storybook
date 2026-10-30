@@ -104,3 +104,48 @@ export function clearanceFindings(root: Element): string[] {
   }
   return [...findings];
 }
+
+function contentBox(el: Element): { left: number; right: number } {
+  const box = el.getBoundingClientRect();
+  const style = getComputedStyle(el);
+  return {
+    left: box.left + parseFloat(style.borderLeftWidth) + parseFloat(style.paddingLeft),
+    right: box.right - parseFloat(style.borderRightWidth) - parseFloat(style.paddingRight),
+  };
+}
+
+/**
+ * A table on another surface keeps its visible boxes (head band, rules, row
+ * fills, footer) inside the surface's content edge, like every box beside it,
+ * or runs them to the surface's own edges, all the way. Never part of the way.
+ * The content edge is the narrowest content box between the table and its surface.
+ */
+export function tableEdgeFindings(root: Element): string[] {
+  const findings: string[] = [];
+  for (const table of root.querySelectorAll(".di-table-wrap, .di-loading-table")) {
+    if (!shown(table) || isSurface(table)) continue;
+    const surface = surfaceOf(table);
+    if (!surface) continue;
+    const content = { left: -Infinity, right: Infinity };
+    for (let node = table.parentElement; node; node = node.parentElement) {
+      const box = contentBox(node);
+      content.left = Math.max(content.left, box.left);
+      content.right = Math.min(content.right, box.right);
+      if (node === surface) break;
+    }
+    const rect = table.getBoundingClientRect();
+    const box = surface.getBoundingClientRect();
+    const style = getComputedStyle(surface);
+    const inner = {
+      left: box.left + parseFloat(style.borderLeftWidth),
+      right: box.right - parseFloat(style.borderRightWidth),
+    };
+    const within = rect.left >= content.left - 0.5 && rect.right <= content.right + 0.5;
+    const bleed = Math.abs(rect.left - inner.left) < 0.5 && Math.abs(rect.right - inner.right) < 0.5;
+    if (!within && !bleed)
+      findings.push(
+        `${describe(table)} spans ${rect.left.toFixed(0)}–${rect.right.toFixed(0)}; ${describe(surface)} has its content at ${content.left.toFixed(0)}–${content.right.toFixed(0)} and its edges at ${inner.left.toFixed(0)}–${inner.right.toFixed(0)}`,
+      );
+  }
+  return findings;
+}

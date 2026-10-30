@@ -40,8 +40,11 @@
         appearance: base-select;
       }
 
+      /* The closed control shows its choice on one line; the list shows it whole. */
       .di-select-control {
         align-items: center;
+        overflow: hidden;
+        white-space: nowrap;
       }
 
       /* A drawn select is as wide as its choice, which would move a table's column on every pick. */
@@ -70,6 +73,7 @@
         border-radius: var(--di-radius-micro);
         font-weight: inherit;
         overflow-wrap: anywhere;
+        white-space: normal;
         cursor: pointer;
       }
 

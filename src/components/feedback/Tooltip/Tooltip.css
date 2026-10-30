@@ -5,6 +5,7 @@
   }
 
   .di-tooltip {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: var(--di-gap-6);
@@ -24,5 +25,47 @@
   .di-tooltip[data-starting-style],
   .di-tooltip[data-ending-style] {
     opacity: 0;
+  }
+
+  /*
+   * A count in the bubble sits on the inverse plane, where the badges made
+   * for the page or the sidebar go dark on dark: here they are light pills
+   * with dark digits, the alert one a bright red.
+   */
+  .di-tooltip .di-badge {
+    background: var(--di-tooltip-badge-bg);
+    color: var(--di-tooltip-badge-fg);
+  }
+
+  .di-tooltip .di-badge-alert {
+    background: var(--di-tooltip-badge-alert-bg);
+  }
+
+  .di-tooltip .di-badge-seal {
+    background: var(--di-tooltip-badge-seal-bg);
+  }
+
+  /* A square turned on its corner, half of it under the bubble: the point that names the trigger. */
+  .di-tooltip-arrow {
+    width: var(--di-tooltip-arrow);
+    height: var(--di-tooltip-arrow);
+    background: inherit;
+    rotate: 45deg;
+  }
+
+  .di-tooltip-arrow[data-side="top"] {
+    bottom: calc(var(--di-tooltip-arrow) / -2);
+  }
+
+  .di-tooltip-arrow[data-side="bottom"] {
+    top: calc(var(--di-tooltip-arrow) / -2);
+  }
+
+  .di-tooltip-arrow[data-side="left"] {
+    right: calc(var(--di-tooltip-arrow) / -2);
+  }
+
+  .di-tooltip-arrow[data-side="right"] {
+    left: calc(var(--di-tooltip-arrow) / -2);
   }
 }

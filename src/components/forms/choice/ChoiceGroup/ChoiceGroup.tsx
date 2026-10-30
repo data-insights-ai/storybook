@@ -101,14 +101,16 @@ export type ChoiceGroupProps = WithOptions | Composed;
  *
  * **Variants:** `appearance` `list` (radio or checkbox rows with a
  * description), `segments` (one track the height of a field, the chosen
- * one a solid thumb: pick one), `toggles` (a row of separate, equal cells
- * in the field frame, each chosen one filled: for several of a short set,
- * such as days; `segments` with `multiple` is drawn as toggles), `cards`
+ * one a quiet raised thumb: pick one), `toggles` (a row of separate, equal
+ * cells in the field frame, each chosen one filled: for several of a short
+ * set, such as days; `segments` with `multiple` is drawn as toggles), `cards`
  * (icon, label, one-line description, optional `group` headings and
  * `planned` kinds). `multiple` turns radios into checkboxes in the same
- * markup. Chosen is cornflower everywhere: a filled thumb or cell for a
- * segment or toggle (too small for a tint to read), the selection tint and a
- * cornflower edge for a card.
+ * markup. Segments switch a view, toggles pick values: a chosen segment is
+ * the surface tone lifted off the track, in ink and semibold, so a view
+ * switch above a list never outshouts the selected record in it; a chosen
+ * toggle is a solid cornflower cell (each one is a value, too small for a
+ * tint to read); a chosen card has the selection tint and a cornflower edge.
  *
  * **States:** a disabled option, a disabled group (`disabled` on the
  * fieldset); a chosen option keeps its edge while disabled. An error is the
@@ -246,7 +248,7 @@ function Options(props: WithOptions & { invalid: boolean; line: ReactNode }) {
           {options.map((o) => (
             <label key={o.value} className={cx("di-choice-toggle", chosen(o.value) && "is-chosen")} title={o.more}>
               {input(o)}
-              <span>{o.label}</span>
+              <span data-label={o.label}>{o.label}</span>
             </label>
           ))}
         </div>

@@ -94,11 +94,7 @@ export function SourceRows({ rows = sources, active = "" }: { rows?: Source[]; a
       </TableHead>
       <TableBody>
         {rows.map((row) => (
-          <TableRow
-            key={row.ordinal}
-            active={row.ordinal === active}
-            tone={row.state === "danger" ? "danger" : "neutral"}
-          >
+          <TableRow key={row.ordinal} active={row.ordinal === active}>
             <TableIndex>{row.ordinal}</TableIndex>
             <TableCell>
               <CellLead>

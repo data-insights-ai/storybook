@@ -64,7 +64,7 @@
     height: var(--di-segment-h);
     padding: 0 var(--di-gap-12);
     border-radius: var(--di-radius-micro);
-    color: var(--di-text);
+    color: var(--di-text-muted);
     font-family: var(--di-label-family);
     font-size: var(--di-label-size);
     line-height: 1;
@@ -79,8 +79,33 @@
     background: var(--di-row-hover-bg);
   }
 
-  /* One thumb on the track: a cornflower fill and no edge of its own, so the track is the only outline. */
-  .di-choice-segment.is-chosen,
+  /*
+   * Segments switch a view: one quiet thumb on the track, the surface tone
+   * lifted by a short shadow, ink in semibold, no edge of its own, so the
+   * track is the only outline. Cornflower stays for what is chosen as a
+   * value (toggles) and for the selected record.
+   */
+  .di-choice-segment.is-chosen {
+    background: var(--di-choice-thumb-bg);
+    box-shadow: var(--di-choice-thumb-shadow);
+    color: var(--di-choice-thumb-fg);
+    font-weight: var(--di-weight-semibold);
+  }
+
+  /* Each label keeps the width of its semibold self, so choosing one does not move its neighbours. */
+  .di-choice-segment > span {
+    display: inline-grid;
+  }
+
+  .di-choice-segment > span::after {
+    content: attr(data-label);
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    font-weight: var(--di-weight-semibold);
+  }
+
+  /* Toggles pick values: each chosen cell is a solid cornflower fill. */
   .di-choice-toggle.is-chosen {
     background: var(--di-choice-on-bg);
     color: var(--di-choice-on-fg);
@@ -160,8 +185,8 @@
   }
 
   .di-choice-segment.is-chosen:has(:disabled) {
-    background: var(--di-text-disabled);
-    color: var(--di-bg-disabled);
+    box-shadow: none;
+    color: var(--di-text-disabled);
   }
 
   @media (pointer: coarse) {

@@ -87,7 +87,7 @@
     min-width: 0;
   }
 
-  /* The head starts on the items' text edge, so the pane has one left edge. */
+  /* Words in the head start on the items' text edge, so the pane has one left edge. */
   .di-split-list-head {
     display: flex;
     flex-wrap: wrap;
@@ -97,6 +97,19 @@
     padding: 0 var(--di-gap-16);
     font-size: var(--di-font-size-300);
     color: var(--di-text-muted);
+  }
+
+  /*
+   * A framed control in the head (a segment track, a field) is a box over a
+   * column of boxes: its frame takes the items' frame edge, where its text
+   * would start one inset in. Words in the head keep the items' text edge.
+   */
+  .di-split-list-head > :is(.di-choice-group, .di-field, .di-search):first-child {
+    margin-inline-start: calc(-1 * var(--di-gap-16));
+  }
+
+  .di-split-list-head > :is(.di-choice-group, .di-field, .di-search):last-child {
+    margin-inline-end: calc(-1 * var(--di-gap-16));
   }
 
   .di-split-items {

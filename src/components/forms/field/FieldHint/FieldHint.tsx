@@ -27,7 +27,9 @@ export function FieldHint({ id, tone, children }: { id: string; tone: HintTone; 
   if (tone === "sealed") {
     return (
       <div className="di-field-hint is-sealed" id={id}>
-        <SealMark state="sealed" />
+        <span className="di-field-hint-mark">
+          <SealMark state="sealed" />
+        </span>
         <span>{children}</span>
       </div>
     );
