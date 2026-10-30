@@ -8,14 +8,20 @@ export type TokenRow = { token: string; use: string; sample?: ReactNode };
 function useResolved(tokens: string[]) {
   const ref = useRef<HTMLDivElement>(null);
   const [values, setValues] = useState<Record<string, string>>({});
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- after every render: the theme or density may have changed on an ancestor
+  const key = tokens.join(" ");
   useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
-    const style = getComputedStyle(node);
-    const next = Object.fromEntries(tokens.map((t) => [t, style.getPropertyValue(t).trim()]));
-    if (tokens.some((t) => next[t] !== values[t])) setValues(next);
-  });
+    const read = () => {
+      const style = getComputedStyle(node);
+      setValues(Object.fromEntries(key.split(" ").map((t) => [t, style.getPropertyValue(t).trim()])));
+    };
+    read();
+    // The theme and the density are set on the root by a decorator, after this table has rendered.
+    const watch = new MutationObserver(read);
+    watch.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-density"] });
+    return () => watch.disconnect();
+  }, [key]);
   return { ref, values };
 }
 

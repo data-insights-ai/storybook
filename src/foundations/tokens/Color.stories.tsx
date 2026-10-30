@@ -54,8 +54,10 @@ const one = [
 ];
 
 const lines = [
+  { token: "--di-bg-selected", use: "A selected row or option: the plane a step above its list, never a tint." },
   { token: "--di-select", use: "Selection: the selected row's edge, a chosen card's border, a link's underline." },
   { token: "--di-focus", use: "The keyboard focus ring." },
+  { token: "--di-text-highlight", use: "Text selected with the pointer: the one pale cornflower fill left." },
   { token: "--di-border", use: "Where two equal tones meet." },
   { token: "--di-border-input", use: "The frame of a field." },
   { token: "--di-rule", use: "Between the rows of a table and the figures of a row, nowhere else." },
@@ -79,44 +81,83 @@ const accents = [
 function Selection() {
   const [window, setWindow] = useState("24h");
   const [row, setRow] = useState("edge-gw-02");
+  const [source, setSource] = useState("syslog");
+  const [days, setDays] = useState<string[]>(["sat", "sun"]);
   return (
-    <Example
-      title="Selected, in a table and in a choice"
-      note="The selected row is a raised neutral tone with a cornflower edge; the chosen segment is a raised thumb. Neither is a pale blue fill."
-      padded={false}
-    >
-      <DataTable caption="Collectors" indexed={false}>
-        <Toolbar label="Window">
+    <>
+      <Example
+        title="A view and a row"
+        note="The chosen segment is a raised thumb in ink. The selected row is lifted to the plane with a cornflower edge on its leading side."
+        padded={false}
+      >
+        <DataTable caption="Collectors" indexed={false}>
+          <Toolbar label="Window">
+            <ChoiceGroup
+              appearance="segments"
+              hideLegend
+              legend="Window"
+              name="color-window"
+              options={[
+                { value: "1h", label: "1h" },
+                { value: "24h", label: "24h" },
+                { value: "7d", label: "7d" },
+              ]}
+              value={window}
+              onChange={setWindow}
+            />
+          </Toolbar>
+          <TableHead>
+            <TableColumn width="fill">Collector</TableColumn>
+            <TableColumn>State</TableColumn>
+          </TableHead>
+          <TableBody>
+            {["edge-gw-01", "edge-gw-02", "edge-gw-03"].map((name) => (
+              <TableRow key={name} active={row === name} onSelect={() => setRow(name)}>
+                <TableCell mono>{name}</TableCell>
+                <TableCell>
+                  <StatusPill tone="ok">running</StatusPill>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </DataTable>
+      </Example>
+      <Example
+        title="A value"
+        note="A chosen card keeps its neutral surface and gets a 2px cornflower line. A chosen toggle is a value, so it takes the primary ink fill."
+      >
+        <Stack gap={16}>
           <ChoiceGroup
-            appearance="segments"
-            hideLegend
-            legend="Window"
-            name="color-window"
+            appearance="cards"
+            legend="Source type"
+            name="color-source"
             options={[
-              { value: "1h", label: "1h" },
-              { value: "24h", label: "24h" },
-              { value: "7d", label: "7d" },
+              { value: "syslog", label: "Syslog", description: "CEF or RFC 5424 over TLS." },
+              { value: "hec", label: "Splunk HEC", description: "Events pushed over HTTPS." },
             ]}
-            value={window}
-            onChange={setWindow}
+            value={source}
+            onChange={setSource}
           />
-        </Toolbar>
-        <TableHead>
-          <TableColumn width="fill">Collector</TableColumn>
-          <TableColumn>State</TableColumn>
-        </TableHead>
-        <TableBody>
-          {["edge-gw-01", "edge-gw-02", "edge-gw-03"].map((name) => (
-            <TableRow key={name} active={row === name} onSelect={() => setRow(name)}>
-              <TableCell mono>{name}</TableCell>
-              <TableCell>
-                <StatusPill tone="ok">running</StatusPill>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </DataTable>
-    </Example>
+          <ChoiceGroup
+            appearance="toggles"
+            multiple
+            legend="Quiet on"
+            name="color-days"
+            options={[
+              { value: "mon", label: "Mo" },
+              { value: "tue", label: "Tu" },
+              { value: "wed", label: "We" },
+              { value: "thu", label: "Th" },
+              { value: "fri", label: "Fr" },
+              { value: "sat", label: "Sa" },
+              { value: "sun", label: "Su" },
+            ]}
+            value={days}
+            onChange={setDays}
+          />
+        </Stack>
+      </Example>
+    </>
   );
 }
 
@@ -194,9 +235,12 @@ function ColorPage() {
       >
         <Selection />
         <Rules>
-          <li>A chosen card or option: neutral surface, a 2px cornflower border and a filled mark.</li>
-          <li>Segments: a raised neutral thumb. Toggles and the selected calendar day: the primary ink fill.</li>
-          <li>A selected row: the raised tone and a cornflower edge on its leading side.</li>
+          <li>A chosen card, tag or option: its neutral surface and a 2px cornflower line.</li>
+          <li>
+            Segments: a raised neutral thumb. Toggles and the selected calendar day: the primary ink fill; the days
+            inside a range sit on the inset tone.
+          </li>
+          <li>A selected row: lifted to the plane, with a cornflower edge on its leading side.</li>
           <li>
             Native checkboxes, radios and ranges follow the token through <code>accent-color</code>.
           </li>
