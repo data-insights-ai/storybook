@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import { useState } from "react";
 import {
   Button,
@@ -23,7 +24,7 @@ import {
   Toolbar,
 } from "../../index";
 import { Doc, DocSection, Example, Prose, Rules } from "../guide/Doc";
-import { fill, ink, TokenTable } from "../guide/Tokens";
+import { fill, ink, brokenTokenCells, TokenTable } from "../guide/Tokens";
 
 const ground = [
   { token: "--di-bg-chrome", use: "The sidebar, one step below the ground. Also --di-bg-strip." },
@@ -304,4 +305,9 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
-export const Color: StoryObj = { render: () => <ColorPage /> };
+export const Color: StoryObj = {
+  render: () => <ColorPage />,
+  play: async ({ canvasElement }) => {
+    await expect(brokenTokenCells(canvasElement)).toEqual([]);
+  },
+};

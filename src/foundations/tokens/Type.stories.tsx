@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import type { CSSProperties } from "react";
 import { Copy, Download, Search } from "lucide-react";
 import {
@@ -17,7 +18,7 @@ import {
   Toolbar,
 } from "../../index";
 import { Doc, DocSection, Example, Rules } from "../guide/Doc";
-import { TokenTable } from "../guide/Tokens";
+import { brokenTokenCells, TokenTable } from "../guide/Tokens";
 
 const sample = (style: CSSProperties, text: string) => <span style={{ whiteSpace: "nowrap", ...style }}>{text}</span>;
 
@@ -161,4 +162,9 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
-export const Type: StoryObj = { render: () => <TypePage /> };
+export const Type: StoryObj = {
+  render: () => <TypePage />,
+  play: async ({ canvasElement }) => {
+    await expect(brokenTokenCells(canvasElement)).toEqual([]);
+  },
+};
