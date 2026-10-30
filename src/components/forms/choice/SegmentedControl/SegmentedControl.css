@@ -17,8 +17,8 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    height: calc(var(--di-h-ctl) - 2 * var(--di-space-2) - 2px);
-    padding: 0 var(--di-space-12);
+    height: calc(var(--di-control-h-md) - 2 * var(--di-space-2) - 2 * 1px);
+    padding: 0 var(--di-gap-12);
     border-radius: var(--di-radius-micro);
     color: var(--di-text-muted);
     font-family: var(--di-label-family);
@@ -60,7 +60,7 @@
     .di-segment::after {
       content: "";
       position: absolute;
-      inset: -7px 0;
+      inset: calc((var(--di-control-h-md) - 2 * var(--di-space-2) - 2 * 1px - var(--di-target)) / 2) 0;
     }
   }
 }

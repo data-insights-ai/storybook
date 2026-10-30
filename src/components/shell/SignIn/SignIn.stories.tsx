@@ -55,7 +55,7 @@ export const Default: Story = {
       <TextField id="login-password" label="Password" type="password" autoComplete="current-password">
         <TextLink quiet={true}>Forgot password?</TextLink>
       </TextField>
-      <Button type="submit" size="comfort">
+      <Button type="submit" size="lg">
         <LockKeyhole aria-hidden />
         Sign in
       </Button>
@@ -96,7 +96,7 @@ export const Rejected: Story = {
       >
         <TextLink quiet={true}>Forgot password?</TextLink>
       </TextField>
-      <Button type="submit" size="comfort">
+      <Button type="submit" size="lg">
         <LockKeyhole aria-hidden />
         Sign in
       </Button>
@@ -129,7 +129,7 @@ export const Verifying: Story = {
         autoComplete="current-password"
         disabled={true}
       />
-      <Button type="submit" size="comfort" loading={true}>
+      <Button type="submit" size="lg" loading={true}>
         Verifying key
       </Button>
     </SignIn>
@@ -157,7 +157,7 @@ export const SecondFactor: Story = {
         placeholder="000000"
         hint="The code changes every 30 seconds."
       />
-      <Button type="submit" size="comfort">
+      <Button type="submit" size="lg">
         <LockKeyhole aria-hidden />
         Confirm
       </Button>
@@ -197,7 +197,7 @@ export const WithPanelAndTable: Story = {
           </TableRow>
         </TableBody>
       </DataTable>
-      <Button type="submit" size="comfort">
+      <Button type="submit" size="lg">
         Open Production
       </Button>
     </SignIn>

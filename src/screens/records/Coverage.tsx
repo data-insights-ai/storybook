@@ -165,11 +165,11 @@ export function CoverageScreen() {
             </Chip>
           ) : null}
           <ToolbarEnd>
-            <Button variant="secondary" size="dense">
+            <Button variant="secondary" size="sm">
               <SlidersHorizontal aria-hidden />
               Filter
             </Button>
-            <Button variant="secondary" size="dense">
+            <Button variant="secondary" size="sm">
               <Download aria-hidden />
               Export
             </Button>

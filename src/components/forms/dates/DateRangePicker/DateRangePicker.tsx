@@ -387,10 +387,10 @@ export function DateRangePicker({
         {labels.timeZone} <code>{timeZone}</code>
       </span>
       <span className="di-date-range-actions">
-        <Button variant="ghost" size={narrow ? "md" : "dense"} onClick={() => setOpen(false)}>
+        <Button variant="ghost" size={narrow ? "md" : "sm"} onClick={() => setOpen(false)}>
           {labels.cancel}
         </Button>
-        <Button size={narrow ? "md" : "dense"} disabled={!applied} onClick={() => applied && choose(applied)}>
+        <Button size={narrow ? "md" : "sm"} disabled={!applied} onClick={() => applied && choose(applied)}>
           {labels.apply}
         </Button>
       </span>

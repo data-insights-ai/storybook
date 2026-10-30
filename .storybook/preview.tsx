@@ -22,6 +22,21 @@ const docsTheme = create({
 });
 
 const preview: Preview = {
+  globalTypes: {
+    density: {
+      description: "How much air the components carry",
+      toolbar: {
+        title: "Density",
+        icon: "component",
+        items: [
+          { value: "comfortable", title: "Comfortable" },
+          { value: "compact", title: "Compact" },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: { density: "comfortable" },
   parameters: {
     layout: "padded",
     backgrounds: { disable: true },
@@ -47,6 +62,7 @@ const preview: Preview = {
           "Actions",
           "Forms",
           "Data",
+          "Text",
           "Marks",
           "Feedback",
           "Overlays",
@@ -69,6 +85,7 @@ const preview: Preview = {
           "Color",
           "Type",
           "Scale",
+          "Density",
           "Logo",
           "Mark",
           "Practice",
@@ -139,6 +156,10 @@ const preview: Preview = {
       defaultTheme: "light",
       attributeName: "data-theme",
     }),
+    (Story, context) => {
+      document.documentElement.setAttribute("data-density", context.globals.density ?? "comfortable");
+      return <Story />;
+    },
     (Story, context) =>
       context.parameters.layout === "fullscreen" ? (
         <Story />

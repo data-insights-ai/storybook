@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { MetaLine } from "./MetaLine";
 
 const meta = {
-  title: "Data/Text/MetaLine",
+  title: "Text/MetaLine",
   component: MetaLine,
   tags: ["layer:primitive", "autodocs"],
   args: { items: "As of 12 Oct, 10:00 · 14 sources · updates live", align: "start", separator: "dot" },

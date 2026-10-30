@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes, Ref } from "react";
 import { Search } from "lucide-react";
 import { cx } from "../../../../internal/cx";
-import { Kbd } from "../../../data/text/Kbd";
+import { Kbd } from "../../../text/Kbd";
 import { useShortcutKeys } from "../../../../internal/shortcutKeys";
 import "../../field/Field/Field.css";
 import "./SearchField.css";
@@ -16,6 +16,7 @@ export function SearchField({
   id = "search",
   label,
   shortcut = "/",
+  size = "md",
   dense = false,
   className,
   disabled = false,
@@ -28,16 +29,19 @@ export function SearchField({
   label: string;
   /** Shown at the trailing edge; `/` also binds it. Empty means none. */
   shortcut?: string;
+  /** `sm` beside small buttons in a toolbar; density scales both sizes. */
+  size?: "sm" | "md";
+  /** @deprecated Use `size="sm"`; removed in 0.12.0. */
   dense?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
   ref?: Ref<HTMLInputElement>;
-} & InputHTMLAttributes<HTMLInputElement>) {
+} & Omit<InputHTMLAttributes<HTMLInputElement>, "size">) {
   const slash = shortcut === "/" && !disabled;
   useShortcutKeys(slash);
   return (
-    <div className={cx("di-search", dense && "is-dense", className)}>
+    <div className={cx("di-search", (size === "sm" || dense) && "is-small", className)}>
       <label className="di-sr" htmlFor={id}>
         {label}
       </label>

@@ -1,4 +1,5 @@
 import { Children, isValidElement, useRef, type ReactNode } from "react";
+import { Eyebrow } from "../../text/Eyebrow";
 import { useModalDialog } from "../useModalDialog";
 import "./Modal.css";
 
@@ -91,7 +92,11 @@ export function ModalContent({ children }: { children: ReactNode }) {
 export function ModalTitle({ id, eyebrow, children }: { id: string; eyebrow?: string; children: ReactNode }) {
   return (
     <>
-      {eyebrow === undefined ? null : <p className="di-modal-eyebrow">{eyebrow}</p>}
+      {eyebrow === undefined ? null : (
+        <Eyebrow variant="plain" tone="danger">
+          {eyebrow}
+        </Eyebrow>
+      )}
       <h2 className="di-modal-title" id={id}>
         {children}
       </h2>

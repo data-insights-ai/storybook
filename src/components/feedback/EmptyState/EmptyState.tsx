@@ -1,5 +1,7 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
+import { surfaceClass } from "../../../internal/surface";
+import { Eyebrow } from "../../text/Eyebrow";
 import "./EmptyState.css";
 
 /**
@@ -38,10 +40,21 @@ export function EmptyState({
     else rest.push(child);
   });
   return (
-    <div className={cx("di-empty", tone === "danger" && "is-danger", className)}>
+    <div
+      className={cx(
+        surfaceClass({ edge: tone === "danger" ? "danger" : "none", padded: false }),
+        "di-empty",
+        tone === "danger" && "is-danger",
+        className,
+      )}
+    >
       <div className="di-empty-body">
         {icon}
-        {eyebrow ? <p className="di-empty-eyebrow">{eyebrow}</p> : null}
+        {eyebrow ? (
+          <Eyebrow variant="plain" tone={tone === "danger" ? "danger" : "quiet"}>
+            {eyebrow}
+          </Eyebrow>
+        ) : null}
         <p className="di-empty-title">{title}</p>
         <p className={cx("di-empty-text", mono && "di-mono")}>{body}</p>
         {rest}

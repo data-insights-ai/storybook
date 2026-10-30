@@ -66,7 +66,7 @@ export const WithAction: Story = {
   render: (args) => (
     <Toast {...args}>
       <ToastAction>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Open record
         </Button>
       </ToastAction>
@@ -132,7 +132,7 @@ export const Arriving: Story = {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 12, minHeight: 260 }}>
         <div>
-          <Button variant="secondary" size="dense" onClick={emit}>
+          <Button variant="secondary" size="sm" onClick={emit}>
             Emit a receipt
           </Button>
         </div>

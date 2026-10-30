@@ -1,5 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
 import "./Stage.css";
 
 /**
@@ -45,10 +46,10 @@ export function Stage({
   });
 
   return (
-    <article className={cx("di-stage", current && "is-current")}>
+    <article className={cx(surfaceClass({ padded: false }), "di-stage", current && "is-current")}>
       <header className="di-stage-head">
         {icon}
-        <span className="di-stage-step">{step}</span>
+        <span className="di-stage-step di-ordinal">{step}</span>
       </header>
       <h3>{title}</h3>
       <p>{body}</p>

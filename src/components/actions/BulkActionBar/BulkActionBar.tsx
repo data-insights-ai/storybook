@@ -66,11 +66,11 @@ export function BulkActionBar({
         {selectedLabel}
       </span>
       {selectAllLabel !== "" && onSelectAll ? (
-        <Button variant="ghost" size="dense" onClick={onSelectAll}>
+        <Button variant="ghost" size="sm" onClick={onSelectAll}>
           {selectAllLabel}
         </Button>
       ) : null}
-      <Button variant="ghost" size="dense" onClick={onClear}>
+      <Button variant="ghost" size="sm" onClick={onClear}>
         {clearLabel}
       </Button>
       <div className="di-bulk-actions">{children}</div>

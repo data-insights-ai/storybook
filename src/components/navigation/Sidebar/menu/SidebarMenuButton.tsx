@@ -59,7 +59,7 @@ export function SidebarMenuButton({
     defaultTagName: href !== undefined ? "a" : "button",
     props: mergeProps(
       {
-        className: cx("di-sb-button", className),
+        className: cx("di-row", "di-sb-button", active && "di-row-current", className),
         // On a phone the sidebar is a sheet over the page; choosing an item is done with it.
         // An item that opens a menu has not been chosen yet.
         ...(mobile && !menu ? { onClick: () => setMobileOpen(false) } : {}),

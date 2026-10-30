@@ -3,25 +3,14 @@
     position: relative;
   }
 
+  /* The count sits on the icon's corner, ringed in the ground so it reads apart from the glyph. */
   .di-count-btn-count {
     position: absolute;
-    top: calc(var(--di-space-2) * -1);
-    right: calc(var(--di-space-4) * -1);
+    top: calc(var(--di-gap-6) * -1);
+    right: calc(var(--di-gap-6) * -1);
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 18px;
-    padding: 0 var(--di-space-4);
-    border: 2px solid var(--di-bg-page);
     border-radius: var(--di-radius-pill);
-    background: var(--di-badge-alert-bg);
-    color: var(--di-badge-alert-fg);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    font-weight: var(--di-weight-medium);
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
+    box-shadow: 0 0 0 2px var(--di-bg-page);
     pointer-events: none;
   }
 }

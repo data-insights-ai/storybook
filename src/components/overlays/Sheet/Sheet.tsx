@@ -11,7 +11,10 @@ import {
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { PageSide } from "../../layout/page/pageSide";
+import { cx } from "../../../internal/cx";
 import { focusFirstField } from "../../../internal/shortcutKeys";
+import { surfaceClass } from "../../../internal/surface";
+import { Eyebrow } from "../../text/Eyebrow";
 import { useShortcut } from "../../../internal/useShortcut";
 import { useModalDialog } from "../useModalDialog";
 import "./Sheet.css";
@@ -145,7 +148,7 @@ function DockedSheet({
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc inside the docked sheet closes it
     <section
       ref={ref}
-      className="di-sheet-docked"
+      className={cx(surfaceClass({ padded: false }), "di-sheet-docked")}
       aria-labelledby={titleId}
       onKeyDown={(event) => {
         if (event.key !== "Escape" || event.defaultPrevented) return;
@@ -189,7 +192,11 @@ function SheetFrame({
     <div className="di-sheet-frame">
       <header className="di-sheet-head">
         <div className="di-sheet-heading">
-          {eyebrow ? <p className="di-sheet-eyebrow">{eyebrow}</p> : null}
+          {eyebrow ? (
+            <Eyebrow variant="plain" tone="quiet">
+              {eyebrow}
+            </Eyebrow>
+          ) : null}
           <h2 className="di-sheet-title" id={titleId} tabIndex={-1}>
             {title}
           </h2>

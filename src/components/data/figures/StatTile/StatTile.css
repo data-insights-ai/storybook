@@ -6,13 +6,6 @@
     height: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
-    box-shadow: var(--di-elevation-surface);
-  }
-
-  .di-stat-tile.is-danger {
-    box-shadow: 0 0 0 1px var(--di-status-danger-border);
   }
 
   .di-stat-tile-body {
@@ -20,7 +13,7 @@
     flex-direction: column;
     flex: 1;
     min-width: 0;
-    padding: var(--di-space-16);
+    padding: var(--di-inset-group);
   }
 
   .di-stat-tile-label {
@@ -34,7 +27,7 @@
 
   /* The measurement, in the mono track so a column of them stays still. */
   .di-stat-tile-value {
-    margin-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
     font-family: var(--di-heading-family);
     font-size: var(--di-figure-size);
     font-weight: var(--di-weight-bold);
@@ -54,7 +47,7 @@
 
   .di-stat-tile-delta {
     margin-top: auto;
-    padding-top: var(--di-space-4);
+    padding-top: var(--di-gap-4);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     font-variant-numeric: tabular-nums;
@@ -73,6 +66,6 @@
   }
 
   .di-stat-tile-body .di-tick-rule {
-    margin-top: var(--di-space-12);
+    margin-top: var(--di-gap-12);
   }
 }

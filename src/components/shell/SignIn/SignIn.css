@@ -29,20 +29,20 @@
   .di-login-stack {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     width: 100%;
-    max-width: 396px;
+    max-width: var(--di-signin-width);
   }
 
   .di-login-kicker {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   .di-login-logo {
-    width: 128px;
+    width: var(--di-signin-logo-width);
     height: auto;
   }
 
@@ -64,25 +64,14 @@
   }
 
   .di-login-body {
+    --di-eyebrow-gap: 0;
     flex: 1;
     min-width: 0;
     padding: var(--di-space-32);
   }
 
-  .di-login-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: var(--di-space-8);
-    font-family: var(--di-mono-label-family);
-    font-size: var(--di-mono-label-size);
-    font-weight: var(--di-mono-label-weight);
-    letter-spacing: var(--di-mono-label-tracking);
-    text-transform: uppercase;
-    color: var(--di-mono-label-color);
-  }
-
   .di-login-title {
-    margin-top: var(--di-space-8);
+    margin-top: var(--di-gap-8);
     font-family: var(--di-heading-family);
     font-size: var(--di-font-size-700);
     font-weight: var(--di-weight-bold);
@@ -91,7 +80,7 @@
   }
 
   .di-login-lede {
-    margin-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
     line-height: var(--di-leading-body);
     color: var(--di-text-muted);
   }
@@ -99,8 +88,8 @@
   .di-login-form {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
-    margin: var(--di-space-16) 0 var(--di-space-16);
+    gap: var(--di-gap-12);
+    margin: var(--di-gap-16) 0 var(--di-gap-16);
   }
 
   .di-login-form .di-btn {
@@ -108,8 +97,8 @@
   }
 
   .di-login-restrict {
-    margin-top: var(--di-space-16);
-    padding-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
+    padding-top: var(--di-gap-16);
     border-top: 1px solid var(--di-rule-hairline);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
@@ -119,9 +108,9 @@
   .di-login-foot {
     display: flex;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     flex-wrap: wrap;
-    padding-top: var(--di-space-12);
+    padding-top: var(--di-gap-12);
     border-top: 1px solid var(--di-rule-hairline);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);

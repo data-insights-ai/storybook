@@ -77,7 +77,7 @@ export const WithFooter: Story = {
         <RecordLine primary="index.example.dev" detail="09:09:38Z" />
       </RecordLines>
       <RecordFooter>
-        <Button variant="ghost" size="dense">
+        <Button variant="ghost" size="sm">
           Open the register
         </Button>
       </RecordFooter>

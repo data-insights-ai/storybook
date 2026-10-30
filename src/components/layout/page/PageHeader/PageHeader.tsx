@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
-import { Eyebrow } from "../../../data/text/Eyebrow";
-import { MetaLine } from "../../../data/text/MetaLine";
+import { Eyebrow } from "../../../text/Eyebrow";
+import { MetaLine } from "../../../text/MetaLine";
 import "./PageHeader.css";
 
 /**

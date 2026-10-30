@@ -1,5 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
+import { surfaceClass } from "../../../internal/surface";
 import "./ChartCard.css";
 
 /**
@@ -39,7 +40,7 @@ export function ChartCard({
   });
   const Heading = `h${level}` as const;
   return (
-    <section className={cx("di-chart-card", `di-chart-card-${tone}`, wide && "is-wide")}>
+    <section className={cx(surfaceClass(), "di-chart-card", `di-chart-card-${tone}`, wide && "is-wide")}>
       <header className="di-chart-card-head">
         <Heading className="di-chart-card-title">{title}</Heading>
         {action}

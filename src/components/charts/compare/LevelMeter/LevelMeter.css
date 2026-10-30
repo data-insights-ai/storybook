@@ -7,19 +7,19 @@
   .di-level {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
-    min-width: 160px;
+    gap: var(--di-gap-4);
+    min-width: var(--di-level-min);
   }
 
   .di-level-track {
     display: grid;
     grid-template-columns: repeat(var(--di-level-segments), minmax(0, 1fr));
     gap: var(--di-space-2);
-    height: 16px;
+    height: var(--di-level-track-h);
   }
 
   .di-level-track.is-compare {
-    height: 6px;
+    height: var(--di-level-compare-h);
   }
 
   /* Marks, not controls: square, so a run of segments reads as one scale. */
@@ -49,7 +49,7 @@
   /* The scale: each figure stands at its own point, the ends flush with the track. */
   .di-level-scale {
     display: block;
-    min-width: 160px;
+    min-width: var(--di-level-min);
   }
 
   .di-level-ticks {
@@ -81,7 +81,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8) var(--di-space-16);
+    gap: var(--di-gap-8) var(--di-gap-16);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
   }
@@ -89,7 +89,7 @@
   .di-level-key {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-level-swatches {
@@ -98,8 +98,8 @@
   }
 
   .di-level-swatches > span {
-    width: 8px;
-    height: 8px;
+    width: var(--di-chart-swatch);
+    height: var(--di-chart-swatch);
     border-radius: 0;
     background: var(--di-chart-series);
   }
@@ -113,8 +113,8 @@
   }
 
   .di-level-swatch-compare {
-    width: 16px;
-    height: 4px;
+    width: var(--di-chart-dash);
+    height: var(--di-level-compare-swatch);
     border-radius: 0;
     background: var(--di-chart-compare);
   }

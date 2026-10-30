@@ -20,10 +20,10 @@
   .di-tab {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
-    height: var(--di-h-comfort);
+    gap: var(--di-gap-6);
+    height: var(--di-control-h-lg);
     flex: none;
-    padding: 0 var(--di-space-12);
+    padding: 0 var(--di-gap-12);
     border: 0;
     border-bottom: 2px solid transparent;
     background: transparent;
@@ -52,21 +52,10 @@
 
   .di-tab-badge {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 17px;
-    height: 17px;
-    padding: 0 var(--di-space-4);
-    border-radius: var(--di-radius-pill);
-    background: var(--di-bg-subtle);
-    color: var(--di-text-muted);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    line-height: 1;
   }
 
   .di-tabpanel {
-    padding-top: var(--di-space-16);
+    padding-top: var(--di-gap-16);
   }
 }
 

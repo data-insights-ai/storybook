@@ -23,7 +23,7 @@ const meta = {
       control: "radio",
       options: ["primary", "secondary", "ghost", "danger", "seal", "inferred"],
     },
-    size: { control: "radio", options: ["dense", "md", "comfort"] },
+    size: { control: "radio", options: ["sm", "md", "lg"] },
     type: { control: "radio", options: ["button", "submit", "reset"] },
     iconOnly: { control: "boolean" },
     loading: { control: "boolean" },
@@ -66,12 +66,14 @@ export const Inferred: Story = {
   args: { variant: "inferred", children: "Accept suggestion" },
 };
 
-export const Dense: Story = {
-  args: { size: "dense", variant: "secondary", children: "Export" },
+/** A row or a toolbar of small controls. */
+export const Small: Story = {
+  args: { size: "sm", variant: "secondary", children: "Export" },
 };
 
-export const Comfort: Story = {
-  args: { size: "comfort", children: "Sign in" },
+/** A sign-in or a brand page. */
+export const Large: Story = {
+  args: { size: "lg", children: "Sign in" },
 };
 
 export const WithIcon: Story = {

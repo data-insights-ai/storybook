@@ -29,10 +29,10 @@ export const InARow: Story = {
           <TableCell mono>mira.kern@data-insights.ai</TableCell>
           <TableCell align="end">
             <RowActions>
-              <Button variant="ghost" size="dense" iconOnly aria-label="Resend to mira.kern@data-insights.ai">
+              <Button variant="ghost" size="sm" iconOnly aria-label="Resend to mira.kern@data-insights.ai">
                 <RotateCw aria-hidden />
               </Button>
-              <Button variant="ghost" size="dense" iconOnly aria-label="Actions for mira.kern@data-insights.ai">
+              <Button variant="ghost" size="sm" iconOnly aria-label="Actions for mira.kern@data-insights.ai">
                 <MoreHorizontal aria-hidden />
               </Button>
             </RowActions>

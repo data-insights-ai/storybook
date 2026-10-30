@@ -1,4 +1,6 @@
 import { useId, type ReactNode } from "react";
+import { cx } from "../../../internal/cx";
+import { surfaceClass } from "../../../internal/surface";
 import "./DangerZone.css";
 
 /**
@@ -20,7 +22,10 @@ export function DangerZone({
 }) {
   const titleId = useId();
   return (
-    <section className="di-danger-zone" aria-labelledby={titleId}>
+    <section
+      className={cx(surfaceClass({ edge: "danger", padded: false }), "di-danger-zone")}
+      aria-labelledby={titleId}
+    >
       <header className="di-danger-zone-head">
         <h2 className="di-danger-zone-title" id={titleId}>
           {title}

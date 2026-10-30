@@ -1,0 +1,100 @@
+/*
+ * Density. How much air the components carry, chosen by the person:
+ * `data-density="comfortable"` (the default, the values the console shipped
+ * with) or `"compact"`, on the root or on any region, inherited.
+ *
+ * Density is not size. A component's `size` (sm, md, lg) is its role in the
+ * layout; density scales every size, so a large button in compact is
+ * smaller than a large button in comfortable, and the steps between the
+ * sizes hold. Compact is 7/8 of comfortable rounded to an even pixel, and
+ * a gap or an inset steps one rung down the space ramp.
+ *
+ * Type does not follow density: the body stays 14px, because compact is
+ * less air, not smaller text.
+ *
+ * `--di-gap-*` and the insets are named by their comfortable value, like
+ * `--di-space-*`: `--di-gap-12` is 12px comfortable and 8px compact. The
+ * page's frame (`--di-content-pad`, the rhythm between page blocks) is not
+ * density and stays on `--di-space-*`.
+ */
+
+@layer tokens {
+  :root,
+  [data-density="comfortable"] {
+    --di-control-h-sm: 28px;
+    --di-control-h-md: 32px;
+    --di-control-h-lg: 36px;
+    /* A record's row in a table or a list, and an option in a popup. */
+    --di-row-h: 40px;
+    --di-option-h: 32px;
+    --di-pill-h: 20px;
+    --di-kbd-h: 18px;
+
+    --di-icon-xs: 12px;
+    --di-icon-sm: 14px;
+    --di-icon-md: 16px;
+    --di-icon-lg: 20px;
+    --di-icon-xl: 24px;
+
+    /* The inset of a surface, and of a group inside one. */
+    --di-inset: 24px;
+    --di-inset-group: 16px;
+
+    --di-gap-2: 2px;
+    --di-gap-4: 4px;
+    --di-gap-6: 6px;
+    --di-gap-8: 8px;
+    --di-gap-12: 12px;
+    --di-gap-16: 16px;
+    --di-gap-24: 24px;
+    --di-gap-32: 32px;
+  }
+
+  [data-density="compact"] {
+    --di-control-h-sm: 24px;
+    --di-control-h-md: 28px;
+    --di-control-h-lg: 32px;
+    --di-row-h: 32px;
+    --di-option-h: 28px;
+    --di-pill-h: 18px;
+    --di-kbd-h: 16px;
+
+    --di-icon-xs: 12px;
+    --di-icon-sm: 12px;
+    --di-icon-md: 14px;
+    --di-icon-lg: 16px;
+    --di-icon-xl: 20px;
+
+    --di-inset: 16px;
+    --di-inset-group: 12px;
+
+    --di-gap-2: 2px;
+    --di-gap-4: 2px;
+    --di-gap-6: 4px;
+    --di-gap-8: 6px;
+    --di-gap-12: 8px;
+    --di-gap-16: 12px;
+    --di-gap-24: 16px;
+    --di-gap-32: 24px;
+  }
+
+  /*
+   * A finger needs the comfortable target whatever the person chose:
+   * on a touch screen compact keeps its air but never its smaller hit
+   * areas.
+   */
+  @media (pointer: coarse) {
+    [data-density="compact"] {
+      --di-control-h-sm: 28px;
+      --di-control-h-md: 32px;
+      --di-control-h-lg: 36px;
+      --di-row-h: 40px;
+      --di-option-h: 32px;
+    }
+  }
+
+  /* The smallest hit area on a touch screen, in either density. */
+  :root {
+    --di-target: 40px;
+  }
+}

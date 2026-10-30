@@ -18,7 +18,7 @@ export { Button } from "./components/actions/Button";
 export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components/data/records/Channel";
 export { ChainTimeline } from "./components/timeline/ChainTimeline";
 export type { ChainTimelineEvent, ChainTimelineLane } from "./components/timeline/ChainTimeline";
-export { CodeBlock } from "./components/data/text/CodeBlock";
+export { CodeBlock } from "./components/text/CodeBlock";
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/charts/Chart";
 export type { ChartConfig, ChartTooltipDetail } from "./components/charts/Chart";
 export { ChartCard, ChartCardAction, ChartCardGrid } from "./components/charts/ChartCard";
@@ -137,7 +137,7 @@ export {
   PageHeaderStatus,
   PageHeaderTitle,
 } from "./components/layout/page/PageHeader";
-export { Highlight } from "./components/data/text/Highlight";
+export { Highlight } from "./components/text/Highlight";
 export { Icon } from "./components/marks/Icon";
 export { IconTile } from "./components/marks/IconTile";
 export { InfiniteTable, heldCount } from "./components/data/table/InfiniteTable";
@@ -186,7 +186,7 @@ export { Progress } from "./components/feedback/waiting/Progress";
 export { RouteProgress } from "./components/feedback/waiting/RouteProgress";
 export { AppLoader } from "./components/feedback/waiting/AppLoader";
 export { Delayed } from "./components/feedback/Delayed";
-export { PullQuote } from "./components/data/text/PullQuote";
+export { PullQuote } from "./components/text/PullQuote";
 export { QuantityField } from "./components/forms/text/QuantityField";
 export { RowActions } from "./components/actions/RowActions";
 export {
@@ -198,10 +198,10 @@ export {
   RecordMark,
   RecordStatus,
 } from "./components/data/records/RecordCard";
-export { Eyebrow } from "./components/data/text/Eyebrow";
-export { Kbd } from "./components/data/text/Kbd";
+export { Eyebrow } from "./components/text/Eyebrow";
+export { Kbd } from "./components/text/Kbd";
 export { SealMark, SealValue } from "./components/marks/status/SealValue";
-export { TickRule } from "./components/data/text/TickRule";
+export { TickRule } from "./components/text/TickRule";
 export type { SealState } from "./components/marks/status/SealValue";
 export { SaveBar } from "./components/forms/field/SaveBar";
 export { SearchField } from "./components/forms/text/SearchField";
@@ -235,6 +235,8 @@ export { useShortcut } from "./internal/useShortcut";
 export { ShortcutHelp, type AppShortcut } from "./components/overlays/ShortcutHelp";
 export { Tag, TagList } from "./components/marks/Tag";
 export { ThemeProvider, themeChoices, useTheme } from "./components/shell/ThemeProvider";
+export { DensityProvider, densityChoices, useDensity } from "./components/shell/DensityProvider";
+export type { Density } from "./components/shell/DensityProvider";
 export type { ResolvedTheme, ThemeChoice } from "./components/shell/ThemeProvider";
 export { SkipLink } from "./components/shell/SkipLink";
 export { SignIn, SignInVersion } from "./components/shell/SignIn";
@@ -277,5 +279,5 @@ export {
   ListDetailList,
   ListDetailPane,
 } from "./components/layout/panes/ListDetail";
-export { MetaLine } from "./components/data/text/MetaLine";
+export { MetaLine } from "./components/text/MetaLine";
 export { SeverityMark, type Severity } from "./components/marks/status/SeverityMark";

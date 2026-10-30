@@ -188,11 +188,11 @@ export function MultiComboBox({
                 {shown.length === 0 && emptyLabel ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
                 <Combobox.List className="di-combobox-list" aria-labelledby={`${id}-label`}>
                   {(value: string) => (
-                    <Combobox.Item key={value} value={value} className="di-combobox-option di-multicombo-option">
+                    <Combobox.Item key={value} value={value} className="di-option di-combobox-option">
                       <span className="di-multicombo-check" aria-hidden>
                         {chosen.includes(value) ? <Check /> : null}
                       </span>
-                      <span className="di-combobox-label">{byValue.get(value)!.label}</span>
+                      <span className="di-option-label">{byValue.get(value)!.label}</span>
                     </Combobox.Item>
                   )}
                 </Combobox.List>

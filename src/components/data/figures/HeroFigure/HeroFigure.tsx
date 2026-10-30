@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
+import { Eyebrow } from "../../../text/Eyebrow";
 import "./HeroFigure.css";
 
 /**
@@ -28,7 +29,9 @@ export function HeroFigure({
 }) {
   return (
     <div className={cx("di-hero-fig", `is-${tone}`)}>
-      <p className="di-hero-fig-label">{label}</p>
+      <Eyebrow variant="plain" tone="quiet">
+        {label}
+      </Eyebrow>
       <p className="di-hero-fig-value">
         {value}
         {unit ? <span className="di-hero-fig-unit"> {unit}</span> : null}

@@ -56,7 +56,7 @@ function Notifications() {
         </DataTable>
         <FlyoutFooter>
           <TextLink href="#all">All notifications</TextLink>
-          <Button variant="secondary" size="dense">
+          <Button variant="secondary" size="sm">
             Mark all read
           </Button>
         </FlyoutFooter>

@@ -3,16 +3,16 @@
      columns, not wider cards, and a short last row shares the width. */
   .di-grid {
     display: grid;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     grid-template-columns: repeat(auto-fit, minmax(min(var(--di-grid-min), 100%), 1fr));
     min-width: 0;
   }
 
   .di-grid[data-gap="16"] {
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
   }
 
   .di-grid[data-gap="24"] {
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
   }
 }

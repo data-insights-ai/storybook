@@ -1,31 +1,25 @@
 @layer components {
-  /* A solid navy plane: a gradient under text has no measurable contrast. */
+  /* The hero plane (`.di-surface-hero`): solid navy, since a gradient under text has no measurable contrast. */
   .di-hero {
     container-type: inline-size;
     min-width: 0;
-    padding: var(--di-space-24);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-hero);
-    box-shadow:
-      inset 0 1px 0 var(--di-border),
-      var(--di-shadow-plane);
     color: var(--di-text);
   }
 
   .di-hero-grid {
     display: grid;
-    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(var(--di-hero-lead-min), var(--di-hero-lead-max)) minmax(0, 1fr) auto;
     grid-template-areas:
       "titles titles aside"
       "lead visual visual"
       "footer footer footer";
     /* Rows are spaced by margins, so a slot left out leaves no empty gap. */
-    gap: 0 var(--di-space-32);
+    gap: 0 var(--di-gap-32);
     align-items: start;
   }
 
   .di-hero-grid > :is(.di-hero-lead, .di-hero-visual, .di-hero-footer) {
-    margin-top: var(--di-space-24);
+    margin-top: var(--di-gap-24);
   }
 
   .di-hero-grid:not(:has(> .di-hero-lead)) {
@@ -36,20 +30,12 @@
   }
 
   .di-hero-titles {
+    --di-eyebrow-gap: 0;
     grid-area: titles;
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     min-width: 0;
-  }
-
-  .di-hero-label {
-    font-family: var(--di-mono-label-family);
-    font-size: var(--di-mono-label-size);
-    font-weight: var(--di-mono-label-weight);
-    letter-spacing: var(--di-mono-label-tracking);
-    text-transform: uppercase;
-    color: var(--di-mono-label-color);
   }
 
   .di-hero-title {
@@ -66,7 +52,7 @@
     align-self: end;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-hero-lead {
@@ -82,7 +68,7 @@
   .di-hero-footer {
     grid-area: footer;
     min-width: 0;
-    padding-top: var(--di-space-24);
+    padding-top: var(--di-gap-24);
     border-top: 1px solid var(--di-rule);
   }
 
@@ -99,17 +85,11 @@
     }
 
     .di-hero-grid > :is(.di-hero-aside, .di-hero-lead, .di-hero-visual, .di-hero-footer) {
-      margin-top: var(--di-space-16);
+      margin-top: var(--di-gap-16);
     }
 
     .di-hero-aside {
       justify-self: start;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .di-hero {
-      padding: var(--di-space-16);
     }
   }
 }

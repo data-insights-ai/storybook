@@ -2,7 +2,7 @@
   .di-choice {
     display: flex;
     align-items: flex-start;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     font-size: var(--di-font-size-400);
     line-height: var(--di-leading-snug);
   }
@@ -63,8 +63,8 @@
 
   .di-choice-box > svg {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
     stroke-width: 3px;
     color: var(--di-text-on-strong);
     opacity: 0;
@@ -72,8 +72,8 @@
 
   .di-choice-dot::after {
     content: "";
-    width: 6px;
-    height: 6px;
+    width: var(--di-choice-dot);
+    height: var(--di-choice-dot);
     border-radius: var(--di-radius-pill);
     background: var(--di-text-on-strong);
     transform: scale(0);
@@ -172,7 +172,7 @@
   /* On a touch screen the input itself grows to a 40px target round the mark. */
   @media (pointer: coarse) {
     .di-choice-input {
-      inset: calc((var(--di-choice-mark) - var(--di-h-row)) / 2);
+      inset: calc((var(--di-choice-mark) - var(--di-target)) / 2);
       width: auto;
       height: auto;
     }

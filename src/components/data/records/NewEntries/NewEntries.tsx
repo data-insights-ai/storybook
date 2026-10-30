@@ -11,7 +11,7 @@ import "./NewEntries.css";
 export function NewEntries({ label, onShow }: { label: string; onShow: () => void }) {
   return (
     <div className="di-new-entries" role="status">
-      <Button size="dense" onClick={onShow}>
+      <Button size="sm" onClick={onShow}>
         <ArrowUp aria-hidden />
         {label}
       </Button>

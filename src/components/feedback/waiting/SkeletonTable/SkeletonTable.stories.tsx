@@ -85,7 +85,7 @@ export const Resolving: Story = {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div>
-          <Button variant="secondary" size="dense" onClick={load}>
+          <Button variant="secondary" size="sm" onClick={load}>
             Reload
           </Button>
         </div>

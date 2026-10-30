@@ -66,7 +66,7 @@ export function InferenceScreen() {
       <div className="inference-grid">
         <LivingCard title="Unsealed entries" insightLabel="ai insight">
           <LivingActions>
-            <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
+            <Button variant="ghost" size="sm" iconOnly={true} aria-label="Card actions">
               <MoreVertical aria-hidden />
             </Button>
           </LivingActions>
@@ -83,10 +83,10 @@ export function InferenceScreen() {
           </LivingBody>
           <LivingInsight body="The rise follows the pause on feed.example.io at 08:47. Resuming it clears the backlog.">
             <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
-            <Button variant="inferred" size="dense">
+            <Button variant="inferred" size="sm">
               Review the proposal
             </Button>
-            <Button variant="ghost" size="dense">
+            <Button variant="ghost" size="sm">
               Dismiss
             </Button>
           </LivingInsight>
@@ -101,10 +101,10 @@ export function InferenceScreen() {
           <ExplainRow label="Scope">One source in this workspace</ExplainRow>
           <ExplainRow label="Reversible">Yes, the source can be paused again</ExplainRow>
           <ConfirmActions>
-            <Button variant="secondary" size="dense">
+            <Button variant="secondary" size="sm">
               Cancel
             </Button>
-            <Button size="dense">Resume</Button>
+            <Button size="sm">Resume</Button>
           </ConfirmActions>
         </ConfirmPanel>
         <ExplainPanel
@@ -219,7 +219,7 @@ export function InferenceScreen() {
             dismissLabel="Dismiss this receipt"
           >
             <ToastAction>
-              <Button variant="secondary" size="dense">
+              <Button variant="secondary" size="sm">
                 Open record
               </Button>
             </ToastAction>

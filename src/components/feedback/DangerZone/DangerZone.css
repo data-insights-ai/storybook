@@ -1,14 +1,11 @@
 @layer components {
   .di-danger-zone {
     min-width: 0;
-    border: 1px solid var(--di-status-danger-border);
-    border-radius: var(--di-panel-radius);
-    background: var(--di-panel-bg);
     overflow: hidden;
   }
 
   .di-danger-zone-head {
-    padding: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-space-12) var(--di-inset-group);
     border-bottom: 1px solid var(--di-status-danger-border);
     background: var(--di-status-danger-bg);
   }
@@ -22,7 +19,7 @@
   }
 
   .di-danger-zone-lede {
-    margin-top: var(--di-space-4);
+    margin-top: var(--di-gap-4);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-status-danger-fg);
@@ -33,8 +30,8 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-12) var(--di-space-24);
-    padding: var(--di-space-16);
+    gap: var(--di-gap-12) var(--di-gap-24);
+    padding: var(--di-inset-group);
   }
 
   .di-danger-action + .di-danger-action {
@@ -55,7 +52,7 @@
 
   .di-danger-action-body,
   .di-danger-action-note {
-    margin-top: var(--di-space-4);
+    margin-top: var(--di-gap-4);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
@@ -68,7 +65,7 @@
   .di-danger-action-control {
     display: flex;
     flex: none;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   @media (max-width: 600px) {

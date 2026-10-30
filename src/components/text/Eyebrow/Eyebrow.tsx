@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { cx } from "../../../../internal/cx";
-import { SealMark } from "../../../marks/status/SealValue";
+import { cx } from "../../../internal/cx";
+import { SealMark } from "../../marks/status/SealValue";
 import "./Eyebrow.css";
 
 /**
@@ -16,20 +16,28 @@ import "./Eyebrow.css";
  *
  * The gap beneath it is `--di-eyebrow-gap`, so a head can retune the
  * distance without the eyebrow knowing which head it is in.
+ *
+ * It is the one caption above a title: a dialog, a sheet, an empty state
+ * and the sign-in card render it rather than setting mono capitals of
+ * their own. `tone="quiet"` sets it in the label ink, for a caption that
+ * must not compete with the value under it; `tone="danger"` names a
+ * failure, as an empty state after an error does.
  */
 export function Eyebrow({
   children,
   variant = "sealed",
+  tone = "default",
   className,
 }: {
   children: ReactNode;
   /** `sealed` takes the dot and the rule — one per view. `plain` repeats. */
   variant?: "sealed" | "plain";
+  tone?: "default" | "quiet" | "danger";
   className?: string;
 }) {
   const sealed = variant === "sealed";
   return (
-    <div className={cx("di-eyebrow", `di-eyebrow-${variant}`, className)}>
+    <div className={cx("di-eyebrow", `di-eyebrow-${variant}`, tone !== "default" && `is-${tone}`, className)}>
       {sealed ? <SealMark state="sealed" /> : null}
       <span className="di-eyebrow-label">{children}</span>
       {sealed ? <span className="di-eyebrow-rule" aria-hidden /> : null}

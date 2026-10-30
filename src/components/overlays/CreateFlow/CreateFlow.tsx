@@ -1,7 +1,9 @@
 import { useEffect, useId, useRef, type FormEvent, type ReactNode } from "react";
 import { Button } from "../../actions/Button";
 import { Stepper } from "../../navigation/sequence/Stepper";
+import { cx } from "../../../internal/cx";
 import { focusFirstField } from "../../../internal/shortcutKeys";
+import { surfaceClass } from "../../../internal/surface";
 import "./CreateFlow.css";
 
 /**
@@ -109,7 +111,7 @@ export function CreateFlow({
           state: i < step ? "done" : i === step ? "current" : "upcoming",
         }))}
       />
-      <div className="di-create-flow-panel">
+      <div className={cx(width === "page" && surfaceClass({ padded: false }), "di-create-flow-panel")}>
         <div className="di-create-flow-step">
           <div className="di-create-flow-head">
             <h2 className="di-create-flow-title" id={headingId} ref={heading} tabIndex={-1}>

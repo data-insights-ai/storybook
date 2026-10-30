@@ -3,7 +3,7 @@ import { expect } from "storybook/test";
 import { TickRule } from "./TickRule";
 
 const meta = {
-  title: "Data/Text/TickRule",
+  title: "Text/TickRule",
   component: TickRule,
   tags: ["layer:primitive", "autodocs"],
 } satisfies Meta<typeof TickRule>;

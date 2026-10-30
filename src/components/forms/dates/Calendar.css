@@ -3,7 +3,7 @@
   .di-calendar-head {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-calendar-heading {
@@ -17,8 +17,8 @@
   .di-calendar-nav {
     display: grid;
     place-items: center;
-    width: var(--di-h-ctl);
-    height: var(--di-h-ctl);
+    width: var(--di-control-h-md);
+    height: var(--di-control-h-md);
     padding: 0;
     border: 1px solid transparent;
     border-radius: var(--di-radius-control);
@@ -28,8 +28,8 @@
   }
 
   .di-calendar-nav > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-calendar-nav:hover:where(:not(:disabled)) {
@@ -64,8 +64,8 @@
   .di-calendar-cell {
     display: grid;
     place-items: center;
-    width: var(--di-h-ctl);
-    height: var(--di-h-ctl);
+    width: var(--di-control-h-md);
+    height: var(--di-control-h-md);
     margin: 0;
     padding: 0;
     border: 0;

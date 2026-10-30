@@ -38,7 +38,7 @@
     "lint": "eslint --max-warnings 0 .",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
-    "test": "vitest run --project=unit --project=layout --project=storybook --project=storybook-dark --project=storybook-phone --project=storybook-phone-dark",
+    "test": "vitest run --project=unit --project=layout --project=storybook --project=storybook-dark --project=storybook-phone --project=storybook-phone-dark --project=storybook-compact --project=storybook-compact-phone",
     "prepublishOnly": "pnpm build",
     "lint:structure": "depcruise src --config .dependency-cruiser.cjs --output-type err && node scripts/lint-layers.mjs && node scripts/lint-conventions.mjs"
   },

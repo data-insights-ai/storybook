@@ -20,9 +20,9 @@
   .di-select-caret {
     position: absolute;
     top: 50%;
-    right: 9px;
-    width: 16px;
-    height: 16px;
+    right: calc(var(--di-gap-8) + 1px);
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     transform: translateY(-50%);
     pointer-events: none;
     color: var(--di-text-muted);
@@ -54,9 +54,9 @@
       }
 
       .di-select-control::picker(select) {
-        max-block-size: 320px;
-        margin-block: var(--di-space-4);
-        padding: var(--di-space-4);
+        max-block-size: var(--di-listbox-max-h);
+        margin-block: var(--di-gap-4);
+        padding: var(--di-gap-4);
         border: 1px solid var(--di-border-strong);
         border-radius: var(--di-radius-control);
         background: var(--di-bg-surface);
@@ -65,8 +65,8 @@
       }
 
       .di-select-control option {
-        min-block-size: var(--di-h-ctl);
-        padding: var(--di-space-6) var(--di-space-8);
+        min-block-size: var(--di-option-h);
+        padding: var(--di-gap-4) var(--di-gap-8);
         border-radius: var(--di-radius-micro);
         font-weight: inherit;
         overflow-wrap: anywhere;
@@ -79,11 +79,11 @@
 
       .di-select-control option:checked,
       .di-select-control option:hover {
-        background: var(--di-bg-page);
+        background: var(--di-option-hover-bg);
       }
 
       .di-select-control option:focus-visible {
-        background: var(--di-bg-page);
+        background: var(--di-option-hover-bg);
         outline: 2px solid var(--di-focus);
         outline-offset: -2px;
       }

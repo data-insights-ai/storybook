@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Search, ShieldCheck } from "lucide-react";
 import { cx } from "../../../internal/cx";
-import { Kbd } from "../../data/text/Kbd";
+import { Kbd } from "../../text/Kbd";
 import { SealMark } from "../../marks/status/SealValue";
 import "./CommandBar.css";
 
@@ -133,10 +133,10 @@ export function CommandRow({
   children?: ReactNode;
 }) {
   return (
-    <button type="button" className={cx("di-command-row", active && "is-active")} onClick={onSelect}>
+    <button type="button" className={cx("di-option", "di-command-row", active && "is-highlighted")} onClick={onSelect}>
       <span className="di-command-row-icon">{inferred ? <SealMark state="inferred" size={7} /> : children}</span>
-      <span className="di-command-row-label">{label}</span>
-      <span className="di-command-row-meta">{meta}</span>
+      <span className="di-option-label di-command-row-label">{label}</span>
+      <span className="di-option-meta">{meta}</span>
     </button>
   );
 }

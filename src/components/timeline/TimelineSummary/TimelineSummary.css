@@ -2,7 +2,7 @@
   .di-tsummary {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     min-width: 0;
     container-type: inline-size;
   }
@@ -11,7 +11,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-4) var(--di-space-12);
+    gap: var(--di-gap-4) var(--di-gap-12);
   }
 
   .di-tsummary-title {
@@ -22,20 +22,20 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-4) var(--di-space-12);
+    gap: var(--di-gap-4) var(--di-gap-12);
     min-width: 0;
   }
 
   .di-tsummary-figure {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   /* Blocks stand on the track like bars, each with its ordinal above it. */
   .di-tsummary-strip {
     position: relative;
-    height: 46px;
+    height: var(--di-tsummary-strip-h);
     user-select: none;
   }
 
@@ -88,7 +88,7 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    min-width: 2px;
+    min-width: var(--di-space-2);
   }
 
   .di-tsummary-stretch.is-neutral,
@@ -113,7 +113,7 @@
   .di-tsummary-block.is-active .di-tsummary-block-fill {
     box-shadow:
       0 0 0 2px var(--di-bg-surface),
-      0 0 0 3px var(--di-text);
+      0 0 0 var(--di-tsummary-ring) var(--di-text);
   }
 
   .di-tsummary-block.is-hovered .di-tsummary-block-index,
@@ -134,15 +134,15 @@
 
   .di-tsummary-flag {
     position: absolute;
-    bottom: -7px;
-    transform: translateX(-4px);
+    bottom: calc(-1 * var(--di-space-8));
+    transform: translateX(calc(-1 * var(--di-space-4)));
   }
 
   .di-tsummary-legend {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-4) var(--di-space-16);
+    gap: var(--di-gap-4) var(--di-gap-16);
     font-size: var(--di-font-size-300);
     color: var(--di-text-subtle);
   }
@@ -150,12 +150,12 @@
   .di-tsummary-legend-item {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-tsummary-swatch {
-    width: 12px;
-    height: 8px;
+    width: var(--di-tsummary-swatch);
+    height: var(--di-chart-swatch);
     border-radius: var(--di-radius-micro);
   }
 
@@ -166,7 +166,7 @@
   .di-tsummary-edges {
     display: flex;
     justify-content: space-between;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     font-variant-numeric: tabular-nums;
@@ -193,28 +193,23 @@
       "index title title tone"
       "index time detail detail";
     align-items: baseline;
-    gap: var(--di-space-2) var(--di-space-12);
+    gap: var(--di-space-2) var(--di-gap-12);
     width: 100%;
-    padding: var(--di-space-8) var(--di-space-8) var(--di-space-8) 0;
+    padding: var(--di-gap-8) var(--di-gap-8) var(--di-gap-8) 0;
     border: 0;
     background: transparent;
     color: var(--di-text);
     font: inherit;
     text-align: left;
-    transition: background-color var(--di-duration) ease-out;
   }
 
   button.di-tsummary-row {
     cursor: pointer;
   }
 
-  .di-tsummary-row.is-hovered {
-    background: var(--di-bg-row-hover);
-  }
-
-  .di-tsummary-row.is-active {
-    background: var(--di-bg-row-hover);
-    box-shadow: inset 2px 0 0 var(--di-text);
+  /* The shared row (`.di-row`): hovered from the strip as from the pointer, and the episode shown carries the selected edge. */
+  .di-tsummary-row.is-hovered:not(.di-row-current) {
+    background: var(--di-row-hover-bg);
   }
 
   .di-tsummary-row:focus-visible {
@@ -225,11 +220,6 @@
   .di-tsummary-index {
     grid-area: index;
     justify-self: center;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    font-weight: var(--di-weight-medium);
-    font-variant-numeric: tabular-nums;
-    color: var(--di-text-subtle);
   }
 
   .di-tsummary-row.is-active .di-tsummary-index {
@@ -281,7 +271,7 @@
     display: grid;
     grid-template-columns: var(--di-index-col) auto minmax(0, 1fr);
     align-items: baseline;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding: var(--di-space-6) var(--di-space-8) var(--di-space-6) 0;
     color: var(--di-text-subtle);
   }

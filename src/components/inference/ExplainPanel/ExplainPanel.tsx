@@ -1,5 +1,6 @@
 import { useId, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
+import { surfaceClass } from "../../../internal/surface";
 import { takeSlot } from "../../../internal/slots";
 import { SealMark } from "../../marks/status/SealValue";
 import "../Inference.css";
@@ -37,7 +38,7 @@ export function ExplainPanel({
   const [ignored, rest] = takeSlot(children, ExplainIgnored);
   const [footer, rows] = takeSlot(rest, ExplainFooter);
   return (
-    <section className={cx("di-explain", className)} aria-labelledby={id}>
+    <section className={cx(surfaceClass(), "di-explain", className)} aria-labelledby={id}>
       <p className="di-inference-label" id={id}>
         <SealMark state="inferred" size={7} />
         {label}

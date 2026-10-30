@@ -4,7 +4,7 @@
     display: inline-flex;
     /* The steps stand on the word's baseline, so the mark lines up with any text beside it. */
     align-items: baseline;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     font-size: var(--di-font-size-300);
     font-weight: var(--di-weight-medium);
     line-height: 1;
@@ -32,28 +32,28 @@
     display: inline-flex;
     align-items: flex-end;
     gap: var(--di-space-2);
-    height: 12px;
+    height: var(--di-sev-step-4);
   }
 
   .di-sev-step {
-    width: 3px;
+    width: var(--di-sev-step-w);
     background: var(--di-border-strong);
   }
 
   .di-sev-step:nth-child(1) {
-    height: 5px;
+    height: var(--di-sev-step-1);
   }
 
   .di-sev-step:nth-child(2) {
-    height: 7px;
+    height: var(--di-sev-step-2);
   }
 
   .di-sev-step:nth-child(3) {
-    height: 9px;
+    height: var(--di-sev-step-3);
   }
 
   .di-sev-step:nth-child(4) {
-    height: 12px;
+    height: var(--di-sev-step-4);
   }
 
   .di-sev-step.is-on {
@@ -73,7 +73,7 @@
   .di-sev-chip {
     align-items: center;
     height: var(--di-pill-height);
-    padding: 0 var(--di-space-8);
+    padding: 0 var(--di-gap-8);
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-subtle);
   }

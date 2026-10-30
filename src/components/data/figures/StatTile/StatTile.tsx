@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
-import { TickRule } from "../../text/TickRule";
+import { surfaceClass } from "../../../../internal/surface";
+import { TickRule } from "../../../text/TickRule";
 import "./StatTile.css";
 
 /**
@@ -32,7 +33,14 @@ export function StatTile({
   children?: ReactNode;
 }) {
   return (
-    <div className={cx("di-stat-tile", tone === "danger" && "is-danger", className)}>
+    <div
+      className={cx(
+        surfaceClass({ edge: tone === "danger" ? "danger" : "none", padded: false }),
+        "di-stat-tile",
+        tone === "danger" && "is-danger",
+        className,
+      )}
+    >
       <div className="di-stat-tile-body">
         <p className="di-stat-tile-label">{label}</p>
         <p className={cx("di-stat-tile-value", compact && "is-compact")}>{value}</p>

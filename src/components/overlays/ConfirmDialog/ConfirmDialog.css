@@ -7,18 +7,18 @@
   .di-confirm-consequences {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
-    margin: var(--di-space-8) 0 0;
-    padding-left: var(--di-space-16);
+    gap: var(--di-gap-4);
+    margin: var(--di-gap-8) 0 0;
+    padding-left: var(--di-gap-16);
     list-style: disc;
   }
 
   .di-confirm-field {
-    margin-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
   }
 
   .di-confirm-error {
-    margin-top: var(--di-space-12);
+    margin-top: var(--di-gap-12);
     font-size: var(--di-font-size-300);
     color: var(--di-status-danger-fg);
   }

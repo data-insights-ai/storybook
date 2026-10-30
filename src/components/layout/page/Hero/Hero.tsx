@@ -1,4 +1,7 @@
 import { useId, type ReactNode } from "react";
+import { surfaceClass } from "../../../../internal/surface";
+import { cx } from "../../../../internal/cx";
+import { Eyebrow } from "../../../text/Eyebrow";
 import "./Hero.css";
 
 /**
@@ -30,10 +33,12 @@ export function Hero({
   const id = useId();
   const Heading = heading === 2 ? "h2" : "h3";
   return (
-    <section className="di-hero" data-theme="dark" aria-labelledby={id}>
+    <section className={cx(surfaceClass({ plane: "hero" }), "di-hero")} data-theme="dark" aria-labelledby={id}>
       <div className="di-hero-grid">
         <div className="di-hero-titles">
-          <p className="di-hero-label">{label}</p>
+          <Eyebrow variant="plain" tone="quiet">
+            {label}
+          </Eyebrow>
           <Heading id={id} className="di-hero-title">
             {title}
           </Heading>

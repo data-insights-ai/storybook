@@ -8,7 +8,7 @@
   .di-disclosure-head {
     display: flex;
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding: var(--di-space-12);
   }
 
@@ -30,8 +30,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--di-h-dense);
-    height: var(--di-h-dense);
+    width: var(--di-control-h-sm);
+    height: var(--di-control-h-sm);
     padding: 0;
     border: 0;
     border-radius: var(--di-radius-control);
@@ -41,8 +41,8 @@
   }
 
   .di-disclosure-toggle > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     transition: transform var(--di-duration) var(--di-ease);
   }
 

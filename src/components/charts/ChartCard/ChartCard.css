@@ -1,19 +1,15 @@
 @layer components {
   .di-chart-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
-    gap: var(--di-space-16);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--di-chart-card-min)), 1fr));
+    gap: var(--di-gap-16);
   }
 
   .di-chart-card {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding: var(--di-space-16);
-    border: 1px solid var(--di-panel-border);
-    border-radius: var(--di-panel-radius);
-    background: var(--di-panel-bg);
-    box-shadow: var(--di-elevation-surface);
+    --di-surface-inner: var(--di-inset-group);
   }
 
   .di-chart-card.is-wide {
@@ -24,7 +20,7 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   .di-chart-card-title {
@@ -41,7 +37,7 @@
   }
 
   .di-chart-card-figure {
-    margin: var(--di-space-8) 0 0;
+    margin: var(--di-gap-8) 0 0;
     font-size: var(--di-font-size-700);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
@@ -51,7 +47,7 @@
   }
 
   .di-chart-card-note {
-    margin: var(--di-space-4) 0 0;
+    margin: var(--di-gap-4) 0 0;
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
@@ -67,6 +63,6 @@
   }
 
   .di-chart-card-body {
-    margin-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
   }
 }

@@ -11,7 +11,7 @@ const meta = {
     label: "Search the register",
     placeholder: "Host, hash or operator",
     shortcut: "/",
-    dense: false,
+    size: "md",
     disabled: false,
     readOnly: false,
     required: false,
@@ -21,7 +21,7 @@ const meta = {
     label: { control: "text" },
     placeholder: { control: "text" },
     shortcut: { control: "text" },
-    dense: { control: "boolean" },
+    size: { control: "radio", options: ["sm", "md"] },
     disabled: { control: "boolean" },
     readOnly: { control: "boolean" },
     required: { control: "boolean" },
@@ -52,8 +52,9 @@ export const WithoutShortcut: Story = {
   args: { shortcut: "", placeholder: "Filter members" },
 };
 
-export const Dense: Story = {
-  args: { dense: true },
+/** Beside small buttons in a toolbar. */
+export const Small: Story = {
+  args: { size: "sm" },
 };
 
 export const WithValue: Story = {

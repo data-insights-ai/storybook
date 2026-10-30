@@ -1,9 +1,9 @@
 @layer components {
   .di-chain {
     display: grid;
-    grid-template-columns: minmax(120px, 200px) minmax(0, 1fr);
+    grid-template-columns: minmax(var(--di-chain-label-min), var(--di-chain-label-max)) minmax(0, 1fr);
     grid-template-rows: auto auto;
-    column-gap: var(--di-space-12);
+    column-gap: var(--di-gap-12);
     min-width: 0;
   }
 
@@ -87,9 +87,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 24px;
-    height: 24px;
-    padding: 0 var(--di-space-6);
+    min-width: var(--di-chain-count);
+    height: var(--di-chain-count);
+    padding: 0 var(--di-gap-6);
     translate: -50% -50%;
     border: 1px solid var(--di-chart-series);
     border-radius: var(--di-radius-pill);
@@ -144,7 +144,7 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding: var(--di-space-6) var(--di-space-12) 0;
     font-size: var(--di-font-size-200);
     font-variant-numeric: tabular-nums;
@@ -173,7 +173,7 @@
 
   @container (max-width: 480px) {
     .di-chain {
-      grid-template-columns: 96px minmax(0, 1fr);
+      grid-template-columns: var(--di-chain-label-narrow) minmax(0, 1fr);
     }
   }
 }

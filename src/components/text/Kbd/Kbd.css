@@ -2,8 +2,8 @@
   .di-kbd {
     display: inline-flex;
     align-items: center;
-    height: 18px;
-    padding: 0 var(--di-space-4);
+    height: var(--di-kbd-h);
+    padding: 0 var(--di-gap-4);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-page);
@@ -13,9 +13,15 @@
     line-height: 1;
   }
 
+  .di-kbd-on-control {
+    border-color: currentColor;
+    background: transparent;
+    color: inherit;
+  }
+
   /* A key hint is for a keyboard; on a touch screen it is noise. */
   @media (pointer: coarse) {
-    .di-kbd.di-search-kbd {
+    .di-kbd:is(.di-search-kbd, .di-kbd-on-control) {
       display: none;
     }
   }

@@ -38,10 +38,10 @@ export const Reversible: Story = {
       <ExplainRow label="Scope">2 entries in WS-01</ExplainRow>
       <ExplainRow label="Reversible">Yes, until the next seal</ExplainRow>
       <ConfirmActions>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Cancel
         </Button>
-        <Button size="dense">Merge</Button>
+        <Button size="sm">Merge</Button>
       </ConfirmActions>
     </ConfirmPanel>
   ),
@@ -78,10 +78,10 @@ export const Irreversible: Story = {
       <ExplainRow label="Scope">4 sources · 0 sealed entries affected</ExplainRow>
       <ExplainRow label="Reversible">No</ExplainRow>
       <ConfirmActions>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Cancel
         </Button>
-        <Button variant="danger" size="dense">
+        <Button variant="danger" size="sm">
           Revoke
         </Button>
       </ConfirmActions>
@@ -109,10 +109,10 @@ export const LongLabelsNarrow: Story = {
       <ExplainRow label="Wirkungsbereich">1 Quelle in WS-01</ExplainRow>
       <ExplainRow label="Rückgängig machbar">Ja, die Quelle kann wieder pausiert werden</ExplainRow>
       <ConfirmActions>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Abbrechen
         </Button>
-        <Button size="dense">Wieder aufnehmen</Button>
+        <Button size="sm">Wieder aufnehmen</Button>
       </ConfirmActions>
     </ConfirmPanel>
   ),

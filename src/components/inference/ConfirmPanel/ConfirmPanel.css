@@ -14,7 +14,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     margin-top: auto;
   }
 
@@ -38,7 +38,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin-left: auto;
   }
 

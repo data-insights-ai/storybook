@@ -177,7 +177,7 @@ export const WithFooter: Story = {
       <p>{args.children}</p>
       <PanelFooter>Rotated last on 2025-09-29 by Nora Feld</PanelFooter>
       <PanelActions>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Rotate now
         </Button>
       </PanelActions>
@@ -189,8 +189,10 @@ export const WithFooter: Story = {
     const body = canvas.getByText(/expires on/).getBoundingClientRect();
     const footer = canvas.getByText(/Rotated last/).getBoundingClientRect();
     const action = canvas.getByRole("button", { name: "Rotate now" }).getBoundingClientRect();
-    const panel = canvasElement.querySelector(".di-panel")!.getBoundingClientRect();
-    await expect(footer.top - body.bottom).toBeGreaterThanOrEqual(16);
+    const frame = canvasElement.querySelector(".di-panel")!;
+    const panel = frame.getBoundingClientRect();
+    // The rows are one gap apart: 16px comfortable, 12px compact.
+    await expect(footer.top - body.bottom).toBeGreaterThanOrEqual(parseFloat(getComputedStyle(frame).rowGap));
     await expect(Math.round(panel.right - action.right)).toBe(Math.round(footer.left - panel.left));
   },
 };
@@ -204,7 +206,7 @@ export const ActionInHead: Story = {
   render: (args) => (
     <Panel {...args}>
       <PanelActions>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Edit
         </Button>
       </PanelActions>
@@ -253,7 +255,7 @@ export const SlotsWrittenReversed: Story = {
   render: (args) => (
     <Panel {...args}>
       <PanelActions>
-        <Button size="dense">Retry</Button>
+        <Button size="sm">Retry</Button>
       </PanelActions>
       <PanelFooter>3 attempts left</PanelFooter>
       <PanelNote>Retries stop after three attempts.</PanelNote>

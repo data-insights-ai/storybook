@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Badge } from "../../marks/Badge";
 import { Button } from "../Button";
 import "./CountButton.css";
 
@@ -42,7 +43,7 @@ export function CountButton({
       {children}
       {count > 0 ? (
         <span className="di-count-btn-count" aria-hidden>
-          {countLabel}
+          <Badge tone="alert">{countLabel}</Badge>
         </span>
       ) : null}
     </Button>

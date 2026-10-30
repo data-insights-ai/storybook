@@ -1,10 +1,15 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, Ref } from "react";
 import { cx } from "../../../internal/cx";
 import { useShortcutKeys } from "../../../internal/shortcutKeys";
+import { Kbd } from "../../text/Kbd";
 import "./Button.css";
 
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "seal" | "inferred";
-type Size = "dense" | "md" | "comfort";
+/** A button's role in the layout, not the density: density scales every size. */
+type Size = "sm" | "md" | "lg";
+/** @deprecated `dense` is `sm` and `comfort` is `lg`; removed in 0.12.0. */
+type RenamedSize = "dense" | "comfort";
+const renamed: Record<RenamedSize, Size> = { dense: "sm", comfort: "lg" };
 
 type Common = {
   /**
@@ -14,7 +19,8 @@ type Common = {
    * or sealing an entry is `primary` or `secondary`.
    */
   variant?: Variant;
-  size?: Size;
+  /** `sm` in a row or a toolbar of small controls, `md` the standard, `lg` a sign-in or a brand page. */
+  size?: Size | RenamedSize;
   /** A square control: a filter, a pagination arrow, a kebab. */
   iconOnly?: boolean;
   /** Swaps the icon for a spinner and blocks the press. */
@@ -49,15 +55,15 @@ export function Button(props: ButtonProps | LinkProps) {
   const keyed = shortcut ? { "data-di-shortcut": shortcut, "aria-keyshortcuts": shortcut } : {};
   const hint =
     shortcut && !iconOnly ? (
-      <kbd className="di-btn-kbd" aria-hidden="true">
-        {shortcut.toUpperCase()}
-      </kbd>
+      <span className="di-btn-kbd" aria-hidden="true">
+        <Kbd tone="onControl">{shortcut.toUpperCase()}</Kbd>
+      </span>
     ) : null;
 
   const className = cx(
     "di-btn",
     `di-btn-${variant}`,
-    `di-btn-${size}`,
+    `di-btn-${size === "dense" || size === "comfort" ? renamed[size] : size}`,
     iconOnly && "di-btn-icon",
     loading && "di-btn-loading",
     props.className,

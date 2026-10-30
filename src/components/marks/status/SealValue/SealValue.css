@@ -23,7 +23,7 @@
   .di-seal {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     color: var(--di-text);
   }
 

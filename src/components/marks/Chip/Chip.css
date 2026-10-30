@@ -2,9 +2,9 @@
   .di-chip {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-4);
-    height: var(--di-h-dense);
-    padding: 0 var(--di-space-8);
+    gap: var(--di-gap-4);
+    height: var(--di-control-h-sm);
+    padding: 0 var(--di-gap-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
@@ -16,8 +16,8 @@
   }
 
   .di-chip > svg {
-    width: 14px;
-    height: 14px;
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
     flex: none;
   }
 
@@ -37,8 +37,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     padding: 0;
     margin-right: calc(-1 * var(--di-space-2));
     border: 0;
@@ -52,7 +52,7 @@
   }
 
   .di-chip-remove > svg {
-    width: 13px;
-    height: 13px;
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
   }
 }

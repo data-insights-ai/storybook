@@ -2,7 +2,7 @@
   .di-create-flow {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
     width: 100%;
     max-width: var(--di-measure-form);
     min-width: 0;
@@ -15,7 +15,7 @@
   .di-create-flow-panel {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
     min-width: 0;
   }
 
@@ -40,7 +40,7 @@
 
   .di-create-flow-lede {
     max-width: var(--di-measure-prose);
-    margin-top: var(--di-space-4);
+    margin-top: var(--di-gap-4);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
@@ -59,8 +59,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
-    padding: var(--di-space-12) 0;
+    gap: var(--di-gap-8);
+    padding: var(--di-gap-12) 0;
     border-top: 1px solid var(--di-rule-hairline);
     background: var(--di-bg-page);
   }
@@ -69,15 +69,11 @@
     flex: 1;
   }
 
-  /* On a page the step is a panel, as a record's sections are, and its
-     actions are the panel's footer. */
+  /* On a page the step is a panel, on the one surface as a record's sections
+     are, and its actions are the panel's footer. */
   .di-create-flow[data-width="page"] .di-create-flow-panel {
-    --di-create-flow-pad: var(--di-panel-pad);
+    --di-create-flow-pad: var(--di-surface-inner);
     gap: 0;
-    border: 1px solid var(--di-panel-border);
-    border-radius: var(--di-panel-radius);
-    background: var(--di-panel-bg);
-    box-shadow: var(--di-elevation-surface);
   }
 
   .di-create-flow[data-width="page"] .di-create-flow-step {
@@ -85,7 +81,7 @@
   }
 
   .di-create-flow[data-width="page"] .di-create-flow-error {
-    padding: 0 var(--di-create-flow-pad) var(--di-space-12);
+    padding: 0 var(--di-create-flow-pad) var(--di-gap-12);
   }
 
   /* The actions are the panel's last row at its inset, no rule over them; they stay in view on a long step. */
@@ -93,7 +89,7 @@
     padding: var(--di-create-flow-pad);
     border-top: 0;
     border-radius: 0 0 var(--di-panel-radius) var(--di-panel-radius);
-    background: var(--di-panel-bg);
+    background: var(--di-surface-bg);
   }
 
   /* Cards, a grid or a split use the panel's width; a lone field, prose, a
@@ -106,11 +102,5 @@
   .di-create-flow[data-width="page"] .di-field-stack > :is(.di-field, p),
   .di-create-flow[data-width="page"] .di-field-stack :is(.di-switch-row, .di-kv) {
     max-width: var(--di-measure-form);
-  }
-
-  @media (max-width: 600px) {
-    .di-create-flow[data-width="page"] .di-create-flow-panel {
-      --di-create-flow-pad: var(--di-space-16);
-    }
   }
 }

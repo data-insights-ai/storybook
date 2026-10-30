@@ -11,7 +11,7 @@
 
   /* The line between bullets runs from one circle's edge to the next's, under them. */
   .di-step {
-    --di-step-radius: 11px;
+    --di-step-radius: calc(var(--di-step-bullet) / 2);
     --di-step-gap: var(--di-space-4);
     position: relative;
     display: flex;
@@ -36,10 +36,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     min-width: 0;
     max-width: 100%;
-    padding: 0 var(--di-space-4);
+    padding: 0 var(--di-gap-4);
     border: 0;
     background: none;
     font: inherit;
@@ -65,16 +65,19 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 22px;
+    width: var(--di-step-bullet);
+    height: var(--di-step-bullet);
     flex: none;
     border: 1px solid var(--di-border-input);
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-surface);
     color: var(--di-text-subtle);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
     line-height: 1;
+  }
+
+  /* The number is the shared ordinal; on the current step it takes the fill's ink. */
+  .di-step-bullet.is-current .di-ordinal {
+    color: inherit;
   }
 
   .di-step-bullet.is-done {
@@ -84,8 +87,8 @@
   }
 
   .di-step-check {
-    width: 12px;
-    height: 12px;
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
     stroke-width: 3;
   }
 
@@ -134,13 +137,13 @@
     flex: 0 1 auto;
     width: var(--di-space-32);
     min-width: var(--di-space-16);
-    margin: 0 var(--di-space-8);
+    margin: 0 var(--di-gap-8);
   }
 
   .di-stepper[data-layout="inline"] .di-step-button {
     flex: none;
     flex-direction: row;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     max-width: none;
     padding: 0;
     text-align: left;

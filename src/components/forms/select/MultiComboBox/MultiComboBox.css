@@ -1,7 +1,7 @@
 @layer components {
   .di-multicombo-control {
     position: relative;
-    padding-right: var(--di-h-ctl);
+    padding-right: var(--di-control-h-md);
   }
 
   /* The input takes what the entries leave on their line, and only wraps
@@ -25,7 +25,7 @@
     bottom: 0;
     display: grid;
     place-items: center;
-    width: var(--di-h-ctl);
+    width: var(--di-control-h-md);
     padding: 0;
     border: 0;
     border-radius: var(--di-radius-control);
@@ -34,8 +34,8 @@
   }
 
   .di-multicombo-toggle > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-multicombo-toggle:disabled {
@@ -43,22 +43,16 @@
     cursor: not-allowed;
   }
 
-  .di-multicombo-option {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--di-space-8);
-  }
-
   .di-multicombo-check {
     display: inline-flex;
     flex: none;
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     color: var(--di-text);
   }
 
   .di-multicombo-check > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 }

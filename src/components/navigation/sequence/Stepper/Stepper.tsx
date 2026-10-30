@@ -37,7 +37,11 @@ export function Stepper({
         const inner = (
           <>
             <span className={cx("di-step-bullet", `is-${step.state}`)} aria-hidden>
-              {step.state === "done" ? <Check className="di-step-check" /> : i + 1}
+              {step.state === "done" ? (
+                <Check className="di-step-check" />
+              ) : (
+                <span className="di-ordinal">{i + 1}</span>
+              )}
             </span>
             <span className={cx("di-step-label", `is-${step.state}`)}>{step.label}</span>
             <span className="di-sr">{stateLabels[step.state]}</span>

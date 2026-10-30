@@ -4,7 +4,7 @@
     /* The term keeps up to two fifths, so a long value wraps instead of
        pushing the term to nothing. */
     grid-template-columns: fit-content(40%) minmax(0, 1fr);
-    gap: var(--di-space-6) var(--di-space-12);
+    gap: var(--di-gap-6) var(--di-gap-12);
     margin: 0;
     font-size: var(--di-font-size-400);
   }

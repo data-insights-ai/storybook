@@ -11,9 +11,10 @@
    * theme is set is what lets a themed region carry its own controls.
    */
   :root,
-  [data-theme] {
+  [data-theme],
+  [data-density] {
     --di-button-radius: var(--di-radius-control);
-    --di-button-height: var(--di-h-ctl);
+    --di-button-height: var(--di-control-h-md);
     --di-button-primary-bg: var(--di-fill-strong);
     --di-button-primary-fg: var(--di-text-on-strong);
     --di-button-primary-bg-hover: var(--di-fill-strong-hover);
@@ -22,7 +23,7 @@
 
     /* The distance from an eyebrow to the title under it. A head re-points
        it rather than the eyebrow guessing which head it sits in. */
-    --di-eyebrow-gap: var(--di-space-12);
+    --di-eyebrow-gap: var(--di-gap-12);
 
     /* One style for every interface label: a field, a stat, a legend, a
        segment, a section's meta. Labels are prose a person reads, so they
@@ -56,27 +57,33 @@
     --di-field-bg: var(--di-bg-surface);
     --di-field-border: var(--di-border-input);
     --di-field-radius: var(--di-radius-micro);
-    --di-field-height: var(--di-h-ctl);
+    --di-field-height: var(--di-control-h-md);
     --di-field-border-hover: var(--di-text-muted);
     --di-field-border-invalid: var(--di-status-danger-dot);
 
     --di-panel-bg: var(--di-bg-surface);
     --di-panel-border: transparent;
     --di-panel-radius: var(--di-radius-surface);
-    --di-panel-pad: var(--di-space-24);
+    --di-panel-pad: var(--di-inset);
+
+    /* A row: its hover tint, the selected row's tint and edge, and an option's highlight in a popup. */
+    --di-row-hover-bg: var(--di-bg-row-hover);
+    --di-row-current-bg: var(--di-bg-selected);
+    --di-select-edge: 3px;
+    --di-option-hover-bg: var(--di-bg-page);
 
     --di-table-bg: var(--di-bg-surface);
     --di-table-shadow: var(--di-elevation-surface);
     --di-table-radius: var(--di-radius-surface);
     --di-table-head-bg: var(--di-bg-subtle);
-    --di-table-edge: var(--di-space-12);
-    --di-table-row-height: var(--di-h-row);
+    --di-table-edge: var(--di-gap-12);
+    --di-table-row-height: var(--di-row-h);
     --di-table-rule: var(--di-rule-hairline);
 
     /* One line of label text. A control mark centres on it, so a
        single-line choice reads as centred and a described one does not. */
     --di-choice-line: calc(var(--di-font-size-400) * var(--di-leading-snug));
-    --di-choice-mark: 16px;
+    --di-choice-mark: var(--di-icon-md);
 
     /* A waiting bar breathes rather than sweeping. One cycle, and how
        far apart two rows start, so a screen can retune the wait. */
@@ -89,7 +96,7 @@
     --di-highlight-font: var(--di-font-sans-band);
 
     --di-pill-radius: var(--di-radius-pill);
-    --di-pill-height: 20px;
+    --di-pill-height: var(--di-pill-h);
 
     /* Page layout. A form is read down one column; a list, a record or
        settings take the frame beside the side column (`Page`). */
@@ -100,9 +107,9 @@
        follows, from a toolbar to the list it filters, between sections, and
        between the fields of one form. */
     --di-rhythm-header: var(--di-space-24);
-    --di-rhythm-toolbar: var(--di-space-12);
+    --di-rhythm-toolbar: var(--di-gap-12);
     --di-rhythm-section: var(--di-space-32);
-    --di-rhythm-field: var(--di-space-16);
+    --di-rhythm-field: var(--di-gap-16);
 
     /* The frame around a page and a chart's plot height. They grow on large
        screens (below). */
@@ -112,6 +119,145 @@
        record, a list's open row. It keeps its width on every screen: what
        grows is the content beside it. */
     --di-rail-width: 320px;
+  }
+
+  /*
+   * Fixed measures: a popup's width, a chart's plot, a mark. They do not
+   * follow the density. One block per component group.
+   */
+  :root,
+  [data-theme],
+  [data-density] {
+    /* actions, forms */
+    --di-button-spinner: 11px;
+    --di-choice-dot: 6px;
+    --di-choicecards-min: 280px;
+    --di-choicecards-planned-min: 140px;
+    --di-date-range-handle-w: 36px;
+    --di-listbox-max-h: 320px;
+    /* An entry in a token field sits inside the field's frame, so it follows the field's height. */
+    --di-token-h: calc(var(--di-field-height) - 2 * var(--di-space-4) - 2px);
+    --di-token-remove: calc(var(--di-token-h) - var(--di-space-4));
+    /* end actions, forms */
+    /* layout, overlays, shell, inference */
+    --di-page-title-measure: 680px;
+    --di-content-max: 1440px;
+    --di-numbered-col: 36px;
+    --di-hero-lead-min: 180px;
+    --di-hero-lead-max: 240px;
+    --di-stage-min-width: 150px;
+    --di-stage-min-height: 168px;
+    --di-list-detail-list-min: 300px;
+    --di-list-detail-list-max: 380px;
+    --di-split-preview-min: 360px;
+    --di-flyout-width: 440px;
+    --di-flyout-max-height: 640px;
+    --di-modal-width: 480px;
+    --di-sheet-width-md: 480px;
+    --di-sheet-width-lg: 760px;
+    --di-sheet-width-xl: 1120px;
+    --di-shell-rail-width: 248px;
+    --di-shell-drawer-width: 360px;
+    --di-shell-logo-width: 124px;
+    --di-shell-bar-height: 58px;
+    --di-signin-width: 396px;
+    --di-signin-logo-width: 128px;
+    --di-confidence-track-height: 3px;
+    /* end layout, overlays, shell, inference */
+    /* data, text, marks, feedback */
+    --di-mark-dot: 6px;
+    /* Figures: the narrowest a figure column gets, regular, quiet and on a phone. */
+    --di-figure-min: 140px;
+    --di-figure-min-quiet: 180px;
+    --di-figure-min-phone: 120px;
+    /* Records. */
+    --di-attention-item-min: 280px;
+    --di-attention-rank-bar: 3px;
+    --di-attention-clear-dot: 8px;
+    --di-living-trend-min: 160px;
+    --di-session-copy-min: 160px;
+    --di-fact-label-min: 96px;
+    --di-fact-label-max: 200px;
+    --di-facts-grid-min: 360px;
+    --di-facts-grid-cell-h: 108px;
+    --di-facts-column-min: 200px;
+    /* Marks: severity steps, the icon specimen grid. */
+    --di-sev-step-w: 3px;
+    --di-sev-step-1: 5px;
+    --di-sev-step-2: 7px;
+    --di-sev-step-3: 9px;
+    --di-sev-step-4: 12px;
+    --di-icon-catalog-min: 112px;
+    --di-codeblock-max-h: 480px;
+    /* Feedback: a toast's width, the tooltip, the waiting marks and the skeleton's bars. */
+    --di-toast-min: 320px;
+    --di-toast-max: 480px;
+    --di-tooltip-h: 22px;
+    --di-app-loader-mark: 64px;
+    --di-progress-h: 5px;
+    --di-route-progress-h: 2px;
+    --di-skeleton-bar-h: 9px;
+    --di-skeleton-label-h: 7px;
+    --di-skeleton-label-w: 96px;
+    --di-skeleton-title-h: 22px;
+    --di-skeleton-title-w: 260px;
+    --di-skeleton-lede-w: 420px;
+    --di-skeleton-heading-h: 12px;
+    --di-skeleton-heading-w: 140px;
+    --di-skeleton-search-w: 280px;
+    --di-skeleton-button-w: 96px;
+    --di-skeleton-fact-min: 220px;
+    --di-skeleton-trailing-w: 54px;
+    /* end data, text, marks, feedback */
+    /* navigation, charts, timeline */
+    --di-sb-width: 248px;
+    --di-sb-rail: 56px;
+    --di-sb-drawer-width: 320px;
+    --di-sb-brand-h: 24px;
+    --di-menu-min: 188px;
+    --di-menu-max: 360px;
+    --di-command-width: 560px;
+    /* The palette's input is its head: a large control plus its own air. */
+    --di-command-input-h: calc(var(--di-control-h-lg) + 10px);
+    --di-command-list-max: 320px;
+    --di-step-bullet: 22px;
+    --di-chart-h-sm: 140px;
+    --di-chart-h-md: 200px;
+    --di-chart-h-lg: 280px;
+    --di-chart-h-xl: 400px;
+    --di-chart-tip-min: 148px;
+    --di-chart-tip-max: 320px;
+    --di-chart-swatch: 8px;
+    --di-chart-dash: 16px;
+    --di-chart-card-min: 360px;
+    --di-bars-h: 72px;
+    --di-level-min: 160px;
+    --di-level-track-h: 16px;
+    --di-level-compare-h: 6px;
+    --di-level-compare-swatch: 4px;
+    --di-matrix-code-min: 88px;
+    --di-matrix-cell-h: 8px;
+    --di-sparkline-h: 54px;
+    --di-sparkline-min: 120px;
+    --di-sparkline-bar: 7px;
+    --di-chain-label-min: 120px;
+    --di-chain-label-max: 200px;
+    --di-chain-label-narrow: 96px;
+    --di-chain-count: 24px;
+    --di-timeline-swatch: 10px;
+    --di-timeline-readout-min: 180px;
+    --di-timeline-readout-max: 280px;
+    --di-periods-label: minmax(96px, 22%);
+    --di-periods-caption: minmax(120px, 26%);
+    --di-period-track-h: 10px;
+    --di-tsummary-strip-h: 46px;
+    --di-tsummary-swatch: 12px;
+    --di-week-max: 640px;
+    --di-week-label: 40px;
+    --di-week-track-h: 12px;
+    /* The active block's ring: a 2px gap in the surface, then 1px of ink. */
+    --di-tsummary-ring: 3px;
+    /* end navigation, charts, timeline */
   }
 
   /* Where a sticky toolbar or table head stops: the window's top, and
@@ -130,7 +276,8 @@
    */
   @media (min-width: 1920px) {
     :root,
-    [data-theme] {
+    [data-theme],
+    [data-density] {
       --di-measure-form: 800px;
       --di-content-pad: var(--di-space-32);
       --di-chart-height: 300px;
@@ -139,17 +286,19 @@
 
   @media (min-width: 2560px) {
     :root,
-    [data-theme] {
+    [data-theme],
+    [data-density] {
       --di-content-pad: var(--di-space-48);
       --di-chart-height: 360px;
     }
   }
 
-  /* On a touch screen a field is a 40px target, the row height. */
+  /* On a touch screen a field is a 40px target, in either density. */
   @media (pointer: coarse) {
     :root,
-    [data-theme] {
-      --di-field-height: var(--di-h-row);
+    [data-theme],
+    [data-density] {
+      --di-field-height: var(--di-target);
     }
   }
 }

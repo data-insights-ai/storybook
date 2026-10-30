@@ -8,14 +8,14 @@
 
   /* The field label's distance to its control. */
   .di-toggle-legend {
-    margin-bottom: var(--di-space-6);
+    margin-bottom: var(--di-gap-6);
     padding: 0;
   }
 
   .di-toggle-row {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
   }
 
   /* A field’s height, so the days line up with the fields beside them. */
@@ -23,7 +23,7 @@
     position: relative;
     min-width: var(--di-field-height);
     height: var(--di-field-height);
-    padding: 0 var(--di-space-8);
+    padding: 0 var(--di-gap-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);

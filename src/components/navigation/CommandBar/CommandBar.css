@@ -1,6 +1,6 @@
 @layer components {
   .di-command {
-    width: min(560px, 100%);
+    width: min(var(--di-command-width), 100%);
     overflow: hidden;
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-surface);
@@ -11,16 +11,16 @@
   .di-command-input {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
-    height: 46px;
-    padding: 0 var(--di-space-12);
+    gap: var(--di-gap-8);
+    height: var(--di-command-input-h);
+    padding: 0 var(--di-gap-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
 
   .di-command-icon {
-    width: 18px;
-    height: 18px;
+    width: var(--di-icon-lg);
+    height: var(--di-icon-lg);
     flex: none;
     color: var(--di-text-muted);
   }
@@ -43,19 +43,19 @@
   }
 
   .di-command-list {
-    max-height: 320px;
-    padding: var(--di-space-6);
+    max-height: var(--di-command-list-max);
+    padding: var(--di-gap-6);
     overflow-y: auto;
   }
 
   .di-command-group + .di-command-group {
-    margin-top: var(--di-space-6);
-    padding-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
+    padding-top: var(--di-gap-6);
     border-top: 1px solid var(--di-rule-hairline);
   }
 
   .di-command-group-label {
-    padding: var(--di-space-4) var(--di-space-8);
+    padding: var(--di-gap-4) var(--di-gap-8);
     font-family: var(--di-mono-label-family);
     font-size: var(--di-mono-label-size);
     font-weight: var(--di-mono-label-weight);
@@ -64,59 +64,30 @@
     color: var(--di-mono-label-color);
   }
 
-  .di-command-row {
-    display: flex;
-    align-items: center;
-    gap: var(--di-space-8);
-    width: 100%;
-    height: var(--di-h-comfort);
-    padding: 0 var(--di-space-8);
-    border: 0;
-    border-radius: var(--di-radius-micro);
-    background: transparent;
-    color: var(--di-text);
-    font-size: var(--di-font-size-400);
-    text-align: left;
-  }
-
-  .di-command-row:hover,
-  .di-command-row.is-active {
-    background: var(--di-bg-page);
-  }
-
   .di-command-row-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 17px;
+    width: var(--di-icon-md);
     flex: none;
     color: var(--di-text-muted);
   }
 
   .di-command-row-icon > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-command-row-label {
-    flex: 1;
-    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  .di-command-row-meta {
-    flex: none;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    color: var(--di-text-subtle);
-  }
-
   .di-command-foot {
     display: flex;
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding: var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
@@ -128,22 +99,22 @@
   .di-command-privacy {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     margin-left: auto;
     color: var(--di-text-muted);
   }
 
   .di-command-privacy > svg {
-    width: 13px;
-    height: 13px;
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
   }
 
   .di-command-chip {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-4);
-    height: 22px;
-    padding: 0 var(--di-space-8);
+    gap: var(--di-gap-4);
+    height: var(--di-pill-height);
+    padding: 0 var(--di-gap-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-surface);

@@ -2,7 +2,7 @@
   .di-attention-section {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
   }
 
   .di-attention-heading {
@@ -17,43 +17,32 @@
   .di-attention {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .di-attention-item {
-    flex: 1 1 280px;
+    flex: 1 1 var(--di-attention-item-min);
     min-width: 0;
     display: grid;
     grid-template-columns: 2.25rem minmax(0, 1fr);
     grid-template-rows: 1fr auto;
     align-items: baseline;
-    gap: var(--di-space-12) var(--di-space-16);
-    padding: var(--di-space-24);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
-    box-shadow: var(--di-elevation-surface);
+    gap: var(--di-gap-12) var(--di-gap-16);
+    padding: var(--di-inset);
   }
 
   .di-attention-item.is-emphasis {
     flex-basis: 100%;
-    box-shadow:
-      0 0 0 1px var(--di-one-edge),
-      var(--di-one-glow);
   }
 
   .di-attention-rank {
     grid-row: 1;
     grid-column: 1;
     justify-self: start;
-    font-family: var(--di-heading-family);
-    font-size: var(--di-figure-size);
-    font-weight: var(--di-weight-bold);
-    font-variant-numeric: tabular-nums;
     line-height: 1;
-    color: var(--di-text-subtle);
   }
 
   /*
@@ -62,7 +51,7 @@
    */
   .di-attention-item.is-emphasis .di-attention-rank {
     padding-left: var(--di-space-8);
-    box-shadow: inset 3px 0 0 var(--di-one);
+    box-shadow: inset var(--di-attention-rank-bar) 0 0 var(--di-one);
     color: var(--di-one-ink);
   }
 
@@ -71,7 +60,7 @@
     grid-column: 2;
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     min-width: 0;
   }
 
@@ -79,13 +68,13 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   /* The one gold object of the view, with the edge and the rank bar: a small pill, navy words. */
   .di-attention-one {
     align-self: center;
-    padding: var(--di-space-2) var(--di-space-8);
+    padding: var(--di-gap-2) var(--di-gap-8);
     border-radius: var(--di-radius-pill);
     background: var(--di-one);
     font-family: var(--di-mono-label-family);
@@ -126,19 +115,15 @@
     align-self: end;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   /* On a phone the one button runs the item's width. */
   @media (max-width: 600px) {
     .di-attention-item {
       grid-template-columns: 1.75rem minmax(0, 1fr);
-      gap: var(--di-space-12);
-      padding: var(--di-space-16);
-    }
-
-    .di-attention-rank {
-      font-size: var(--di-font-size-600);
+      gap: var(--di-gap-12);
+      padding: var(--di-inset-group);
     }
 
     .di-attention-action {
@@ -151,7 +136,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-4) var(--di-space-16);
+    gap: var(--di-gap-4) var(--di-gap-16);
     padding: var(--di-space-16) 0;
     border-block: 1px solid var(--di-rule);
   }
@@ -166,9 +151,9 @@
   .di-attention-clear-title::before {
     content: "";
     display: inline-block;
-    width: 8px;
-    height: 8px;
-    margin-right: var(--di-space-12);
+    width: var(--di-attention-clear-dot);
+    height: var(--di-attention-clear-dot);
+    margin-right: var(--di-gap-12);
     border-radius: 50%;
     background: var(--di-status-ok-dot);
     vertical-align: 0.1em;

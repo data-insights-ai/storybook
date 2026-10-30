@@ -16,7 +16,7 @@
       "eyebrow meta"
       "heading meta"
       "lede meta";
-    column-gap: var(--di-space-16);
+    column-gap: var(--di-gap-16);
   }
 
   .di-section-eyebrow {
@@ -52,7 +52,7 @@
 
   .di-section-title-console {
     --di-eyebrow-gap: var(--di-space-8);
-    margin-bottom: var(--di-space-12);
+    margin-bottom: var(--di-gap-12);
   }
 
   .di-section-title-console .di-section-meta {
@@ -65,7 +65,7 @@
   }
 
   .di-section-title-console .di-section-lede {
-    margin-top: var(--di-space-8);
+    margin-top: var(--di-gap-8);
     max-width: 62ch;
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
@@ -93,7 +93,7 @@
   }
 
   .di-section-title-brand .di-section-lede {
-    margin-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
     max-width: 58ch;
     font-size: var(--di-font-size-500);
     line-height: 1.55;
@@ -112,7 +112,7 @@
 
     .di-section-meta {
       justify-self: start;
-      margin-top: var(--di-space-8);
+      margin-top: var(--di-gap-8);
       white-space: normal;
     }
   }

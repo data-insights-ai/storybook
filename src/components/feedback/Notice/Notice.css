@@ -1,20 +1,20 @@
 @layer components {
   /*
-   * Three columns: the icon, the copy, the action. An action may sit inside
-   * `NoticeText` or beside it; either way it stays inside the padding, in
-   * line with the copy, and goes under the copy on a narrow notice.
+   * Three columns: the icon, the copy, the action. The plane is the one
+   * surface; the toned icon column carries the state, no frame does.
+   * An action may sit inside `NoticeText` or beside it; either way it stays
+   * inside the padding, in line with the copy, and goes under the copy on a
+   * narrow notice. The inset stays 12px in compact: the least text may sit
+   * from an edge.
    */
   .di-notice {
     container: di-notice / inline-size;
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr) max-content;
     overflow: hidden;
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
   }
 
-  /* The icon column echoes the panel's index: a notice is also a record. */
+  /* The icon column carries the tone: the state is a mark plus a word. */
   .di-notice-icon {
     grid-column: 1;
     grid-row: 1 / span 2;
@@ -22,14 +22,13 @@
     justify-content: center;
     width: var(--di-index-col);
     flex: none;
-    padding-top: var(--di-notice-pad);
-    border-right: 1px solid var(--di-border);
+    padding-top: var(--di-space-12);
     background: var(--di-bg-page);
   }
 
   .di-notice-icon > svg {
-    width: 17px;
-    height: 17px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-notice-copy {
@@ -38,8 +37,8 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) max-content;
     align-items: start;
-    column-gap: var(--di-notice-pad);
-    padding: var(--di-notice-pad);
+    column-gap: var(--di-gap-12);
+    padding: var(--di-space-12);
   }
 
   .di-notice-copy > * {
@@ -54,11 +53,11 @@
   .di-notice > .di-notice-action {
     grid-column: 3;
     grid-row: 1;
-    padding: var(--di-notice-pad) var(--di-notice-pad) var(--di-notice-pad) 0;
+    padding: var(--di-space-12) var(--di-space-12) var(--di-space-12) 0;
   }
 
   .di-notice-title {
-    font-size: var(--di-notice-title-size);
+    font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-semibold);
     letter-spacing: var(--di-tracking-tight);
     line-height: var(--di-leading-snug);
@@ -67,65 +66,33 @@
 
   .di-notice-body {
     margin-top: var(--di-space-2);
-    font-size: var(--di-notice-body-size);
+    font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
-  }
-
-  /*
-   * The two densities. The inset and the two type steps move together —
-   * a notice padded to 16 with 13px copy in it reads as a mistake, not a
-   * variant, which is why this is one prop and not three.
-   */
-  .di-notice-md {
-    --di-notice-pad: var(--di-space-12);
-    --di-notice-title-size: var(--di-font-size-400);
-    --di-notice-body-size: var(--di-font-size-300);
-  }
-
-  .di-notice-comfort {
-    --di-notice-pad: var(--di-space-16);
-    --di-notice-title-size: var(--di-font-size-500);
-    --di-notice-body-size: var(--di-font-size-400);
   }
 
   .di-notice-action {
     align-self: center;
     display: flex;
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   .di-notice-neutral .di-notice-icon {
     color: var(--di-text-muted);
   }
 
-  .di-notice-ok {
-    border-color: var(--di-status-ok-border);
-  }
-
   .di-notice-ok .di-notice-icon {
-    border-right-color: var(--di-status-ok-border);
     background: var(--di-status-ok-bg);
     color: var(--di-status-ok-fg);
   }
 
-  .di-notice-warn {
-    border-color: var(--di-status-warn-border);
-  }
-
   .di-notice-warn .di-notice-icon {
-    border-right-color: var(--di-status-warn-border);
     background: var(--di-status-warn-bg);
     color: var(--di-status-warn-fg);
   }
 
-  .di-notice-danger {
-    border-color: var(--di-status-danger-border);
-  }
-
   .di-notice-danger .di-notice-icon {
-    border-right-color: var(--di-status-danger-border);
     background: var(--di-status-danger-bg);
     color: var(--di-status-danger-fg);
   }
@@ -135,13 +102,13 @@
     .di-notice-copy > .di-notice-action {
       grid-column: 1;
       grid-row: auto;
-      margin-top: var(--di-space-12);
+      margin-top: var(--di-gap-12);
     }
 
     .di-notice > .di-notice-action {
       grid-column: 2;
       grid-row: 2;
-      padding: 0 var(--di-notice-pad) var(--di-notice-pad);
+      padding: 0 var(--di-space-12) var(--di-space-12);
     }
 
     .di-notice-action {

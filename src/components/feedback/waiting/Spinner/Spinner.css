@@ -2,12 +2,12 @@
   .di-spinner-row {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-spinner {
-    width: 14px;
-    height: 14px;
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
     flex: none;
     border: 2px solid var(--di-border-strong);
     border-top-color: var(--di-fill-strong);

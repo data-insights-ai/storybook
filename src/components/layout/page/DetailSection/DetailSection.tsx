@@ -2,6 +2,8 @@ import { Children, isValidElement, useEffect, useId, useRef, type FormEvent, typ
 import { Pencil } from "lucide-react";
 import { Button } from "../../../actions/Button";
 import { focusFirstField, useShortcutKeys } from "../../../../internal/shortcutKeys";
+import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
 import "./DetailSection.css";
 
 /**
@@ -63,7 +65,7 @@ export function DetailSection({
   // on every section, the shortcut help names it.
   useShortcutKeys(canEdit);
   return (
-    <section className="di-detail-section" aria-labelledby={titleId}>
+    <section className={cx(surfaceClass({ padded: false }), "di-detail-section")} aria-labelledby={titleId}>
       <header className="di-detail-section-head">
         <div className="di-detail-section-heading">
           <h2 className="di-detail-section-title" id={titleId}>
@@ -78,7 +80,7 @@ export function DetailSection({
               <Button
                 ref={editButton}
                 variant="secondary"
-                size="dense"
+                size="sm"
                 onClick={onEdit}
                 data-di-shortcut="e"
                 aria-keyshortcuts="e"

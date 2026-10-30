@@ -192,11 +192,7 @@
     --di-space-64: 64px;
     --di-space-96: 96px;
 
-    /* Control heights. The console runs dense; 32px is the standard. */
-    --di-h-dense: 28px;
-    --di-h-ctl: 32px;
-    --di-h-comfort: 36px;
-    --di-h-row: 40px;
+    /* Control heights, row heights, insets and gaps follow the density: density.css. */
 
     /* Motion stays under 240ms, ease-out, one change at a time. */
     --di-duration: 120ms;

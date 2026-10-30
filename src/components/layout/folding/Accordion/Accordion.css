@@ -4,9 +4,6 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    border: 1px solid var(--di-panel-border);
-    border-radius: var(--di-panel-radius);
-    background: var(--di-panel-bg);
   }
 
   .di-accordion-item + .di-accordion-item {
@@ -20,14 +17,14 @@
 
   .di-accordion-toggle {
     display: grid;
-    grid-template-columns: 16px minmax(0, 1fr) auto;
+    grid-template-columns: var(--di-icon-md) minmax(0, 1fr) auto;
     grid-template-areas:
       "chevron title meta"
       ". detail meta";
     align-items: center;
-    gap: var(--di-space-2) var(--di-space-12);
+    gap: var(--di-space-2) var(--di-gap-12);
     width: 100%;
-    padding: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-gap-12) var(--di-inset-group);
     border: 0;
     background: transparent;
     color: var(--di-text);
@@ -60,8 +57,8 @@
 
   .di-accordion-chevron {
     grid-area: chevron;
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     color: var(--di-text-muted);
     transition: transform var(--di-duration) var(--di-ease);
   }
@@ -96,7 +93,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-400);
     font-variant-numeric: tabular-nums;
@@ -134,15 +131,15 @@
   .di-accordion-body {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     min-width: 0;
-    padding: var(--di-space-4) var(--di-space-16) var(--di-space-16);
+    padding: var(--di-gap-4) var(--di-inset-group) var(--di-inset-group);
   }
 
   /* A narrow list puts the meta under the detail rather than squeezing the title. */
   @container di-accordion (max-width: 480px) {
     .di-accordion-toggle {
-      grid-template-columns: 16px minmax(0, 1fr);
+      grid-template-columns: var(--di-icon-md) minmax(0, 1fr);
       grid-template-areas:
         "chevron title"
         ". detail"
@@ -151,7 +148,7 @@
 
     .di-accordion-meta {
       justify-content: flex-start;
-      margin-top: var(--di-space-4);
+      margin-top: var(--di-gap-4);
     }
   }
 }

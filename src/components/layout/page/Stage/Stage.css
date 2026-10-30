@@ -1,29 +1,25 @@
 @layer components {
   .di-stage-track {
     display: grid;
-    gap: var(--di-space-8);
-    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    gap: var(--di-gap-8);
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--di-stage-min-width), 100%), 1fr));
     min-width: 0;
   }
 
   .di-stage {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
-    min-height: 168px;
+    gap: var(--di-gap-8);
+    min-height: var(--di-stage-min-height);
     min-width: 0;
-    padding: var(--di-space-16);
-    border: 1px solid var(--di-panel-border);
-    border-radius: var(--di-panel-radius);
-    background: var(--di-panel-bg);
-    box-shadow: var(--di-elevation-surface);
+    padding: var(--di-inset-group);
   }
 
   .di-stage-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
@@ -47,7 +43,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin-top: auto;
   }
 
@@ -57,8 +53,8 @@
   }
 
   .di-stage-icon svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   /*
@@ -66,16 +62,17 @@
    * Toast does rather than colouring three element selectors. Whatever the
    * foot slot holds — a Spinner, a SealValue, a StatusPill — then reads on
    * that ground instead of inheriting paper colours that measure 2:1
-   * against it.
+   * against it. Inside another surface it stays navy: it is the step that
+   * runs, not a group to sink.
    */
-  .di-stage.is-current {
+  .di-surface.di-stage.is-current {
     --di-text: var(--di-inverse-text);
     --di-text-muted: var(--di-inverse-muted);
+    --di-text-subtle: var(--di-inverse-muted);
     --di-focus: var(--di-inverse-focus);
+    --di-surface-bg: var(--di-inverse-bg);
+    --di-surface-shadow: none;
 
-    background: var(--di-inverse-bg);
-    border-color: var(--di-inverse-bg);
-    box-shadow: none;
     color: var(--di-text);
   }
 

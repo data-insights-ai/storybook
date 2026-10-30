@@ -71,7 +71,7 @@ export const Other: Story = {
         </IconTile>
       </SessionMark>
       <SessionAction>
-        <Button variant="danger" size="dense">
+        <Button variant="danger" size="sm">
           End session
         </Button>
       </SessionAction>
@@ -108,7 +108,7 @@ export const List: Story = {
           </IconTile>
         </SessionMark>
         <SessionAction>
-          <Button variant="danger" size="dense">
+          <Button variant="danger" size="sm">
             End session
           </Button>
         </SessionAction>

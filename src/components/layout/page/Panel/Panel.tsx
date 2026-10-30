@@ -1,5 +1,7 @@
 import { Children, isValidElement, useId, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
+import { Eyebrow } from "../../../text/Eyebrow";
 import "./Panel.css";
 
 /**
@@ -74,13 +76,22 @@ export function Panel({
 
   return (
     <section
-      className={cx("di-panel", `di-panel-${surface}`, emphasis && "is-emphasis", className)}
+      className={cx(
+        surfaceClass({ plane: surface, edge: emphasis ? "one" : "none" }),
+        "di-panel",
+        emphasis && "is-emphasis",
+        className,
+      )}
       aria-labelledby={title !== undefined && heading ? id : undefined}
     >
       {headed ? (
         <div className="di-panel-header">
           <div className="di-panel-titles">
-            {label === undefined ? null : <p className="di-panel-label">{label}</p>}
+            {label === undefined ? null : (
+              <Eyebrow variant="plain" tone="quiet">
+                {label}
+              </Eyebrow>
+            )}
             {title === undefined && slot.status.length === 0 ? null : (
               <div className="di-panel-title-row">
                 {title === undefined ? null : <PanelTitle id={id} heading={heading} title={title} />}

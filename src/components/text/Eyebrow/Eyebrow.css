@@ -1,0 +1,33 @@
+@layer components {
+  .di-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-8);
+    margin-bottom: var(--di-eyebrow-gap);
+  }
+
+  /* The mono caption every label above a value uses; the eyebrow adds only its ink. */
+  .di-eyebrow-label {
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-one-ink);
+    overflow-wrap: anywhere;
+  }
+
+  .di-eyebrow.is-quiet .di-eyebrow-label {
+    color: var(--di-mono-label-color);
+  }
+
+  .di-eyebrow.is-danger .di-eyebrow-label {
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-eyebrow-rule {
+    height: 1px;
+    flex: 1;
+    background: var(--di-rule);
+  }
+}

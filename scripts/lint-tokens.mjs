@@ -30,6 +30,17 @@ const PRIMITIVE =
  * a surface that re-points its own tokens is naming a value on purpose. */
 const TOKEN_FILES = /styles\/tokens\//;
 
+/*
+ * Sizes and spacing in a component follow the density, so a raw length
+ * there is a value one density cannot change. What stays raw is what no
+ * density moves: a 1px rule or hairline, a border, an outline and its
+ * offset, a focus ring of 2px or less, a stroke, an underline offset, and
+ * the condition of a media or container query (CSS cannot read a custom
+ * property there). Anything else names a token, or says why it cannot.
+ */
+const SIZE_FREE =
+  /^(border(-[a-z]+)*|outline(-[a-z]+)?|stroke(-[a-z]+)?|text-underline-offset|text-decoration-thickness|transition|animation)$/;
+
 const files = [];
 (function walk(dir) {
   for (const name of readdirSync(dir)) {
@@ -72,10 +83,39 @@ for (const file of files) {
   const isComponent = /\/components\//.test(file);
   const fileAllows = (rule) => allowedFile(text, rule);
 
+  let property = null;
   lines.forEach((raw, i) => {
     const line = i + 1;
     const code = raw.replace(/\/\*.*?\*\//g, "");
     if (/^\s*\*/.test(raw) || /^\s*\/\//.test(raw)) return;
+
+    if (
+      isCss &&
+      !isTokens &&
+      (isComponent || /styles\/primitives\.css$/.test(file)) &&
+      !fileAllows("size") &&
+      !allowed(lines, i, "size")
+    ) {
+      /* 7. Sizes and spacing come from tokens, so the density can move them. */
+      const own = code.match(/^\s*(-?-?[a-z][\w-]*)\s*:(.*)$/);
+      const continues = !own && property && !/^\s*([.@}:#\[*&>]|[a-z][\w-]*\s*[,{])/.test(code);
+      if (own) property = own[1];
+      const value = own ? own[2] : continues ? code : "";
+      if (value && !/^\s*@/.test(code) && !SIZE_FREE.test(property)) {
+        for (const px of value.matchAll(/(-?\d*\.?\d+)px/g)) {
+          const n = Math.abs(Number(px[1]));
+          if (n <= 1 || (property === "box-shadow" && n <= 2)) continue;
+          add(
+            file,
+            line,
+            "size",
+            `${property}: ${px[0]} is a raw length. Use a density token (--di-control-h-*, --di-row-h, --di-icon-*, --di-inset*, --di-gap-*) or a measure from component.css.`,
+          );
+        }
+      }
+      if (own && /;\s*$/.test(code)) property = null;
+      if (/[{}]\s*$/.test(code)) property = null;
+    }
 
     if (isCss && !isTokens) {
       /* 1. Spacing lands on the ramp. */

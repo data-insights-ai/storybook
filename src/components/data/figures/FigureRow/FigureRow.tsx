@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
-import { MetaLine } from "../../text/MetaLine";
+import { MetaLine } from "../../../text/MetaLine";
 import "./FigureRow.css";
 
 /**

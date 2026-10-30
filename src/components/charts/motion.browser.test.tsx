@@ -37,13 +37,18 @@ function shapes() {
   );
 }
 
+/* Every chart again in compact density, where its sizes come from the compact tokens. */
 const cases = Object.entries(modules).flatMap(([file, mod]) =>
-  Object.entries(composeStories(mod)).map(
-    ([name, Story]) => [`${file.replace(/^.*\//, "")} ${name}`, Story as () => React.ReactElement] as const,
+  Object.entries(composeStories(mod)).flatMap(([name, Story]) =>
+    (["comfortable", "compact"] as const).map(
+      (density) =>
+        [`${file.replace(/^.*\//, "")} ${name} (${density})`, Story as () => React.ReactElement, density] as const,
+    ),
   ),
 );
 
-test.each(cases)("%s draws no series in", async (_, Story) => {
+test.each(cases)("%s draws no series in", async (_, Story, density) => {
+  document.documentElement.setAttribute("data-density", density);
   const host = document.createElement("div");
   host.style.width = "720px";
   document.body.append(host);

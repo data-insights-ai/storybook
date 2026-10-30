@@ -3,9 +3,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     height: var(--di-button-height);
-    padding: 0 var(--di-space-12);
+    padding: 0 var(--di-gap-12);
     border: 1px solid transparent;
     border-radius: var(--di-button-radius);
     font-family: var(--di-font-ui);
@@ -22,38 +22,38 @@
   }
 
   .di-btn > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     flex: none;
   }
 
-  .di-btn-dense {
-    height: var(--di-h-dense);
-    padding: 0 var(--di-space-12);
+  .di-btn-sm {
+    height: var(--di-control-h-sm);
+    padding: 0 var(--di-gap-12);
     font-size: var(--di-font-size-300);
   }
 
   .di-btn-md {
-    height: var(--di-h-ctl);
+    height: var(--di-control-h-md);
   }
 
-  .di-btn-comfort {
-    height: var(--di-h-comfort);
-    padding: 0 var(--di-space-16);
+  .di-btn-lg {
+    height: var(--di-control-h-lg);
+    padding: 0 var(--di-gap-16);
     font-size: var(--di-font-size-500);
   }
 
   .di-btn-icon {
-    width: var(--di-h-ctl);
+    width: var(--di-control-h-md);
     padding: 0;
   }
 
-  .di-btn-icon.di-btn-dense {
-    width: var(--di-h-dense);
+  .di-btn-icon.di-btn-sm {
+    width: var(--di-control-h-sm);
   }
 
-  .di-btn-icon.di-btn-comfort {
-    width: var(--di-h-comfort);
+  .di-btn-icon.di-btn-lg {
+    width: var(--di-control-h-lg);
   }
 
   /* The one filled control on the sheet. */
@@ -143,8 +143,8 @@
   }
 
   .di-btn-spinner {
-    width: 11px;
-    height: 11px;
+    width: var(--di-button-spinner);
+    height: var(--di-button-spinner);
     flex: none;
     border: 2px solid currentColor;
     border-top-color: transparent;
@@ -161,15 +161,7 @@
   /* The key that presses the button sits after its label, on the button's own ground. */
   .di-btn-kbd {
     display: inline-flex;
-    align-items: center;
-    height: 18px;
-    margin-left: var(--di-space-2);
-    padding: 0 var(--di-space-4);
-    border: 1px solid currentColor;
-    border-radius: var(--di-radius-micro);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    line-height: 1;
+    margin-left: var(--di-gap-2);
   }
 
   @media (pointer: coarse) {
@@ -186,18 +178,18 @@
       width: var(--di-field-height);
     }
 
-    /* A dense button keeps its look; the target around it grows to the 40px row. */
-    .di-btn-dense {
+    /* A small button keeps its look; the target around it grows to 40px. */
+    .di-btn-sm {
       position: relative;
     }
 
-    .di-btn-dense::after {
+    .di-btn-sm::after {
       content: "";
       position: absolute;
       top: 50%;
       left: 50%;
-      width: max(100%, var(--di-h-row));
-      height: max(100%, var(--di-h-row));
+      width: max(100%, var(--di-target));
+      height: max(100%, var(--di-target));
       translate: -50% -50%;
     }
   }

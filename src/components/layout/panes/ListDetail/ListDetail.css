@@ -6,14 +6,14 @@
   .di-ld-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
     align-items: start;
   }
 
   .di-ld-list {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 
@@ -22,8 +22,8 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-8);
-    padding: 0 var(--di-space-8) var(--di-space-4);
+    gap: var(--di-gap-8);
+    padding: 0 var(--di-gap-8) var(--di-gap-4);
   }
 
   .di-ld-items {
@@ -38,27 +38,18 @@
   .di-ld-item {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     width: 100%;
-    padding: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-gap-12) var(--di-gap-16);
     border: 0;
     border-radius: var(--di-radius-inset);
-    background: transparent;
     color: var(--di-text);
     text-align: left;
-    transition: background-color var(--di-duration) var(--di-ease);
   }
 
-  .di-ld-item:hover {
-    background: var(--di-bg-row-hover);
-  }
-
-  /* One step further up than the pane, with the selection's cornflower edge. */
-  .di-ld-item.is-selected {
-    background: var(--di-bg-selected);
-    box-shadow:
-      inset 3px 0 0 var(--di-select),
-      var(--di-elevation-surface);
+  /* Zero specificity, so the row's hover tint and the selected row (`.di-row-current`) paint over it. */
+  :where(.di-ld-item) {
+    background: transparent;
   }
 
   .di-ld-item:focus-visible {
@@ -69,7 +60,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-ld-item-title {
@@ -88,7 +79,7 @@
   .di-ld-pane {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
     min-width: 0;
   }
 
@@ -101,8 +92,8 @@
     align-self: flex-start;
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
-    min-height: var(--di-h-ctl);
+    gap: var(--di-gap-6);
+    min-height: var(--di-control-h-md);
     padding: 0;
     border: 0;
     background: none;
@@ -111,8 +102,8 @@
   }
 
   .di-ld-back > svg {
-    width: 14px;
-    height: 14px;
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
   }
 
   @container (width < 56rem) {
@@ -124,8 +115,8 @@
 
   @container (width >= 56rem) {
     .di-ld-grid {
-      grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
-      gap: var(--di-space-32);
+      grid-template-columns: minmax(var(--di-list-detail-list-min), var(--di-list-detail-list-max)) minmax(0, 1fr);
+      gap: var(--di-gap-32);
     }
 
     /* The list is a pane of its own, a step above the ground and full height. */
@@ -134,7 +125,7 @@
       top: calc(var(--di-sticky-top) + var(--di-space-16));
       height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
       overflow: auto;
-      padding: var(--di-space-12) var(--di-space-8);
+      padding: var(--di-space-12) var(--di-gap-8);
       border-radius: var(--di-radius-surface);
       background: var(--di-bg-pane);
       box-shadow: var(--di-elevation-surface);

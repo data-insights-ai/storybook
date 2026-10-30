@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Kbd } from "./Kbd";
 
 const meta = {
-  title: "Data/Text/Kbd",
+  title: "Text/Kbd",
   component: Kbd,
   tags: ["layer:primitive", "autodocs"],
   args: { children: "⌘K" },

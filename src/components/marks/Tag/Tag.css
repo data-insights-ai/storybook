@@ -2,15 +2,15 @@
   .di-tag-list {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-4) var(--di-space-6);
+    gap: var(--di-gap-4) var(--di-gap-6);
   }
 
   .di-tag {
     display: inline-flex;
     align-items: baseline;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     max-width: 100%;
-    padding: var(--di-space-2) var(--di-space-6);
+    padding: var(--di-gap-2) var(--di-gap-6);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-surface);

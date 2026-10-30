@@ -17,14 +17,17 @@
     display: flex;
   }
 
+  /* The row is the shared one (`.di-row`), its hover and current tint re-pointed to the chrome. */
   .di-sb-button {
+    --di-row-hover-bg: color-mix(in srgb, var(--di-sidebar-fg) 6%, transparent);
+    --di-row-current-bg: var(--di-sidebar-active);
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     width: 100%;
-    min-height: var(--di-h-ctl);
-    padding: var(--di-space-6) var(--di-space-8);
+    min-height: var(--di-control-h-md);
+    padding: var(--di-gap-6) var(--di-gap-8);
     box-sizing: border-box;
     border: 0;
     border-radius: var(--di-radius-inset);
@@ -37,19 +40,6 @@
     text-align: left;
     text-decoration: none;
     cursor: pointer;
-    transition: background-color var(--di-duration) var(--di-ease);
-  }
-
-  .di-sb-button:hover {
-    background: color-mix(in srgb, var(--di-sidebar-fg) 6%, transparent);
-  }
-
-  /* The current page is lifted a step, with the selection's cornflower edge. */
-  .di-sb-button[aria-current="page"] {
-    background: var(--di-sidebar-active);
-    box-shadow:
-      inset 3px 0 0 var(--di-select),
-      var(--di-elevation-surface);
   }
 
   .di-sb-icon {
@@ -59,8 +49,8 @@
   }
 
   .di-sb-icon > svg {
-    width: 17px;
-    height: 17px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-sb-button[aria-current="page"] .di-sb-icon {
@@ -84,8 +74,8 @@
   }
 
   .di-sb-trailing > svg {
-    width: 14px;
-    height: 14px;
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
   }
 
   .di-sb[data-state="collapsed"] .di-sb-button {
@@ -111,7 +101,7 @@
   }
 
   .di-sb-tooltip .di-tooltip {
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     font-family: var(--di-font-ui);
     transition: opacity var(--di-duration) var(--di-ease);
   }

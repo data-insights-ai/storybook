@@ -36,8 +36,8 @@
   }
 
   .di-chart-tip {
-    min-width: 148px;
-    max-width: min(320px, 100cqi);
+    min-width: var(--di-chart-tip-min);
+    max-width: min(var(--di-chart-tip-max), 100cqi);
     padding: var(--di-space-8) var(--di-space-8);
     border: 1px solid var(--di-rule);
     background: var(--di-bg-surface);
@@ -47,7 +47,7 @@
   }
 
   .di-chart-tip-label {
-    margin: 0 0 var(--di-space-6);
+    margin: 0 0 var(--di-gap-6);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
@@ -63,25 +63,25 @@
 
   .di-chart-tip ul {
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
   }
 
   .di-chart-tip li {
     display: grid;
-    grid-template-columns: 8px minmax(0, 1fr) auto;
-    gap: var(--di-space-8);
+    grid-template-columns: var(--di-chart-swatch) minmax(0, 1fr) auto;
+    gap: var(--di-gap-8);
     align-items: center;
   }
 
   .di-chart-tip i,
   .di-chart-legend i {
-    width: 8px;
-    height: 8px;
+    width: var(--di-chart-swatch);
+    height: var(--di-chart-swatch);
   }
 
   /* Below the series, ruled off: what the point carries that is not a series. */
   .di-chart-tip ul.di-chart-tip-details {
-    margin-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
     padding-top: var(--di-space-6);
     border-top: 1px solid var(--di-rule-hairline);
   }
@@ -107,7 +107,7 @@
     }
 
     .di-chart-tip ul.di-chart-tip-details li {
-      grid-template-columns: 8px minmax(0, 1fr);
+      grid-template-columns: var(--di-chart-swatch) minmax(0, 1fr);
       row-gap: 0;
     }
 
@@ -118,7 +118,7 @@
 
   .di-chart-legend {
     flex-wrap: wrap;
-    gap: var(--di-space-8) var(--di-space-16);
+    gap: var(--di-gap-8) var(--di-gap-16);
     padding: var(--di-space-4) var(--di-space-4) 0;
     color: var(--di-text-muted);
     font-family: var(--di-font-ui);
@@ -128,19 +128,19 @@
   .di-chart-legend li {
     display: flex;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-chart-legend i.is-dashed {
-    width: 16px;
+    width: var(--di-chart-dash);
     height: 0;
     border-top: 1.6px dashed var(--di-chart-series);
     background: none;
   }
 
   .di-chart-legend svg {
-    width: 12px;
-    height: 12px;
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
   }
 }
 

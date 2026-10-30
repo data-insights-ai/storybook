@@ -12,7 +12,7 @@ import {
   PageHeaderStatus,
   PageHeaderTitle,
 } from "./PageHeader";
-import { Highlight } from "../../../data/text/Highlight";
+import { Highlight } from "../../../text/Highlight";
 import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {

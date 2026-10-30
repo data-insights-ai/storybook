@@ -4,9 +4,9 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
-    min-height: calc(var(--di-control-h, 32px) + 2 * var(--di-space-8));
+    min-height: calc(var(--di-control-h-md) + 2 * var(--di-space-8));
     padding: var(--di-space-8) var(--di-space-12);
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-surface);
@@ -29,7 +29,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin-left: auto;
   }
 

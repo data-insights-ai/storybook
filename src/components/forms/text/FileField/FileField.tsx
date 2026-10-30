@@ -155,7 +155,7 @@ export function FileField({
               ref={clearButton}
               type="button"
               variant="ghost"
-              size="dense"
+              size="sm"
               iconOnly
               aria-label={`${clearLabel}: ${file.name}`}
               aria-describedby={describedBy}
@@ -192,7 +192,7 @@ export function FileField({
             id={chooseId}
             type="button"
             variant="secondary"
-            size="dense"
+            size="sm"
             disabled={disabled}
             aria-labelledby={`${chooseId} ${labelId}`}
             aria-describedby={describedBy ? `${statusId} ${describedBy}` : statusId}

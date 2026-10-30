@@ -18,20 +18,20 @@
 
   /* The console list: a term column that wraps, then the value. */
   .di-facts-rows {
-    margin: var(--di-space-12) 0 0;
+    margin: var(--di-gap-12) 0 0;
     border-top: 1px solid var(--di-rule-hairline);
   }
 
   .di-facts-rows .di-fact {
     display: flex;
     align-items: baseline;
-    gap: var(--di-space-12);
-    padding: var(--di-space-6) 0;
+    gap: var(--di-gap-12);
+    padding: var(--di-gap-6) 0;
     border-bottom: 1px solid var(--di-rule-hairline);
   }
 
   .di-facts-rows .di-fact-label {
-    flex: 0 0 clamp(96px, 34%, 200px);
+    flex: 0 0 clamp(var(--di-fact-label-min), 34%, var(--di-fact-label-max));
     min-width: 0;
     font-size: var(--di-font-size-200);
     color: var(--di-text-subtle);
@@ -56,7 +56,7 @@
    */
   .di-facts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--di-facts-grid-min), 100%), 1fr));
     margin: 0;
     border-top: 1px solid var(--di-rule);
     border-left: 1px solid var(--di-rule);
@@ -65,10 +65,10 @@
   .di-facts-grid .di-fact {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
-    min-height: 108px;
+    gap: var(--di-gap-8);
+    min-height: var(--di-facts-grid-cell-h);
     margin: 0;
-    padding: var(--di-space-16);
+    padding: var(--di-inset-group);
     border-right: 1px solid var(--di-rule);
     border-bottom: 1px solid var(--di-rule);
     background: var(--di-bg-surface);
@@ -96,15 +96,15 @@
   /* A record’s facts in a section: label above value, columns as fit. */
   .di-facts-columns {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
-    gap: var(--di-space-16) var(--di-space-24);
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--di-facts-column-min), 100%), 1fr));
+    gap: var(--di-gap-16) var(--di-gap-24);
     margin: 0;
   }
 
   .di-facts-columns .di-fact {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     min-width: 0;
   }
 
@@ -124,14 +124,14 @@
   .di-facts-inline {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-8) var(--di-space-24);
+    gap: var(--di-gap-8) var(--di-gap-24);
     margin: 0;
   }
 
   .di-facts-inline .di-fact {
     display: flex;
     align-items: baseline;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 

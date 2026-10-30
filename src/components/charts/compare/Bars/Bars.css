@@ -6,8 +6,8 @@
   .di-bars {
     display: flex;
     align-items: flex-end;
-    gap: var(--di-space-4);
-    height: 72px;
+    gap: var(--di-gap-4);
+    height: var(--di-bars-h);
   }
 
   .di-bars span {
@@ -23,8 +23,8 @@
   .di-bar-caption {
     display: flex;
     justify-content: space-between;
-    gap: var(--di-space-8);
-    margin-top: var(--di-space-6);
+    gap: var(--di-gap-8);
+    margin-top: var(--di-gap-6);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
   }

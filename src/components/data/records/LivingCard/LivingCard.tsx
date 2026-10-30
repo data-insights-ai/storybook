@@ -1,5 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
 import { SealMark } from "../../../marks/status/SealValue";
 import { StatusPill } from "../../../marks/status/StatusPill";
 import "./LivingCard.css";
@@ -33,7 +34,7 @@ export function LivingCard({
     else body.push(child);
   });
   return (
-    <div className={cx("di-living", className)}>
+    <div className={cx(surfaceClass({ padded: false }), "di-living", className)}>
       <div className="di-living-head">
         <span className="di-living-title">{title}</span>
         <StatusPill tone="inferred">{insightLabel}</StatusPill>

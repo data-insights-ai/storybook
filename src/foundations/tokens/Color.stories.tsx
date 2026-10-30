@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Bar, BarChart, XAxis, YAxis } from "recharts";
 import { Chart, ChartLegend, ChartTooltip, type ChartConfig } from "../../components/charts/Chart";
-import { Highlight } from "../../components/data/text/Highlight";
+import { Highlight } from "../../components/text/Highlight";
 import { Page, Rule, Rules, Section } from "../guide/Guide";
 import "./foundations.css";
 

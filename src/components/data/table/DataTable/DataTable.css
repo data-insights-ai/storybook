@@ -16,7 +16,7 @@
   .di-table-toolbar {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding: var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-table-head-bg);
@@ -40,8 +40,8 @@
 
   /* The head names each column as a label, not as a value: mono capitals, quiet. */
   .di-table th {
-    height: 32px;
-    padding: 0 var(--di-space-12);
+    height: var(--di-control-h-md);
+    padding: 0 var(--di-gap-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-table-head-bg);
     text-align: left;
@@ -95,7 +95,7 @@
   }
 
   .di-table-sort {
-    margin-left: var(--di-space-4);
+    margin-left: var(--di-gap-4);
   }
 
   .di-table-sort.is-idle {
@@ -135,7 +135,7 @@
    */
   .di-table td {
     height: var(--di-table-row-height);
-    padding: var(--di-space-8) var(--di-space-12);
+    padding: var(--di-gap-8) var(--di-gap-12);
     border-bottom: 1px solid var(--di-table-rule);
     color: var(--di-text);
     font-variant-numeric: tabular-nums;
@@ -146,7 +146,7 @@
     border-bottom: 0;
   }
 
-  .di-table tbody tr:hover td {
+  .di-table tbody tr:not(.di-row-current):hover td {
     background: var(--di-bg-row-hover);
   }
 
@@ -166,14 +166,7 @@
     cursor: pointer;
   }
 
-  /* The row an open pane shows is selected: the cornflower tint and its edge. */
-  .di-table tbody tr.is-active td {
-    background: var(--di-bg-selected);
-  }
-
-  .di-table tbody tr.is-active > :first-child {
-    box-shadow: inset 3px 0 0 var(--di-select);
-  }
+  /* The row an open pane shows is the selected row (`.di-row-current`): the cornflower tint and its edge. */
 
   /*
    * The row's name stays at the left edge while the grid scrolls sideways.
@@ -228,11 +221,6 @@
     min-width: var(--di-index-col);
     padding: 0 0 0 var(--di-table-edge) !important;
     text-align: left;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: var(--di-tracking-mono);
-    color: var(--di-text-muted);
   }
 
   tbody .di-table-index {
@@ -261,7 +249,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding: var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-table-head-bg);
@@ -273,7 +261,7 @@
   .di-cell {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     min-width: 0;
   }
 
@@ -299,7 +287,7 @@
   .di-cell-lead {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 
@@ -307,8 +295,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: var(--di-icon-xl);
+    height: var(--di-icon-xl);
     flex: none;
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-subtle);
@@ -316,8 +304,8 @@
   }
 
   .di-cell-icon > svg {
-    width: 14px;
-    height: 14px;
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
   }
 
   /*
@@ -339,7 +327,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: var(--di-space-6) var(--di-space-12);
+      gap: var(--di-gap-6) var(--di-gap-12);
       padding: var(--di-space-12) var(--di-table-edge);
       border-bottom: 1px solid var(--di-table-rule);
     }
@@ -405,8 +393,8 @@
      */
     .di-table-wrap.is-stackable td.is-labelled {
       display: grid;
-      grid-template-columns: minmax(96px, 38%) minmax(0, 1fr);
-      gap: var(--di-space-12);
+      grid-template-columns: minmax(var(--di-fact-label-min), 38%) minmax(0, 1fr);
+      gap: var(--di-gap-12);
       align-items: baseline;
       justify-items: start;
       flex-basis: 100%;
@@ -453,8 +441,8 @@
 
     /* The head stays only as the row of sort controls; without one it is read, not shown. */
     .di-table-wrap.is-stackable thead tr {
-      min-height: 32px;
-      padding-block: var(--di-space-6);
+      min-height: var(--di-control-h-md);
+      padding-block: var(--di-gap-6);
       border-bottom-color: var(--di-border);
       background: var(--di-table-head-bg);
     }

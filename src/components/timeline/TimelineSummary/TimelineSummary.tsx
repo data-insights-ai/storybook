@@ -260,10 +260,15 @@ export function TimelineSummaryEpisode({
 }) {
   const place = useContext(SummaryPlace);
   const active = place?.active === episode;
-  const className = cx("di-tsummary-row", active && "is-active", place?.hovered === episode && "is-hovered");
+  const className = cx(
+    "di-row",
+    "di-tsummary-row",
+    active && "is-active di-row-current",
+    place?.hovered === episode && "is-hovered",
+  );
   const body = (
     <>
-      <span className="di-tsummary-index">{ordinal(episode)}</span>
+      <span className="di-ordinal di-tsummary-index">{ordinal(episode)}</span>
       <span className="di-tsummary-tone">
         <StatusPill tone={tone}>{toneLabel}</StatusPill>
       </span>

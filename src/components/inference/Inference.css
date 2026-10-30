@@ -1,21 +1,17 @@
-/* The surface, label, rows and note that ExplainPanel and ConfirmPanel share: one family. */
+/* ExplainPanel and ConfirmPanel: the one surface (`.di-surface`), and the label, rows and note they share. */
 @layer components {
   .di-explain,
   .di-confirm {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     min-width: 0;
-    padding: var(--di-panel-pad);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
-    box-shadow: var(--di-elevation-surface);
   }
 
   .di-inference-label {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin: 0;
     font-family: var(--di-mono-label-family);
     font-size: var(--di-mono-label-size);
@@ -37,13 +33,13 @@
   .di-explain-figure {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
   }
 
   .di-explain-figure-value {
     display: flex;
     align-items: baseline;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     font-family: var(--di-heading-family);
     font-size: var(--di-section-title-size);
     font-weight: var(--di-weight-bold);
@@ -62,7 +58,7 @@
   .di-inference-rows {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     margin: 0;
   }
 
@@ -114,9 +110,9 @@
   .di-explain-ignored ul {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
-    margin: var(--di-space-8) 0 0;
-    padding-left: var(--di-space-16);
+    gap: var(--di-gap-4);
+    margin: var(--di-gap-8) 0 0;
+    padding-left: var(--di-gap-16);
     color: var(--di-text-muted);
   }
 

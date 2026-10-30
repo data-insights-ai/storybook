@@ -82,7 +82,7 @@ function MemberRow({
             onOpenChange={setMenu}
             label={`Actions for ${member.name}`}
             trigger={(props) => (
-              <Button {...props} variant="ghost" size="dense" iconOnly aria-label={`Actions for ${member.name}`}>
+              <Button {...props} variant="ghost" size="sm" iconOnly aria-label={`Actions for ${member.name}`}>
                 <MoreHorizontal aria-hidden />
               </Button>
             )}
