@@ -42,7 +42,10 @@ function stories(
     ],
     test: {
       name,
+      // FOCUS_REPORT=1 prints the focus-ring findings per story instead of failing on them.
+      provide: { focusReport: process.env.FOCUS_REPORT === "1" },
       setupFiles: [
+        "./.storybook/tests/focus/vitest.setup.ts",
         "./.storybook/tests/surfaces/spacing.setup.ts",
         "./.storybook/tests/contrast/vitest.setup.ts",
         "./.storybook/tests/surfaces/vitest.setup.ts",
