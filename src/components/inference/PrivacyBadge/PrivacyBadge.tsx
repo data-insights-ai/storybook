@@ -12,7 +12,5 @@ export function PrivacyBadge({
   /** The icon first, then the words — the same order `Button` takes. */
   children: ReactNode;
 }) {
-  return (
-    <span className={cx("di-privacy", `di-privacy-${scope}`)}>{children}</span>
-  );
+  return <span className={cx("di-privacy", `di-privacy-${scope}`)}>{children}</span>;
 }

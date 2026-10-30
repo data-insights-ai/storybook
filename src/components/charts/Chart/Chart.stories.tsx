@@ -103,7 +103,7 @@ export const Series: Story = {
         <XAxis dataKey="period" tickLine={false} axisLine={false} interval={0} />
         <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
         <ChartTooltip />
-        <Line
+        <Line isAnimationActive={false}
           dataKey="estimate"
           stroke="var(--color-estimate)"
           strokeWidth={1.6}
@@ -111,7 +111,7 @@ export const Series: Story = {
           strokeLinecap="round"
           dot={false}
         />
-        <Line
+        <Line isAnimationActive={false}
           dataKey="value"
           stroke="var(--color-value)"
           strokeWidth={1.6}
@@ -146,7 +146,7 @@ export const Compare: Story = {
         <XAxis type="number" domain={[0, 100]} hide />
         <YAxis type="category" dataKey="name" tickLine={false} axisLine={false} width={64} interval={0} />
         <ChartTooltip />
-        <Bar dataKey="value" barSize={14} radius={0}>
+        <Bar isAnimationActive={false} dataKey="value" barSize={14} radius={0}>
           {bars.map((entry) => (
             <Cell key={entry.name} fill={entry.fill} />
           ))}
@@ -173,8 +173,8 @@ export const AgainstComparison: Story = {
         <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
         <ChartTooltip />
         <ChartLegend />
-        <Bar dataKey="recorded" fill="var(--color-recorded)" radius={0} />
-        <Bar dataKey="compare" fill="var(--color-compare)" radius={0} />
+        <Bar isAnimationActive={false} dataKey="recorded" fill="var(--color-recorded)" radius={0} />
+        <Bar isAnimationActive={false} dataKey="compare" fill="var(--color-compare)" radius={0} />
       </ComposedChart>
     </Chart>
   ),
@@ -198,7 +198,7 @@ export const Range: Story = {
         <XAxis dataKey="month" tickLine={false} axisLine={false} interval={0} />
         <YAxis hide domain={[0, 100]} />
         <ChartTooltip />
-        <Area
+        <Area isAnimationActive={false}
           dataKey="low"
           stackId="band"
           stroke="none"
@@ -207,8 +207,8 @@ export const Range: Story = {
           tooltipType="none"
           activeDot={false}
         />
-        <Area dataKey="span" stackId="band" stroke="none" fill="var(--color-span)" activeDot={false} />
-        <Line
+        <Area isAnimationActive={false} dataKey="span" stackId="band" stroke="none" fill="var(--color-span)" activeDot={false} />
+        <Line isAnimationActive={false}
           dataKey="median"
           stroke="var(--color-median)"
           strokeWidth={1.6}
@@ -235,7 +235,7 @@ export const Legend: Story = {
         <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
         <ChartTooltip />
         <ChartLegend />
-        <Line
+        <Line isAnimationActive={false}
           dataKey="estimate"
           stroke="var(--color-estimate)"
           strokeWidth={1.6}
@@ -243,7 +243,7 @@ export const Legend: Story = {
           strokeLinecap="round"
           dot={false}
         />
-        <Line
+        <Line isAnimationActive={false}
           dataKey="value"
           stroke="var(--color-value)"
           strokeWidth={1.6}
@@ -273,8 +273,8 @@ export const LegendAbove: Story = {
         <XAxis dataKey="period" tickLine={false} axisLine={false} interval={0} />
         <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
         <ChartLegend verticalAlign="top" content={<ChartLegendContent />} />
-        <Line dataKey="estimate" stroke="var(--color-estimate)" strokeWidth={1.6} strokeDasharray="4 3" dot={false} />
-        <Line dataKey="value" stroke="var(--color-value)" strokeWidth={1.6} dot={false} connectNulls={false} />
+        <Line isAnimationActive={false} dataKey="estimate" stroke="var(--color-estimate)" strokeWidth={1.6} strokeDasharray="4 3" dot={false} />
+        <Line isAnimationActive={false} dataKey="value" stroke="var(--color-value)" strokeWidth={1.6} dot={false} connectNulls={false} />
       </ComposedChart>
     </Chart>
   ),
@@ -320,8 +320,8 @@ export const TooltipDetails: Story = {
             />
           }
         />
-        <Bar dataKey="low" stackId="runs" fill="var(--color-low)" stroke="var(--di-bg-surface)" />
-        <Bar dataKey="high" stackId="runs" fill="var(--color-high)" stroke="var(--di-bg-surface)" />
+        <Bar isAnimationActive={false} dataKey="low" stackId="runs" fill="var(--color-low)" stroke="var(--di-bg-surface)" />
+        <Bar isAnimationActive={false} dataKey="high" stackId="runs" fill="var(--color-high)" stroke="var(--di-bg-surface)" />
       </ComposedChart>
     </Chart>
   ),

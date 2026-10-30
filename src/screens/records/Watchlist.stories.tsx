@@ -10,12 +10,7 @@ const meta = {
   parameters: { layout: "fullscreen" },
   decorators: [
     (Story) => (
-      <Console
-        title="Watchlist"
-        crumb={["Monitor", "Watchlist"]}
-        active="watchlist"
-        chrome={sampleChrome}
-      >
+      <Console title="Watchlist" crumb={["Monitor", "Watchlist"]} active="watchlist" chrome={sampleChrome}>
         <Story />
       </Console>
     ),

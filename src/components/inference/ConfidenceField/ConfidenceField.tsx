@@ -27,7 +27,7 @@ export function ConfidenceField({
   confidence: number;
   /** The reading in words, e.g. "0.94 · matched on 3 of 4 inputs". */
   confidenceLabel: string;
-  /**
+/**
    * Which side of the threshold the reading fell on. The caller owns the
    * threshold: the field draws and announces `confidence`, it does not
    * decide what counts as high.

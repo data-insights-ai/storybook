@@ -1,3 +1,4 @@
+import type React from "react";
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -24,6 +25,15 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+/* A page has no gutter of its own: the AppShell's workpane gives it one. A full-width story stands in for that pane. */
+function workpane(Story: () => React.ReactElement) {
+  return (
+    <div style={{ padding: "var(--di-space-24) var(--di-content-pad) var(--di-space-32)" }}>
+      <Story />
+    </div>
+  );
+}
 
 /** A header, then sections in the section rhythm; the width follows what the page holds. */
 export const Detail: Story = {
@@ -60,6 +70,7 @@ export const Detail: Story = {
  */
 export const WithAside: Story = {
   parameters: { layout: "fullscreen" },
+  decorators: [workpane],
   render: (args) => (
     <Page {...args}>
       <PageHeader lede="What happened, and who works on it.">
@@ -157,6 +168,7 @@ function ListWithSheet() {
  */
 export const WithSheet: Story = {
   parameters: { layout: "fullscreen" },
+  decorators: [workpane],
   args: { width: "list" },
   render: () => <ListWithSheet />,
   play: async ({ canvasElement }) => {

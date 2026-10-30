@@ -8,11 +8,7 @@ const meta = {
   title: "Data/Records/AttentionList",
   component: AttentionList,
   tags: ["layer:block", "autodocs"],
-  args: {
-    label: "What needs you, most urgent first",
-    title: "3 things need you",
-    children: null,
-  },
+  args: { label: "What needs you, most urgent first", title: "3 things need you", children: null },
   argTypes: {
     label: { control: "text" },
     title: { control: "text" },
@@ -67,27 +63,18 @@ export const Default: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(
-      canvas.getByRole("heading", { level: 2, name: "3 things need you" }),
-    ).toBeVisible();
+    await expect(canvas.getByRole("heading", { level: 2, name: "3 things need you" })).toBeVisible();
     const list = canvasElement.querySelector(".di-attention")!;
     await expect(list).toHaveAttribute("role", "list");
     await expect(list.children).toHaveLength(3);
     await expect(canvas.getAllByRole("heading", { level: 3 })).toHaveLength(3);
-    await expect(
-      canvas.getAllByRole("link", { name: "Open case 4" }),
-    ).toHaveLength(1);
+    await expect(canvas.getAllByRole("link", { name: "Open case 4" })).toHaveLength(1);
     const [first, second] = Array.from(list.children);
     const rank = first.querySelector(".di-attention-rank")!;
     await expect(getComputedStyle(rank).textDecorationLine).toBe("none");
-    await expect(getComputedStyle(rank).boxShadow).toMatch(/inset 3px 0px 0px/);
-    await expect(first.getBoundingClientRect().width).toBeGreaterThanOrEqual(
-      second.getBoundingClientRect().width,
-    );
-    if (window.innerWidth > 900)
-      await expect(first.getBoundingClientRect().width).toBeGreaterThan(
-        second.getBoundingClientRect().width,
-      );
+    await expect(getComputedStyle(rank).boxShadow).toMatch(/3px 0px 0px 0px inset/);
+    await expect(first.getBoundingClientRect().width).toBeGreaterThanOrEqual(second.getBoundingClientRect().width);
+    if (window.innerWidth > 900) await expect(first.getBoundingClientRect().width).toBeGreaterThan(second.getBoundingClientRect().width);
   },
 };
 
@@ -112,12 +99,7 @@ export const OneDecision: Story = {
 
 /** Nothing is due: no empty list, one quiet line and what it rests on. */
 export const Clear: Story = {
-  render: () => (
-    <AttentionClear
-      title="Everything is running"
-      note="14 sources delivering · nothing to decide before 30 Apr"
-    />
-  ),
+  render: () => <AttentionClear title="Everything is running" note="14 sources delivering · nothing to decide before 30 Apr" />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Everything is running")).toBeVisible();

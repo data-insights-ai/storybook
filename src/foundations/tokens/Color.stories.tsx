@@ -147,8 +147,8 @@ function AccentsInUse() {
           <YAxis hide domain={[0, 100]} />
           <ChartTooltip />
           <ChartLegend />
-          <Bar dataKey="recorded" fill="var(--color-recorded)" radius={0} />
-          <Bar dataKey="compare" fill="var(--color-compare)" radius={0} />
+          <Bar isAnimationActive={false} dataKey="recorded" fill="var(--color-recorded)" radius={0} />
+          <Bar isAnimationActive={false} dataKey="compare" fill="var(--color-compare)" radius={0} />
         </BarChart>
       </Chart>
     </div>

@@ -2,13 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MoreVertical } from "lucide-react";
 import { expect, fn, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import {
-  LivingActions,
-  LivingBasis,
-  LivingBody,
-  LivingCard,
-  LivingInsight,
-} from "./LivingCard";
+import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./LivingCard";
 import { Figure, FigureRow } from "../../figures/FigureRow";
 import { Sparkline } from "../../../charts/time/Sparkline";
 
@@ -57,12 +51,7 @@ export const Default: Story = {
   render: (args) => (
     <LivingCard {...args}>
       <LivingActions>
-        <Button
-          variant="ghost"
-          size="dense"
-          iconOnly={true}
-          aria-label="Card actions"
-        >
+        <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
           <MoreVertical aria-hidden />
         </Button>
       </LivingActions>
@@ -72,12 +61,10 @@ export const Default: Story = {
             up 940 since 08:00Z
           </Figure>
         </FigureRow>
-        <Sparkline
-          bars={bars}
-          label="Unsealed entries over the last eight hours, rising sharply in the last two."
-        />
+        <Sparkline bars={bars} label="Unsealed entries over the last eight hours, rising sharply in the last two." />
       </LivingBody>
-      <LivingInsight body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
+      <LivingInsight
+        body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
         <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
         <Button variant="inferred" size="dense">
           Review the proposal
@@ -94,18 +81,10 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("ai insight")).toBeVisible();
-    await expect(
-      canvas.getByRole("img", {
-        name: /Unsealed entries over the last eight hours/,
-      }),
-    ).toBeVisible();
+    await expect(canvas.getByRole("img", { name: /Unsealed entries over the last eight hours/ })).toBeVisible();
     // The sparkline takes the space beside the figure instead of leaving it empty.
-    const body = canvasElement
-      .querySelector(".di-living-body")!
-      .getBoundingClientRect();
-    const spark = canvasElement
-      .querySelector(".di-sparkline")!
-      .getBoundingClientRect();
+    const body = canvasElement.querySelector(".di-living-body")!.getBoundingClientRect();
+    const spark = canvasElement.querySelector(".di-sparkline")!.getBoundingClientRect();
     await expect(spark.right).toBeGreaterThan(body.right - 40);
   },
 };
@@ -120,12 +99,7 @@ export const ActionsWrittenLast: Story = {
         </FigureRow>
       </LivingBody>
       <LivingActions>
-        <Button
-          variant="ghost"
-          size="dense"
-          iconOnly={true}
-          aria-label="Card actions"
-        >
+        <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
           <MoreVertical aria-hidden />
         </Button>
       </LivingActions>
@@ -136,12 +110,8 @@ export const ActionsWrittenLast: Story = {
     const actions = canvasElement.querySelector(".di-living-actions")!;
     await expect(head.contains(actions)).toBe(true);
     const a = actions.getBoundingClientRect();
-    const t = canvasElement
-      .querySelector(".di-living-title")!
-      .getBoundingClientRect();
-    await expect(
-      Math.abs(a.top + a.height / 2 - (t.top + t.height / 2)),
-    ).toBeLessThanOrEqual(2);
+    const t = canvasElement.querySelector(".di-living-title")!.getBoundingClientRect();
+    await expect(Math.abs(a.top + a.height / 2 - (t.top + t.height / 2))).toBeLessThanOrEqual(2);
   },
 };
 
@@ -155,10 +125,7 @@ export const WithoutInsight: Story = {
             steady
           </Figure>
         </FigureRow>
-        <Sparkline
-          bars={bars.map((bar) => ({ percent: bar.percent }))}
-          label="Unsealed entries, flat over the last eight hours."
-        />
+        <Sparkline bars={bars.map((bar) => ({ percent: bar.percent }))} label="Unsealed entries, flat over the last eight hours." />
       </LivingBody>
     </LivingCard>
   ),
@@ -174,12 +141,10 @@ export const OneAction: Story = {
             down 2.1 points
           </Figure>
         </FigureRow>
-        <Sparkline
-          bars={bars}
-          label="Coverage over the last eight hours, falling in the last two."
-        />
+        <Sparkline bars={bars} label="Coverage over the last eight hours, falling in the last two." />
       </LivingBody>
-      <LivingInsight body="Four archive sources stopped reporting at 08:44Z.">
+      <LivingInsight
+        body="Four archive sources stopped reporting at 08:44Z.">
         <LivingBasis>inferred from 1 source · confidence 0.71</LivingBasis>
         <Button variant="inferred" size="dense" onClick={fn()}>
           Review the proposal

@@ -91,7 +91,7 @@ export function TrendChart({
           const color = `var(--color-${s.key})`;
           const dash = s.dashed ? "4 3" : undefined;
           if (s.kind === "bar") {
-            return <Bar key={s.key} dataKey={s.key} stackId={s.stack} fill={color} radius={s.stack ? 0 : [2, 2, 0, 0]} maxBarSize={18} />;
+            return <Bar isAnimationActive={false} key={s.key} dataKey={s.key} stackId={s.stack} fill={color} radius={s.stack ? 0 : [2, 2, 0, 0]} maxBarSize={18} />;
           }
           if (s.kind === "area") {
             return (

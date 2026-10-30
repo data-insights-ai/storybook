@@ -17,6 +17,7 @@ export function ConfirmPanel({
   question,
   whyLabel,
   onWhy,
+  heading = 3,
   className,
   children,
 }: {
@@ -26,21 +27,24 @@ export function ConfirmPanel({
   /** Opens the explanation. An operator may always ask why first. */
   whyLabel: string;
   onWhy: () => void;
+  /** The question's heading level, to fit the page outline. */
+  heading?: 2 | 3 | 4;
   className?: string;
   /** The `ExplainRow`s stating the basis, and one `ConfirmActions`, in any order. */
   children: ReactNode;
 }) {
   const id = useId();
   const [actions, rows] = takeSlot(children, ConfirmActions);
+  const Question = `h${heading}` as "h2" | "h3" | "h4";
   return (
     <section className={cx("di-confirm", className)} aria-labelledby={id}>
       <p className="di-inference-label">
         <SealMark state="inferred" size={7} />
         {label}
       </p>
-      <h3 className="di-confirm-question" id={id}>
+      <Question className="di-confirm-question" id={id}>
         {question}
-      </h3>
+      </Question>
       <dl className="di-inference-rows">{rows}</dl>
       <div className="di-confirm-foot">
         <button type="button" className="di-confirm-why" onClick={onWhy}>

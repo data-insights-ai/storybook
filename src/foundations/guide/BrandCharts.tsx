@@ -9,7 +9,7 @@ const series = [
   { period: "Next", value: null, estimate: 88 },
 ];
 
-const draw = { animationDuration: 180, animationEasing: "ease-out" as const };
+const draw = { isAnimationActive: false };
 
 const seriesConfig = {
   value: { label: "Recorded", color: "var(--di-chart-series)" },

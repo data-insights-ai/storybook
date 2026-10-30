@@ -26,7 +26,6 @@
   .di-level-seg {
     border-radius: 0;
     background: var(--di-bg-subtle);
-    transition: background var(--di-duration-slow) var(--di-ease);
   }
 
   .di-level-seg.is-on {

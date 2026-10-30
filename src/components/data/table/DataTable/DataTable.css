@@ -7,11 +7,18 @@
     box-shadow: var(--di-table-shadow);
   }
 
+  /* On any other surface (a sign-in card, an accordion, a sheet, a dialog) the table drops its frame, as in a Panel. */
+  :is(.di-login-card, .di-accordion, .di-sheet, .di-modal, .di-living)
+    .di-table-wrap {
+    --di-table-bg: transparent;
+    --di-table-shadow: none;
+  }
+
   .di-table-toolbar {
     display: flex;
     align-items: center;
     gap: var(--di-space-8);
-    padding: var(--di-space-8) var(--di-space-12);
+    padding: var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-table-head-bg);
   }
@@ -256,7 +263,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--di-space-12);
-    padding: var(--di-space-8) var(--di-space-12);
+    padding: var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-table-head-bg);
     font-family: var(--di-font-code);
@@ -339,7 +346,9 @@
     }
 
     .di-table-wrap.is-stackable tbody tr:last-child,
-    .di-table-wrap.is-stackable tbody tr:has(+ tr.di-table-spacer.is-empty:last-child) {
+    .di-table-wrap.is-stackable
+      tbody
+      tr:has(+ tr.di-table-spacer.is-empty:last-child) {
       border-bottom: 0;
     }
 
@@ -368,7 +377,8 @@
       text-align: left;
     }
 
-    .di-table-wrap.is-stackable :is(th, td):is(:first-child, :last-child):not(.di-table-index) {
+    .di-table-wrap.is-stackable
+      :is(th, td):is(:first-child, :last-child):not(.di-table-index) {
       padding-inline: 0;
     }
 
@@ -458,7 +468,9 @@
     }
 
     .di-table-wrap.is-stackable thead:not(:has(.di-table-sort-btn)),
-    .di-table-wrap.is-stackable thead th:not(:has(.di-table-sort-btn)):not(.di-table-index) {
+    .di-table-wrap.is-stackable
+      thead
+      th:not(:has(.di-table-sort-btn)):not(.di-table-index) {
       position: absolute;
       width: 1px;
       height: 1px;

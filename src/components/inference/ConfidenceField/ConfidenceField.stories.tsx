@@ -42,9 +42,7 @@ export const High: Story = {
   render: (args) => <ConfidenceField {...args}>Nora Feld</ConfidenceField>,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(
-      canvas.getByRole("meter", { name: /0.94/ }),
-    ).toBeInTheDocument();
+    await expect(canvas.getByRole("meter", { name: /0.94/ })).toBeInTheDocument();
   },
 };
 
@@ -61,7 +59,5 @@ export const Review: Story = {
     confidence: 0.42,
     confidenceLabel: "0.42 · below the threshold, review before sealing",
   },
-  render: (args) => (
-    <ConfidenceField {...args}>mirror.example.net</ConfidenceField>
-  ),
+  render: (args) => <ConfidenceField {...args}>mirror.example.net</ConfidenceField>,
 };

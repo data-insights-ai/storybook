@@ -16,13 +16,27 @@
     box-shadow: none;
   }
 
+  /*
+   * Never a surface on the same surface: a panel or a tile inside a panel
+   * takes the inset tone and drops its edge, whatever the caller wrote.
+   */
+  .di-panel-content :is(.di-panel, .di-stat-tile) {
+    --di-panel-bg: var(--di-bg-subtle);
+    border-color: transparent;
+    border-radius: var(--di-radius-inset);
+    background: var(--di-bg-subtle);
+    box-shadow: none;
+  }
+
   .di-panel.is-danger {
     border-color: var(--di-status-danger-border);
   }
 
   /* The one thing that matters in the view. Gold marks the object, never its words. */
   .di-panel.is-emphasis {
-    box-shadow: 0 0 0 1px var(--di-one-edge), var(--di-one-glow);
+    box-shadow:
+      0 0 0 1px var(--di-one-edge),
+      var(--di-one-glow);
   }
 
   .di-panel-index {

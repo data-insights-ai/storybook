@@ -13,6 +13,7 @@ const meta = {
     question: "Merge entry 07 into entry 03?",
     whyLabel: "why was this proposed?",
     onWhy: fn(),
+    heading: 2,
     children: null,
   },
   argTypes: {
@@ -52,7 +53,7 @@ export const Reversible: Story = {
     await expect(args.onWhy).toHaveBeenCalled();
     await expect(
       canvas.getByRole("heading", {
-        level: 3,
+        level: 2,
         name: "Merge entry 07 into entry 03?",
       }),
     ).toBeVisible();

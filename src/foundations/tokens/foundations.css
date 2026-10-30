@@ -204,6 +204,12 @@
     background: var(--di-bg-surface);
   }
 
+  @media (max-width: 600px) {
+    .di-logo-cell {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
   .di-logo-stage {
     display: grid;
     place-items: center;

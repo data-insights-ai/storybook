@@ -1,0 +1,84 @@
+import type React from "react";
+import { afterEach, expect, test } from "vitest";
+import { createRoot, type Root } from "react-dom/client";
+import { flushSync } from "react-dom";
+import { composeStories } from "@storybook/react-vite";
+import "../../styles/styles.css";
+
+/*
+ * The chart motion rule: no series is drawn in, solid or dashed. After
+ * mount the only animation allowed is the plot's opacity fade, and every
+ * mark has its final shape from the first frame.
+ */
+const modules = import.meta.glob<Parameters<typeof composeStories>[0]>(
+  [
+    "./**/*.stories.tsx",
+    "../../screens/overview/SecurityOverview.stories.tsx",
+    "../../foundations/tokens/Color.stories.tsx",
+  ],
+  { eager: true },
+);
+
+let root: Root | undefined;
+afterEach(() => {
+  root?.unmount();
+  document.body.replaceChildren();
+});
+
+function shapes() {
+  return Array.from(
+    document.querySelectorAll(
+      "svg path, svg rect, .di-sparkline-bar, [class*='-bar']",
+    ),
+  ).map((el) =>
+    [
+      el.getAttribute("d"),
+      el.getAttribute("width"),
+      el.getAttribute("height"),
+      el.getAttribute("stroke-dasharray"),
+      (el as HTMLElement).style?.height,
+    ].join("|"),
+  );
+}
+
+const cases = Object.entries(modules).flatMap(([file, mod]) =>
+  Object.entries(composeStories(mod)).map(
+    ([name, Story]) =>
+      [
+        `${file.replace(/^.*\//, "")} ${name}`,
+        Story as () => React.ReactElement,
+      ] as const,
+  ),
+);
+
+test.each(cases)("%s draws no series in", async (_, Story) => {
+  const host = document.createElement("div");
+  host.style.width = "720px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() => root!.render(<Story />));
+  await new Promise((r) => setTimeout(r, 60));
+  const first = shapes();
+  const moving = document
+    .getAnimations()
+    .filter(
+      (a) => !(a instanceof CSSAnimation && a.animationName === "di-chart-in"),
+    )
+    // The tooltip follows the pointer; it is not a series.
+    .filter(
+      (a) =>
+        !(
+          (a.effect as KeyframeEffect | null)?.target as Element | null
+        )?.closest?.(".recharts-tooltip-wrapper"),
+    )
+    .map((a) =>
+      a instanceof CSSAnimation
+        ? a.animationName
+        : a instanceof CSSTransition
+          ? a.transitionProperty
+          : "script",
+    );
+  await new Promise((r) => setTimeout(r, 400));
+  expect(moving).toEqual([]);
+  expect(shapes()).toEqual(first);
+});

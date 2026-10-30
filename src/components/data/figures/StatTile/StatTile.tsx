@@ -22,7 +22,7 @@ export function StatTile({
   children,
 }: {
   /**
-   * The ordinal or letter in the index column. Omit for a tile that is not one of a sequence:
+   * The ordinal or letter before the label. Omit for a tile that is not one of a sequence:
    * a row of different measures has no order to number.
    */
   index?: string;
@@ -39,13 +39,11 @@ export function StatTile({
 }) {
   return (
     <div className={cx("di-stat-tile", tone === "danger" && "is-danger", className)}>
-      {index === undefined ? null : (
-        <div className="di-stat-tile-index">
-          <span className="di-stat-tile-ordinal">{index}</span>
-        </div>
-      )}
       <div className="di-stat-tile-body">
-        <p className="di-stat-tile-label">{label}</p>
+        <p className="di-stat-tile-label">
+          {index === undefined ? null : <span className="di-stat-tile-ordinal">{index}</span>}
+          {label}
+        </p>
         <p className={cx("di-stat-tile-value", compact && "is-compact")}>{value}</p>
         {children}
         {ruled ? <TickRule /> : null}
