@@ -38,7 +38,7 @@ export type {
 export { ChoiceCards, SegmentedControl, ToggleGroup } from "./components/forms/choice/ChoiceGroup";
 export type { ChoiceCard, ChoiceCardsPlanned, ToggleOption } from "./components/forms/choice/ChoiceGroup";
 export { Chip } from "./components/marks/Chip";
-export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/navigation/CommandBar";
+export { CommandBar, CommandChip, CommandEmpty, CommandGroup, CommandRow } from "./components/navigation/CommandBar";
 export { ComboBox } from "./components/forms/select/ComboBox";
 export type { ComboBoxSuggestion } from "./components/forms/select/ComboBox";
 export { MultiComboBox } from "./components/forms/select/MultiComboBox";
