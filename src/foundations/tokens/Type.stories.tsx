@@ -131,21 +131,23 @@ function TypePage() {
           title="Collectors"
           note="An icon labels an action; it does not decorate. An icon-only button has a name."
         >
-          <MetaLine items={["As of 09:12", "14 sources", "updates live"]} />
-          <Toolbar>
-            <Button variant="secondary" shortcut="/">
-              <Search /> Search
-            </Button>
-            <Button variant="secondary">
-              <Download /> Export
-            </Button>
-            <Button variant="ghost" iconOnly aria-label="Copy the key">
-              <Copy />
-            </Button>
-          </Toolbar>
-          <p>
-            Press <Kbd>⌘K</Kbd> to open the command bar.
-          </p>
+          <Stack gap={12}>
+            <MetaLine items={["As of 09:12", "14 sources", "updates live"]} />
+            <p>
+              Press <Kbd>/</Kbd> to search, <Kbd>⌘K</Kbd> to open the command bar.
+            </p>
+            <Toolbar>
+              <Button variant="secondary">
+                <Search /> Search
+              </Button>
+              <Button variant="secondary">
+                <Download /> Export
+              </Button>
+              <Button variant="ghost" iconOnly aria-label="Copy the key">
+                <Copy />
+              </Button>
+            </Toolbar>
+          </Stack>
         </Example>
       </DocSection>
     </Doc>
