@@ -215,6 +215,27 @@ export const Stacked: Story = {
   },
 };
 
+/** A value longer than a column, such as an endpoint, takes the row instead of breaking. */
+export const ColumnsWide: Story = {
+  args: { layout: "columns" },
+  render: (args) => (
+    <FactList {...args}>
+      <Fact label="Endpoint" wide>
+        https://collector.example.com:8088/services/collector/event
+      </Fact>
+      <Fact label="Token">…9f3a</Fact>
+      <Fact label="Index">soc</Fact>
+      <Fact label="Trust the server by">System trust store</Fact>
+    </FactList>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const endpoint = canvas.getByText(/services\/collector/);
+    const token = canvas.getByText("…9f3a");
+    await expect(endpoint.getBoundingClientRect().height).toBeLessThan(token.getBoundingClientRect().height * 1.5);
+  },
+};
+
 /** A header’s key facts on one line that wraps. */
 export const Inline: Story = {
   args: { layout: "inline" },
