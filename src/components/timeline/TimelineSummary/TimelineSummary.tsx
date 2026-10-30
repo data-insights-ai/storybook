@@ -17,8 +17,6 @@ const SEVERITY: Record<TimelineTone, Severity> = { danger: "critical", warn: "me
 const ordinal = (i: number) => String(i + 1).padStart(2, "0");
 
 type Place = {
-  /** Set when every episode has the same tone: the head says it once and the rows leave it out. */
-  uniform: TimelineTone | null;
   active: number | null;
   hovered: number | null;
   hover: (episode: number | null) => void;
@@ -105,9 +103,7 @@ export function TimelineSummary({
   );
 
   const pick = onEpisodePick ? (episode: number) => onEpisodePick(episode === active ? null : episode) : undefined;
-  const tones = new Set(episodes.filter((e) => e.total > 0).map((e) => e.tone));
-  const uniform = tones.size === 1 ? [...tones][0] : null;
-  const place: Place = { uniform, active, hovered, hover, pick };
+  const place: Place = { active, hovered, hover, pick };
 
   const blocks = useMemo(() => {
     const spanMs = Math.max(1, bounds.end - bounds.start);
@@ -154,7 +150,6 @@ export function TimelineSummary({
         <span id={`${id}-title`} className="di-tsummary-title">
           {title}
         </span>
-        {uniform ? <SeverityMark level={SEVERITY[uniform]} label={toneLabels[uniform]} /> : null}
         {meta}
       </div>
 
@@ -247,10 +242,10 @@ export function TimelineSummaryMeta({ children }: { children: ReactNode }) {
 
 /**
  * One episode as a row: its ordinal, what it was in a line of prose, its
- * severest tone as a `SeverityMark` in a column of its own, and the slots
- * `TimelineSummaryTime` and `TimelineSummaryDetail`. When every episode
- * has the same tone the summary's head says it once and the rows leave it
- * out. A button when the summary takes a pick.
+ * severest tone as a `SeverityMark` in a column of its own (in every row,
+ * so a row without one is never mistaken for unrated), and the slots
+ * `TimelineSummaryTime` and `TimelineSummaryDetail`. A button when the
+ * summary takes a pick.
  */
 export function TimelineSummaryEpisode({
   episode,
@@ -278,11 +273,9 @@ export function TimelineSummaryEpisode({
   const body = (
     <>
       <span className="di-ordinal di-tsummary-index">{ordinal(episode)}</span>
-      {place?.uniform ? null : (
-        <span className="di-tsummary-tone">
-          <SeverityMark level={SEVERITY[tone]} label={toneLabel} />
-        </span>
-      )}
+      <span className="di-tsummary-tone">
+        <SeverityMark level={SEVERITY[tone]} label={toneLabel} />
+      </span>
       <span className="di-tsummary-row-title">{title}</span>
       {children}
     </>
