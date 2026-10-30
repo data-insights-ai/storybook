@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { SeverityMark } from "../../../marks/SeverityMark";
+import { SeverityMark } from "../../../marks/status/SeverityMark";
 import { HeroFigure } from "./HeroFigure";
 
 const meta = {

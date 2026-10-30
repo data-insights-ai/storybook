@@ -11,9 +11,9 @@ import {
   TableIndex,
   TableRow,
 } from "../../../data/table/DataTable";
-import { SealValue } from "../../../marks/SealValue";
+import { SealValue } from "../../../marks/status/SealValue";
 import { SkeletonTable } from "./SkeletonTable";
-import { StatusPill } from "../../../marks/StatusPill";
+import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {
   title: "Feedback/Waiting/SkeletonTable",

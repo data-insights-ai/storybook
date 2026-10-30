@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Breadcrumb } from "../../navigation/Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Select } from "../../forms/select/Select";
-import { StatusPill } from "../../marks/StatusPill";
+import { StatusPill } from "../../marks/status/StatusPill";
 import { AppShell, AppShellBar, AppShellBarEnd, AppShellContent, AppShellMain } from "./AppShell";
 import { AppShellContext, AppShellFoot, AppShellRail, type NavGroup } from "./AppShellRail";
 import { Console } from "../../../../.storybook/Console";

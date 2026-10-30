@@ -8,7 +8,7 @@ import { VersionTag } from "../../marks/VersionTag";
 import { TextLink } from "../../navigation/TextLink";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
 import { Panel } from "../../layout/page/Panel";
-import { StatusPill } from "../../marks/StatusPill";
+import { StatusPill } from "../../marks/status/StatusPill";
 
 const meta = {
   title: "Shell/SignIn",

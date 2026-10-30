@@ -5,8 +5,8 @@ import { Button } from "../../../actions/Button";
 import { Icon } from "../../../marks/Icon";
 import { IconTile } from "../../../marks/IconTile";
 import { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./Session";
-import { SealValue } from "../../../marks/SealValue";
-import { StatusPill } from "../../../marks/StatusPill";
+import { SealValue } from "../../../marks/status/SealValue";
+import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {
   title: "Data/Records/Session",

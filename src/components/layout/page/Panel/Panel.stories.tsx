@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Panel, PanelFooter, PanelMeta, PanelNote } from "./Panel";
-import { SealValue } from "../../../marks/SealValue";
-import { StatusPill } from "../../../marks/StatusPill";
+import { SealValue } from "../../../marks/status/SealValue";
+import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {
   title: "Layout/Page/Panel",

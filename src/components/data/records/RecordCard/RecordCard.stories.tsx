@@ -13,7 +13,7 @@ import {
   RecordMark,
   RecordStatus,
 } from "./RecordCard";
-import { StatusPill } from "../../../marks/StatusPill";
+import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {
   title: "Data/Records/RecordCard",

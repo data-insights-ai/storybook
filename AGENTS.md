@@ -106,11 +106,11 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | `navigation/` | Breadcrumb, CommandBar, Menu, Pagination, Stepper, Tabs, TabNav, TextLink; `Sidebar/` the sidebar and its parts behind one index |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker |
 | `data/` | `records/` AttentionList, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` FigureRow, HeroFigure, Stat, StatTile; `text/` Eyebrow, Highlight, Kbd, MetaLine, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
-| `marks/` | Badge, Chip, SeverityMark, StatusPill, Tag, VersionTag, SealValue, Icon (with the `IconSet` gallery the docs show), IconTile |
+| `marks/` | Badge, Chip, Tag, VersionTag, Icon (with the `IconSet` gallery the docs show), IconTile; `status/` StatusPill, SeverityMark, SealValue |
 | `feedback/` | DangerZone, Delayed, EmptyState, Notice, Toast, Tooltip, TooltipTarget; `waiting/` AppLoader, Progress, RouteProgress, SkeletonPage, SkeletonTable, Spinner |
 | `overlays/` | ConfirmDialog, CreateFlow, Flyout, Modal, Sheet, ShortcutHelp; `useModalDialog/` the dialog behaviour Modal and Sheet share |
 | `inference/` | ConfidenceField, ConfirmPanel, ExplainPanel, PrivacyBadge, and the `Inference.css` they share |
-| `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, Split, ListDetail, FieldStack, InlineForm, Actions; `page/` Page, PageHeader, SectionTitle, Panel, Hero, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure |
+| `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, FieldStack, InlineForm, Actions; `panes/` Split, ListDetail; `page/` Page, PageHeader, SectionTitle, Panel, Hero, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure |
 | `charts/` | Bars, Chart, ChartCard, CoverageMatrix, Distribution, LevelMeter, Seismograph, Sparkline, TrendChart |
 | `timeline/` | ChainTimeline, EventTimeline (with its `marks/` and `navigation/`), PeriodTimeline, WeekTimeline, TimelineSummary; `scale/` and `types/`, shared by EventTimeline and TimelineSummary |
 | `shell/` | AppShell, SignIn, SkipLink, ThemeProvider |
@@ -123,13 +123,13 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Actions/` — what a person presses: Button, CountButton, CopyValue, RowActions, BulkActionBar.
 - `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
 - `Data/` — what a person reads: `Records/` (AttentionList, the cards, FactList, KeyValues, Channel, Session), `Figures/` (FigureRow, HeroFigure, Stat, StatTile), `Text/` (Eyebrow, Highlight, Kbd, MetaLine, CodeBlock, PullQuote) and `Table/`.
-- `Marks/` — what every other component draws with: Badge, SeverityMark, StatusPill, Chip, Tag, VersionTag, SealValue, Icon, IconTile. A mark imports no other component, so it sits below them all.
+- `Marks/` — what every other component draws with: Badge, Chip, Tag, VersionTag, Icon, IconTile; `Status/` (StatusPill, SeverityMark, SealValue). A mark imports no other component, so it sits below them all.
 - `Feedback/` — Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `Waiting/` the loaders, progress and skeletons.
 - `Overlays/`, `Navigation/` — what opens over the page, and how a person moves through it.
-- `Layout/` — `Arrangement/` (Stack, Grid, Numbered, Toolbar, Split, ListDetail, FieldStack, InlineForm, Actions), `Page/` (Page, the headers, Panel, Hero, Stage, DetailSection), `Folding/` (Accordion, Disclosure).
+- `Layout/` — `Arrangement/` (Stack, Grid, Numbered, Toolbar, FieldStack, InlineForm, Actions), `Panes/` (Split, ListDetail), `Page/` (Page, the headers, Panel, Hero, Stage, DetailSection), `Folding/` (Accordion, Disclosure).
 - `Charts/`, `Timeline/`, `Inference/` — what a screen measures, what happened when, and what the system inferred.
 - `Shell/` — AppShell, SignIn, ThemeProvider. A product renders `AppShell` full-bleed from its slots. The Storybook window the older patterns sit in, with the sample chrome they share, is `.storybook/Console.tsx`: such a story adds it as a decorator, and it is not in the package.
-- `Patterns/` — whole screens composed only from public components: Security overview, Case triage, Organization home (one story per role), and the older console examples. A pattern is an example, never a package export.
+- `Patterns/` — whole screens composed only from public components: Security overview, Case triage, Organization home (one story per role), and the older console examples. `src/screens` keeps one folder per kind (`overview/`, `cases/`, `home/`, `pages/`, `records/`, `shell/`). A pattern is an example, never a package export.
 
 A group gets subgroups only where a natural one exists, and a flat group runs to about eight or ten entries before it needs one (Navigation holds ten). Inside a group, entries sort alphabetically by title.
 

@@ -4,7 +4,7 @@ import logo from "../../../assets/logo.svg";
 import logoInverse from "../../../assets/logo-inverse.svg";
 import { cx } from "../../../internal/cx";
 import { Badge } from "../../marks/Badge";
-import { SealMark } from "../../marks/SealValue";
+import { SealMark } from "../../marks/status/SealValue";
 import "./AppShell.css";
 
 export type NavItem = {

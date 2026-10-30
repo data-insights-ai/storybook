@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Fact, FactList } from "../../../data/records/FactList";
-import { StatusPill } from "../../../marks/StatusPill";
+import { StatusPill } from "../../../marks/status/StatusPill";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
 import { TextLink } from "../../../navigation/TextLink";
 import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../PageHeader";

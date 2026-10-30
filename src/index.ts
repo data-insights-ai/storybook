@@ -192,9 +192,9 @@ export {
 } from "./components/data/records/RecordCard";
 export { Eyebrow } from "./components/data/text/Eyebrow";
 export { Kbd } from "./components/data/text/Kbd";
-export { SealMark, SealValue } from "./components/marks/SealValue";
+export { SealMark, SealValue } from "./components/marks/status/SealValue";
 export { TickRule } from "./components/data/text/TickRule";
-export type { SealState } from "./components/marks/SealValue";
+export type { SealState } from "./components/marks/status/SealValue";
 export { SaveBar } from "./components/forms/field/SaveBar";
 export { SearchField } from "./components/forms/text/SearchField";
 export { Seismograph } from "./components/charts/Seismograph";
@@ -234,12 +234,12 @@ export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
 export { SkeletonPage } from "./components/feedback/waiting/SkeletonPage";
 export type { SkeletonPageVariant } from "./components/feedback/waiting/SkeletonPage";
 export { Sparkline } from "./components/charts/Sparkline";
-export { Split, SplitAside, SplitMain } from "./components/layout/arrangement/Split";
+export { Split, SplitAside, SplitMain } from "./components/layout/panes/Split";
 export { Spinner } from "./components/feedback/waiting/Spinner";
 export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/page/Stage";
 export { Stat, StatRow } from "./components/data/figures/Stat";
 export { StatTile, StatTileDelta } from "./components/data/figures/StatTile";
-export { StatusPill } from "./components/marks/StatusPill";
+export { StatusPill } from "./components/marks/status/StatusPill";
 export { Stepper } from "./components/navigation/Stepper";
 export { Switch } from "./components/forms/choice/Switch";
 export { TabPanel, Tabs } from "./components/navigation/Tabs";
@@ -268,6 +268,6 @@ export {
   ListDetailItems,
   ListDetailList,
   ListDetailPane,
-} from "./components/layout/arrangement/ListDetail";
+} from "./components/layout/panes/ListDetail";
 export { MetaLine } from "./components/data/text/MetaLine";
-export { SeverityMark, type Severity } from "./components/marks/SeverityMark";
+export { SeverityMark, type Severity } from "./components/marks/status/SeverityMark";
