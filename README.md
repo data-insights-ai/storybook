@@ -85,7 +85,7 @@ Tokens are three layers in `src/styles/tokens`:
 
 Depth is a step in tone, not a line. Gold marks the one thing that matters in a view and, in daylight, is never text. Selection and focus are cornflower. Severity is one scale (`SeverityMark`), a filled mark plus the word.
 
-Sansation is the page's name, figures and section heads. IBM Plex Sans is the interface, with a 14px body. IBM Plex Mono is identifiers, timestamps and the labels above values.
+Space Grotesk is the page's name, figures and section heads. IBM Plex Sans is the interface, with a 14px body. IBM Plex Mono is identifiers, timestamps and the labels above values.
 
 Buttons, fields, and tables are native elements. Where a control needs roving focus or a popup beyond that, the headless library is Base UI (`@base-ui/react`), the only one. The date calendars draw their month grid with `react-day-picker`; the typed day and time segments are the package's own.
 

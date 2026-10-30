@@ -121,7 +121,7 @@ Rules that make output look native rather than approximate:
 - **Selection and focus are cornflower**, in both themes. Never ring focus in gold. Never remove a focus indicator.
 - **Warn is its own amber**, so it never reads as the gold. Severity after dark runs orange for medium for the same reason.
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
-- **Three families.** `--di-font-display` (Sansation) is the page's name, a figure, a section head. `--di-font-ui` (IBM Plex Sans, 14px body) is prose. `--di-font-code` (IBM Plex Mono) is anything a machine wrote, and the capital label above a value.
+- **Three families.** `--di-font-display` (Space Grotesk) is the page's name, a figure, a section head. `--di-font-ui` (IBM Plex Sans, 14px body) is prose. `--di-font-code` (IBM Plex Mono) is anything a machine wrote, and the capital label above a value.
 - **Rules only between figures and table rows.** A surface carries a soft shadow at most; a detached plane — menu, modal, toast — a stronger one (`--di-shadow-plane`). No blur behind text.
 - **Indexed records carry a 38px index column** (`--di-index-col`) holding an ordinal or a letter, wherever sequence or record identity matters — panels, tables, sheets opened from a row, notices. A sheet opened from a row keeps that row's ordinal; a failure keeps its ordinal, tinted. An ordinary form, a first-use empty state, and a panel or `StatTile` that is not one of a sequence (a row of different measures, the facts on one record) omit it; never invent a number to fill a decorative rail.
 - Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
@@ -162,10 +162,10 @@ use, and nothing else.
 
 | Role | Token | Face | Size | Weight | Where |
 | --- | --- | --- | --- | --- | --- |
-| Display | `--di-font-size-1000` | Sansation | 56px | 700 | Brand page title |
-| Title | `--di-font-size-800` | Sansation | 34px | 700 | Brand page section |
-| Page | `--di-font-size-700` | Sansation | 28px | 700 | `PageHeader`: the page's name; `Figure` value |
-| Section | `--di-font-size-600` | Sansation | 20px | 700 | `SectionTitle`, the attention heading |
+| Display | `--di-font-size-1000` | Space Grotesk | 56px | 700 | Brand page title |
+| Title | `--di-font-size-800` | Space Grotesk | 34px | 700 | Brand page section |
+| Page | `--di-font-size-700` | Space Grotesk | 28px | 700 | `PageHeader`: the page's name; `Figure` value |
+| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `SectionTitle`, the attention heading |
 | Brand lede | `--di-font-size-550` | IBM Plex Sans | 18px | 400 | `PageHeader tier="brand"` lede |
 | Block | `--di-font-size-500` | IBM Plex Sans | 16px | 600 | A panel's or an attention item's title |
 | **Body** | `--di-font-size-400` | IBM Plex Sans | **14px** | 400 | The console body — `base.css` |

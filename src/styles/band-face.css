@@ -54,3 +54,19 @@
   descent-override: 22%;
   line-gap-override: 0%;
 }
+
+/*
+ * Space Grotesk, the display face, cut the same way for a passage marked
+ * inside a heading: ascent 0.064em above its cap height (0.70), descent at
+ * the foot of the descenders. Bold only, the one weight headings use.
+ */
+@font-face {
+  font-family: "Space Grotesk Band";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("@fontsource/space-grotesk/files/space-grotesk-latin-700-normal.woff2") format("woff2");
+  ascent-override: 76.4%;
+  descent-override: 21.6%;
+  line-gap-override: 0%;
+}

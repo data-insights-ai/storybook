@@ -123,11 +123,11 @@ export const ScaleStory: StoryObj = {
     <Page
       eyebrow="Type"
       title="Three families, three jobs."
-      lede="Sansation names and counts: a page's name, a figure, a section head. IBM Plex Sans is what a person reads, at 14px. IBM Plex Mono is what a machine wrote, and the label above a value, so the label reads as a different kind of text than the value it names."
+      lede="Space Grotesk names and counts: a page's name, a figure, a section head. IBM Plex Sans is what a person reads, at 14px. IBM Plex Mono is what a machine wrote, and the label above a value, so the label reads as a different kind of text than the value it names."
     >
       <Section
         eyebrow="Display"
-        title="Sansation."
+        title="Space Grotesk."
         lede="Three steps on a console: the page's name, a figure, a section head. Bold only. The top of the ramp is a brand page's, and the one hero figure of a view."
       >
         <Rows rows={display} />

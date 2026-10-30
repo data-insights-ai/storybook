@@ -194,7 +194,8 @@
      * the sans for what a person reads, the mono for what a machine wrote
      * and for the labels above a value.
      */
-    --di-font-display: var(--di-font-sansation);
+    --di-font-display: var(--di-font-grotesk);
+    --di-font-display-band: var(--di-font-grotesk-band);
     --di-font-ui: var(--di-font-sans);
     --di-font-code: var(--di-font-mono);
 
