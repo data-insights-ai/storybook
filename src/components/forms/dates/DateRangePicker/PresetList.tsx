@@ -46,7 +46,7 @@ export function PresetList<Key extends string>({
           role="option"
           aria-selected={option.key === selected}
           tabIndex={option.key === tabStop ? 0 : -1}
-          className="di-date-range-preset"
+          className="di-option di-date-range-preset"
           data-selected={option.key === selected || undefined}
           onClick={() => onChoose(option.key)}
           onKeyDown={onKeyDown(index)}

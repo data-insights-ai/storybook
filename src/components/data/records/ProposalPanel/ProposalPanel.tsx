@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { cx } from "../../../../internal/cx";
 import { surfaceClass } from "../../../../internal/surface";
 import { takeSlot } from "../../../../internal/slots";
-import { Disclosure, DisclosureLead } from "../../../layout/folding/Disclosure";
+import { Disclosure } from "../../../layout/folding/Disclosure";
 import { SealMark } from "../../../marks/status/SealValue";
 import { Figure } from "../../figures/Figure";
 import "./ProposalPanel.css";
@@ -94,10 +94,7 @@ function ProposalWhy({ label, children }: { label: string; children: ReactNode }
   const id = useId();
   const [open, setOpen] = useState(false);
   return (
-    <Disclosure id={id} open={open} onOpenChange={setOpen} toggleLabel={label} className="di-proposal-why">
-      <DisclosureLead>
-        <span className="di-proposal-why-label">{label}</span>
-      </DisclosureLead>
+    <Disclosure id={id} open={open} onOpenChange={setOpen} toggle="head" title={label} className="di-proposal-why">
       <div className="di-proposal-why-body">{children}</div>
     </Disclosure>
   );

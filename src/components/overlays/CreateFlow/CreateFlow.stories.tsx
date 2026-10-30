@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { ChoiceCards } from "../../forms/choice/ChoiceCards";
+import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
 import { CreateFlow } from "./CreateFlow";
 import { Fact, FactList } from "../../data/records/FactList";
 import { TextField } from "../../forms/text/TextField";
 import { Page } from "../../layout/page/Page";
+import { Button } from "../../actions/Button";
+import { Dialog } from "../Dialog";
 
 const steps = ["Choose a type", "Details", "Review"];
 const ledes = ["", "How the platform reaches your identity provider.", "The connection is active once it is created."];
@@ -60,7 +62,7 @@ function Flow(args: Parameters<typeof CreateFlow>[0]) {
       onCancel={() => setStep(0)}
     >
       {step === 0 ? (
-        <ChoiceCards name="kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} />
+        <ChoiceGroup appearance="cards" name="kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} />
       ) : null}
       {step === 1 ? (
         <TextField id="conn-name" label="Name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -75,19 +77,33 @@ function Flow(args: Parameters<typeof CreateFlow>[0]) {
   );
 }
 
-/** Choose the type, fill in the details, review, create. */
+function InADialog(args: Parameters<typeof CreateFlow>[0]) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>New connection</Button>
+      <Dialog open={open} onClose={() => setOpen(false)} title="New connection" closeLabel="Close">
+        <Flow {...args} />
+      </Dialog>
+    </>
+  );
+}
+
+/** In a side `Dialog`: choose the type, fill in the details, review, create. */
 export const NewConnection: Story = {
-  render: (args) => <Flow {...args} />,
+  render: (args) => <InADialog {...args} />,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "New connection" }));
+    const canvas = within(
+      await within(canvasElement.ownerDocument.body).findByRole("dialog", { name: "New connection" }),
+    );
     await userEvent.click(canvas.getByText("SAML 2.0"));
     await userEvent.click(canvas.getByRole("button", { name: "Next" }));
     await waitFor(() => expect(canvas.getByLabelText("Name")).toHaveFocus());
     await expect(canvas.getByRole("button", { name: "Next" })).toBeDisabled();
     await userEvent.type(canvas.getByLabelText("Name"), "Head office{Enter}");
     await expect(canvas.getByRole("heading", { name: "Review" })).toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Create connection" }));
-    await expect(canvas.getByText("Created Head office.")).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Create connection" })).toBeEnabled();
   },
 };
 

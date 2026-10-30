@@ -8,7 +8,7 @@ import "./CreateFlow.css";
 
 /**
  * Creating something that needs a choice before its details: choose the
- * type (`ChoiceCards`), fill in the details, review, create. One step is
+ * type (`ChoiceGroup appearance="cards"`), fill in the details, review, create. One step is
  * on screen at a time, under a `Stepper` that says where the reader is.
  * Enter moves on; Back keeps what was entered. Each step starts in its
  * first field, or on its heading when it has none.
@@ -20,7 +20,7 @@ import "./CreateFlow.css";
  * view: Back and Cancel at the left, the one action that moves on at the
  * right.
  *
- * It sits in a `Sheet` (`width="form"`) or on a page (`width="page"`).
+ * It sits in a side `Dialog` (`width="form"`) or on a page (`width="page"`).
  * On a page the steps run in one line from the left edge, and the step is
  * a panel, like a section of a record: its title and
  * lede, its body, the actions as its footer. A single field, a switch and

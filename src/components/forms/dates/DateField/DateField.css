@@ -18,18 +18,26 @@
     outline-offset: 2px;
   }
 
-  .di-date-control:is([data-disabled], :has([data-disabled])) {
+  /* Doubled class: above .di-control's hover, so neither state takes the hover edge. */
+  .di-control.di-date-control:is([data-invalid], :has([data-invalid])) {
+    border-color: var(--di-field-border-invalid);
+  }
+
+  .di-control.di-date-control:is([data-disabled], :has([data-disabled])) {
     cursor: not-allowed;
     border-color: var(--di-field-border);
     background: var(--di-bg-disabled);
     color: var(--di-text-disabled);
   }
 
-  .di-date-control:is([data-invalid], :has([data-invalid])) {
-    border-color: var(--di-status-danger-dot);
+  /* A day or time to read and copy, as a read-only text field: the inset tone, no frame, full ink. */
+  .di-control.di-date-control[data-readonly] {
+    border-color: transparent;
+    background: var(--di-bg-subtle);
   }
 
   .di-date-field-toggle {
+    position: relative;
     display: grid;
     flex: none;
     place-items: center;
@@ -63,6 +71,14 @@
   .di-date-field-toggle:disabled {
     color: var(--di-text-disabled);
     cursor: not-allowed;
+  }
+
+  @media (pointer: coarse) {
+    .di-date-field-toggle::after {
+      content: "";
+      position: absolute;
+      inset: calc((100% - var(--di-target)) / 2);
+    }
   }
 
   .di-time-field-icon {
@@ -99,13 +115,7 @@
   }
 
   .di-date-field-dialog {
-    padding: var(--di-space-12);
+    padding: var(--di-gap-12);
     outline: none;
-  }
-
-  .di-date-field-calendar {
-    display: flex;
-    flex-direction: column;
-    gap: var(--di-gap-12);
   }
 }

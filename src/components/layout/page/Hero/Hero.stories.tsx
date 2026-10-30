@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { TrendChart } from "../../../charts/time/TrendChart";
-import { Figure, FigureRow } from "../../../data/figures/FigureRow";
-import { HeroFigure } from "../../../data/figures/HeroFigure";
+import { FigureRow } from "../../../data/figures/FigureRow";
+import { Figure } from "../../../data/figures/Figure";
 import { SeverityMark } from "../../../marks/status/SeverityMark";
 import { TextLink } from "../../../navigation/TextLink";
 import { Hero, HeroAside, HeroFooter, HeroLead, HeroVisual } from "./Hero";
@@ -17,7 +17,7 @@ const activity = counts.map((detections, i) => ({
 const meta = {
   title: "Layout/Page/Hero",
   component: Hero,
-  tags: ["layer:block", "autodocs"],
+  tags: ["layer:block", "autodocs", "status:deprecated"],
   args: {
     label: "Detections · last 7 days",
     title: "Three bursts this week, the largest on 9 October",
@@ -36,6 +36,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
+ * Deprecated: removed in 0.12.0; write `Panel surface="hero"` (`Layout/Page/Panel` → Hero).
  * The page's signature visual on navy: the one figure beside it, the chart,
  * and the supporting figures as its footer.
  */
@@ -46,11 +47,11 @@ export const Default: Story = {
         <TextLink href="#cases">All cases</TextLink>
       </HeroAside>
       <HeroLead>
-        <HeroFigure label="Open cases" value="3">
+        <Figure size="hero" label="Open cases" value="3">
           <SeverityMark level="critical" label="1 critical" />
           <SeverityMark level="high" label="1 high" />
           <SeverityMark level="medium" label="1 medium" />
-        </HeroFigure>
+        </Figure>
       </HeroLead>
       <HeroVisual>
         <TrendChart

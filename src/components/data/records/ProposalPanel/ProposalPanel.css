@@ -46,9 +46,10 @@
     color: var(--di-text);
   }
 
-  .di-proposal-why-label {
-    font-size: var(--di-font-size-400);
-    color: var(--di-text);
+  /* The fold names a question, not a section: reading face, regular, so the panel keeps one bold line. */
+  .di-proposal-why .di-disclosure-title {
+    font-family: var(--di-font-ui);
+    font-weight: var(--di-weight-regular);
   }
 
   .di-proposal-why-body {

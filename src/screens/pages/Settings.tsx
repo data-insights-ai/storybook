@@ -15,10 +15,8 @@ import {
   Numbered,
   PageHeader,
   PageHeaderAside,
+  PageHeaderMeta,
   PageHeaderTitle,
-  SectionTitle,
-  SectionTitleHeading,
-  SectionTitleMeta,
   RecordActions,
   RecordCard,
   RecordDetail,
@@ -78,10 +76,10 @@ export function SettingsScreen() {
         </Numbered>
 
         <Numbered index="02">
-          <SectionTitle lede="Active endpoints for security events">
-            <SectionTitleHeading>Notification channels</SectionTitleHeading>
-            <SectionTitleMeta>Synced</SectionTitleMeta>
-          </SectionTitle>
+          <PageHeader level={2} lede="Active endpoints for security events">
+            <PageHeaderTitle>Notification channels</PageHeaderTitle>
+            <PageHeaderMeta>Synced</PageHeaderMeta>
+          </PageHeader>
           <Grid min="240px">
             <RecordCard title="Email notifications">
               <RecordStatus>
@@ -125,14 +123,14 @@ export function SettingsScreen() {
             </NoticeText>
           </Notice>
 
-          <SectionTitle lede="New hit on a domain · medium · email sent · webhook received">
-            <SectionTitleHeading>Recent security events</SectionTitleHeading>
-            <SectionTitleMeta>10 Sep 2026, 14:37 CEST</SectionTitleMeta>
-          </SectionTitle>
-          <SectionTitle lede="High · email sent · webhook received">
-            <SectionTitleHeading>Security report created</SectionTitleHeading>
-            <SectionTitleMeta>10 Sep 2026, 14:30 CEST</SectionTitleMeta>
-          </SectionTitle>
+          <PageHeader level={2} lede="New hit on a domain · medium · email sent · webhook received">
+            <PageHeaderTitle>Recent security events</PageHeaderTitle>
+            <PageHeaderMeta>10 Sep 2026, 14:37 CEST</PageHeaderMeta>
+          </PageHeader>
+          <PageHeader level={2} lede="High · email sent · webhook received">
+            <PageHeaderTitle>Security report created</PageHeaderTitle>
+            <PageHeaderMeta>10 Sep 2026, 14:30 CEST</PageHeaderMeta>
+          </PageHeader>
         </Numbered>
 
         <Panel>
@@ -149,10 +147,10 @@ export function SettingsScreen() {
           </Grid>
         </Panel>
 
-        <SectionTitle>
-          <SectionTitleHeading>Security status: checked</SectionTitleHeading>
-          <SectionTitleMeta>ISO/IEC 27001 · privacy rules applied</SectionTitleMeta>
-        </SectionTitle>
+        <PageHeader level={2}>
+          <PageHeaderTitle>Security status: checked</PageHeaderTitle>
+          <PageHeaderMeta>ISO/IEC 27001 · privacy rules applied</PageHeaderMeta>
+        </PageHeader>
       </Stack>
     </>
   );

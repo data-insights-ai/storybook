@@ -1,0 +1,50 @@
+@layer components {
+  /*
+   * A row of the danger panel: the action and its cost at the start, the
+   * button at the end, dropping under the text on a narrow panel. Rows are
+   * a step of space apart, not ruled; only the panel's title is bold, so the
+   * action's name is medium weight.
+   */
+  .di-danger-action {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-gap-12) var(--di-gap-24);
+  }
+
+  .di-danger-action + .di-danger-action {
+    margin-top: var(--di-gap-24);
+  }
+
+  .di-danger-action-text {
+    flex: 1 1 20rem;
+    min-width: 0;
+    max-width: var(--di-measure-prose);
+  }
+
+  .di-danger-action-title {
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-medium);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-danger-action-body,
+  .di-danger-action-note {
+    margin-top: var(--di-gap-4);
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  .di-danger-action-note {
+    color: var(--di-status-warn-fg);
+  }
+
+  .di-danger-action-control {
+    display: flex;
+    flex: none;
+    gap: var(--di-gap-8);
+  }
+}

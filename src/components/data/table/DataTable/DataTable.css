@@ -8,12 +8,21 @@
   }
 
   /*
-   * On any other surface (a sign-in card, an accordion, a sheet, a dialog, a
-   * flyout, a panel) the table drops its frame and reaches out by its own
+   * On any other surface (a sign-in card, a disclosure, a dialog, a flyout,
+   * a record card, a panel) the table drops its frame and reaches out by its own
    * edge, so its text keeps the line of the content above it while a row's
    * hover still has room around it. A flush panel has already placed it.
    */
-  :is(.di-login-card, .di-accordion, .di-sheet, .di-sheet-docked, .di-modal, .di-flyout, .di-record, .di-panel-content)
+  :is(
+      .di-login-card,
+      .di-disclosure,
+      .di-dialog,
+      .di-dialog-docked,
+      .di-modal,
+      .di-flyout,
+      .di-record,
+      .di-panel-content
+    )
     .di-table-wrap:not(.di-panel-content-flush .di-table-wrap) {
     --di-table-bg: transparent;
     --di-table-shadow: none;

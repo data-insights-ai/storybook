@@ -4,9 +4,9 @@ import {
   Button,
   ConfirmDialog,
   DangerAction,
-  DangerZone,
   DetailSection,
   DetailSectionForm,
+  Dialog,
   EmptyState,
   EmptyStateAction,
   Fact,
@@ -20,10 +20,10 @@ import {
   PageHeader,
   PageHeaderAside,
   PageHeaderTitle,
+  Panel,
   RowActions,
   SearchField,
   Select,
-  Sheet,
   StatusPill,
   TableCell,
   TableColumn,
@@ -193,7 +193,7 @@ export function ListPageScreen() {
             </TableHead>
           </InfiniteTable>
         )}
-        <Sheet
+        <Dialog
           open={open !== undefined}
           onClose={() => (setOpen(undefined), setEditing(false))}
           title={open?.name ?? ""}
@@ -218,7 +218,7 @@ export function ListPageScreen() {
               </Select>
             </DetailSectionForm>
           </DetailSection>
-          <DangerZone title="Danger zone">
+          <Panel tone="danger" heading={2} title="Danger zone">
             <DangerAction
               title="Remove from organization"
               body="They lose access to the organization and its products at once."
@@ -227,8 +227,8 @@ export function ListPageScreen() {
                 Remove
               </Button>
             </DangerAction>
-          </DangerZone>
-        </Sheet>
+          </Panel>
+        </Dialog>
       </Page>
       <ConfirmDialog
         open={confirm}

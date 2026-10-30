@@ -13,10 +13,8 @@ import {
   Numbered,
   PageHeader,
   PageHeaderAside,
+  PageHeaderMeta,
   PageHeaderTitle,
-  SectionTitle,
-  SectionTitleHeading,
-  SectionTitleMeta,
   Stack,
   Stage,
   StageFooter,
@@ -102,10 +100,10 @@ export function ArchitectureScreen() {
         </Notice>
 
         <Numbered index="01">
-          <SectionTitle lede="End-to-end data flow">
-            <SectionTitleHeading>Five-stage pipeline</SectionTitleHeading>
-            <SectionTitleMeta>Sync active</SectionTitleMeta>
-          </SectionTitle>
+          <PageHeader level={2} lede="End-to-end data flow">
+            <PageHeaderTitle>Five-stage pipeline</PageHeaderTitle>
+            <PageHeaderMeta>Sync active</PageHeaderMeta>
+          </PageHeader>
           <StageTrack>
             {stages.map((stage) => (
               <Stage key={stage.id} step={stage.step} title={stage.title} body={stage.body} current={stage.current}>
@@ -126,10 +124,10 @@ export function ArchitectureScreen() {
         </Numbered>
 
         <Numbered index="02">
-          <SectionTitle lede="Component monitoring">
-            <SectionTitleHeading>System status and performance</SectionTitleHeading>
-            <SectionTitleMeta>Updated: today, 08:37 CEST</SectionTitleMeta>
-          </SectionTitle>
+          <PageHeader level={2} lede="Component monitoring">
+            <PageHeaderTitle>System status and performance</PageHeaderTitle>
+            <PageHeaderMeta>Updated: today, 08:37 CEST</PageHeaderMeta>
+          </PageHeader>
           <Grid min="220px">
             <Panel>
               <Stack gap={16}>

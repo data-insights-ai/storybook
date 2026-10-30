@@ -6,18 +6,17 @@ import {
   Figure,
   FigureRow,
   Grid,
-  Hero,
-  HeroAside,
-  HeroFooter,
-  HeroLead,
-  HeroVisual,
   PageHeader,
   PageHeaderMeta,
   PageHeaderStatus,
   PageHeaderTitle,
   Panel,
+  PanelActions,
+  PanelFigure,
+  PanelFooter,
   PanelMeta,
   PanelNote,
+  PanelVisual,
   SeverityMark,
   StatusPill,
   TableBody,
@@ -86,26 +85,31 @@ export function SecurityOverview() {
         </AttentionItem>
       </AttentionList>
 
-      <Hero label="Detections · last 7 days" title="Three bursts this week, the largest on Friday">
-        <HeroAside>
+      <Panel
+        surface="hero"
+        heading={2}
+        label="Detections · last 7 days"
+        title="Three bursts this week, the largest on Friday"
+      >
+        <PanelActions>
           <TextLink href="#cases">All cases</TextLink>
-        </HeroAside>
-        <HeroLead>
+        </PanelActions>
+        <PanelFigure>
           <Figure size="hero" label="Open cases" value={String(figures.open)}>
             <SeverityMark level="critical" label="1 critical" />
             <SeverityMark level="high" label="1 high" />
             <SeverityMark level="medium" label="1 medium" />
           </Figure>
-        </HeroLead>
-        <HeroVisual>
+        </PanelFigure>
+        <PanelVisual>
           <TrendChart
             label="Detections per 6 hours, last 7 days"
             height="lg"
             data={detections}
             series={[{ key: "detections", label: "Detections", kind: "bar" }]}
           />
-        </HeroVisual>
-        <HeroFooter>
+        </PanelVisual>
+        <PanelFooter>
           <FigureRow label="Supporting figures" variant="footer">
             <Figure label="New in 24 h" value={String(figures.new24h)}>
               1 escalated
@@ -120,8 +124,8 @@ export function SecurityOverview() {
               median · 7 days
             </Figure>
           </FigureRow>
-        </HeroFooter>
-      </Hero>
+        </PanelFooter>
+      </Panel>
 
       <Grid min="360px">
         <Panel label="Devices" title="Three of the four devices with cases are critical" heading={2} padded={false}>

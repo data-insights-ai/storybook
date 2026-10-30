@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Building2, KeyRound, Network } from "lucide-react";
 import {
   Breadcrumb,
-  ChoiceCards,
+  ChoiceGroup,
   CreateFlow,
   Fact,
   FactList,
@@ -61,7 +61,14 @@ export function CreateFlowPageScreen() {
           onCancel={() => setStep(0)}
         >
           {step === 0 ? (
-            <ChoiceCards name="screen-kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} />
+            <ChoiceGroup
+              appearance="cards"
+              name="screen-kind"
+              legend="Protocol"
+              options={kinds}
+              value={kind}
+              onChange={setKind}
+            />
           ) : null}
           {step === 1 ? (
             <>

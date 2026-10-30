@@ -38,7 +38,7 @@ type Story = StoryObj<typeof meta>;
  * What an action will touch, stated before it runs. Scope and
  * reversibility belong here, never in a tooltip.
  *
- * It is not a modal's property: a `Sheet` states the same facts about
+ * It is not a modal's property: a side `Dialog` states the same facts about
  * the row it opened from, which is why this is its own component.
  */
 export const Scope: Story = {

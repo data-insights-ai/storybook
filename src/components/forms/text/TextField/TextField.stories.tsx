@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { FieldStack } from "../../../layout/arrangement/FieldStack";
+import { Stack } from "../../../layout/arrangement/Stack";
 import { Toolbar } from "../../../layout/arrangement/Toolbar";
 import { TextField } from "./TextField";
+import { ConfidenceField } from "./ConfidenceField";
 import { TextLink } from "../../../navigation/TextLink";
 
 const meta = {
@@ -147,7 +148,7 @@ export const Disabled: Story = {
 export const AllStates: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <FieldStack>
+    <Stack variant="form">
       <TextField id="s1" label="Default" placeholder="registry.example.org" />
       <TextField id="s1r" label="Required" required={true} placeholder="registry.example.org" />
       <TextField id="s2" label="With hint" hint="A host name, without a scheme." />
@@ -168,7 +169,7 @@ export const AllStates: Story = {
       />
       <TextField id="s5r" label="Read-only" readOnly={true} mono={true} defaultValue="ws_7f3a99e2c41b" />
       <TextField id="s5" label="Disabled" disabled={true} defaultValue="registry.example.org" />
-    </FieldStack>
+    </Stack>
   ),
 };
 
@@ -179,13 +180,13 @@ export const AllStates: Story = {
  * a 13px label still uppercase and still letterspaced is not a heavier
  * console label, it is a broken one.
  *
- * The distance between two such fields is `FieldStack`'s, not the field's.
+ * The distance between two such fields is the form `Stack`'s, not the field's.
  */
 export const ProseLabel: Story = {
   name: "Prose label",
   parameters: { controls: { disable: true } },
   render: () => (
-    <FieldStack>
+    <Stack variant="form">
       <TextField id="account-name" label="Full name" labelTrack="prose" placeholder="Nora Feld" />
       <TextField
         id="account-email"
@@ -194,7 +195,7 @@ export const ProseLabel: Story = {
         hint="We only use this to send the receipt for a sealed run."
         placeholder="nora.feld@data-insights.ai"
       />
-    </FieldStack>
+    </Stack>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -226,7 +227,7 @@ export const German: Story = {
   name: "German, long labels",
   parameters: { controls: { disable: true } },
   render: () => (
-    <FieldStack>
+    <Stack variant="form">
       <TextField
         id="de-endpoint"
         label="Adresse des Ereignis-Hubs für die Weiterleitung an das Sicherheitsinformationssystem"
@@ -259,10 +260,70 @@ export const German: Story = {
         defaultValue="30 Tage"
         hint="Von der Richtlinie des Arbeitsbereichs festgelegt."
       />
-    </FieldStack>
+    </Stack>
   ),
   play: async ({ canvasElement }) => {
     const slot = within(canvasElement).getByRole("button", { name: "Schlüssel erneuern" });
     await expect(slot.getBoundingClientRect().height).toBeLessThan(24);
+  },
+};
+
+/**
+ * A value a model filled in, with its confidence: read-only, a meter under
+ * it and the reading in words with the way to its reasons. The label names
+ * the value, so a screen reader hears "Resolved operator, Nora Feld".
+ */
+export const Confidence: Story = {
+  args: {
+    id: "resolved-operator",
+    label: "Resolved operator",
+    readOnly: true,
+    value: "Nora Feld",
+    confidence: { value: 0.94, label: "0.94 · matched on 3 of 4 inputs", whyLabel: "Why?", onWhy: fn() },
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("textbox", { name: "Resolved operator" })).toHaveValue("Nora Feld");
+    await expect(canvas.getByRole("meter", { name: /0.94/ })).toHaveAttribute("aria-valuenow", "94");
+    const why = canvas.getByRole("button", { name: "Why?" });
+    await userEvent.click(why);
+    await expect(args.confidence?.onWhy).toHaveBeenCalled();
+    why.blur();
+  },
+};
+
+/** Below the caller's threshold: the meter and the words turn to warn, and the words say what to do. */
+export const ConfidenceToReview: Story = {
+  args: {
+    id: "resolved-host",
+    label: "Resolved host",
+    readOnly: true,
+    mono: true,
+    value: "mirror.example.net",
+    confidence: {
+      value: 0.42,
+      label: "0.42 · below the threshold, review before sealing",
+      level: "review",
+      whyLabel: "Why?",
+      onWhy: fn(),
+    },
+  },
+};
+
+/** `ConfidenceField` is deprecated and renders the read-only field with `confidence`. Removed in 0.12. */
+export const DeprecatedConfidenceField: Story = {
+  render: () => (
+    <ConfidenceField
+      id="legacy-confidence"
+      label="Resolved operator"
+      confidence={0.94}
+      confidenceLabel="0.94 · matched on 3 of 4 inputs"
+    >
+      Nora Feld
+    </ConfidenceField>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("textbox", { name: "Resolved operator" })).toHaveValue("Nora Feld");
   },
 };

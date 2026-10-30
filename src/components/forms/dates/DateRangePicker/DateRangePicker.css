@@ -14,12 +14,12 @@
   }
 
   .di-date-range:hover:not(:disabled) {
-    border-color: var(--di-border-strong);
+    border-color: var(--di-field-border-hover);
   }
 
   .di-date-range:focus-visible {
     outline: 2px solid var(--di-focus);
-    outline-offset: 1px;
+    outline-offset: 2px;
   }
 
   .di-date-range:disabled {
@@ -77,30 +77,20 @@
     flex-direction: column;
     gap: var(--di-space-2);
     min-width: 10rem;
-    padding: var(--di-space-8);
+    padding: var(--di-gap-12) var(--di-gap-8);
     border-right: 1px solid var(--di-border);
     outline: none;
   }
 
+  /* The row is the shared option (.di-option); the chosen period takes the selection tint and edge. */
   .di-date-range-preset {
-    display: flex;
-    align-items: center;
-    min-height: var(--di-option-h);
-    padding: var(--di-gap-6) var(--di-gap-8);
-    border-radius: var(--di-radius-micro);
-    font-size: var(--di-font-size-400);
     white-space: nowrap;
-    cursor: pointer;
-  }
-
-  .di-date-range-preset:hover {
-    background: var(--di-bg-page);
   }
 
   .di-date-range-preset[data-selected] {
-    background: var(--di-status-recorded-bg);
-    color: var(--di-status-recorded-fg);
-    font-weight: 600;
+    background: var(--di-choice-selected-bg);
+    box-shadow: inset var(--di-select-edge) 0 0 var(--di-choice-selected-edge);
+    color: var(--di-choice-selected-fg);
   }
 
   .di-date-range-preset:focus-visible {
@@ -113,14 +103,13 @@
     flex-direction: column;
     gap: var(--di-gap-12);
     min-width: 0;
-    padding: var(--di-space-12);
+    padding: var(--di-gap-12);
   }
 
-  /* Between the first and last day: a band, the two ends filled. */
+  /* Between the first and last day: a band in the selection tint, the two ends ringed. */
   .di-date-range-calendar .di-calendar-cell[data-selected]:not([data-selection-start], [data-selection-end]) {
     border-radius: 0;
-    background: var(--di-status-recorded-bg);
-    color: var(--di-status-recorded-fg);
+    box-shadow: none;
   }
 
   .di-date-range-months {
@@ -150,15 +139,11 @@
   .di-date-range-time {
     display: flex;
     flex-direction: column;
-    gap: var(--di-gap-4);
+    gap: var(--di-gap-6);
   }
 
   .di-date-range-time-input {
     width: auto;
-  }
-
-  .di-date-range-time-input:focus-within {
-    border-color: var(--di-focus);
   }
 
   .di-date-range-foot {
@@ -167,7 +152,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--di-gap-8);
-    padding-top: var(--di-space-12);
+    padding-top: var(--di-gap-12);
     border-top: 1px solid var(--di-border);
   }
 
@@ -277,7 +262,8 @@
 
   .di-date-range-sheet-title {
     justify-self: start;
-    font-size: var(--di-font-size-500);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
     font-weight: var(--di-weight-semibold);
   }
 
@@ -309,7 +295,13 @@
     margin-top: auto;
     padding: var(--di-space-12) var(--di-space-16) calc(var(--di-space-12) + env(safe-area-inset-bottom));
     border-top: 1px solid var(--di-border);
-    background: var(--di-bg-page);
+    background: var(--di-bg-surface);
+  }
+
+  @media (pointer: coarse) {
+    .di-date-range-preset {
+      min-height: var(--di-target);
+    }
   }
 
   body:has(.di-date-range-scrim) {

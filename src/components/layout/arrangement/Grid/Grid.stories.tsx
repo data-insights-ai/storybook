@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Fact, FactList } from "../../../data/records/FactList";
-import { StatTile } from "../../../data/figures/StatTile";
+import { Figure } from "../../../data/figures/Figure";
 import { Panel } from "../../page/Panel";
 import { Select } from "../../../forms/select/Select";
 import { TextField } from "../../../forms/text/TextField";
@@ -29,10 +29,18 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <Grid {...args}>
-      <StatTile label="Open cases" value="14" />
-      <StatTile label="Unassigned" value="3" tone="danger" />
-      <StatTile label="Sources reporting" value="12 of 14" />
-      <StatTile label="Signals today" value="1,043" />
+      <Panel>
+        <Figure label="Open cases" value="14" />
+      </Panel>
+      <Panel>
+        <Figure label="Unassigned" value="3" tone="danger" />
+      </Panel>
+      <Panel>
+        <Figure label="Sources reporting" value="12 of 14" />
+      </Panel>
+      <Panel>
+        <Figure label="Signals today" value="1,043" />
+      </Panel>
     </Grid>
   ),
   play: async ({ canvasElement }) => {
@@ -68,17 +76,19 @@ export const Panels: Story = {
   ),
 };
 
-/** Short fields side by side at 16, the form's rhythm; on a phone they stack. */
+/** Short fields side by side at 16, the form's rhythm, inside the panel that holds them; on a phone they stack. */
 export const Fields: Story = {
   args: { min: "220px", gap: 16 },
   render: (args) => (
-    <Grid {...args}>
-      <TextField id="grid-rate" type="number" label="Requests per minute" defaultValue="60" />
-      <Select id="grid-severity" label="Lowest severity" mono={false} defaultValue="high">
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-        <option value="critical">Critical</option>
-      </Select>
-    </Grid>
+    <Panel title="Rate limit">
+      <Grid {...args}>
+        <TextField id="grid-rate" type="number" label="Requests per minute" defaultValue="60" />
+        <Select id="grid-severity" label="Lowest severity" mono={false} defaultValue="high">
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="critical">Critical</option>
+        </Select>
+      </Grid>
+    </Panel>
   ),
 };

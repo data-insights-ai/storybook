@@ -26,8 +26,8 @@ import {
   Pagination,
   SealValue,
   SearchField,
-  Sheet,
-  SheetFooter,
+  Dialog,
+  DialogFooter,
   Figure,
   FigureNote,
   Panel,
@@ -192,13 +192,12 @@ export function RegisterScreen() {
 
       <DataTable caption="Sources on record">
         <TableToolbar>
-          <div style={{ width: 240 }}>
+          <div style={{ flex: "1 1 15rem", minWidth: 0, maxWidth: "20rem" }}>
             <SearchField
               id="register-search"
               label="Search the register"
               placeholder="host, hash or operator"
-              dense={true}
-              shortcut="⌘K"
+              size="sm"
             />
           </div>
           <Chip active={true} removeLabel="Remove the workspace filter">
@@ -288,7 +287,7 @@ export function RegisterScreen() {
           ))}
         </TableBody>
       </DataTable>
-      <Sheet
+      <Dialog
         open={selected !== null}
         onClose={() => setOpen(null)}
         eyebrow="Source · WS-01"
@@ -296,11 +295,11 @@ export function RegisterScreen() {
         closeLabel={`Close the detail for ${selected?.host ?? "the source"}`}
       >
         {selected ? <SourceFacts source={selected} /> : null}
-        <SheetFooter>
+        <DialogFooter>
           <Button variant="secondary">Open log</Button>
           <Button variant="primary">{selected?.state === "ok" ? "Seal now" : "Resume"}</Button>
-        </SheetFooter>
-      </Sheet>
+        </DialogFooter>
+      </Dialog>
     </Page>
   );
 }

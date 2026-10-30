@@ -5,27 +5,44 @@ import { Eyebrow } from "../../../text/Eyebrow";
 import "./Panel.css";
 
 /**
- * A block of content, drawn by tone rather than by a line: the surface
- * lifts a step from the page ground. `inset` sinks a step instead, for a
- * group inside a surface; it is the deepest a region goes.
+ * A block of content, drawn by tone rather than by a line. Every card-like
+ * block of a page is a Panel: a group of facts, a dashboard figure with its
+ * chart, the page's one navy hero, the destructive actions at the end of a
+ * record.
  *
- * One inset all round: the head, the content and the footer are rows
- * inside the surface, 16px apart, never bands of their own. The head is
- * an optional mono `label` above the `title` (set in the display face),
- * a `PanelStatus` beside the title it qualifies, and a `PanelMeta` at its
- * end. `PanelActions` sit at the end of the `PanelFooter` row, or at the
- * end of the head when the panel has no footer. A `title` with a
- * `heading` level is a heading the page outline reads; without one it is
- * the panel's name only.
+ * Use it for one block a reader takes in as a whole. Not for a record that
+ * reads and edits by section (`DetailSection`), a message about the page
+ * (`Notice`), or a list of rows (`DataTable`, which sits in a Panel with
+ * `padded={false}`).
  *
- * Only the title is bold: a lead, the body and a note are regular weight.
+ * Anatomy, top to bottom: the head (an optional mono `label`, the `title`
+ * in the display face, a `PanelStatus` beside it, a `PanelMeta` and, without
+ * a footer, `PanelActions` at its end); then `PanelLead`; then the content,
+ * or a `PanelFigure` beside a `PanelVisual`; then `PanelNote`; last the
+ * `PanelFooter` row with `PanelActions` at its end. One inset all round,
+ * the rows 16px apart (12 compact), never bands of their own. Slots may be
+ * written in any order.
  *
- * `emphasis` marks the one block that matters in the view with a gold
- * edge. One per view: the rule is the point.
+ * Variants: `surface="sheet"` lifts from the ground, `"inset"` sinks inside
+ * a surface, `"hero"` is the navy zone behind the page's signature visual
+ * (dark in both themes, one per page, its actions stay in the head and its
+ * footer, a `FigureRow variant="footer"`, sits under a fine rule).
+ * `tone="danger"` draws the danger edge around the irreversible actions at
+ * the end of a record, one `DangerAction` row each. `emphasis` is the gold
+ * edge of the one block that matters in the view. `wide` spans every column
+ * of the `Grid` it sits in.
+ *
+ * Content rules: only the title is bold; a lead, the body, a value and a
+ * note are regular weight. A panel carries no number of its own.
+ *
+ * Accessibility: with a `heading` level the title is a heading and names the
+ * panel's region; without one it is the panel's name only.
  */
 export function Panel({
   surface = "sheet",
+  tone = "neutral",
   emphasis = false,
+  wide = false,
   label,
   title,
   heading,
@@ -33,28 +50,41 @@ export function Panel({
   className,
   children,
 }: {
-  /** `sheet` lifts from the ground; `inset` sinks inside a surface. */
-  surface?: "sheet" | "inset";
+  /** `sheet` lifts from the ground; `inset` sinks inside a surface; `hero` is the navy zone of the page's signature visual. */
+  surface?: "sheet" | "inset" | "hero";
+  /** `danger` holds what cannot be taken back: the danger edge around `DangerAction` rows. */
+  tone?: "neutral" | "danger";
   /** The one block that matters in the view: a gold edge. */
   emphasis?: boolean;
+  /** Spans every column of the `Grid` it sits in, for a chart that needs the width. */
+  wide?: boolean;
   /** A mono capital line above the title: a kind, a source, a period. */
   label?: string;
   title?: string;
   /** The title's level in the page outline. Without it the title is not a heading. */
-  heading?: 2 | 3;
+  heading?: 2 | 3 | 4;
   /** Off when the child draws to the panel's edge, such as a list. */
   padded?: boolean;
   className?: string;
-  /** The panel's content, and at most one each of `PanelStatus`, `PanelMeta`, `PanelActions`, `PanelLead`, `PanelNote` and `PanelFooter`. */
+  /** The content, and at most one each of `PanelStatus`, `PanelMeta`, `PanelActions`, `PanelLead`, `PanelFigure`, `PanelVisual`, `PanelNote` and `PanelFooter`. */
   children?: ReactNode;
 }) {
   const id = useId();
   /*
-   * The slots are picked out of `children` by type, the way `ModalFrame`
-   * does it: the head sits above the content and the footer below it, so
-   * a slot cannot be placed by writing it in source order.
+   * The slots are picked out of `children` by type: the head sits above the
+   * content and the footer below it, so a slot cannot be placed by writing
+   * it in source order.
    */
-  const slot = { status: [], meta: [], actions: [], lead: [], note: [], footer: [] } as Record<string, ReactNode[]>;
+  const slot = {
+    status: [],
+    meta: [],
+    actions: [],
+    lead: [],
+    figure: [],
+    visual: [],
+    note: [],
+    footer: [],
+  } as Record<string, ReactNode[]>;
   const body: ReactNode[] = [];
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) body.push(child);
@@ -62,26 +92,35 @@ export function Panel({
     else if (child.type === PanelMeta) slot.meta.push(child);
     else if (child.type === PanelActions) slot.actions.push(child);
     else if (child.type === PanelLead) slot.lead.push(child);
+    else if (child.type === PanelFigure) slot.figure.push(child);
+    else if (child.type === PanelVisual) slot.visual.push(child);
     else if (child.type === PanelNote) slot.note.push(child);
     else if (child.type === PanelFooter) slot.footer.push(child);
     else body.push(child);
   });
+  const hero = surface === "hero";
   const footed = slot.footer.length > 0;
+  const actionsInFoot = footed && !hero;
   const headed =
     title !== undefined ||
     label !== undefined ||
     slot.status.length > 0 ||
     slot.meta.length > 0 ||
-    (!footed && slot.actions.length > 0);
+    (!actionsInFoot && slot.actions.length > 0);
+  const staged = slot.figure.length + slot.visual.length > 0;
 
   return (
     <section
       className={cx(
-        surfaceClass({ plane: surface, edge: emphasis ? "one" : "none" }),
+        surfaceClass({ plane: surface, edge: emphasis ? "one" : tone === "danger" ? "danger" : "none" }),
         "di-panel",
+        hero && "is-hero",
         emphasis && "is-emphasis",
+        tone === "danger" && "is-danger",
+        wide && "is-wide",
         className,
       )}
+      data-theme={hero ? "dark" : undefined}
       aria-labelledby={title !== undefined && heading ? id : undefined}
     >
       {headed ? (
@@ -100,7 +139,13 @@ export function Panel({
             )}
           </div>
           {slot.meta}
-          {footed ? null : slot.actions}
+          {actionsInFoot ? null : slot.actions}
+        </div>
+      ) : null}
+      {staged ? (
+        <div className="di-panel-stage">
+          {slot.figure}
+          {slot.visual}
         </div>
       ) : null}
       {body.length + slot.lead.length + slot.note.length === 0 ? null : (
@@ -113,27 +158,20 @@ export function Panel({
       {footed ? (
         <div className="di-panel-foot">
           {slot.footer}
-          {slot.actions}
+          {actionsInFoot ? slot.actions : null}
         </div>
       ) : null}
     </section>
   );
 }
 
-function PanelTitle({ id, heading, title }: { id: string; heading?: 2 | 3; title: string }) {
-  if (heading === 2)
-    return (
-      <h2 id={id} className="di-panel-title">
-        {title}
-      </h2>
-    );
-  if (heading === 3)
-    return (
-      <h3 id={id} className="di-panel-title">
-        {title}
-      </h3>
-    );
-  return <span className="di-panel-title">{title}</span>;
+function PanelTitle({ id, heading, title }: { id: string; heading?: 2 | 3 | 4; title: string }) {
+  const Heading = heading === undefined ? "span" : (`h${heading}` as const);
+  return (
+    <Heading id={id} className="di-panel-title">
+      {title}
+    </Heading>
+  );
 }
 
 /**
@@ -156,9 +194,10 @@ export function PanelMeta({ children }: { children: ReactNode }) {
 }
 
 /**
- * What a person can do with the panel: one `Button`, or a few. At the end
- * of the footer row when the panel has a `PanelFooter`, otherwise at the
- * end of the head.
+ * What a person can do with the panel: one `Button`, a `TextLink` to the
+ * page behind a figure, or a few. At the end of the footer row when the
+ * panel has a `PanelFooter`, otherwise (and always in the hero) at the end
+ * of the head.
  */
 export function PanelActions({ children }: { children: ReactNode }) {
   return <div className="di-panel-actions">{children}</div>;
@@ -166,7 +205,8 @@ export function PanelActions({ children }: { children: ReactNode }) {
 
 /**
  * The row under a panel's content, inside the same surface: a count, a
- * source, a link onward. `PanelActions` join it at its end.
+ * source, a link onward. `PanelActions` join it at its end. In the hero it
+ * holds the `FigureRow variant="footer"` under a fine rule.
  */
 export function PanelFooter({ children }: { children: ReactNode }) {
   return <div className="di-panel-footer">{children}</div>;
@@ -181,6 +221,20 @@ export function PanelFooter({ children }: { children: ReactNode }) {
  */
 export function PanelLead({ children }: { children: string }) {
   return <p className="di-panel-lead">{children}</p>;
+}
+
+/**
+ * The one figure the panel is about, in a column before its `PanelVisual`:
+ * a `Figure size="hero"` in the hero, a `Figure` on a dashboard. On a narrow panel
+ * it stacks above the visual.
+ */
+export function PanelFigure({ children }: { children: ReactNode }) {
+  return <div className="di-panel-figure">{children}</div>;
+}
+
+/** The chart, timeline or map the panel exists to show. Without a `PanelFigure` it takes the whole width. */
+export function PanelVisual({ children }: { children: ReactNode }) {
+  return <div className="di-panel-visual">{children}</div>;
 }
 
 /**

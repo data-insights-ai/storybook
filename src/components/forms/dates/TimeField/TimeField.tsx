@@ -74,6 +74,7 @@ export function TimeField({
         aria-disabled={disabled || undefined}
         data-disabled={disabled || undefined}
         data-invalid={invalid || undefined}
+        data-readonly={(readOnly && !disabled) || undefined}
       >
         <SegmentedInput
           kind="time"

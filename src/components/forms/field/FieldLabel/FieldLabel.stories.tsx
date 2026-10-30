@@ -1,14 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, within } from "storybook/test";
-import { FieldStack } from "../../../layout/arrangement/FieldStack";
+import { Button } from "../../../actions/Button";
+import { Stack } from "../../../layout/arrangement/Stack";
+import { ComboBox } from "../../select/ComboBox";
+import { DateRangePicker } from "../../dates/DateRangePicker";
+import { SearchField } from "../../text/SearchField";
+import { TextField } from "../../text/TextField";
 import { DateField } from "../../dates/DateField";
 import { TimeField } from "../../dates/TimeField";
+import { MultiComboBox } from "../../select/MultiComboBox";
 import { Select } from "../../select/Select";
 import { FileField } from "../../text/FileField";
 import { QuantityField } from "../../text/QuantityField";
 import { TextArea } from "../../text/TextArea";
-import { TokenField } from "../../text/TokenField";
 import { FieldHint } from "../FieldHint";
 import { FieldLabel } from "./FieldLabel";
 
@@ -72,7 +77,7 @@ export const EveryFieldGerman: Story = {
     const [day, setDay] = useState("2026-11-02");
     const [time, setTime] = useState("22:00");
     return (
-      <FieldStack>
+      <Stack variant="form">
         <Select
           id="de-severity"
           label="Mindestschweregrad für Benachrichtigungen an das Bereitschaftsteam"
@@ -107,13 +112,14 @@ export const EveryFieldGerman: Story = {
           wrongTypeLabel="Wählen Sie eine .pem- oder .crt-Datei."
           tooLargeLabel="Die Datei ist zu groß."
         />
-        <TokenField
+        <MultiComboBox
           id="de-invite"
+          freeEntry
           label="E-Mail-Adressen der einzuladenden Personen"
           required={true}
           values={emails}
           onChange={setEmails}
-          isValid={(v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
+          validate={(v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
           invalidLabel="keine E-Mail-Adresse"
           removeLabel={(v) => `${v} entfernen`}
           hint="1 Eintrag ist keine E-Mail-Adresse."
@@ -148,7 +154,7 @@ export const EveryFieldGerman: Story = {
           onChange={setTime}
           required={true}
         />
-      </FieldStack>
+      </Stack>
     );
   },
   play: async ({ canvasElement }) => {
@@ -159,5 +165,160 @@ export const EveryFieldGerman: Story = {
     await expect(
       within(canvasElement).getByLabelText("Client-Zertifikat des Sammlers", { selector: "input" }),
     ).toBeRequired();
+  },
+};
+
+const frames: [string, string][] = [
+  ["text", "input.di-control"],
+  ["search", ".di-search"],
+  ["select", "select.di-control"],
+  ["combo", ".di-combobox-control .di-control"],
+  ["multi", ".di-token-field"],
+  ["date", ".di-date-field .di-date-control"],
+  ["time", ".di-time-field .di-date-control"],
+  ["range", ".di-date-range"],
+  ["quantity", ".di-quantity-step"],
+  ["area", "textarea.di-control"],
+];
+
+/**
+ * Every input frame beside a Button of the same size: one tone, one border,
+ * one radius, one height in each density, and icons and keys centred in
+ * the frame. The play measures it, so a frame that drifts fails here.
+ */
+export const FramesBesideAButton: Story = {
+  name: "Frames beside a button",
+  parameters: { controls: { disable: true } },
+  render: function Render() {
+    const [text, setText] = useState("");
+    const [combo, setCombo] = useState("");
+    const [members, setMembers] = useState(["nora.feld@data-insights.ai"]);
+    const [day, setDay] = useState("");
+    const [time, setTime] = useState("");
+    const [range, setRange] = useState({ preset: "24h" as const });
+    const [seats, setSeats] = useState(5);
+    const row = { display: "flex", alignItems: "flex-end", gap: "var(--di-gap-8)", flexWrap: "wrap" } as const;
+    const cell = { flex: "1 1 14rem", minWidth: 0 } as const;
+    return (
+      <Stack variant="form">
+        <div style={row} data-frame="text">
+          <div style={cell}>
+            <TextField
+              id="f-text"
+              label="Host"
+              placeholder="mirror.example.net"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </div>
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="search">
+          <div style={cell}>
+            <SearchField id="f-search" label="Search the register" placeholder="host, hash or operator" />
+          </div>
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="select">
+          <div style={cell}>
+            <Select id="f-select" label="Severity floor" defaultValue="high">
+              <option value="high">High</option>
+              <option value="critical">Critical</option>
+            </Select>
+          </div>
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="combo">
+          <div style={cell}>
+            <ComboBox
+              id="f-combo"
+              label="Operator"
+              value={combo}
+              onValueChange={setCombo}
+              suggestions={[{ value: "nora", label: "Nora Feld" }]}
+              toggleLabel="Show operators"
+              placeholder="Name or id"
+            />
+          </div>
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="multi">
+          <div style={cell}>
+            <MultiComboBox
+              id="f-multi"
+              label="Recipients"
+              freeEntry
+              values={members}
+              onChange={setMembers}
+              removeLabel={(v) => `Remove ${v}`}
+            />
+          </div>
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="date">
+          <div style={cell}>
+            <DateField id="f-date" label="Valid from" value={day} onChange={setDay} />
+          </div>
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="time">
+          <div style={cell}>
+            <TimeField id="f-time" label="Quiet from" value={time} onChange={setTime} />
+          </div>
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="range">
+          <div style={cell}>
+            <DateRangePicker id="f-range" label="Period" value={range} onChange={() => setRange({ preset: "24h" })} />
+          </div>
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="quantity">
+          <QuantityField
+            id="f-seats"
+            label="Seats"
+            value={seats}
+            onChange={setSeats}
+            min={1}
+            max={50}
+            decrementLabel="One fewer"
+            incrementLabel="One more"
+            invalidHint="Between 1 and 50 seats."
+          />
+          <Button variant="secondary">Apply</Button>
+        </div>
+        <div style={row} data-frame="area">
+          <div style={cell}>
+            <TextArea id="f-area" label="Note" placeholder="Why this host is trusted" />
+          </div>
+        </div>
+      </Stack>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const button = canvasElement.querySelector<HTMLElement>(".di-btn")!;
+    const b = getComputedStyle(button);
+    const height = Math.round(button.getBoundingClientRect().height);
+    const reference = getComputedStyle(canvasElement.querySelector<HTMLElement>(frames[0][1])!);
+    const drift: string[] = [];
+    for (const [name, selector] of frames) {
+      const frame = canvasElement.querySelector<HTMLElement>(`[data-frame="${name}"] ${selector}`)!;
+      const f = getComputedStyle(frame);
+      const box = frame.getBoundingClientRect();
+      if (f.borderTopLeftRadius !== b.borderTopLeftRadius) drift.push(`${name} radius ${f.borderTopLeftRadius}`);
+      if (name !== "quantity" && f.borderTopColor !== reference.borderTopColor)
+        drift.push(`${name} border ${f.borderTopColor}`);
+      if (name !== "quantity" && f.backgroundColor !== reference.backgroundColor)
+        drift.push(`${name} tone ${f.backgroundColor}`);
+      if (name === "area") continue;
+      if (Math.round(box.height) !== height) drift.push(`${name} height ${box.height} beside ${height}`);
+      for (const mark of frame.querySelectorAll<Element>("svg, kbd")) {
+        const m = mark.getBoundingClientRect();
+        if (m.height === 0 || m.height >= box.height - 2) continue;
+        const offset = m.top + m.height / 2 - (box.top + box.height / 2);
+        if (Math.abs(offset) > 1) drift.push(`${name} ${mark.tagName} off centre ${offset.toFixed(1)}`);
+      }
+    }
+    await expect(drift).toEqual([]);
   },
 };

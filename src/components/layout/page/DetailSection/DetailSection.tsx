@@ -15,7 +15,7 @@ import "./DetailSection.css";
  *
  * Focus follows the switch: into the form's first field on Edit, back to
  * the Edit button on Save or Cancel, so a keyboard user does not lose
- * their place. A change too large for a section opens a `Sheet` from
+ * their place. A change too large for a section opens a side `Dialog` from
  * `DetailSectionActions` instead.
  */
 export function DetailSection({

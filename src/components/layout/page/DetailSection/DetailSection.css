@@ -9,7 +9,7 @@
 
   /* In a sheet or a panel the section is a part of that surface: not even
      the inset tone, its title on the surface's edge. */
-  :is(.di-sheet-body, .di-panel-content) .di-surface.di-detail-section {
+  :is(.di-dialog-body, .di-panel-content) .di-surface.di-detail-section {
     --di-detail-section-pad: 0px;
     --di-surface-bg: transparent;
     --di-surface-shadow: none;
@@ -29,10 +29,11 @@
     min-width: 0;
   }
 
+  /* A section's name is a heading: the display face and weight a Panel title has, so the two read alike side by side. */
   .di-detail-section-title {
-    font-size: var(--di-font-size-500);
-    font-weight: var(--di-weight-semibold);
-    letter-spacing: var(--di-tracking-tight);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
     color: var(--di-text);
   }

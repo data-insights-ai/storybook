@@ -6,12 +6,12 @@ import "../../../../styles/styles.css";
 import { AppShellContent } from "../../../shell/AppShell";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
 import { ListToolbar } from "../../../data/table/ListToolbar";
-import { Sheet } from "../../../overlays/Sheet";
+import { Dialog } from "../../../overlays/Dialog";
 import { Page, PageAside } from "./Page";
 import { PageHeader, PageHeaderTitle } from "../PageHeader";
 import { Grid } from "../../arrangement/Grid";
 import { CreateFlow } from "../../../overlays/CreateFlow";
-import { ChoiceCards } from "../../../forms/choice/ChoiceCards";
+import { ChoiceGroup } from "../../../forms/choice/ChoiceGroup";
 import { TextField } from "../../../forms/text/TextField";
 
 let root: Root | undefined;
@@ -76,9 +76,9 @@ function list(n: number, rail?: boolean) {
           </thead>
         </table>
         {rail !== undefined && (
-          <Sheet open={rail} onClose={() => {}} title="Linz branch" closeLabel="Close">
+          <Dialog open={rail} onClose={() => {}} title="Linz branch" closeLabel="Close">
             <section className="rail">Collector</section>
-          </Sheet>
+          </Dialog>
         )}
       </Page>
     </AppShellContent>,
@@ -122,7 +122,7 @@ describe("large screens", () => {
     test(`at ${width}px a list keeps the side column free, however few its columns`, async () => {
       await page.viewport(width, 1080);
       const host = list(3, false);
-      expect(host.querySelector(".di-sheet-docked")).toBeNull();
+      expect(host.querySelector(".di-dialog-docked")).toBeNull();
       expect(Math.round(box(host.querySelector(".di-table")).width)).toBe(width - 2 * pad - 320 - 24);
     });
   }
@@ -131,7 +131,7 @@ describe("large screens", () => {
     await page.viewport(1920, 1080);
     const host = list(3, true);
     const table = box(host.querySelector(".di-table"));
-    const rail = box(host.querySelector(".di-sheet-docked"));
+    const rail = box(host.querySelector(".di-dialog-docked"));
     expect(rail.width).toBe(320);
     expect(rail.left).toBeGreaterThan(table.right);
     expect(Math.round(rail.right)).toBe(1920 - 32);
@@ -153,15 +153,15 @@ describe("large screens", () => {
               </tr>
             </thead>
           </table>
-          <Sheet open onClose={() => {}} title="Linz branch" closeLabel="Close">
+          <Dialog open onClose={() => {}} title="Linz branch" closeLabel="Close">
             <section>Collector</section>
-          </Sheet>
+          </Dialog>
         </Page>
       </AppShellContent>,
     );
     await new Promise((resolve) => requestAnimationFrame(resolve));
     const table = box(host.querySelector(".di-table"));
-    const sheet = box(host.querySelector(".di-sheet-docked"));
+    const sheet = box(host.querySelector(".di-dialog-docked"));
     expect(Math.round(sheet.top)).toBe(Math.round(table.top));
   });
 
@@ -186,15 +186,15 @@ describe("large screens", () => {
               </TableRow>
             </TableBody>
           </DataTable>
-          <Sheet open onClose={() => {}} title="Saved views" closeLabel="Close">
+          <Dialog open onClose={() => {}} title="Saved views" closeLabel="Close">
             <section>None yet</section>
-          </Sheet>
+          </Dialog>
         </Page>
       </AppShellContent>,
     );
     await new Promise((resolve) => requestAnimationFrame(resolve));
     const table = box(host.querySelector(".di-table-wrap"));
-    const sheet = box(host.querySelector(".di-sheet-docked"));
+    const sheet = box(host.querySelector(".di-dialog-docked"));
     expect(Math.round(sheet.top)).toBe(Math.round(table.top));
   });
 
@@ -204,14 +204,14 @@ describe("large screens", () => {
       <AppShellContent>
         <Page>
           <section className="section">Feeds</section>
-          <Sheet open onClose={() => {}} title="Indicators" closeLabel="Close" size="lg">
+          <Dialog open onClose={() => {}} title="Indicators" closeLabel="Close" size="lg">
             <section>Table</section>
-          </Sheet>
+          </Dialog>
         </Page>
       </AppShellContent>,
     );
-    expect(host.querySelector(".di-sheet-docked")).toBeNull();
-    expect(host.querySelector<HTMLDialogElement>("dialog.di-sheet")!.open).toBe(true);
+    expect(host.querySelector(".di-dialog-docked")).toBeNull();
+    expect(host.querySelector<HTMLDialogElement>("dialog.di-dialog")!.open).toBe(true);
   });
 
   test("at 2560px an overview takes the whole frame", async () => {
@@ -244,7 +244,8 @@ describe("large screens", () => {
             onNext={() => {}}
             onSubmit={() => {}}
           >
-            <ChoiceCards
+            <ChoiceGroup
+              appearance="cards"
               name="kind"
               legend="Type"
               options={["a", "b", "c", "d", "e", "f"].map((v) => ({ value: v, label: v }))}
@@ -258,7 +259,7 @@ describe("large screens", () => {
     );
     const panel = box(host.querySelector(".di-create-flow-panel"));
     expect(Math.round(panel.width)).toBe(1920 - 64 - 320 - 24);
-    expect(new Set([...host.querySelectorAll(".di-choicecard")].map((c) => Math.round(box(c).top))).size).toBe(2);
+    expect(new Set([...host.querySelectorAll(".di-choice-card")].map((c) => Math.round(box(c).top))).size).toBe(2);
     expect(box(host.querySelector(".di-field")).width).toBeLessThanOrEqual(800);
   });
 
@@ -286,8 +287,8 @@ describe("regressions below", () => {
   test("at 1024px an open row is a sheet over the list", async () => {
     await page.viewport(1024, 768);
     const host = list(3, true);
-    expect(host.querySelector(".di-sheet-docked")).toBeNull();
-    expect(host.querySelector<HTMLDialogElement>("dialog.di-sheet")!.open).toBe(true);
+    expect(host.querySelector(".di-dialog-docked")).toBeNull();
+    expect(host.querySelector<HTMLDialogElement>("dialog.di-dialog")!.open).toBe(true);
     expect(box(host.querySelector(".di-table")).width).toBe(1024 - 48);
   });
 

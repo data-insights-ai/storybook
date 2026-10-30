@@ -5,7 +5,6 @@ import {
   CommandBar,
   CommandGroup,
   CommandRow,
-  ConfidenceField,
   Fact,
   FactList,
   Figure,
@@ -26,10 +25,9 @@ import {
   RecordCard,
   RecordInsight,
   RecordStatus,
-  SectionTitle,
-  SectionTitleHeading,
   Sparkline,
   StatusPill,
+  TextField,
   Toast,
   ToastAction,
   ToastRegion,
@@ -53,9 +51,9 @@ export function InferenceScreen() {
         <PageHeaderTitle>Sources</PageHeaderTitle>
       </PageHeader>
 
-      <SectionTitle>
-        <SectionTitleHeading>The claim, and the question before it runs</SectionTitleHeading>
-      </SectionTitle>
+      <PageHeader level={2}>
+        <PageHeaderTitle>The claim, and the question before it runs</PageHeaderTitle>
+      </PageHeader>
       <div className="inference-grid">
         <RecordCard title="Unsealed entries">
           <RecordStatus>
@@ -127,35 +125,40 @@ export function InferenceScreen() {
           </Panel>
           <Panel title="Resolved by a model">
             <div className="inference-fields">
-              <ConfidenceField
+              <TextField
                 id="screen-c-high"
                 label="Resolved operator"
-                confidence={0.94}
-                confidenceLabel="0.94 · matched on 3 of 4 inputs"
-                whyLabel="Why?"
-                onWhy={() => undefined}
-              >
-                Nora Feld
-              </ConfidenceField>
-              <ConfidenceField
+                readOnly
+                value="Nora Feld"
+                confidence={{
+                  value: 0.94,
+                  label: "0.94 · matched on 3 of 4 inputs",
+                  whyLabel: "Why?",
+                  onWhy: () => undefined,
+                }}
+              />
+              <TextField
                 id="screen-c-review"
                 label="Resolved host"
-                level="review"
-                confidence={0.42}
-                confidenceLabel="0.42 · below the threshold, review before sealing"
-                whyLabel="Why?"
-                onWhy={() => undefined}
-              >
-                mirror.example.net
-              </ConfidenceField>
+                readOnly
+                mono
+                value="mirror.example.net"
+                confidence={{
+                  value: 0.42,
+                  label: "0.42 · below the threshold, review before sealing",
+                  level: "review",
+                  whyLabel: "Why?",
+                  onWhy: () => undefined,
+                }}
+              />
             </div>
           </Panel>
         </div>
       </div>
 
-      <SectionTitle>
-        <SectionTitleHeading>Asking</SectionTitleHeading>
-      </SectionTitle>
+      <PageHeader level={2}>
+        <PageHeaderTitle>Asking</PageHeaderTitle>
+      </PageHeader>
       <div className="inference-grid">
         <CommandBar
           id="screen-command"

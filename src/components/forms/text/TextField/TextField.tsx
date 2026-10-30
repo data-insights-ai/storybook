@@ -3,6 +3,7 @@ import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
 import { FieldLabel } from "../../field/FieldLabel";
+import { FieldConfidence, type FieldConfidenceReading } from "../../field/FieldConfidence";
 import "../../field/Field/Field.css";
 
 /**
@@ -16,6 +17,7 @@ export function TextField({
   label,
   hint = "",
   hintTone = "neutral",
+  confidence,
   labelTrack = "record",
   hideLabel = false,
   mono = false,
@@ -32,6 +34,11 @@ export function TextField({
   hint?: string;
   /** What that line is. `error` also marks the control invalid. */
   hintTone?: HintTone;
+  /**
+   * A value a model filled in: a meter and the reading in words take the
+   * place of the hint. An error hint still replaces them.
+   */
+  confidence?: FieldConfidenceReading;
   /**
    * Which track the label runs in. `record` is the interface label
    * style (`--di-label-*`); `prose` is the body step in ink, for a form a person
@@ -52,6 +59,8 @@ export function TextField({
   required?: boolean;
 } & Omit<InputHTMLAttributes<HTMLInputElement>, "children">) {
   const invalid = hint !== "" && hintTone === "error";
+  const reading = invalid ? undefined : confidence;
+  const describedBy = hint === "" && !reading ? undefined : `${id}-hint`;
 
   return (
     <div className={cx("di-field", className)}>
@@ -65,12 +74,16 @@ export function TextField({
         readOnly={readOnly}
         required={required}
         aria-invalid={invalid || undefined}
-        aria-describedby={hint === "" ? undefined : `${id}-hint`}
+        aria-describedby={describedBy}
         {...props}
       />
-      <FieldHint id={`${id}-hint`} tone={hintTone}>
-        {hint}
-      </FieldHint>
+      {reading ? (
+        <FieldConfidence id={`${id}-hint`} reading={reading} />
+      ) : (
+        <FieldHint id={`${id}-hint`} tone={hintTone}>
+          {hint}
+        </FieldHint>
+      )}
     </div>
   );
 }

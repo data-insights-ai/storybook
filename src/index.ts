@@ -28,8 +28,14 @@ export type { TrendMarker, TrendSeries, TrendTone } from "./components/charts/ti
 export { Checkbox } from "./components/forms/choice/Checkbox";
 export { ChoiceGroup } from "./components/forms/choice/ChoiceGroup";
 export { Radio } from "./components/forms/choice/Radio";
-export { ChoiceCards } from "./components/forms/choice/ChoiceCards";
-export type { ChoiceCard, ChoiceCardsPlanned } from "./components/forms/choice/ChoiceCards";
+export type {
+  ChoiceAppearance,
+  ChoiceGroupProps,
+  ChoiceOption,
+  ChoicePlanned,
+} from "./components/forms/choice/ChoiceGroup";
+export { ChoiceCards, SegmentedControl, ToggleGroup } from "./components/forms/choice/ChoiceGroup";
+export type { ChoiceCard, ChoiceCardsPlanned, ToggleOption } from "./components/forms/choice/ChoiceGroup";
 export { Chip } from "./components/marks/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/navigation/CommandBar";
 export { ComboBox } from "./components/forms/select/ComboBox";
@@ -55,13 +61,15 @@ export type {
   DateRangeValue,
   ResolvedDateRange,
 } from "./components/forms/dates/dateRange";
-export { ConfidenceField } from "./components/inference/ConfidenceField";
+export { ConfidenceField } from "./components/forms/text/TextField";
+export type { FieldConfidenceReading } from "./components/forms/field/FieldConfidence";
 export { ConfirmDialog } from "./components/overlays/ConfirmDialog";
 export { CountButton } from "./components/actions/CountButton";
 export { CopyValue } from "./components/actions/CopyValue";
 export { CreateFlow } from "./components/overlays/CreateFlow";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/compare/CoverageMatrix";
-export { DangerAction, DangerZone } from "./components/feedback/DangerZone";
+export { DangerZone } from "./components/feedback/DangerZone";
+export { Dialog, DialogFooter, type DialogProps } from "./components/overlays/Dialog";
 export type {
   CoverageMatrixColumn,
   CoverageMatrixMark,
@@ -83,7 +91,13 @@ export {
   TableToolbar,
 } from "./components/data/table/DataTable";
 export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/page/DetailSection";
-export { Disclosure, DisclosureLead } from "./components/layout/folding/Disclosure";
+export {
+  Disclosure,
+  DisclosureDetail,
+  DisclosureGroup,
+  DisclosureLead,
+  DisclosureMeta,
+} from "./components/layout/folding/Disclosure";
 export { Distribution } from "./components/charts/compare/Distribution";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
 export { EventTimeline, EventTimelineMeta, EventTimelineReadout } from "./components/timeline/EventTimeline";
@@ -131,7 +145,7 @@ export {
   ProposalQuestion,
 } from "./components/data/records/ProposalPanel";
 export { Fact, FactList, KeyValue, KeyValues } from "./components/data/records/FactList";
-export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/overlays/Flyout";
+export { Flyout, FlyoutFooter, FlyoutItem, FlyoutItems, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/field/Field";
 export { FieldHint } from "./components/forms/field/FieldHint";
 export { FieldLabel } from "./components/forms/field/FieldLabel";
@@ -176,13 +190,16 @@ export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle }
 export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/sequence/Pagination";
 export {
+  DangerAction,
   Panel,
   PanelActions,
+  PanelFigure,
   PanelFooter,
   PanelLead,
   PanelMeta,
   PanelNote,
   PanelStatus,
+  PanelVisual,
 } from "./components/layout/page/Panel";
 export { PrivacyBadge } from "./components/inference/PrivacyBadge";
 export { Progress } from "./components/feedback/waiting/Progress";
@@ -231,7 +248,6 @@ export { SearchField } from "./components/forms/text/SearchField";
 export { Seismograph } from "./components/charts/time/Seismograph";
 export type { SeismographPoint } from "./components/charts/time/Seismograph";
 export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/layout/page/SectionTitle";
-export { SegmentedControl } from "./components/forms/choice/SegmentedControl";
 export { Select } from "./components/forms/select/Select";
 export { Sheet, SheetFooter } from "./components/overlays/Sheet";
 export {
@@ -266,7 +282,16 @@ export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
 export { SkeletonPage } from "./components/feedback/waiting/SkeletonPage";
 export type { SkeletonPageVariant } from "./components/feedback/waiting/SkeletonPage";
 export { Sparkline } from "./components/data/figures/Sparkline";
-export { Split, SplitAside, SplitMain } from "./components/layout/panes/Split";
+export {
+  Split,
+  SplitAside,
+  SplitBack,
+  SplitList,
+  SplitListHead,
+  SplitListItem,
+  SplitListItems,
+  SplitMain,
+} from "./components/layout/panes/Split";
 export { Spinner } from "./components/feedback/waiting/Spinner";
 export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/page/Stage";
 export { Stat, StatRow } from "./components/data/figures/Stat";
@@ -282,9 +307,8 @@ export { TextField } from "./components/forms/text/TextField";
 export { TextLink } from "./components/navigation/TextLink";
 export { TimeField } from "./components/forms/dates/TimeField";
 export { Toast, ToastAction, ToastRegion } from "./components/feedback/Toast";
-export { ToggleGroup, type ToggleOption } from "./components/forms/choice/ToggleGroup";
 export { WeekTimeline, type WeekTimelineRow } from "./components/timeline/WeekTimeline";
-export { TokenField } from "./components/forms/text/TokenField";
+export { TokenField } from "./components/forms/select/MultiComboBox";
 export { Tooltip } from "./components/feedback/Tooltip";
 export { TooltipTarget } from "./components/feedback/TooltipTarget";
 export { VersionTag } from "./components/marks/VersionTag";

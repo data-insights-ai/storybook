@@ -158,4 +158,79 @@
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
   }
+
+  /* In a Grid, a panel whose chart needs the width spans every column. */
+  .di-panel.is-wide {
+    grid-column: 1 / -1;
+  }
+
+  /* The one figure beside the visual it is read against; stacked on a narrow panel. */
+  .di-panel:has(> .di-panel-stage) {
+    container-type: inline-size;
+  }
+
+  .di-panel-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--di-gap-16) var(--di-gap-32);
+    align-items: start;
+    min-width: 0;
+  }
+
+  .di-panel-stage:has(> .di-panel-figure) {
+    grid-template-columns: minmax(var(--di-hero-lead-min), var(--di-hero-lead-max)) minmax(0, 1fr);
+  }
+
+  .di-panel-figure,
+  .di-panel-visual {
+    min-width: 0;
+  }
+
+  @container (width < 44rem) {
+    .di-panel-stage:has(> .di-panel-figure) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /*
+   * The hero: the navy plane behind the page's signature visual. Its name
+   * is a section head, its rows 24px apart, and its footer — the figures
+   * that support the visual — sits under the one fine rule a panel draws.
+   */
+  .di-panel.is-hero {
+    gap: var(--di-gap-24);
+    color: var(--di-text);
+  }
+
+  .di-panel.is-hero .di-panel-title {
+    font-size: var(--di-section-title-size);
+    line-height: var(--di-leading-tight);
+  }
+
+  .di-panel.is-hero .di-panel-header {
+    align-items: flex-end;
+  }
+
+  .di-panel.is-hero .di-panel-foot {
+    padding-top: var(--di-gap-24);
+    border-top: 1px solid var(--di-rule);
+  }
+
+  .di-panel.is-hero .di-panel-footer {
+    display: block;
+    flex: 1 1 100%;
+    font-size: inherit;
+    color: inherit;
+  }
+
+  @container (width < 44rem) {
+    .di-panel.is-hero {
+      gap: var(--di-gap-16);
+    }
+  }
+
+  /* The danger panel's lead states what its actions cost, in the danger ink. */
+  .di-panel.is-danger .di-panel-lead {
+    color: var(--di-status-danger-fg);
+  }
 }

@@ -3,19 +3,258 @@
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-8);
+    min-width: 0;
     padding: 0;
     margin: 0;
     border: 0;
   }
 
+  /* A field label, the field label's distance above its control: options line up with the fields beside them. */
   .di-choice-legend {
     padding: 0;
-    margin-bottom: var(--di-gap-8);
+    margin-bottom: var(--di-gap-6);
+  }
+
+  .di-choice-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+  }
+
+  /* A joined row the height of a field. It never runs past its container: what does not fit wraps. */
+  .di-choice-segments {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-self: flex-start;
+    max-width: 100%;
+    min-width: 0;
+    padding: var(--di-space-2);
+    border: 1px solid var(--di-field-border);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-subtle);
+  }
+
+  /* Track padding and border taken off a field height. */
+  .di-choice-segments {
+    --di-segment-h: calc(var(--di-field-height) - 2 * var(--di-space-2) - 2 * 1px);
+  }
+
+  .di-choice-segment {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--di-segment-h);
+    height: var(--di-segment-h);
+    padding: 0 var(--di-gap-12);
+    border-radius: var(--di-radius-micro);
+    color: var(--di-text-muted);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--di-duration) var(--di-ease),
+      color var(--di-duration) var(--di-ease);
+  }
+
+  .di-choice-segment:hover:not(.is-chosen, :has(:disabled)) {
+    color: var(--di-text);
+    background: var(--di-row-hover-bg);
+  }
+
+  /* The one chosen look for a segment and a card: the selection tint, a cornflower edge, the text at full strength. */
+  .di-choice-segment.is-chosen {
+    background: var(--di-choice-selected-bg);
+    box-shadow: inset 0 0 0 1px var(--di-choice-selected-edge);
+    color: var(--di-choice-selected-fg);
+  }
+
+  .di-choice-segment:has(:focus-visible),
+  .di-choice-card:has(:focus-visible) {
+    z-index: 1;
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-choice-segment:has(:disabled),
+  .di-choice-card:has(:disabled) {
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .di-choice-segment.is-chosen:has(:disabled) {
+    background: var(--di-bg-disabled);
+    box-shadow: inset 0 0 0 1px var(--di-text-disabled);
+  }
+
+  @media (pointer: coarse) {
+    .di-choice-segment::after {
+      content: "";
+      position: absolute;
+      inset: calc((var(--di-segment-h) - var(--di-target)) / 2) 0;
+    }
+  }
+
+  .di-choice-group-cards {
+    gap: var(--di-gap-16);
+  }
+
+  .di-choice-cards-group-label {
+    margin-bottom: var(--di-gap-6);
     font-family: var(--di-label-family);
     font-size: var(--di-label-size);
     font-weight: var(--di-label-weight);
-    letter-spacing: normal;
-    text-transform: none;
     color: var(--di-label-color);
+  }
+
+  /* The grid fills the measure; a row's cards share its height. */
+  .di-choice-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--di-choicecards-min)), 1fr));
+    gap: var(--di-gap-12);
+    align-items: stretch;
+  }
+
+  .di-choice-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--di-gap-12);
+    padding: var(--di-space-12) var(--di-inset-group);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-container);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    cursor: pointer;
+    transition:
+      border-color var(--di-duration) var(--di-ease),
+      background-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-choice-card:hover:not(.is-chosen, :has(:disabled)) {
+    border-color: var(--di-field-border-hover);
+  }
+
+  .di-choice-card.is-chosen {
+    border-color: var(--di-choice-selected-edge);
+    background: var(--di-choice-selected-bg);
+    box-shadow: inset 0 0 0 1px var(--di-choice-selected-edge);
+    color: var(--di-choice-selected-fg);
+  }
+
+  .di-choice-card.is-chosen:has(:disabled) {
+    border-color: var(--di-text-disabled);
+    background: var(--di-bg-disabled);
+    box-shadow: none;
+  }
+
+  .di-choice-card-icon {
+    display: inline-flex;
+    flex: none;
+    color: var(--di-text-muted);
+  }
+
+  .di-choice-card-icon > svg {
+    width: var(--di-icon-lg);
+    height: var(--di-icon-lg);
+  }
+
+  .di-choice-card.is-chosen .di-choice-card-icon {
+    color: inherit;
+  }
+
+  .di-choice-card-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-2);
+    min-width: 0;
+  }
+
+  .di-choice-card-label {
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-medium);
+    text-wrap: pretty;
+  }
+
+  .di-choice-card-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-subtle);
+  }
+
+  .di-choice-card:has(:disabled) .di-choice-card-desc,
+  .di-choice-card:has(:disabled) .di-choice-card-icon {
+    color: var(--di-text-disabled);
+  }
+
+  /* What cannot be chosen yet: under a rule, smaller, dashed, and not a control. */
+  .di-choice-planned {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+    padding-top: var(--di-space-16);
+    border-top: 1px solid var(--di-border);
+  }
+
+  .di-choice-planned-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: var(--di-gap-8);
+    margin: 0;
+  }
+
+  .di-choice-planned-label {
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    color: var(--di-label-color);
+  }
+
+  .di-choice-planned-lede {
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-subtle);
+  }
+
+  /* At most five a row on a wide page, still two a row on a phone. */
+  .di-choice-planned-list {
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(max(var(--di-choicecards-planned-min), calc((100% - 4 * var(--di-gap-8)) / 5)), 1fr)
+    );
+    gap: var(--di-gap-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-choice-planned-item {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-8);
+    min-width: 0;
+    padding: var(--di-space-8) var(--di-space-12);
+    border: 1px dashed var(--di-border-strong);
+    border-radius: var(--di-radius-container);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
+
+  .di-choice-planned-icon {
+    display: inline-flex;
+    flex: none;
+    color: var(--di-text-subtle);
+  }
+
+  .di-choice-planned-icon > svg {
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 }
