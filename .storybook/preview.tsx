@@ -64,6 +64,7 @@ const preview: Preview = {
           "Data",
           "Text",
           "Marks",
+          "Status",
           "Feedback",
           "Overlays",
           "Navigation",
