@@ -12,7 +12,7 @@
     font-weight: var(--di-weight-medium);
     letter-spacing: var(--di-tracking-eyebrow);
     text-transform: uppercase;
-    color: var(--di-seal-ink);
+    color: var(--di-one-ink);
     white-space: nowrap;
   }
 

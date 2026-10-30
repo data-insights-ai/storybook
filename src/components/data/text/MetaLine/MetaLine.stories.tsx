@@ -6,10 +6,11 @@ const meta = {
   title: "Data/Text/MetaLine",
   component: MetaLine,
   tags: ["layer:primitive", "autodocs"],
-  args: { items: "As of 12 Oct, 10:00 · 14 sources · updates live", align: "start" },
+  args: { items: "As of 12 Oct, 10:00 · 14 sources · updates live", align: "start", separator: "dot" },
   argTypes: {
     items: { control: "text" },
     align: { control: "radio", options: ["start", "end"] },
+    separator: { control: "radio", options: ["dot", "arrow"] },
   },
 } satisfies Meta<typeof MetaLine>;
 
@@ -47,4 +48,12 @@ export const Narrow: Story = {
 /** Against the right edge, as a page header's meta sits on a wide page. */
 export const End: Story = {
   args: { align: "end" },
+};
+
+/** A path: where it entered, what it crossed, where the data went. */
+export const Path: Story = {
+  args: { items: ["vpn-gw-01", "ws-fin-014", "srv-fs-02", "192.0.2.88"], separator: "arrow" },
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelector(".di-meta-line")).toHaveClass("is-path");
+  },
 };

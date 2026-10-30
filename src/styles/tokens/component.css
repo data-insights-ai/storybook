@@ -65,7 +65,10 @@
     --di-panel-index-bg: var(--di-bg-subtle);
 
     --di-table-bg: var(--di-bg-surface);
+    --di-table-shadow: var(--di-elevation-surface);
+    --di-table-radius: var(--di-radius-surface);
     --di-table-head-bg: var(--di-bg-subtle);
+    --di-table-edge: var(--di-space-12);
     --di-table-row-height: var(--di-h-row);
     --di-table-rule: var(--di-rule-hairline);
 

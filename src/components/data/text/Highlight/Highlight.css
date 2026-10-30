@@ -8,8 +8,8 @@
    * The tint follows each line of a wrapped passage rather than boxing the
    * whole run.
    *
-   * An inline background fills the font's ascent-to-descent box, and Space
-   * Grotesk's is 1.28em: under a display title set at 1.02 it reached into
+   * An inline background fills the font's ascent-to-descent box, and IBM
+   * Plex Sans' is 1.3em: under a display title set at 1.02 it reached into
    * the line above and painted over its descenders. The passage is set in
    * the band face, the same glyphs with that box cut to just above the caps
    * and the foot of the descenders, so a solid tint stops there — clear of

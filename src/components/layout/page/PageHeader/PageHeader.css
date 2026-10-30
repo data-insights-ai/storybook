@@ -17,7 +17,7 @@
    */
   .di-page-grid {
     display: grid;
-    grid-template-columns: minmax(0, max-content) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, max-content) auto 1fr;
     grid-template-areas:
       "crumbs crumbs crumbs"
       "eyebrow eyebrow eyebrow"
@@ -60,6 +60,35 @@
     max-width: 48ch;
     padding-left: var(--di-space-12);
     text-align: right;
+  }
+
+  /* Narrower than 56rem, or beside an action, the meta moves under the name. */
+  @container (width < 56rem) {
+    .di-page-grid,
+    .di-page-grid:has(> .di-page-aside) {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        "crumbs crumbs"
+        "eyebrow aside"
+        "title aside"
+        "status aside"
+        "meta aside"
+        "lede aside"
+        "facts facts";
+    }
+
+    .di-page-status {
+      margin-top: var(--di-space-8);
+    }
+
+    .di-page-meta {
+      --di-meta-justify: flex-start;
+      justify-self: start;
+      max-width: none;
+      margin-top: var(--di-space-8);
+      padding-left: 0;
+      text-align: left;
+    }
   }
 
   .di-page-grid:has(> .di-page-aside) .di-page-meta {
@@ -164,6 +193,10 @@
     max-width: 680px;
     font-size: var(--di-page-title-size);
     line-height: var(--di-leading-tight);
+  }
+
+  .di-page-head-console h2.di-page-title {
+    font-size: var(--di-section-title-size);
   }
 
   .di-page-head-console .di-lede {

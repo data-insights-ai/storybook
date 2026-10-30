@@ -50,9 +50,13 @@ export function PageHeader({
   );
 }
 
-/** The page's one h1. Text, and at most one `Highlight` inside it. */
-export function PageHeaderTitle({ children }: { children: ReactNode }) {
-  return <h1 className="di-page-title">{children}</h1>;
+/**
+ * The page's one h1. Text, and at most one `Highlight` inside it. A record
+ * opened beside its list, where the list's page already has the h1, is
+ * `level={2}` and one step smaller.
+ */
+export function PageHeaderTitle({ level = 1, children }: { level?: 1 | 2; children: ReactNode }) {
+  return level === 1 ? <h1 className="di-page-title">{children}</h1> : <h2 className="di-page-title">{children}</h2>;
 }
 
 /** At the right of the header: the page's one primary action, on a list or a record page. */

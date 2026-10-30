@@ -12,20 +12,20 @@
 
   .di-hero-grid {
     display: grid;
-    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) auto;
     grid-template-areas:
-      "titles aside"
-      "lead visual"
-      "footer footer";
+      "titles titles aside"
+      "lead visual visual"
+      "footer footer footer";
     gap: var(--di-space-24) var(--di-space-32);
     align-items: start;
   }
 
   .di-hero-grid:not(:has(> .di-hero-lead)) {
     grid-template-areas:
-      "titles aside"
-      "visual visual"
-      "footer footer";
+      "titles titles aside"
+      "visual visual visual"
+      "footer footer footer";
   }
 
   .di-hero-titles {

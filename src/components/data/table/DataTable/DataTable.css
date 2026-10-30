@@ -2,9 +2,9 @@
   /* The table is a surface by tone, without a frame of its own. */
   .di-table-wrap {
     overflow: hidden;
-    border-radius: var(--di-radius-surface);
+    border-radius: var(--di-table-radius);
     background: var(--di-table-bg);
-    box-shadow: var(--di-elevation-surface);
+    box-shadow: var(--di-table-shadow);
   }
 
   .di-table-toolbar {
@@ -238,6 +238,15 @@
     text-align: right;
   }
 
+  /* The outer cells keep the inset of whatever surface the table sits on. */
+  .di-table :is(th, td):first-child:not(.di-table-index) {
+    padding-left: var(--di-table-edge);
+  }
+
+  .di-table :is(th, td):last-child {
+    padding-right: var(--di-table-edge);
+  }
+
   .di-table-foot {
     display: flex;
     align-items: center;
@@ -321,7 +330,7 @@
       flex-wrap: wrap;
       align-items: center;
       gap: var(--di-space-6) var(--di-space-12);
-      padding: var(--di-space-12);
+      padding: var(--di-space-12) var(--di-table-edge);
       border-bottom: 1px solid var(--di-table-rule);
     }
 
@@ -353,6 +362,10 @@
       border: 0;
       background: none;
       text-align: left;
+    }
+
+    .di-table-wrap.is-stackable :is(th, td):is(:first-child, :last-child):not(.di-table-index) {
+      padding-inline: 0;
     }
 
     /* Beside a filling column every cell keeps its line; stacked, prose wraps again. */

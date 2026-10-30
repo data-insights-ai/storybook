@@ -38,4 +38,14 @@
     left: calc(-0.5 * var(--di-meta-gap));
     transform: translateX(-50%);
   }
+
+  .di-meta-line.is-path {
+    --di-meta-gap: 2em;
+    color: var(--di-text);
+  }
+
+  .di-meta-line.is-path .di-meta-line-item::before {
+    content: "→" / "";
+    color: var(--di-text-subtle);
+  }
 }

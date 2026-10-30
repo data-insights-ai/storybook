@@ -43,8 +43,9 @@
 
   .di-hero-fig-note {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--di-space-8) var(--di-space-16);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--di-space-8);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
   }

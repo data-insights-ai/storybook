@@ -29,7 +29,7 @@
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     text-decoration: underline;
-    text-decoration-color: var(--di-seal);
+    text-decoration-color: var(--di-select);
     text-underline-offset: 3px;
   }
 

@@ -73,7 +73,8 @@ export function TrendChart({
   const tick = (v: unknown) => formatX(String(v));
   return (
     <Chart label={label} config={config} className={`di-trend di-trend-${height}`}>
-      <ComposedChart data={data} margin={{ top: 16, right: 12, bottom: 0, left: 0 }}>
+      {/* The right margin holds half of the last tick's label, which is centred on the plot's edge. */}
+      <ComposedChart data={data} margin={{ top: 16, right: 24, bottom: 0, left: 0 }}>
         <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
         <XAxis dataKey={xKey} tickLine={false} axisLine={false} tickFormatter={tick} minTickGap={24} />
         <YAxis

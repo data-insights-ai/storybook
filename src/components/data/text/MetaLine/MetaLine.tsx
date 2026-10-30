@@ -8,21 +8,25 @@ import "./MetaLine.css";
  * so no line starts or ends on a lone "·". A string is split at " · ".
  *
  * `align="end"` sets the items against the right edge, as a page header's
- * meta does on a wide page.
+ * meta does on a wide page. `separator="arrow"` reads the items as a path
+ * — a host, the next host, where the data went — with the same rule: no
+ * line starts on an arrow.
  */
 export function MetaLine({
   items,
   align = "start",
+  separator = "dot",
   className,
 }: {
   /** The facts, in reading order: an array, or one string with " · " between them. */
   items: string | string[];
   align?: "start" | "end";
+  separator?: "dot" | "arrow";
   className?: string;
 }) {
   const list = typeof items === "string" ? items.split(" · ") : items;
   return (
-    <span className={cx("di-meta-line", align === "end" && "is-end", className)}>
+    <span className={cx("di-meta-line", align === "end" && "is-end", separator === "arrow" && "is-path", className)}>
       <span className="di-meta-line-items">
         {list.map((item, i) => (
           <span key={i} className="di-meta-line-item">

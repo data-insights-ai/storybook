@@ -1,7 +1,7 @@
 @layer components {
   /*
-   * Navy, underlined in gold. A link is not a status, so it does not
-   * borrow the status hues — the seal colour marks it instead.
+   * Ink, underlined in cornflower. A link is not a status, so it does not
+   * borrow the status hues, and not gold: gold marks one object per view.
    */
   .di-textlink {
     padding: 0;
@@ -12,7 +12,7 @@
     font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-medium);
     text-decoration: underline;
-    text-decoration-color: var(--di-seal);
+    text-decoration-color: var(--di-select);
     text-underline-offset: 3px;
     transition: color var(--di-duration) var(--di-ease);
   }
@@ -39,7 +39,7 @@
 
   .di-textlink.is-plain:hover:not(:disabled),
   .di-textlink.is-plain:focus-visible {
-    text-decoration-color: var(--di-seal);
+    text-decoration-color: var(--di-select);
   }
 
   .di-textlink:disabled {

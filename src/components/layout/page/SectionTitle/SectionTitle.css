@@ -97,4 +97,22 @@
     font-size: var(--di-font-size-500);
     line-height: 1.55;
   }
+
+  /* On a phone the meta drops under the heading rather than squeezing it. */
+  @media (max-width: 600px) {
+    .di-section-title:has(> .di-section-meta) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "eyebrow"
+        "heading"
+        "lede"
+        "meta";
+    }
+
+    .di-section-meta {
+      justify-self: start;
+      margin-top: var(--di-space-8);
+      white-space: normal;
+    }
+  }
 }

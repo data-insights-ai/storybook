@@ -116,7 +116,7 @@
     --di-text-on-seal: var(--di-navy-900);
     --di-ai-ring: var(--di-gold-600);
     --di-ai-surface: var(--di-gold-50);
-    --di-ai-ink: var(--di-gold-700);
+    --di-ai-ink: var(--di-navy-600);
 
     /* A plane on navy in either theme: the toast, the tooltip, the sign-in footer. */
     --di-inverse-bg: var(--di-navy-900);

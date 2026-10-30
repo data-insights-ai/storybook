@@ -11,8 +11,8 @@
 
   /* A step below the surface it sits in: the deepest a region goes. */
   .di-panel-inset {
+    --di-panel-bg: var(--di-bg-subtle);
     border-radius: var(--di-radius-inset);
-    background: var(--di-bg-subtle);
     box-shadow: none;
   }
 
@@ -115,6 +115,11 @@
     color: var(--di-mono-label-color);
   }
 
+  /* After dark the one thing may say so in gold; in daylight one-ink is navy. */
+  .di-panel.is-emphasis .di-panel-label {
+    color: var(--di-one-ink);
+  }
+
   .di-panel-title {
     font-size: var(--di-block-title-size);
     font-weight: var(--di-weight-semibold);
@@ -149,6 +154,22 @@
 
   .di-panel-content.di-panel-content-flush {
     --di-panel-pad: 0px;
+  }
+
+  /* A table in a panel sits on the panel's surface: it drops a surface of its own. */
+  .di-panel-content {
+    --di-table-bg: var(--di-panel-bg);
+    --di-table-shadow: none;
+    --di-table-radius: 0;
+  }
+
+  .di-panel-content-flush {
+    --di-table-edge: var(--di-panel-inner);
+  }
+
+  .di-panel-content-flush > .di-panel-note {
+    margin-top: 0;
+    padding: var(--di-space-12) var(--di-panel-inner) var(--di-panel-inner);
   }
 
   /*
