@@ -379,6 +379,9 @@ export const TooltipDetails: Story = {
     await waitFor(() => expect(canvas.getByText("Rotated keys · 14:20")).toBeVisible());
     await expect(canvas.getByText("Total")).toBeVisible();
     const chart = canvas.getByRole("group", { name: "Runs per day, with what happened" });
+    if (chart.getBoundingClientRect().width <= 480) {
+      await waitFor(() => expect(canvasElement.querySelector(".di-chart-readout .di-chart-tip")).not.toBeNull());
+    }
     const tip = canvasElement.querySelector(".di-chart-tip")!;
     if (chart.getBoundingClientRect().width <= 480) {
       const plot = chart.querySelector(".di-chart-plot")!.getBoundingClientRect();

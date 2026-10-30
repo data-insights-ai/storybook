@@ -9,6 +9,8 @@ export function useWidth<T extends HTMLElement>() {
     if (!element) {
       return;
     }
+    // The observer reports a frame late; measure before the first paint too.
+    setWidth(element.getBoundingClientRect().width);
     const observer = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
     observer.observe(element);
     return () => observer.disconnect();
