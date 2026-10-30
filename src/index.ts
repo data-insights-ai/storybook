@@ -4,7 +4,12 @@ export { Badge } from "./components/status/Badge";
 export { Breadcrumb } from "./components/navigation/Breadcrumb";
 export { Button } from "./components/actions/Button";
 export { ChainTimeline } from "./components/timelines/ChainTimeline";
-export type { ChainTimelineEvent, ChainTimelineLane } from "./components/timelines/ChainTimeline";
+export type {
+  ChainTimelineClock,
+  ChainTimelineEvent,
+  ChainTimelineLane,
+  ChainTimelineTick,
+} from "./components/timelines/ChainTimeline";
 export { CodeBlock } from "./components/text/blocks/CodeBlock";
 export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "./components/charts/Chart";
 export type { ChartConfig, ChartTooltipDetail } from "./components/charts/Chart";

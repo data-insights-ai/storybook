@@ -10,7 +10,13 @@ import { hex, opacity, over, parse, ratio, type Rgba } from "./visibleContrast";
 
 export type MarkFinding = { mark: string; colour: string; against: string; ratio: number };
 
-type Mark = { selector: string; against?: (mark: Element) => Element | null | undefined; shadow?: boolean };
+type Mark = {
+  selector: string;
+  against?: (mark: Element) => Element | null | undefined;
+  shadow?: boolean;
+  /** A line drawn as a box's border: its top edge, or its left one when it has no top. */
+  edge?: boolean;
+};
 
 const overviewGround = (mark: Element) =>
   mark.closest(".di-timeline-overview")?.querySelector(".di-timeline-overview-ground");
@@ -30,19 +36,21 @@ const MARKS: Mark[] = [
   { selector: ".di-tsummary-stretch" },
   { selector: ".di-tsummary-block-fill", shadow: true },
   { selector: ".di-period-bar", against: (mark) => mark.closest(".di-period-track") },
-  { selector: ".di-chain-links path" },
+  { selector: ".di-chain-link", edge: true },
 ];
 
 const clear: Rgba = { r: 0, g: 0, b: 0, a: 0 };
 
-/** What the element paints: an SVG shape's fill (its stroke for a line or an unfilled shape), a box's background or its first inset shadow. */
-function paintOf(element: Element, shadow = false): Rgba | null {
+/** What the element paints: an SVG shape's fill (its stroke for a line or an unfilled shape), a box's background, its first inset shadow or its border. */
+function paintOf(element: Element, shadow = false, edge = false): Rgba | null {
   const style = getComputedStyle(element);
   let colour: Rgba | null;
   if (element instanceof SVGGeometryElement) {
     const stroked = style.fill === "none" || element instanceof SVGLineElement;
     colour = parse(stroked ? style.stroke : style.fill);
     if (colour) colour = { ...colour, a: colour.a * parseFloat(stroked ? style.strokeOpacity : style.fillOpacity) };
+  } else if (edge) {
+    colour = parse(parseFloat(style.borderTopWidth) > 0 ? style.borderTopColor : style.borderLeftColor);
   } else if (shadow) {
     colour = parse(/(rgba?\([^)]*\)|#[0-9a-f]+)/i.exec(style.boxShadow)?.[1] ?? "");
   } else {
@@ -79,13 +87,13 @@ function drawn(element: Element) {
 
 export function markContrast(root: Element): MarkFinding[] {
   const findings = new Map<string, MarkFinding>();
-  for (const { selector, against, shadow } of MARKS) {
+  for (const { selector, against, shadow, edge } of MARKS) {
     for (const element of root.querySelectorAll(selector)) {
       if (!drawn(element)) continue;
       const ground = groundUnder(element);
       const neighbour = against?.(element);
       const back = neighbour ? over(paintOf(neighbour) ?? clear, ground) : ground;
-      const paint = paintOf(element, shadow);
+      const paint = paintOf(element, shadow, edge);
       if (!paint) continue;
       const shown = over(paint, back);
       const value = Math.floor(ratio(shown, back) * 100) / 100;

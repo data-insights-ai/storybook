@@ -233,6 +233,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Every flag above the bars keeps its name: a label that would collide moves to a second row, none disappears. */
+async function everyMarkerNamed(canvasElement: HTMLElement) {
+  await waitFor(() => expect(canvasElement.querySelector(".di-timeline-marker-flag")).not.toBeNull());
+  const flags = canvasElement.querySelectorAll(".di-timeline-marker-flag");
+  const labels = [...canvasElement.querySelectorAll(".di-timeline-marker-label")];
+  await expect(labels).toHaveLength(flags.length);
+  const boxes = labels.map((label) => label.getBoundingClientRect());
+  const overlapping = boxes.flatMap((a, i) =>
+    boxes.slice(i + 1).filter((b) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top),
+  );
+  await expect(overlapping).toHaveLength(0);
+}
+
 /**
  * Three days with a spray of hundreds of retries inside minutes. The score runs
  * above on the same clock; the lanes, opened under the plot, read as a
@@ -244,6 +257,7 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     const back = await canvas.findByRole("button", { name: "Back to the previous view" });
     await expect(back).toBeDisabled();
+    await everyMarkerNamed(canvasElement);
     await expect(canvas.getByRole("button", { name: "Show everything" })).toBeDisabled();
     await userEvent.click(canvas.getByRole("button", { name: "Zoom in" }));
     await waitFor(() => expect(back).toBeEnabled());
@@ -337,6 +351,10 @@ export const German: Story = {
       withMarkers
     />
   ),
+  play: async ({ canvasElement }) => {
+    await within(canvasElement).findByRole("group", { name: "Ereignisablauf" });
+    await everyMarkerNamed(canvasElement);
+  },
 };
 
 /** Waiting for the first bars: the frame and its controls stand, the plot says it is loading. */

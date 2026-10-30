@@ -71,6 +71,7 @@ const charts = [
   { token: "--di-chart-compare", use: "What the series is measured against." },
   { token: "--di-chart-muted", use: "A comparison bar, grey." },
   { token: "--di-chart-band", use: "The range around a median." },
+  { token: "--di-chart-routine", use: "Routine on a timeline: the series ink mixed into the surface." },
   { token: "--di-chart-warn", use: "A reading past the medium threshold." },
   { token: "--di-chart-danger", use: "A reading past the critical threshold." },
 ];

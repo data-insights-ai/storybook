@@ -19,6 +19,29 @@ const events = [
   { id: "6", lane: "dc", at: 100, label: "08:34 Remote service started" },
 ];
 
+/** The axis is one line: its ends and the ticks between them share a baseline, and no tick touches an end or another tick. */
+async function axisOnOneLine(canvasElement: HTMLElement) {
+  const axis = canvasElement.querySelector(".di-chain-axis")!;
+  const ends = [...axis.querySelectorAll(":scope > .di-chain-axis-end")].map((el) => el.getBoundingClientRect());
+  const ticks = [...axis.querySelectorAll(".di-chain-axis-tick:not(.is-hidden)")].map((el) =>
+    el.getBoundingClientRect(),
+  );
+  const line = [ends[0]!, ...ticks, ends[1]!];
+  for (const box of line) await expect(Math.abs(box.top - ends[0]!.top)).toBeLessThanOrEqual(1);
+  for (let i = 1; i < line.length; i++) await expect(line[i]!.left).toBeGreaterThan(line[i - 1]!.right);
+  const frame = canvasElement.querySelector(".di-chain")!.getBoundingClientRect();
+  for (const box of line) await expect(box.right).toBeLessThanOrEqual(frame.right + 0.5);
+}
+
+/** No two markers on one lane touch: near steps are one marker named by their range. */
+async function markersApart(canvasElement: HTMLElement) {
+  const boxes = [...canvasElement.querySelectorAll(".di-chain-marker")].map((el) => el.getBoundingClientRect());
+  const touching = boxes.flatMap((a, i) =>
+    boxes.slice(i + 1).filter((b) => a.left <= b.right && a.right >= b.left && a.top < b.bottom && a.bottom > b.top),
+  );
+  await expect(touching).toHaveLength(0);
+}
+
 const meta = {
   title: "Timelines/ChainTimeline",
   component: ChainTimeline,
@@ -67,6 +90,8 @@ export const Lateral: Story = {
     await expect(args.onSelect).toHaveBeenCalledWith("4");
     // A pointer click leaves no ring; the test's synthetic click would, so the story ends without focus.
     (document.activeElement as HTMLElement | null)?.blur();
+    await axisOnOneLine(canvasElement);
+    await markersApart(canvasElement);
   },
 };
 
@@ -111,8 +136,9 @@ export const Clustered: Story = {
 };
 
 /**
- * German lane names and details, on a phone: the lane column takes about a
- * quarter of the width and ends a long name in an ellipsis; tick labels that
+ * German lane names and details: beside the track the lane column takes
+ * about a quarter of the width and ends a long name in an ellipsis; on a
+ * phone each name stands above its rule and is read whole. Tick labels that
  * would touch give way, the two ends always stay.
  */
 export const German: Story = {
@@ -139,19 +165,17 @@ export const German: Story = {
     ],
   },
   play: async ({ canvasElement }) => {
-    const shown = [
-      ...canvasElement.querySelectorAll(
-        ".di-chain-axis > span:not(.di-chain-axis-ticks), .di-chain-axis-tick:not(.is-hidden)",
-      ),
-    ].map((el) => el.getBoundingClientRect());
-    const ticks = shown.slice(1, -1).filter((box) => box.width > 0);
-    for (let i = 1; i < ticks.length; i++) await expect(ticks[i]!.left).toBeGreaterThan(ticks[i - 1]!.right);
-    const frame = canvasElement.querySelector(".di-chain")!.getBoundingClientRect();
-    for (const box of shown) await expect(box.right).toBeLessThanOrEqual(frame.right + 0.5);
+    await axisOnOneLine(canvasElement);
+    await markersApart(canvasElement);
   },
 };
 
-/** On a phone the devices keep a narrow column, so the track keeps room for its steps and both ends of the axis. */
+/**
+ * On a phone each device's name stands above its rule at the full width,
+ * so it is never cut and the track keeps the whole width for its steps; two
+ * steps that would touch are one marker named by their range ("03–04"), and
+ * the axis keeps both ends on its one line.
+ */
 export const Phone: Story = {
   args: {
     startLabel: "Oct 30, 2026, 08:12",
@@ -161,11 +185,42 @@ export const Phone: Story = {
   play: async ({ canvasElement }) => {
     await expect(window.innerWidth).toBe(390);
     const chain = within(canvasElement).getByRole("group", { name: /attack chain/i });
-    const [devices] = getComputedStyle(chain).gridTemplateColumns.split(" ").map(parseFloat);
-    await expect(devices).toBeLessThanOrEqual(chain.getBoundingClientRect().width * 0.28 + 0.5);
+    const frame = chain.getBoundingClientRect();
+    const track = chain.querySelector(".di-chain-track")!.getBoundingClientRect();
+    await expect(track.width).toBeCloseTo(frame.width, 0);
+    for (const name of chain.querySelectorAll<HTMLElement>(".di-chain-lane-label")) {
+      await expect(name).toBeVisible();
+      await expect(name.scrollWidth).toBeLessThanOrEqual(name.clientWidth);
+      await expect(name.getBoundingClientRect().left).toBeCloseTo(frame.left, 0);
+    }
+    await expect(within(chain).getByRole("button", { name: /local admin; .*remote service/i })).toHaveTextContent(
+      "03–04",
+    );
     for (const end of chain.querySelectorAll(".di-chain-axis-end")) {
       await expect(end.getClientRects()).toHaveLength(1);
-      await expect(end.getBoundingClientRect().height).toBeLessThan(40);
     }
+    await axisOnOneLine(canvasElement);
+    await markersApart(canvasElement);
+  },
+};
+
+/**
+ * With `clock`, the ticks are clock times from the shared timeline scale, in
+ * the reader's language and zone, as many as the width holds.
+ */
+export const ClockTicks: Story = {
+  args: {
+    ticks: undefined,
+    clock: {
+      span: { start: Date.UTC(2026, 9, 30, 7, 12), end: Date.UTC(2026, 9, 30, 7, 34) },
+      locale: "en-GB",
+      timeZone: "Europe/Vienna",
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const shown = [...canvasElement.querySelectorAll(".di-chain-axis-tick:not(.is-hidden)")];
+    await expect(shown.length).toBeGreaterThan(0);
+    for (const tick of shown) await expect(tick.textContent).toMatch(/^08:\d\d$/);
+    await axisOnOneLine(canvasElement);
   },
 };

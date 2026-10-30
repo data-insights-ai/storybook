@@ -1,6 +1,7 @@
-import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
+import { Fragment, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { cx } from "../../../internal/cx";
-import { spaceOut, textWidth, TICK_FONT } from "../scale";
+import { clockFormats, ticksFor } from "../scale";
+import type { TimelineSpan } from "../types";
 import "./ChainTimeline.css";
 
 export type ChainTimelineLane = {
@@ -29,13 +30,34 @@ export type ChainTimelineTick = {
   label: string;
 };
 
+/** The clock behind the axis: its ticks come from the shared timeline scale, in the reader's language and zone. */
+export type ChainTimelineClock = {
+  /** The instants at 0 and 100 on the axis, in epoch milliseconds. */
+  span: TimelineSpan;
+  locale: string;
+  timeZone: string;
+};
+
+/* Below this width the lane names would be cut in a column of their own; each goes above its rule instead. */
+const STACK_BELOW = 480;
+/* Markers closer than their own width and this share of it merge into one, named by their range. */
+const MARKER_ROOM = 1.25;
+/* The smallest gap between two labels on the axis. */
+const AXIS_GAP = 8;
+
 /**
  * A chain of events over several lanes: one row per device or account,
  * each event a numbered marker at its time, consecutive events joined by a
  * stepped line so a hop from one lane to the next is read as a move. The
  * marker's number is the step's ordinal in the chain, the same one the
- * step list under it carries. Markers that would collide on one lane are
+ * step list under it carries. Markers that would touch on one lane are
  * drawn as one, named by their range ("03–04").
+ *
+ * Narrower than 480px, each lane's name stands above its rule at the full
+ * width instead of in a column of its own, so a long German device name is
+ * never cut. The axis is one line: its two ends and, between them, the
+ * ticks that fit — from `clock` through the shared timeline scale, or the
+ * caller's relative `ticks`.
  *
  * Markers are buttons: `onSelect` opens the step, `selected` marks the one
  * that is open, `hovered` and `onHover` tie a marker to its row in the
@@ -48,6 +70,7 @@ export function ChainTimeline({
   startLabel,
   endLabel,
   ticks = [],
+  clock,
   selected,
   hovered,
   onSelect,
@@ -61,8 +84,10 @@ export function ChainTimeline({
   /** The axis' two ends, e.g. the first and the last time. */
   startLabel: string;
   endLabel: string;
-  /** Relative marks along the axis. */
+  /** Relative marks along the axis; `clock` replaces them with clock times. */
   ticks?: ChainTimelineTick[];
+  /** The clock behind the axis: its ticks are clock times from the shared timeline scale. */
+  clock?: ChainTimelineClock;
   selected?: string;
   hovered?: string;
   onSelect?: (id: string) => void;
@@ -71,52 +96,81 @@ export function ChainTimeline({
   className?: string;
 }) {
   const rows = new Map(lanes.map((lane, i) => [lane.id, i]));
-  const y = (e: ChainTimelineEvent) => (rows.get(e.lane) ?? 0) + 0.5;
+  const rowOf = (e: ChainTimelineEvent) => rows.get(e.lane) ?? 0;
+  const frame = useRef<HTMLDivElement>(null);
+  const frameWidth = useFrameWidth(frame);
+  const stacked = frameWidth > 0 && frameWidth < STACK_BELOW;
   const plot = useRef<HTMLDivElement>(null);
   const { width, marker } = usePlot(plot);
-  const path = events
-    .map((e, i) => {
-      const x = clamp(e.at);
-      if (i === 0) return `M ${x} ${y(e)}`;
-      const prev = events[i - 1];
-      return prev.lane === e.lane ? `L ${x} ${y(e)}` : `L ${clamp(prev.at)} ${y(e)} L ${x} ${y(e)}`;
-    })
-    .join(" ");
   const markers = cluster(events, width, marker);
-  const shown = new Set(
-    spaceOut(
-      ticks.map((tick) => ({ tick, x: (clamp(tick.at) / 100) * width })),
-      tickRoom(ticks),
-    ).map((t) => t.tick),
-  );
+  const axisTicks = useMemo(() => {
+    if (!clock || width <= 0) return ticks;
+    const { span, locale, timeZone } = clock;
+    const formats = clockFormats(locale, timeZone);
+    const length = Math.max(1, span.end - span.start);
+    return ticksFor(span, width, formats.offsetOf)
+      .map((tick) => ({ at: ((tick.at - span.start) / length) * 100, label: formats.tick(tick) }))
+      .filter((tick) => tick.at > 0 && tick.at < 100);
+  }, [clock, ticks, width]);
+  const axis = useRef<HTMLDivElement>(null);
+  const hidden = useCrowdedTicks(axis, axisTicks, width);
 
   return (
-    <div className={cx("di-chain", className)} role="group" aria-label={label}>
-      <div className="di-chain-lanes">
+    <div
+      ref={frame}
+      className={cx("di-chain", stacked && "is-stacked", className)}
+      role="group"
+      aria-label={label}
+      style={{ "--di-chain-lanes": lanes.length } as CSSProperties}
+    >
+      {stacked ? null : (
+        <div className="di-chain-lanes">
+          {lanes.map((lane) => (
+            <div key={lane.id} className="di-chain-lane">
+              <LaneName lane={lane} />
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="di-chain-track">
         {lanes.map((lane) => (
-          <div key={lane.id} className="di-chain-lane">
-            <span className="di-chain-lane-label">{lane.label}</span>
-            {lane.detail ? <span className="di-chain-lane-detail">{lane.detail}</span> : null}
+          <div key={lane.id} className="di-chain-rule">
+            {stacked ? (
+              <div className="di-chain-lane-head">
+                <LaneName lane={lane} />
+              </div>
+            ) : null}
           </div>
         ))}
-      </div>
-      <div className="di-chain-track" style={{ "--di-chain-lanes": lanes.length } as CSSProperties}>
-        {lanes.map((lane) => (
-          <div key={lane.id} className="di-chain-rule" />
-        ))}
         <div className="di-chain-plot" ref={plot}>
-          {ticks.map((tick) => (
+          {axisTicks.map((tick) => (
             <div key={tick.at} className="di-chain-tick" style={{ left: `${clamp(tick.at)}%` }} aria-hidden />
           ))}
-          <svg
-            className="di-chain-links"
-            viewBox={`0 0 100 ${lanes.length}`}
-            preserveAspectRatio="none"
-            aria-hidden
-            focusable="false"
-          >
-            {events.length > 1 ? <path d={path} /> : null}
-          </svg>
+          <div className="di-chain-links" aria-hidden>
+            {events.map((e, i) => {
+              const prev = events[i - 1];
+              if (!prev) return null;
+              const from = clamp(prev.at);
+              const to = clamp(e.at);
+              const [top, bottom] = [rowOf(prev), rowOf(e)].sort((a, b) => a - b);
+              return (
+                <Fragment key={e.id}>
+                  {top !== bottom ? (
+                    <span
+                      className="di-chain-link is-hop"
+                      style={
+                        { left: `${from}%`, "--di-chain-row": top, "--di-chain-span": bottom - top } as CSSProperties
+                      }
+                    />
+                  ) : null}
+                  <span
+                    className="di-chain-link"
+                    style={{ left: `${from}%`, width: `${to - from}%`, "--di-chain-row": rowOf(e) } as CSSProperties}
+                  />
+                </Fragment>
+              );
+            })}
+          </div>
           {markers.map((m) => {
             const ids = m.events.map((e) => e.id);
             const active = ids.some((id) => id === selected);
@@ -132,7 +186,13 @@ export function ChainTimeline({
                   active && "is-selected",
                   lit && "is-hovered",
                 )}
-                style={{ left: `${m.at}%`, "--di-chain-row": rows.get(m.events[0].lane) ?? 0 } as CSSProperties}
+                style={
+                  {
+                    "--di-chain-at": `${m.at}%`,
+                    "--di-chain-chars": m.ordinal.length,
+                    "--di-chain-row": rowOf(m.events[0]),
+                  } as CSSProperties
+                }
                 aria-label={m.events.map((e) => e.label).join("; ")}
                 aria-pressed={onSelect ? active : undefined}
                 title={m.events.map((e) => e.label).join("\n")}
@@ -148,13 +208,13 @@ export function ChainTimeline({
           })}
         </div>
       </div>
-      <div className="di-chain-axis">
+      <div className="di-chain-axis" ref={axis}>
         <span className="di-chain-axis-end">{startLabel}</span>
         <span className="di-chain-axis-ticks">
-          {ticks.map((tick) => (
+          {axisTicks.map((tick, i) => (
             <span
               key={tick.at}
-              className={cx("di-chain-axis-tick", width > 0 && !shown.has(tick) && "is-hidden")}
+              className={cx("di-chain-axis-tick", hidden.has(i) && "is-hidden")}
               style={{ left: `${clamp(tick.at)}%` }}
             >
               {tick.label}
@@ -167,28 +227,77 @@ export function ChainTimeline({
   );
 }
 
-/* A tick label needs its own width and a gap; on a narrow plot every other one gives way. */
-const tickRoom = (ticks: ChainTimelineTick[]) =>
-  Math.max(0, ...ticks.map((tick) => textWidth(tick.label, TICK_FONT))) + TICK_FONT * 2;
+function LaneName({ lane }: { lane: ChainTimelineLane }) {
+  return (
+    <>
+      <span className="di-chain-lane-label">{lane.label}</span>
+      {lane.detail ? <span className="di-chain-lane-detail">{lane.detail}</span> : null}
+    </>
+  );
+}
+
+/*
+ * The ends and the ticks share one line. Measured as drawn, left to right:
+ * a tick gives way where it would touch an end or the tick kept before it.
+ */
+function useCrowdedTicks(axis: { current: HTMLDivElement | null }, ticks: ChainTimelineTick[], width: number) {
+  const [hidden, setHidden] = useState<Set<number>>(new Set());
+  useLayoutEffect(() => {
+    const el = axis.current;
+    if (!el) return;
+    const measure = () => {
+      const [start, end] = [...el.querySelectorAll(":scope > .di-chain-axis-end")].map((e) =>
+        e.getBoundingClientRect(),
+      );
+      const labels = [...el.querySelectorAll(".di-chain-axis-tick")].map((e) => e.getBoundingClientRect());
+      const next = new Set<number>();
+      let edge = (start?.right ?? -Infinity) + AXIS_GAP;
+      labels.forEach((box, i) => {
+        if (box.left < edge || box.right + AXIS_GAP > (end?.left ?? Infinity)) next.add(i);
+        else edge = box.right + AXIS_GAP;
+      });
+      setHidden((was) => (was.size === next.size && [...next].every((i) => was.has(i)) ? was : next));
+    };
+    measure();
+  }, [axis, ticks, width]);
+  return hidden;
+}
 
 type Marker = { at: number; ordinal: string; events: ChainTimelineEvent[] };
 
-/* Events on one lane whose markers would overlap become one marker named by their range. */
+/* Events on one lane whose markers would touch become one marker named by their range, at the middle of it. */
 function cluster(events: ChainTimelineEvent[], width: number, markerWidth: number): Marker[] {
-  const out: Marker[] = [];
-  const minGap = width > 0 ? (markerWidth / width) * 100 : 0;
+  const out: (Marker & { first: number })[] = [];
+  const minGap = width > 0 ? ((markerWidth * MARKER_ROOM) / width) * 100 : 0;
   events.forEach((e, i) => {
     const at = clamp(e.at);
     const last = out[out.length - 1];
     const ordinal = String(i + 1).padStart(2, "0");
-    if (last && last.events[0].lane === e.lane && at - last.at < minGap) {
+    if (last && last.events[0].lane === e.lane && at - clamp(last.events.at(-1)!.at) < minGap) {
       last.events.push(e);
-      last.ordinal = `${String(events.indexOf(last.events[0]) + 1).padStart(2, "0")}–${ordinal}`;
+      last.ordinal = `${String(last.first + 1).padStart(2, "0")}–${ordinal}`;
+      last.at = (clamp(last.events[0].at) + at) / 2;
       return;
     }
-    out.push({ at, ordinal, events: [e] });
+    out.push({ at, ordinal, events: [e], first: i });
   });
   return out;
+}
+
+/* Measured before the first paint, so a phone never draws the lane column first. */
+function useFrameWidth(frame: { current: HTMLDivElement | null }) {
+  const [width, setWidth] = useState(0);
+  useLayoutEffect(() => {
+    const el = frame.current;
+    if (!el) return;
+    const measure = () => setWidth(el.clientWidth);
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [frame]);
+  return width;
 }
 
 /* The plot's width and a marker's drawn width, which follows the density. */
