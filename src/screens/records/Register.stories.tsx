@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { RegisterScreen } from "./Register";
+import { toolbarRows } from "../../components/actions/Toolbar/rows.sample";
 
 const meta = {
   title: "Patterns/Register",
@@ -124,5 +125,9 @@ export const GermanPhone: Story = {
     await expect(canvas.getByRole("button", { name: "Weitere" })).toBeVisible();
     await expect(canvas.getByRole("button", { name: "Benachrichtigungen, 3 ungelesen" })).toBeVisible();
     await holdsTheWidth(canvasElement);
+    const rows = toolbarRows(canvas.getByRole("search", { name: "Register filtern" }));
+    await expect(rows).toHaveLength(2);
+    await expect(rows[0][0]).toHaveClass("di-search");
+    await expect(rows[0]).toHaveLength(2);
   },
 };

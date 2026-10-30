@@ -26,7 +26,8 @@ export type ToolbarProps = {
   /**
    * Sets every control at one end: `end` for the buttons that close a form or
    * a block, `start` for the actions a block leads with. On a phone they
-   * stack at full width.
+   * share the width and wrap; with three or more, the primary takes the
+   * first row and the others share the second.
    */
   align?: "start" | "end";
   /**
@@ -54,13 +55,16 @@ export type ToolbarProps = {
  *
  * **Anatomy:** `ToolbarStatus` (what is selected or unsaved, announced) ·
  * `ToolbarSelection` (select all, clear; Escape clears) · the controls ·
- * `ToolbarEnd` (the trailing group, wherever it is written) · `ToolbarNote`
+ * `ToolbarEnd` (the trailing group, wherever it is written; `ToolbarAction`
+ * is an action there that folds to its icon on a phone) · `ToolbarNote`
  * (one muted line under the row).
  *
  * **Variants:**
  * - list toolbar: `label role="search" sticky="top"`; a filter names itself
  *   in its first option, so field labels are read, not shown, and a search
- *   field takes the free width;
+ *   field takes the free width. On a phone it is two rows: the search with
+ *   `ToolbarEnd` beside it (write its actions as `ToolbarAction`, so they
+ *   fold to an icon), then the filters sharing one row;
  * - selection bar: `label frame="bar" sticky="top"` with `ToolbarStatus`,
  *   `ToolbarSelection` and the actions in `ToolbarEnd`; it takes the list
  *   toolbar's place at the same height, so nothing moves;

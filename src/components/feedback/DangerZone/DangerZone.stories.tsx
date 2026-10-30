@@ -3,8 +3,7 @@ import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { ConfirmDialog } from "../../overlays/ConfirmDialog";
-import { DangerAction } from "../../layout/page/Panel";
-import { DangerZone } from "./DangerZone";
+import { DangerAction, DangerZone } from "../../layout/page/Panel";
 
 const meta = {
   title: "Feedback/DangerZone",

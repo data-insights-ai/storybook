@@ -59,7 +59,7 @@ export { CountButton } from "./components/actions/CountButton";
 export { CopyValue } from "./components/actions/CopyValue";
 export { CreateFlow } from "./components/overlays/CreateFlow";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/compare/CoverageMatrix";
-export { DangerZone } from "./components/feedback/DangerZone";
+export { DangerZone } from "./components/layout/page/Panel";
 export { Dialog, DialogFooter, type DialogProps } from "./components/overlays/Dialog";
 export type {
   CoverageMatrixColumn,
@@ -163,7 +163,14 @@ export type { LevelBands, LevelTone } from "./components/charts/compare/LevelMet
 export { Actions } from "./components/layout/arrangement/Actions";
 export { Grid } from "./components/layout/arrangement/Grid";
 export { Stack } from "./components/layout/arrangement/Stack";
-export { Toolbar, ToolbarEnd, ToolbarNote, ToolbarSelection, ToolbarStatus } from "./components/actions/Toolbar";
+export {
+  Toolbar,
+  ToolbarAction,
+  ToolbarEnd,
+  ToolbarNote,
+  ToolbarSelection,
+  ToolbarStatus,
+} from "./components/actions/Toolbar";
 export type { ToolbarProps, ToolbarRole } from "./components/actions/Toolbar";
 export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/data/table/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/navigation/Menu";
