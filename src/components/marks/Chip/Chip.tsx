@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
-import { X } from "lucide-react";
-import { cx } from "../../../internal/cx";
-import "./Chip.css";
+import { Tag } from "../Tag";
 
 /**
- * A filter, in two states. Unset it offers itself with a leading icon;
- * set it states the value and offers the way back out. `removeLabel`
- * names the filter being dropped, because "Remove" alone tells a screen
- * reader nothing about which one.
+ * A filter, set or on offer.
+ *
+ * @deprecated Removed in 0.12: use `Tag mono`. A set filter is
+ * `<Tag mono pressed onRemove removeLabel>`, an offered one
+ * `<Tag mono onClick>`.
  */
 export function Chip({
   children,
@@ -18,31 +17,22 @@ export function Chip({
   className,
 }: {
   children: ReactNode;
-  /** Set. The chip states a value rather than offering one. */
   active?: boolean;
   onRemove?: () => void;
   removeLabel: string;
   onClick?: () => void;
   className?: string;
 }) {
-  const body = (
-    <>
-      {children}
-      {active && onRemove ? (
-        <button type="button" className="di-chip-remove" aria-label={removeLabel} onClick={onRemove}>
-          <X aria-hidden />
-        </button>
-      ) : null}
-    </>
-  );
-
-  if (onClick && !active) {
+  if (active) {
     return (
-      <button type="button" className={cx("di-chip", "di-chip-button", className)} onClick={onClick}>
-        {body}
-      </button>
+      <Tag mono pressed onRemove={onRemove} removeLabel={removeLabel} className={className}>
+        {children}
+      </Tag>
     );
   }
-
-  return <span className={cx("di-chip", active && "is-active", className)}>{body}</span>;
+  return (
+    <Tag mono onClick={onClick} className={className}>
+      {children}
+    </Tag>
+  );
 }

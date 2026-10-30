@@ -54,7 +54,7 @@ const status = [
 const severities = [
   ["Critical", "--di-severity-critical", "#B3161B", "#FF5F5A"],
   ["High", "--di-severity-high", "#D9481A", "#FF7A3D"],
-  ["Medium", "--di-severity-medium", "#B57400", "#FF9D2E"],
+  ["Medium", "--di-severity-medium", "#B57400", "#FF8A2A"],
   ["Low", "--di-severity-low", "#5D7797", "#94ABCB"],
   ["Info", "--di-severity-info", "#737885", "#7F8FB0"],
 ];

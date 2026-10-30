@@ -1,5 +1,5 @@
 import { LockKeyhole } from "lucide-react";
-import { Button, SignIn, SignInVersion, TextField, TextLink, VersionTag } from "../..";
+import { Button, SignIn, SignInVersion, TextField, TextLink, Tag } from "../..";
 
 export function LoginScreen() {
   return (
@@ -13,7 +13,7 @@ export function LoginScreen() {
         foot="Protected workspace · End-to-end encrypted · SSO and 2FA"
       >
         <SignInVersion>
-          <VersionTag>v1.0</VersionTag>
+          <Tag mono>v1.0</Tag>
         </SignInVersion>
         <TextField
           id="login-user"

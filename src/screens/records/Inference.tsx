@@ -21,7 +21,7 @@ import {
   PageHeader,
   PageHeaderTitle,
   Panel,
-  PrivacyBadge,
+  StatusPill,
   Sparkline,
   TextField,
   Toast,
@@ -125,18 +125,15 @@ export function InferenceScreen() {
         <div className="inference-column">
           <Panel title="Where a query goes">
             <div className="inference-badges">
-              <PrivacyBadge scope="local">
-                <ShieldCheck aria-hidden />
+              <StatusPill tone="ok" track="record" icon={<ShieldCheck />}>
                 local processing
-              </PrivacyBadge>
-              <PrivacyBadge scope="external">
-                <Globe aria-hidden />
+              </StatusPill>
+              <StatusPill tone="warn" track="record" icon={<Globe />}>
                 model · eu-central
-              </PrivacyBadge>
-              <PrivacyBadge scope="retention">
-                <Timer aria-hidden />
+              </StatusPill>
+              <StatusPill tone="neutral" track="record" icon={<Timer />}>
                 retained 30 days
-              </PrivacyBadge>
+              </StatusPill>
             </div>
           </Panel>
           <Panel title="Resolved by a model">

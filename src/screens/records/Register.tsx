@@ -5,7 +5,7 @@ import {
   CellIcon,
   CellLead,
   CellStack,
-  Chip,
+  Tag,
   DataTable,
   Fact,
   FactList,
@@ -191,13 +191,13 @@ export function RegisterScreen() {
               size="sm"
             />
           </div>
-          <Chip active={true} removeLabel="Remove the workspace filter">
+          <Tag mono pressed onRemove={() => undefined} removeLabel="Remove the workspace filter">
             workspace: WS-01
-          </Chip>
-          <Chip active={false} removeLabel="Add a state filter">
+          </Tag>
+          <Tag mono onClick={() => undefined}>
             <Plus aria-hidden />
             state
-          </Chip>
+          </Tag>
           <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
             <Button variant="secondary" size="sm">
               <Download aria-hidden />

@@ -33,4 +33,14 @@
     background: transparent;
     border: 1.5px solid var(--di-mark-ring);
   }
+
+  .di-pill-icon {
+    display: inline-flex;
+    flex: none;
+  }
+
+  .di-pill-icon > svg {
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
+  }
 }

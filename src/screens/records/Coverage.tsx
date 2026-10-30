@@ -6,7 +6,7 @@ import {
   CellIcon,
   CellLead,
   CellStack,
-  Chip,
+  Tag,
   DataTable,
   Grid,
   Notice,
@@ -160,9 +160,9 @@ export function CoverageScreen() {
         <Toolbar>
           <SearchField label="Search sources" placeholder="Search sources, platforms, or types…" />
           {showAll ? (
-            <Chip onRemove={() => setShowAll(false)} removeLabel="Remove status filter">
+            <Tag pressed onRemove={() => setShowAll(false)} removeLabel="Remove the status filter">
               Status: All (6)
-            </Chip>
+            </Tag>
           ) : null}
           <ToolbarEnd>
             <Button variant="secondary" size="sm">

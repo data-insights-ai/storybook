@@ -6,7 +6,7 @@
     align-items: baseline;
     gap: var(--di-gap-6);
     font-size: var(--di-font-size-300);
-    font-weight: var(--di-weight-medium);
+    font-weight: var(--di-weight-regular);
     line-height: 1;
     white-space: nowrap;
     color: var(--di-text);
@@ -64,10 +64,6 @@
   .di-sev[data-level="info"] .di-sev-step:first-child {
     background: transparent;
     box-shadow: inset 0 0 0 1px var(--di-sev-colour);
-  }
-
-  .di-sev[data-level="critical"] .di-sev-label {
-    font-weight: var(--di-weight-semibold);
   }
 
   .di-sev-chip {

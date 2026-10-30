@@ -59,7 +59,7 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
   {
     pattern: "Privacy stated in context, not in a policy page",
     verdict: "adopted",
-    built: "PrivacyBadge",
+    built: "StatusPill icon",
     reason: "Stated at the field that processes the data, with region and retention.",
   },
   {
