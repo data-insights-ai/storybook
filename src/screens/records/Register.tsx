@@ -167,16 +167,16 @@ export function RegisterScreen() {
       </Notice>
 
       <Grid>
-        <StatTile index="01" label="Entries sealed" value="4,182" ruled={true}>
+        <StatTile label="Entries sealed" value="4,182" ruled={true}>
           <StatTileDelta>+112 since 09:00Z</StatTileDelta>
         </StatTile>
-        <StatTile index="02" label="Coverage" value="86.4%" ruled={true}>
+        <StatTile label="Coverage" value="86.4%" ruled={true}>
           <StatTileDelta tone="warn">down 2.1 points</StatTileDelta>
         </StatTile>
-        <StatTile index="03" label="Unsealed" value="1,284" tone="danger" ruled={true}>
+        <StatTile label="Unsealed" value="1,284" tone="danger" ruled={true}>
           <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
         </StatTile>
-        <StatTile index="04" label="Sources" value="24" ruled={true}>
+        <StatTile label="Sources" value="24" ruled={true}>
           <StatTileDelta tone="warn">4 paused, 1 failed</StatTileDelta>
         </StatTile>
       </Grid>
@@ -282,7 +282,6 @@ export function RegisterScreen() {
       <Sheet
         open={selected !== null}
         onClose={() => setOpen(null)}
-        index={selected?.ordinal}
         eyebrow="Source · WS-01"
         title={selected?.host ?? ""}
         closeLabel={`Close the detail for ${selected?.host ?? "the source"}`}

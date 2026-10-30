@@ -11,10 +11,6 @@ const meta = {
   component: Panel,
   tags: ["layer:block", "autodocs"],
   args: {
-    index: "01",
-    indexSize: "md",
-    indexTone: "neutral",
-    indexRule: true,
     surface: "sheet",
     emphasis: false,
     title: "Graz office",
@@ -22,10 +18,6 @@ const meta = {
     children: "Fourteen sources report here; the last event arrived two minutes ago.",
   },
   argTypes: {
-    index: { control: "text" },
-    indexSize: { control: "radio", options: ["md", "sm"] },
-    indexTone: { control: "radio", options: ["neutral", "danger"] },
-    indexRule: { control: "boolean" },
     surface: { control: "radio", options: ["sheet", "inset"] },
     emphasis: { control: "boolean" },
     label: { control: "text" },
@@ -39,13 +31,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The default sheet, with the index column that names the system. */
-export const Default: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByText("01")).toBeVisible();
-  },
-};
+/** The default sheet: a title over its content, the same inset all round. */
+export const Default: Story = {};
 
 /**
  * The header's trailing line is a slot, so what a panel reports about
@@ -70,7 +57,7 @@ export const WithMeta: Story = {
 /** A state, rather than a measurement, in the same slot. */
 export const MetaStatus: Story = {
   name: "Meta status",
-  args: { index: "04", title: "Ingest run", indexTone: "danger", children: null },
+  args: { title: "Ingest run", children: null },
   render: (args) => (
     <Panel {...args}>
       <PanelMeta>
@@ -83,9 +70,9 @@ export const MetaStatus: Story = {
 
 /** A step below the surface it sits in: a group inside a panel, a quoted extract. */
 export const Inset: Story = {
-  args: { index: undefined, surface: "inset", title: "Extract" },
+  args: { surface: "inset", title: "Extract" },
   render: (args) => (
-    <Panel index={undefined} title="Manifest">
+    <Panel title="Manifest">
       <Panel {...args}>a4f9c21e · 2026-09-18T09:12:04Z</Panel>
     </Panel>
   ),
@@ -97,7 +84,6 @@ export const Inset: Story = {
  */
 export const Labelled: Story = {
   args: {
-    index: undefined,
     label: "Coverage · last 24 h",
     title: "Two of nine tables are not arriving",
     heading: 2,
@@ -111,7 +97,6 @@ export const Labelled: Story = {
  */
 export const Emphasis: Story = {
   args: {
-    index: undefined,
     emphasis: true,
     label: "Verdict",
     title: "Credentials were used to reach the file server",
@@ -136,9 +121,6 @@ export const Emphasis: Story = {
 /** A short tile: no rule, because there is no height for it to run down. */
 export const Tile: Story = {
   args: {
-    index: "A",
-    indexSize: "sm",
-    indexRule: false,
     title: undefined,
     children: "Four sources ingested since the last seal.",
   },
@@ -147,22 +129,14 @@ export const Tile: Story = {
 /** A failure keeps its index, tinted. The row is still a record. */
 export const Failed: Story = {
   args: {
-    index: "07",
-    indexTone: "danger",
     title: "Ingest run",
     children: "Connection reset by the upstream host after 2 of 14 batches.",
   },
 };
 
-/** No index at all, for a panel that is not part of a register. */
-export const WithoutIndex: Story = {
-  args: { index: undefined, title: "Notes", children: "Rotate the collector key before the audit in March." },
-};
-
 /** The footer strip under the body: the state and the one action it asks for. */
 export const WithFooter: Story = {
   args: {
-    index: "02",
     title: "Key rotation",
     children: "The signing key for this workspace expires on 2026-09-29.",
   },
@@ -183,7 +157,7 @@ export const WithFooter: Story = {
 
 /** What a panel holds in practice: a measured value under its seal. */
 export const WithSealedValue: Story = {
-  args: { index: "03", title: "Manifest" },
+  args: { title: "Manifest" },
   render: (args) => (
     <Panel {...args}>
       <SealValue state="sealed" stateLabel="Sealed">
@@ -198,7 +172,7 @@ export const WithSealedValue: Story = {
  * thing the numbers above do not say. It is never where a fact lives.
  */
 export const WithNote: Story = {
-  args: { index: "04", title: "Coverage" },
+  args: { title: "Coverage" },
   render: (args) => (
     <Panel {...args}>
       <SealValue state="sealed" stateLabel="Sealed">

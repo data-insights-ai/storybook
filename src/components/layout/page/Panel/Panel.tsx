@@ -13,15 +13,8 @@ import "./Panel.css";
  *
  * `emphasis` marks the one block that matters in the view with a gold
  * edge. One per view: the rule is the point.
- *
- * An `index` column holds an ordinal or a letter where sequence or record
- * identity matters, and nowhere else.
  */
 export function Panel({
-  index,
-  indexSize = "md",
-  indexTone = "neutral",
-  indexRule = true,
   surface = "sheet",
   emphasis = false,
   label,
@@ -31,12 +24,6 @@ export function Panel({
   className,
   children,
 }: {
-  /** The ordinal or letter in the index column. Omit for a panel with no index. */
-  index?: string;
-  indexSize?: "md" | "sm";
-  indexTone?: "neutral" | "danger";
-  /** The hairline running down from the mark. Off for a short tile. */
-  indexRule?: boolean;
   /** `sheet` lifts from the ground; `inset` sinks inside a surface. */
   surface?: "sheet" | "inset";
   /** The one block that matters in the view: a gold edge. */
@@ -75,21 +62,9 @@ export function Panel({
 
   return (
     <section
-      className={cx(
-        "di-panel",
-        `di-panel-${surface}`,
-        emphasis && "is-emphasis",
-        indexTone === "danger" && "is-danger",
-        className,
-      )}
+      className={cx("di-panel", `di-panel-${surface}`, emphasis && "is-emphasis", className)}
       aria-labelledby={title !== undefined && heading ? id : undefined}
     >
-      {index === undefined ? null : (
-        <div className={cx("di-panel-index", indexSize === "sm" && "di-panel-index-sm")}>
-          <span className="di-panel-index-label">{index}</span>
-          {indexRule ? <span className="di-panel-index-rule" aria-hidden /> : null}
-        </div>
-      )}
       <div className="di-panel-body">
         {title === undefined && label === undefined && meta.length === 0 ? null : (
           <div className="di-panel-header">

@@ -28,54 +28,11 @@
     box-shadow: none;
   }
 
-  .di-panel.is-danger {
-    border-color: var(--di-status-danger-border);
-  }
-
   /* The one thing that matters in the view. Gold marks the object, never its words. */
   .di-panel.is-emphasis {
     box-shadow:
       0 0 0 1px var(--di-one-edge),
       var(--di-one-glow);
-  }
-
-  .di-panel-index {
-    width: var(--di-index-col);
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: var(--di-space-12) 0;
-    border-right: 1px solid var(--di-panel-border);
-    background: var(--di-panel-index-bg);
-  }
-
-  .di-panel-index-sm {
-    width: var(--di-index-col-sm);
-  }
-
-  .di-panel.is-danger .di-panel-index {
-    border-right-color: var(--di-status-danger-border);
-    background: var(--di-status-danger-bg);
-  }
-
-  .di-panel-index-label {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    font-weight: var(--di-weight-medium);
-    font-variant-numeric: tabular-nums;
-    color: var(--di-text-subtle);
-  }
-
-  .di-panel.is-danger .di-panel-index-label {
-    color: var(--di-status-danger-fg);
-  }
-
-  .di-panel-index-rule {
-    width: 1px;
-    flex: 1;
-    margin-top: var(--di-space-8);
-    background: var(--di-rule);
   }
 
   .di-panel-body {

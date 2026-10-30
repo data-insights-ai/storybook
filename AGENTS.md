@@ -90,7 +90,7 @@ A screen is composed in a fixed order:
 - A list beside its record is `ListDetail`: the list pane runs full height a step above the ground, the selected row a step above that with a cornflower edge; on a phone the list and the record are two views with a back link.
 - Meta lines break between items, never inside one. A row of action buttons (`Actions`) stacks full width on a phone.
 
-Indexed records carry a 38px index column (`--di-index-col`) holding an ordinal or a letter. It is the system's fingerprint when sequence or record identity matters. A drawer keeps the ordinal of the row it opened from. A failure keeps its ordinal, tinted. Ordinary forms, first-use empty states, and panels or tiles that are not one of a sequence (a row of different measures, the facts on one record) omit the index; never invent a number to fill a decorative rail.
+A number appears only where the order is information: the rows of a register (the 38px index column, `--di-index-col`, of a `DataTable`), the steps of a process (`Numbered`, `Stepper`), the rank in an `AttentionList`, the phases of a story. A panel, a sheet, a tile or an empty state carries no number of its own and has no prop for one: a sheet opened from a row names its record in its `eyebrow`, and a failure says so in words beside its title. Never invent a number to fill a rail.
 
 Focus is cornflower in both themes (`#2B6CB0` on paper, `#79AEEA` after dark), so it is never confused with the gold of the one thing.
 

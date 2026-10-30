@@ -131,20 +131,19 @@ export const Dimensions: StoryObj = {
 
       <Section
         eyebrow="The index column"
-        title="38 pixels that cost real space."
-        lede="`--di-index-col` is the system's fingerprint: the column down the left of `Panel`, `DataTable`, `Sheet`, `Notice`, `EmptyState`, `Modal`, `SignIn`, `StatTile` and `SkeletonTable`, holding an ordinal or a letter."
+        title="A number only where the order is information."
+        lede="`--di-index-col`, 38px, holds the ordinal of a row in a `DataTable` and a `SkeletonTable`, and the icon of a `Notice` and a `Modal`. Numbers count where order means something: the rows of a register, the steps of a process (`Numbered`, `Stepper`), the rank in an `AttentionList`, the phases of a story."
       >
         <Rules>
-          <Rule>It is what turns a card into an entry, and gives a row a handle an operator can say out loud.</Rule>
           <Rule>
-            A drawer keeps the ordinal of the row it opened from, so the row and its detail are visibly the same object.
+            A panel, a sheet, a tile or an empty state carries no number. A number that orders nothing is decoration,
+            and the reader looks for a meaning it does not have.
           </Rule>
-          <Rule>A failure keeps its ordinal too, tinted. A failed run is still something the register recorded.</Rule>
           <Rule>
-            `Panel` and `StatTile` can drop to `--di-index-col-sm`, 26px, where the block is too short to give up the
-            full width.
+            A sheet opened from a row names its record in the eyebrow (`Member · WS-01`), not by the row's ordinal.
           </Rule>
-          <Rule>`Toast`, `Stage` and `Session` carry no index. They report; they are not entries.</Rule>
+          <Rule>A failure is a status beside its title, in words, not a tinted number.</Rule>
+          <Rule>`Toast`, `Stage` and `Session` carry no index either. They report; they are not entries.</Rule>
         </Rules>
       </Section>
 

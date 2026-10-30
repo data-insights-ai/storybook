@@ -13,7 +13,7 @@ const meta = {
     items: [
       { value: "record", label: "Record" },
       { value: "sources", label: "Sources", badge: "12" },
-      { value: "seals", label: "Seals", badge: "04" },
+      { value: "seals", label: "Seals", badge: "4" },
       { value: "log", label: "Log" },
       { value: "export", label: "Export", disabled: true },
     ],

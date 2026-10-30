@@ -7,13 +7,11 @@ import "./EmptyState.css";
  * never share a screen. Each state names the cause, states the boundary
  * it ran into, and offers exactly one action.
  *
- * An index is optional: use it when the absence belongs to an indexed record.
- * So is the eyebrow: inside a page that already names the place, repeating
+ * The eyebrow is optional: inside a page that already names the place, repeating
  * it over the empty state is noise. `EmptyStateIcon` sets one line icon
  * above the title, for a first-use state that invites the first entry.
  */
 export function EmptyState({
-  index,
   eyebrow,
   title,
   body,
@@ -22,7 +20,6 @@ export function EmptyState({
   className,
   children,
 }: {
-  index?: string;
   eyebrow?: string;
   title: string;
   body: string;
@@ -42,11 +39,6 @@ export function EmptyState({
   });
   return (
     <div className={cx("di-empty", tone === "danger" && "is-danger", className)}>
-      {index === undefined ? null : (
-        <div className="di-empty-index">
-          <span className="di-empty-index-label">{index}</span>
-        </div>
-      )}
       <div className="di-empty-body">
         {icon}
         {eyebrow ? <p className="di-empty-eyebrow">{eyebrow}</p> : null}

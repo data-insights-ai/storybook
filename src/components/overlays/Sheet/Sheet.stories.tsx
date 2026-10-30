@@ -73,15 +73,15 @@ export const Record: Story = {
   },
 };
 
-/** Opened from a row: the row's ordinal in the index column and the kind of record above the title tie the detail to the row. */
+/** Opened from a row: the kind of record and its workspace above the title tie the detail to the row. */
 export const FromARow: Story = {
-  args: { index: "03", eyebrow: "Member · WS-01" },
+  args: { eyebrow: "Member · WS-01" },
   render: (args) => <Opener {...args} />,
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole("button", { name: "Open member" }));
     const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog", { name: "Jonas Brandt" });
     await waitFor(() => expect(dialog).toBeVisible());
-    await expect(within(dialog).getByText("03")).toBeVisible();
+    await expect(within(dialog).queryByText("03")).toBeNull();
     await expect(within(dialog).getByText("Member · WS-01")).toBeVisible();
   },
 };

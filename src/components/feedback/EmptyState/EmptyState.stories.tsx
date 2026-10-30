@@ -9,7 +9,6 @@ const meta = {
   component: EmptyState,
   tags: ["layer:block", "autodocs"],
   args: {
-    index: "00",
     eyebrow: "No results",
     title: "No source matches this filter.",
     body: "The register holds 24 sources. None of them is paused in the last 24 hours.",
@@ -18,7 +17,6 @@ const meta = {
     children: null,
   },
   argTypes: {
-    index: { control: "text" },
     eyebrow: { control: "text" },
     title: { control: "text" },
     body: { control: "text" },
@@ -51,7 +49,6 @@ export const NoResults: Story = {
 /** Zero configuration: a different fact, and never on the same screen. */
 export const NotConfigured: Story = {
   args: {
-    index: "00",
     eyebrow: "Nothing configured",
     title: "This workspace has no sources yet.",
     body: "Connect a source to start a register. Nothing is sealed until the first entry lands.",
@@ -87,7 +84,6 @@ export const MonoBody: Story = {
 /** A boundary the system hit, not an absence it found. */
 export const Failure: Story = {
   args: {
-    index: "!!",
     tone: "danger",
     eyebrow: "Boundary",
     title: "The register could not be read.",
@@ -104,7 +100,7 @@ export const Failure: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("!!")).toBeVisible();
+    await expect(canvas.getByText("The register could not be read.")).toBeVisible();
   },
 };
 
@@ -117,32 +113,9 @@ export const WithoutAction: Story = {
   },
 };
 
-/** An ordinary first-use action needs no decorative record number. */
-export const WithoutIndex: Story = {
-  args: {
-    index: undefined,
-    eyebrow: "Get started",
-    title: "No sources connected",
-    body: "Connect your first source to start receiving records.",
-  },
-  render: (args) => (
-    <EmptyState {...args}>
-      <EmptyStateAction>
-        <Button>Connect source</Button>
-      </EmptyStateAction>
-    </EmptyState>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByRole("button", { name: "Connect source" })).toBeVisible();
-    await expect(canvasElement.querySelector(".di-empty-index")).toBeNull();
-  },
-};
-
 /** First use inside a page that already names the place: no eyebrow, an icon, the one action. */
 export const FirstUse: Story = {
   args: {
-    index: undefined,
     eyebrow: "",
     title: "No invitations yet.",
     body: "Invite colleagues by email. They join with the role you choose.",

@@ -67,8 +67,6 @@ A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around 
 
 `Modal` is a native modal dialog. `Sheet` is one too, except an `md` sheet inside a `list` or `detail` `Page` wide enough for its side column: it docks there and the page beside it stays usable. Either way focus moves in, Escape closes it and focus returns to the opener.
 
-`Panel` and `EmptyState` can omit `index` when no ordinal belongs to the content. Omission removes the index rail completely.
-
 ## Periods and counts
 
 `DateRangePicker` takes a custom range on the calendar or typed into its first and last day; a partial or impossible day applies nothing, and a last day before the first is named under it instead of being swapped. `allowOpenEnd` adds "Until now": a custom range from a first day (and its time, with times on) with no end, applied as `{ from }`, so entries keep arriving in it. Without it the picker works as before.
