@@ -229,7 +229,7 @@ function Options(props: WithOptions & { invalid: boolean; line: ReactNode }) {
     // eslint-disable-next-line jsx-a11y/role-supports-aria-props -- aria-description is global in ARIA 1.3, newer than the rule's role table
     <input
       type={type}
-      className="di-sr"
+      className="di-choice-cover"
       name={name}
       value={o.value}
       checked={chosen(o.value)}

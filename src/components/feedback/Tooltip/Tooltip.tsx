@@ -54,7 +54,8 @@ export function Tooltip({
         <Base.Positioner
           side={side}
           align={align}
-          sideOffset={8}
+          // The arrow, an 8px square turned 45°, reaches 6px out: 12 keeps its tip clear of the trigger's focus ring.
+          sideOffset={12}
           collisionPadding={8}
           arrowPadding={8}
           className="di-tooltip-positioner"

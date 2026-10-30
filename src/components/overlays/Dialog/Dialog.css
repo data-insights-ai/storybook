@@ -242,8 +242,10 @@
     outline: none;
   }
 
+  /* The hit box reaches to the head inset; its ring is drawn inside it, where the plane cannot clip it. */
   .di-dialog-close:focus-visible::before {
-    outline: 2px solid var(--di-focus);
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-dialog-close > svg {

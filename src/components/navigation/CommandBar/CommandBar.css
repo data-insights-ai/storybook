@@ -45,6 +45,13 @@
     outline: none;
   }
 
+  /* The field is the palette head, edge to edge: its ring is drawn inside the head. */
+  .di-command-input:has(.di-command-field:focus-visible) {
+    border-radius: var(--di-radius-surface) var(--di-radius-surface) 0 0;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
   .di-command-field::placeholder {
     color: var(--di-text-subtle);
   }

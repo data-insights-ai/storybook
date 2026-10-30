@@ -34,6 +34,7 @@ import {
   TableHead,
   TableRow,
   Toolbar,
+  ToolbarAction,
   ToolbarEnd,
   useShortcut,
 } from "../..";
@@ -112,10 +113,7 @@ export function ListPageScreen({
             <option value="member">{w.roleFilter.member}</option>
           </Select>
           <ToolbarEnd>
-            <Button variant="secondary">
-              <Download aria-hidden />
-              {w.export}
-            </Button>
+            <ToolbarAction icon={<Download aria-hidden />} label={w.export} />
           </ToolbarEnd>
         </Toolbar>
 

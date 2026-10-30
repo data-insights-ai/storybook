@@ -90,6 +90,11 @@
     background: var(--di-row-hover-bg);
   }
 
+  /* A row stands against the rows beside it: the ring is drawn inside. */
+  .di-row:focus-visible {
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
   /* The current row is lifted a step, with the cornflower edge as its one mark: no tint. */
   .di-row-current,
   .di-row-current:hover {
@@ -160,9 +165,9 @@
     color: var(--di-meta-color);
   }
 
-  /* Inside the popup, where the plane would clip a ring drawn outside the row. */
+  /* Option rows touch each other and the popup plane clips: the ring is drawn inside. */
   .di-option:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   /* A finger needs a 40px row, in either density. */

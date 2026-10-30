@@ -97,8 +97,8 @@
   }
 
   .di-timeline-stage:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   .di-timeline-svg {
@@ -312,8 +312,8 @@
   }
 
   .di-timeline-lanes-toggle:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   /* Centred on the legend swatch below it, so the chevron and the swatches share one edge. */

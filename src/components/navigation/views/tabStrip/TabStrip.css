@@ -56,7 +56,7 @@
 
   /* Inside the strip, where the scroll would clip a ring drawn outside the tab. */
   .di-tab:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-tab-badge {
@@ -72,5 +72,10 @@
 
   .di-tabpanel {
     padding-top: var(--di-gap-16);
+  }
+
+  /* The panel sits right under the strip: its ring is drawn inside, clear of the tabs. */
+  .di-tabpanel:focus-visible {
+    outline-offset: var(--di-focus-ring-inset);
   }
 }

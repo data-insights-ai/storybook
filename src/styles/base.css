@@ -99,8 +99,13 @@
 
   /* Focus is cornflower, like selection: 4.4:1 on the chrome, 6:1 on navy after dark. */
   :focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
+  }
+
+  /* Every scroll frame, the page included, scrolls a focused control into view with its ring. */
+  * {
+    scroll-padding: var(--di-focus-ring-reach);
   }
 
   ::selection {

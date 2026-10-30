@@ -114,8 +114,8 @@
 
   .di-choice-input:focus-visible ~ .di-choice-box,
   .di-choice-input:focus-visible ~ .di-choice-dot {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   /* Locked, still a control: the edge keeps the disabled ink, so the ring or box reads on a night ground too. */

@@ -88,8 +88,8 @@
 
       .di-select-control option:focus-visible {
         background: var(--di-option-hover-bg);
-        outline: 2px solid var(--di-focus);
-        outline-offset: -2px;
+        outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+        outline-offset: var(--di-focus-ring-inset);
       }
 
       .di-select-control option:disabled {

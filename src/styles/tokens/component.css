@@ -243,7 +243,8 @@
     --di-sb-width: 248px;
     --di-sb-rail: 56px;
     --di-sb-drawer-width: 320px;
-    --di-sb-brand-h: 24px;
+    /* The brand mark, one height alone on the rail and inside the lockup. */
+    --di-sb-mark-h: 18px;
     --di-menu-min: 188px;
     --di-menu-max: 360px;
     --di-command-width: 560px;

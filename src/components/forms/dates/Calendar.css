@@ -44,8 +44,8 @@
   }
 
   .di-calendar-nav:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   .di-calendar-nav:disabled {
@@ -96,6 +96,7 @@
 
   /* A chosen day is a value: the primary ink fill, as a chosen toggle. */
   .di-calendar-cell[data-selected] {
+    --di-focus-ring-color: var(--di-focus-ring-on-strong);
     background: var(--di-choice-on-bg);
     color: var(--di-choice-on-fg);
   }
@@ -106,8 +107,8 @@
   }
 
   .di-calendar-cell:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: -2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-date-input {

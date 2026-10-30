@@ -2,22 +2,31 @@
   .di-sb-brand {
     display: flex;
     align-items: center;
-    padding: var(--di-space-8) var(--di-space-8);
+    padding: var(--di-space-8);
   }
 
-  /* At the foot the logo keeps the frame's inset to the bottom edge, not its own on top of it. */
-  .di-sb-footer > .di-sb-brand:last-child {
-    padding-bottom: 0;
+  /* At the head the lockup sits on the shell bar's row, its middle on the bar's middle. */
+  .di-sb-header > .di-sb-brand:first-child {
+    min-height: var(--di-shell-bar-height);
+    margin-top: calc(-1 * var(--di-space-16));
+    padding-block: 0;
   }
 
+  /*
+   * The files draw the mark 133.2 units tall in a 180-unit lockup, after
+   * 28.3 units of air, and 132.2 tall on its own. The lockup is sized from
+   * the mark and its air taken back, so the mark keeps one size and one
+   * edge, the nav icons' edge, open and on the rail.
+   */
   .di-sb-brand-logo {
-    height: var(--di-sb-brand-h);
     width: auto;
+    height: calc(var(--di-sb-mark-h) * 180 / 133.2);
+    margin-inline-start: calc(var(--di-sb-mark-h) * -28.3 / 133.2);
   }
 
   .di-sb-brand-mark {
-    height: var(--di-sb-brand-h);
     width: auto;
+    height: var(--di-sb-mark-h);
     margin-inline: auto;
   }
 }
