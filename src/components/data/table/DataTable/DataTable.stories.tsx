@@ -203,6 +203,7 @@ export const Sortable: Story = {
  * meter is the column that can use it.
  */
 export const FillColumn: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   args: { caption: "Load per source" },
   render: (args) => (
     <DataTable {...args}>

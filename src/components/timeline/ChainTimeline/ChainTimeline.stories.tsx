@@ -51,6 +51,7 @@ type Story = StoryObj<typeof meta>;
 
 /** Six steps over three devices: each hop to the next lane is one stepped line. */
 export const Lateral: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("group", { name: /attack chain/i })).toBeVisible();

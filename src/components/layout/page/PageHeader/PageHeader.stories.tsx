@@ -54,6 +54,7 @@ export const TitleOnly: Story = {
  * writes the meta first and it still lands on the right.
  */
 export const Orientation: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   args: { eyebrow: undefined, lede: undefined },
   render: (args) => (
     <PageHeader {...args}>
@@ -79,6 +80,7 @@ export const Orientation: Story = {
 
 /** A list page keeps its one primary action at the right; the meta moves under the name. */
 export const WithAction: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   args: { eyebrow: undefined, lede: undefined },
   render: (args) => (
     <PageHeader {...args}>

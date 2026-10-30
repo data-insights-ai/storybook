@@ -67,7 +67,8 @@ export const Default: Story = {
     await expect(canvas.getAllByRole("listitem")).toHaveLength(3);
     await expect(canvas.getAllByRole("link", { name: "Open case 4" })).toHaveLength(1);
     const [first, second] = canvas.getAllByRole("listitem");
-    await expect(first.getBoundingClientRect().width).toBeGreaterThan(second.getBoundingClientRect().width);
+    await expect(first.getBoundingClientRect().width).toBeGreaterThanOrEqual(second.getBoundingClientRect().width);
+    if (window.innerWidth > 900) await expect(first.getBoundingClientRect().width).toBeGreaterThan(second.getBoundingClientRect().width);
   },
 };
 
