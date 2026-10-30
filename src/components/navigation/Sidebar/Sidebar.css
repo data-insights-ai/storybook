@@ -21,7 +21,7 @@
     overflow-wrap: anywhere;
     background: var(--di-sidebar-bg);
     color: var(--di-sidebar-fg);
-    border-right: 1px solid var(--di-sidebar-edge);
+    border-inline-end: 1px solid var(--di-sidebar-edge);
     transition:
       width var(--di-duration-slow) var(--di-ease),
       padding var(--di-duration-slow) var(--di-ease);
@@ -132,10 +132,10 @@
 
   .di-sb.di-sb-drawer {
     position: fixed;
-    inset: 0 auto 0 0;
+    inset-block: 0;
+    inset-inline-start: 0;
     width: min(var(--di-sb-drawer-width), calc(100vw - var(--di-space-48)));
     height: 100dvh;
-    padding-top: var(--di-space-12);
     overscroll-behavior: contain;
     box-shadow: var(--di-shadow-plane);
     transform: translateX(var(--drawer-swipe-movement-x, 0));
@@ -145,6 +145,17 @@
   .di-sb-drawer[data-starting-style],
   .di-sb-drawer[data-ending-style] {
     transform: translateX(-100%);
+  }
+
+  /* The drawer comes from the inline start: the right edge in a right-to-left page. */
+  .di-sb-drawer:dir(rtl)[data-starting-style],
+  .di-sb-drawer:dir(rtl)[data-ending-style] {
+    transform: translateX(100%);
+  }
+
+  /* The drawer takes focus as a whole when it opens; its items draw their own ring. */
+  .di-sb-drawer:focus-visible {
+    outline: none;
   }
 
   .di-sb-drawer[data-swiping] {

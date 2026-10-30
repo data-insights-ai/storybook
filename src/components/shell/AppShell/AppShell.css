@@ -286,36 +286,9 @@
     background: var(--di-bg-page);
   }
 
-  /* What follows the sticky bar stops under it. */
-  .di-topbar ~ * {
-    --di-sticky-top: calc(var(--di-shell-bar-height) + 1px);
-  }
-
-  .di-topbar {
-    min-width: 0;
-    overflow-wrap: anywhere;
-    position: sticky;
-    top: 0;
-    z-index: 4;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--di-space-16);
-    min-height: var(--di-shell-bar-height);
-    padding: var(--di-space-8) var(--di-space-16);
-    border-bottom: 1px solid var(--di-border);
-    background: var(--di-bg-page);
-  }
-
-  .di-topbar > * {
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  /* These controls may name the current context; preserve full labels on narrow
-     rails and wrapped header rows instead of letting nowrap widen the page. */
-  :is(.di-top-actions, .di-sidebar-context) .di-btn {
+  /* These controls may name the current context; preserve full labels on a
+     narrow rail instead of letting nowrap widen the page. */
+  .di-sidebar-context .di-btn {
     min-width: 0;
     max-width: 100%;
     height: auto;
@@ -326,22 +299,12 @@
     line-height: var(--di-leading-snug);
   }
 
-  :is(.di-top-actions, .di-sidebar-context) .di-btn-sm {
+  .di-sidebar-context .di-btn-sm {
     min-height: var(--di-control-h-sm);
   }
 
-  :is(.di-top-actions, .di-sidebar-context) .di-btn-lg {
+  .di-sidebar-context .di-btn-lg {
     min-height: var(--di-control-h-lg);
-  }
-
-  .di-top-actions {
-    min-width: 0;
-    max-width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--di-space-6);
-    margin-left: auto;
   }
 
   /* The page follows the window: a list or table uses every column, a

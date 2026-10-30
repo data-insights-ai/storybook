@@ -165,6 +165,8 @@
     --di-shell-drawer-width: 360px;
     --di-shell-logo-width: 124px;
     --di-shell-bar-height: 58px;
+    /* The narrowest the page's name gets in the bar before its end folds away. */
+    --di-shell-bar-start-min: 160px;
     --di-signin-width: 396px;
     --di-signin-logo-width: 128px;
     --di-confidence-track-height: 3px;
