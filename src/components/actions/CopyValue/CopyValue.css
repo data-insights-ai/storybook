@@ -1,12 +1,14 @@
 @layer components {
+  /* The button sits on the first line of a value that wraps, not in the middle of it. */
   .di-copy {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--di-gap-4);
     min-width: 0;
     max-width: 100%;
   }
 
+  /* Wraps at the address boundaries the value carries; only a run without one breaks where it must. */
   .di-copy-value {
     min-width: 0;
     overflow-wrap: anywhere;
@@ -19,20 +21,38 @@
     justify-content: center;
     width: var(--di-control-h-sm);
     height: var(--di-control-h-sm);
+    margin-block: calc((1lh - var(--di-control-h-sm)) / 2);
     padding: 0;
-    border: 1px solid transparent;
+    border: 0;
     border-radius: var(--di-radius-control);
     background: transparent;
     color: var(--di-text-subtle);
     cursor: pointer;
     transition:
       color var(--di-duration) var(--di-ease),
-      border-color var(--di-duration) var(--di-ease);
+      background-color var(--di-duration) var(--di-ease);
   }
 
+  /* A tone, not a frame: the value often sits in a framed field or card already. */
   .di-copy-button:hover {
-    border-color: var(--di-border);
+    background: var(--di-bg-row-hover);
     color: var(--di-text);
+  }
+
+  @media (pointer: coarse) {
+    .di-copy-button {
+      position: relative;
+    }
+
+    .di-copy-button::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, var(--di-target));
+      height: max(100%, var(--di-target));
+      translate: -50% -50%;
+    }
   }
 
   .di-copy-button > svg {
