@@ -146,6 +146,7 @@ export const StableColumns: StoryObj = {
       await expect(edges()).toEqual(before);
     }
     window.scrollTo(0, 0);
+    await expectAtRest(canvas.getByRole("table"), { top: 0, bottom: window.innerHeight });
   },
 };
 
@@ -184,6 +185,17 @@ function Windowed1000({ maxRows }: { maxRows?: number }) {
 
 const settle = () =>
   new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(done, 60))));
+
+/* Back at the top, the first rows are drawn in view: the story is never left as a blank stretch of spacer. */
+async function expectAtRest(table: HTMLElement, view: { top: number; bottom: number }) {
+  await settle();
+  await settle();
+  const first = table.querySelector<HTMLElement>("tbody tr[data-index]")!;
+  await expect(first.dataset.index).toBe("0");
+  const box = first.getBoundingClientRect();
+  await expect(box.top).toBeGreaterThanOrEqual(view.top - 1);
+  await expect(box.bottom).toBeLessThanOrEqual(view.bottom);
+}
 
 /* The blank between the edges of what is in view (the window, or the frame under its head) and the rendered rows. */
 function blank(table: HTMLTableElement, view: { top: number; bottom: number }) {
@@ -229,6 +241,7 @@ export const Windowed: StoryObj = {
       await expect(below).toBeLessThanOrEqual(row);
     }
     frame.scrollTop = 0;
+    await expectAtRest(table, frame.getBoundingClientRect());
   },
 };
 
@@ -254,5 +267,6 @@ export const WindowedPage: StoryObj = {
       await expect(below).toBeLessThanOrEqual(row);
     }
     window.scrollTo(0, 0);
+    await expectAtRest(table, { top: 0, bottom: window.innerHeight });
   },
 };
