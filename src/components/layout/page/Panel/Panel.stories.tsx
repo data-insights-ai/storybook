@@ -148,7 +148,7 @@ export const WithFooter: Story = {
       <PanelFooter>
         <StatusPill tone="warn">expiring</StatusPill>
         <span style={{ marginLeft: "auto" }}>
-          <Button variant="seal" size="dense">
+          <Button variant="secondary" size="dense">
             Rotate now
           </Button>
         </span>

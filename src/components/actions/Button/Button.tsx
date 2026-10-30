@@ -7,6 +7,12 @@ type Variant = "primary" | "secondary" | "ghost" | "danger" | "seal" | "inferred
 type Size = "dense" | "md" | "comfort";
 
 type Common = {
+  /**
+   * `seal` is a brand moment, not an operational action: sign-in, an empty
+   * or onboarding state, issuing a licence or a certificate. Never in an
+   * operational view, where gold marks the one thing; there, rotating a key
+   * or sealing an entry is `primary` or `secondary`.
+   */
   variant?: Variant;
   size?: Size;
   /** A square control: a filter, a pagination arrow, a kebab. */
@@ -31,9 +37,9 @@ type ButtonProps = Common & ButtonHTMLAttributes<HTMLButtonElement> & { href?: n
 type LinkProps = Common & Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "type"> & { href: string };
 
 /**
- * Navy acts, paper waits. Solid navy is the only filled control on the
- * sheet, so there is never a question which button commits. After dark
- * the fill turns gold, because navy cannot act against a navy ground.
+ * Navy acts, paper waits. Solid navy is the only filled control in a
+ * view, so there is never a question which button commits. After dark
+ * the fill turns paper-white, because navy cannot act against a navy ground.
  *
  * The icon is the first child. An icon-only button needs `aria-label`.
  */
