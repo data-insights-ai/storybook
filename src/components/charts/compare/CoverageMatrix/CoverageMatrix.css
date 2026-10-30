@@ -102,7 +102,7 @@
     list-style: none;
   }
 
-  /* The code of a mark, on the same quiet pill a VersionTag uses: it names a thing. */
+  /* The code of a mark, on a quiet pill: it names a thing. */
   .di-matrix-mark {
     display: flex;
     align-items: center;

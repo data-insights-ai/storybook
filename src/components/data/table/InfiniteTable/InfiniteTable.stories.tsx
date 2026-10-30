@@ -147,3 +147,74 @@ export const StableColumns: StoryObj = {
     window.scrollTo(0, 0);
   },
 };
+
+function Windowed1000() {
+  const entries = Array.from({ length: 1000 }, (_, i) => entry(1000 - i));
+  return (
+    <InfiniteTable
+      caption="Collector runs"
+      count={entries.length}
+      rowKey={(i) => entries[i].id}
+      hasMore={false}
+      loadingMore={false}
+      onLoadMore={() => {}}
+      newEntriesLabel={(n) => `${n} new entries`}
+      footerLabel={(shown) => `All ${shown.toLocaleString("en")} entries`}
+      loadingLabel="Loading more"
+      renderRow={(i, { key, ...place }) => (
+        <TableRow key={key} {...place}>
+          <TableCell mono>{entries[i].at}</TableCell>
+          <TableCell>{entries[i].what}</TableCell>
+          <TableCell align="end">
+            <StatusPill tone={entries[i].ok ? "ok" : "danger"}>{entries[i].ok ? "Done" : "Failed"}</StatusPill>
+          </TableCell>
+        </TableRow>
+      )}
+    >
+      <TableHead>
+        <TableColumn>When</TableColumn>
+        <TableColumn width="fill">What happened</TableColumn>
+        <TableColumn align="end">Result</TableColumn>
+      </TableHead>
+    </InfiniteTable>
+  );
+}
+
+const settle = () =>
+  new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(done, 60))));
+
+/* The blank between the edge of the visible part of the body and the rendered rows, above and below. */
+function blank(table: HTMLTableElement) {
+  const body = table.tBodies[0].getBoundingClientRect();
+  const rows = [...table.tBodies[0].rows].filter((row) => !row.classList.contains("di-table-spacer"));
+  const first = rows[0].getBoundingClientRect();
+  const last = rows[rows.length - 1].getBoundingClientRect();
+  const top = Math.max(0, body.top);
+  const bottom = Math.min(window.innerHeight, body.bottom);
+  return { above: first.top - top, below: bottom - last.bottom, row: first.height };
+}
+
+/**
+ * A thousand rows, of which only those near the viewport are rendered. The
+ * rows not rendered are held by space as tall as the rendered rows
+ * measure, in either density, so the register scrolls as one long list
+ * with no blank stretch at the top, the middle or the end.
+ */
+export const Windowed: StoryObj = {
+  render: () => <Windowed1000 />,
+  play: async ({ canvasElement }) => {
+    const table = within(canvasElement).getByRole<HTMLTableElement>("table", { name: "Collector runs" });
+    await waitFor(() => expect(table.tBodies[0].rows.length).toBeGreaterThan(2));
+    await expect(table).toHaveAttribute("aria-rowcount", "1001");
+    const end = () => document.documentElement.scrollHeight - window.innerHeight;
+    for (const at of [0, 0.5, 1]) {
+      window.scrollTo(0, Math.round(end() * at));
+      await settle();
+      await settle();
+      const { above, below, row } = blank(table);
+      await expect(above).toBeLessThanOrEqual(row);
+      await expect(below).toBeLessThanOrEqual(row);
+    }
+    window.scrollTo(0, 0);
+  },
+};

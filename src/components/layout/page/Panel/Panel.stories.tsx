@@ -4,8 +4,8 @@ import { Button } from "../../../actions/Button";
 import { Actions } from "../../arrangement/Actions";
 import { Grid } from "../../arrangement/Grid";
 import { TrendChart } from "../../../charts/time/TrendChart";
-import { Figure, FigureRow } from "../../../data/figures/FigureRow";
-import { HeroFigure } from "../../../data/figures/HeroFigure";
+import { FigureRow } from "../../../data/figures/FigureRow";
+import { Figure } from "../../../data/figures/Figure";
 import { SeverityMark } from "../../../marks/status/SeverityMark";
 import { TextLink } from "../../../navigation/TextLink";
 import { DangerAction } from "./DangerAction";
@@ -205,11 +205,11 @@ export const Hero: Story = {
         <TextLink href="#cases">All cases</TextLink>
       </PanelActions>
       <PanelFigure>
-        <HeroFigure label="Open cases" value="3">
+        <Figure size="hero" label="Open cases" value="3">
           <SeverityMark level="critical" label="1 critical" />
           <SeverityMark level="high" label="1 high" />
           <SeverityMark level="medium" label="1 medium" />
-        </HeroFigure>
+        </Figure>
       </PanelFigure>
       <PanelVisual>
         <TrendChart

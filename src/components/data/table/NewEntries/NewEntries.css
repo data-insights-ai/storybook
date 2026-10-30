@@ -1,0 +1,22 @@
+@layer components {
+  .di-new-entries {
+    position: fixed;
+    top: calc(var(--di-sticky-top) + var(--di-gap-8));
+    left: 50%;
+    z-index: 3;
+    translate: -50% 0;
+    animation: di-new-entries-in var(--di-duration-slow) var(--di-ease) both;
+  }
+
+  .di-new-entries .di-btn {
+    border-radius: var(--di-radius-pill);
+    box-shadow: var(--di-shadow-plane);
+  }
+
+  @keyframes di-new-entries-in {
+    from {
+      opacity: 0;
+      translate: -50% calc(-1 * var(--di-gap-4));
+    }
+  }
+}

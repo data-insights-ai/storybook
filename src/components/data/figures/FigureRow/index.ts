@@ -1,1 +1,1 @@
-export * from "./FigureRow";
+export { FigureRow } from "./FigureRow";

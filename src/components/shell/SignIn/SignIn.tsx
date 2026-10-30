@@ -84,7 +84,7 @@ export function SignIn({
 
 /**
  * The build beside the mark. A slot rather than a string, because the
- * library already draws a version — `VersionTag` — and a bare string
+ * library already draws a version — `Tag mono` — and a bare string
  * could not put it in the mono track.
  */
 export function SignInVersion({ children }: { children: ReactNode }) {

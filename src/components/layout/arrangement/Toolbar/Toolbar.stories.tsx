@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { Actions } from "../Actions";
 import { Toolbar, ToolbarEnd } from "./Toolbar";
 import { Button } from "../../../actions/Button";
-import { Chip } from "../../../marks/Chip";
+import { Tag } from "../../../marks/Tag";
 import { SearchField } from "../../../forms/text/SearchField";
 import { Select } from "../../../forms/select/Select";
 import { TextField } from "../../../forms/text/TextField";
@@ -27,9 +27,9 @@ export const Default: Story = {
       <div style={{ width: 240 }}>
         <SearchField id="toolbar-search" label="Search sources" placeholder="host or hash" dense={true} />
       </div>
-      <Chip active={true} removeLabel="Remove the state filter">
+      <Tag mono pressed onRemove={() => undefined} removeLabel="Remove the state filter">
         state: running
-      </Chip>
+      </Tag>
       <ToolbarEnd>
         <Button variant="secondary" size="sm">
           Export

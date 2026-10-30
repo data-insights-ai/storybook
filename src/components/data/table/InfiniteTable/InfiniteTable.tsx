@@ -12,14 +12,35 @@ import {
   type RefObject,
 } from "react";
 import { DataTable, TableBody, TableFooter, TableSpacer, TableToolbar } from "../DataTable";
-import { NewEntries } from "../../records/NewEntries";
-import { Spinner } from "../../../feedback/waiting/Spinner";
+import { NewEntries } from "../NewEntries";
+import { Loading } from "../../../feedback/waiting/Loading";
 import "./InfiniteTable.css";
 
 /** What a row needs to be measured and placed: spread it onto its `TableRow`. */
 export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLTableRowElement | null) => void };
 
 /**
+ * A register too long for one page, read by scrolling: an audit log, the
+ * events of a source, every run of a collector.
+ *
+ * **When to use:** hundreds to millions of rows, loaded page by page, or
+ * a live register that gains rows while it is read. **Not** for a list
+ * that fits on a few pages (`DataTable` with `Pagination`), nor where
+ * the reader must reach a known page by number.
+ *
+ * **Anatomy:** `TableToolbar` and `TableHead` as children, then the
+ * rendered rows between two spacers, then a footer that counts the rows
+ * or says the next page is loading; `NewEntries` floats under the app
+ * bar while rows are held back.
+ *
+ * **States:** loading more (the footer's inline `Loading`), all loaded
+ * (`footerLabel` with `hasMore` false), entries held back
+ * (`order="newest-first"`).
+ *
+ * **Accessibility:** `aria-rowcount` gives the whole size and each row
+ * its `aria-rowindex`, so a screen reader hears where it is although
+ * only some rows exist in the page.
+ *
  * A register that grows as the reader scrolls: only the rows near the
  * viewport are rendered, the next page is asked for while the end is still
  * below the fold, and a newest-first register keeps the reader's place when
@@ -28,7 +49,9 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  *
  * The table holds no data. The caller says how many rows are loaded, names
  * each by `rowKey`, renders one `TableRow` per index with `renderRow`, and
- * fetches when `onLoadMore` is called. Its `TableToolbar` and `TableHead`
+ * fetches when `onLoadMore` is called. Rows not rendered are held by space as
+ * tall as the rendered rows measure, so the scroll height follows the
+ * density and the fonts instead of a fixed guess. Its `TableToolbar` and `TableHead`
  * are children, as in `DataTable`. The page scrolls, not the table, and
  * the head stays in view under the app bar (`--di-sticky-top`) and under a
  * sticky `ListToolbar` above the table.
@@ -46,7 +69,7 @@ export function InfiniteTable({
   footerLabel,
   loadingLabel,
   memoryKey,
-  estimateRowHeight = 44,
+  estimateRowHeight,
   indexed = false,
   narrow = "scroll",
   layout = "measured",
@@ -74,6 +97,7 @@ export function InfiniteTable({
   loadingLabel: string;
   /** Names the register, so its measured rows are kept when it is shown again (back from a detail page). */
   memoryKey?: string;
+  /** The height of a row not yet rendered, until the first rows are measured; after that, their mean. */
   estimateRowHeight?: number;
   indexed?: boolean;
   narrow?: "scroll" | "stack";
@@ -88,14 +112,19 @@ export function InfiniteTable({
   const held = useHeld(keys, order === "newest-first", top, start);
   const shown = count - held.count;
 
+  const sized = useRef<Map<unknown, number>>(undefined);
+  const mean = useRef<Mean>({ of: 0, size: 0 });
   const virtualizer = useWindowVirtualizer({
     count: shown,
-    estimateSize: () => estimateRowHeight,
+    estimateSize: () => meanSize(sized.current, mean.current) ?? estimateRowHeight ?? fallbackRowHeight,
     overscan: 12,
     scrollMargin: start,
     getItemKey: (index) => keys[index + held.count],
     initialMeasurementsCache: memoryKey ? measured.get(memoryKey) : undefined,
   });
+  useLayoutEffect(() => {
+    sized.current = virtualizer.itemSizeCache;
+  }, [virtualizer]);
   useEffect(
     () => () => {
       if (memoryKey) remember(memoryKey, virtualizer.measurementsCache);
@@ -127,11 +156,27 @@ export function InfiniteTable({
           <TableSpacer height={after} />
         </TableBody>
         <TableFooter>
-          <span ref={end}>{loadingMore ? <Spinner label={loadingLabel} /> : footerLabel(shown, hasMore)}</span>
+          <span ref={end}>
+            {loadingMore ? <Loading shape="inline" label={loadingLabel} delay={0} /> : footerLabel(shown, hasMore)}
+          </span>
         </TableFooter>
       </DataTable>
     </div>
   );
+}
+
+/* Rows not yet rendered are as tall as the rendered ones: density, fonts and wrapping set the real height, not a constant. */
+const fallbackRowHeight = 44;
+type Mean = { of: number; size: number };
+function meanSize(sizes: Map<unknown, number> | undefined, mean: Mean) {
+  if (!sizes || sizes.size === 0) return undefined;
+  if (mean.of !== sizes.size) {
+    let sum = 0;
+    for (const size of sizes.values()) sum += size;
+    mean.of = sizes.size;
+    mean.size = sum / sizes.size;
+  }
+  return mean.size;
 }
 
 function gaps(rows: VirtualItem[], total: number, start: number) {

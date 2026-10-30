@@ -11,7 +11,7 @@ export type BadgeTone = "neutral" | "alert" | "seal" | "quiet" | "ok" | "warn" |
 /**
  * The one pill: a count on a control (a tab, the rail, a button) or a
  * short label beside a name. Every pill in the system draws through it —
- * `StatusPill`, `VersionTag` and `PrivacyBadge` set their content on it —
+ * `StatusPill` sets its content on it —
  * so the height, the radius and the inset exist once and follow the
  * density.
  *

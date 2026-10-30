@@ -249,10 +249,3 @@ export const devices = [
     source: "Directory",
   },
 ] as const;
-
-/*
- * A register too long to render: the product's virtualizer decides which
- * rows are on screen, the spacers stand in for the rest, and `rowCount`
- * with each row's `rowIndex` tells a screen reader where it is.
- */
-export const windowed = Array.from({ length: 20 }, (_, i) => 40 + i);

@@ -186,7 +186,7 @@ export function PanelStatus({ children }: { children: ReactNode }) {
 /**
  * The trailing line in a panel's header: a count, a timestamp, a version.
  * A slot rather than a string, because each of those is a value the
- * library already has a component for — `SealValue`, `VersionTag` — and a
+ * library already has a component for — `SealValue`, `Tag mono` — and a
  * bare string cannot carry the mono track or the mark.
  */
 export function PanelMeta({ children }: { children: ReactNode }) {
@@ -225,7 +225,7 @@ export function PanelLead({ children }: { children: string }) {
 
 /**
  * The one figure the panel is about, in a column before its `PanelVisual`:
- * a `HeroFigure` in the hero, a `Figure` on a dashboard. On a narrow panel
+ * a `Figure size="hero"` in the hero, a `Figure` on a dashboard. On a narrow panel
  * it stacks above the visual.
  */
 export function PanelFigure({ children }: { children: ReactNode }) {

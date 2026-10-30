@@ -86,10 +86,12 @@
     color: var(--di-text-on-one);
   }
 
+  /* A title is a heading: the display face, the item's one bold line. */
   .di-attention-title {
     margin: 0;
+    font-family: var(--di-heading-family);
     font-size: var(--di-block-title-size);
-    font-weight: var(--di-weight-semibold);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
     text-wrap: balance;
     overflow-wrap: break-word;
