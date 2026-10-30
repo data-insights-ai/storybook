@@ -310,16 +310,12 @@ else, which is what keeps the tier honest.
       </TableRow>
     </TableBody>
   </DataTable>
-  <PanelFooter>
-    <div style={{ display: "flex", gap: "var(--di-space-8)", alignItems: "center" }}>
-      <span style={{ fontFamily: "var(--di-font-code)", fontSize: "var(--di-font-size-200)", color: "var(--di-text-muted)" }}>
-        1–5 of 24
-      </span>
-      <Button variant="primary">Seal entry</Button>
-    </div>
-  </PanelFooter>
+  <PanelFooter>1–5 of 24</PanelFooter>
+  <PanelActions><Button variant="primary">Seal entry</Button></PanelActions>
 </Panel>
 ```
+
+A `Panel` is one surface at one inset all round (24px, 16px on a phone): the head, the content and the footer are rows 16px apart, never bands. The title is the display face and the block's one bold line; `PanelLead`, the body and `PanelNote` are regular weight. A state sits beside the title it qualifies (`PanelStatus` holding a `StatusPill`); a count or a time sits at the head's end (`PanelMeta`); `PanelActions` sit at the end of the `PanelFooter` row, or at the head's end when there is no footer.
 
 `TableHead` holds `TableColumn` (props: `index`, `sort`, `align`) — there is no `as="th"`. `TableRow` takes `active` and `tone`; `TableCell` takes `align` and `mono`. A cell's lead is `CellLead` + `CellIcon` + `CellStack`.
 

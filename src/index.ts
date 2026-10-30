@@ -172,7 +172,15 @@ export { NewEntries } from "./components/data/records/NewEntries";
 export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./components/feedback/Notice";
 export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/sequence/Pagination";
-export { Panel, PanelFooter, PanelMeta, PanelLead, PanelNote } from "./components/layout/page/Panel";
+export {
+  Panel,
+  PanelActions,
+  PanelFooter,
+  PanelLead,
+  PanelMeta,
+  PanelNote,
+  PanelStatus,
+} from "./components/layout/page/Panel";
 export { PrivacyBadge } from "./components/inference/PrivacyBadge";
 export { Progress } from "./components/feedback/waiting/Progress";
 export { RouteProgress } from "./components/feedback/waiting/RouteProgress";
