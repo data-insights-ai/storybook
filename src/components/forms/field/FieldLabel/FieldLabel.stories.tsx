@@ -47,7 +47,7 @@ export const OwnControl: Story = {
       <FieldLabel {...args} id="floor-label" />
       <input
         type="range"
-        style={{ width: "100%" }}
+        style={{ width: "100%", margin: 0 }}
         aria-labelledby="floor-label"
         aria-describedby="floor-hint"
         min={1}
