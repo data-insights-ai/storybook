@@ -10,7 +10,12 @@ const meta = {
   parameters: { layout: "fullscreen" },
   decorators: [
     (Story) => (
-      <Console title="Coverage" crumb={["Monitor", "Coverage"]} active="coverage" chrome={sampleChrome}>
+      <Console
+        title="Coverage"
+        crumb={["Monitor", "Coverage"]}
+        active="coverage"
+        chrome={sampleChrome}
+      >
         <Story />
       </Console>
     ),

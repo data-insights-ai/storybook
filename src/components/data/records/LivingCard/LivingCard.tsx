@@ -29,7 +29,8 @@ export function LivingCard({
   const actions: ReactNode[] = [];
   const body: ReactNode[] = [];
   Children.forEach(children, (child) => {
-    if (isValidElement(child) && child.type === LivingActions) actions.push(child);
+    if (isValidElement(child) && child.type === LivingActions)
+      actions.push(child);
     else body.push(child);
   });
   return (

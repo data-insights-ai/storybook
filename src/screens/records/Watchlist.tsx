@@ -1,4 +1,11 @@
-import { Building2, Globe, Mail, Plus, ShieldCheck, UserRound } from "lucide-react";
+import {
+  Building2,
+  Globe,
+  Mail,
+  Plus,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 import {
   Actions,
   Button,
@@ -35,7 +42,7 @@ import {
   TableHead,
   TableRow,
   TextLink,
-} from "../.."; 
+} from "../..";
 
 type Identity = {
   id: string;
@@ -46,14 +53,62 @@ type Identity = {
 };
 
 const identities: Identity[] = [
-  { id: "p1", name: "nora feld", detail: "Normalized full name", category: "Person", added: "12 Jan 2024" },
-  { id: "p2", name: "dr. nora feld", detail: "Title prefix", category: "Person", added: "12 Jan 2024" },
-  { id: "p3", name: "nora feld-kranz", detail: "Double name", category: "Person", added: "14 Jan 2024" },
-  { id: "p4", name: "n. feld", detail: "Short form", category: "Person", added: "14 Jan 2024" },
-  { id: "c1", name: "harthaus gmbh", detail: "Registered legal form", category: "Company", added: "18 Jan 2024" },
-  { id: "c2", name: "harthaus", detail: "Short form", category: "Company", added: "18 Jan 2024" },
-  { id: "d1", name: "harthaus.example", detail: "Primary web domain", category: "Domain", added: "20 Jan 2024" },
-  { id: "e1", name: "nora.feld@data-insights.ai", detail: "Verified mailbox", category: "Email", added: "22 Jan 2024" },
+  {
+    id: "p1",
+    name: "nora feld",
+    detail: "Normalized full name",
+    category: "Person",
+    added: "12 Jan 2024",
+  },
+  {
+    id: "p2",
+    name: "dr. nora feld",
+    detail: "Title prefix",
+    category: "Person",
+    added: "12 Jan 2024",
+  },
+  {
+    id: "p3",
+    name: "nora feld-kranz",
+    detail: "Double name",
+    category: "Person",
+    added: "14 Jan 2024",
+  },
+  {
+    id: "p4",
+    name: "n. feld",
+    detail: "Short form",
+    category: "Person",
+    added: "14 Jan 2024",
+  },
+  {
+    id: "c1",
+    name: "harthaus gmbh",
+    detail: "Registered legal form",
+    category: "Company",
+    added: "18 Jan 2024",
+  },
+  {
+    id: "c2",
+    name: "harthaus",
+    detail: "Short form",
+    category: "Company",
+    added: "18 Jan 2024",
+  },
+  {
+    id: "d1",
+    name: "harthaus.example",
+    detail: "Primary web domain",
+    category: "Domain",
+    added: "20 Jan 2024",
+  },
+  {
+    id: "e1",
+    name: "nora.feld@data-insights.ai",
+    detail: "Verified mailbox",
+    category: "Email",
+    added: "22 Jan 2024",
+  },
 ];
 
 export function WatchlistScreen() {
@@ -69,7 +124,9 @@ export function WatchlistScreen() {
             Monitoring active
           </StatusPill>
         </PageHeaderStatus>
-        <PageHeaderMeta>{["8 of 8 entries active", "updates live"]}</PageHeaderMeta>
+        <PageHeaderMeta>
+          {["8 of 8 entries active", "updates live"]}
+        </PageHeaderMeta>
       </PageHeader>
 
       <Stack>
@@ -86,7 +143,10 @@ export function WatchlistScreen() {
             </RecordStatus>
             <RecordLines>
               <RecordLine primary="Nora Feld" detail="Primary name" />
-              <RecordLine primary="Dr. Nora Feld" detail="With academic title" />
+              <RecordLine
+                primary="Dr. Nora Feld"
+                detail="With academic title"
+              />
               <RecordLine primary="Nora Feld-Kranz" detail="Double name" />
               <RecordLine primary="N. Feld" detail="Short form" />
             </RecordLines>
@@ -106,7 +166,10 @@ export function WatchlistScreen() {
               <StatusPill tone="ok">Active</StatusPill>
             </RecordStatus>
             <RecordLines>
-              <RecordLine primary="Harthaus GmbH" detail="Full registered name" />
+              <RecordLine
+                primary="Harthaus GmbH"
+                detail="Full registered name"
+              />
               <RecordLine primary="Harthaus" detail="Short form" />
             </RecordLines>
             <RecordFooter>
@@ -143,7 +206,10 @@ export function WatchlistScreen() {
               <StatusPill tone="ok">Active</StatusPill>
             </RecordStatus>
             <RecordLines>
-              <RecordLine primary="nora.feld@data-insights.ai" detail="Verified mailbox" />
+              <RecordLine
+                primary="nora.feld@data-insights.ai"
+                detail="Verified mailbox"
+              />
             </RecordLines>
             <RecordFooter>
               <span>Status: Active</span>
@@ -158,7 +224,10 @@ export function WatchlistScreen() {
           </NoticeIcon>
           <NoticeText>
             <NoticeTitle>Protection is active</NoticeTitle>
-            <NoticeBody>Watched entries are checked continuously against the connected sources.</NoticeBody>
+            <NoticeBody>
+              Watched entries are checked continuously against the connected
+              sources.
+            </NoticeBody>
           </NoticeText>
           <NoticeAction>
             <Button>
@@ -205,7 +274,11 @@ export function WatchlistScreen() {
                       <Button size="dense" variant="secondary">
                         Pause
                       </Button>
-                      <Button size="dense" variant="danger" aria-label={`Remove ${row.name}`}>
+                      <Button
+                        size="dense"
+                        variant="danger"
+                        aria-label={`Remove ${row.name}`}
+                      >
                         Remove
                       </Button>
                     </Actions>
@@ -220,7 +293,8 @@ export function WatchlistScreen() {
           <NoticeText>
             <NoticeTitle>Administration and access</NoticeTitle>
             <NoticeBody>
-              Adding or changing a watched identity requires an administrator. Changes are written to the audit log.
+              Adding or changing a watched identity requires an administrator.
+              Changes are written to the audit log.
             </NoticeBody>
           </NoticeText>
         </Notice>

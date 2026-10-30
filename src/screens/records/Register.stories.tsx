@@ -11,7 +11,12 @@ const meta = {
   parameters: { layout: "fullscreen" },
   decorators: [
     (Story) => (
-      <Console title="Register" crumb={["WS-01", "Record", "Sources"]} active="sources" chrome={sampleChrome}>
+      <Console
+        title="Register"
+        crumb={["WS-01", "Record", "Sources"]}
+        active="sources"
+        chrome={sampleChrome}
+      >
         <Story />
       </Console>
     ),
@@ -28,8 +33,12 @@ type Story = StoryObj<typeof meta>;
 export const Sources: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("table", { name: "Sources on record" })).toBeVisible();
-    await expect(canvas.getByRole("heading", { level: 1, name: "Source register" })).toBeVisible();
+    await expect(
+      canvas.getByRole("table", { name: "Sources on record" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 1, name: "Source register" }),
+    ).toBeVisible();
   },
 };
 
@@ -39,11 +48,20 @@ export const OpenRow: Story = {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByText("feed.example.io"));
     const body = within(canvasElement.ownerDocument.body);
-    const title = await body.findByRole("heading", { level: 2, name: "feed.example.io" });
+    const title = await body.findByRole("heading", {
+      level: 2,
+      name: "feed.example.io",
+    });
     await waitFor(() => expect(title).toBeVisible());
-    await expect(body.getByText("Rate limit from the upstream host")).toBeVisible();
+    await expect(
+      body.getByText("Rate limit from the upstream host"),
+    ).toBeVisible();
     await userEvent.keyboard("{Escape}");
-    await waitFor(() => expect(body.queryByRole("heading", { level: 2, name: "feed.example.io" })).toBeNull());
+    await waitFor(() =>
+      expect(
+        body.queryByRole("heading", { level: 2, name: "feed.example.io" }),
+      ).toBeNull(),
+    );
   },
 };
 
@@ -55,6 +73,8 @@ export const Night: Story = {
   globals: { theme: "dark" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("table", { name: "Sources on record" })).toBeVisible();
+    await expect(
+      canvas.getByRole("table", { name: "Sources on record" }),
+    ).toBeVisible();
   },
 };

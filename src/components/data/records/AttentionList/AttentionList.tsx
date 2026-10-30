@@ -1,6 +1,9 @@
 import { useId, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
-import { SeverityMark, type Severity } from "../../../marks/status/SeverityMark";
+import {
+  SeverityMark,
+  type Severity,
+} from "../../../marks/status/SeverityMark";
 import { MetaLine } from "../../text/MetaLine";
 import "./AttentionList.css";
 
@@ -32,7 +35,12 @@ export function AttentionList({
   const id = useId();
   const list = (
     // role="list": Safari drops the list role from an <ol> whose markers are styled away.
-    <ol className="di-attention" role="list" aria-label={title ? undefined : label} aria-labelledby={title ? id : undefined}>
+    <ol
+      className="di-attention"
+      role="list"
+      aria-label={title ? undefined : label}
+      aria-labelledby={title ? id : undefined}
+    >
       {children}
     </ol>
   );
@@ -94,8 +102,12 @@ export function AttentionItem({
       <div className="di-attention-body">
         {marked || rated ? (
           <div className="di-attention-top">
-            {marked ? <span className="di-attention-one">{emphasisLabel}</span> : null}
-            {rated ? <SeverityMark level={severity} label={severityLabel} /> : null}
+            {marked ? (
+              <span className="di-attention-one">{emphasisLabel}</span>
+            ) : null}
+            {rated ? (
+              <SeverityMark level={severity} label={severityLabel} />
+            ) : null}
           </div>
         ) : null}
         <Title className="di-attention-title">{title}</Title>

@@ -118,7 +118,7 @@ export type {
   TimelineTarget,
   TimelineTone,
 } from "./components/timeline/types";
-export { ExplainFooter, ExplainPanel, ExplainRow } from "./components/inference/ExplainPanel";
+export { ExplainFooter, ExplainIgnored, ExplainPanel, ExplainRow } from "./components/inference/ExplainPanel";
 export { Fact, FactList } from "./components/data/records/FactList";
 export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/field/Field";

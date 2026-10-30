@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { AlertTriangle, Download, Globe, MoreVertical, Plus, Server, Stamp } from "lucide-react";
+import {
+  AlertTriangle,
+  Download,
+  Globe,
+  MoreVertical,
+  Plus,
+  Server,
+  Stamp,
+} from "lucide-react";
 import {
   Button,
   CellIcon,
@@ -39,7 +47,7 @@ import {
   TableIndex,
   TableRow,
   TableToolbar,
-} from "../.."; 
+} from "../..";
 
 type Source = {
   ordinal: string;
@@ -155,7 +163,9 @@ export function RegisterScreen() {
         <NoticeText>
           <div>
             <NoticeTitle>The signing key expires in six days.</NoticeTitle>
-            <NoticeBody>After 2026-09-29 no new entry can be sealed with it.</NoticeBody>
+            <NoticeBody>
+              After 2026-09-29 no new entry can be sealed with it.
+            </NoticeBody>
           </div>
           <NoticeAction>
             <Button variant="secondary" size="dense">
@@ -173,7 +183,13 @@ export function RegisterScreen() {
         <StatTile index="02" label="Coverage" value="86.4%" ruled={true}>
           <StatTileDelta tone="warn">down 2.1 points</StatTileDelta>
         </StatTile>
-        <StatTile index="03" label="Unsealed" value="1,284" tone="danger" ruled={true}>
+        <StatTile
+          index="03"
+          label="Unsealed"
+          value="1,284"
+          tone="danger"
+          ruled={true}
+        >
           <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
         </StatTile>
         <StatTile index="04" label="Sources" value="24" ruled={true}>
@@ -209,13 +225,23 @@ export function RegisterScreen() {
               onOpenChange={setMenu}
               label="Register actions"
               trigger={(props) => (
-                <Button {...props} variant="secondary" size="dense" iconOnly={true} aria-label="Register actions">
+                <Button
+                  {...props}
+                  variant="secondary"
+                  size="dense"
+                  iconOnly={true}
+                  aria-label="Register actions"
+                >
                   <MoreVertical aria-hidden />
                 </Button>
               )}
             >
-              <MenuItem onSelect={() => setMenu(false)}>Seal the register now</MenuItem>
-              <MenuItem onSelect={() => setMenu(false)}>Verify every manifest</MenuItem>
+              <MenuItem onSelect={() => setMenu(false)}>
+                Seal the register now
+              </MenuItem>
+              <MenuItem onSelect={() => setMenu(false)}>
+                Verify every manifest
+              </MenuItem>
               <MenuDivider />
               <MenuItem onSelect={() => setMenu(false)} tone="danger">
                 Revoke stale sources
@@ -254,8 +280,17 @@ export function RegisterScreen() {
               <TableIndex>{source.ordinal}</TableIndex>
               <TableCell>
                 <CellLead>
-                  <CellIcon>{source.kind === "Registry" ? <Server aria-hidden /> : <Globe aria-hidden />}</CellIcon>
-                  <CellStack primary={source.host} secondary={source.kind.toLowerCase()} />
+                  <CellIcon>
+                    {source.kind === "Registry" ? (
+                      <Server aria-hidden />
+                    ) : (
+                      <Globe aria-hidden />
+                    )}
+                  </CellIcon>
+                  <CellStack
+                    primary={source.host}
+                    secondary={source.kind.toLowerCase()}
+                  />
                 </CellLead>
               </TableCell>
               <TableCell>
@@ -290,7 +325,9 @@ export function RegisterScreen() {
         {selected ? <SourceFacts source={selected} /> : null}
         <SheetFooter>
           <Button variant="secondary">Open log</Button>
-          <Button variant="primary">{selected?.state === "ok" ? "Seal now" : "Resume"}</Button>
+          <Button variant="primary">
+            {selected?.state === "ok" ? "Seal now" : "Resume"}
+          </Button>
         </SheetFooter>
       </Sheet>
     </Page>

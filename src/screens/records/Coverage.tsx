@@ -39,7 +39,7 @@ import {
   Toolbar,
   ToolbarEnd,
   Panel,
-} from "../.."; 
+} from "../..";
 
 type StatusTone = NonNullable<ComponentProps<typeof StatusPill>["tone"]>;
 
@@ -157,9 +157,13 @@ export function CoverageScreen() {
           </NoticeIcon>
           <NoticeText>
             <NoticeTitle>
-              Live monitoring is running <StatusPill tone="ok">Online</StatusPill>
+              Live monitoring is running{" "}
+              <StatusPill tone="ok">Online</StatusPill>
             </NoticeTitle>
-            <NoticeBody>Configured sources sync in the background. Hits are checked as they arrive.</NoticeBody>
+            <NoticeBody>
+              Configured sources sync in the background. Hits are checked as
+              they arrive.
+            </NoticeBody>
           </NoticeText>
           <NoticeAction>
             <span className="di-quiet">Interval: 15 min</span>
@@ -167,9 +171,15 @@ export function CoverageScreen() {
         </Notice>
 
         <Toolbar>
-          <SearchField label="Search sources" placeholder="Search sources, platforms, or types…" />
+          <SearchField
+            label="Search sources"
+            placeholder="Search sources, platforms, or types…"
+          />
           {showAll ? (
-            <Chip onRemove={() => setShowAll(false)} removeLabel="Remove status filter">
+            <Chip
+              onRemove={() => setShowAll(false)}
+              removeLabel="Remove status filter"
+            >
               Status: All (6)
             </Chip>
           ) : null}
@@ -223,7 +233,10 @@ export function CoverageScreen() {
                   <StatusPill tone={row.tone}>{row.status}</StatusPill>
                 </TableCell>
                 <TableCell>
-                  <CellStack primary={row.checked} secondary={row.checkedDetail} />
+                  <CellStack
+                    primary={row.checked}
+                    secondary={row.checkedDetail}
+                  />
                 </TableCell>
                 <TableCell align="end">{row.hits}</TableCell>
               </TableRow>
@@ -240,19 +253,27 @@ export function CoverageScreen() {
               <SectionTitle>
                 <SectionTitleHeading>Full history</SectionTitleHeading>
               </SectionTitle>
-              <p>Archive data is kept in full, so older entries stay traceable.</p>
+              <p>
+                Archive data is kept in full, so older entries stay traceable.
+              </p>
             </Panel>
             <Panel>
               <SectionTitle>
                 <SectionTitleHeading>Automatic matching</SectionTitleHeading>
               </SectionTitle>
-              <p>New finds are matched against the watchlist — terms, domains, and identities — and reported.</p>
+              <p>
+                New finds are matched against the watchlist — terms, domains,
+                and identities — and reported.
+              </p>
             </Panel>
             <Panel>
               <SectionTitle>
                 <SectionTitleHeading>Privacy</SectionTitleHeading>
               </SectionTitle>
-              <p>Records are held under the applicable privacy rules. Review uses encrypted logs.</p>
+              <p>
+                Records are held under the applicable privacy rules. Review uses
+                encrypted logs.
+              </p>
             </Panel>
           </Grid>
         </section>
@@ -260,4 +281,3 @@ export function CoverageScreen() {
     </>
   );
 }
-
