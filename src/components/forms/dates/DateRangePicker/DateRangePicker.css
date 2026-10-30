@@ -82,14 +82,16 @@
     outline: none;
   }
 
-  /* The row is the shared option (.di-option); the chosen period takes the selection tint and edge. */
+  /* The row is the shared option (.di-option); the chosen period is lifted with the cornflower edge. */
   .di-date-range-preset {
     white-space: nowrap;
   }
 
   .di-date-range-preset[data-selected] {
-    background: var(--di-choice-selected-bg);
-    box-shadow: inset var(--di-select-edge) 0 0 var(--di-choice-selected-edge);
+    background: var(--di-row-current-bg);
+    box-shadow:
+      inset var(--di-select-edge) 0 0 var(--di-choice-selected-edge),
+      var(--di-row-current-shadow);
     color: var(--di-choice-selected-fg);
   }
 
@@ -106,10 +108,11 @@
     padding: var(--di-gap-12);
   }
 
-  /* Between the first and last day: a band in the selection tint, the two ends ringed. */
+  /* Between the first and last day: a band in the inset tone, in ink; the two ends filled. */
   .di-date-range-calendar .di-calendar-cell[data-selected]:not([data-selection-start], [data-selection-end]) {
     border-radius: 0;
-    box-shadow: none;
+    background: var(--di-choice-range-bg);
+    color: var(--di-text);
   }
 
   .di-date-range-months {

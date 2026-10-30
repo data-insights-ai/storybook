@@ -90,10 +90,13 @@
     background: var(--di-row-hover-bg);
   }
 
+  /* The current row is lifted a step, with the cornflower edge as its one mark: no tint. */
   .di-row-current,
   .di-row-current:hover {
     background: var(--di-row-current-bg);
-    box-shadow: inset var(--di-select-edge) 0 0 var(--di-select);
+    box-shadow:
+      inset var(--di-select-edge) 0 0 var(--di-select),
+      var(--di-row-current-shadow);
   }
 
   tr.di-row-current,
