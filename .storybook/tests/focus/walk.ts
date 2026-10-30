@@ -28,6 +28,18 @@ const scope = () =>
     .find((el) => el.getClientRects().length > 0) ??
   document.body;
 
+/*
+ * The last stop in the page, kept after everything (a popup portalled later too). Tab past the story's last control
+ * lands here instead of leaving the frame: out of the frame, the keys went to whichever frame the runner had focused
+ * next, which could be one it was removing ("Frame was detached").
+ */
+const lastStop = () => {
+  const stop = document.createElement("span");
+  stop.tabIndex = 0;
+  stop.setAttribute("aria-hidden", "true");
+  return stop;
+};
+
 /**
  * Tab through the story with the real keyboard, as a person would, and step
  * with the arrows through each menu, list, tab row, radio group and grid
@@ -37,11 +49,16 @@ export async function walkFocus(): Promise<RingFinding[]> {
   const seen = new Set<string>();
   const composites = new Set<Element>();
   const found = new Map<string, RingFinding>();
+  const stop = lastStop();
+  const press = async (key: string) => {
+    if (stop !== document.activeElement) document.body.append(stop);
+    await userEvent.keyboard(key);
+  };
 
   const visit = async (): Promise<"new" | "seen" | "left"> => {
     await settled();
     const focused = document.activeElement;
-    if (!focused || focused === document.body || !document.hasFocus()) return "left";
+    if (!focused || focused === document.body || focused === stop || !document.hasFocus()) return "left";
     const pointed = focused.getAttribute("aria-activedescendant");
     const target = pointed ? document.getElementById(pointed) : null;
     const key = `${elementKey(focused)}|${target ? elementKey(target) : ""}`;
@@ -64,14 +81,14 @@ export async function walkFocus(): Promise<RingFinding[]> {
         ? "{ArrowRight}"
         : "{ArrowDown}";
     for (let i = 0; i < MAX_ARROWS; i++) {
-      await userEvent.keyboard(key);
+      await press(key);
       if ((await visit()) !== "new") break;
     }
   };
 
   const tabs = async () => {
     for (let i = 0; i < MAX_TABS; i++) {
-      await userEvent.keyboard("{Tab}");
+      await press("{Tab}");
       if ((await visit()) !== "new") return;
       await arrows();
     }
@@ -87,12 +104,13 @@ export async function walkFocus(): Promise<RingFinding[]> {
   scope().prepend(start);
   window.focus();
   start.focus();
-  await userEvent.keyboard("{Tab}");
+  await press("{Tab}");
   start.remove();
   if ((await visit()) === "new") {
     await arrows();
     await tabs();
   }
+  stop.remove();
   return [...found.values()];
 }
 
