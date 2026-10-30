@@ -167,6 +167,16 @@ function partsOf(surface: Element): Element[] {
   return parts;
 }
 
+/* A wrapper read through takes its content height too: the sidebar's sticky frame is the window's height. */
+function freeWrappers(surface: Element) {
+  let parts = [...surface.children].filter(seen);
+  while (parts.length === 1 && !enclosed(parts[0]) && !parts[0].matches(BLEED)) {
+    (parts[0] as HTMLElement).style.cssText +=
+      ";height:auto!important;min-height:0!important;max-height:none!important;position:static!important";
+    parts = [...parts[0].children].filter(seen);
+  }
+}
+
 const onScale = (gap: number) => gap <= TOLERANCE || SCALE.some((step) => Math.abs(gap - step) <= TOLERANCE);
 
 /* Ends an animation at its last frame; a loop (a spinner) has none and keeps turning. */
@@ -211,6 +221,7 @@ type Measured = {
 /** One surface measured at its content height: the inset above and below its content, and the gaps between its parts. */
 export function measureSpacing(surface: HTMLElement, surfaceOf: (el: Element) => boolean = enclosed): Measured | null {
   return atContentHeight(surface, (copy) => {
+    freeWrappers(copy);
     const box = copy.getBoundingClientRect();
     const style = getComputedStyle(copy);
     const content = extentsIn(copy, surfaceOf, copy);
