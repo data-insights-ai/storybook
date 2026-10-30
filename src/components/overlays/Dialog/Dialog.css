@@ -158,6 +158,14 @@
     gap: var(--di-gap-12);
   }
 
+  /* A dialog before what cannot be taken back says so before its title is read: the danger mark, on the title's line. */
+  .di-dialog-mark {
+    flex: none;
+    width: var(--di-icon-lg);
+    height: var(--di-icon-lg);
+    color: var(--di-status-danger-dot);
+  }
+
   /* The dialog's name is a heading: the display face, its one bold line. Focus lands here when there is no field. */
   .di-dialog-title {
     flex: 1;

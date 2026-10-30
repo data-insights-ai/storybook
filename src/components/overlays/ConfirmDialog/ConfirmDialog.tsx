@@ -16,6 +16,12 @@ import "./ConfirmDialog.css";
  * `eyebrow` names the record the action acts on ("Workspace · Field
  * Research"); it takes the danger ink only with `tone="danger"`.
  *
+ * `tone="danger"` carries the danger in the dialog itself, whatever the
+ * page behind the scrim shows: the danger mark leads the title and the
+ * confirm button is filled in the danger colour, the one action the
+ * question asks for. While `confirmText` is not yet typed the button keeps
+ * a danger tint, so it reads as destructive before it can be pressed.
+ *
  * Built on `Dialog placement="center"`, a native dialog: focus is trapped,
  * the page behind is inert, Escape closes and focus returns to the button
  * that opened it.
@@ -78,7 +84,7 @@ export function ConfirmDialog({
       onClose={close}
       title={title}
       eyebrow={eyebrow || undefined}
-      eyebrowTone={tone === "danger" ? "danger" : "quiet"}
+      tone={tone}
       placement="center"
       size="md"
       onSubmit={submit}
@@ -111,7 +117,13 @@ export function ConfirmDialog({
         <Button variant="secondary" onClick={close} data-autofocus={needsText ? undefined : true} disabled={busy}>
           {cancelLabel}
         </Button>
-        <Button type="submit" variant={tone === "danger" ? "danger" : "primary"} loading={busy} disabled={!allowed}>
+        <Button
+          type="submit"
+          variant={tone === "danger" ? "danger" : "primary"}
+          className={tone === "danger" ? "di-confirm-commit" : undefined}
+          loading={busy}
+          disabled={!allowed}
+        >
           {confirmLabel}
         </Button>
       </DialogFooter>
