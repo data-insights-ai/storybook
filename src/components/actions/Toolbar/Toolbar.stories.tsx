@@ -435,6 +435,13 @@ export const German: Story = {
       await expect(bar.scrollWidth).toBeLessThanOrEqual(bar.clientWidth + 1);
       await expectTwoRows(bar);
     }
-    await expect(within(canvasElement).getByRole("group", { name: /ausgewählten Mitglieder/ })).toBeVisible();
+    const canvas = within(canvasElement);
+    const bar = canvas.getByRole("group", { name: /ausgewählten Mitglieder/ });
+    await expect(bar).toBeVisible();
+    const middle = (el: Element) => (el.getBoundingClientRect().top + el.getBoundingClientRect().bottom) / 2;
+    const clear = within(bar).getByRole("button", { name: "Auswahl aufheben" });
+    await expect(Math.abs(middle(clear) - middle(within(bar).getByText("2 ausgewählt")))).toBeLessThan(4);
+    const filter = canvas.getByRole("search").getBoundingClientRect().height;
+    await expect(bar.getBoundingClientRect().height).toBeLessThanOrEqual(filter + 1);
   },
 };

@@ -38,7 +38,8 @@ type Story = StoryObj<typeof meta>;
  * A control a product draws itself takes the same row above it and the
  * same line under it, so it reads as one of the fields beside it. Without
  * `htmlFor` the label is a span the control names itself by. A native
- * control (here a range) fills in the selection colour in either theme.
+ * control (here a range) fills in the strong primary fill on a track in the
+ * input border tone, in either theme; cornflower is only its focus ring.
  */
 export const OwnControl: Story = {
   name: "Own control",
@@ -62,12 +63,20 @@ export const OwnControl: Story = {
   play: async ({ canvasElement }) => {
     const slider = within(canvasElement).getByRole("slider", { name: "Severity floor" });
     await expect(slider).toBeVisible();
-    const select = getComputedStyle(canvasElement).getPropertyValue("--di-select").trim();
-    const probe = canvasElement.ownerDocument.createElement("i");
-    probe.style.color = select;
-    canvasElement.append(probe);
-    await expect(getComputedStyle(slider).accentColor).toBe(getComputedStyle(probe).color);
-    probe.remove();
+    const colour = (value: string) => {
+      const probe = canvasElement.ownerDocument.createElement("i");
+      probe.style.color = value;
+      canvasElement.append(probe);
+      const painted = getComputedStyle(probe).color;
+      probe.remove();
+      return painted;
+    };
+    const style = getComputedStyle(slider);
+    await expect(style.accentColor).toBe(colour("var(--di-fill-strong)"));
+    await expect(colour(style.getPropertyValue("--di-range-fill"))).toBe(colour("var(--di-fill-strong)"));
+    await expect(colour(style.getPropertyValue("--di-range-track"))).toBe(colour("var(--di-border-input)"));
+    for (const control of canvasElement.ownerDocument.querySelectorAll("input, progress, meter"))
+      await expect(getComputedStyle(control).accentColor).not.toBe(colour("var(--di-select)"));
   },
 };
 

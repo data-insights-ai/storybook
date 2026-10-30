@@ -39,11 +39,3 @@
   border-block-start: 2px solid var(--di-text);
   border-inline-start: 2px solid var(--di-text);
 }
-
-/* A machine value in mono that may still wrap on a phone, where a stacked mono cell would not. */
-.di-tokens-mono {
-  font-family: var(--di-font-code);
-  font-variant-numeric: tabular-nums;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}

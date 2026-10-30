@@ -13,6 +13,7 @@ import {
 } from "react";
 import { cx } from "../../../internal/cx";
 import { Toolbar } from "../../actions/Toolbar";
+import { useFrame } from "./frame";
 import "./DataTable.css";
 
 /**
@@ -61,8 +62,11 @@ import "./DataTable.css";
  * all the way, place it in `Panel padded={false}`.
  * A table never reaches part of the way past the content edge.
  *
- * In a narrow frame the grid scrolls sideways, and a `pinned` column — the
- * row's name — stays at the left edge while the others pass under it.
+ * In a narrow frame the grid scrolls sideways and the row's name stays at
+ * the inline-start edge while the others pass under it: the first column
+ * headed by a word, or the column marked `pinned`, with every column before
+ * it (the ordinal, a selection box). A shade on each side that hides columns
+ * says there is more.
  * `narrow="stack"` lays each row out as a card instead: unlabelled cells run
  * on and wrap like words, a cell with a `label` takes a line of its own with
  * its column's name in front, and the ordinal keeps the left edge.
@@ -132,7 +136,7 @@ export function DataTable({
   const framed = maxRows !== undefined;
   const stack = narrow === "stack";
   const scroll = useRef<HTMLDivElement>(null);
-  const overflowing = useOverflowing(scroll);
+  const { overflowing, moreStart, moreEnd, through, offsets } = useFrame(scroll, stack);
   const widths = useMeasuredColumns(scroll, layout === "measured");
   return (
     <div
@@ -140,6 +144,8 @@ export function DataTable({
         "di-table-wrap",
         stack && "is-stackable",
         overflowing && "is-overflowing",
+        moreStart && "is-more-start",
+        moreEnd && "is-more-end",
         framed && "is-framed",
         className,
       )}
@@ -152,37 +158,41 @@ export function DataTable({
         then: a frame that fits would be a stop that does nothing. A framed
         register always scrolls, so it is always a stop.
       */}
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the frame takes the arrow keys for the rows inside it */}
-      <div
-        ref={scroll}
-        className="di-table-scroll"
-        tabIndex={overflowing || framed ? 0 : undefined}
-        role="region"
-        aria-label={caption}
-        onKeyDown={moveBetweenRows}
-      >
-        {/* A stacked row is no longer laid out as a table, so it says what it is. */}
-        <table
-          className={cx("di-table", indexed && "is-indexed", widths && "is-measured")}
-          role={stack ? "table" : undefined}
-          aria-rowcount={rowCount === undefined ? undefined : rowCount + 1}
+      <div className="di-table-view">
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the frame takes the arrow keys for the rows inside it */}
+        <div
+          ref={scroll}
+          className="di-table-scroll"
+          tabIndex={overflowing || framed ? 0 : undefined}
+          role="region"
+          aria-label={caption}
+          onKeyDown={moveBetweenRows}
         >
-          <caption className="di-sr">{caption}</caption>
-          {widths ? (
-            <colgroup>
-              {widths.map((width, i) => (
-                <col key={i} style={{ width }} />
-              ))}
-            </colgroup>
-          ) : null}
-          <StackContext.Provider value={stack}>
-            <MeasuredContext.Provider value={widths !== undefined}>
-              <IndexColumnContext.Provider value={indexColumn}>
-                <FillColumnContext.Provider value={fill}>{grid}</FillColumnContext.Provider>
-              </IndexColumnContext.Provider>
-            </MeasuredContext.Provider>
-          </StackContext.Provider>
-        </table>
+          {/* A stacked row is no longer laid out as a table, so it says what it is. */}
+          <table
+            className={cx("di-table", indexed && "is-indexed", widths && "is-measured")}
+            role={stack ? "table" : undefined}
+            aria-rowcount={rowCount === undefined ? undefined : rowCount + 1}
+          >
+            <caption className="di-sr">{caption}</caption>
+            {widths ? (
+              <colgroup>
+                {widths.map((width, i) => (
+                  <col key={i} style={{ width }} />
+                ))}
+              </colgroup>
+            ) : null}
+            <StackContext.Provider value={stack}>
+              <MeasuredContext.Provider value={widths !== undefined}>
+                <IndexColumnContext.Provider value={indexColumn}>
+                  <FillColumnContext.Provider value={fill}>
+                    <PinContext.Provider value={{ through, offsets }}>{grid}</PinContext.Provider>
+                  </FillColumnContext.Provider>
+                </IndexColumnContext.Provider>
+              </MeasuredContext.Provider>
+            </StackContext.Provider>
+          </table>
+        </div>
       </div>
       {empty ? null : foot}
     </div>
@@ -230,6 +240,21 @@ const FillColumnContext = createContext(-1);
 const ColumnContext = createContext(-1);
 /* Whether the head opens with the index column, so a row that spans the grid can start on the first data column. */
 const IndexColumnContext = createContext(false);
+/* The last column that stays at the inline start while the grid scrolls, and where each column up to it sticks. */
+const PinContext = createContext<{ through: number; offsets?: number[] }>({ through: -1 });
+
+/** A cell's pinned classes and its sticking point: every column up to the pinned one stays, the last of them draws the edge. */
+function usePin(pinned: boolean) {
+  const column = useContext(ColumnContext);
+  const { through, offsets } = useContext(PinContext);
+  const pins = pinned || (column !== -1 && column <= through);
+  const last = column === through || (pinned && through === -1);
+  const at = pins ? offsets?.[column] : undefined;
+  return {
+    className: cx(pins && "is-pinned", pins && last && "is-pin-last"),
+    style: at === undefined ? undefined : ({ "--di-table-pin-at": `${at}px` } as CSSProperties),
+  };
+}
 
 function headColumns(grid: ReactNode[]) {
   const head = grid.find((child) => isValidElement(child) && child.type === TableHead);
@@ -254,27 +279,6 @@ function fillColumn(grid: ReactNode[]) {
   return headColumns(grid).findIndex(
     (column) => isValidElement<{ width?: string }>(column) && column.props.width === "fill",
   );
-}
-
-/*
- * Whether the grid is wider than its frame. A frame that keeps its head in
- * view clips instead of scrolling; once the columns no longer fit, it hands
- * the sticky head back for a sideways scroll, so no column is cut off.
- */
-function useOverflowing(frame: { current: HTMLDivElement | null }) {
-  const [overflowing, setOverflowing] = useState(false);
-  useLayoutEffect(() => {
-    const el = frame.current;
-    const table = el?.firstElementChild;
-    if (!el || !table || typeof ResizeObserver === "undefined") return;
-    const measure = () => setOverflowing(table.scrollWidth > el.clientWidth + 1);
-    const observer = new ResizeObserver(measure);
-    observer.observe(el);
-    observer.observe(table);
-    measure();
-    return () => observer.disconnect();
-  }, [frame]);
-  return overflowing;
 }
 
 /*
@@ -329,7 +333,11 @@ export function TableHead({ children }: { children: ReactNode }) {
   const row = useRole("row");
   return (
     <thead role={group}>
-      <tr role={row}>{children}</tr>
+      <tr role={row}>
+        {Children.map(children, (column, i) => (
+          <ColumnContext.Provider value={i}>{column}</ColumnContext.Provider>
+        ))}
+      </tr>
     </thead>
   );
 }
@@ -354,7 +362,10 @@ export function TableColumn({
 }: {
   children?: ReactNode;
   align?: "start" | "end";
-  /** Stays at the left edge while the grid scrolls sideways. Set it on the column's cells too. */
+  /**
+   * The row's name, which stays at the inline-start edge with every column before it while the grid scrolls
+   * sideways. Without it the first column headed by a word stays.
+   */
   pinned?: boolean;
   /** `fill` hands this column whatever width the others leave — for a bar or a meter. */
   width?: "auto" | "fill";
@@ -365,6 +376,7 @@ export function TableColumn({
   onSort?: () => void;
 }) {
   const role = useRole("columnheader");
+  const pin = usePin(pinned);
   if (index) {
     return (
       <th scope="col" role={role} className="di-table-index">
@@ -388,9 +400,11 @@ export function TableColumn({
         align === "end" && "is-end",
         sort !== "none" && "is-sorted",
         width === "fill" && "is-fill",
-        pinned && "is-pinned",
+        pin.className,
       )}
+      style={pin.style}
       aria-sort={sort === "none" ? undefined : sort}
+      data-pinned={pinned || undefined}
     >
       {onSort ? (
         <button type="button" className="di-table-sort-btn" onClick={onSort}>
@@ -539,13 +553,14 @@ export function TableCell({
    * row's name and its actions: they head and close the card unlabelled.
    */
   label?: string;
-  /** Stays at the left edge while the grid scrolls sideways, with its `TableColumn`. */
+  /** Stays at the inline-start edge while the grid scrolls sideways; its `TableColumn` pins the whole column. */
   pinned?: boolean;
 }) {
   const measured = useContext(MeasuredContext);
   const fill = useContext(FillColumnContext);
   const column = useContext(ColumnContext);
   const fills = fill !== -1 && fill === column;
+  const pin = usePin(pinned);
   return (
     <td
       role={useRole("cell")}
@@ -553,10 +568,11 @@ export function TableCell({
       className={cx(
         align === "end" && "is-end",
         mono && "di-mono",
-        pinned && "is-pinned",
+        pin.className,
         label && "is-labelled",
         fills && "is-fill",
       )}
+      style={pin.style}
       /* A value cut by a measured column shows whole in its tooltip. */
       onMouseEnter={measured ? revealCut : undefined}
     >

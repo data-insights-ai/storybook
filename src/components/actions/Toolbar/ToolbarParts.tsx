@@ -70,7 +70,8 @@ export function ToolbarStatus({ children }: { children: ReactNode }) {
  * The ways out of a selection, after `ToolbarStatus`: select every row the
  * filter matches, and clear. Escape clears too, unless a field has focus or
  * a dialog, a menu or a flyout is open. On a phone, Clear is an icon
- * named by `clearLabel`, so the status and both ways out keep to one row.
+ * named by `clearLabel` right after the count it clears, so the two stay on
+ * the first row whatever wraps after them.
  */
 export function ToolbarSelection({
   clearLabel,
@@ -99,24 +100,27 @@ export function ToolbarSelection({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-  return (
+  const selectAll =
+    selectAllLabel !== "" && onSelectAll ? (
+      <Button variant="ghost" size="sm" onClick={onSelectAll}>
+        {selectAllLabel}
+      </Button>
+    ) : null;
+  return phone ? (
     <>
-      {selectAllLabel !== "" && onSelectAll ? (
-        <Button variant="ghost" size="sm" onClick={onSelectAll}>
-          {selectAllLabel}
+      <Tooltip label={clearLabel}>
+        <Button variant="ghost" size="sm" iconOnly aria-label={clearLabel} onClick={onClear}>
+          <X aria-hidden />
         </Button>
-      ) : null}
-      {phone ? (
-        <Tooltip label={clearLabel}>
-          <Button variant="ghost" size="sm" iconOnly aria-label={clearLabel} onClick={onClear}>
-            <X aria-hidden />
-          </Button>
-        </Tooltip>
-      ) : (
-        <Button variant="ghost" size="sm" onClick={onClear}>
-          {clearLabel}
-        </Button>
-      )}
+      </Tooltip>
+      {selectAll}
+    </>
+  ) : (
+    <>
+      {selectAll}
+      <Button variant="ghost" size="sm" onClick={onClear}>
+        {clearLabel}
+      </Button>
     </>
   );
 }

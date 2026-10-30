@@ -295,6 +295,18 @@ export const Danger: Story = {
       await expect([resolve("--di-status-danger-dot"), resolve("--di-status-danger-fg")]).not.toContain(
         getComputedStyle(words).color,
       );
+    // Blocked: the disabled look in either theme, and why sits under the button on its end edge, describing it.
+    const leave = canvas.getByRole("button", { name: "Leave" });
+    await expect(getComputedStyle(leave).backgroundColor).toBe(resolve("--di-bg-disabled"));
+    await expect(getComputedStyle(leave).color).toBe(resolve("--di-text-disabled"));
+    const note = canvas.getByText(/You are the last owner/);
+    await expect(leave).toHaveAccessibleDescription(note.textContent!);
+    const [button, under] = [leave.getBoundingClientRect(), note.getBoundingClientRect()];
+    await expect(under.top).toBeGreaterThanOrEqual(button.bottom);
+    await expect(Math.abs(under.right - button.right)).toBeLessThan(1);
+    // An opener stays quiet: the filled danger is only the final commit.
+    const opener = canvas.getByRole("button", { name: "Delete organization" });
+    await expect(getComputedStyle(opener).backgroundColor).not.toBe(resolve("--di-status-danger-dot"));
   },
 };
 

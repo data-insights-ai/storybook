@@ -188,10 +188,6 @@
 
   /* The console tier: a 28px name in the display face over a 14px lede. Like the brand tier it carries
      no bottom margin; the page or Stack around it owns the rhythm. */
-  .di-page-head-console {
-    --di-eyebrow-gap: var(--di-space-8);
-  }
-
   .di-page-head-console .di-page-title {
     max-width: var(--di-page-title-measure);
     font-size: var(--di-page-title-size);

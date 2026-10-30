@@ -54,11 +54,11 @@ export function TokenTable({
                 <TableCell label="Sample">
                   <span className="di-tokens-sample">{row.sample ?? draw?.(row.token)}</span>
                 </TableCell>
-                <TableCell label="Token">
-                  <span className="di-tokens-mono">{row.token}</span>
+                <TableCell label="Token" mono>
+                  {row.token}
                 </TableCell>
-                <TableCell label="Value">
-                  <span className="di-tokens-mono">{values[row.token] || "—"}</span>
+                <TableCell label="Value" mono>
+                  {values[row.token] || "—"}
                 </TableCell>
                 <TableCell label="Use">{row.use}</TableCell>
               </TableRow>
@@ -87,3 +87,20 @@ export const length = (token: string) => (
 export const corner = (token: string) => (
   <i className="di-tokens-corner" style={{ borderStartStartRadius: `var(${token})` }} aria-hidden />
 );
+
+/**
+ * The token and value cells that run over more than one line. A name or a value is one token; on a phone, where
+ * the rows stack, only a value may wrap, and only between its parts.
+ */
+export function brokenTokenCells(root: HTMLElement) {
+  const stacked = window.innerWidth < 600;
+  const cells = Array.from(root.querySelectorAll<HTMLElement>(".di-tokens td.di-mono"));
+  return cells
+    .filter((cell) => !stacked || cell.dataset.label === "Token")
+    .filter((cell) => {
+      const range = document.createRange();
+      range.selectNodeContents(cell);
+      return new Set(Array.from(range.getClientRects(), (line) => Math.round(line.top))).size > 1;
+    })
+    .map((cell) => cell.textContent);
+}

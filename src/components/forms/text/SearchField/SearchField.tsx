@@ -54,7 +54,11 @@ export function SearchField({
         aria-keyshortcuts={slash ? "/" : undefined}
         {...props}
       />
-      {shortcut === "" ? null : <Kbd className="di-search-kbd">{shortcut}</Kbd>}
+      {shortcut === "" ? null : (
+        <Kbd tone="onControl" className="di-search-kbd">
+          {shortcut}
+        </Kbd>
+      )}
     </div>
   );
 }

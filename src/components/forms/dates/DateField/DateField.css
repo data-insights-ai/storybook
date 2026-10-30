@@ -91,7 +91,13 @@
     color: var(--di-text-disabled);
   }
 
+  /*
+   * The calendar opens on the field's start edge and at least as wide as the
+   * field, so it covers the hint under it whole instead of leaving its last
+   * words standing beside it.
+   */
   .di-date-field-popover {
+    min-width: var(--anchor-width);
     max-width: calc(100vw - var(--di-space-24));
     max-height: var(--available-height);
     overflow: auto;
@@ -114,7 +120,10 @@
     }
   }
 
+  /* A field wider than the month centres the month in it. */
   .di-date-field-dialog {
+    display: flex;
+    justify-content: center;
     padding: var(--di-gap-12);
     outline: none;
   }

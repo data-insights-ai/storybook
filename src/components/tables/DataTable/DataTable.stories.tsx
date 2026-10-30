@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Globe, Plus, Server } from "lucide-react";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Toolbar } from "../../actions/Toolbar";
 import { Tag } from "../../status/Tag";
@@ -22,6 +22,7 @@ import {
 import { Panel, PanelActions, PanelFooter, PanelLead } from "../../layout/page/Panel";
 import { LevelMeter } from "../../status/LevelMeter";
 import { Pagination } from "../../navigation/Pagination";
+import { Checkbox } from "../../forms/choice/Checkbox";
 import { SearchField } from "../../forms/text/SearchField";
 import { Select } from "../../forms/select/Select";
 import { SealValue } from "../../status/SealValue";
@@ -595,11 +596,89 @@ export const PinnedAndLabelled: Story = {
   play: async ({ canvasElement }) => {
     const [wide, narrow] = within(canvasElement).getAllByRole("table");
     const pinned = within(wide).getAllByRole("cell")[0];
-    const grid = wide.closest(".di-table-wrap")!.clientWidth > 600;
-    await expect(getComputedStyle(pinned).position).toBe(grid ? "sticky" : "static");
+    const scrolls = wide.closest(".di-table-wrap")!.classList.contains("is-overflowing");
+    await expect(getComputedStyle(pinned).position).toBe(scrolls ? "sticky" : "static");
     const owner = within(narrow).getByText("Nora Feld");
     await expect(owner).toHaveAttribute("data-label", "Owner");
     await expect(getComputedStyle(owner).display).toBe("grid");
+  },
+};
+
+/**
+ * A grid wider than its frame scrolls sideways inside it. The row's name (the
+ * first column headed by a word) stays at the inline-start edge with the
+ * selection box before it, and a shade marks each side that hides columns:
+ * the end at rest, the start once scrolled. Right to left, the same from the
+ * other side.
+ */
+export const ScrollingSideways: Story = {
+  args: { caption: "Devices", indexed: false },
+  render: (args) => (
+    <div style={{ display: "grid", gap: 24, maxWidth: 360 }}>
+      {(["ltr", "rtl"] as const).map((dir) => (
+        <Panel key={dir} title={dir === "ltr" ? "Devices" : "Devices, right to left"} padded={false}>
+          <div dir={dir}>
+            <DataTable {...args} caption={`${args.caption}, ${dir}`}>
+              <TableHead>
+                <TableColumn>
+                  <Checkbox id={`devices-all-${dir}`} label="Select every device" hideLabel />
+                </TableColumn>
+                <TableColumn>Name</TableColumn>
+                <TableColumn>Criticality</TableColumn>
+                <TableColumn>Owner</TableColumn>
+                <TableColumn>Last seen</TableColumn>
+                <TableColumn>Source</TableColumn>
+              </TableHead>
+              <TableBody>
+                {devices.map((d) => (
+                  <TableRow key={d.name}>
+                    <TableCell>
+                      <Checkbox id={`device-${dir}-${d.name}`} label={`Select ${d.name}`} hideLabel />
+                    </TableCell>
+                    <TableCell>
+                      <TextLink href="#">{d.name}</TextLink>
+                    </TableCell>
+                    <TableCell>
+                      <StatusPill tone={d.criticality === "High" ? "danger" : "ok"}>{d.criticality}</StatusPill>
+                    </TableCell>
+                    <TableCell>{d.owner}</TableCell>
+                    <TableCell mono>{d.seen}</TableCell>
+                    <TableCell>{d.source}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </DataTable>
+          </div>
+        </Panel>
+      ))}
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    for (const table of within(canvasElement).getAllByRole("table")) {
+      const wrap = table.closest<HTMLElement>(".di-table-wrap")!;
+      const frame = wrap.querySelector<HTMLElement>(".di-table-scroll")!;
+      const rtl = getComputedStyle(frame).direction === "rtl";
+      const name = within(table).getByText(devices[0].name).closest("td")!;
+      const box = name.getBoundingClientRect();
+      await expect(wrap).toHaveClass("is-overflowing", "is-more-end");
+      await expect(wrap).not.toHaveClass("is-more-start");
+      await expect(getComputedStyle(name).position).toBe("sticky");
+      // The selection box keeps the cell inset from the frame's edge, like any first column.
+      const mark = table.querySelector("tbody .di-choice-mark")!.getBoundingClientRect();
+      const edge = frame.getBoundingClientRect();
+      await expect(rtl ? edge.right - mark.right : mark.left - edge.left).toBeGreaterThanOrEqual(11.5);
+      frame.scrollLeft = rtl ? -frame.scrollWidth : frame.scrollWidth;
+      await waitFor(() => expect(wrap).toHaveClass("is-more-start"));
+      await expect(wrap).not.toHaveClass("is-more-end");
+      await expect(Math.abs(name.getBoundingClientRect().left - box.left)).toBeLessThan(1);
+      const select = name.previousElementSibling!.getBoundingClientRect();
+      const meet = rtl
+        ? select.left - name.getBoundingClientRect().right
+        : name.getBoundingClientRect().left - select.right;
+      await expect(Math.abs(meet)).toBeLessThan(1);
+      frame.scrollLeft = 0;
+      await waitFor(() => expect(wrap).not.toHaveClass("is-more-start"));
+    }
   },
 };
 
@@ -653,7 +732,7 @@ export const PinnedWithoutIndex: Story = {
         <TableBody>
           <TableRow>
             <TableCell pinned>
-              <CellStack primary="Team Add-on" secondary="Yearly · 3 seats per unit" prose />
+              <CellStack primary="Team Add‑on" secondary="Yearly · 3 seats per unit" prose />
             </TableCell>
             <TableCell align="end">
               <CellStack primary="€9,900.00 per year" secondary={["Total €9,900.00 per year"]} prose />

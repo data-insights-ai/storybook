@@ -42,6 +42,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** The space from an eyebrow to the title under it: the one eyebrow gap, in every head. */
+async function expectEyebrowGap(eyebrow: Element) {
+  const probe = document.createElement("div");
+  probe.style.width = "var(--di-gap-8)";
+  eyebrow.parentElement!.append(probe);
+  const gap = probe.getBoundingClientRect().width;
+  probe.remove();
+  const next = eyebrow.nextElementSibling!.getBoundingClientRect().top - eyebrow.getBoundingClientRect().bottom;
+  await expect(Math.abs(next - gap)).toBeLessThan(1);
+}
+
 /**
  * An overview's header only orients: the name, its state beside it, and as
  * of when at the right. The slots are placed by grid area, so this story
@@ -289,5 +300,7 @@ export const TitleOnly: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("heading", { level: 1, name: "Watched identities" })).toBeVisible();
+    const eyebrow = canvasElement.querySelector(".di-eyebrow");
+    if (eyebrow) await expectEyebrowGap(eyebrow);
   },
 };

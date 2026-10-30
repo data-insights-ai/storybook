@@ -38,6 +38,7 @@ export const Remove: Story = {
     const dialog = within(canvasElement.ownerDocument.body).getByRole("dialog");
     await waitFor(() => expect(within(dialog).getByRole("button", { name: "Cancel" })).toHaveFocus());
     await expect(within(dialog).getByText("Member · Northwind").closest(".di-eyebrow")).toHaveClass("is-danger");
+    await expectEyebrowGap(dialog.querySelector(".di-eyebrow")!);
     await expect(dialog.querySelector("svg.lucide-triangle-alert")).toBeNull();
     await readsAsDanger(dialog, within(dialog).getByRole("button", { name: "Remove member" }));
     await waitFor(() => expect(getComputedStyle(dialog).opacity).toBe("1"));
@@ -63,7 +64,31 @@ export const Ordinary: Story = {
   },
 };
 
-/** The danger reads in the dialog itself: the mark leads the title, and the commit is filled in the danger colour. */
+/** The space from an eyebrow to the title under it: the one eyebrow gap, in every head. */
+async function expectEyebrowGap(eyebrow: Element) {
+  const probe = document.createElement("div");
+  probe.style.width = "var(--di-gap-8)";
+  eyebrow.parentElement!.append(probe);
+  const gap = probe.getBoundingClientRect().width;
+  probe.remove();
+  const next = eyebrow.nextElementSibling!.getBoundingClientRect().top - eyebrow.getBoundingClientRect().bottom;
+  await expect(Math.abs(next - gap)).toBeLessThan(1);
+}
+
+/** A token as the element's context paints it. */
+function paintOf(within: Element, token: string) {
+  const probe = document.createElement("span");
+  probe.style.color = `var(${token})`;
+  within.append(probe);
+  const colour = getComputedStyle(probe).color;
+  probe.remove();
+  return colour;
+}
+
+/**
+ * The danger reads in the dialog itself: the mark leads the title, and the commit, once it can act, is the filled
+ * danger button (until then it is disabled like any other control).
+ */
 async function readsAsDanger(dialog: HTMLElement, confirm: HTMLElement) {
   const mark = dialog.querySelector(".di-dialog-mark");
   await expect(mark).not.toBeNull();
@@ -72,13 +97,18 @@ async function readsAsDanger(dialog: HTMLElement, confirm: HTMLElement) {
   const markBox = mark!.getBoundingClientRect();
   await expect(Math.abs(markBox.top + markBox.height / 2 - (title.top + title.height / 2))).toBeLessThanOrEqual(2);
   await expect(getComputedStyle(confirm).backgroundColor).not.toBe(getComputedStyle(dialog).backgroundColor);
+  const ground = (confirm as HTMLButtonElement).disabled ? "--di-bg-disabled" : "--di-status-danger-dot";
+  // The ground eases in with the theme and the state, so it is read once it has settled.
+  const expected = paintOf(confirm, ground);
+  await waitFor(() => expect(getComputedStyle(confirm).backgroundColor).toBe(expected));
   return red;
 }
 
 /**
  * Irreversible: the name has to be typed before the button acts. Until
- * then the button keeps a danger tint, not the grey of any disabled
- * control, so the dialog reads as destructive before anything is typed.
+ * then the button is disabled like any other control; the mark at the title
+ * and the eyebrow say the dialog is destructive, and once the name is typed
+ * the commit is the filled danger button.
  */
 export const TypeToConfirm: Story = {
   args: {
@@ -101,6 +131,8 @@ export const TypeToConfirm: Story = {
     await expect(red).not.toBe(getComputedStyle(within(dialog).getByRole("heading")).color);
     await userEvent.type(within(dialog).getByLabelText("Type Field Research to confirm"), "Field Research");
     await expect(confirm).toBeEnabled();
+    const filled = paintOf(confirm, "--di-status-danger-dot");
+    await waitFor(() => expect(getComputedStyle(confirm).backgroundColor).toBe(filled));
     await userEvent.click(confirm);
     await expect(args.onConfirm).toHaveBeenCalled();
     await waitFor(() => expect(getComputedStyle(dialog).opacity).toBe("1"));

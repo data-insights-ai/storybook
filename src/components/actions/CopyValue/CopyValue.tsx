@@ -17,7 +17,8 @@ import "./CopyValue.css";
  * **Content:** the whole value, never cut. A long one wraps only at its
  * boundaries (after "//", before "/", ".", "-", "?", "&", "="), so no word
  * of a URL is split; a run with no boundary, such as a hash, wraps where it
- * must.
+ * must. In a `FactList layout="columns"` a value longer than a column (a URL)
+ * sits in a `Fact wide`, which takes the whole row; an id keeps its column.
  *
  * **Accessibility:** the button is named by `copyLabel`; the copied word is
  * read from a polite live region. On a touch screen its hit area is 40px.

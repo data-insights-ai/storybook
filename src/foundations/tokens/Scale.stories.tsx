@@ -17,7 +17,7 @@ import {
   Toolbar,
 } from "../../index";
 import { Doc, DocSection, Rules } from "../guide/Doc";
-import { corner, length, TokenTable } from "../guide/Tokens";
+import { corner, length, brokenTokenCells, TokenTable } from "../guide/Tokens";
 
 const space = [
   { token: "--di-space-4", use: "A mark to its word: the seal dot, a pill's dot." },
@@ -172,10 +172,11 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
-/** The code samples wrap inside their frame on a phone; none runs past it. */
+/** Token and value cells keep one line, and the code samples wrap inside their frame on a phone. */
 export const Scale: StoryObj = {
   render: () => <ScalePage />,
   play: async ({ canvasElement }) => {
+    await expect(brokenTokenCells(canvasElement)).toEqual([]);
     for (const code of canvasElement.querySelectorAll<HTMLElement>(".di-codeblock-scroll")) {
       await expect(code.scrollWidth).toBeLessThanOrEqual(code.clientWidth + 1);
     }

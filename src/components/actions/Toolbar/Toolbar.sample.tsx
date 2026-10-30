@@ -111,7 +111,7 @@ export function MembersTable({
   onChoose?: (ids: string[]) => void;
 }) {
   return (
-    <DataTable caption={w.members} indexed={false}>
+    <DataTable caption={w.members} indexed={false} narrow="stack">
       <TableHead>
         {chosen ? (
           <TableColumn>
@@ -125,7 +125,9 @@ export function MembersTable({
             />
           </TableColumn>
         ) : null}
-        <TableColumn width="fill">{w.name}</TableColumn>
+        <TableColumn width="fill" pinned>
+          {w.name}
+        </TableColumn>
         <TableColumn>{w.role}</TableColumn>
         <TableColumn align="end">{w.actions}</TableColumn>
       </TableHead>
@@ -148,7 +150,7 @@ export function MembersTable({
             <TableCell>
               <CellStack primary={m.name} secondary={m.email} prose />
             </TableCell>
-            <TableCell>{m.role}</TableCell>
+            <TableCell label={w.role}>{m.role}</TableCell>
             <TableCell align="end">
               <Toolbar variant="row" label={`Actions for ${m.name}`}>
                 <Button variant="ghost" size="sm" iconOnly aria-label={`Resend the invitation to ${m.name}`}>

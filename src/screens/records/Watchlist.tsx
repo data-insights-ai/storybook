@@ -109,7 +109,7 @@ function Watched() {
       </Notice>
 
       <Panel padded={false}>
-        <DataTable caption="Watched entries" indexed={false}>
+        <DataTable caption="Watched entries" indexed={false} narrow="stack">
           <Toolbar label="Filter the watchlist" role="search">
             <SearchField
               id="watchlist-search"
@@ -126,7 +126,9 @@ function Watched() {
             </span>
           </TableFooter>
           <TableHead>
-            <TableColumn width="fill">Entry</TableColumn>
+            <TableColumn width="fill" pinned>
+              Entry
+            </TableColumn>
             <TableColumn>Kind</TableColumn>
             <TableColumn align="end">Last match</TableColumn>
             <TableColumn align="end">State</TableColumn>
@@ -140,13 +142,13 @@ function Watched() {
                 <TableCell>
                   <CellStack primary={row.name} secondary={row.detail} />
                 </TableCell>
-                <TableCell>
+                <TableCell label="Kind">
                   <Tag>{row.kind}</Tag>
                 </TableCell>
-                <TableCell align="end" mono>
+                <TableCell label="Last match" align="end" mono>
                   {row.match}
                 </TableCell>
-                <TableCell align="end">
+                <TableCell label="State" align="end">
                   <StatusPill tone={row.paused ? "neutral" : "ok"}>{row.paused ? "paused" : "watching"}</StatusPill>
                 </TableCell>
                 <TableCell align="end">
