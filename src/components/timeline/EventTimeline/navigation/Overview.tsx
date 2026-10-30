@@ -7,6 +7,7 @@ import type { ViewChange } from "./useGestures";
 
 export const OVERVIEW_H = 36;
 const EDGE = 8;
+const HANDLE_INSET = 6;
 const MIN_BRUSH = 6;
 
 type Drag = { mode: "move" | "start" | "end" | "new"; x: number; view: Span; moved: boolean };
@@ -106,9 +107,24 @@ export function Overview({
       <Waveform bars={bars} scale={scale} plotPx={plotPx} mid={mid} half={mid - 3} peak={peak} />
       <rect width={left} height={OVERVIEW_H} className="di-timeline-overview-shade" />
       <rect x={right} width={Math.max(0, plotPx - right)} height={OVERVIEW_H} className="di-timeline-overview-shade" />
-      <rect x={left + 0.5} y={0.5} width={width - 1} height={OVERVIEW_H - 1} className="di-timeline-brush" />
-      <rect x={left - 2} y={mid - 7} width={4} height={14} rx={2} className="di-timeline-handle" />
-      <rect x={right - 2} y={mid - 7} width={4} height={14} rx={2} className="di-timeline-handle" />
+      {/* The view is the clear part of the strip, the rest lies under a veil; the handles mark its ends. */}
+      <rect x={left} width={width} height={OVERVIEW_H} className="di-timeline-brush" />
+      <rect
+        x={Math.max(0, left - 1.5)}
+        y={HANDLE_INSET}
+        width={3}
+        height={OVERVIEW_H - 2 * HANDLE_INSET}
+        rx={1.5}
+        className="di-timeline-handle"
+      />
+      <rect
+        x={Math.min(plotPx - 3, right - 1.5)}
+        y={HANDLE_INSET}
+        width={3}
+        height={OVERVIEW_H - 2 * HANDLE_INSET}
+        rx={1.5}
+        className="di-timeline-handle"
+      />
     </svg>
   );
 }

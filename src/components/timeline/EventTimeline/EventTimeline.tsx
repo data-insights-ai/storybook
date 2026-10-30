@@ -18,8 +18,8 @@ import { Kbd } from "../../text/Kbd";
 import { Loading } from "../../feedback/waiting/Loading";
 import { Events, nearestEvent, reachOf } from "./marks/Events";
 import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";
-import { Markers } from "./marks/Markers";
-import { SCORE_H, ScoreTrack, valueAt } from "./marks/ScoreTrack";
+import { MARK_BAND, Markers } from "./marks/Markers";
+import { gutterOf, SCORE_H, scaleValues, ScoreTrack, valueAt } from "./marks/ScoreTrack";
 import { AXIS_H, TimeAxis } from "./marks/TimeAxis";
 import { totalOf, Waveform } from "./marks/Waveform";
 import { Controls } from "./navigation/Controls";
@@ -132,13 +132,16 @@ export function EventTimeline({
 }) {
   const id = useId();
   const [lanesOpen, setLanesOpen] = useState(false);
-  const [frame, plotPx] = useWidth<HTMLDivElement>();
+  const [frame, framePx] = useWidth<HTMLDivElement>();
   const { view, bounds, change, measure } = navigation;
+  const number = useMemo(() => new Intl.NumberFormat(locale), [locale]);
+  // The score's scale values get a column of their own at the end, so they never sit on the plot.
+  const gutter = score ? gutterOf(scaleValues(score).map((v) => number.format(v))) : 0;
+  const plotPx = Math.max(0, framePx - gutter);
   useEffect(() => measure(plotPx), [plotPx, measure]);
 
   const scale = useMemo(() => scaleOf(view, plotPx), [view, plotPx]);
   const clock = useMemo(() => clockFormats(locale, timeZone), [locale, timeZone]);
-  const number = useMemo(() => new Intl.NumberFormat(locale), [locale]);
   const ticks = useMemo(() => ticksFor(view, plotPx, clock.offsetOf), [view, plotPx, clock]);
   const peak = useMemo(() => Math.max(0, ...bars.map(totalOf)), [bars]);
   const cells = useMemo(() => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events)])), [lanes, events]);
@@ -209,7 +212,8 @@ export function EventTimeline({
   const meta = slots.find((c) => c.type === EventTimelineMeta);
   const readout = slots.find((c) => c.type === EventTimelineReadout);
 
-  const waveTop = score ? SCORE_H + GAP : 0;
+  const markTop = score ? SCORE_H + GAP : 0;
+  const waveTop = markTop + (markers.length > 0 ? MARK_BAND : 0);
   const mid = waveTop + WAVE_H / 2;
   const half = WAVE_H / 2 - 4;
   const axisTop = waveTop + WAVE_H + GAP + 4;
@@ -251,7 +255,7 @@ export function EventTimeline({
             >
               {/* Under the loading veil the plot is stale and inactive, so it is inert. */}
               <div ref={canvas} className="di-timeline-canvas">
-                <svg width={plotPx} height={axisTop + AXIS_H} className="di-timeline-svg" aria-hidden>
+                <svg width={framePx} height={axisTop + AXIS_H} className="di-timeline-svg" aria-hidden>
                   <TimeAxis ticks={ticks} label={clock.tick} scale={scale} plotPx={plotPx} top={axisTop} />
                   {score ? (
                     <ScoreTrack
@@ -284,8 +288,8 @@ export function EventTimeline({
                       />
                     );
                   })}
-                  <g transform={`translate(0 ${waveTop})`}>
-                    <Markers markers={markers} scale={scale} plotPx={plotPx} height={axisTop - waveTop} />
+                  <g transform={`translate(0 ${markTop})`}>
+                    <Markers markers={markers} scale={scale} plotPx={plotPx} height={axisTop - markTop} />
                   </g>
                   {gestures.brush ? (
                     <rect
@@ -355,8 +359,8 @@ export function EventTimeline({
         <span className="di-timeline-note">{scaleNote}</span>
       </div>
       <ul id={`${id}-hint`} className="di-timeline-help">
-        {instructions.map(({ keys, label: action }) => (
-          <li key={action}>
+        {instructions.map(({ keys, label: action, pointer }) => (
+          <li key={`${action}-${pointer ?? "any"}`} className={pointer ? `is-${pointer}` : undefined}>
             <span className="di-timeline-keys">
               {keys.map((key, i) => (
                 <Fragment key={key}>
