@@ -254,6 +254,8 @@ export function EventTimeline({
               aria-describedby={`${id}-hint`}
               {...gestures.handlers}
             >
+              {/* Under the loading veil the plot is stale and inactive, so it is inert. */}
+              <div className="di-timeline-canvas" inert={loading}>
               <svg width={plotPx} height={axisTop + AXIS_H} className="di-timeline-svg" aria-hidden>
                 <TimeAxis
                   ticks={ticks}
@@ -326,6 +328,7 @@ export function EventTimeline({
                   />
                 ) : null}
               </svg>
+              </div>
               {target && hoverPx !== null ? (
                 <ReadoutPlace.Provider value={{ x: hoverPx, flipped: hoverPx > plotPx - FLIP_PX }}>
                   {readout}

@@ -184,7 +184,15 @@ export function Seismograph({
           ))}
           {selected >= 0 ? (
             <ReferenceLine
-              x={bucketMiddle(points, selected)}
+              {...(labelled.includes(selected)
+                ? // A labelled peak keeps its figure clear: the selection stops at the dot beneath it.
+                  {
+                    segment: [
+                      { x: bucketMiddle(points, selected), y: -maxBelow * 1.25 },
+                      { x: bucketMiddle(points, selected), y: points[selected].above },
+                    ],
+                  }
+                : { x: bucketMiddle(points, selected) })}
               stroke="var(--di-chart-highlight)"
               strokeDasharray="3 3"
             />

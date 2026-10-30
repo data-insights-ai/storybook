@@ -1,14 +1,31 @@
-import axe from "axe-core";
-
 /**
- * WCAG 1.4.3 for the text axe sees but cannot decide.
+ * WCAG 1.4.3 for every piece of visible text, measured where it is painted.
  *
- * Axe checks aria-hidden text too, but it leaves a node "incomplete" when
- * something it cannot model sits behind it: an SVG or image (every chart
- * label), a pseudo-element (the Stepper's connector), an overlap, a lone
- * symbol. The story test fails on violations only, so those nodes were never
- * measured. This measures each of them at the point where it is drawn: the
- * paint stack under the text, composited down to the first opaque layer.
+ * Axe measures text at one point and leaves a node "incomplete" when it
+ * cannot model what is behind it (an SVG under every chart label, a
+ * pseudo-element, an overlap, a lone symbol); the story test fails on axe
+ * violations only. This check runs beside it on all text, aria-hidden text
+ * included. Each line of text is sampled at its start, middle and end. At
+ * each point the paint stack is read with `elementsFromPoint`: the layers
+ * below the text are composited down to the first opaque one (an SVG shape
+ * by its stroke and its fill, each only where it covers the point), the
+ * layers above it are composited over both the text and its ground, and the
+ * worst point counts.
+ *
+ * It fails, rather than skips, when it cannot measure: text filled with a
+ * gradient or pattern; a gradient, pattern, background image, `<img>`,
+ * SVG `<image>`, canvas or video under or over the text; a point where the
+ * text is not what the hit test returns (a `clip-path`, which is not
+ * modelled, ends here); and text that cannot be scrolled into view.
+ *
+ * Not measured, because it is not shown: `display: none`, `visibility:
+ * hidden`, opacity 0, `.di-sr`, a line with no size, the part of a line
+ * that its own box or an ancestor clips with `overflow` (what is left a
+ * pixel wide or less is the visually hidden pattern), the part beyond the
+ * document's top or left edge, which no scroll reaches, and a point an
+ * opaque layer covers. Inactive content is out, as in WCAG: disabled
+ * controls, `[aria-disabled="true"]`, `[inert]`, and the page behind a
+ * modal dialog.
  */
 
 export type ContrastFinding = {
@@ -22,12 +39,13 @@ export type ContrastFinding = {
 };
 
 type Rgba = { r: number; g: number; b: number; a: number };
+type Paint = Rgba | string | null;
 
 const sample = new OffscreenCanvas(1, 1).getContext("2d", { willReadFrequently: true })!;
 
 /** Any CSS colour the browser computes (rgb, color(), oklch, keywords) through the canvas, which speaks all of them. */
 function parse(colour: string): Rgba | null {
-  if (!colour || colour === "none" || colour.startsWith("url(")) return null;
+  if (!colour || colour === "none") return null;
   sample.clearRect(0, 0, 1, 1);
   sample.fillStyle = "rgba(0, 0, 0, 0)";
   sample.fillStyle = colour;
@@ -35,6 +53,8 @@ function parse(colour: string): Rgba | null {
   const [r, g, b, a] = sample.getImageData(0, 0, 1, 1).data;
   return { r, g, b, a: a / 255 };
 }
+
+const isPaintServer = (value: string) => value.startsWith("url(");
 
 function over(top: Rgba, bottom: Rgba): Rgba {
   const a = top.a + bottom.a * (1 - top.a);
@@ -66,71 +86,163 @@ function opacity(element: Element) {
   return value;
 }
 
-const isSvgText = (element: Element) => element instanceof SVGTextContentElement;
-
-function foreground(element: Element): Rgba | null {
-  const style = getComputedStyle(element);
-  const colour = parse(isSvgText(element) ? style.fill : style.color);
-  if (!colour) return null;
-  const alpha = isSvgText(element) ? parseFloat(style.fillOpacity) : 1;
-  return { ...colour, a: colour.a * alpha * opacity(element) };
+function describe(element: Element) {
+  const classes = element.getAttribute("class") ?? "";
+  return `<${element.localName}${classes ? ` class="${classes}"` : ""}>`;
 }
 
-/** The paint of one layer under the text, or a reason it cannot be measured. */
-function layer(element: Element): Rgba | string | null {
+const isSvgText = (element: Element) => element instanceof SVGTextContentElement;
+
+function foreground(element: Element): Rgba | string {
   const style = getComputedStyle(element);
-  if (element instanceof HTMLImageElement || element instanceof HTMLCanvasElement || element instanceof HTMLVideoElement) {
-    return `text over <${element.localName}>`;
-  }
-  if (element instanceof SVGGraphicsElement && !(element instanceof SVGSVGElement) && !(element instanceof SVGGElement)) {
-    if (isSvgText(element)) return null;
-    if (style.fill.startsWith("url(")) return "text over a gradient or pattern fill";
-    const fill = parse(style.fill);
-    if (!fill || fill.a === 0) return null;
+  if (isSvgText(element)) {
+    if (isPaintServer(style.fill)) return "text filled with a gradient or pattern";
+    const fill = parse(style.fill) ?? { r: 0, g: 0, b: 0, a: 0 };
     return { ...fill, a: fill.a * parseFloat(style.fillOpacity) * opacity(element) };
   }
-  if (style.backgroundImage !== "none") return "text over a background image or gradient";
+  if (style.backgroundClip === "text" || style.webkitTextFillColor !== style.color) {
+    return "text filled with a background or a text-fill colour";
+  }
+  const colour = parse(style.color)!;
+  return { ...colour, a: colour.a * opacity(element) };
+}
+
+/** What an SVG shape paints at a point: its stroke over its fill, each only where it covers the point. */
+function shape(element: SVGGeometryElement, x: number, y: number): Paint {
+  const style = getComputedStyle(element);
+  const matrix = element.getScreenCTM();
+  if (!matrix) return null;
+  const point = new DOMPoint(x, y).matrixTransform(matrix.inverse());
+  const alpha = opacity(element);
+  let paint: Rgba | null = null;
+  if (style.fill !== "none" && element.isPointInFill(point)) {
+    if (isPaintServer(style.fill)) return `text over a gradient or pattern fill (${describe(element)})`;
+    const fill = parse(style.fill)!;
+    paint = { ...fill, a: fill.a * parseFloat(style.fillOpacity) * alpha };
+  }
+  if (style.stroke !== "none" && element.isPointInStroke(point)) {
+    if (isPaintServer(style.stroke)) return `text over a gradient or pattern stroke (${describe(element)})`;
+    const stroke = parse(style.stroke)!;
+    const top = { ...stroke, a: stroke.a * parseFloat(style.strokeOpacity) * alpha };
+    paint = paint ? over(top, paint) : top;
+  }
+  return paint && paint.a > 0 ? paint : null;
+}
+
+/** The paint one element lays at a point, or why it cannot be measured. */
+function layer(element: Element, x: number, y: number): Paint {
+  if (
+    element instanceof HTMLImageElement ||
+    element instanceof HTMLCanvasElement ||
+    element instanceof HTMLVideoElement ||
+    element instanceof SVGImageElement
+  ) {
+    return `text over an image (${describe(element)})`;
+  }
+  if (isSvgText(element)) return null;
+  if (element instanceof SVGGeometryElement) return shape(element, x, y);
+  if (element instanceof SVGElement && !(element instanceof SVGSVGElement)) return null;
+  const style = getComputedStyle(element);
+  if (style.backgroundImage !== "none") return `text over a background image or gradient (${describe(element)})`;
   const background = parse(style.backgroundColor);
   if (!background || background.a === 0) return null;
   return { ...background, a: background.a * opacity(element) };
 }
 
-function textRect(element: Element) {
+function lineRects(element: Element) {
   const range = document.createRange();
+  const rects: DOMRect[] = [];
   for (const child of element.childNodes) {
     if (child.nodeType !== Node.TEXT_NODE || !child.textContent?.trim()) continue;
     range.selectNodeContents(child);
-    const rect = Array.from(range.getClientRects()).find((r) => r.width > 0 && r.height > 0);
-    if (rect) return rect;
+    rects.push(...Array.from(range.getClientRects()).filter((r) => r.width > 0 && r.height > 0));
   }
-  return null;
+  return rects;
 }
 
-function visible(element: Element) {
-  if (element.closest(".di-sr")) return false;
-  if (!element.checkVisibility({ visibilityProperty: true, opacityProperty: true })) return false;
-  return textRect(element) !== null;
+type Box = { left: number; top: number; right: number; bottom: number };
+
+/**
+ * The part of a line its own box and its ancestors leave visible, where any of
+ * them clips its overflow (a scroller has been scrolled to it already). A part
+ * a pixel wide or less is the visually hidden pattern, and is not shown.
+ */
+function unclipped(element: Element, rect: Box): Box | null {
+  // Nothing scrolls past the document's top or left edge, so what lies beyond them is never shown.
+  let box = {
+    left: Math.max(rect.left, -scrollX),
+    top: Math.max(rect.top, -scrollY),
+    right: rect.right,
+    bottom: rect.bottom,
+  };
+  if (box.right - box.left <= 1 || box.bottom - box.top <= 1) return null;
+  for (let node: Element | null = element; node; node = node.parentElement) {
+    const style = getComputedStyle(node);
+    const cuts = [style.overflowX, style.overflowY].some((v) => v !== "visible");
+    if (!cuts) continue;
+    const edge = node.getBoundingClientRect();
+    box = {
+      left: Math.max(box.left, edge.left),
+      top: Math.max(box.top, edge.top),
+      right: Math.min(box.right, edge.right),
+      bottom: Math.min(box.bottom, edge.bottom),
+    };
+    if (box.right - box.left <= 1 || box.bottom - box.top <= 1) return null;
+  }
+  return box;
 }
 
-/** Composites the stack under the text's centre down to the first opaque layer, then onto the page. */
-function background(element: Element): Rgba | string | null {
-  element.scrollIntoView({ block: "center", inline: "center" });
-  const rect = textRect(element);
-  if (!rect) return null;
-  const stack = document.elementsFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-  const own = stack.findIndex((node) => node === element || node.contains(element));
-  if (own === -1) return null;
-  const layers: Rgba[] = [];
+const positions = ["start", "center", "end"] as const;
+
+function pointOf(box: Box, at: (typeof positions)[number]) {
+  const inset = Math.min(2, (box.right - box.left) / 4);
+  const x = at === "start" ? box.left + inset : at === "end" ? box.right - inset : (box.left + box.right) / 2;
+  return { x, y: (box.top + box.bottom) / 2 };
+}
+
+const inView = (x: number, y: number) => x >= 0 && y >= 0 && x < innerWidth && y < innerHeight;
+
+/** The box the hit test returns for the text: its own element, or the first ancestor with a box of its own. */
+function hitTarget(element: Element) {
+  let node: Element = element;
+  while (node.parentElement && (getComputedStyle(node).display === "contents" || node instanceof SVGTSpanElement)) {
+    node = node.parentElement;
+  }
+  return node;
+}
+
+type Measure ={ fg: Rgba; bg: Rgba; ratio: number } | string | null;
+
+/** One point: the text and its ground as the eye gets them there, or null where an opaque layer covers it. */
+function measureAt(element: Element, fg: Rgba, x: number, y: number): Measure {
+  const stack = document.elementsFromPoint(x, y);
+  const target = hitTarget(element);
+  const own = stack.findIndex((node) => node === element || node === target);
+  if (own === -1) {
+    const top = stack[0] ? describe(stack[0]) : "nothing";
+    return `the text is not what is hit at (${Math.round(x)}, ${Math.round(y)}); the top is ${top}`;
+  }
+  const below: Rgba[] = [];
   for (const node of stack.slice(own)) {
-    const paint = layer(node);
+    const paint = layer(node, x, y);
     if (typeof paint === "string") return paint;
     if (!paint) continue;
-    layers.push(paint);
+    below.push(paint);
     if (paint.a >= 1) break;
   }
-  let result: Rgba = { r: 255, g: 255, b: 255, a: 1 };
-  for (const paint of layers.reverse()) result = over(paint, result);
-  return result;
+  let bg: Rgba = { r: 255, g: 255, b: 255, a: 1 };
+  for (const paint of below.reverse()) bg = over(paint, bg);
+  let shown = over(fg, bg);
+  const above = stack.slice(0, own).filter((node) => !element.contains(node));
+  for (const node of above.reverse()) {
+    const paint = layer(node, x, y);
+    if (typeof paint === "string") return paint.replace("text over", "text under");
+    if (!paint) continue;
+    if (paint.a >= 1) return null;
+    shown = over(paint, shown);
+    bg = over(paint, bg);
+  }
+  return { fg: shown, bg, ratio: ratio(shown, bg) };
 }
 
 function large(element: Element) {
@@ -140,54 +252,78 @@ function large(element: Element) {
   return px >= 24 || (bold && px >= 18.66);
 }
 
-function describe(element: Element) {
-  const classes = typeof element.className === "string" ? element.className : element.getAttribute("class") ?? "";
-  return `<${element.localName}${classes ? ` class="${classes}"` : ""}>`;
+function inactive(element: Element) {
+  if (element.closest("[inert], :disabled, [aria-disabled='true']")) return true;
+  const modal = document.querySelector(":modal");
+  if (modal && !modal.contains(element)) return true;
+  const label = element.closest("label");
+  const control = label?.control ?? null;
+  return control !== null && (control as HTMLInputElement).disabled;
 }
 
-/**
- * Measures the nodes axe left incomplete for color-contrast. Disabled and
- * inert controls stay out, as in axe and in WCAG (inactive components).
- */
-export async function visibleContrast(root: Element): Promise<ContrastFinding[]> {
-  const result = await axe.run(root, {
-    runOnly: { type: "rule", values: ["color-contrast"] },
-    resultTypes: ["incomplete"],
-  });
-  const elements = result.incomplete
-    .flatMap((rule) => rule.nodes.map((node) => ({ node, reason: String(node.any[0]?.data?.messageKey ?? "") })))
-    .map(({ node, reason }) => ({ element: document.querySelector(String(node.target[0])), reason }))
-    .filter((entry): entry is { element: Element; reason: string } => entry.element !== null);
+function candidates(root: Element) {
+  const found: Element[] = [];
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    const parent = node.parentElement;
+    if (!parent || !node.textContent?.trim() || found.at(-1) === parent) continue;
+    if (["SCRIPT", "STYLE", "NOSCRIPT", "TEMPLATE", "OPTION", "TITLE", "TEXTAREA"].includes(parent.tagName)) continue;
+    if (parent.closest("svg title, svg desc, svg defs")) continue;
+    found.push(parent);
+  }
+  return found;
+}
 
+function shown(element: Element) {
+  if (element.closest(".di-sr")) return false;
+  if (!element.checkVisibility({ visibilityProperty: true, opacityProperty: true })) return false;
+  return lineRects(element).length > 0;
+}
+
+/** Measures one element's text at every sample point; the worst one, or the reason it cannot be measured. */
+function measure(element: Element): Omit<ContrastFinding, "element" | "text" | "expected"> | null {
+  const fg = foreground(element);
+  if (typeof fg === "string") return { reason: fg, foreground: "?", background: "?", ratio: 0 };
+  element.scrollIntoView({ block: "nearest", inline: "nearest" });
+  let worst: { fg: Rgba; bg: Rgba; ratio: number } | null = null;
+  const lines = lineRects(element).length;
+  for (let line = 0; line < lines; line++) {
+    for (const at of positions) {
+      let box = lineRects(element)[line] && unclipped(element, lineRects(element)[line]);
+      if (!box) continue;
+      let point = pointOf(box, at);
+      if (!inView(point.x, point.y)) {
+        element.scrollIntoView({ block: "center", inline: at });
+        box = lineRects(element)[line] && unclipped(element, lineRects(element)[line]);
+        if (!box) continue;
+        point = pointOf(box, at);
+        if (!inView(point.x, point.y)) {
+          return { reason: `the text cannot be scrolled into view at its ${at}`, foreground: "?", background: "?", ratio: 0 };
+        }
+      }
+      const result = measureAt(element, fg, point.x, point.y);
+      if (typeof result === "string") return { reason: result, foreground: hex(fg), background: "?", ratio: 0 };
+      if (result && (!worst || result.ratio < worst.ratio)) worst = result;
+    }
+  }
+  if (!worst) return null;
+  return { reason: "", foreground: hex(worst.fg), background: hex(worst.bg), ratio: Math.floor(worst.ratio * 100) / 100 };
+}
+
+export async function visibleContrast(root: Element): Promise<ContrastFinding[]> {
   // Paint is what the eye sees; pointer-events only decide what a click hits.
   const hits = document.createElement("style");
   hits.textContent = "* { pointer-events: auto !important; }";
   document.head.append(hits);
   try {
     const findings: ContrastFinding[] = [];
-    for (const { element, reason } of elements) {
-      if (!visible(element)) continue;
-      const fg = foreground(element);
-      const bg = background(element);
-      if (!fg || bg === null) continue;
+    for (const element of candidates(root)) {
+      if (!element.isConnected || inactive(element) || !shown(element)) continue;
+      const result = measure(element);
+      if (!result) continue;
       const expected = large(element) ? 3 : 4.5;
-      const text = (element.textContent ?? "").trim().slice(0, 40);
-      if (typeof bg === "string") {
-        findings.push({ element: describe(element), text, reason: bg, foreground: hex(fg), background: "?", ratio: 0, expected });
-        continue;
-      }
-      const shown = over(fg, bg);
-      const measured = ratio(shown, bg);
-      if (measured < expected) {
-        findings.push({
-          element: describe(element),
-          text,
-          reason,
-          foreground: hex(shown),
-          background: hex(bg),
-          ratio: Math.floor(measured * 100) / 100,
-          expected,
-        });
+      if (result.reason || result.ratio < expected) {
+        findings.push({ element: describe(element), text: (element.textContent ?? "").trim().slice(0, 40), expected, ...result });
       }
     }
     return findings;

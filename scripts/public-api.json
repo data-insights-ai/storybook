@@ -990,6 +990,7 @@
     "di-timeline-band",
     "di-timeline-baseline",
     "di-timeline-brush",
+    "di-timeline-canvas",
     "di-timeline-compare-line",
     "di-timeline-compare-rule",
     "di-timeline-cursor",
