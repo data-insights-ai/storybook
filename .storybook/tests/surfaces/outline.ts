@@ -2,7 +2,9 @@ import { describe } from "./paint";
 
 /**
  * One outline per object: an element framed on all four sides (a border, or
- * a spread ring) never sits within 8px inside another framed element.
+ * an inset spread ring, as a selection ring is drawn) never sits within 8px
+ * inside another framed element. An outer ring is a surface's elevation in
+ * dark, its depth rather than a line, as the shadow is in daylight.
  * Selection inside a container is a fill; a key or an entry inside a field
  * is a tone. Focus rings are exempt: they are outlines and they pass. A
  * table cell bounds what it holds: a pill in a cell is measured against the
@@ -29,7 +31,7 @@ function framed(el: Element): boolean {
       style.getPropertyValue(`border-${side.toLowerCase()}-style`) !== "none" &&
       !clear(style.getPropertyValue(`border-${side.toLowerCase()}-color`)),
   );
-  return sides.length === 4 || /0px 0px 0px [1-9]/.test(style.boxShadow);
+  return sides.length === 4 || /0px 0px 0px [1-9][^,]*inset/.test(style.boxShadow);
 }
 
 export function outlineFindings(root: Element): string[] {
