@@ -62,8 +62,9 @@ const lines = [
   { token: "--di-select", use: "Selection: the selected row's edge, a chosen card's border, a link's underline." },
   { token: "--di-focus", use: "The keyboard focus ring." },
   { token: "--di-border", use: "Where two equal tones meet." },
-  { token: "--di-border-input", use: "The frame of a field." },
+  { token: "--di-border-input", use: "The frame of a field, and the track of a range." },
   { token: "--di-rule", use: "Between the rows of a table and the figures of a row, nowhere else." },
+  { token: "--di-shade-edge", use: "The side of a table that scrolls sideways and hides columns there." },
 ];
 
 const charts = [
@@ -245,7 +246,8 @@ function ColorPage() {
             the days between a range&apos;s ends take the pale tint.
           </li>
           <li>
-            Native checkboxes, radios and ranges follow the token through <code>accent-color</code>.
+            Native checkboxes, radios and ranges fill in the strong primary fill (<code>accent-color</code>), a range on
+            a track in the input border tone; cornflower is never a control&apos;s paint, only its ring.
           </li>
           <li>
             Focus and selection on one element are one indicator that changes, never two rings. A ring shows only on
