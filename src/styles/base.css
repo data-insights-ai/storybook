@@ -62,6 +62,11 @@
     text-wrap: pretty;
   }
 
+  /* A date or a time is one token: "2026-09-29" never breaks at its hyphens. */
+  time {
+    white-space: nowrap;
+  }
+
   button,
   input,
   select,

@@ -53,7 +53,9 @@ export const OnAPage: Story = {
         <NoticeText>
           <div>
             <NoticeTitle>The signing key expires in six days.</NoticeTitle>
-            <NoticeBody>After 2026-09-29 no new entry can be sealed with it.</NoticeBody>
+            <NoticeBody>
+              After <time dateTime="2026-09-29">2026-09-29</time> no new entry can be sealed with it.
+            </NoticeBody>
           </div>
           <NoticeAction>
             <Button variant="secondary" size="sm">
@@ -69,6 +71,8 @@ export const OnAPage: Story = {
   ),
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByRole("note")).toBeVisible();
+    const date = canvasElement.querySelector("time")!;
+    await expect(date.getClientRects()).toHaveLength(1);
   },
 };
 
@@ -215,7 +219,7 @@ export const German: Story = {
 /** On a phone the action moves under the copy, so the copy keeps its width. */
 export const PhoneWidth: Story = {
   render: (args) => (
-    <div style={{ width: 360 }}>
+    <div style={{ maxWidth: 360 }}>
       <Notice {...args} tone="warn">
         <NoticeIcon />
         <NoticeText>
@@ -237,6 +241,9 @@ export const PhoneWidth: Story = {
     const title = canvas.getByText(/license has expired/);
     const action = canvas.getByRole("button", { name: "License details" });
     await expect(action.getBoundingClientRect().top).toBeGreaterThan(title.getBoundingClientRect().bottom);
+    const note = canvas.getByRole("note").getBoundingClientRect();
+    await expect(note.right).toBeLessThanOrEqual(canvasElement.getBoundingClientRect().right + 0.5);
+    await expect(note.width).toBeLessThanOrEqual(360);
   },
 };
 

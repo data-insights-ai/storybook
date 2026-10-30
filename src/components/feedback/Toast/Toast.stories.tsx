@@ -33,8 +33,13 @@ export const Default: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await waitFor(() => expect(canvas.getByRole("status")).toBeVisible());
-    await userEvent.click(canvas.getByRole("button", { name: "Dismiss this receipt" }));
+    const close = canvas.getByRole("button", { name: "Dismiss this receipt" });
+    await expect(close).not.toHaveFocus();
+    await userEvent.click(close);
     await expect(args.onDismiss).toHaveBeenCalledOnce();
+    // A script click focuses with a ring; the product unmounts the toast here, so the story puts it back at rest.
+    close.blur();
+    await expect(close).not.toHaveFocus();
   },
 };
 

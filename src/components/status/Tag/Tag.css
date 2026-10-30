@@ -180,7 +180,7 @@
 
   .di-tag-list.is-compact button.di-tag:focus-visible,
   .di-tag-list.is-compact .di-tag:has(> .di-tag-press:focus-visible) {
-    outline-offset: calc(-1 * var(--di-focus-ring-width));
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-tag-list.is-compact .di-tag-detail[data-cut] {
