@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { cx } from "../../../internal/cx";
+import { useLineStarts } from "../../../internal/useLineStarts";
 import "./MetaLine.css";
 
 /**
@@ -17,8 +19,9 @@ import "./MetaLine.css";
  * items as a path: a host, the next host, where the data went.
  *
  * **Content:** short facts, each a figure or a name with its unit; a string
- * is split at " · ". The line breaks only between items, so no line starts
- * or ends on a lone separator; an item longer than the line wraps inside.
+ * is split at " · ". The line breaks only between items, and the separator
+ * before an item that starts a line is left out, at either alignment; an
+ * item longer than the line wraps inside.
  *
  * **Accessibility:** a list, so a screen reader hears the items apart
  * without the drawn separators.
@@ -36,10 +39,12 @@ export function MetaLine({
   className?: string;
 }) {
   const list = typeof items === "string" ? items.split(" · ") : items;
+  const itemsRef = useRef<HTMLSpanElement>(null);
+  useLineStarts(itemsRef, list.join("\n"));
   return (
     <span className={cx("di-meta-line", align === "end" && "is-end", separator === "arrow" && "is-path", className)}>
       {/* A list, so a screen reader hears the items apart without the drawn separators. */}
-      <span className="di-meta-line-items" role="list">
+      <span ref={itemsRef} className="di-meta-line-items" role="list">
         {list.map((item, i) => (
           <span key={i} className="di-meta-line-item" role="listitem">
             {item}
