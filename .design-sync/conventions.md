@@ -55,7 +55,7 @@ The Storybook sidebar is grouped by the job a component does:
 - `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `Hero`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `ListDetail`, `Toolbar`, `Actions`, `Accordion`, `Disclosure`.
 - `Charts/`: `Chart`, `ChartCard`, over time (`TrendChart`, `Sparkline`, `Seismograph`) and compared (`Bars`, `Distribution`, `LevelMeter`, `CoverageMatrix`).
 - `Timeline/`, `Inference/`: what happened when, and what the system inferred.
-- `Shell/`: the frame of the app: `AppShell`, `SignIn`, `ThemeProvider`.
+- `Shell/`: the frame of the app: `AppShell`, `SignIn`, `ThemeProvider`, `DensityProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 
 ### Which component for which job
@@ -110,7 +110,8 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | Record marks | `--di-mark`, `--di-mark-ring`, `--di-mark-surface`, `--di-mark-ink` (neutral; gold inside `data-brand`); `--di-seal` only in a brand moment |
 | Accents | `--di-highlight` (poppy), `--di-highlight-ink`, `--di-highlight-tint`; `--di-signal` (cornflower), `--di-signal-ink`, `--di-signal-tint` — see the rules below before using either |
 | Motion | `--di-duration` (120ms), `--di-duration-slow` (200ms), `--di-ease` |
-| Control height | `--di-h-dense` (28), `--di-h-ctl` (32, the standard), `--di-h-comfort` (36), `--di-h-row` (40) |
+| Control height | `--di-control-h-sm` (28), `--di-control-h-md` (32, the standard), `--di-control-h-lg` (36), `--di-row-h` (40); compact 24 / 28 / 32 / 32 |
+| Density | `--di-inset`, `--di-inset-group`, `--di-gap-*`, `--di-icon-*`, `--di-option-h`, `--di-pill-h` — one value per density (`data-density`) |
 | On navy | `--di-inverse-bg`, `-raised`, `-border`, `-text`, `-muted`, `-seal` — a surface sitting on navy re-points its roles from these |
 
 Rules that make output look native rather than approximate:
@@ -202,9 +203,16 @@ separate the parts from each other, and **a console screen stops at 48**.
 the surface holding it is 12px, so the field reads as set *into* the sheet rather
 than floating on it. Only a pill is fully round, and only because it is a mark.
 
-**Control height** — 32px is the standard and covers every form control unless
-told otherwise. 28 is a toolbar control, a chip, a menu item. 36 is a lone
+**Control height** — md (32px) is the standard and covers every form control
+unless told otherwise. sm (28) is a toolbar control, a chip. lg (36) is a lone
 primary action, the command bar, the tab strip. 40 is a table row.
+
+**Density** — the person chooses comfortable (the default, the values above) or
+compact; `DensityProvider` sets `data-density` on the root, and any region may
+set it on its own element. Density scales every size and inset, and a `size`
+(sm, md, lg) stays a role: never pick a smaller size to make a screen denser.
+Compact keeps 40px targets on a touch screen. `Foundations/Density` has the
+matrix.
 
 **The index column** — 38px (`--di-index-col`): the ordinal of a row in
 `DataTable` and `SkeletonTable`, and the icon column of `Notice` and `Modal`.
@@ -270,8 +278,7 @@ is the other value.
   48.
 - **`FactList layout="grid"`** for a band of terms; **`PullQuote`** for the page's
   one sentence of rhetoric (no attribution — a pull quote with a byline is a
-  testimonial); **`Grid`** for a two-column band; **`Notice size="comfort"`** for
-  a notice a reader meets at reading distance.
+  testimonial); and **`Grid`** for a two-column band.
 - **`labelTrack="prose"`** on `TextField` and `Select`, where a person is filling
   a form in for themselves rather than reading a record.
 - **`Eyebrow`** has two variants and they are not interchangeable. `sealed` is the

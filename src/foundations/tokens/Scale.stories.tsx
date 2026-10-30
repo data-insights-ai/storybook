@@ -41,10 +41,10 @@ const radius = [
 ];
 
 const heights = [
-  { token: "--di-control-h-sm", px: 28, use: 'Button size="sm", Chip, a menu item, a dense SearchField.' },
-  { token: "--di-control-h-md", px: 32, use: "The standard. Every form control unless told otherwise." },
-  { token: "--di-control-h-lg", px: 36, use: 'Button size="lg", the command bar input, the tab strip.' },
-  { token: "--di-h-row", px: 40, use: "A table row, via --di-table-row-height. Its only use." },
+  { token: "--di-control-h-sm", px: 28, use: 'Button size="sm", Chip, a small SearchField. 24 in compact.' },
+  { token: "--di-control-h-md", px: 32, use: "The standard. Every form control unless told otherwise. 28 in compact." },
+  { token: "--di-control-h-lg", px: 36, use: 'Button size="lg", the command bar input, the tab strip. 32 in compact.' },
+  { token: "--di-row-h", px: 40, use: "A table or list row, via --di-table-row-height. 32 in compact." },
 ];
 
 function Ramp({
@@ -124,7 +124,7 @@ export const Dimensions: StoryObj = {
       <Section
         eyebrow="Height"
         title="The console runs dense. 32px is the standard."
-        lede="A control is the same height whatever it is, so a toolbar is one line and not a staircase. Reach for 28 beside a table and 36 for a lone primary action; everything else is 32."
+        lede="A control is the same height whatever it is, so a toolbar is one line and not a staircase. Reach for sm beside a table and lg for a lone primary action; everything else is md. These are the comfortable values; Foundations/Density has compact, where every step shrinks and the steps between them hold."
       >
         <Ramp rows={heights} draw={(px) => <i className="di-ramp-control" style={{ height: px }} />} />
       </Section>

@@ -249,6 +249,13 @@
     color: var(--di-text-muted);
   }
 
+  /* Foundations/Density: the same toolbar in each density, side by side. */
+  .di-density-matrix {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: var(--di-space-24);
+  }
+
   /* Foundations/Scale: the space, radius and height ramps. */
   .di-ramp {
     display: flex;

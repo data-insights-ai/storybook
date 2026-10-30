@@ -85,6 +85,7 @@ const preview: Preview = {
           "Color",
           "Type",
           "Scale",
+          "Density",
           "Logo",
           "Mark",
           "Practice",
