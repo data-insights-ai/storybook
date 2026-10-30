@@ -215,6 +215,11 @@
     --di-notice-dot: 8px;
     --di-tooltip-h: 22px;
     --di-tooltip-arrow: 8px;
+    /* A count in a tooltip: light pills on the inverse bubble in both themes, dark digits. */
+    --di-tooltip-badge-bg: var(--di-night-ink);
+    --di-tooltip-badge-fg: var(--di-navy-900);
+    --di-tooltip-badge-alert-bg: var(--di-danger-200);
+    --di-tooltip-badge-seal-bg: var(--di-gold-300);
     --di-app-loader-mark: 64px;
     --di-progress-h: 5px;
     --di-route-progress-h: 2px;

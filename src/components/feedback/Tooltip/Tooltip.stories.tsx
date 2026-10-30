@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Download, RefreshCw, Settings } from "lucide-react";
+import { BadgeCheck, Download, FileText, Gauge, RefreshCw, ShieldAlert } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Panel, PanelActions, PanelMeta } from "../../layout/page/Panel";
@@ -7,6 +7,15 @@ import { Page } from "../../layout/page/Page";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
 import { StatusPill } from "../../marks/status/StatusPill";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+} from "../../navigation/Sidebar";
 import { Tooltip } from "./Tooltip";
 
 /**
@@ -219,19 +228,91 @@ export const ClosesOnEscape: Story = {
   },
 };
 
-/** A count beside the label: a collapsed navigation item still says how much waits behind it. */
+/* Relative luminance and contrast of two computed rgb() colours (WCAG 2). */
+const luminance = (rgb: string) => {
+  const [r, g, b] = (rgb.match(/[\d.]+/g) ?? []).slice(0, 3).map((v) => {
+    const c = Number(v) / 255;
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+};
+const contrast = (a: string, b: string) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+
+const rail = [
+  { id: "overview", label: "Overview", icon: <Gauge />, badge: "", tone: "neutral" as const },
+  { id: "cases", label: "Cases", icon: <ShieldAlert />, badge: "3", tone: "alert" as const },
+  { id: "reports", label: "Reports", icon: <FileText />, badge: "12", tone: "neutral" as const },
+  { id: "licence", label: "Licence", icon: <BadgeCheck />, badge: "new", tone: "seal" as const },
+];
+
+/**
+ * With a count: the collapsed navigation rail, where an item shows only its
+ * icon and a dot for what waits behind it. Hovered or focused, the tooltip
+ * names the item and repeats the count, as a light pill on the bubble (the
+ * alert one bright red) so it reads in both themes.
+ */
 export const WithACount: Story = {
   args: { label: "Cases", side: "right" },
-  render: (args) => (
-    <Tooltip label={args.label} side={args.side} badge="3" badgeTone="alert">
-      <Button variant="ghost" iconOnly aria-label={`${args.label}, 3 open`}>
-        <Settings />
-      </Button>
-    </Tooltip>
+  parameters: { layout: "fullscreen" },
+  globals: { viewport: { value: "desk", isRotated: false } },
+  render: () => (
+    <SidebarProvider defaultExpanded={false}>
+      <Sidebar label="Sections" closeLabel="Close navigation">
+        <SidebarContent>
+          <SidebarMenu>
+            {rail.map((item) => (
+              <SidebarMenuItem key={item.id}>
+                <SidebarMenuButton
+                  label={item.label}
+                  href={`#/${item.id}`}
+                  active={item.id === "overview"}
+                  badge={item.badge}
+                  badgeTone={item.tone}
+                >
+                  {item.icon}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarContent>
+      </Sidebar>
+      <SidebarInset>
+        <Page>
+          <PageHeader>
+            <PageHeaderTitle>Overview</PageHeaderTitle>
+          </PageHeader>
+        </Page>
+      </SidebarInset>
+    </SidebarProvider>
   ),
-  play: async ({ canvasElement, args }) => {
-    await userEvent.tab();
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
-    await waitFor(() => expect(body.getByText(args.label, { selector: ".di-tooltip" })).toBeVisible());
+    const nav = canvas.getByRole("navigation", { name: "Sections" });
+    await expect(nav).toHaveAttribute("data-state", "collapsed");
+    for (const item of rail.slice(1)) {
+      const link = within(nav).getByRole("link", { name: new RegExp(item.label) });
+      // The rail loads its tooltips on demand; hover again until they are there.
+      const tip = await waitFor(
+        async () => {
+          await userEvent.hover(link);
+          const found = await body.findByText(item.label, { selector: ".di-tooltip" }, { timeout: 600 });
+          await expect(found).toBeVisible();
+          return found;
+        },
+        { timeout: 10000 },
+      );
+      await waitFor(() => expect(tip.getAnimations().length).toBe(0));
+      const badge = tip.querySelector(".di-badge")!;
+      await expect(badge).toHaveTextContent(item.badge);
+      const bubble = getComputedStyle(tip).backgroundColor;
+      const pill = getComputedStyle(badge);
+      await expect(contrast(pill.backgroundColor, bubble)).toBeGreaterThanOrEqual(3);
+      await expect(contrast(pill.color, pill.backgroundColor)).toBeGreaterThanOrEqual(4.5);
+      await userEvent.unhover(link);
+    }
   },
 };

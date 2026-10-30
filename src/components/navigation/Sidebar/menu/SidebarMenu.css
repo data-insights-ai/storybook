@@ -95,4 +95,28 @@
     white-space: nowrap;
     clip-path: inset(50%);
   }
+
+  /* In the rail the count folds away; a dot on the icon says one is waiting, in the tone of the count. The tooltip names both. */
+  .di-sb[data-state="collapsed"] .di-sb-button:has(.di-sb-badge) .di-sb-icon {
+    position: relative;
+  }
+
+  .di-sb[data-state="collapsed"] .di-sb-button:has(.di-sb-badge) .di-sb-icon::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--di-notice-dot) / -4);
+    right: calc(var(--di-notice-dot) / -2);
+    width: var(--di-notice-dot);
+    height: var(--di-notice-dot);
+    border-radius: 50%;
+    background: var(--di-sidebar-muted);
+  }
+
+  .di-sb[data-state="collapsed"] .di-sb-button:has(.di-badge-alert) .di-sb-icon::after {
+    background: var(--di-status-danger-fg);
+  }
+
+  .di-sb[data-state="collapsed"] .di-sb-button:has(.di-badge-seal) .di-sb-icon::after {
+    background: var(--di-seal);
+  }
 }
