@@ -16,7 +16,7 @@ const meta = {
           "**Purpose:** shows how far a counted wait has come: what is running, how many of how many, and the same share as a bar.",
           "**When to use:** an import, a sync, an upload or any job that knows its total. **When not to:** a wait with no count is `Loading`; a page change is `RouteProgress`; a share of a quota or a limit (“1 of 10 seats used”, storage used) is a measurement, `LevelMeter`.",
           "**Anatomy:** the label (what is running), the count at the end of the same line, the bar under both.",
-          "**Variants:** none that change the meaning. `countTrack` is deprecated: a count in words was only ever a quota.",
+          "**Variants:** none that change the meaning.",
           "**States:** running, nearly done, complete (the label says so: “Import complete”). On failure, replace it with a `Notice`.",
           "**Content rules:** the label names the job in a few words; the count is in figures with the unit implied by the label, “1,284 of 4,000”.",
           "**Accessibility:** a native `progress` (role progressbar) named by its visible label through `htmlFor`; the count is visible text, so the bar never carries the number alone.",
@@ -37,7 +37,6 @@ const meta = {
     count: { control: "text" },
     value: { control: { type: "range", min: 0, max: 100 } },
     max: { control: { type: "number" } },
-    countTrack: { table: { disable: true } },
   },
   render: (args) => (
     <Panel title="Import">

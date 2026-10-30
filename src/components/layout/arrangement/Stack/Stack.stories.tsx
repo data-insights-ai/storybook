@@ -42,8 +42,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <Stack {...args}>
-      <PageHeader lede="Where events come from, and whether they still arrive.">
-        <PageHeaderTitle level={2}>Collection</PageHeaderTitle>
+      <PageHeader level={2} lede="Where events come from, and whether they still arrive.">
+        <PageHeaderTitle>Collection</PageHeaderTitle>
       </PageHeader>
       <Panel title="Graz office">
         <FactList layout="columns">
@@ -134,15 +134,21 @@ export const Brand: Story = {
   args: { gap: 64 },
   render: (args) => (
     <Stack {...args}>
-      <PageHeader tier="brand" eyebrow="Source" lede="Every claim on a screen is tied to the source it came from.">
-        <PageHeaderTitle level={2}>Each entry has a source.</PageHeaderTitle>
+      <PageHeader
+        level={2}
+        tier="brand"
+        eyebrow="Source"
+        lede="Every claim on a screen is tied to the source it came from."
+      >
+        <PageHeaderTitle>Each entry has a source.</PageHeaderTitle>
       </PageHeader>
       <PageHeader
+        level={2}
         tier="brand"
         eyebrow="Time"
         lede="A source carries the time it was recorded, so a finding can be replayed."
       >
-        <PageHeaderTitle level={2}>Each source has a timestamp.</PageHeaderTitle>
+        <PageHeaderTitle>Each source has a timestamp.</PageHeaderTitle>
       </PageHeader>
     </Stack>
   ),

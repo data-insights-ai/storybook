@@ -17,7 +17,6 @@ export function SearchField({
   label,
   shortcut = "/",
   size = "md",
-  dense = false,
   className,
   disabled = false,
   readOnly = false,
@@ -31,8 +30,6 @@ export function SearchField({
   shortcut?: string;
   /** `sm` beside small buttons in a toolbar; density scales both sizes. */
   size?: "sm" | "md";
-  /** @deprecated Use `size="sm"`; removed in 0.12.0. */
-  dense?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
@@ -41,7 +38,7 @@ export function SearchField({
   const slash = shortcut === "/" && !disabled;
   useShortcutKeys(slash);
   return (
-    <div className={cx("di-search", (size === "sm" || dense) && "is-small", className)}>
+    <div className={cx("di-search", size === "sm" && "is-small", className)}>
       <label className="di-sr" htmlFor={id}>
         {label}
       </label>

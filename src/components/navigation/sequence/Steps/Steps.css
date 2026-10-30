@@ -320,7 +320,7 @@
 
   /*
    * The current card runs on navy, so it re-points its own tokens the way
-   * Toast does: whatever the footer holds (a Spinner, a SealValue, a
+   * Toast does: whatever the footer holds (a Loading, a SealValue, a
    * StatusPill) then reads on that ground. Inside another surface it stays
    * navy: it is the step that runs, not a group to sink.
    */

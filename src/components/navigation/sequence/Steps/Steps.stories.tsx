@@ -6,7 +6,6 @@ import { TextField } from "../../../forms/text/TextField";
 import { Panel } from "../../../layout/page/Panel";
 import { Stack } from "../../../layout/arrangement/Stack";
 import { SealValue } from "../../../marks/status/SealValue";
-import { Numbered, Stage, StageTrack, Stepper } from "./deprecated";
 import { Step, StepFooter, StepIcon, Steps, type StepState } from "./Steps";
 
 /**
@@ -159,7 +158,7 @@ export const InAPanel: Story = {
 
 /**
  * How a process runs, on an overview: each stage a card, the one that runs
- * now on navy, its closing line a slot that can hold a `Spinner` or a sealed
+ * now on navy, its closing line a slot that can hold a `Loading` or a sealed
  * value.
  */
 export const Pipeline: Story = {
@@ -381,43 +380,5 @@ export const InlinePhone: Story = {
     await expect(window.innerWidth).toBe(390);
     await statesWithoutColour(canvasElement);
     await titleUnderTheTrack(canvasElement.querySelector<HTMLElement>(".di-steps")!);
-  },
-};
-
-/**
- * Stepper, Numbered, Stage and StageTrack are deprecated (removed in 0.12) and
- * render `Steps`, so their callers keep working. A lone `Numbered` or
- * `Stage` is a list of one, never an orphan list item.
- */
-export const DeprecatedNames: Story = {
-  render: () => (
-    <Stack gap={24}>
-      <h2 className="di-sr">Deprecated names</h2>
-      <Stepper
-        label="Source registration"
-        stateLabels={{ done: "Done", current: "Current step", upcoming: "Not started" }}
-        steps={registration.map((label, i) => ({ label, state: i < 1 ? "done" : i === 1 ? "current" : "upcoming" }))}
-      />
-      <div>
-        <Numbered index="01" variant="row">
-          Isolate the file server
-        </Numbered>
-        <Numbered index="02" variant="row">
-          Revoke its sessions and tokens
-        </Numbered>
-      </div>
-      <StageTrack>
-        <Stage step="01" title="Connect" body="A source is named, reached and checked for a manifest." />
-        <Stage step="02" title="Seal" body="Every entry gets a hash and a timestamp." current={true} />
-      </StageTrack>
-    </Stack>
-  ),
-  play: async ({ canvasElement }) => {
-    for (const item of Array.from(canvasElement.querySelectorAll("li"))) {
-      await expect(item.parentElement?.tagName).toBe("OL");
-    }
-    const rows = canvasElement.querySelectorAll<HTMLElement>(".di-step-row");
-    await expect(getComputedStyle(rows[1].parentElement!).borderTopStyle).toBe("solid");
-    await expect(canvasElement.querySelectorAll(".di-step-card")).toHaveLength(2);
   },
 };

@@ -26,10 +26,6 @@
     color: var(--di-text-muted);
   }
 
-  .di-progress-count-prose {
-    font-family: var(--di-font-ui);
-  }
-
   .di-progress-bar {
     appearance: none;
     display: block;

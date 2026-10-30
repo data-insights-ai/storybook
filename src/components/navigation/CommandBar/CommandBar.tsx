@@ -7,7 +7,6 @@ import { CommandEmpty } from "./CommandRow";
 import "./CommandBar.css";
 
 export { CommandEmpty, CommandGroup, CommandRow } from "./CommandRow";
-export { CommandChip } from "./CommandChip";
 
 /** One entry of the key legend: the key as it is printed on the cap, and what it does. */
 export type CommandHint = { keys: string; label: string };

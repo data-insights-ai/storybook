@@ -25,35 +25,7 @@ export type PeriodRow = {
   caption?: string;
 };
 
-/**
- * One period of the earlier API.
- *
- * @deprecated Removed in 0.12.0. Use a `PeriodRow` with one `PeriodSpan`.
- */
-export type Period = {
-  id: string;
-  label: string;
-  start: string;
-  end?: string;
-  graceEnd?: string;
-  tone?: "ok" | "warn" | "danger" | "neutral";
-  caption: string;
-};
-
 const value = (point: PeriodPoint) => (typeof point === "number" ? point : new Date(point).getTime());
-
-/** Moves the earlier `periods` and `today` props onto rows and a marker. */
-export function fromPeriods(periods: Period[], today: string, todayLabel: string) {
-  return {
-    rows: periods.map(({ id, label, caption, start, end, graceEnd, tone }): PeriodRow => ({
-      id,
-      label,
-      caption,
-      spans: [{ start, end, graceEnd, tone }],
-    })),
-    marker: { at: today, label: todayLabel },
-  };
-}
 
 /** The axis' ends: `from` and `to` when set, else the earliest and the latest point on it. */
 export function axisRange(rows: PeriodRow[], marker?: { at: PeriodPoint }, from?: PeriodPoint, to?: PeriodPoint) {
@@ -93,21 +65,18 @@ export function axisRange(rows: PeriodRow[], marker?: { at: PeriodPoint }, from?
  */
 export function PeriodTimeline({
   label,
-  rows: given,
+  rows,
   from,
   to,
   ticks,
-  marker: givenMarker,
+  marker,
   formatDate,
   summary,
   className,
-  periods,
-  today,
-  todayLabel,
 }: {
   /** The accessible name of the rows. */
   label: string;
-  rows?: PeriodRow[];
+  rows: PeriodRow[];
   from?: PeriodPoint;
   to?: PeriodPoint;
   /** Labels under the rows at their own points, in place of the two ends. */
@@ -123,16 +92,7 @@ export function PeriodTimeline({
   /** The rows in words, when no row has a caption. */
   summary?: string;
   className?: string;
-  /** @deprecated Removed in 0.12.0. Use `rows`, one span each. */
-  periods?: Period[];
-  /** @deprecated Removed in 0.12.0. Use `marker={{ at, label }}`. */
-  today?: string;
-  /** @deprecated Removed in 0.12.0. Use `marker={{ at, label }}`. */
-  todayLabel?: string;
 }) {
-  const legacy = periods ? fromPeriods(periods, today ?? new Date().toISOString(), todayLabel ?? "") : undefined;
-  const rows = given ?? legacy?.rows ?? [];
-  const marker = givenMarker ?? legacy?.marker;
   const { start, end } = axisRange(rows, marker, from, to);
   const span = Math.max(end - start, 1);
   const at = (point: number) => `${(Math.min(Math.max(point - start, 0), span) / span) * 100}%`;

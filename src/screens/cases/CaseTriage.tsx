@@ -10,7 +10,6 @@ import {
   Notice,
   NoticeBody,
   NoticeTitle,
-  Numbered,
   PageHeader,
   PageHeaderMeta,
   PageHeaderStatus,
@@ -28,6 +27,8 @@ import {
   SplitListItems,
   SplitMain,
   Stack,
+  Step,
+  Steps,
   StatusPill,
   TableBody,
   TableCell,
@@ -109,8 +110,8 @@ export function CaseTriage({ showing: initial = "list" }: { showing?: "list" | "
 
 function CaseHeader({ record }: { record: CaseRow }) {
   return (
-    <PageHeader>
-      <PageHeaderTitle level={2}>{`Case ${record.n} · ${record.title}`}</PageHeaderTitle>
+    <PageHeader level={2}>
+      <PageHeaderTitle>{`Case ${record.n} · ${record.title}`}</PageHeaderTitle>
       <PageHeaderStatus>
         <SeverityMark
           level={record.severity}
@@ -225,13 +226,13 @@ function CaseFour({ record }: { record: CaseRow }) {
       </Panel>
 
       <Panel label="Next steps" title="What the playbook asks for" heading={3}>
-        <div>
+        <Steps variant="list" tone="ruled">
           {caseFour.steps.map((step, i) => (
-            <Numbered key={step} index={String(i + 1).padStart(2, "0")} variant="row">
+            <Step key={step} index={String(i + 1).padStart(2, "0")}>
               {step}
-            </Numbered>
+            </Step>
           ))}
-        </div>
+        </Steps>
       </Panel>
     </>
   );

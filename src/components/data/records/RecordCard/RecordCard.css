@@ -122,14 +122,6 @@
     justify-content: flex-end;
   }
 
-  .di-record-specs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--di-gap-4) var(--di-gap-16);
-    font-size: var(--di-font-size-300);
-    color: var(--di-text-muted);
-  }
-
   .di-record-lines {
     display: flex;
     flex-direction: column;

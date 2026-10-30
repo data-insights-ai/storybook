@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { axisRange, fromPeriods, needsYear } from "./PeriodTimeline";
+import { axisRange, needsYear } from "./PeriodTimeline";
 
 const at = (iso: string) => Date.parse(iso);
 
@@ -35,24 +35,5 @@ describe("axisRange", () => {
       { id: "a", label: "Pro", spans: [{ start: "2026-10-22", end: "2027-05-10", graceEnd: "2027-05-24" }] },
     ];
     expect(axisRange(rows, { at: "2026-10-01" })).toEqual({ start: at("2026-10-01"), end: at("2027-05-24") });
-  });
-});
-
-describe("fromPeriods", () => {
-  it("moves each earlier period onto one row with one span, and today onto the marker", () => {
-    const moved = fromPeriods(
-      [{ id: "a", label: "Pro", start: "2026-10-22", end: "2027-05-10", tone: "ok", caption: "valid" }],
-      "2026-10-22",
-      "Today",
-    );
-    expect(moved.rows).toEqual([
-      {
-        id: "a",
-        label: "Pro",
-        caption: "valid",
-        spans: [{ start: "2026-10-22", end: "2027-05-10", graceEnd: undefined, tone: "ok" }],
-      },
-    ]);
-    expect(moved.marker).toEqual({ at: "2026-10-22", label: "Today" });
   });
 });
