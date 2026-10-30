@@ -11,6 +11,10 @@ import "./ChartCard.css";
  *
  * Cards sit in a `Grid`; `wide` spans two columns for a chart that needs
  * the width, such as usage per day.
+ *
+ * @deprecated Removed in 0.12.0. Use `<Panel title heading={3}>` with the
+ * figure and the chart as its content, `wide` for the full row, and the link
+ * in `PanelActions`.
  */
 export function ChartCard({
   title,
@@ -52,12 +56,20 @@ export function ChartCard({
   );
 }
 
-/** The link beside the title: a `TextLink` to the page behind the figure. */
+/**
+ * The link beside the title: a `TextLink` to the page behind the figure.
+ *
+ * @deprecated Removed in 0.12.0. Use `PanelActions` with the `TextLink` in a `Panel`.
+ */
 export function ChartCardAction({ children }: { children: ReactNode }) {
   return <span className="di-chart-card-action">{children}</span>;
 }
 
-/** Dashboard cards in columns: two on a laptop, one on a phone. */
+/**
+ * Dashboard cards in columns: two on a laptop, one on a phone.
+ *
+ * @deprecated Removed in 0.12.0. Use `Grid` with a `min` and `Panel`s in it.
+ */
 export function ChartCardGrid({ children }: { children: ReactNode }) {
   return <div className="di-chart-card-grid">{children}</div>;
 }

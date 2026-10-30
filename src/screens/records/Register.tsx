@@ -26,8 +26,8 @@ import {
   Pagination,
   SealValue,
   SearchField,
-  Sheet,
-  SheetFooter,
+  Dialog,
+  DialogFooter,
   StatTile,
   StatTileDelta,
   StatusPill,
@@ -278,7 +278,7 @@ export function RegisterScreen() {
           ))}
         </TableBody>
       </DataTable>
-      <Sheet
+      <Dialog
         open={selected !== null}
         onClose={() => setOpen(null)}
         eyebrow="Source · WS-01"
@@ -286,11 +286,11 @@ export function RegisterScreen() {
         closeLabel={`Close the detail for ${selected?.host ?? "the source"}`}
       >
         {selected ? <SourceFacts source={selected} /> : null}
-        <SheetFooter>
+        <DialogFooter>
           <Button variant="secondary">Open log</Button>
           <Button variant="primary">{selected?.state === "ok" ? "Seal now" : "Resume"}</Button>
-        </SheetFooter>
-      </Sheet>
+        </DialogFooter>
+      </Dialog>
     </Page>
   );
 }

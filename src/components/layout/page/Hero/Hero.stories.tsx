@@ -17,7 +17,7 @@ const activity = counts.map((detections, i) => ({
 const meta = {
   title: "Layout/Page/Hero",
   component: Hero,
-  tags: ["layer:block", "autodocs"],
+  tags: ["layer:block", "autodocs", "status:deprecated"],
   args: {
     label: "Detections · last 7 days",
     title: "Three bursts this week, the largest on 9 October",
@@ -36,6 +36,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
+ * Deprecated: removed in 0.12.0; write `Panel surface="hero"` (`Layout/Page/Panel` → Hero).
  * The page's signature visual on navy: the one figure beside it, the chart,
  * and the supporting figures as its footer.
  */

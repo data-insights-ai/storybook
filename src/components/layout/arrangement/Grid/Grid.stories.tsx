@@ -68,17 +68,19 @@ export const Panels: Story = {
   ),
 };
 
-/** Short fields side by side at 16, the form's rhythm; on a phone they stack. */
+/** Short fields side by side at 16, the form's rhythm, inside the panel that holds them; on a phone they stack. */
 export const Fields: Story = {
   args: { min: "220px", gap: 16 },
   render: (args) => (
-    <Grid {...args}>
-      <TextField id="grid-rate" type="number" label="Requests per minute" defaultValue="60" />
-      <Select id="grid-severity" label="Lowest severity" mono={false} defaultValue="high">
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-        <option value="critical">Critical</option>
-      </Select>
-    </Grid>
+    <Panel title="Rate limit">
+      <Grid {...args}>
+        <TextField id="grid-rate" type="number" label="Requests per minute" defaultValue="60" />
+        <Select id="grid-severity" label="Lowest severity" mono={false} defaultValue="high">
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="critical">Critical</option>
+        </Select>
+      </Grid>
+    </Panel>
   ),
 };

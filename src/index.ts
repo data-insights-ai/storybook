@@ -70,7 +70,8 @@ export { CopyValue } from "./components/actions/CopyValue";
 export { CreateFlow } from "./components/overlays/CreateFlow";
 export { ConfirmActions, ConfirmPanel } from "./components/inference/ConfirmPanel";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/compare/CoverageMatrix";
-export { DangerAction, DangerZone } from "./components/feedback/DangerZone";
+export { DangerZone } from "./components/feedback/DangerZone";
+export { Dialog, DialogFooter, type DialogProps } from "./components/overlays/Dialog";
 export type {
   CoverageMatrixColumn,
   CoverageMatrixMark,
@@ -92,7 +93,13 @@ export {
   TableToolbar,
 } from "./components/data/table/DataTable";
 export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/page/DetailSection";
-export { Disclosure, DisclosureLead } from "./components/layout/folding/Disclosure";
+export {
+  Disclosure,
+  DisclosureDetail,
+  DisclosureGroup,
+  DisclosureLead,
+  DisclosureMeta,
+} from "./components/layout/folding/Disclosure";
 export { Distribution } from "./components/charts/compare/Distribution";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
 export { EventTimeline, EventTimelineMeta, EventTimelineReadout } from "./components/timeline/EventTimeline";
@@ -127,7 +134,7 @@ export type {
 } from "./components/timeline/types";
 export { ExplainFooter, ExplainIgnored, ExplainPanel, ExplainRow } from "./components/inference/ExplainPanel";
 export { Fact, FactList } from "./components/data/records/FactList";
-export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/overlays/Flyout";
+export { Flyout, FlyoutFooter, FlyoutItem, FlyoutItems, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/field/Field";
 export { FieldHint } from "./components/forms/field/FieldHint";
 export { FieldLabel } from "./components/forms/field/FieldLabel";
@@ -180,13 +187,16 @@ export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle }
 export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/sequence/Pagination";
 export {
+  DangerAction,
   Panel,
   PanelActions,
+  PanelFigure,
   PanelFooter,
   PanelLead,
   PanelMeta,
   PanelNote,
   PanelStatus,
+  PanelVisual,
 } from "./components/layout/page/Panel";
 export { PrivacyBadge } from "./components/inference/PrivacyBadge";
 export { Progress } from "./components/feedback/waiting/Progress";
@@ -250,7 +260,16 @@ export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
 export { SkeletonPage } from "./components/feedback/waiting/SkeletonPage";
 export type { SkeletonPageVariant } from "./components/feedback/waiting/SkeletonPage";
 export { Sparkline } from "./components/charts/time/Sparkline";
-export { Split, SplitAside, SplitMain } from "./components/layout/panes/Split";
+export {
+  Split,
+  SplitAside,
+  SplitBack,
+  SplitList,
+  SplitListHead,
+  SplitListItem,
+  SplitListItems,
+  SplitMain,
+} from "./components/layout/panes/Split";
 export { Spinner } from "./components/feedback/waiting/Spinner";
 export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/page/Stage";
 export { Stat, StatRow } from "./components/data/figures/Stat";

@@ -5,7 +5,6 @@ import {
   ConfirmDialog,
   CopyValue,
   DangerAction,
-  DangerZone,
   DetailSection,
   DetailSectionForm,
   Fact,
@@ -17,6 +16,8 @@ import {
   PageHeaderFacts,
   PageHeaderStatus,
   PageHeaderTitle,
+  Panel,
+  PanelLead,
   SaveBar,
   StatusPill,
   Switch,
@@ -112,7 +113,8 @@ export function DetailPageScreen() {
           ) : null}
         </DetailSection>
 
-        <DangerZone title="Danger zone" lede="These actions remove access and cannot be undone.">
+        <Panel tone="danger" heading={2} title="Danger zone">
+          <PanelLead>These actions remove access and cannot be undone.</PanelLead>
           <DangerAction
             title="Leave organization"
             body="You lose access to this organization and its products at once."
@@ -130,7 +132,7 @@ export function DetailPageScreen() {
               Delete organization
             </Button>
           </DangerAction>
-        </DangerZone>
+        </Panel>
       </Page>
       <ConfirmDialog
         open={confirm}

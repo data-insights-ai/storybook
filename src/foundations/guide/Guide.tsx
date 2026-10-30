@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { PageHeader, PageHeaderTitle } from "../../components/layout/page/PageHeader";
-import { SectionTitle, SectionTitleHeading } from "../../components/layout/page/SectionTitle";
 import logo from "../../assets/logo.svg";
 import mark from "../../assets/mark.svg";
 import "./Guide.css";
@@ -13,7 +12,7 @@ import "./Guide.css";
  * The page shell and the section heading are not specimen. They were the
  * marketing vocabulary drawn a second time, in a stylesheet no product can
  * import — so a page assembled from the package could not reach them and
- * had to approximate them. They are `PageHeader` and `SectionTitle` at
+ * had to approximate them. They are `PageHeader` (level 1 and 2) at
  * `tier="brand"` now, and these two wrappers only supply the landmark and
  * the measure.
  */
@@ -63,9 +62,9 @@ export function Section({
 }) {
   return (
     <section className="di-guide-section">
-      <SectionTitle tier="brand" eyebrow={eyebrow} lede={lede}>
-        <SectionTitleHeading>{title}</SectionTitleHeading>
-      </SectionTitle>
+      <PageHeader level={2} tier="brand" eyebrow={eyebrow} lede={lede}>
+        <PageHeaderTitle>{title}</PageHeaderTitle>
+      </PageHeader>
       {children}
     </section>
   );

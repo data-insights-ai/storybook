@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fireEvent, fn, userEvent, waitFor, within } from "storybook/test";
 import { ComboBox } from "./ComboBox";
 import { Button } from "../../../actions/Button";
-import { Modal, ModalContent, ModalFooter, ModalTitle } from "../../../overlays/Modal";
+import { Dialog, DialogFooter } from "../../../overlays/Dialog";
 
 const suggestions = [
   { value: "NR-01", label: "Northern register" },
@@ -372,17 +372,14 @@ export const InDialog: Story = {
     return (
       <>
         <Button onClick={() => setOpen(true)}>Review code</Button>
-        <Modal open={open} labelledBy="review-code-title" onClose={() => setOpen(false)}>
-          <ModalContent>
-            <ModalTitle id="review-code-title">Review the register code</ModalTitle>
-            <ComboBox {...args} value={value} onValueChange={setValue} />
-          </ModalContent>
-          <ModalFooter>
+        <Dialog placement="center" open={open} title="Review the register code" onClose={() => setOpen(false)}>
+          <ComboBox {...args} value={value} onValueChange={setValue} />
+          <DialogFooter>
             <Button variant="secondary" onClick={() => setOpen(false)}>
               Cancel review
             </Button>
-          </ModalFooter>
-        </Modal>
+          </DialogFooter>
+        </Dialog>
       </>
     );
   },

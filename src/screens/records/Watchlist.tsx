@@ -23,9 +23,6 @@ import {
   RecordLines,
   RecordMark,
   RecordStatus,
-  SectionTitle,
-  SectionTitleHeading,
-  SectionTitleMeta,
   Stack,
   StatusPill,
   TableBody,
@@ -169,10 +166,10 @@ export function WatchlistScreen() {
         </Notice>
 
         <section>
-          <SectionTitle lede="Name variants, domains, and identifiers currently under audit.">
-            <SectionTitleHeading>Active watch rules</SectionTitleHeading>
-            <SectionTitleMeta>8 entries active</SectionTitleMeta>
-          </SectionTitle>
+          <PageHeader level={2} lede="Name variants, domains, and identifiers currently under audit.">
+            <PageHeaderTitle>Active watch rules</PageHeaderTitle>
+            <PageHeaderMeta>8 entries active</PageHeaderMeta>
+          </PageHeader>
           <DataTable caption="Active watch rules">
             <TableFooter>
               <span>8 of 8 entries active · Last sync 5 minutes ago</span>

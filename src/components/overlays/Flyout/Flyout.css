@@ -8,7 +8,13 @@
     display: inline-flex;
   }
 
+  /*
+   * One plane, lifted by its shadow: the title, the body and the footer are
+   * rows of it at one inset, with no band under the title and none under
+   * the footer.
+   */
   .di-flyout {
+    --di-flyout-inset: var(--di-inset-group);
     position: absolute;
     top: calc(100% + var(--di-space-4));
     right: 0;
@@ -17,7 +23,6 @@
     flex-direction: column;
     width: min(var(--di-flyout-width), calc(100vw - var(--di-space-32)));
     max-height: min(var(--di-flyout-max-height), calc(100dvh - var(--di-space-96)));
-    border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
     box-shadow: var(--di-shadow-plane);
@@ -38,12 +43,19 @@
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .di-flyout {
+      animation: none;
+    }
+  }
+
+  /* The panel's name is a heading: the display face, its one bold line. */
   .di-flyout-title {
     margin: 0;
-    padding: var(--di-space-12) var(--di-inset-group);
-    border-bottom: 1px solid var(--di-border);
-    font-size: var(--di-font-size-500);
-    font-weight: var(--di-weight-medium);
+    padding: var(--di-flyout-inset) var(--di-flyout-inset) 0;
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
   }
 
@@ -52,9 +64,13 @@
     flex-direction: column;
     gap: var(--di-gap-12);
     min-height: 0;
-    padding: var(--di-space-12) var(--di-inset-group);
+    padding: var(--di-gap-8) var(--di-flyout-inset);
     overflow-y: auto;
     overscroll-behavior: contain;
+  }
+
+  .di-flyout-body:last-child {
+    padding-bottom: var(--di-flyout-inset);
   }
 
   .di-flyout-footer {
@@ -63,8 +79,76 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--di-gap-8);
-    padding: var(--di-space-8) var(--di-inset-group);
-    border-top: 1px solid var(--di-border);
-    background: var(--di-bg-page);
+    padding: var(--di-gap-8) var(--di-flyout-inset) var(--di-flyout-inset);
+  }
+
+  /*
+   * Each entry starts at the heading's edge with its dot column; its hover
+   * tint reaches a step beyond, as an option row's does in a menu.
+   */
+  .di-flyout-items {
+    margin: 0 calc(-1 * var(--di-gap-4));
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-flyout-item {
+    --di-flyout-mark: var(--di-space-8);
+    display: grid;
+    grid-template-columns: var(--di-flyout-mark) minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: var(--di-gap-8);
+    width: 100%;
+    min-height: var(--di-row-h);
+    padding: var(--di-gap-8) var(--di-gap-4);
+    border: 0;
+    border-radius: var(--di-radius-micro);
+    background: transparent;
+    color: var(--di-text);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .di-flyout-item:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: -2px;
+  }
+
+  /* The dot sits on the centre of the title's first line. */
+  .di-flyout-item-mark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: start;
+    height: calc(var(--di-font-size-400) * var(--di-leading-snug));
+  }
+
+  .di-flyout-item-dot {
+    width: var(--di-mark-dot);
+    height: var(--di-mark-dot);
+    border-radius: 50%;
+    background: var(--di-text);
+  }
+
+  .di-flyout-item-title {
+    min-width: 0;
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-regular);
+    line-height: var(--di-leading-snug);
+    text-wrap: pretty;
+  }
+
+  .di-flyout-item.is-unread .di-flyout-item-title {
+    font-weight: var(--di-weight-semibold);
+  }
+
+  .di-flyout-item-time {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--di-text-subtle);
   }
 }

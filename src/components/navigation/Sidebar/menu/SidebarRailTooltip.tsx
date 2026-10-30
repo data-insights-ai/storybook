@@ -1,9 +1,8 @@
 import type { ReactElement } from "react";
-import { Tooltip } from "@base-ui/react/tooltip";
-import { Badge } from "../../../marks/Badge";
+import { Tooltip } from "../../../feedback/Tooltip";
 import type { BadgeTone } from "./badgeTone";
-import "../../../feedback/Tooltip/Tooltip.css";
 
+/* Loaded only when the rail collapses, so an expanded sidebar ships no tooltip code. */
 export default function SidebarRailTooltip({
   label,
   badge,
@@ -16,16 +15,8 @@ export default function SidebarRailTooltip({
   children: ReactElement;
 }) {
   return (
-    <Tooltip.Root>
-      <Tooltip.Trigger render={children} />
-      <Tooltip.Portal>
-        <Tooltip.Positioner side="right" sideOffset={12} className="di-sb-tooltip">
-          <Tooltip.Popup className="di-tooltip">
-            {label}
-            {badge ? <Badge tone={badgeTone}>{badge}</Badge> : null}
-          </Tooltip.Popup>
-        </Tooltip.Positioner>
-      </Tooltip.Portal>
-    </Tooltip.Root>
+    <Tooltip label={label} side="right" badge={badge ?? ""} badgeTone={badgeTone}>
+      {children}
+    </Tooltip>
   );
 }

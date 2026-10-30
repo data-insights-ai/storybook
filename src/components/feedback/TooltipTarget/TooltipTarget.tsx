@@ -1,4 +1,5 @@
-import { useId, useRef } from "react";
+import { useId } from "react";
+import { cx } from "../../../internal/cx";
 import { Tooltip } from "../Tooltip";
 import "./TooltipTarget.css";
 
@@ -7,10 +8,11 @@ import "./TooltipTarget.css";
  * an abbreviation. The term inherits the type it sits in, so an id in a
  * mono cell stays mono.
  *
- * The label opens in the top layer, so a table's scroll frame does not
- * clip it, and Escape closes it. It is never the only place the fact
- * lives: the screen spells the term out somewhere a reader reaches
- * without hovering.
+ * Drawn by `Tooltip`, so the label opens in the top layer, a table's scroll
+ * frame does not clip it, and Escape closes it. A screen reader hears the
+ * label as the term's description. It is never the only place the fact
+ * lives: the screen spells the term out somewhere a reader reaches without
+ * hovering.
  */
 export function TooltipTarget({
   text,
@@ -24,48 +26,17 @@ export function TooltipTarget({
   className?: string;
 }) {
   const id = useId();
-  const target = useRef<HTMLSpanElement>(null);
-  const tip = useRef<HTMLSpanElement>(null);
-
-  const hide = () => {
-    if (tip.current?.matches(":popover-open")) tip.current.hidePopover();
-    window.removeEventListener("scroll", hide, true);
-  };
-
-  const show = () => {
-    const anchor = target.current;
-    const popup = tip.current;
-    if (!anchor || !popup || popup.matches(":popover-open")) return;
-    popup.showPopover();
-    // The popup's own padding is the gap, so the pointer can cross onto it.
-    const a = anchor.getBoundingClientRect();
-    const p = popup.getBoundingClientRect();
-    popup.style.top = `${a.top >= p.height ? a.top - p.height : a.bottom}px`;
-    popup.style.left = `${Math.max(0, Math.min(a.left, window.innerWidth - p.width))}px`;
-    // Placed once, in viewport coordinates: a scroll would leave it behind.
-    window.addEventListener("scroll", hide, true);
-  };
-
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- a term the keyboard reaches so its label opens on focus, as on hover (WCAG 1.4.13)
-    <span
-      ref={target}
-      className={["di-tooltip-target", className].filter(Boolean).join(" ")}
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- focus opens the label, as hover does
-      tabIndex={0}
-      aria-describedby={id}
-      onMouseEnter={show}
-      onMouseLeave={hide}
-      onFocus={show}
-      onBlur={hide}
-      onKeyDown={(event) => {
-        if (event.key === "Escape") hide();
-      }}
-    >
-      {text}
-      <span ref={tip} id={id} className="di-tooltip-target-popup" popover="manual">
-        <Tooltip>{label}</Tooltip>
+    <>
+      <Tooltip label={label}>
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- focus opens the label, as hover does (WCAG 1.4.13) */}
+        <span className={cx("di-tooltip-target", className)} tabIndex={0} aria-describedby={id}>
+          {text}
+        </span>
+      </Tooltip>
+      <span id={id} hidden>
+        {label}
       </span>
-    </span>
+    </>
   );
 }
