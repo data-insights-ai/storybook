@@ -33,6 +33,16 @@ const meta = {
     file: { control: false },
     onFileChange: { control: false },
   },
+  decorators: [
+    (Story, { parameters }) =>
+      parameters.measure === false ? (
+        <Story />
+      ) : (
+        <div style={{ maxWidth: 480 }}>
+          <Story />
+        </div>
+      ),
+  ],
   render: function Render(args) {
     const [file, setFile] = useState<File>();
     return <FileField {...args} file={file} onFileChange={setFile} />;
@@ -98,11 +108,26 @@ export const WithError: Story = {
   },
 };
 
+/** A chosen file: one row with its name, its size and the way to remove it. */
+export const Chosen: Story = {
+  args: { required: true },
+  render: function Render(args) {
+    const [file, setFile] = useState<File | undefined>(certificate);
+    return <FileField {...args} file={file} onFileChange={setFile} />;
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("collector-eu-west.pem")).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Remove file: collector-eu-west.pem" })).toBeVisible();
+  },
+};
+
 export const Disabled: Story = {
   args: { disabled: true },
 };
 
 export const InAToolbar: Story = {
+  parameters: { measure: false },
   render: function Render(args) {
     const [file, setFile] = useState<File>();
     return (

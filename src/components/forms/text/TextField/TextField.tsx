@@ -2,6 +2,7 @@ import type { InputHTMLAttributes, ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import "../../field/Field/Field.css";
 
 /**
@@ -54,12 +55,9 @@ export function TextField({
 
   return (
     <div className={cx("di-field", className)}>
-      <div className={cx("di-field-row", hideLabel && "di-sr")}>
-        <label className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
-          {label}
-        </label>
+      <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required}>
         {children}
-      </div>
+      </FieldLabel>
       <input
         id={id}
         className={cx("di-control", mono && "di-control-mono")}

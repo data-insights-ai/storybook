@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import "../../field/Field/Field.css";
 import "./TokenField.css";
 
@@ -28,6 +29,7 @@ export function TokenField({
   labelTrack = "record",
   placeholder = "",
   disabled = false,
+  required = false,
   maxLength = 320,
 }: {
   id: string;
@@ -44,6 +46,8 @@ export function TokenField({
   labelTrack?: LabelTrack;
   placeholder?: string;
   disabled?: boolean;
+  /** At least one entry is needed; marks the label. */
+  required?: boolean;
   /** The longest one entry may be. */
   maxLength?: number;
 }) {
@@ -85,11 +89,7 @@ export function TokenField({
 
   return (
     <div className="di-field">
-      <div className="di-field-row">
-        <label className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
-          {label}
-        </label>
-      </div>
+      <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} required={required} />
       <div className={cx("di-token-field", invalid && "is-invalid", disabled && "is-disabled")}>
         <ul className="di-token-list">
           {values.map((value) => {
@@ -120,6 +120,7 @@ export function TokenField({
           maxLength={maxLength}
           autoComplete="off"
           aria-invalid={invalid || undefined}
+          aria-required={required || undefined}
           aria-describedby={hint === "" ? undefined : `${id}-hint`}
           onChange={(event) => setDraft(event.target.value)}
           onKeyDown={keyDown}

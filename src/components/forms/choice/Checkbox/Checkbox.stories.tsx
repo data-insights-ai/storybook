@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { Checkbox } from "./Checkbox";
 import { ChoiceGroup } from "../ChoiceGroup";
 
@@ -69,7 +69,8 @@ export const DisabledChecked: Story = {
   play: async ({ args, canvasElement, globals }) => {
     const canvas = within(canvasElement);
     if (globals.theme === "dark") {
-      await waitFor(() => expect(canvasElement.ownerDocument.documentElement).toHaveAttribute("data-theme", "dark"));
+      // Storybook’s own preview sets the theme only after the play has run, so the play sets it first.
+      canvasElement.ownerDocument.documentElement.dataset.theme = "dark";
     }
     const checkbox = canvas.getByRole("checkbox", { name: "Seal on ingest" });
     await expect(checkbox).toBeDisabled();

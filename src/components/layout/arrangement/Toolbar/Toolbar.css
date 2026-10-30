@@ -28,6 +28,11 @@
     min-width: 0;
   }
 
+  /* A hidden label leaves the flow, so the control would take the label's row. */
+  .di-toolbar:has(> .di-field) > .di-field > .di-sr:first-child + * {
+    grid-row: 2;
+  }
+
   .di-toolbar:has(> .di-field) > :not(.di-field) {
     grid-row: 2;
   }

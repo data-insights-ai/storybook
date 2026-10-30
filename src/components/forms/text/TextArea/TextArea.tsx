@@ -2,6 +2,7 @@ import type { ReactNode, TextareaHTMLAttributes } from "react";
 import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import "../../field/Field/Field.css";
 import "./TextArea.css";
 
@@ -16,6 +17,8 @@ export function TextArea({
   hintTone = "neutral",
   labelTrack = "record",
   mono = false,
+  hideLabel = false,
+  required = false,
   className,
   children,
   ...props
@@ -26,21 +29,22 @@ export function TextArea({
   hintTone?: HintTone;
   labelTrack?: LabelTrack;
   mono?: boolean;
+  /** Keeps the label for assistive technology only. */
+  hideLabel?: boolean;
+  required?: boolean;
   /** Slot beside the label, for example a file picker. */
   children?: ReactNode;
 } & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, "children">) {
   const invalid = hint !== "" && hintTone === "error";
   return (
     <div className={cx("di-field", className)}>
-      <div className="di-field-row">
-        <label className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
-          {label}
-        </label>
+      <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required}>
         {children}
-      </div>
+      </FieldLabel>
       <textarea
         id={id}
         className={cx("di-control", mono && "di-control-mono")}
+        required={required}
         aria-invalid={invalid || undefined}
         aria-describedby={hint === "" ? undefined : `${id}-hint`}
         {...props}

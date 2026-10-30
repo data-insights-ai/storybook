@@ -1,56 +1,13 @@
 @layer components {
-  .di-switch-row {
-    display: flex;
-    align-items: flex-start;
-    font-size: var(--di-font-size-400);
-    line-height: var(--di-leading-snug);
-  }
-
-  /* Control first, one gap, then the title — the checkbox's geometry. */
-  .di-switch-row.is-inline {
-    gap: var(--di-space-8);
-  }
-
   /*
    * The control rides the trailing edge so a column of switches lines up.
    * The space between is the column, not slack, which is why it only
    * appears in this layout.
    */
   .di-switch-row.is-row {
+    flex-direction: row-reverse;
     justify-content: space-between;
     gap: var(--di-space-16);
-  }
-
-  /*
-   * One line of title tall, with the control centred on it. Same rule as
-   * the checkbox: the control sits on the middle of the first line, and a
-   * description below does not move it.
-   */
-  .di-switch-control {
-    display: flex;
-    align-items: center;
-    height: var(--di-choice-line);
-    flex: none;
-  }
-
-  .di-switch-text {
-    display: flex;
-    flex-direction: column;
-    gap: var(--di-space-2);
-    min-width: 0;
-  }
-
-  .di-switch-title {
-    font-size: var(--di-font-size-400);
-    line-height: var(--di-leading-snug);
-    color: var(--di-text);
-    cursor: pointer;
-  }
-
-  .di-switch-desc {
-    font-size: var(--di-font-size-300);
-    line-height: var(--di-leading-snug);
-    color: var(--di-text-subtle);
   }
 
   .di-switch {
@@ -62,8 +19,13 @@
     border: 1px solid var(--di-border-input);
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-subtle);
+    cursor: pointer;
     transition: background-color var(--di-duration) var(--di-ease),
       border-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-switch:hover:not(:disabled) {
+    border-color: var(--di-text);
   }
 
   .di-switch.is-on {
@@ -71,6 +33,7 @@
     background: var(--di-fill-strong);
   }
 
+  /* Off, the thumb is drawn in the border's ink, so it reads on the track in both themes. */
   .di-switch-thumb {
     position: absolute;
     top: 2px;
@@ -78,7 +41,7 @@
     width: 14px;
     height: 14px;
     border-radius: var(--di-radius-pill);
-    background: var(--di-bg-surface);
+    background: var(--di-border-input);
     transition: transform var(--di-duration) var(--di-ease);
   }
 
@@ -93,8 +56,25 @@
     background: var(--di-bg-disabled);
   }
 
-  .di-switch-row.is-disabled .di-switch-title,
-  .di-switch-row.is-disabled .di-switch-desc {
-    color: var(--di-text-disabled);
+  .di-switch:disabled .di-switch-thumb {
+    background: var(--di-border-strong);
+  }
+
+  /* Disabled and on still reads as on: the track keeps a fill, in the disabled ink. */
+  .di-switch.is-on:disabled {
+    border-color: var(--di-text-disabled);
+    background: var(--di-text-disabled);
+  }
+
+  .di-switch.is-on:disabled .di-switch-thumb {
+    background: var(--di-bg-disabled);
+  }
+
+  @media (pointer: coarse) {
+    .di-switch::after {
+      content: "";
+      position: absolute;
+      inset: -11px -3px;
+    }
   }
 }

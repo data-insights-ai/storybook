@@ -41,7 +41,7 @@
   }
 
   .di-quantity-step:hover:not(:disabled) {
-    border-color: var(--di-border-strong);
+    border-color: var(--di-field-border-hover);
     color: var(--di-text);
   }
 

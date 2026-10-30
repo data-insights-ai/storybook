@@ -136,6 +136,11 @@
     color: var(--di-text-disabled);
   }
 
+  .di-choice.is-disabled .di-choice-label,
+  .di-choice.is-disabled .di-choice-input {
+    cursor: not-allowed;
+  }
+
   .di-choice-text {
     display: flex;
     flex-direction: column;
@@ -154,11 +159,21 @@
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-subtle);
+    text-wrap: pretty;
   }
 
   /* Without a visible label the box takes no more room than itself. */
   .di-choice.is-bare {
     display: inline-flex;
     gap: 0;
+  }
+
+  /* On a touch screen the input itself grows to a 40px target round the mark. */
+  @media (pointer: coarse) {
+    .di-choice-input {
+      inset: calc((var(--di-choice-mark) - var(--di-h-row)) / 2);
+      width: auto;
+      height: auto;
+    }
   }
 }

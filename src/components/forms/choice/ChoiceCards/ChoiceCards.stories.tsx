@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Cloud, Database, FileText, Mail, MessageSquare, Server, Shield, Webhook } from "lucide-react";
+import { Cloud, Database, FileText, Info, Mail, MessageSquare, Server, Shield, Webhook } from "lucide-react";
 import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
-import { Notice, NoticeTitle } from "../../../feedback/Notice";
+import { Notice, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../../../feedback/Notice";
 import { ChoiceCards } from "./ChoiceCards";
 
 const meta = {
@@ -139,8 +139,15 @@ export const WithGuide: StoryObj<typeof meta> = {
         planned={{ label: "Coming later", options: [{ value: "syslog", label: "Syslog", icon: <Server /> }] }}
       >
         <Notice>
-          <NoticeTitle>Before you continue</NoticeTitle>
-          {guides[value]}
+          <NoticeIcon>
+            <Info />
+          </NoticeIcon>
+          <NoticeText>
+            <div>
+              <NoticeTitle>Before you continue</NoticeTitle>
+              <NoticeBody>{guides[value]}</NoticeBody>
+            </div>
+          </NoticeText>
         </Notice>
       </ChoiceCards>
     );

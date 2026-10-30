@@ -2,6 +2,7 @@ import { useId, type ReactNode } from "react";
 import { Clock } from "lucide-react";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { SegmentedInput, emptySegmentLabels } from "../segments";
 import "../../field/Field/Field.css";
@@ -61,12 +62,9 @@ export function TimeField({
   const describedBy = hint === "" ? undefined : `${id}-hint`;
   return (
     <div className={cx("di-field", "di-time-field", className)}>
-      <div className={cx("di-field-row", hideLabel && "di-sr")}>
-        <span id={labelId} className={cx("di-field-label", `di-field-label-${labelTrack}`)}>
-          {label}
-        </span>
+      <FieldLabel id={labelId} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required}>
         {children}
-      </div>
+      </FieldLabel>
       <div
         id={id}
         role="group"

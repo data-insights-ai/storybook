@@ -4,6 +4,7 @@ import { cx } from "../../../../internal/cx";
 import { Button } from "../../../actions/Button";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import { Icon } from "../../../marks/Icon";
 import "../../field/Field/Field.css";
 import "./FileField.css";
@@ -129,11 +130,7 @@ export function FileField({
 
   return (
     <div ref={field} className={cx("di-field", className)}>
-      <div className="di-field-row">
-        <label id={labelId} className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
-          {label}
-        </label>
-      </div>
+      <FieldLabel id={labelId} htmlFor={id} label={label} labelTrack={labelTrack} required={required} />
       <input
         ref={input}
         id={id}

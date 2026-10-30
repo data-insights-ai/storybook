@@ -12,10 +12,12 @@
     background: var(--di-bg-subtle);
   }
 
+  /* Track and segment add up to a control height, so it lines up with a field or a button. */
   .di-segment {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    height: 24px;
+    height: calc(var(--di-h-ctl) - 2 * var(--di-space-2) - 2px);
     padding: 0 var(--di-space-12);
     border-radius: var(--di-radius-micro);
     color: var(--di-text-muted);
@@ -31,7 +33,7 @@
   .di-segment.is-active {
     background: var(--di-bg-surface);
     color: var(--di-text);
-    box-shadow: 0 1px 1px rgba(10, 31, 68, 0.08);
+    box-shadow: var(--di-elevation-surface);
   }
 
   .di-segment:has(:focus-visible) {
@@ -39,8 +41,25 @@
     outline-offset: 2px;
   }
 
+  .di-segment:hover:not(.is-active) {
+    color: var(--di-text);
+  }
+
   .di-segmented:disabled .di-segment {
     color: var(--di-text-disabled);
     cursor: not-allowed;
+  }
+
+  .di-segmented:disabled .di-segment.is-active {
+    background: var(--di-bg-disabled);
+    box-shadow: none;
+  }
+
+  @media (pointer: coarse) {
+    .di-segment::after {
+      content: "";
+      position: absolute;
+      inset: -7px 0;
+    }
   }
 }

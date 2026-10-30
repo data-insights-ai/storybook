@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
-import { Stack } from "../../../layout/arrangement/Stack";
+import { Button } from "../../../actions/Button";
+import { FieldStack } from "../../../layout/arrangement/FieldStack";
+import { Toolbar } from "../../../layout/arrangement/Toolbar";
 import { TextField } from "./TextField";
 import { TextLink } from "../../../navigation/TextLink";
 
@@ -34,6 +36,16 @@ const meta = {
     required: { control: "boolean" },
     children: { control: false },
   },
+  decorators: [
+    (Story, { parameters }) =>
+      parameters.measure === false ? (
+        <Story />
+      ) : (
+        <div style={{ maxWidth: 400 }}>
+          <Story />
+        </div>
+      ),
+  ],
 } satisfies Meta<typeof TextField>;
 
 export default meta;
@@ -94,17 +106,33 @@ export const WithLabelSlot: Story = {
   args: { id: "password", label: "Password", type: "password", placeholder: "" },
   render: (args) => (
     <TextField {...args}>
-      <TextLink quiet={true}>Forgot password?</TextLink>
+      <TextLink>Forgot password?</TextLink>
     </TextField>
   ),
 };
 
+/** The mark after the label is paint; the input's own `required` is what a screen reader hears. */
 export const Required: Story = {
-  args: { required: true, hint: "Required." },
+  args: { required: true, hint: "A host name, without a scheme or a path." },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("textbox", { name: "Source" })).toBeRequired();
+    const label = canvas.getByText("Source");
+    await expect(getComputedStyle(label, "::after").content).toContain("*");
+  },
 };
 
+/** A value to read and copy, not to change: the inset tone, no frame, full ink. */
 export const ReadOnly: Story = {
-  args: { readOnly: true, defaultValue: "registry.example.org", mono: true },
+  args: {
+    id: "workspace-id",
+    label: "Workspace ID",
+    readOnly: true,
+    defaultValue: "ws_7f3a99e2c41b",
+    mono: true,
+    placeholder: "",
+    hint: "Assigned when the workspace was created. Quote it to support.",
+  },
 };
 
 export const Disabled: Story = {
@@ -119,8 +147,9 @@ export const Disabled: Story = {
 export const AllStates: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 340 }}>
+    <FieldStack>
       <TextField id="s1" label="Default" placeholder="registry.example.org" />
+      <TextField id="s1r" label="Required" required={true} placeholder="registry.example.org" />
       <TextField id="s2" label="With hint" hint="A host name, without a scheme." />
       <TextField
         id="s3"
@@ -137,8 +166,9 @@ export const AllStates: Story = {
         hintTone="error"
         defaultValue="registry.exmaple.org"
       />
+      <TextField id="s5r" label="Read-only" readOnly={true} mono={true} defaultValue="ws_7f3a99e2c41b" />
       <TextField id="s5" label="Disabled" disabled={true} defaultValue="registry.example.org" />
-    </div>
+    </FieldStack>
   ),
 };
 
@@ -149,13 +179,13 @@ export const AllStates: Story = {
  * a 13px label still uppercase and still letterspaced is not a heavier
  * console label, it is a broken one.
  *
- * The distance between two such fields is `Stack`'s, not the field's.
+ * The distance between two such fields is `FieldStack`'s, not the field's.
  */
 export const ProseLabel: Story = {
   name: "Prose label",
   parameters: { controls: { disable: true } },
   render: () => (
-    <Stack gap={12}>
+    <FieldStack>
       <TextField
         id="account-name"
         label="Full name"
@@ -169,7 +199,7 @@ export const ProseLabel: Story = {
         hint="We only use this to send the receipt for a sealed run."
         placeholder="nora.feld@data-insights.ai"
       />
-    </Stack>
+    </FieldStack>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -177,10 +207,61 @@ export const ProseLabel: Story = {
   },
 };
 
-/** In a list toolbar the place names the field: the label stays for assistive technology only. */
+/** In a one-line add form the button names the field: the label stays for assistive technology only. */
 export const HiddenLabel: Story = {
-  args: { id: "range-from", label: "From", type: "date", hideLabel: true, hint: "" },
+  args: { id: "new-tag", label: "New tag", hideLabel: true, placeholder: "finance-eu" },
+  parameters: { measure: false },
+  render: (args) => (
+    <Toolbar fillFirst={true}>
+      <TextField {...args} />
+      <Button variant="secondary">Add tag</Button>
+    </Toolbar>
+  ),
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByLabelText("From")).toBeVisible();
+    await expect(within(canvasElement).getByRole("textbox", { name: "New tag" })).toBeVisible();
+  },
+};
+
+/**
+ * German runs a third longer than English. A label wraps under its own
+ * width and the slot beside it keeps its line; an error wraps under its
+ * icon; the required mark stays on the label's last word.
+ */
+export const German: Story = {
+  name: "German, long labels",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <FieldStack>
+      <TextField
+        id="de-endpoint"
+        label="Adresse des Ereignis-Hubs für die Weiterleitung an das Sicherheitsinformationssystem"
+        required={true}
+        placeholder="hub.beispiel.de"
+        hint="Ein Hostname ohne Schema und ohne Pfad, zum Beispiel hub.beispiel.de."
+      />
+      <TextField
+        id="de-secret"
+        label="Gemeinsamer Schlüssel des Dienstkontos"
+        type="password"
+        required={true}
+        defaultValue="geheim"
+        hint="Dieser Schlüssel ist abgelaufen. Erzeugen Sie im Ereignis-Hub einen neuen und fügen Sie ihn hier ein."
+        hintTone="error"
+      >
+        <TextLink>Schlüssel erneuern</TextLink>
+      </TextField>
+      <TextField id="de-workspace" label="Kennung des Arbeitsbereichs" readOnly={true} mono={true} defaultValue="ws_7f3a99e2c41b" />
+      <TextField
+        id="de-retention"
+        label="Aufbewahrungsfrist laut Arbeitsbereichsrichtlinie"
+        disabled={true}
+        defaultValue="30 Tage"
+        hint="Von der Richtlinie des Arbeitsbereichs festgelegt."
+      />
+    </FieldStack>
+  ),
+  play: async ({ canvasElement }) => {
+    const slot = within(canvasElement).getByRole("button", { name: "Schlüssel erneuern" });
+    await expect(slot.getBoundingClientRect().height).toBeLessThan(24);
   },
 };

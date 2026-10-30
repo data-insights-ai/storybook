@@ -123,6 +123,7 @@ export { Fact, FactList } from "./components/data/records/FactList";
 export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/field/Field";
 export { FieldHint } from "./components/forms/field/FieldHint";
+export { FieldLabel } from "./components/forms/field/FieldLabel";
 export { FieldStack } from "./components/layout/arrangement/FieldStack";
 export { InlineForm } from "./components/layout/arrangement/InlineForm";
 export { FileField } from "./components/forms/text/FileField";
