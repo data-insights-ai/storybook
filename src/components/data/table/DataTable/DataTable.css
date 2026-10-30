@@ -276,11 +276,6 @@
     background: none;
   }
 
-  .di-table tbody tr.is-danger .di-table-index {
-    background: var(--di-status-danger-bg);
-    color: var(--di-status-danger-fg);
-  }
-
   .di-table .is-end {
     text-align: right;
   }
@@ -509,10 +504,6 @@
       justify-content: flex-start;
       padding-top: var(--di-space-12) !important;
       background: none;
-    }
-
-    .di-table-wrap.is-stackable tbody tr.is-danger .di-table-index {
-      background: var(--di-status-danger-bg);
     }
 
     /* The head stays only as the row of sort controls; without one it is read, not shown. */

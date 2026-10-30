@@ -51,7 +51,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * The register extract: ordinals down the left, mono values across.
+ * The register extract: ordinals down the left, mono values across. A failed
+ * row reads like any other: its State column says "failed", nothing else on
+ * the row is tinted.
  *
  * Written out in full rather than through the helper the variants use, so
  * Show code carries the composition itself. There is no `rows` prop, so
@@ -70,7 +72,7 @@ export const Default: Story = {
       </TableHead>
       <TableBody>
         {sources.map((row) => (
-          <TableRow key={row.ordinal} tone={row.state === "danger" ? "danger" : "neutral"}>
+          <TableRow key={row.ordinal}>
             <TableIndex>{row.ordinal}</TableIndex>
             <TableCell>
               <CellLead>
@@ -102,6 +104,9 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("table", { name: "Sources on record" })).toBeVisible();
     await expect(canvas.getAllByRole("row")).toHaveLength(6);
+    const look = (cell: Element) => `${getComputedStyle(cell).backgroundColor} ${getComputedStyle(cell).color}`;
+    const ordinals = [...canvasElement.querySelectorAll("tbody .di-table-index")].map(look);
+    await expect(new Set(ordinals).size).toBe(1);
   },
 };
 
@@ -488,7 +493,7 @@ export const Stacked: Story = {
         </TableHead>
         <TableBody>
           {events.map((row) => (
-            <TableRow key={row.ordinal} tone={row.state === "danger" ? "danger" : "neutral"}>
+            <TableRow key={row.ordinal}>
               <TableIndex>{row.ordinal}</TableIndex>
               <TableCell mono={true}>{row.at}</TableCell>
               <TableCell>

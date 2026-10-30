@@ -32,8 +32,9 @@ import "./DataTable.css";
  * (count, pages).
  *
  * **States:** empty (`TableEmpty` keeps the head; the footer goes, it would only count nothing), the
- * row an open pane shows (`TableRow active`), a failed row
- * (`tone="danger"` tints its ordinal), loading (`Loading shape="table"` in its
+ * row an open pane shows (`TableRow active`, the only state on a row's
+ * leading edge), a failed row (its State column says so, like any other
+ * state), loading (`Loading shape="table"` in its
  * place).
  *
  * **Content:** a column head is one or two words; identifiers, times and
@@ -436,14 +437,17 @@ export function TableBody({ children }: { children: ReactNode }) {
 export function TableRow({
   children,
   active = false,
-  tone = "neutral",
   onSelect,
   rowIndex,
   ref,
 }: {
   children: ReactNode;
   active?: boolean;
-  /** `danger` tints the ordinal, for a row that failed. */
+  /**
+   * @deprecated Since 0.11 it draws nothing; removed in 0.12. A row's state is
+   * its State column (`StatusPill` or `SeverityMark` with a word), the same for
+   * every state; the leading edge is only the current row's.
+   */
   tone?: "neutral" | "danger";
   onSelect?: () => void;
   /**
@@ -462,11 +466,7 @@ export function TableRow({
       role={role}
       data-index={rowIndex}
       aria-rowindex={rowIndex === undefined ? undefined : rowIndex + 2}
-      className={cx(
-        active && "is-active di-row-current",
-        tone === "danger" && "is-danger",
-        onSelect && "is-selectable",
-      )}
+      className={cx(active && "is-active di-row-current", onSelect && "is-selectable")}
       onClick={
         onSelect
           ? (event) => {
