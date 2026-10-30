@@ -37,7 +37,8 @@ type Story = StoryObj<typeof meta>;
 /**
  * A control a product draws itself takes the same row above it and the
  * same line under it, so it reads as one of the fields beside it. Without
- * `htmlFor` the label is a span the control names itself by.
+ * `htmlFor` the label is a span the control names itself by. A native
+ * control (here a range) fills in the selection colour in either theme.
  */
 export const OwnControl: Story = {
   name: "Own control",
@@ -46,6 +47,7 @@ export const OwnControl: Story = {
       <FieldLabel {...args} id="floor-label" />
       <input
         type="range"
+        style={{ width: "100%" }}
         aria-labelledby="floor-label"
         aria-describedby="floor-hint"
         min={1}
@@ -58,7 +60,14 @@ export const OwnControl: Story = {
     </div>
   ),
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByRole("slider", { name: "Severity floor" })).toBeVisible();
+    const slider = within(canvasElement).getByRole("slider", { name: "Severity floor" });
+    await expect(slider).toBeVisible();
+    const select = getComputedStyle(canvasElement).getPropertyValue("--di-select").trim();
+    const probe = canvasElement.ownerDocument.createElement("i");
+    probe.style.color = select;
+    canvasElement.append(probe);
+    await expect(getComputedStyle(slider).accentColor).toBe(getComputedStyle(probe).color);
+    probe.remove();
   },
 };
 
