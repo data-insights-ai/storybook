@@ -83,8 +83,9 @@ values.
   owns. The card is `AppShell`. Since 0.10.0 `Console` and `ConsoleFrame` live in
   `.storybook/Console.tsx`, outside the bundle.
   `null` excludes: `Foundations/*` (Color, Type, Logo, Scale, Decisions — doc
-  pages with no component) and `Screens/*` (Architecture, Coverage, Inference,
-  Login, Register, Settings, Watchlist). **A new Foundations page needs a new
+  pages with no component) and `Patterns/*` (Architecture, Case triage, Coverage,
+  Inference, Login, Organization home, Register, Security overview, Settings,
+  Watchlist). **A new Foundations page needs a new
   null**, or it gets scanned as a component.
 - **`guidelinesGlob: ["src/foundations/*.mdx"]`** — the converter's defaults
   (`docs/*.md`, `docs/guides/**`, `guides/**`) match nothing here, which is why
@@ -104,7 +105,7 @@ values.
   "A story that themes through a global" below. The `Button` and `StatusPill` entries are **gone** —
   their NightSheet stories render a themed region now and photograph cleanly.
 
-**Screens are not synced.** `src/screens/*` are real components but are not
+**Patterns are not synced.** `src/screens/*` are real components but are not
 exported from `src/index.ts`, so they are not in the bundle. Adding them would
 mean `extraEntries` pointing at TS source, which bundles a second copy of every
 component they import — the recharts trap again. Think carefully first.
@@ -298,7 +299,7 @@ only one. Read the emitted `.d.ts` back; do not assume.
 ### Expected noise — do not chase
 
 - **The preview card page is white.** That is card chrome. A rendered *design*
-  gets `background: #F4F1E8` and Space Grotesk from `styles.css`'s import
+  gets `background: #F3F2EE` and IBM Plex Sans from `styles.css`'s import
   closure — measured. It is why every sheet shows paper on the storybook side
   and white on the preview side.
 - **Storybook's own static build cannot load the brand mark.** `Console/Chrome`

@@ -6,6 +6,9 @@ import { SignIn, SignInVersion } from "./SignIn";
 import { TextField } from "../../forms/text/TextField";
 import { VersionTag } from "../../marks/VersionTag";
 import { TextLink } from "../../navigation/TextLink";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
+import { Panel } from "../../layout/page/Panel";
+import { StatusPill } from "../../marks/StatusPill";
 
 const meta = {
   title: "Shell/SignIn",
@@ -158,4 +161,54 @@ export const SecondFactor: Story = {
       </Button>
     </SignIn>
   ),
+};
+
+/**
+ * The card is the daylight theme on itself, in both themes, so a panel or a
+ * table inside it is daylight too: nothing in it has to be pinned by hand.
+ */
+export const WithPanelAndTable: Story = {
+  name: "With a panel and a table",
+  args: { title: "Choose a workspace", lede: "Your account opens two workspaces." },
+  render: (args) => (
+    <SignIn {...args}>
+      <Panel surface="inset" title="Last sign-in">
+        Yesterday, 18:04, from Vienna.
+      </Panel>
+      <DataTable caption="Workspaces" indexed={false}>
+        <TableHead>
+          <TableColumn>Workspace</TableColumn>
+          <TableColumn>State</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Production</TableCell>
+            <TableCell>
+              <StatusPill tone="ok">Open</StatusPill>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Staging</TableCell>
+            <TableCell>
+              <StatusPill tone="neutral">Idle</StatusPill>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>
+      <Button type="submit" size="comfort">
+        Open Production
+      </Button>
+    </SignIn>
+  ),
+  play: async ({ canvasElement }) => {
+    const card = canvasElement.querySelector(".di-login-card") as HTMLElement;
+    const daylight = document.createElement("div");
+    daylight.dataset.theme = "light";
+    document.body.append(daylight);
+    const surface = getComputedStyle(daylight).getPropertyValue("--di-bg-surface");
+    const ink = getComputedStyle(daylight).color;
+    daylight.remove();
+    await expect(getComputedStyle(card).getPropertyValue("--di-bg-surface")).toBe(surface);
+    await expect(getComputedStyle(within(card).getByText("Staging")).color).toBe(ink);
+  },
 };

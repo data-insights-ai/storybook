@@ -4,7 +4,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { SettingsScreen } from "./Settings";
 
 const meta = {
-  title: "Screens/Settings",
+  title: "Patterns/Settings",
   tags: ["layer:screen"],
   component: SettingsScreen,
   parameters: { layout: "fullscreen" },

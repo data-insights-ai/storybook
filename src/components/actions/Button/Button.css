@@ -83,7 +83,7 @@
     background: transparent;
     color: var(--di-text);
     text-decoration: underline;
-    text-decoration-color: var(--di-seal);
+    text-decoration-color: var(--di-select);
     text-underline-offset: 3px;
   }
 
@@ -106,11 +106,11 @@
     background: var(--di-status-danger-bg);
   }
 
-  /* Seals a record: gold, and the only gold control in daylight. */
+  /* Seals a record. Gold marks the control's edge; in daylight its words stay ink. */
   .di-btn-seal {
-    border-color: var(--di-seal-border);
-    background: var(--di-seal-bg);
-    color: var(--di-seal-ink);
+    border-color: var(--di-seal);
+    background: var(--di-bg-surface);
+    color: var(--di-one-ink);
   }
 
   .di-btn-seal:hover:not(:disabled, [aria-disabled="true"]) {

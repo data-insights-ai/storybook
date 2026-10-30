@@ -11,14 +11,14 @@ const docsTheme = create({
   brandUrl: "https://www.data-insights.ai",
   brandImage: "./mark.svg",
   colorPrimary: "#0a1f44",
-  colorSecondary: "#7a5c0e",
-  appBg: "#f4f1e8",
-  appContentBg: "#fcfbf7",
-  appBorderColor: "#dcd5c3",
+  colorSecondary: "#2b6cb0",
+  appBg: "#e9e8e3",
+  appContentBg: "#fdfdfb",
+  appBorderColor: "#d9d8d2",
   textColor: "#0a1f44",
-  textMutedColor: "#4a5570",
-  fontBase: '"Space Grotesk", "Helvetica Neue", sans-serif',
-  fontCode: '"JetBrains Mono", ui-monospace, monospace',
+  textMutedColor: "#3d4a66",
+  fontBase: '"IBM Plex Sans", "Helvetica Neue", sans-serif',
+  fontCode: '"IBM Plex Mono", ui-monospace, monospace',
 });
 
 const preview: Preview = {
@@ -56,7 +56,7 @@ const preview: Preview = {
           "Timeline",
           "Inference",
           "Shell",
-          "Screens",
+          "Patterns",
         ];
         // Read top to bottom: what the system is, then what it is made of,
         // then how it is applied, and last the reasoning behind all of it.

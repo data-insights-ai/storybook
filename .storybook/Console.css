@@ -2,12 +2,12 @@
 @layer tokens {
   :root,
   [data-theme="light"] {
-    --sb-canvas: var(--di-sunken);
+    --sb-canvas: var(--di-bg-chrome);
     --sb-canvas-dot: rgba(10, 31, 68, 0.22);
   }
 
   [data-theme="dark"] {
-    --sb-canvas: #030914;
+    --sb-canvas: var(--di-bg-chrome);
     --sb-canvas-dot: rgba(242, 245, 251, 0.16);
   }
 }

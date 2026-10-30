@@ -98,6 +98,7 @@ const root = () => document.documentElement.getAttribute("data-theme");
 
 /** Auto follows the device; Light and Dark hold whatever the device says. */
 export const Choice: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   play: async ({ canvasElement, globals }) => {
     const canvas = within(canvasElement);
     const device = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -124,6 +125,7 @@ export const Choice: Story = {
 
 /** The words come with the control in the apps' three languages. */
 export const German: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   args: { value: "dark", language: "de" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

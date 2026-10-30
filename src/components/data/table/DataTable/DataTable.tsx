@@ -19,9 +19,10 @@ import "./DataTable.css";
  * caller owns the copy and anything that sits in a cell. There is no
  * `rows` prop: the data belongs to the product, not to the table.
  *
- * The grid drops to the one cold surface in the system, so a dense
- * field of mono values reads as an extract from the record. Ordinals
- * run down the index column on the left.
+ * The table is its own surface, a step above the ground, with no frame
+ * of its own: its head and foot sit in the inset tone, its head names
+ * each column in mono capitals. Ordinals run down the index column on the
+ * left.
  *
  * In a narrow frame the grid scrolls sideways, and a `pinned` column — the
  * row's name — stays at the left edge while the others pass under it.
@@ -80,6 +81,7 @@ export function DataTable({
     grid.push(child);
   });
 
+  const fill = fillColumn(grid);
   const stack = narrow === "stack";
   const scroll = useRef<HTMLDivElement>(null);
   const overflowing = useOverflowing(scroll);
@@ -115,7 +117,9 @@ export function DataTable({
             </colgroup>
           ) : null}
           <StackContext.Provider value={stack}>
-            <MeasuredContext.Provider value={widths !== undefined}>{grid}</MeasuredContext.Provider>
+            <MeasuredContext.Provider value={widths !== undefined}>
+              <FillColumnContext.Provider value={fill}>{grid}</FillColumnContext.Provider>
+            </MeasuredContext.Provider>
           </StackContext.Provider>
         </table>
       </div>
@@ -156,6 +160,18 @@ function controls(row: Element) {
 
 const StackContext = createContext(false);
 const MeasuredContext = createContext(false);
+/* Which column fills, and which column a cell is in: the filling column's cells wrap, every other cell keeps its line. */
+const FillColumnContext = createContext(-1);
+const ColumnContext = createContext(-1);
+
+function fillColumn(grid: ReactNode[]) {
+  const head = grid.find((child) => isValidElement(child) && child.type === TableHead);
+  if (!isValidElement<{ children?: ReactNode }>(head)) return -1;
+  const fills = Children.map(head.props.children, (column, i) =>
+    isValidElement<{ width?: string }>(column) && column.props.width === "fill" ? i : -1,
+  );
+  return fills?.find((i) => i !== -1) ?? -1;
+}
 
 /*
  * Whether the grid is wider than its frame. A frame that keeps its head in
@@ -363,7 +379,9 @@ export function TableRow({
           : undefined
       }
     >
-      {children}
+      {Children.map(children, (cell, i) => (
+        <ColumnContext.Provider value={i}>{cell}</ColumnContext.Provider>
+      ))}
     </tr>
   );
 }
@@ -415,11 +433,13 @@ export function TableCell({
   pinned?: boolean;
 }) {
   const measured = useContext(MeasuredContext);
+  const fill = useContext(FillColumnContext);
+  const fills = fill !== -1 && fill === useContext(ColumnContext);
   return (
     <td
       role={useRole("cell")}
       data-label={label}
-      className={cx(align === "end" && "is-end", mono && "di-mono", pinned && "is-pinned", label && "is-labelled")}
+      className={cx(align === "end" && "is-end", mono && "di-mono", pinned && "is-pinned", label && "is-labelled", fills && "is-fill")}
       /* A value cut by a measured column shows whole in its tooltip. */
       onMouseEnter={measured ? revealCut : undefined}
     >

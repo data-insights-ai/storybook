@@ -1,14 +1,21 @@
-import { Children, isValidElement, type ReactNode } from "react";
+import { Children, isValidElement, useId, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
 import "./Panel.css";
 
 /**
- * The register panel: an index column, then the content. This is the one
- * recurring shape in the system — a card, a tile, a table frame and a
- * drawer are all this panel with a different fill.
+ * A block of content, drawn by tone rather than by a line: the surface
+ * lifts a step from the page ground. `inset` sinks a step instead, for a
+ * group inside a surface; it is the deepest a region goes.
  *
- * The index column is the fingerprint. It costs 38px and it is what
- * makes the surface read as a record rather than a dashboard.
+ * The header is an optional mono `label` above the `title` and a
+ * `PanelMeta` at its right. A `title` with a `heading` level is a
+ * heading the page outline reads; without one it is the panel's name only.
+ *
+ * `emphasis` marks the one block that matters in the view with a gold
+ * edge. One per view: the rule is the point.
+ *
+ * An `index` column holds an ordinal or a letter where sequence or record
+ * identity matters, and nowhere else.
  */
 export function Panel({
   index,
@@ -16,7 +23,10 @@ export function Panel({
   indexTone = "neutral",
   indexRule = true,
   surface = "sheet",
+  emphasis = false,
+  label,
   title,
+  heading,
   padded = true,
   className,
   children,
@@ -27,18 +37,22 @@ export function Panel({
   indexTone?: "neutral" | "danger";
   /** The hairline running down from the mark. Off for a short tile. */
   indexRule?: boolean;
-  /**
-   * Which surface the panel sits on. `grid` drops to the one cold surface,
-   * for a dense field of mono values.
-   */
-  surface?: "sheet" | "grid";
+  /** `sheet` lifts from the ground; `inset` sinks inside a surface. */
+  surface?: "sheet" | "inset";
+  /** The one block that matters in the view: a gold edge. */
+  emphasis?: boolean;
+  /** A mono capital line above the title: a kind, a source, a period. */
+  label?: string;
   title?: string;
-  /** Off when the child draws to the panel's edge, such as a table. */
+  /** The title's level in the page outline. Without it the title is not a heading. */
+  heading?: 2 | 3;
+  /** Off when the child draws to the panel's edge, such as a list. */
   padded?: boolean;
   className?: string;
   /** The panel's content, and at most one `PanelMeta`. */
   children?: ReactNode;
 }) {
+  const id = useId();
   /*
    * `PanelMeta` is picked out of `children` by type, the way `ModalFrame`
    * does it: the header sits above the content area, so the slot cannot be
@@ -52,7 +66,10 @@ export function Panel({
   });
 
   return (
-    <div className={cx("di-panel", `di-panel-${surface}`, indexTone === "danger" && "is-danger", className)}>
+    <section
+      className={cx("di-panel", `di-panel-${surface}`, emphasis && "is-emphasis", indexTone === "danger" && "is-danger", className)}
+      aria-labelledby={title !== undefined && heading ? id : undefined}
+    >
       {index === undefined ? null : (
         <div className={cx("di-panel-index", indexSize === "sm" && "di-panel-index-sm")}>
           <span className="di-panel-index-label">{index}</span>
@@ -60,16 +77,25 @@ export function Panel({
         </div>
       )}
       <div className="di-panel-body">
-        {title === undefined && meta.length === 0 ? null : (
+        {title === undefined && label === undefined && meta.length === 0 ? null : (
           <div className="di-panel-header">
-            {title === undefined ? null : <span className="di-panel-title">{title}</span>}
+            <div className="di-panel-titles">
+              {label === undefined ? null : <p className="di-panel-label">{label}</p>}
+              {title === undefined ? null : <PanelTitle id={id} heading={heading} title={title} />}
+            </div>
             {meta}
           </div>
         )}
         <div className={cx("di-panel-content", !padded && "di-panel-content-flush")}>{body}</div>
       </div>
-    </div>
+    </section>
   );
+}
+
+function PanelTitle({ id, heading, title }: { id: string; heading?: 2 | 3; title: string }) {
+  if (heading === 2) return <h2 id={id} className="di-panel-title">{title}</h2>;
+  if (heading === 3) return <h3 id={id} className="di-panel-title">{title}</h3>;
+  return <span className="di-panel-title">{title}</span>;
 }
 
 /**

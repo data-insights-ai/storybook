@@ -1,0 +1,105 @@
+@layer components {
+  /* A solid navy plane: a gradient under text has no measurable contrast. */
+  .di-hero {
+    container-type: inline-size;
+    min-width: 0;
+    padding: var(--di-space-24);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-hero);
+    box-shadow: inset 0 1px 0 var(--di-border), var(--di-shadow-plane);
+    color: var(--di-text);
+  }
+
+  .di-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) auto;
+    grid-template-areas:
+      "titles titles aside"
+      "lead visual visual"
+      "footer footer footer";
+    gap: var(--di-space-24) var(--di-space-32);
+    align-items: start;
+  }
+
+  .di-hero-grid:not(:has(> .di-hero-lead)) {
+    grid-template-areas:
+      "titles titles aside"
+      "visual visual visual"
+      "footer footer footer";
+  }
+
+  .di-hero-titles {
+    grid-area: titles;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    min-width: 0;
+  }
+
+  .di-hero-label {
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
+  }
+
+  .di-hero-title {
+    font-family: var(--di-heading-family);
+    font-size: var(--di-section-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-tight);
+    color: var(--di-text);
+  }
+
+  .di-hero-aside {
+    grid-area: aside;
+    justify-self: end;
+    align-self: end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-8);
+  }
+
+  .di-hero-lead {
+    grid-area: lead;
+    min-width: 0;
+  }
+
+  .di-hero-visual {
+    grid-area: visual;
+    min-width: 0;
+  }
+
+  .di-hero-footer {
+    grid-area: footer;
+    min-width: 0;
+    padding-top: var(--di-space-24);
+    border-top: 1px solid var(--di-rule);
+  }
+
+  @container (width < 44rem) {
+    .di-hero-grid,
+    .di-hero-grid:not(:has(> .di-hero-lead)) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "titles"
+        "aside"
+        "lead"
+        "visual"
+        "footer";
+      gap: var(--di-space-16);
+    }
+
+    .di-hero-aside {
+      justify-self: start;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .di-hero {
+      padding: var(--di-space-16);
+    }
+  }
+}

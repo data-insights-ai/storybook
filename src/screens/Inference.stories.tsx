@@ -5,7 +5,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { InferenceScreen } from "./Inference";
 
 const meta = {
-  title: "Screens/Inference",
+  title: "Patterns/Inference",
   tags: ["layer:screen"],
   component: InferenceScreen,
   parameters: { layout: "fullscreen" },

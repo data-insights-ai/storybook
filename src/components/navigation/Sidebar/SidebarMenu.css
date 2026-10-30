@@ -27,7 +27,7 @@
     padding: var(--di-space-6) var(--di-space-8);
     box-sizing: border-box;
     border: 0;
-    border-radius: var(--di-radius-surface);
+    border-radius: var(--di-radius-inset);
     background: transparent;
     color: var(--di-sidebar-fg);
     font-family: var(--di-font-ui);
@@ -44,8 +44,10 @@
     background: color-mix(in srgb, var(--di-sidebar-fg) 6%, transparent);
   }
 
+  /* The current page is lifted a step, with the selection's cornflower edge. */
   .di-sb-button[aria-current="page"] {
     background: var(--di-sidebar-active);
+    box-shadow: inset 3px 0 0 var(--di-select), var(--di-elevation-surface);
   }
 
   .di-sb-icon {

@@ -1,30 +1,26 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
 import { Eyebrow } from "../../../data/text/Eyebrow";
+import { MetaLine } from "../../../data/text/MetaLine";
 import "./PageHeader.css";
 
 /**
  * The h1 of a page, in one of two tiers.
  *
- * `console` is the product screen: 28px, a 12px lede, the dense rhythm
- * every screen in `Screens/` opens with. `brand` is the display tier the
- * brand pages use — 34px up to 56, measured to 16ch so the line breaks
- * where it means to, with an 18px lede. They are the same header doing
- * the same job at two scales, which is why this is one union prop and
- * not a second component with a second name.
+ * `console` is the product screen, and its header only orients: the
+ * page's name in the display face, its state beside it
+ * (`PageHeaderStatus`), and `PageHeaderMeta` — as of when, from where —
+ * at the right, under the name on a narrow page. The page's point comes
+ * from its first block, such as an `AttentionList`, not from a sentence in
+ * the header. `brand` is the display tier the brand pages use, measured to
+ * 16ch, with an 18px lede.
  *
- * A product screen never sets `brand`: the display steps are the top of
- * the type ramp and the console stops below them.
- *
- * The title is a slot, `PageHeaderTitle`, because a title can hold a
- * `Highlight`. What sits beside it is `PageHeaderAside`: the page’s
- * primary actions. A detail page adds `PageHeaderCrumbs` above (the way
- * back to its list), `PageHeaderStatus` under the title (badges) and
- * `PageHeaderFacts` under the lede (the key facts, a `FactList
- * layout="inline"`). The frame places every slot with grid areas, so they
- * may be written in any order.
- *
- * The eyebrow is optional: a page under breadcrumbs is already placed.
+ * The title is a slot, `PageHeaderTitle`, because a brand title can hold a
+ * `Highlight`. A list or record page keeps its one primary action in
+ * `PageHeaderAside`; an overview has none, its first block carries it. A
+ * record adds `PageHeaderCrumbs` above (the way back to its list) and
+ * `PageHeaderFacts` under the lede. The frame places every slot with grid
+ * areas, so they may be written in any order.
  */
 export function PageHeader({
   eyebrow,
@@ -36,7 +32,7 @@ export function PageHeader({
   lede?: string;
   /** `console` is a screen. `brand` is the display tier of a brand page. */
   tier?: "console" | "brand";
-  /** `PageHeaderTitle`, and optionally `PageHeaderAside`, `PageHeaderCrumbs`, `PageHeaderStatus`, `PageHeaderFacts`. */
+  /** `PageHeaderTitle`, and optionally `PageHeaderStatus`, `PageHeaderMeta`, `PageHeaderAside`, `PageHeaderCrumbs`, `PageHeaderFacts`. */
   children: ReactNode;
 }) {
   return (
@@ -54,12 +50,16 @@ export function PageHeader({
   );
 }
 
-/** The page's one h1. Text, and at most one `Highlight` inside it. */
-export function PageHeaderTitle({ children }: { children: ReactNode }) {
-  return <h1 className="di-page-title">{children}</h1>;
+/**
+ * The page's one h1. Text, and at most one `Highlight` inside it. A record
+ * opened beside its list, where the list's page already has the h1, is
+ * `level={2}` and one step smaller.
+ */
+export function PageHeaderTitle({ level = 1, children }: { level?: 1 | 2; children: ReactNode }) {
+  return level === 1 ? <h1 className="di-page-title">{children}</h1> : <h2 className="di-page-title">{children}</h2>;
 }
 
-/** Beside the title: a status, a figure, or the page's actions. */
+/** At the right of the header: the page's one primary action, on a list or a record page. */
 export function PageHeaderAside({ children }: { children: ReactNode }) {
   return <div className="di-page-aside">{children}</div>;
 }
@@ -69,7 +69,7 @@ export function PageHeaderCrumbs({ children }: { children: ReactNode }) {
   return <div className="di-page-crumbs">{children}</div>;
 }
 
-/** Under the title: the record’s state, as `StatusPill`s or `Badge`s. */
+/** Beside the title: the page's or the record's state, as `StatusPill`s or a `SeverityMark`. */
 export function PageHeaderStatus({ children }: { children: ReactNode }) {
   return <div className="di-page-status">{children}</div>;
 }
@@ -77,4 +77,17 @@ export function PageHeaderStatus({ children }: { children: ReactNode }) {
 /** Under the lede: the record’s key facts, a `FactList layout="inline"`. */
 export function PageHeaderFacts({ children }: { children: ReactNode }) {
   return <div className="di-page-facts">{children}</div>;
+}
+
+/**
+ * As of when, from where, how many: facts in the mono track that break
+ * only between items. At the right of the name on a wide page, under it on
+ * a narrow one. A string is split at " · ".
+ */
+export function PageHeaderMeta({ children }: { children: string | string[] }) {
+  return (
+    <div className="di-page-meta">
+      <MetaLine items={children} />
+    </div>
+  );
 }

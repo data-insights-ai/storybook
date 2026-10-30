@@ -113,7 +113,7 @@
 }
 
 .di-guide-marks li span.is-gold {
-  color: var(--di-seal-ink);
+  color: var(--di-one-ink);
   border-color: var(--di-seal);
 }
 
@@ -180,7 +180,7 @@
 
 .di-guide-column h3 {
   margin: 0 0 var(--di-space-12);
-  color: var(--di-seal-ink);
+  color: var(--di-one-ink);
 }
 
 .di-guide-column ul {
@@ -215,7 +215,7 @@
   font-weight: var(--di-weight-regular);
   letter-spacing: var(--di-tracking-eyebrow);
   text-transform: uppercase;
-  color: var(--di-seal-ink);
+  color: var(--di-one-ink);
 }
 
 .di-guide-lines ul {
@@ -327,7 +327,7 @@
   align-items: center;
   gap: var(--di-space-8);
   height: 62px;
-  color: var(--di-seal-ink);
+  color: var(--di-one-ink);
   font-family: var(--di-font-code);
   font-size: var(--di-font-size-400);
 }
@@ -380,7 +380,7 @@
   display: grid;
   place-items: center;
   background: color-mix(in srgb, var(--di-seal) 16%, transparent);
-  color: var(--di-seal-ink);
+  color: var(--di-one-ink);
   font-family: var(--di-font-code);
   font-size: var(--di-font-size-100);
   letter-spacing: var(--di-tracking-eyebrow);
@@ -544,9 +544,9 @@
 .di-misuse .is-shadow img { filter: drop-shadow(3px 4px 0 rgba(10, 31, 68, 0.35)); }
 .di-misuse .is-busy > div {
   background:
-    radial-gradient(circle at 20% 30%, var(--di-ink) 0 2px, transparent 3px),
+    radial-gradient(circle at 20% 30%, var(--di-navy-900) 0 2px, transparent 3px),
     radial-gradient(circle at 70% 60%, var(--di-seal) 0 2px, transparent 3px),
-    repeating-linear-gradient(135deg, var(--di-ivory) 0 8px, var(--di-sunken) 8px 16px);
+    repeating-linear-gradient(135deg, var(--di-paper-surface) 0 8px, var(--di-paper-inset) 8px 16px);
 }
 .di-misuse .is-tilt img { transform: rotate(-8deg); }
 
@@ -624,7 +624,7 @@
 }
 
 .di-charts em {
-  color: var(--di-seal-ink);
+  color: var(--di-one-ink);
   font-style: normal;
 }
 
@@ -752,7 +752,7 @@
   font-size: var(--di-font-size-200);
   letter-spacing: var(--di-tracking-eyebrow);
   text-transform: uppercase;
-  color: var(--di-seal-ink);
+  color: var(--di-one-ink);
 }
 
 .di-surface-web strong,
@@ -777,7 +777,7 @@
 }
 
 .di-surface-slide strong {
-  color: var(--di-ivory);
+  color: var(--di-night-ink);
 }
 
 .di-surface-slide img {
@@ -813,7 +813,7 @@
 }
 
 .di-surface-sign a {
-  color: var(--di-seal-ink);
+  color: var(--di-one-ink);
   font-family: var(--di-font-code);
   font-size: var(--di-font-size-400);
 }

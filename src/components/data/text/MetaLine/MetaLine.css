@@ -1,0 +1,51 @@
+@layer components {
+  /* The separator sits in the gap before each item; the one before the
+     first item of a line falls outside the clipped box. */
+  .di-meta-line {
+    --di-meta-gap: 1.5em;
+    display: block;
+    overflow: hidden;
+    font-family: var(--di-meta-family);
+    font-size: var(--di-meta-size);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--di-leading-snug);
+    color: var(--di-meta-color);
+  }
+
+  .di-meta-line-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: var(--di-meta-justify, flex-start);
+    row-gap: var(--di-space-2);
+    margin-left: calc(-1 * var(--di-meta-gap));
+  }
+
+  .di-meta-line.is-end {
+    --di-meta-justify: flex-end;
+  }
+
+  /* A flex item keeps its full width and moves to the next line whole; only
+     an item longer than the line itself wraps inside. */
+  .di-meta-line-item {
+    position: relative;
+    min-width: 0;
+    margin-left: var(--di-meta-gap);
+  }
+
+  .di-meta-line-item::before {
+    content: "·" / "";
+    position: absolute;
+    left: calc(-0.5 * var(--di-meta-gap));
+    transform: translateX(-50%);
+  }
+
+  .di-meta-line.is-path {
+    --di-meta-gap: 2em;
+    color: var(--di-text);
+  }
+
+  .di-meta-line.is-path .di-meta-line-item::before {
+    content: "→" / "";
+    color: var(--di-text-subtle);
+  }
+}

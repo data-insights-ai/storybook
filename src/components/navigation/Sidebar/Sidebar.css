@@ -67,9 +67,11 @@
 
   .di-sb-group-label {
     padding: 0 var(--di-space-8) var(--di-space-6);
-    font-family: var(--di-label-family);
-    font-size: var(--di-label-size);
-    font-weight: var(--di-label-weight);
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
     white-space: nowrap;
     color: var(--di-sidebar-muted);
   }

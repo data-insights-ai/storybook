@@ -1,6 +1,6 @@
 {
   "name": "@data-insights-ai/ui",
-  "version": "0.10.2",
+  "version": "0.11.0",
   "description": "datAInsights component workbench. All rights reserved.",
   "type": "module",
   "module": "./dist/lib/index.js",
@@ -35,7 +35,7 @@
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "check": "pnpm typecheck && pnpm test && pnpm build",
-    "test": "vitest run --project=unit --project=layout --project=storybook --project=storybook-dark",
+    "test": "vitest run --project=unit --project=layout --project=storybook --project=storybook-dark --project=storybook-phone --project=storybook-phone-dark",
     "prepublishOnly": "pnpm build",
     "lint:structure": "depcruise src --config .dependency-cruiser.cjs --output-type err && node scripts/lint-layers.mjs && node scripts/lint-conventions.mjs"
   },
@@ -54,9 +54,7 @@
   "devDependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/ibm-plex-sans": "^5.2.8",
-    "@fontsource/jetbrains-mono": "^5.3.0",
     "@fontsource/sansation": "^5.2.2",
-    "@fontsource/space-grotesk": "^5.3.0",
     "@storybook/addon-a11y": "^10.5.10",
     "@storybook/addon-docs": "^10.5.10",
     "@storybook/addon-mcp": "^10.6.0",

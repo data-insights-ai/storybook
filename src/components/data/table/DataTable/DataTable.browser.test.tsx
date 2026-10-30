@@ -67,14 +67,22 @@ test("a frame that fits is no tab stop; one that scrolls is", () => {
   expect(document.querySelector(".di-table-scroll")!.hasAttribute("tabindex")).toBe(false);
 });
 
-test("the head reads in the interface's type, not as a shouted eyebrow", () => {
+test("the head names each column as a mono label, a different kind of text than the values", () => {
   renderRegister();
   const head = getComputedStyle(document.querySelector("th")!);
-  expect(head.textTransform).toBe("none");
-  expect(head.letterSpacing).toBe("normal");
+  expect(head.fontFamily).toContain("IBM Plex Mono");
+  expect(head.textTransform).toBe("uppercase");
 });
 
-test("a stacked row names its cells in the interface's type too", () => {
+test("beside a filling column every other cell keeps its line, while the filling column's prose wraps", () => {
+  renderRegister("360px");
+  const [record, title] = Array.from(document.querySelectorAll("tbody tr:first-child td"));
+  expect(getComputedStyle(record).whiteSpace).toBe("nowrap");
+  expect(getComputedStyle(title).whiteSpace).toBe("normal");
+  expect(title.classList.contains("is-fill")).toBe(true);
+});
+
+test("a stacked row names its cells with the same mono label", () => {
   const host = document.createElement("div");
   host.style.width = "360px";
   document.body.append(host);
@@ -97,7 +105,7 @@ test("a stacked row names its cells in the interface's type too", () => {
   );
   const label = getComputedStyle(document.querySelector("td.is-labelled")!, "::before");
   expect(label.content).toContain("Seen");
-  expect(label.textTransform).toBe("none");
+  expect(label.textTransform).toBe("uppercase");
 });
 
 test("a row's disclosure is a column the arrows keep", async () => {

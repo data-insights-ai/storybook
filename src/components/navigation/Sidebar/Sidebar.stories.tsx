@@ -145,6 +145,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -169,6 +170,7 @@ export const Default: Story = {
 };
 
 export const Collapsed: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} defaultExpanded={false} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -187,6 +189,7 @@ export const Collapsed: Story = {
 };
 
 export const GroupsAndBadges: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -201,6 +204,7 @@ export const GroupsAndBadges: Story = {
 };
 
 export const Remembered: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   beforeEach: () => {
     window.localStorage.setItem("di-sidebar-story", "collapsed");
     return () => window.localStorage.removeItem("di-sidebar-story");
@@ -274,6 +278,7 @@ function WorkspaceSwitcher() {
 
 /** The header item opens a menu to switch context; the chevron says so. */
 export const ContextSwitcher: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   render: (args) => (
     <SidebarProvider>
       <Sidebar label={args.label} closeLabel={args.closeLabel}>

@@ -1,5 +1,6 @@
 import { Children, isValidElement, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Menu as MenuIcon, X } from "lucide-react";
+import logo from "../../../assets/logo.svg";
 import logoInverse from "../../../assets/logo-inverse.svg";
 import { cx } from "../../../internal/cx";
 import { Badge } from "../../marks/Badge";
@@ -77,7 +78,8 @@ export function AppShellRail({
     <aside className={cx("di-sidebar", mobile && "di-sidebar-mobile")}>
       <div className="di-sidebar-header">
         <div className="di-brand">
-          <img className="di-brand-logo" src={logoInverse} alt="datAInsights" />
+          <img className="di-brand-logo di-brand-day" src={logo} alt="datAInsights" />
+          <img className="di-brand-logo di-brand-night" src={logoInverse} alt="datAInsights" />
           <div className="di-brand-row">
             <span className="di-brand-product">{workspace}</span>
             <span className="di-instance">{workspaceId}</span>
@@ -151,9 +153,7 @@ function railBackdrop(event: { target: EventTarget; currentTarget: HTMLDialogEle
 
 /** Persistent context controls below the brand and before navigation. */
 export function AppShellContext({ children }: { children: ReactNode }) {
-  // The rail is dark in either page theme. Redeclare semantic and component
-  // tokens here: inherited component slots otherwise retain daylight fills.
-  return <div className="di-sidebar-context" data-theme="dark">{children}</div>;
+  return <div className="di-sidebar-context">{children}</div>;
 }
 
 /** The rail's foot: the runtime and the version, in the mono track. */

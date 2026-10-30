@@ -10,70 +10,75 @@ const families = [
     name: "Navy",
     role: "ink and action",
     swatches: [
-      ["--di-text", "#0A1F44", "#fcfbf7", "Body text, and the one filled control."],
-      ["--di-text-press", "#061631", "#fcfbf7", "The pressed state of that control."],
-      ["--di-text-muted", "#4A5570", "#fcfbf7", "Secondary copy, labels."],
-      ["--di-text-subtle", "#5B6478", "#fcfbf7", "Ordinals, meta, quiet notes."],
+      ["--di-text", "#0A1F44", "#fdfdfb", "Body text, and the one filled control."],
+      ["--di-text-press", "#061631", "#fdfdfb", "The pressed state of that control."],
+      ["--di-text-muted", "#3D4A66", "#fdfdfb", "Secondary copy, the mono labels above a value."],
+      ["--di-text-subtle", "#556076", "#fdfdfb", "Meta lines, ordinals, quiet notes."],
     ],
   },
   {
     name: "Gold",
-    role: "the seal",
+    role: "the one thing",
     swatches: [
-      ["--di-seal", "#C9A24A", "#0a1f44", "The mark. A fact, recorded."],
-      ["--di-text-on-seal", "#0A1F44", "#c9a24a", "Ink on the filled seal, such as a done step's check. Navy in both themes."],
-      ["--di-ai-ring", "#A6811F", "#061631", "The hollow ring. A model's claim."],
-      ["--di-seal-ink", "#7A5C0E", "#fcfbf7", "The only gold readable as text on paper."],
-      ["--di-gold-400", "#D9B45E", "#0a1f44", "Gold on the night sheet."],
-      ["--di-seal-bg", "#F7EDD5", "#6e4708", "Under a gold word. Never a fill."],
+      ["--di-one", "#C9A24A", "#0a1f44", "Marks the one object that matters in a view. In daylight never text."],
+      ["--di-one-edge", "#A6811F", "#061631", "Its edge: the attention item, the verdict."],
+      ["--di-seal", "#C9A24A", "#0a1f44", "The seal mark beside a recorded value."],
+      ["--di-ai-ring", "#A6811F", "#061631", "The hollow ring beside an inferred value."],
     ],
   },
   {
     name: "Paper",
-    role: "the ground",
+    role: "depth by tone",
     swatches: [
-      ["--di-bg-page", "#F4F1E8", "#0a1f44", "The page. Warm, and the first tell."],
-      ["--di-bg-surface", "#FCFBF7", "#0a1f44", "A panel, a field, a card."],
-      ["--di-bg-grid", "#FFFFFF", "#0a1f44", "The one cold surface. Tables only."],
-      ["--di-bg-subtle", "#EAE5D7", "#0a1f44", "A track, a disabled control, a segment."],
-      ["--di-rule", "#DCD5C3", "#0a1f44", "Hairline dividers only. Never a fill."],
+      ["--di-bg-chrome", "#E9E8E3", "#0a1f44", "The sidebar, one step below the ground. Also --di-bg-strip."],
+      ["--di-bg-page", "#F3F2EE", "#0a1f44", "The ground. One token, so a warmer ground is one line."],
+      ["--di-bg-subtle", "#EFEEE9", "#0a1f44", "Inset: a table head, a group inside a surface."],
+      ["--di-bg-surface", "#FDFDFB", "#0a1f44", "A panel, a table, a list pane. Also --di-bg-pane."],
+      ["--di-bg-plane", "#FFFFFF", "#0a1f44", "What floats or is lifted: a menu, the selected row."],
     ],
   },
 ];
 
 const status = [
-  ["Verified", "#155230", "#E7EFE5"],
-  ["Anomaly", "#6E4708", "#F7EDD5"],
-  ["Critical", "#8A1B1B", "#F8E6E2"],
-  ["Recorded", "#0A1F44", "#E6E9F0"],
+  ["Verified", "#155230", "#E2ECE0"],
+  ["Warn", "#8A4500", "#FBE7CF"],
+  ["Critical", "#8A1B1B", "#F8E2DD"],
+  ["Recorded", "#1F5288", "#E2EBF7"],
+];
+
+const severities = [
+  ["Critical", "--di-severity-critical", "#B3161B", "#FF5F5A"],
+  ["High", "--di-severity-high", "#D9481A", "#FF7A3D"],
+  ["Medium", "--di-severity-medium", "#B57400", "#FF9D2E"],
+  ["Low", "--di-severity-low", "#5D7797", "#94ABCB"],
+  ["Info", "--di-severity-info", "#878D99", "#7F8FB0"],
 ];
 
 /*
- * The night sheet, rendered from the tokens rather than transcribed from
- * them. The section sits in a `data-theme="dark"` region, so each swatch
- * paints `var(--di-*)` as the night sheet actually resolves it. The hex
- * beside it is the documented value: it is a caption, not the fill, so a
- * token moving under this page shows up as the swatch and its label
- * disagreeing rather than as a page quietly displaying a retired colour.
+ * After dark, rendered from the tokens rather than transcribed from them.
+ * The section sits in a `data-theme="dark"` region, so each swatch paints
+ * `var(--di-*)` as the dark theme resolves it; the hex beside it is the
+ * documented value, a caption rather than the fill.
  */
 const night = [
-  ["--di-bg-page", "--di-text", "#071229", "The page, after dark."],
-  ["--di-bg-surface", "--di-text", "#0c1b37", "A panel on that ground."],
-  ["--di-fill-strong", "--di-text-on-strong", "#c9a24a", "The committing control. Gold, because navy cannot act on navy."],
-  ["--di-focus", "--di-text-on-strong", "#d9b45e", "The focus ring follows its ground."],
-  ["--di-seal", "--di-text-on-seal", "#c9a24a", "The seal does not move. A fact is a fact in either theme."],
-  ["--di-text-on-seal", "--di-seal", "#0a1f44", "Its ink does not move either: navy on the seal, 6.8:1."],
-  ["--di-seal-ink", "--di-text-on-strong", "#d9b45e", "Gold read as text on navy is Gold 400."],
+  ["--di-bg-chrome", "--di-text", "#071733", "The sidebar, one step deeper than the ground."],
+  ["--di-bg-page", "--di-text", "#0A1F44", "The ground is brand navy, not near-black."],
+  ["--di-bg-subtle", "--di-text", "#0C2350", "Inset and strip."],
+  ["--di-bg-surface", "--di-text", "#0F2A57", "A surface lifts from the ground."],
+  ["--di-bg-plane", "--di-text", "#133068", "The plane and the hero zone."],
+  ["--di-fill-strong", "--di-text-on-strong", "#F2F0E6", "The committing control turns paper-white."],
+  ["--di-one-ink", "--di-bg-page", "#E6C677", "After dark gold may be read as text."],
+  ["--di-select", "--di-bg-page", "#79AEEA", "Selection and focus stay cornflower."],
 ];
 
 const chartRoles = [
   ["Series", "--di-chart-series", "var(--di-chart-series)", "The recorded line."],
-  ["Highlight", "--di-chart-highlight", "var(--di-chart-highlight)", "The one value, in poppy."],
+  ["Highlight", "--di-chart-highlight", "var(--di-chart-highlight)", "The one value, in gold."],
   ["Muted", "--di-chart-muted", "var(--di-chart-muted)", "A comparison bar."],
   ["Strong", "--di-chart-muted-strong", "var(--di-chart-muted-strong)", "A second comparison, still grey."],
   ["Band", "--di-chart-band", "var(--di-chart-band)", "The range around a median."],
-  ["Warn", "--di-chart-warn", "var(--di-chart-warn)", "The middle of an ordered status scale."],
-  ["Danger", "--di-chart-danger", "var(--di-chart-danger)", "The top of an ordered status scale."],
+  ["Warn", "--di-chart-warn", "var(--di-chart-warn)", "Medium on the severity scale."],
+  ["Danger", "--di-chart-danger", "var(--di-chart-danger)", "Critical on the severity scale."],
   ["Compare", "--di-chart-compare", "var(--di-chart-compare)", "What the recorded series is measured against."],
 ];
 
@@ -97,7 +102,7 @@ const accents = [
     name: "Poppy",
     role: "the highlight",
     swatches: [
-      ["--di-highlight", "--di-text-on-strong", "#D23C2E", "light", "The marked place. A key figure, a quote, the core claim."],
+      ["--di-highlight", "--di-text-on-strong", "#D23C2E", "light", "A marked passage on a brand page."],
       ["--di-highlight-ink", "--di-text-on-strong", "#A42A1F", "light", "Poppy as text on paper."],
       ["--di-highlight-tint", "--di-highlight-ink", "#FADFDA", "light", "The ground under a marked passage."],
       ["--di-highlight", "--di-bg-page", "#FF7F6E", "dark", "Poppy on the night sheet."],
@@ -105,11 +110,11 @@ const accents = [
   },
   {
     name: "Cornflower",
-    role: "the signal",
+    role: "selection and signal",
     swatches: [
-      ["--di-signal", "--di-text-on-strong", "#2B6CB0", "light", "The accent. A second series, a note that something is new."],
+      ["--di-signal", "--di-text-on-strong", "#2B6CB0", "light", "Selection, focus, a compared series, a note that something is new."],
       ["--di-signal-ink", "--di-text-on-strong", "#1F5288", "light", "Cornflower as text on paper."],
-      ["--di-signal-tint", "--di-signal-ink", "#DFE9F5", "light", "The ground behind an accent."],
+      ["--di-signal-tint", "--di-signal-ink", "#E2EBF7", "light", "The ground of a selected row."],
       ["--di-signal", "--di-bg-page", "#79AEEA", "dark", "Cornflower on the night sheet."],
     ],
   },
@@ -153,11 +158,11 @@ function Board() {
   return (
     <Page
       eyebrow="Colour"
-      title="Paper, ink, seal."
-      lede="Warm paper is the ground. Navy is the ink and, on paper, the only thing that acts — no accent ever fills a control, so what writes is what commits. Gold is not decoration: a filled dot means the value is recorded and verifiable, and a hollow ring means a model inferred it and nothing has vouched for it yet."
+      title="Paper, navy, one gold."
+      lede="A cool paper is the ground and depth is a step in tone, not a line. Navy is the ink and, in daylight, the only thing that acts. Gold marks the one thing that matters in a view — an object, never a word in daylight. Cornflower is selection and focus. Severity is one scale for everything."
     >
       <div className="di-ratio" aria-hidden>
-        <div style={{ flex: 72, background: "#f4f1e8", color: "#0a1f44" }}>
+        <div style={{ flex: 72, background: "#f3f2ee", color: "#0a1f44" }}>
           <strong>72%</strong>
           Paper
         </div>
@@ -197,7 +202,7 @@ function Board() {
       <Section
         eyebrow="Status"
         title="Four states, and the word always carries the meaning."
-        lede="The dot is a second channel, never the only one. Anomaly runs on the gold ramp rather than inventing a second yellow. Each word sits on a wash that keeps it above 5:1."
+        lede="The dot is a second channel, never the only one. Warn is its own amber, so it never reads as the one gold. Each word sits on a wash that keeps it above 5:1."
       >
         <div style={{ display: "flex", gap: "var(--di-space-12)", flexWrap: "wrap" }}>
           {status.map(([name, fg, bg]) => (
@@ -209,9 +214,30 @@ function Board() {
         </div>
       </Section>
       <Section
+        eyebrow="Severity"
+        title="One scale, in every product and every chart."
+        lede="A filled mark beside the word, never colour alone and never the text's own colour. After dark medium runs orange rather than yellow, so it never reads as gold."
+      >
+        <div className="di-swatches">
+          {(["light", "dark"] as const).map((theme) => (
+            <section key={theme} className="di-swatch-col" data-theme={theme} style={{ background: "var(--di-bg-page)" }}>
+              {severities.map(([word, token, day, night]) => (
+                <div key={token} className="di-swatch is-mark">
+                  <i style={{ background: `var(${token})` }} aria-hidden />
+                  <b>
+                    {word}
+                    <small>{theme === "light" ? day : night}</small>
+                  </b>
+                </div>
+              ))}
+            </section>
+          ))}
+        </div>
+      </Section>
+      <Section
         eyebrow="After dark"
-        title="One exception, and it is the fill."
-        lede="Every role remaps, but only one reverses its meaning: navy cannot act as the accent against a navy ground, so the committing control turns gold. That is the single exception in the system, and it exists only on the night sheet."
+        title="Designed, not inverted."
+        lede="The ground is brand navy and the surfaces lift from it in tone; the sidebar sits one step deeper. Navy cannot act on navy, so the committing control turns paper-white. Gold may be text here."
       >
         <div className="di-swatches" data-theme="dark">
           <section className="di-swatch-col" style={{ gridColumn: "1 / -1" }}>
@@ -231,8 +257,8 @@ function Board() {
       </Section>
       <Section
         eyebrow="Accents"
-        title="Poppy marks. Cornflower signals."
-        lede="Clear primaries that carry at a distance, in print and on a trade-fair wall. They stand beside navy and gold, never in their place, and they carry no status: neither one says a value is good, bad or sealed."
+        title="Poppy marks a passage. Cornflower selects."
+        lede="Clear primaries that carry at a distance. Poppy marks a passage on a brand page; cornflower is selection, focus and a compared series. Neither is a status and neither fills a button."
       >
         <div className="di-swatches">
           {accents.map((family) => (
@@ -260,16 +286,16 @@ function Board() {
             <AccentsInUse />
             <Rules>
               <Rule>At most one accent per page. The two meet only in a chart.</Rule>
-              <Rule>Poppy is not “critical”. A failure stays danger red, #9E2020, and says so in words.</Rule>
-              <Rule>Never on a button. Cornflower never sits directly on a navy surface — it measures 3:1 there.</Rule>
+              <Rule>Poppy is not “critical”. A failure is the severity scale's critical, and says so in words.</Rule>
+              <Rule>Never on a button. After dark cornflower lightens to #79AEEA so it still reads on navy.</Rule>
             </Rules>
           </section>
         </div>
       </Section>
       <Section
         eyebrow="Charts"
-        title="One series in navy, everything else warm neutral."
-        lede="Accent is the single value the eye should land on. A semantic hue appears only where a reading crossed a threshold — never to tell two ordinary series apart."
+        title="One series in ink, the one value in gold."
+        lede="Gold is the single value the eye should land on. A severity hue appears only where a reading crossed a threshold — never to tell two ordinary series apart."
       >
         <ul className="di-chart-roles">
           {chartRoles.map(([name, token, color, role]) => (

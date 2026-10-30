@@ -132,6 +132,7 @@ export {
   PageHeaderAside,
   PageHeaderCrumbs,
   PageHeaderFacts,
+  PageHeaderMeta,
   PageHeaderStatus,
   PageHeaderTitle,
 } from "./components/layout/page/PageHeader";
@@ -255,3 +256,18 @@ export { TokenField } from "./components/forms/text/TokenField";
 export { Tooltip } from "./components/feedback/Tooltip";
 export { TooltipTarget } from "./components/feedback/TooltipTarget";
 export { VersionTag } from "./components/marks/VersionTag";
+export { AttentionClear, AttentionItem, AttentionList } from "./components/data/records/AttentionList";
+export { Figure, FigureRow } from "./components/data/figures/FigureRow";
+export { Hero, HeroAside, HeroFooter, HeroLead, HeroVisual } from "./components/layout/page/Hero";
+export { HeroFigure } from "./components/data/figures/HeroFigure";
+export {
+  ListDetail,
+  ListDetailBack,
+  ListDetailHead,
+  ListDetailItem,
+  ListDetailItems,
+  ListDetailList,
+  ListDetailPane,
+} from "./components/layout/arrangement/ListDetail";
+export { MetaLine } from "./components/data/text/MetaLine";
+export { SeverityMark, type Severity } from "./components/marks/SeverityMark";

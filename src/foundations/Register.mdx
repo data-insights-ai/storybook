@@ -10,15 +10,15 @@ import { SealSpecimen, IndexSpecimen } from "./guide/RegisterSpecimens";
   title="The surface is a register, not a dashboard."
   lede="Everything else on this page follows from that one sentence. A dashboard shows you numbers. A register records them, states who recorded them, and lets you check. The six moves below are what make the difference visible."
 >
-  <Section eyebrow="One" title="Warm paper, not cool grey.">
+  <Section eyebrow="One" title="Paper, and depth by tone.">
     <p>
-      A cool grey canvas with a blue accent is what every tool in this field looks like. Paper
-      (`#F4F1E8`) reads as a record before a single word is parsed, and no competitor in the space
-      has it. That is the whole reason it is here.
+      The ground is a barely warm paper (`#F3F2EE`). Depth is a step in tone, not a line: the
+      sidebar sits one step below the ground, a surface one step above it, a menu or the selected
+      row higher still. A table sits on a surface and has no frame of its own.
     </p>
     <p>
-      The one cold surface is the grid behind a table. It is white so a dense field of mono values
-      reads as an extract lifted out of the record, rather than as more of the page.
+      After dark the same steps run in brand navy. The theme is designed, not inverted: the ground is
+      `#0A1F44`, never near-black.
     </p>
   </Section>
 
@@ -30,12 +30,21 @@ import { SealSpecimen, IndexSpecimen } from "./guide/RegisterSpecimens";
       cornflower mark and signal on a page — they never fill a control.
     </p>
     <p>
-      After dark that breaks down — navy cannot act against a navy ground — so the fill turns gold.
-      That is the single exception in the system, and it exists only in the night sheet.
+      After dark navy cannot act against a navy ground, so the fill turns paper-white.
     </p>
   </Section>
 
-  <Section eyebrow="Three" title="Gold means sealed. It does not mean important.">
+  <Section eyebrow="Three" title="Gold marks the one thing.">
+    <p>
+      In each view gold marks one object: the first attention item, a verdict, the highlighted
+      value of a chart. In daylight it is an edge or a mark, never text and never a text background;
+      after dark gold may be read as text. Selection and focus are cornflower, so gold never has to
+      mean "you are here".
+    </p>
+    <p>
+      The seal marks below use the same gold, small, beside a recorded value. They do not compete
+      with the one thing: they are a dot and a ring, not a surface.
+    </p>
     <SealSpecimen />
     <Rules>
       <Rule>A filled gold dot: the value is recorded and can be verified.</Rule>
@@ -87,14 +96,13 @@ import { SealSpecimen, IndexSpecimen } from "./guide/RegisterSpecimens";
     </Verdicts>
   </Section>
 
-  <Section eyebrow="Six" title="One ornament, and it measures something.">
+  <Section eyebrow="Six" title="Few lines, and each one separates something.">
     <p>
-      The 8px tick scale closes a header or a block that reports a measurement. It is the only
-      decorative mark in the system, and it earns its place by looking like an instrument rather than
-      a flourish. Everything else is a hairline.
+      Rules run only between figures in a row and between the rows of a table. A header has no rule
+      under it; a section is set apart by space and tone.
     </p>
     <Rules>
-      <Rule>Depth is drawn with a 1px rule, not with a shadow.</Rule>
+      <Rule>Depth is a step in tone, with at most a soft shadow under a surface.</Rule>
       <Rule>Only a detached plane — a menu, a modal, a toast — gets a shadow, and a technical one.</Rule>
       <Rule>No blur behind text. A mono value behind frosted glass has no measurable contrast.</Rule>
       <Rule>Motion runs at one of two durations and no others: 120ms and 200ms, ease-out, one change at a time.</Rule>

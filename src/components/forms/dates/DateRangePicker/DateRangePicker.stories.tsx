@@ -25,6 +25,8 @@ const meta = {
   title: "Forms/Dates/DateRangePicker",
   tags: ["layer:form"],
   component: DateRangePicker,
+  // The popover stories assert the anchored panel; the phone sheet has its own story below.
+  globals: { viewport: { value: "desk", isRotated: false } },
   args: {
     id: "period",
     label: "Period",
@@ -384,7 +386,6 @@ export const DesktopPopover: Story = {
   parameters: {
     viewport: { options: { desk: { name: "Console (1280)", styles: { width: "1280px", height: "900px" } } } },
   },
-  globals: { viewport: { value: "desk", isRotated: false } },
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
     const doc = canvasElement.ownerDocument;

@@ -3,7 +3,7 @@ import { ConsoleFrame } from "../../.storybook/Console";
 import { LoginScreen } from "./Login";
 
 const meta = {
-  title: "Screens/Login",
+  title: "Patterns/Login",
   tags: ["layer:screen"],
   component: LoginScreen,
   parameters: { layout: "fullscreen" },

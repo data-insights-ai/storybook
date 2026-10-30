@@ -39,7 +39,7 @@ export const Seal: Story = {
 export const AllTones: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", gap: 8, padding: 12, background: "var(--di-navy-900)", borderRadius: 8 }}>
+    <div style={{ display: "flex", gap: 8, padding: 12, background: "var(--di-sidebar-bg)", borderRadius: 8 }}>
       <Badge tone="neutral">08</Badge>
       <Badge tone="alert">03</Badge>
       <Badge tone="seal">06</Badge>

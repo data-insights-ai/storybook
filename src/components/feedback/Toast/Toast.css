@@ -10,7 +10,7 @@
     --di-bg-subtle: var(--di-inverse-raised);
     --di-button-secondary-bg: transparent;
     --di-button-secondary-border: var(--di-seal);
-    --di-focus: var(--di-inverse-seal);
+    --di-focus: var(--di-inverse-focus);
 
     display: flex;
     align-items: center;

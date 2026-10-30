@@ -5,7 +5,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { DetailPageScreen } from "./DetailPage";
 
 const meta = {
-  title: "Screens/Detail page",
+  title: "Patterns/Detail page",
   tags: ["layer:screen"],
   component: DetailPageScreen,
   parameters: { layout: "fullscreen" },

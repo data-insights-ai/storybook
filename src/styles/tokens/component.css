@@ -32,21 +32,43 @@
     --di-label-weight: var(--di-weight-medium);
     --di-label-color: var(--di-text-muted);
 
+    /* The label above a value — a figure, a table column, a navigation
+       group, a fact — is a different kind of text than the value: mono
+       capitals, quiet, so the value reads first. */
+    --di-mono-label-family: var(--di-font-code);
+    --di-mono-label-size: var(--di-font-size-200);
+    --di-mono-label-weight: var(--di-weight-medium);
+    --di-mono-label-tracking: var(--di-tracking-label);
+    --di-mono-label-color: var(--di-text-muted);
+
+    /* A line of facts beside a value: as of when, from where, how many. */
+    --di-meta-family: var(--di-font-code);
+    --di-meta-size: var(--di-font-size-300);
+    --di-meta-color: var(--di-text-subtle);
+
+    /* The display face's steps: a page's name, a section head, a figure. */
+    --di-heading-family: var(--di-font-display);
+    --di-page-title-size: var(--di-font-size-700);
+    --di-section-title-size: var(--di-font-size-600);
+    --di-block-title-size: var(--di-font-size-500);
+    --di-figure-size: var(--di-font-size-700);
+
     --di-field-bg: var(--di-bg-surface);
     --di-field-border: var(--di-border-input);
     --di-field-radius: var(--di-radius-micro);
     --di-field-height: var(--di-h-ctl);
 
     --di-panel-bg: var(--di-bg-surface);
-    --di-panel-border: var(--di-border);
+    --di-panel-border: transparent;
     --di-panel-radius: var(--di-radius-surface);
-    --di-panel-index-bg: var(--di-bg-page);
+    --di-panel-pad: var(--di-space-24);
+    --di-panel-index-bg: var(--di-bg-subtle);
 
-    --di-card-bg: var(--di-bg-surface);
-    --di-card-border: var(--di-border);
-    --di-card-radius: var(--di-radius-surface);
-
-    --di-table-bg: var(--di-bg-grid);
+    --di-table-bg: var(--di-bg-surface);
+    --di-table-shadow: var(--di-elevation-surface);
+    --di-table-radius: var(--di-radius-surface);
+    --di-table-head-bg: var(--di-bg-subtle);
+    --di-table-edge: var(--di-space-12);
     --di-table-row-height: var(--di-h-row);
     --di-table-rule: var(--di-rule-hairline);
 

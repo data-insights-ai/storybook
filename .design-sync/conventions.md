@@ -26,7 +26,16 @@ This exists so a page can show both themes at once — `Foundations/Color` puts 
 
 Build from the components in this system. **If something you need is missing, say so — do not approximate it with raw markup.** A missing control is a code change in the library (a new component, with its own story and an export), not something a design invents. A hand-rolled substitute looks right in the design and cannot ship: it has no tokens, no dark theme, no focus handling and no accessible name.
 
-`Screens/*` are **not** in this bundle. The register, watchlist and other example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `Panel`, `DataTable` and the rest.
+`Patterns/*` are **not** in this bundle. The security overview, case triage, organization home and the older example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `PageHeader`, `AttentionList`, `Panel`, `DataTable` and the rest.
+
+### How a screen is composed
+
+- **The header only orients.** `PageHeader` holds the page's name, a `StatusPill` beside it and the meta (`PageHeaderMeta`: as of when, from where) — right of the name on a desktop, under it on a phone. No eyebrow, no claim, no rule, no button in a console header.
+- **The first block is what needs the person**: `AttentionList` with at most three `AttentionItem`s; item 01 runs full width with the one primary button and the gold edge. When nothing is due, `AttentionClear` says "Everything is running".
+- **A navy `Hero` only with a signature visual** — the chart that is the screen's argument — closed by `FigureRow variant="footer"`. Figures without a hero sit on `FigureRow variant="strip"`. Rules separate figures and nothing else.
+- **A list beside its record is `ListDetail`**: the list pane a step above the ground, the selected row a step higher with a cornflower edge; on a phone the two are separate views with `ListDetailBack`.
+- **Severity is `SeverityMark`**: one scale, a filled mark plus the word.
+- Meta lines (`MetaLine`) break between items; `Actions` stack full width on a phone.
 
 A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav.
 
@@ -37,20 +46,25 @@ The Storybook sidebar is grouped by the job a component does:
 - `Foundations/`: the brand, the tokens and the reasoning behind them. No component lives here.
 - `Actions/`: what a person presses: `Button`, `CountButton`, `CopyValue`, `RowActions`, `BulkActionBar`.
 - `Forms/`: labelled controls: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `Switch`, `Checkbox` and the date fields.
-- `Data/`: what a person reads: records (`RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`Stat`, `StatTile`), text (`Eyebrow`, `Highlight`, `Kbd`, `CodeBlock`, `PullQuote`) and `DataTable`.
-- `Marks/`: what every other component draws with: `Badge`, `StatusPill`, `Chip`, `Tag`, `VersionTag`, `SealValue`, `Icon`, `IconTile`.
+- `Data/`: what a person reads: records (`AttentionList`, `RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`FigureRow`, `HeroFigure`, `Stat`, `StatTile`), text (`Eyebrow`, `Highlight`, `Kbd`, `MetaLine`, `CodeBlock`, `PullQuote`) and `DataTable`.
+- `Marks/`: what every other component draws with: `Badge`, `SeverityMark`, `StatusPill`, `Chip`, `Tag`, `VersionTag`, `SealValue`, `Icon`, `IconTile`.
 - `Feedback/`: `Notice`, `Toast`, `EmptyState`, `DangerZone`, `Tooltip`, and the loaders, progress bars and skeletons.
 - `Overlays/`: what opens over the page: `Modal`, `ConfirmDialog`, `Sheet`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
 - `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Menu`, `CommandBar`, `Pagination`, `Stepper`, `TextLink`.
-- `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `Toolbar`, `Accordion`, `Disclosure`.
+- `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `Hero`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `ListDetail`, `Toolbar`, `Actions`, `Accordion`, `Disclosure`.
 - `Charts/`, `Timeline/`, `Inference/`: what a screen measures, what happened when, and what the system inferred.
 - `Shell/`: the frame of the app: `AppShell`, `SignIn`, `ThemeProvider`.
+- `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 
 ### Which component for which job
 
 | Job | Use | Not |
 | --- | --- | --- |
-| A block of a record, or a plain bordered surface | `Panel`, with a `title` and an `index` when it is one of a sequence, with neither for a plain surface | |
+| What needs the person now | `AttentionList`, at most three items | a notice per item |
+| The figures of a screen | `FigureRow` (`strip`, or `footer` under a `Hero`) | a row of `StatTile`s |
+| A list beside one record | `ListDetail` | a table with a drawer |
+| A severity | `SeverityMark` | a coloured word |
+| A block of a record, or a plain surface | `Panel`, with a `title` and an `index` when it is one of a sequence, `surface="inset"` for a group inside another surface | |
 | One measured value on its own surface | `StatTile`, with an `index`, a `StatTileDelta` or a `Sparkline` when it has them | |
 | A small labelled figure set in a row inside something else | `Stat` in a `StatRow` | |
 | The detail of one row | `Sheet` with the row's `index` and an `eyebrow` naming the kind of record | |
@@ -73,20 +87,23 @@ The Storybook sidebar is grouped by the job a component does:
 
 There is no utility-class system. Style your own layout glue with `var(--di-*)`; never hand-write a `di-*` class, those belong to the components.
 
-**Every dimension is a token too.** Spacing is `--di-space-2|4|6|8|12|16|24|32|48|64|96`, named by value; radius is `--di-radius-micro|control|surface|container|pill`; type is `--di-font-size-100`…`-1000`. A raw px in `gap`, `padding`, `margin`, `border-radius` or `font-size` does not ship.
+**Every dimension is a token too.** Spacing is `--di-space-2|4|6|8|12|16|24|32|48|64|96`, named by value; radius is `--di-radius-micro|control|inset|surface|container|pill`; type is `--di-font-size-100`…`-1000`. A raw px in `gap`, `padding`, `margin`, `border-radius` or `font-size` does not ship.
 
-**Never write a raw colour.** No `#0A1F44`, no `rgb()`, no named colours — only `var(--di-*)`. This is not housekeeping: navy is both the ink and the action, and **after dark the action fill turns gold**. A hardcoded navy is correct in daylight and *invisible on the night sheet*, because navy cannot act against a navy ground. The token flips; a hex literal cannot.
+**Never write a raw colour.** No `#0A1F44`, no `rgb()`, no named colours — only `var(--di-*)`. This is not housekeeping: navy is both the ink and the action, and **after dark the action fill turns paper-white**. A hardcoded navy is correct in daylight and *invisible on the night sheet*, because navy cannot act against a navy ground. The token flips; a hex literal cannot.
 
 | Need | Tokens |
 | --- | --- |
-| Surfaces | `--di-bg-page` (warm paper, the page), `--di-bg-surface` (a panel/field/card), `--di-bg-grid` (white — tables only), `--di-bg-subtle` |
+| Surfaces | Depth is a step in tone: `--di-bg-chrome` (the sidebar, a step below), `--di-bg-page` (the ground), `--di-bg-surface` (a panel, a table, a list pane), `--di-bg-subtle` (inset), `--di-bg-strip`, `--di-bg-plane` (what floats, the selected row) |
 | Ink | `--di-text`, `--di-text-muted`, `--di-text-subtle`, `--di-text-disabled`, `--di-text-on-strong`, `--di-text-on-seal` (ink on the filled seal) |
 | Lines | `--di-rule`, `--di-rule-hairline`, `--di-border`, `--di-border-strong` |
 | Space | `--di-space-2 4 6 8 12 16 24 32 48 64 96` — named by value, so `--di-space-12` is 12px |
-| Radius | `--di-radius-micro` (4), `--di-radius-control` (6), `--di-radius-surface` (8), `--di-radius-container` (12), `--di-radius-pill` |
-| Type | `--di-font-ui`, `--di-font-code`, `--di-font-size-100` … `-1000`, `--di-weight-regular/medium/semibold/bold` |
+| Radius | `--di-radius-micro` (4), `--di-radius-control` (6), `--di-radius-inset` (8), `--di-radius-surface` (12), `--di-radius-container` (12), `--di-radius-pill` |
+| Type | `--di-font-display`, `--di-font-ui`, `--di-font-code`, `--di-font-size-100` … `-1000`, `--di-weight-regular/medium/semibold/bold` |
 | Status | `--di-status-{ok,warn,danger,recorded,neutral}-{bg,fg,border,dot}` |
-| Record marks | `--di-seal`, `--di-seal-ink`, `--di-ai-ring`, `--di-ai-ink` |
+| The one thing | `--di-one`, `--di-one-edge`, `--di-one-ink` (navy in daylight, gold after dark) |
+| Selection | `--di-select`, `--di-select-ink`, `--di-bg-selected`, `--di-focus` (cornflower) |
+| Severity | `--di-severity-{critical,high,medium,low,info}` |
+| Record marks | `--di-seal`, `--di-ai-ring` |
 | Accents | `--di-highlight` (poppy), `--di-highlight-ink`, `--di-highlight-tint`; `--di-signal` (cornflower), `--di-signal-ink`, `--di-signal-tint` — see the rules below before using either |
 | Motion | `--di-duration` (120ms), `--di-duration-slow` (200ms), `--di-ease` |
 | Control height | `--di-h-dense` (28), `--di-h-ctl` (32, the standard), `--di-h-comfort` (36), `--di-h-row` (40) |
@@ -94,15 +111,15 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 
 Rules that make output look native rather than approximate:
 
-- **Navy is the ink and the action.** No accent acts. One filled navy control per sheet, so it is never unclear which button commits.
-- **Two accents stand beside navy and gold, never in their place.** Poppy marks the place a page is about — a key figure, a quote, the core claim — and on a page it is only ever `Highlight` (`variant="passage"` lays the tint under a run of words, `variant="figure"` sets a key figure in poppy ink). Cornflower signals a second series and lives in charts as `--di-chart-compare`. **At most one accent per page**, and the two meet only in a chart. Neither is a status, so neither is a `tone`: poppy is not critical, and a failure stays danger. Neither fills a button. Cornflower never sits directly on navy (3.0:1) — not on the rail, a toast, a tooltip or a `Badge`. Bare `--di-highlight` is 4.2:1 on paper: a mark or a large figure, never body text.
-- **Gold means sealed, not important.** A filled dot (`--di-seal`) is a recorded, verifiable value; a hollow ring (`--di-ai-ring`) is a value a model inferred. Never swap them — it inverts the meaning. The mark is never the only channel: keep the word beside it.
-- **Gold is a mark, not type.** Gold 500 and Gold 600 do not clear AA as small text on paper. Small gold text uses `--di-seal-ink` (`#7A5C0E`); gold text on navy uses Gold 400. On ivory, a gold-adjacent ink needs `#061631` rather than navy to clear.
-- **Focus follows its ground**, and this is a mistake the system already made once: `--di-focus` is navy on paper and Gold 400 after dark, and `--di-sidebar-focus` is gold on the navy rail. Do not ring focus in seal gold on paper — it measures **2.1:1**, under the **3:1** a focus indicator has to clear. Never remove a focus indicator.
-- **Anomaly runs on the gold ramp.** Do not introduce a second yellow, or a generic traffic-light green or red — the four status pairs above are the whole set.
+- **Navy is the ink and the action.** No accent acts. One filled navy control per view, so it is never unclear which button commits.
+- **Depth is a step in tone, not a line.** A table sits on a surface without a frame of its own.
+- **Poppy marks a passage on a brand page; cornflower selects.** Poppy is only ever `Highlight`. Cornflower is selection, focus and a compared series (`--di-chart-compare`). Neither is a status, so neither is a `tone`, and neither fills a button.
+- **Gold marks the one thing in a view** — the first attention item, a verdict, the one value of a chart. In daylight it is an edge or a mark, **never text and never a text background**; after dark gold text is allowed (`--di-one-ink`). The seal marks use the same gold, small: a filled dot (`--di-seal`) is a recorded value, a hollow ring (`--di-ai-ring`) an inferred one. Keep the word beside the mark.
+- **Selection and focus are cornflower**, in both themes. Never ring focus in gold. Never remove a focus indicator.
+- **Warn is its own amber**, so it never reads as the gold. Severity after dark runs orange for medium for the same reason.
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
-- **`--di-font-code` (JetBrains Mono) is for anything a machine wrote**: identifiers, hashes, timestamps, measured values, section numbers. Prose is `--di-font-ui`. Which track a string sits in says where it came from.
-- **Depth is a 1px rule.** Only a detached plane — menu, modal, toast — gets a shadow (`--di-shadow-plane`). No blur behind text.
+- **Three families.** `--di-font-display` (Sansation) is the page's name, a figure, a section head. `--di-font-ui` (IBM Plex Sans, 14px body) is prose. `--di-font-code` (IBM Plex Mono) is anything a machine wrote, and the capital label above a value.
+- **Rules only between figures and table rows.** A surface carries a soft shadow at most; a detached plane — menu, modal, toast — a stronger one (`--di-shadow-plane`). No blur behind text.
 - **Indexed records carry a 38px index column** (`--di-index-col`) holding an ordinal or a letter, wherever sequence or record identity matters — panels, tables, sheets opened from a row, notices. A sheet opened from a row keeps that row's ordinal; a failure keeps its ordinal, tinted. An ordinary form, a first-use empty state, and a panel or `StatTile` that is not one of a sequence (a row of different measures, the facts on one record) omit it; never invent a number to fill a decorative rail.
 - Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
 
@@ -117,7 +134,7 @@ Rules that make output look native rather than approximate:
 - **`Pagination` and `Switch` are controlled** — you own `page` / `checked`.
 - **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. A blocked link (`disabled` or `loading`) drops its `href` and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined in-text control and stays a `<button>` — it is for acting, not for going somewhere.
 - **`Icon` takes one Lucide icon as its child**: `<Icon label="Search"><Search aria-hidden /></Icon>`.
-- **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, poppy), `--di-chart-compare` (the comparison series, cornflower — also `LevelMeter`'s comparison track), `--di-chart-muted`, `--di-chart-band`. An ordered status scale (low → warn → danger: a stacked severity, a meter's zones, a `Distribution` row's `tone`) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Never draw a one-off SVG chart.
+- **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, gold), `--di-chart-compare` (the comparison series, cornflower — also `LevelMeter`'s comparison track), `--di-chart-muted`, `--di-chart-band`. An ordered status scale (low → warn → danger: a stacked severity, a meter's zones, a `Distribution` row's `tone`) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Never draw a one-off SVG chart.
 - **A page or section heading is a slot, because it can hold a `Highlight`**: `<PageHeader eyebrow="…" lede="…"><PageHeaderTitle>…</PageHeaderTitle><PageHeaderAside>…</PageHeaderAside></PageHeader>`, and `SectionTitleHeading` / `SectionTitleMeta` the same way. A `Panel`, `Modal` or `Sheet` title stays a string — the page marks one place, and it is never a panel's title.
 - Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first.
 
@@ -126,8 +143,8 @@ Rules that make output look native rather than approximate:
 To try different colour, override token **values** — never swap a component's styling, and never write a hex into markup. One block at the top of the design and every component follows, in both themes:
 
 ```css
-:root { --di-seal: #B8912F; --di-fill-strong: #0E2A55; }
-:root[data-theme="dark"] { --di-fill-strong: #D8BE81; }
+:root { --di-one: #B8912F; --di-fill-strong: #0E2A55; }
+:root[data-theme="dark"] { --di-fill-strong: #F2F0E6; }
 ```
 
 Keep the names and keep the roles: `--di-seal` stays the *recorded* mark, `--di-ai-ring` stays *inferred*, a status `-bg` stays a pale wash its `-fg` reads on. Redefining what a token **means** breaks the register even when the colour is pretty. When handing back, say which tokens you changed; engineering sets those values in the token files.
@@ -142,19 +159,19 @@ use, and nothing else.
 
 | Role | Token | Face | Size | Weight | Where |
 | --- | --- | --- | --- | --- | --- |
-| Display | `--di-font-size-1000` | Space Grotesk | 56px | 700 | Brand page title |
-| Title | `--di-font-size-800` | Space Grotesk | 34px | 700 | Brand page section |
-| Page | `--di-font-size-700` | Space Grotesk | 28px | 700 | `PageHeader tier="console"` |
-| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `SectionTitle tier="console"` |
-| Brand lede | `--di-font-size-550` | Space Grotesk | 18px | 400 | `PageHeader tier="brand"` lede |
-| Lede | `--di-font-size-500` | Space Grotesk | 16px | 400 | Section lede, a stated fact |
-| **Body** | `--di-font-size-400` | Space Grotesk | **13px** | 400 | The console body — `base.css` |
-| Interface | `--di-font-size-400` | Space Grotesk | 13px | 500 | Control labels |
-| Meta | `--di-font-size-300` | Space Grotesk | 12px | 400 | Screen lede, field hints |
-| Measurement | `--di-font-size-700` | JetBrains Mono | 28px | 500 | `StatTile` figure |
-| Identifier | `--di-font-size-400` | JetBrains Mono | 13px | 400 | Identifiers, hashes, timestamps |
-| Eyebrow | `--di-font-size-200` | JetBrains Mono | 11px | 500 | `Eyebrow` — `--di-tracking-eyebrow`, uppercase, Seal ink |
-| Micro | `--di-font-size-100` | JetBrains Mono | 10px | 500 | `Kbd`, tile ordinal |
+| Display | `--di-font-size-1000` | Sansation | 56px | 700 | Brand page title |
+| Title | `--di-font-size-800` | Sansation | 34px | 700 | Brand page section |
+| Page | `--di-font-size-700` | Sansation | 28px | 700 | `PageHeader`: the page's name; `Figure` value |
+| Section | `--di-font-size-600` | Sansation | 20px | 700 | `SectionTitle`, the attention heading |
+| Brand lede | `--di-font-size-550` | IBM Plex Sans | 18px | 400 | `PageHeader tier="brand"` lede |
+| Block | `--di-font-size-500` | IBM Plex Sans | 16px | 600 | A panel's or an attention item's title |
+| **Body** | `--di-font-size-400` | IBM Plex Sans | **14px** | 400 | The console body — `base.css` |
+| Interface | `--di-font-size-400` | IBM Plex Sans | 14px | 500 | Control labels |
+| Hint | `--di-font-size-300` | IBM Plex Sans | 12px | 400 | Field hints, a panel's note |
+| Meta | `--di-font-size-300` | IBM Plex Mono | 12px | 400 | `MetaLine`, `PageHeaderMeta` |
+| Identifier | `--di-font-size-400` | IBM Plex Mono | 14px | 400 | Identifiers, hashes, timestamps |
+| Label | `--di-font-size-200` | IBM Plex Mono | 11px | 500 | The label above a value — uppercase, 0.1em |
+| Micro | `--di-font-size-100` | IBM Plex Mono | 10px | 500 | `Kbd`, tile ordinal |
 
 `-550` is the ramp's one interpolated step, and it is the reason the brand tier
 reads: 16 to 20 is where prose hierarchy lives, and with nothing between them a
@@ -178,7 +195,7 @@ way the top two type steps are: 48 separates the parts of a brand page, 64 and 9
 separate the parts from each other, and **a console screen stops at 48**.
 
 **Radius** — the smaller the control, the tighter the corner. A field is 4px and
-the panel holding it is 8px, so the field reads as set *into* the sheet rather
+the surface holding it is 12px, so the field reads as set *into* the sheet rather
 than floating on it. Only a pill is fully round, and only because it is a mark.
 
 **Control height** — 32px is the standard and covers every form control unless
@@ -267,7 +284,7 @@ else, which is what keeps the tier honest.
 ### A build
 
 ```jsx
-<Panel title="Source register" index="01" surface="grid">
+<Panel title="Source register" index="01">
   <PanelMeta><SealValue stateLabel="Sealed">09:12:04Z</SealValue></PanelMeta>
   <DataTable caption="Sources" indexed={true}>
     <TableHead>

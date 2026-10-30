@@ -4,7 +4,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { ArchitectureScreen } from "./Architecture";
 
 const meta = {
-  title: "Screens/Architecture",
+  title: "Patterns/Architecture",
   tags: ["layer:screen"],
   component: ArchitectureScreen,
   parameters: { layout: "fullscreen" },

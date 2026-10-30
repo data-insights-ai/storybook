@@ -1,9 +1,10 @@
 @layer components {
+  /* The table is a surface by tone, without a frame of its own. */
   .di-table-wrap {
     overflow: hidden;
-    border: 1px solid var(--di-border-strong);
-    border-radius: var(--di-radius-surface);
+    border-radius: var(--di-table-radius);
     background: var(--di-table-bg);
+    box-shadow: var(--di-table-shadow);
   }
 
   .di-table-toolbar {
@@ -12,7 +13,7 @@
     gap: var(--di-space-8);
     padding: var(--di-space-8) var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
-    background: var(--di-bg-page);
+    background: var(--di-table-head-bg);
   }
 
   /*
@@ -31,29 +32,33 @@
     font-size: var(--di-font-size-400);
   }
 
+  /* The head names each column as a label, not as a value: mono capitals, quiet. */
   .di-table th {
     height: 32px;
     padding: 0 var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
-    background: var(--di-bg-page);
+    background: var(--di-table-head-bg);
     text-align: left;
-    font-family: var(--di-font-ui);
-    font-size: var(--di-font-size-300);
-    font-weight: var(--di-weight-semibold);
-    color: var(--di-text-muted);
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
     white-space: nowrap;
   }
 
   /*
    * A table sizes columns to their content; a filling column takes the rest.
    * Claiming 100% would squeeze the others to their narrowest and wrap an id
-   * at its hyphen, so beside a filling column every other cell keeps its line.
+   * at its hyphen, so beside a filling column every other cell keeps its
+   * line, while the filling column's own prose wraps inside it.
    */
   .di-table th.is-fill {
     width: 100%;
   }
 
-  .di-table:has(th.is-fill) :is(th, td) {
+  .di-table:has(th.is-fill) :is(th, td):not(.is-fill) {
     white-space: nowrap;
   }
 
@@ -155,8 +160,13 @@
     cursor: pointer;
   }
 
+  /* The row an open pane shows is selected: the cornflower tint and its edge. */
   .di-table tbody tr.is-active td {
-    background: var(--di-bg-page);
+    background: var(--di-bg-selected);
+  }
+
+  .di-table tbody tr.is-active > :first-child {
+    box-shadow: inset 3px 0 0 var(--di-select);
   }
 
   /*
@@ -172,7 +182,7 @@
 
   .di-table th.is-pinned {
     z-index: 2;
-    background: var(--di-bg-page);
+    background: var(--di-table-head-bg);
   }
 
   /*
@@ -201,7 +211,7 @@
   }
 
   .di-table tbody tr.is-active td.is-pinned {
-    background: var(--di-bg-page);
+    background: var(--di-bg-selected);
   }
 
   /* The ordinal column: the row's handle, never its content. */
@@ -211,7 +221,7 @@
     min-width: var(--di-index-col);
     padding: 0 !important;
     border-right: 1px solid var(--di-table-rule);
-    background: var(--di-bg-page);
+    background: var(--di-table-head-bg);
     text-align: center;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
@@ -228,6 +238,15 @@
     text-align: right;
   }
 
+  /* The outer cells keep the inset of whatever surface the table sits on. */
+  .di-table :is(th, td):first-child:not(.di-table-index) {
+    padding-left: var(--di-table-edge);
+  }
+
+  .di-table :is(th, td):last-child {
+    padding-right: var(--di-table-edge);
+  }
+
   .di-table-foot {
     display: flex;
     align-items: center;
@@ -235,7 +254,7 @@
     gap: var(--di-space-12);
     padding: var(--di-space-8) var(--di-space-12);
     border-top: 1px solid var(--di-border);
-    background: var(--di-bg-page);
+    background: var(--di-table-head-bg);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
@@ -311,7 +330,7 @@
       flex-wrap: wrap;
       align-items: center;
       gap: var(--di-space-6) var(--di-space-12);
-      padding: var(--di-space-12);
+      padding: var(--di-space-12) var(--di-table-edge);
       border-bottom: 1px solid var(--di-table-rule);
     }
 
@@ -343,6 +362,10 @@
       border: 0;
       background: none;
       text-align: left;
+    }
+
+    .di-table-wrap.is-stackable :is(th, td):is(:first-child, :last-child):not(.di-table-index) {
+      padding-inline: 0;
     }
 
     /* Beside a filling column every cell keeps its line; stacked, prose wraps again. */
@@ -382,10 +405,12 @@
 
     .di-table-wrap.is-stackable td.is-labelled::before {
       content: attr(data-label) / "";
-      font-family: var(--di-font-ui);
-      font-size: var(--di-font-size-300);
-      font-weight: var(--di-weight-semibold);
-      color: var(--di-text-muted);
+      font-family: var(--di-mono-label-family);
+      font-size: var(--di-mono-label-size);
+      font-weight: var(--di-mono-label-weight);
+      letter-spacing: var(--di-mono-label-tracking);
+      text-transform: uppercase;
+      color: var(--di-mono-label-color);
       white-space: normal;
     }
 
@@ -400,7 +425,7 @@
 
     .di-table-wrap.is-stackable tbody tr.is-active,
     .di-table-wrap.is-stackable tbody tr.is-active td {
-      background: var(--di-bg-page);
+      background: var(--di-bg-selected);
     }
 
     .di-table-wrap.is-stackable .di-table-index {
@@ -410,12 +435,12 @@
       justify-content: center;
       padding-top: var(--di-space-12) !important;
       border-right: 1px solid var(--di-table-rule);
-      background: var(--di-bg-page);
+      background: var(--di-table-head-bg);
     }
 
     .di-table-wrap.is-stackable tbody tr:hover .di-table-index,
     .di-table-wrap.is-stackable tbody tr.is-active .di-table-index {
-      background: var(--di-bg-page);
+      background: var(--di-table-head-bg);
     }
 
     .di-table-wrap.is-stackable tbody tr.is-danger .di-table-index {
@@ -427,7 +452,7 @@
       min-height: 32px;
       padding-block: var(--di-space-6);
       border-bottom-color: var(--di-border);
-      background: var(--di-bg-page);
+      background: var(--di-table-head-bg);
     }
 
     .di-table-wrap.is-stackable thead th.di-table-index {

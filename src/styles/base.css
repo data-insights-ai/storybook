@@ -42,6 +42,20 @@
     margin: 0;
   }
 
+  /* Headings break into balanced lines; reading text keeps no lone last word. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+
   button,
   input,
   select,
@@ -71,19 +85,14 @@
     outline: none;
   }
 
-  /*
-   * Navy on paper, gold on the night sheet and the navy rail. The
-   * prototype rang the focus in seal gold throughout; gold on paper
-   * measures 2.1:1, under the 3:1 a focus indicator has to clear, so
-   * the ring follows the ground it sits on.
-   */
+  /* Focus is cornflower, like selection: 4.4:1 on the chrome, 6:1 on navy after dark. */
   :focus-visible {
     outline: 2px solid var(--di-focus);
     outline-offset: 2px;
   }
 
   ::selection {
-    background: var(--di-seal-bg);
+    background: var(--di-bg-selected);
     color: var(--di-text);
   }
 

@@ -35,7 +35,7 @@ export function Motifs() {
     <div className="di-motifs">
       <figure>
         <svg viewBox="0 0 120 80" aria-hidden>
-          <text x="60" y="58" textAnchor="middle" fontFamily="Space Grotesk, sans-serif" fontWeight="400" fontSize="56" fill="var(--di-text)">
+          <text x="60" y="58" textAnchor="middle" fontFamily="Sansation, sans-serif" fontWeight="400" fontSize="56" fill="var(--di-text)">
             [ ]
           </text>
         </svg>
@@ -73,7 +73,7 @@ export function Motifs() {
       <figure>
         <svg viewBox="0 0 120 80" aria-hidden>
           <line x1="10" y1="40" x2="110" y2="40" stroke="var(--di-rule)" strokeWidth="1" strokeDasharray="2 4" />
-          <text x="18" y="33" fontFamily="JetBrains Mono, monospace" fontSize="11" letterSpacing="0.04em" fill="var(--di-text-muted)">
+          <text x="18" y="33" fontFamily="IBM Plex Mono, monospace" fontSize="11" letterSpacing="0.04em" fill="var(--di-text-muted)">
             2026-09-18
           </text>
         </svg>
@@ -96,7 +96,7 @@ export function Motifs() {
       </figure>
       <figure>
         <svg viewBox="0 0 120 80" aria-hidden>
-          <g stroke="var(--di-rule-500)" strokeWidth="1">
+          <g stroke="var(--di-border-strong)" strokeWidth="1">
             {[10, 26, 42, 58, 74, 90, 106].map((x) => (
               <line key={x} x1={x} y1="34" x2={x} y2="46" />
             ))}

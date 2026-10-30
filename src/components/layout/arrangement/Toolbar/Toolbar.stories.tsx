@@ -63,6 +63,7 @@ export const InlineActions: Story = {
  * does not move it.
  */
 export const InlineForm: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
   render: () => (
     <form onSubmit={(event) => event.preventDefault()}>
       <Toolbar>

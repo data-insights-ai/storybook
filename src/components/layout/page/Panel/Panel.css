@@ -1,20 +1,28 @@
 @layer components {
+  /* A surface is a step in tone with a faint edge, not a box drawn with a line. */
   .di-panel {
     display: flex;
     overflow: hidden;
     border: 1px solid var(--di-panel-border);
     border-radius: var(--di-panel-radius);
     background: var(--di-panel-bg);
+    box-shadow: var(--di-elevation-surface);
   }
 
-  /* The cold surface. Reserved for an extract from the record. */
-  .di-panel-grid {
-    background: var(--di-bg-grid);
-    border-color: var(--di-border-strong);
+  /* A step below the surface it sits in: the deepest a region goes. */
+  .di-panel-inset {
+    --di-panel-bg: var(--di-bg-subtle);
+    border-radius: var(--di-radius-inset);
+    box-shadow: none;
   }
 
   .di-panel.is-danger {
     border-color: var(--di-status-danger-border);
+  }
+
+  /* The one thing that matters in the view. Gold marks the object, never its words. */
+  .di-panel.is-emphasis {
+    box-shadow: 0 0 0 1px var(--di-one-edge), var(--di-one-glow);
   }
 
   .di-panel-index {
@@ -63,48 +71,105 @@
     flex-direction: column;
   }
 
-  /* On a narrow panel the meta drops under the title rather than off the edge. */
+  /*
+   * The header has no rule under it: the title and the content belong to
+   * one block. On a narrow panel the meta drops under the title rather than
+   * off the edge.
+   */
+  .di-panel-body {
+    --di-panel-inner: var(--di-panel-pad);
+  }
+
+  .di-panel-inset > .di-panel-body {
+    --di-panel-inner: var(--di-space-16);
+  }
+
+  @media (max-width: 600px) {
+    .di-panel-body {
+      --di-panel-inner: var(--di-space-16);
+    }
+  }
+
   .di-panel-header {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
-    gap: var(--di-space-4) var(--di-space-12);
-    padding: var(--di-space-8) var(--di-space-12);
-    border-bottom: 1px solid var(--di-rule-hairline);
+    gap: var(--di-space-8) var(--di-space-16);
+    padding: var(--di-panel-inner) var(--di-panel-inner) 0;
+  }
+
+  .di-panel-titles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    min-width: 0;
+  }
+
+  .di-panel-label {
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
+  }
+
+  /* After dark the one thing may say so in gold; in daylight one-ink is navy. */
+  .di-panel.is-emphasis .di-panel-label {
+    color: var(--di-one-ink);
   }
 
   .di-panel-title {
-    font-size: var(--di-font-size-400);
+    font-size: var(--di-block-title-size);
     font-weight: var(--di-weight-semibold);
-    letter-spacing: var(--di-tracking-tight);
+    line-height: var(--di-leading-snug);
+    text-wrap: balance;
     color: var(--di-text);
   }
 
   .di-panel-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8);
     min-width: 0;
     font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
+    font-size: var(--di-font-size-300);
     font-variant-numeric: tabular-nums;
     color: var(--di-text-subtle);
   }
 
   .di-panel-content {
-    --di-panel-pad: var(--di-space-16);
+    --di-panel-pad: var(--di-panel-inner);
     flex: 1;
     display: flex;
     flex-direction: column;
     padding: var(--di-panel-pad);
   }
 
-  @media (max-width: 600px) {
-    .di-panel-content {
-      --di-panel-pad: var(--di-space-12);
-    }
+  .di-panel-header + .di-panel-content {
+    padding-top: var(--di-space-16);
   }
 
   .di-panel-content.di-panel-content-flush {
     --di-panel-pad: 0px;
+  }
+
+  /* A table in a panel sits on the panel's surface: it drops a surface of its own. */
+  .di-panel-content {
+    --di-table-bg: var(--di-panel-bg);
+    --di-table-shadow: none;
+    --di-table-radius: 0;
+  }
+
+  .di-panel-content-flush {
+    --di-table-edge: var(--di-panel-inner);
+  }
+
+  .di-panel-content-flush > .di-panel-note {
+    margin-top: 0;
+    padding: var(--di-space-12) var(--di-panel-inner) var(--di-panel-inner);
   }
 
   /*
@@ -118,9 +183,9 @@
     align-items: center;
     gap: var(--di-space-8);
     margin: auto calc(-1 * var(--di-panel-pad)) calc(-1 * var(--di-panel-pad));
-    padding: var(--di-space-8) var(--di-space-12);
+    padding: var(--di-space-12) var(--di-panel-inner);
     border-top: 1px solid var(--di-rule-hairline);
-    background: var(--di-bg-page);
+    background: var(--di-bg-subtle);
   }
 
   /*
