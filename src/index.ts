@@ -22,7 +22,7 @@ export { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipConte
 export type { ChartConfig, ChartTooltipDetail } from "./components/charts/Chart";
 export { ChartCard, ChartCardAction, ChartCardGrid } from "./components/charts/ChartCard";
 export { PeriodTimeline } from "./components/timeline/PeriodTimeline";
-export type { Period } from "./components/timeline/PeriodTimeline";
+export type { Period, PeriodPoint, PeriodRow, PeriodSpan } from "./components/timeline/PeriodTimeline";
 export { TrendChart } from "./components/charts/time/TrendChart";
 export type { TrendMarker, TrendSeries, TrendTone } from "./components/charts/time/TrendChart";
 export { Checkbox } from "./components/forms/choice/Checkbox";
@@ -168,7 +168,7 @@ export { IconTile } from "./components/marks/IconTile";
 export { InfiniteTable } from "./components/data/table/InfiniteTable";
 export type { InfiniteRowPlace } from "./components/data/table/InfiniteTable";
 export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/charts/compare/LevelMeter";
-export type { LevelBands } from "./components/charts/compare/LevelMeter";
+export type { LevelBands, LevelTone } from "./components/charts/compare/LevelMeter";
 export { Actions } from "./components/layout/arrangement/Actions";
 export { Grid } from "./components/layout/arrangement/Grid";
 export { Stack } from "./components/layout/arrangement/Stack";

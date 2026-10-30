@@ -48,6 +48,16 @@ function surfaceOf(el: Element): Element | null {
   return null;
 }
 
+/* Text scrolled past the edge of a scroll frame inside the surface is hidden there; the frame clips it, not the surface. */
+function clippedByScroller(rect: DOMRect, host: Element, surface: Element): boolean {
+  for (let node: Element | null = host; node && node !== surface; node = node.parentElement) {
+    if (!/auto|scroll/.test(getComputedStyle(node).overflowX)) continue;
+    const frame = node.getBoundingClientRect();
+    return rect.left < frame.left - 0.5 || rect.right > frame.right + 0.5;
+  }
+  return false;
+}
+
 function tooClose(inner: DOMRect, surface: Element, min: number): string | null {
   const box = surface.getBoundingClientRect();
   const style = getComputedStyle(surface);
@@ -72,7 +82,7 @@ export function clearanceFindings(root: Element): string[] {
     const range = document.createRange();
     range.selectNodeContents(node);
     for (const rect of range.getClientRects()) {
-      if (rect.width < 1) continue;
+      if (rect.width < 1 || clippedByScroller(rect, host, surface)) continue;
       const close = tooClose(rect, surface, MIN_TEXT);
       if (close)
         findings.add(`"${node.textContent!.trim().slice(0, 30)}" is ${close} from the edge of ${describe(surface)}`);
