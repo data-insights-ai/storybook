@@ -1,0 +1,329 @@
+@layer components {
+  /*
+   * One plane over the scrim, lifted by its shadow and its tone, never by a
+   * line. The head, the body and the footer are rows of it at one inset all
+   * round, 16px apart (12 compact): no rule under the head, no band under
+   * the footer.
+   */
+  .di-dialog {
+    --di-dialog-inset: var(--di-inset);
+    --di-dialog-width: var(--di-dialog-width-md);
+    max-width: 100vw;
+    padding: 0;
+    border: 0;
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    box-shadow: var(--di-shadow-plane);
+  }
+
+  .di-dialog[data-size="sm"] {
+    --di-dialog-width: var(--di-dialog-width-sm);
+  }
+
+  .di-dialog[data-size="lg"] {
+    --di-dialog-width: var(--di-dialog-width-lg);
+  }
+
+  .di-dialog[data-size="xl"] {
+    --di-dialog-width: var(--di-dialog-width-xl);
+  }
+
+  /* Solid, never blurred: the record behind stays a record. */
+  .di-dialog::backdrop {
+    background: var(--di-scrim);
+    opacity: 0;
+    transition:
+      opacity var(--di-duration-slow) var(--di-ease),
+      overlay var(--di-duration-slow) allow-discrete,
+      display var(--di-duration-slow) allow-discrete;
+  }
+
+  .di-dialog[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .di-dialog[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  /* `allow-discrete` lets the native dialog animate out as well as in, so closing is seen rather than cut. */
+  .di-dialog {
+    transition:
+      opacity var(--di-duration-slow) var(--di-ease),
+      translate var(--di-duration-slow) var(--di-ease),
+      overlay var(--di-duration-slow) allow-discrete,
+      display var(--di-duration-slow) allow-discrete;
+  }
+
+  /* From the right edge, the full height. */
+  .di-dialog[data-placement="side"] {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(var(--di-dialog-width), 100vw);
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    translate: 100% 0;
+  }
+
+  /* In the middle: a decision. It fades and settles down one step. */
+  .di-dialog[data-placement="center"] {
+    --di-dialog-width: var(--di-dialog-width-md);
+    width: min(var(--di-dialog-width), calc(100vw - var(--di-space-32)));
+    max-height: calc(100dvh - var(--di-space-64));
+    border-radius: var(--di-radius-surface);
+    opacity: 0;
+    translate: 0 calc(-1 * var(--di-space-8));
+  }
+
+  .di-dialog[data-placement="center"][data-size="sm"] {
+    --di-dialog-width: var(--di-dialog-width-sm);
+  }
+
+  .di-dialog[data-placement="center"][data-size="lg"] {
+    --di-dialog-width: var(--di-dialog-width-lg);
+  }
+
+  .di-dialog[data-placement="center"][data-size="xl"] {
+    --di-dialog-width: var(--di-dialog-width-xl);
+  }
+
+  /* From the bottom edge, the full width: a picker on a phone. */
+  .di-dialog[data-placement="bottom"] {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100vw;
+    max-height: var(--di-dialog-bottom-max);
+    margin: 0;
+    border-radius: var(--di-radius-surface) var(--di-radius-surface) 0 0;
+    translate: 0 100%;
+  }
+
+  .di-dialog[open] {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  @starting-style {
+    .di-dialog[open][data-placement="side"] {
+      translate: 100% 0;
+    }
+
+    .di-dialog[open][data-placement="center"] {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--di-space-8));
+    }
+
+    .di-dialog[open][data-placement="bottom"] {
+      translate: 0 100%;
+    }
+  }
+
+  /* The page behind holds still: the dialog is the only thing that scrolls. */
+  body:has(.di-dialog[open]) {
+    overflow: hidden;
+  }
+
+  .di-dialog-frame {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+    min-height: 0;
+  }
+
+  .di-dialog[data-placement="side"] .di-dialog-frame {
+    height: 100%;
+  }
+
+  .di-dialog-form {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .di-dialog-head {
+    --di-eyebrow-gap: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-4);
+    padding: var(--di-dialog-inset) var(--di-dialog-inset) 0;
+  }
+
+  .di-dialog-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-12);
+  }
+
+  /* The dialog's name is a heading: the display face, its one bold line. Focus lands here when there is no field. */
+  .di-dialog-title {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    outline: none;
+    font-family: var(--di-heading-family);
+    font-size: var(--di-section-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
+    text-wrap: balance;
+    color: var(--di-text);
+  }
+
+  .di-dialog[data-placement="center"] .di-dialog-title {
+    font-size: var(--di-block-title-size);
+  }
+
+  .di-dialog-lede {
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  /*
+   * The close button is drawn as its icon, on the title's line, so the
+   * head keeps one inset; its hit area is a box around it, the control's
+   * height, and 40px on a touch screen.
+   */
+  .di-dialog-close {
+    --di-dialog-close-hit: var(--di-control-h-md);
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+    padding: 0;
+    border: 0;
+    border-radius: var(--di-radius-micro);
+    background: transparent;
+    color: var(--di-text-muted);
+    cursor: pointer;
+  }
+
+  .di-dialog-close::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--di-dialog-close-hit);
+    height: var(--di-dialog-close-hit);
+    border-radius: var(--di-radius-control);
+    translate: -50% -50%;
+    transition: background-color var(--di-duration) var(--di-ease);
+  }
+
+  @media (pointer: coarse) {
+    .di-dialog-close {
+      --di-dialog-close-hit: var(--di-target);
+    }
+  }
+
+  .di-dialog-close:hover {
+    color: var(--di-text);
+  }
+
+  .di-dialog-close:hover::before {
+    background: var(--di-row-hover-bg);
+  }
+
+  .di-dialog-close:focus-visible {
+    outline: none;
+  }
+
+  .di-dialog-close:focus-visible::before {
+    outline: 2px solid var(--di-focus);
+  }
+
+  .di-dialog-close > svg {
+    position: relative;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+  }
+
+  .di-dialog-body {
+    flex: 1;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-rhythm-field);
+    min-height: 0;
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: var(--di-gap-16) var(--di-dialog-inset) var(--di-dialog-inset);
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-body);
+  }
+
+  .di-dialog-body:has(+ .di-dialog-footer) {
+    padding-bottom: var(--di-gap-16);
+  }
+
+  .di-dialog-body > p {
+    color: var(--di-text-muted);
+  }
+
+  .di-dialog-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--di-gap-8);
+    padding: 0 var(--di-dialog-inset) var(--di-dialog-inset);
+  }
+
+  @media (max-width: 600px) {
+    .di-dialog {
+      --di-dialog-inset: var(--di-inset-group);
+    }
+
+    /* On a phone the actions run the width, the one that commits on top. */
+    .di-dialog-footer {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+  }
+
+  /*
+   * Docked in a page's side column: a panel beside the content, on the one
+   * surface a Panel is on (tone, the surface shadow, the panel's inset), no
+   * scrim; it arrives in place and the page stays as it was.
+   */
+  .di-dialog-docked {
+    --di-dialog-inset: var(--di-surface-inner);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    color: var(--di-text);
+    opacity: 1;
+    transition: opacity var(--di-duration-slow) var(--di-ease);
+  }
+
+  @starting-style {
+    .di-dialog-docked {
+      opacity: 0;
+    }
+  }
+
+  .di-dialog-docked > .di-dialog-frame {
+    flex: 0 1 auto;
+    min-height: 0;
+  }
+
+  .di-dialog-docked .di-dialog-title {
+    font-size: var(--di-block-title-size);
+  }
+
+  .di-dialog-docked .di-dialog-close {
+    --di-dialog-close-hit: var(--di-control-h-sm);
+  }
+
+  .di-dialog-docked .di-dialog-body {
+    flex: 0 1 auto;
+  }
+}
