@@ -1,6 +1,6 @@
 import { useMemo, useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Panel } from "../../layout/page/Panel";
 import { bucketFor } from "../scale";
 import { episodesIn, episodesOf, type TimelineEpisode } from "./episodes";
@@ -205,6 +205,10 @@ const meta = {
     timeZone: "UTC",
     onEpisodePick: fn(),
   },
+  // The strip lays its blocks out once it knows its width; the checks after a story measure the drawn strip.
+  play: async ({ canvasElement }) => {
+    await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
+  },
   decorators: [
     (Story) => (
       <Panel>
@@ -251,6 +255,7 @@ export const Default: Story = {
     const list = await canvas.findByRole("list", {
       name: "Episodes and record changes, oldest first",
     });
+    await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
     const [first] = within(list).getAllByRole("button");
     await expect(first).toHaveAttribute("aria-pressed", "false");
     await userEvent.click(first);
@@ -288,6 +293,7 @@ const inIntakeOrExport = (event: SampleEvent) => event.lane === "intake" || even
 export const MixedSeverity: Story = {
   render: (args) => <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} sampleFocus={inIntakeOrExport} />,
   play: async ({ canvasElement }) => {
+    await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
     const marks = canvasElement.querySelectorAll(".di-tsummary-row .di-sev");
     await expect(marks.length).toBeGreaterThan(1);
     const lefts = new Set([...marks].map((mark) => Math.round(mark.getBoundingClientRect().left)));
