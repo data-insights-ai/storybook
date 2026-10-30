@@ -11,6 +11,7 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
+import { Toolbar } from "../../../actions/Toolbar";
 import { DataTable, TableBody, TableFooter, TableSpacer, TableToolbar } from "../DataTable";
 import { NewEntries } from "../NewEntries";
 import { Loading } from "../../../feedback/waiting/Loading";
@@ -28,7 +29,7 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * that fits on a few pages (`DataTable` with `Pagination`), nor where
  * the reader must reach a known page by number.
  *
- * **Anatomy:** `TableToolbar` and `TableHead` as children, then the
+ * **Anatomy:** `Toolbar` and `TableHead` as children, then the
  * rendered rows between two spacers, then a footer that counts the rows
  * or says the next page is loading; `NewEntries` floats under the app
  * bar while rows are held back.
@@ -51,10 +52,10 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * each by `rowKey`, renders one `TableRow` per index with `renderRow`, and
  * fetches when `onLoadMore` is called. Rows not rendered are held by space as
  * tall as the rendered rows measure, so the scroll height follows the
- * density and the fonts instead of a fixed guess. Its `TableToolbar` and `TableHead`
+ * density and the fonts instead of a fixed guess. Its `Toolbar` and `TableHead`
  * are children, as in `DataTable`. The page scrolls, not the table, and
  * the head stays in view under the app bar (`--di-sticky-top`) and under a
- * sticky `ListToolbar` above the table.
+ * sticky `Toolbar` above the table.
  */
 export function InfiniteTable({
   caption,
@@ -103,7 +104,7 @@ export function InfiniteTable({
   narrow?: "scroll" | "stack";
   /** Column widths are measured once and kept while rows come and go; `auto` lets each render size them. */
   layout?: "auto" | "measured";
-  /** `TableToolbar` and `TableHead`. */
+  /** `Toolbar` and `TableHead`. */
   children: ReactNode;
 }) {
   const top = useRef<HTMLTableRowElement>(null);
@@ -136,7 +137,7 @@ export function InfiniteTable({
   const toolbar: ReactNode[] = [];
   const head: ReactNode[] = [];
   Children.forEach(children, (child) => {
-    if (isValidElement(child) && child.type === TableToolbar) toolbar.push(child);
+    if (isValidElement(child) && (child.type === TableToolbar || child.type === Toolbar)) toolbar.push(child);
     else head.push(child);
   });
   const rows = virtualizer.getVirtualItems();

@@ -16,5 +16,7 @@
     line-height: 1.15;
     color: var(--di-text);
     text-wrap: balance;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 }

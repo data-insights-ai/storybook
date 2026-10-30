@@ -14,7 +14,8 @@
     letter-spacing: var(--di-mono-label-tracking);
     text-transform: uppercase;
     color: var(--di-one-ink);
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   .di-eyebrow.is-quiet .di-eyebrow-label {

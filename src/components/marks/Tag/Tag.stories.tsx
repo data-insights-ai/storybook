@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Plus } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
-import { Toolbar, ToolbarEnd } from "../../layout/arrangement/Toolbar";
+import { Toolbar, ToolbarEnd } from "../../actions/Toolbar";
 import { Tag, TagList } from "./Tag";
 
 const meta = {

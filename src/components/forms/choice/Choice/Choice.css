@@ -118,9 +118,10 @@
     outline-offset: 2px;
   }
 
+  /* Locked, still a control: the edge keeps the disabled ink, so the ring or box reads on a night ground too. */
   .di-choice.is-disabled .di-choice-box,
   .di-choice.is-disabled .di-choice-dot {
-    border-color: var(--di-border);
+    border-color: var(--di-text-disabled);
     background: var(--di-bg-disabled);
   }
 

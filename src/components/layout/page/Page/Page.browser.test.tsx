@@ -5,7 +5,7 @@ import { flushSync } from "react-dom";
 import "../../../../styles/styles.css";
 import { AppShellContent } from "../../../shell/AppShell";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
-import { ListToolbar } from "../../../data/table/ListToolbar";
+import { Toolbar } from "../../../actions/Toolbar";
 import { Dialog } from "../../../overlays/Dialog";
 import { Page, PageAside } from "./Page";
 import { PageHeader, PageHeaderTitle } from "../PageHeader";
@@ -173,9 +173,9 @@ describe("large screens", () => {
           <PageHeader lede="Hosts and accounts.">
             <PageHeaderTitle>Assets</PageHeaderTitle>
           </PageHeader>
-          <ListToolbar label="Filter assets">
+          <Toolbar label="Filter assets" role="search" sticky="top">
             <button type="button">Views</button>
-          </ListToolbar>
+          </Toolbar>
           <DataTable caption="Assets">
             <TableHead>
               <TableColumn>Name</TableColumn>

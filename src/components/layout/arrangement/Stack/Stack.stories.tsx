@@ -5,7 +5,7 @@ import { Notice, NoticeBody, NoticeText, NoticeTitle } from "../../../feedback/N
 import { Panel } from "../../page/Panel";
 import { PageHeader, PageHeaderTitle } from "../../page/PageHeader";
 import { Button } from "../../../actions/Button";
-import { Actions } from "../Actions";
+import { Toolbar } from "../../../actions/Toolbar";
 import { Select } from "../../../forms/select/Select";
 import { TextField } from "../../../forms/text/TextField";
 import { Stack } from "./Stack";
@@ -109,10 +109,10 @@ export const Form: Story = {
             <option value="admin">Administrator</option>
           </Select>
           <TextField id="st-seats" type="number" label="Seats" defaultValue="25" />
-          <Actions>
+          <Toolbar align="end">
             <Button variant="secondary">Cancel</Button>
             <Button type="submit">Save</Button>
-          </Actions>
+          </Toolbar>
         </Stack>
       </form>
     </Panel>

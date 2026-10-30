@@ -1,6 +1,5 @@
 import { Building2, Globe, Mail, Plus, ShieldCheck, UserRound } from "lucide-react";
 import {
-  Actions,
   Button,
   CellStack,
   DataTable,
@@ -32,6 +31,7 @@ import {
   TableHead,
   TableRow,
   TextLink,
+  Toolbar,
 } from "../..";
 
 type Identity = {
@@ -198,14 +198,14 @@ export function WatchlistScreen() {
                     <StatusPill tone="ok">Active</StatusPill>
                   </TableCell>
                   <TableCell align="end">
-                    <Actions>
+                    <Toolbar align="end" label={`Actions for ${row.name}`}>
                       <Button size="sm" variant="secondary">
                         Pause
                       </Button>
                       <Button size="sm" variant="danger" aria-label={`Remove ${row.name}`}>
                         Remove
                       </Button>
-                    </Actions>
+                    </Toolbar>
                   </TableCell>
                 </TableRow>
               ))}

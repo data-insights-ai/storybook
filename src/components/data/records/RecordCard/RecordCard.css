@@ -84,9 +84,10 @@
     color: var(--di-text-muted);
   }
 
+  /* The icon stays on the first line of a value that wraps. */
   .di-record-value {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--di-gap-8);
     min-width: 0;
     font-family: var(--di-font-code);
@@ -99,6 +100,7 @@
   .di-record-value svg {
     width: var(--di-icon-md);
     height: var(--di-icon-md);
+    margin-block: calc((1lh - var(--di-icon-md)) / 2);
     flex: none;
     color: var(--di-text-muted);
   }

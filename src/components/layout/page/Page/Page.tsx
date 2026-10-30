@@ -109,7 +109,7 @@ function useContentTop(page: HTMLElement | null, body: HTMLElement | null, wide:
     if (!page || !body || !wide) return;
     const measure = () => {
       const origin = body.getBoundingClientRect().top;
-      const toolbar = body.querySelector<HTMLElement>(".di-list-toolbar");
+      const toolbar = body.querySelector<HTMLElement>(".di-toolbar.is-list");
       const list = toolbar ? listAfter(body, toolbar) : null;
       let top: number;
       if (list) {
@@ -126,7 +126,7 @@ function useContentTop(page: HTMLElement | null, body: HTMLElement | null, wide:
           : 0;
       }
       page.style.setProperty("--di-page-content-top", `${Math.round(top)}px`);
-      if (list && toolbar?.dataset.sticky === "true") {
+      if (list && toolbar?.dataset.sticky === "top") {
         page.style.setProperty("--di-page-side-stick", `${toolbar.offsetHeight}px`);
       } else {
         page.style.removeProperty("--di-page-side-stick");
@@ -135,7 +135,7 @@ function useContentTop(page: HTMLElement | null, body: HTMLElement | null, wide:
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(body);
-    for (const el of body.querySelectorAll(`:scope > :is(${ABOVE_CONTENT}), .di-list-toolbar`)) observer.observe(el);
+    for (const el of body.querySelectorAll(`:scope > :is(${ABOVE_CONTENT}), .di-toolbar.is-list`)) observer.observe(el);
     return () => {
       observer.disconnect();
       page.style.removeProperty("--di-page-content-top");

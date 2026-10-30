@@ -18,10 +18,12 @@ import {
   PageHeaderTitle,
   Panel,
   PanelLead,
-  SaveBar,
   StatusPill,
   Switch,
   TextField,
+  Toolbar,
+  ToolbarEnd,
+  ToolbarStatus,
 } from "../..";
 
 /** A detail page: summary header, sections that read until Edit, the danger zone last. */
@@ -104,12 +106,15 @@ export function DetailPageScreen() {
             onToggle={setSessions}
           />
           {dirty ? (
-            <SaveBar label="Unsaved changes" message="Security rules changed">
-              <Button variant="secondary" onClick={() => (setMfa(saved.mfa), setSessions(saved.sessions))}>
-                Discard
-              </Button>
-              <Button onClick={() => setSaved({ mfa, sessions })}>Save changes</Button>
-            </SaveBar>
+            <Toolbar label="Unsaved changes" role="region" frame="bar" sticky="bottom">
+              <ToolbarStatus>Security rules changed</ToolbarStatus>
+              <ToolbarEnd>
+                <Button variant="secondary" onClick={() => (setMfa(saved.mfa), setSessions(saved.sessions))}>
+                  Discard
+                </Button>
+                <Button onClick={() => setSaved({ mfa, sessions })}>Save changes</Button>
+              </ToolbarEnd>
+            </Toolbar>
           ) : null}
         </DetailSection>
 

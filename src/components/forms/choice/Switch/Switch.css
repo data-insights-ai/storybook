@@ -54,14 +54,15 @@
     background: var(--di-text-on-strong);
   }
 
+  /* Locked and off: the edge and the thumb in the disabled ink, so the track still reads on a night ground. */
   .di-switch:disabled {
     cursor: not-allowed;
-    border-color: var(--di-border);
+    border-color: var(--di-text-disabled);
     background: var(--di-bg-disabled);
   }
 
   .di-switch:disabled .di-switch-thumb {
-    background: var(--di-border-strong);
+    background: var(--di-text-disabled);
   }
 
   /* Disabled and on still reads as on: the track keeps a fill, in the disabled ink. */

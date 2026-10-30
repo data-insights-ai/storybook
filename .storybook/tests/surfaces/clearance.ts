@@ -48,16 +48,6 @@ function surfaceOf(el: Element): Element | null {
   return null;
 }
 
-/* Text scrolled past the edge of a scroll frame inside the surface is hidden there; the frame clips it, not the surface. */
-function clippedByScroller(rect: DOMRect, host: Element, surface: Element): boolean {
-  for (let node: Element | null = host; node && node !== surface; node = node.parentElement) {
-    if (!/auto|scroll/.test(getComputedStyle(node).overflowX)) continue;
-    const frame = node.getBoundingClientRect();
-    return rect.left < frame.left - 0.5 || rect.right > frame.right + 0.5;
-  }
-  return false;
-}
-
 function tooClose(inner: DOMRect, surface: Element, min: number): string | null {
   const box = surface.getBoundingClientRect();
   const style = getComputedStyle(surface);
@@ -71,6 +61,22 @@ function tooClose(inner: DOMRect, surface: Element, min: number): string | null 
   return close.length ? close.map(([side, gap]) => `${side} ${gap.toFixed(0)}px`).join(", ") : null;
 }
 
+/** The part of a text box a scroll box between it and its surface leaves visible; null when it is scrolled out of view. */
+function visiblePart(rect: DOMRect, host: Element, surface: Element): DOMRect | null {
+  for (let node: Element | null = host; node && node !== surface; node = node.parentElement) {
+    const style = getComputedStyle(node);
+    if (style.overflowX === "visible" && style.overflowY === "visible") continue;
+    const clip = node.getBoundingClientRect();
+    const top = Math.max(rect.top, clip.top);
+    const bottom = Math.min(rect.bottom, clip.bottom);
+    const left = Math.max(rect.left, clip.left);
+    const right = Math.min(rect.right, clip.right);
+    if (bottom - top < 1 || right - left < 1) return null;
+    rect = new DOMRect(left, top, right - left, bottom - top);
+  }
+  return rect;
+}
+
 export function clearanceFindings(root: Element): string[] {
   const findings = new Set<string>();
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -81,8 +87,9 @@ export function clearanceFindings(root: Element): string[] {
     if (!surface) continue;
     const range = document.createRange();
     range.selectNodeContents(node);
-    for (const rect of range.getClientRects()) {
-      if (rect.width < 1 || clippedByScroller(rect, host, surface)) continue;
+    for (const box of range.getClientRects()) {
+      const rect = box.width < 1 ? null : visiblePart(box, host, surface);
+      if (!rect) continue;
       const close = tooClose(rect, surface, MIN_TEXT);
       if (close)
         findings.add(`"${node.textContent!.trim().slice(0, 30)}" is ${close} from the edge of ${describe(surface)}`);

@@ -3,7 +3,6 @@ import { Bell } from "lucide-react";
 import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
-import { CountButton } from "../../actions/CountButton";
 import { Flyout, FlyoutFooter, FlyoutItem, FlyoutItems, FlyoutTrigger } from "./Flyout";
 import { TextLink } from "../../navigation/TextLink";
 
@@ -29,16 +28,18 @@ function Notifications() {
     <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start", minHeight: 460 }}>
       <Flyout id="latest" title="Notifications" open={open} onOpenChange={setOpen}>
         <FlyoutTrigger>
-          <CountButton
-            label="Notifications, 2 unread"
-            count={2}
-            countLabel="2"
-            expanded={open}
-            controls="latest"
+          <Button
+            variant="ghost"
+            iconOnly
+            aria-label="Notifications"
+            badge={2}
+            badgeLabel="2 unread"
+            aria-expanded={open}
+            aria-controls="latest"
             onClick={() => setOpen(!open)}
           >
-            <Bell />
-          </CountButton>
+            <Bell aria-hidden />
+          </Button>
         </FlyoutTrigger>
         <FlyoutItems label="Latest notifications" unreadLabel="unread">
           {entries.map((e) => (

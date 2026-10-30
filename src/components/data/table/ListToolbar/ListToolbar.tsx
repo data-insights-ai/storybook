@@ -1,64 +1,39 @@
-import { useLayoutEffect, useRef, type ReactNode } from "react";
-import { takeSlot } from "../../../../internal/slots";
-import "./ListToolbar.css";
+import type { ReactNode } from "react";
+import { Toolbar, ToolbarEnd, ToolbarNote } from "../../../actions/Toolbar";
 
 /**
- * Above a list: the search that narrows it, its filters, and the list's
- * own actions at the end (export, the view). It stays in view under the
- * app bar while the list scrolls, so a filter is never a scroll away;
- * an `InfiniteTable` below keeps its head under it.
+ * The search and filters above a list.
  *
- * The `SearchField` grows; each filter is a `Select` with `hideLabel`
- * whose first option names the filter ("All roles"). On a page without
- * tabs the primary action ("New …", "Invite people") belongs in
- * `PageHeaderAside`. In a tab panel it is the tab's own and sits here, in
- * `ListToolbarEnd`; the panel has no heading of its own, only an optional
- * `ListToolbarNote` under the row.
- * Search and filters are state the reader shares by link: keep them in the
- * URL.
+ * @deprecated Removed in 0.12: use `<Toolbar label role="search" sticky="top">`
+ * (`sticky` left out where it should not stick), the trailing actions in
+ * `ToolbarEnd` and the note in `ToolbarNote`.
  */
 export function ListToolbar({
   label,
   sticky = true,
   children,
 }: {
-  /** Names the toolbar for assistive technology, e.g. "Filter members". */
   label: string;
   sticky?: boolean;
-  /** A `SearchField`, filters, and optionally `ListToolbarEnd`. */
   children: ReactNode;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    const el = ref.current;
-    const parent = el?.parentElement;
-    if (!el || !parent || !sticky) return;
-    const set = () => parent.style.setProperty("--di-list-toolbar-h", `${el.offsetHeight}px`);
-    set();
-    const observer = new ResizeObserver(set);
-    observer.observe(el);
-    return () => {
-      observer.disconnect();
-      parent.style.removeProperty("--di-list-toolbar-h");
-    };
-  }, [sticky]);
-
-  const [end, rest] = takeSlot(children, ListToolbarEnd);
   return (
-    <div ref={ref} className="di-list-toolbar" data-sticky={sticky} role="search" aria-label={label}>
-      {rest}
-      {end}
-    </div>
+    <Toolbar label={label} role="search" sticky={sticky ? "top" : undefined}>
+      {children}
+    </Toolbar>
   );
 }
 
-/** The toolbar's trailing actions on the list as a whole: export, a view switch. */
-export function ListToolbarEnd({ children }: { children: ReactNode }) {
-  return <div className="di-list-toolbar-end">{children}</div>;
-}
+/**
+ * The toolbar's trailing actions.
+ *
+ * @deprecated Removed in 0.12: the same slot is `ToolbarEnd`.
+ */
+export const ListToolbarEnd = ToolbarEnd;
 
-/** One muted line under a tab panel's toolbar: what this tab holds. */
-export function ListToolbarNote({ children }: { children: ReactNode }) {
-  return <p className="di-list-toolbar-note">{children}</p>;
-}
+/**
+ * One muted line under a toolbar.
+ *
+ * @deprecated Removed in 0.12: use `ToolbarNote` inside the `Toolbar`.
+ */
+export const ListToolbarNote = ToolbarNote;
