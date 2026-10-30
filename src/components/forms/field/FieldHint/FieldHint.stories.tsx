@@ -36,6 +36,13 @@ export const Neutral: Story = {
 /** A resolved value the register can vouch for, carrying the seal. */
 export const Sealed: Story = {
   args: { tone: "sealed", children: "resolved 2026-09-18T09:12:04Z" },
+  play: async ({ canvasElement }) => {
+    const mark = canvasElement.querySelector(".di-seal-mark")!.getBoundingClientRect();
+    const range = document.createRange();
+    range.selectNodeContents(canvasElement.querySelector(".di-field-hint > span:last-child")!);
+    const line = range.getClientRects()[0];
+    await expect(Math.abs(mark.top + mark.height / 2 - (line.top + line.height / 2))).toBeLessThanOrEqual(1);
+  },
 };
 
 /** The same line, reading as the failure. It never stacks under the help. */
