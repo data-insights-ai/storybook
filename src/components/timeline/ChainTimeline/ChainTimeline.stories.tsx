@@ -98,3 +98,21 @@ export const Clustered: Story = {
     await expect(canvas.getByRole("button", { name: /public address; .*discovery/i })).toHaveTextContent("01–02");
   },
 };
+
+/** On a phone the devices keep a narrow column, so the track keeps room for its steps and both ends of the axis. */
+export const Phone: Story = {
+  args: {
+    startLabel: "Oct 30, 2026, 08:12",
+    endLabel: "08:34",
+  },
+  globals: { viewport: { value: "phone", isRotated: false } },
+  play: async ({ canvasElement }) => {
+    await expect(window.innerWidth).toBe(390);
+    const chain = within(canvasElement).getByRole("group", { name: /attack chain/i });
+    await expect(getComputedStyle(chain).gridTemplateColumns).toMatch(/^96px /);
+    for (const end of chain.querySelectorAll(".di-chain-axis-end")) {
+      await expect(end.getClientRects()).toHaveLength(1);
+      await expect(end.getBoundingClientRect().height).toBeLessThan(40);
+    }
+  },
+};

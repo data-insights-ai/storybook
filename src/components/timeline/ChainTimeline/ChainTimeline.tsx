@@ -89,102 +89,106 @@ export function ChainTimeline({
   const markers = cluster(events, width);
 
   return (
-    <div className={cx("di-chain", className)} role="group" aria-label={label}>
-      <div className="di-chain-lanes">
-        {lanes.map((lane) => (
-          <div
-            key={lane.id}
-            className="di-chain-lane"
-            style={{ height: laneHeight }}
-          >
-            <span className="di-chain-lane-label">{lane.label}</span>
-            {lane.detail ? (
-              <span className="di-chain-lane-detail">{lane.detail}</span>
-            ) : null}
-          </div>
-        ))}
-      </div>
-      <div
-        className="di-chain-track"
-        style={{ height: lanes.length * laneHeight }}
-      >
-        {lanes.map((lane) => (
-          <div
-            key={lane.id}
-            className="di-chain-rule"
-            style={{ height: laneHeight }}
-          />
-        ))}
-        <div className="di-chain-plot" ref={plot}>
-          {ticks.map((tick) => (
+    <div className={cx("di-chain-frame", className)}>
+      <div className="di-chain" role="group" aria-label={label}>
+        <div className="di-chain-lanes">
+          {lanes.map((lane) => (
             <div
-              key={tick.at}
-              className="di-chain-tick"
-              style={{ left: `${clamp(tick.at)}%` }}
-              aria-hidden
+              key={lane.id}
+              className="di-chain-lane"
+              style={{ height: laneHeight }}
+            >
+              <span className="di-chain-lane-label">{lane.label}</span>
+              {lane.detail ? (
+                <span className="di-chain-lane-detail">{lane.detail}</span>
+              ) : null}
+            </div>
+          ))}
+        </div>
+        <div
+          className="di-chain-track"
+          style={{ height: lanes.length * laneHeight }}
+        >
+          {lanes.map((lane) => (
+            <div
+              key={lane.id}
+              className="di-chain-rule"
+              style={{ height: laneHeight }}
             />
           ))}
-          <svg
-            className="di-chain-links"
-            viewBox={`0 0 100 ${lanes.length}`}
-            preserveAspectRatio="none"
-            aria-hidden
-            focusable="false"
-          >
-            {events.length > 1 ? <path d={path} /> : null}
-          </svg>
-          {markers.map((m) => {
-            const ids = m.events.map((e) => e.id);
-            const active = ids.some((id) => id === selected);
-            const lit = ids.some((id) => id === hovered);
-            return (
-              <button
-                key={m.events[0].id}
-                type="button"
-                className={cx(
-                  "di-chain-marker",
-                  m.events.some((e) => e.tone === "danger") && "is-danger",
-                  m.events.every((e) => e.tone === "muted") && "is-muted",
-                  active && "is-selected",
-                  lit && "is-hovered",
-                )}
-                style={{
-                  left: `${m.at}%`,
-                  top:
-                    (rows.get(m.events[0].lane) ?? 0) * laneHeight +
-                    laneHeight / 2,
-                }}
-                aria-label={m.events.map((e) => e.label).join("; ")}
-                aria-pressed={onSelect ? active : undefined}
-                title={m.events.map((e) => e.label).join("\n")}
-                onClick={onSelect ? () => onSelect(m.events[0].id) : undefined}
-                onMouseEnter={
-                  onHover ? () => onHover(m.events[0].id) : undefined
-                }
-                onMouseLeave={onHover ? () => onHover(undefined) : undefined}
-                onFocus={onHover ? () => onHover(m.events[0].id) : undefined}
-                onBlur={onHover ? () => onHover(undefined) : undefined}
-              >
-                {m.ordinal}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-      <div className="di-chain-axis">
-        <span className="di-chain-axis-end">{startLabel}</span>
-        <span className="di-chain-axis-ticks">
-          {ticks.map((tick) => (
-            <span
-              key={tick.at}
-              className="di-chain-axis-tick"
-              style={{ left: `${clamp(tick.at)}%` }}
+          <div className="di-chain-plot" ref={plot}>
+            {ticks.map((tick) => (
+              <div
+                key={tick.at}
+                className="di-chain-tick"
+                style={{ left: `${clamp(tick.at)}%` }}
+                aria-hidden
+              />
+            ))}
+            <svg
+              className="di-chain-links"
+              viewBox={`0 0 100 ${lanes.length}`}
+              preserveAspectRatio="none"
+              aria-hidden
+              focusable="false"
             >
-              {tick.label}
-            </span>
-          ))}
-        </span>
-        <span className="di-chain-axis-end">{endLabel}</span>
+              {events.length > 1 ? <path d={path} /> : null}
+            </svg>
+            {markers.map((m) => {
+              const ids = m.events.map((e) => e.id);
+              const active = ids.some((id) => id === selected);
+              const lit = ids.some((id) => id === hovered);
+              return (
+                <button
+                  key={m.events[0].id}
+                  type="button"
+                  className={cx(
+                    "di-chain-marker",
+                    m.events.some((e) => e.tone === "danger") && "is-danger",
+                    m.events.every((e) => e.tone === "muted") && "is-muted",
+                    active && "is-selected",
+                    lit && "is-hovered",
+                  )}
+                  style={{
+                    left: `${m.at}%`,
+                    top:
+                      (rows.get(m.events[0].lane) ?? 0) * laneHeight +
+                      laneHeight / 2,
+                  }}
+                  aria-label={m.events.map((e) => e.label).join("; ")}
+                  aria-pressed={onSelect ? active : undefined}
+                  title={m.events.map((e) => e.label).join("\n")}
+                  onClick={
+                    onSelect ? () => onSelect(m.events[0].id) : undefined
+                  }
+                  onMouseEnter={
+                    onHover ? () => onHover(m.events[0].id) : undefined
+                  }
+                  onMouseLeave={onHover ? () => onHover(undefined) : undefined}
+                  onFocus={onHover ? () => onHover(m.events[0].id) : undefined}
+                  onBlur={onHover ? () => onHover(undefined) : undefined}
+                >
+                  {m.ordinal}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="di-chain-axis">
+          <span className="di-chain-axis-end">{startLabel}</span>
+          <span className="di-chain-axis-ticks">
+            {ticks.map((tick) => (
+              <span
+                key={tick.at}
+                className="di-chain-axis-tick"
+                style={{ left: `${clamp(tick.at)}%` }}
+              >
+                {tick.label}
+              </span>
+            ))}
+          </span>
+          <span className="di-chain-axis-end">{endLabel}</span>
+        </div>
       </div>
     </div>
   );

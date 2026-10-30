@@ -1,4 +1,10 @@
 @layer components {
+  /* The frame is the container the lanes' width answers to: a grid cannot query its own width. */
+  .di-chain-frame {
+    container: di-chain / inline-size;
+    min-width: 0;
+  }
+
   .di-chain {
     display: grid;
     grid-template-columns: minmax(120px, 200px) minmax(0, 1fr);
@@ -171,7 +177,7 @@
     background: var(--di-bg-surface);
   }
 
-  @container (max-width: 480px) {
+  @container di-chain (max-width: 480px) {
     .di-chain {
       grid-template-columns: 96px minmax(0, 1fr);
     }
