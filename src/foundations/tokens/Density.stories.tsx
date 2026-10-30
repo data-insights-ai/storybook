@@ -22,9 +22,17 @@ const tokens = [
   { token: "--di-row-h", comfortable: "40", compact: "32" },
   { token: "--di-option-h", comfortable: "32", compact: "28" },
   { token: "--di-pill-h, --di-kbd-h", comfortable: "20, 18", compact: "18, 16" },
-  { token: "--di-icon-xs | sm | md | lg | xl", comfortable: "12 / 14 / 16 / 20 / 24", compact: "12 / 12 / 14 / 16 / 20" },
+  {
+    token: "--di-icon-xs | sm | md | lg | xl",
+    comfortable: "12 / 14 / 16 / 20 / 24",
+    compact: "12 / 12 / 14 / 16 / 20",
+  },
   { token: "--di-inset, --di-inset-group", comfortable: "24, 16", compact: "16, 12" },
-  { token: "--di-gap-4 | 8 | 12 | 16 | 24 | 32", comfortable: "4 / 8 / 12 / 16 / 24 / 32", compact: "2 / 6 / 8 / 12 / 16 / 24" },
+  {
+    token: "--di-gap-4 | 8 | 12 | 16 | 24 | 32",
+    comfortable: "4 / 8 / 12 / 16 / 24 / 32",
+    compact: "2 / 6 / 8 / 12 / 16 / 24",
+  },
 ];
 
 const setUp = `import { DensityProvider, ThemeProvider, type Density } from "@data-insights-ai/ui";
