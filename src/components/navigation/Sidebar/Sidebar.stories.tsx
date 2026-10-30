@@ -1,8 +1,10 @@
 import { useState, type AnchorHTMLAttributes, type MouseEvent } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { Archive, Bell, Building2, FileSearch, Gauge, Settings, ShieldAlert, UserRound } from "lucide-react";
-import { AppShellBar, AppShellContent } from "../../shell/AppShell";
+import { Archive, Bell, Building2, FileSearch, Gauge, RefreshCw, Settings, ShieldAlert, UserRound } from "lucide-react";
+import { AppShellBar, AppShellBarEnd, AppShellContent } from "../../shell/AppShell";
+import { Button } from "../../actions/Button";
+import { StatusPill } from "../../marks/status/StatusPill";
 import { Breadcrumb } from "../Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Menu, MenuGroup, MenuItem } from "../Menu";
@@ -20,6 +22,42 @@ type SampleProps = {
   closeLabel: string;
   defaultExpanded?: boolean;
   storageKey?: string;
+  words?: Words;
+};
+
+/* What the shell says, in the two languages the bar has to hold on one row. */
+const english = {
+  workspace: "Example studio",
+  monitor: "Monitor",
+  records: "Records",
+  toggle: "Toggle navigation",
+  more: "More",
+  demo: "Demo data off",
+  refresh: "Refresh",
+  sealed: "Admin sealed",
+  lede: "Press Ctrl+B or Cmd+B to collapse the navigation to its icon rail.",
+  names: {} as Record<string, string>,
+};
+type Words = typeof english;
+
+const german: Words = {
+  workspace: "Beispielstudio für Sicherheitsanalysen",
+  monitor: "Überwachung",
+  records: "Aufzeichnungen",
+  toggle: "Navigation ein- oder ausblenden",
+  more: "Weitere",
+  demo: "Demodaten ausgeschaltet",
+  refresh: "Aktualisieren",
+  sealed: "Verwaltung versiegelt",
+  lede: "Strg+B oder Cmd+B blendet die Navigation zur Symbolleiste ein.",
+  names: {
+    overview: "Übersicht",
+    findings: "Erkenntnisse und Befunde",
+    sources: "Datenquellen",
+    alerts: "Benachrichtigungen",
+    archive: "Archiv",
+    settings: "Einstellungen",
+  },
 };
 
 const sections = [
@@ -56,9 +94,10 @@ function RouterLink({
   );
 }
 
-function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }: SampleProps) {
+function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey, words = english }: SampleProps) {
   const [active, setActive] = useState("findings");
-  const current = [...sections, ...records].find((item) => item.id === active)!;
+  const name = (item: { id: string; label: string }) => words.names[item.id] ?? item.label;
+  const current = name([...sections, ...records].find((item) => item.id === active)!);
 
   return (
     <SidebarProvider defaultExpanded={defaultExpanded} storageKey={storageKey} skipLabel="Skip to content">
@@ -66,7 +105,7 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton label="Example studio" href="#/workspace">
+              <SidebarMenuButton label={words.workspace} href="#/workspace">
                 <Building2 />
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -74,12 +113,12 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
         </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Monitor</SidebarGroupLabel>
+            <SidebarGroupLabel>{words.monitor}</SidebarGroupLabel>
             <SidebarMenu>
               {sections.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
-                    label={item.label}
+                    label={name(item)}
                     badge={item.badge}
                     badgeTone={item.badgeTone}
                     active={item.id === active}
@@ -92,12 +131,12 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
             </SidebarMenu>
           </SidebarGroup>
           <SidebarGroup>
-            <SidebarGroupLabel>Records</SidebarGroupLabel>
+            <SidebarGroupLabel>{words.records}</SidebarGroupLabel>
             <SidebarMenu>
               {records.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
-                    label={item.label}
+                    label={name(item)}
                     badge={item.badge}
                     active={item.id === active}
                     render={<RouterLink to={item.id} onNavigate={setActive} />}
@@ -122,15 +161,23 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
       </Sidebar>
       <SidebarInset>
         <AppShellBar>
-          <SidebarTrigger label="Toggle navigation" />
+          <SidebarTrigger label={words.toggle} />
           <Breadcrumb
             label="Breadcrumb"
-            items={[{ label: "Example studio", href: "#/workspace" }, { label: current.label }]}
+            items={[{ label: words.workspace, href: "#/workspace" }, { label: current }]}
           />
+          <AppShellBarEnd moreLabel={words.more}>
+            <StatusPill tone="neutral">{words.demo}</StatusPill>
+            <StatusPill tone="recorded">{words.sealed}</StatusPill>
+            <Button variant="ghost" size="sm">
+              <RefreshCw aria-hidden />
+              {words.refresh}
+            </Button>
+          </AppShellBarEnd>
         </AppShellBar>
         <AppShellContent>
-          <PageHeader eyebrow="Record" lede="Press Ctrl+B or Cmd+B to collapse the navigation to its icon rail.">
-            <PageHeaderTitle>{current.label}</PageHeaderTitle>
+          <PageHeader eyebrow="Record" lede={words.lede}>
+            <PageHeaderTitle>{current}</PageHeaderTitle>
           </PageHeader>
         </AppShellContent>
       </SidebarInset>
@@ -252,9 +299,96 @@ export const MobileDrawer: Story = {
     await waitFor(() => expect(trigger).toHaveFocus());
 
     await userEvent.click(trigger);
+    await body.findByRole("dialog", { name: "Sections" });
+    await userEvent.click(canvasElement.ownerDocument.querySelector<HTMLElement>(".di-sb-backdrop")!);
+    await waitFor(() => expect(body.queryByRole("dialog")).toBeNull());
+    await waitFor(() => expect(trigger).toHaveFocus());
+
+    await userEvent.click(trigger);
     const reopened = await body.findByRole("dialog", { name: "Sections" });
+    await userEvent.tab({ shift: true });
+    await expect(reopened.contains(canvasElement.ownerDocument.activeElement)).toBe(true);
     await userEvent.click(within(reopened).getByRole("link", { name: "Sources" }));
     await waitFor(() => expect(body.queryByRole("dialog")).toBeNull());
+  },
+};
+
+/** The drawer open on a phone: it comes from the inline start over a scrim, with the page behind it. */
+export const MobileDrawerOpen: Story = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole("button", { name: "Toggle navigation" }));
+    const drawer = await body.findByRole("dialog", { name: "Sections" }, { timeout: 5000 });
+    await waitFor(() => expect(Math.round(drawer.getBoundingClientRect().left)).toBe(0));
+  },
+};
+
+/*
+ * The bar on a phone and a tablet: one row, the trigger, the page's name and
+ * one overflow button, in both densities. Its height is measured, not looked at.
+ */
+async function barIsOneRow(canvasElement: HTMLElement, width: number) {
+  const doc = canvasElement.ownerDocument;
+  await expect(doc.defaultView!.innerWidth).toBe(width);
+  const bar = canvasElement.querySelector<HTMLElement>(".di-topbar")!;
+  const height = parseFloat(getComputedStyle(bar).getPropertyValue("--di-shell-bar-height"));
+  const box = bar.getBoundingClientRect();
+  await expect(box.height).toBe(height);
+  for (const part of bar.querySelectorAll<HTMLElement>(".di-topbar-start > *, .di-top-actions > *")) {
+    const own = part.getBoundingClientRect();
+    await expect(own.top, part.className).toBeGreaterThanOrEqual(box.top);
+    await expect(own.bottom, part.className).toBeLessThanOrEqual(box.bottom);
+    await expect(own.right, part.className).toBeLessThanOrEqual(box.right);
+  }
+  await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
+}
+
+function phoneBar(width: number, words: Words, folds: boolean): Story {
+  return {
+    parameters: {
+      viewport: { options: { bar: { name: "Bar", styles: { width: width + "px", height: "844px" }, type: "mobile" } } },
+    },
+    globals: { viewport: { value: "bar", isRotated: false } },
+    render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} words={words} />,
+    play: async ({ canvasElement }) => {
+      await barIsOneRow(canvasElement, width);
+      const canvas = within(canvasElement);
+      const more = canvas.queryByRole("button", { name: words.more });
+      await expect(more !== null).toBe(folds);
+      if (!more) return;
+      const body = within(canvasElement.ownerDocument.body);
+      await userEvent.click(more);
+      const panel = await body.findByRole("dialog", { name: words.more });
+      await waitFor(() => expect(within(panel).getByRole("button", { name: words.refresh })).toBeVisible());
+      await expect(within(panel).getByText(words.demo)).toBeVisible();
+      await userEvent.keyboard("{Escape}");
+      await waitFor(() => expect(body.queryByRole("dialog", { name: words.more })).toBeNull());
+      await waitFor(() => expect(more).toHaveFocus());
+    },
+  };
+}
+
+/** A phone: the status and the refresh fold into one overflow button; the bar stays one row. */
+export const PhoneBar: Story = phoneBar(390, english, true);
+/** The smallest phone, with the German words: the name truncates, the end folds. */
+export const PhoneBarGerman: Story = phoneBar(360, german, true);
+/** German on a phone at 390. */
+export const PhoneBarGerman390: Story = phoneBar(390, german, true);
+/** A tablet in portrait, under the drawer breakpoint: the English end fits beside the name. */
+export const TabletBar: Story = phoneBar(768, english, false);
+/** The same tablet in German: the longer words still fit beside a readable name, on one row. */
+export const TabletBarGerman: Story = phoneBar(768, german, false);
+
+/** A desk: the end stays inline on one row, in German too. */
+export const DeskBarGerman: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} words={german} />,
+  play: async ({ canvasElement }) => {
+    await barIsOneRow(canvasElement, canvasElement.ownerDocument.defaultView!.innerWidth);
+    await expect(within(canvasElement).queryByRole("button", { name: german.more })).toBeNull();
   },
 };
 
@@ -345,6 +479,10 @@ export const FooterWrittenFirst: Story = {
         </SidebarContent>
       </Sidebar>
       <SidebarInset>
+        <AppShellBar>
+          <SidebarTrigger label="Toggle navigation" />
+          <Breadcrumb label="Breadcrumb" items={[{ label: "Overview" }]} />
+        </AppShellBar>
         <AppShellContent>
           <h1>Overview</h1>
         </AppShellContent>

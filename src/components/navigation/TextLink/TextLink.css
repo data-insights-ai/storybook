@@ -2,6 +2,7 @@
   /*
    * Ink, underlined in cornflower. A link is not a status, so it does not
    * borrow the status hues, and not gold: gold marks one object per view.
+   * It takes the size of the line it sits in.
    */
   .di-textlink {
     padding: 0;
@@ -9,12 +10,17 @@
     background: none;
     color: var(--di-text);
     font-family: var(--di-font-ui);
-    font-size: var(--di-font-size-400);
+    font-size: inherit;
     font-weight: var(--di-weight-medium);
+    line-height: inherit;
+    text-align: inherit;
     text-decoration: underline;
     text-decoration-color: var(--di-select);
     text-underline-offset: 3px;
-    transition: color var(--di-duration) var(--di-ease);
+    cursor: pointer;
+    transition:
+      color var(--di-duration) var(--di-ease),
+      text-decoration-color var(--di-duration) var(--di-ease);
   }
 
   .di-textlink:hover:not(:disabled) {
@@ -24,13 +30,18 @@
 
   .di-textlink.is-quiet {
     color: var(--di-text-muted);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
     font-weight: var(--di-weight-regular);
   }
 
   .di-textlink.is-quiet:hover:not(:disabled) {
     color: var(--di-text);
+  }
+
+  .di-textlink.is-mono {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    font-weight: var(--di-weight-regular);
+    white-space: nowrap;
   }
 
   .di-textlink.is-plain {
@@ -42,9 +53,16 @@
     text-decoration-color: var(--di-select);
   }
 
+  /* The mark is not part of the underlined words. */
+  .di-textlink-trail {
+    display: inline-block;
+    margin-inline-start: var(--di-gap-4);
+    text-decoration: none;
+  }
+
   .di-textlink:disabled {
     color: var(--di-text-disabled);
     cursor: not-allowed;
-    text-decoration-color: var(--di-border);
+    text-decoration-color: transparent;
   }
 }

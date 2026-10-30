@@ -14,8 +14,9 @@ export default function SidebarDrawer({
   children: ReactNode;
 }) {
   const { mobileOpen, setMobileOpen, sidebarId } = useSidebar();
+  const rtl = getComputedStyle(document.documentElement).direction === "rtl";
   return (
-    <Drawer.Root open={mobileOpen} onOpenChange={setMobileOpen} swipeDirection="left">
+    <Drawer.Root open={mobileOpen} onOpenChange={setMobileOpen} swipeDirection={rtl ? "right" : "left"}>
       <Drawer.Portal>
         <Drawer.Backdrop className="di-sb-backdrop" />
         <Drawer.Viewport className="di-sb-viewport">

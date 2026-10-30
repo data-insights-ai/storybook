@@ -3,14 +3,26 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cx } from "../../../../internal/cx";
 import { useActiveInView } from "../../../../internal/useActiveInView";
-import { Badge } from "../../../marks/Badge";
-import "../Tabs/Tabs.css";
+import { TabCount } from "../tabStrip";
 
 /**
- * Tabs that are places: each tab is a link with its own URL, so a tab can
- * be bookmarked, shared and reached with Back. The current one carries
- * `aria-current="page"`. Use `Tabs` instead when the panels are views of
- * one record that do not deserve an address.
+ * Tabs that are places: the sections of one record or settings page, each
+ * with its own URL, so a tab can be bookmarked, shared and reached with
+ * Back.
+ *
+ * - **Use it** for a record's detail page split into sections (overview,
+ *   members, settings), each its own route.
+ * - **Not** for views that need no address (`Tabs`), or for the app's
+ *   sections (`Sidebar`).
+ *
+ * Anatomy: a `nav` strip of `TabNavLink`s, each a label and an optional
+ * count. It looks like `Tabs` (one shared strip): the current link carries
+ * the ink mark on the baseline, and a strip wider than its frame scrolls
+ * with the current link in view.
+ *
+ * Accessibility: a `nav` named by `label`; each link is a tab stop, and
+ * the current one has `aria-current="page"`. On a touch screen each link is
+ * 40px tall.
  */
 export function TabNav({ label, className, children }: { label: string; className?: string; children: ReactNode }) {
   const strip = useRef<HTMLElement>(null);
@@ -46,11 +58,7 @@ export function TabNavLink({ active = false, badge, render, className, children,
         children: (
           <>
             {children}
-            {badge === undefined ? null : (
-              <span className="di-tab-badge">
-                <Badge tone="quiet">{badge}</Badge>
-              </span>
-            )}
+            {badge === undefined ? null : <TabCount>{badge}</TabCount>}
           </>
         ),
       },

@@ -1,17 +1,33 @@
-import type { ReactNode } from "react";
+import { useCallback, useId, useLayoutEffect, useRef, type KeyboardEvent, type ReactNode } from "react";
 import { Search, ShieldCheck } from "lucide-react";
-import { cx } from "../../../internal/cx";
+import { takeSlot } from "../../../internal/slots";
 import { Kbd } from "../../text/Kbd";
-import { SealMark } from "../../marks/status/SealValue";
+import { CommandListContext } from "./commandList";
+import { CommandEmpty } from "./CommandRow";
 import "./CommandBar.css";
 
+export { CommandEmpty, CommandGroup, CommandRow } from "./CommandRow";
+export { CommandChip } from "./CommandChip";
+
 /**
- * One field for navigating, searching and asking. The scrim is solid
- * navy — a blurred register is an unreadable one, and a mono value
- * behind frosted glass has no measurable contrast.
+ * One field for going somewhere, finding a record and asking a question.
  *
- * Where the bar sits over a page, the caller renders it in a dialog. On
- * its own it is the panel only.
+ * - **Use it** as the app's ⌘K palette, rendered by the caller in a dialog
+ *   over the page; on its own it is the panel only.
+ * - **Not** for filtering a list in place (`SearchField` in the list's
+ *   `Toolbar`), for choosing a value in a form (`ComboBox`), or for a row's
+ *   actions (`Menu`).
+ *
+ * Anatomy: the field (magnifier, query, the `esc` key), the results as
+ * `CommandGroup`s of `CommandRow`s, or one `CommandEmpty` when nothing
+ * matched, then a foot with the key legend and where the query is processed.
+ *
+ * Accessibility: the field is a combobox that owns a listbox. Focus stays in
+ * the field; Up and Down move the highlighted row (and wrap), Home and End
+ * jump to the first and last, Enter chooses the highlighted row. The rows are
+ * options, announced through `aria-activedescendant`; typing highlights the
+ * first row again. The key legend is hidden on a touch screen, which has no
+ * keys to press.
  */
 export function CommandBar({
   id = "command",
@@ -24,17 +40,77 @@ export function CommandBar({
   children,
 }: {
   id?: string;
-  /** Names the field. The magnifier alone does not. */
+  /** Names the field and its list. The magnifier alone does not. */
   label: string;
   placeholder: string;
   value: string;
   onValueChange: (value: string) => void;
-  /** The key legend along the footer, e.g. ["/ commands", "↑↓ select"]. */
+  /** The key legend along the foot, e.g. ["↑↓ move", "↵ open"]. */
   hints: string[];
   /** Where the query is processed. Stated, not implied. */
   privacyNote: string;
+  /** `CommandGroup`s of `CommandRow`s, or one `CommandEmpty`. */
   children: ReactNode;
 }) {
+  const listId = useId();
+  const list = useRef<HTMLDivElement>(null);
+  const field = useRef<HTMLInputElement>(null);
+  const active = useRef("");
+  const query = useRef(value);
+  const [empty, rows] = takeSlot(children, CommandEmpty);
+
+  const options = useCallback(
+    () => Array.from(list.current?.querySelectorAll<HTMLElement>('[role="option"]') ?? []),
+    [],
+  );
+
+  // The highlight lives in the DOM, the way aria-activedescendant does: the
+  // rows are the caller's, so only the rendered list knows which exist.
+  const highlight = useCallback(
+    (id: string) => {
+      const all = options();
+      const next = all.find((option) => option.id === id) ?? all[0];
+      active.current = next?.id ?? "";
+      for (const option of all) {
+        option.setAttribute("aria-selected", String(option === next));
+        option.toggleAttribute("data-highlighted", option === next);
+      }
+      const input = field.current;
+      if (!input) return;
+      input.setAttribute("aria-expanded", String(next !== undefined));
+      if (next) input.setAttribute("aria-activedescendant", next.id);
+      else input.removeAttribute("aria-activedescendant");
+    },
+    [options],
+  );
+
+  // After every render: a new query starts at the first row again, and rows
+  // that came or went keep a highlight that exists.
+  useLayoutEffect(() => {
+    const fresh = query.current !== value;
+    query.current = value;
+    highlight(fresh ? "" : active.current);
+  });
+
+  function move(event: KeyboardEvent<HTMLInputElement>) {
+    const all = options();
+    if (all.length === 0) return;
+    const at = all.findIndex((option) => option.id === active.current);
+    let next: HTMLElement | undefined;
+    if (event.key === "ArrowDown") next = all[(at + 1) % all.length];
+    else if (event.key === "ArrowUp") next = all[at <= 0 ? all.length - 1 : at - 1];
+    else if (event.key === "Home") next = all[0];
+    else if (event.key === "End") next = all[all.length - 1];
+    else if (event.key === "Enter" && at >= 0) {
+      event.preventDefault();
+      all[at].click();
+      return;
+    } else return;
+    event.preventDefault();
+    highlight(next.id);
+    next.scrollIntoView({ block: "nearest" });
+  }
+
   return (
     <div className="di-command">
       <div className="di-command-input">
@@ -46,97 +122,38 @@ export function CommandBar({
           id={id}
           className="di-command-field"
           type="text"
+          ref={field}
+          role="combobox"
+          aria-expanded={false}
+          aria-controls={listId}
+          aria-autocomplete="list"
           autoComplete="off"
           placeholder={placeholder}
           value={value}
           onChange={(event) => onValueChange(event.target.value)}
+          onKeyDown={move}
         />
         <Kbd>esc</Kbd>
       </div>
-      <div className="di-command-list">{children}</div>
+      <CommandListContext.Provider value={highlight}>
+        <div ref={list} id={listId} className="di-command-list" role="listbox" aria-label={label}>
+          {rows}
+        </div>
+      </CommandListContext.Provider>
+      <div className="di-command-status" role="status">
+        {empty}
+      </div>
       <div className="di-command-foot">
-        {hints.map((hint) => (
-          <span key={hint}>{hint}</span>
-        ))}
+        <span className="di-command-hints">
+          {hints.map((hint) => (
+            <span key={hint}>{hint}</span>
+          ))}
+        </span>
         <span className="di-command-privacy">
           <ShieldCheck aria-hidden />
           {privacyNote}
         </span>
       </div>
     </div>
-  );
-}
-
-/**
- * A scope the bar is searching within, or one it offers to add. A
- * suggested scope came from a model, so it carries the ring.
- */
-export function CommandChip({
-  state = "available",
-  onSelect,
-  children,
-}: {
-  /** Whether the scope is applied, offered or merely available. */
-  state?: "active" | "available" | "suggested";
-  onSelect?: () => void;
-  children: ReactNode;
-}) {
-  const body = (
-    <>
-      {state === "suggested" ? <SealMark state="inferred" size={6} /> : null}
-      {children}
-    </>
-  );
-  if (!onSelect) {
-    return <span className={cx("di-command-chip", `is-${state}`)}>{body}</span>;
-  }
-  return (
-    <button type="button" className={cx("di-command-chip", `is-${state}`)} onClick={onSelect}>
-      {body}
-    </button>
-  );
-}
-
-/**
- * A labelled set of `CommandRow`s inside a `CommandBar`. `label` is shown
- * above the rows.
- */
-export function CommandGroup({ label, children }: { label: string; children: ReactNode }) {
-  return (
-    <div className="di-command-group">
-      <p className="di-command-group-label">{label}</p>
-      {children}
-    </div>
-  );
-}
-
-/**
- * A row the bar offers. `inferred` swaps the icon for the hollow ring:
- * a model proposed this, and it has not been sealed.
- */
-export function CommandRow({
-  label,
-  meta,
-  active = false,
-  inferred = false,
-  onSelect,
-  children,
-}: {
-  /** What the row offers, in one line. */
-  label: string;
-  /** The trailing note: a shortcut, a count, a source. */
-  meta: string;
-  active?: boolean;
-  inferred?: boolean;
-  onSelect: () => void;
-  /** The leading icon, as `Button` takes it. Ignored when `inferred`. */
-  children?: ReactNode;
-}) {
-  return (
-    <button type="button" className={cx("di-option", "di-command-row", active && "is-highlighted")} onClick={onSelect}>
-      <span className="di-command-row-icon">{inferred ? <SealMark state="inferred" size={7} /> : children}</span>
-      <span className="di-option-label di-command-row-label">{label}</span>
-      <span className="di-option-meta">{meta}</span>
-    </button>
   );
 }

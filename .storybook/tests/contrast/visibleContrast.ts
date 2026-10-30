@@ -268,8 +268,13 @@ function disabledControl(element: Element) {
   return (role === "group" || role === "radiogroup") && marked.querySelector(CONTROL) !== null;
 }
 
-/** Content an open modal dialog makes inert: outside every modal and every popover shown above it. */
+/**
+ * Content an open modal dialog makes inert: outside every modal and every
+ * popover shown above it, or what a Base UI modal (the Sidebar drawer) hides
+ * behind its scrim.
+ */
 function behindModal(element: Element) {
+  if (element.closest("[data-base-ui-inert]")) return true;
   if (!document.querySelector(":modal")) return false;
   return !element.closest(":modal, :popover-open");
 }
