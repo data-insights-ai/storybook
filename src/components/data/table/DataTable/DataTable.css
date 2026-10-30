@@ -183,9 +183,13 @@
     border-bottom: 0;
   }
 
-  /* A body with no rows: why, and the one way out at the end of the same line. */
+  /*
+   * A body with no rows: why, and the one way out at the end of the same
+   * line. Its sides are a cell's, so the message starts on the first data
+   * column's line and the way out ends on the last column's.
+   */
   .di-table tbody tr.di-table-empty td {
-    padding: var(--di-space-24) var(--di-table-edge);
+    padding-block: var(--di-space-24);
     white-space: normal;
   }
 
@@ -288,6 +292,26 @@
     padding-right: var(--di-table-edge);
   }
 
+  /*
+   * A framed register scrolls inside its own frame, its head held at the
+   * frame's top and its footer under it, so the count stays in view.
+   */
+  .di-table-wrap.is-framed .di-table-scroll {
+    max-height: calc(var(--di-control-h-md) + var(--di-table-frame-rows) * var(--di-table-row-height));
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+
+  .di-table-wrap.is-framed .di-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .di-table-wrap.is-framed .di-table tbody :is(td.is-pinned, .di-table-index) {
+    z-index: 0;
+  }
+
   .di-table-foot {
     display: flex;
     align-items: center;
@@ -300,6 +324,11 @@
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
+  }
+
+  /* What the footer reports stays at its start; a pagination after it keeps the end, also on a line of its own. */
+  .di-table-foot > :last-child:not(:only-child) {
+    margin-inline-start: auto;
   }
 
   .di-cell {

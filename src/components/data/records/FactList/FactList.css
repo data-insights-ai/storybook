@@ -37,6 +37,12 @@
     color: var(--di-text-subtle);
   }
 
+  /* A token breaks between its parts first, and inside one only when a single part does not fit the line. */
+  .di-facts-rows .di-fact-value.di-fact-mono {
+    overflow-wrap: break-word;
+    word-break: keep-all;
+  }
+
   .di-facts-rows .di-fact-value {
     flex: 1;
     overflow-wrap: anywhere;

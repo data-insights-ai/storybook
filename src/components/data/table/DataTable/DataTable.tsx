@@ -31,7 +31,7 @@ import "./DataTable.css";
  * inside), or `TableEmpty` when nothing matches · `TableFooter`
  * (count, pages).
  *
- * **States:** empty (`TableEmpty` keeps the head and the footer), the
+ * **States:** empty (`TableEmpty` keeps the head; the footer goes, it would only count nothing), the
  * row an open pane shows (`TableRow active`), a failed row
  * (`tone="danger"` tints its ordinal), loading (`Loading shape="table"` in its
  * place).
@@ -64,6 +64,7 @@ export function DataTable({
   narrow = "scroll",
   layout = "auto",
   rowCount,
+  maxRows,
   className,
   children,
 }: {
@@ -90,6 +91,13 @@ export function DataTable({
    * each `TableRow` states its place with `rowIndex`.
    */
   rowCount?: number;
+  /**
+   * Holds the grid in a frame about this many rows tall that scrolls on its
+   * own, with the head kept at its top and the footer under it. For a long
+   * register inside a page that has more below it (a panel, a dialog); a
+   * register that is the page itself lets the page scroll instead.
+   */
+  maxRows?: number;
   className?: string;
   /** A `Toolbar`, the grid's `TableHead` and `TableBody`, and `TableFooter`. */
   children: ReactNode;
@@ -110,23 +118,36 @@ export function DataTable({
   });
 
   const fill = fillColumn(grid);
+  const indexColumn = hasIndexColumn(grid);
+  const empty = holdsEmpty(grid);
+  const framed = maxRows !== undefined;
   const stack = narrow === "stack";
   const scroll = useRef<HTMLDivElement>(null);
   const overflowing = useOverflowing(scroll);
   const widths = useMeasuredColumns(scroll, layout === "measured");
   return (
-    <div className={cx("di-table-wrap", stack && "is-stackable", overflowing && "is-overflowing", className)}>
+    <div
+      className={cx(
+        "di-table-wrap",
+        stack && "is-stackable",
+        overflowing && "is-overflowing",
+        framed && "is-framed",
+        className,
+      )}
+      style={framed ? ({ "--di-table-frame-rows": maxRows } as CSSProperties) : undefined}
+    >
       {toolbar.length > 0 ? <div className="di-table-toolbar">{toolbar}</div> : null}
       {/*
         The frame scrolls, not the page. A region that scrolls has to be
         reachable from the keyboard, so it takes a tab stop then, and only
-        then: a frame that fits would be a stop that does nothing.
+        then: a frame that fits would be a stop that does nothing. A framed
+        register always scrolls, so it is always a stop.
       */}
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the frame takes the arrow keys for the rows inside it */}
       <div
         ref={scroll}
         className="di-table-scroll"
-        tabIndex={overflowing ? 0 : undefined}
+        tabIndex={overflowing || framed ? 0 : undefined}
         role="region"
         aria-label={caption}
         onKeyDown={moveBetweenRows}
@@ -147,12 +168,14 @@ export function DataTable({
           ) : null}
           <StackContext.Provider value={stack}>
             <MeasuredContext.Provider value={widths !== undefined}>
-              <FillColumnContext.Provider value={fill}>{grid}</FillColumnContext.Provider>
+              <IndexColumnContext.Provider value={indexColumn}>
+                <FillColumnContext.Provider value={fill}>{grid}</FillColumnContext.Provider>
+              </IndexColumnContext.Provider>
             </MeasuredContext.Provider>
           </StackContext.Provider>
         </table>
       </div>
-      {foot}
+      {empty ? null : foot}
     </div>
   );
 }
@@ -196,14 +219,32 @@ const MeasuredContext = createContext(false);
 /* Which column fills, and which column a cell is in: the filling column's cells wrap, every other cell keeps its line. */
 const FillColumnContext = createContext(-1);
 const ColumnContext = createContext(-1);
+/* Whether the head opens with the index column, so a row that spans the grid can start on the first data column. */
+const IndexColumnContext = createContext(false);
+
+function headColumns(grid: ReactNode[]) {
+  const head = grid.find((child) => isValidElement(child) && child.type === TableHead);
+  return isValidElement<{ children?: ReactNode }>(head) ? Children.toArray(head.props.children) : [];
+}
+
+function hasIndexColumn(grid: ReactNode[]) {
+  const first = headColumns(grid)[0];
+  return isValidElement<{ index?: boolean }>(first) && first.props.index === true;
+}
+
+function holdsEmpty(grid: ReactNode[]) {
+  return grid.some(
+    (child) =>
+      isValidElement<{ children?: ReactNode }>(child) &&
+      child.type === TableBody &&
+      Children.toArray(child.props.children).some((row) => isValidElement(row) && row.type === TableEmpty),
+  );
+}
 
 function fillColumn(grid: ReactNode[]) {
-  const head = grid.find((child) => isValidElement(child) && child.type === TableHead);
-  if (!isValidElement<{ children?: ReactNode }>(head)) return -1;
-  const fills = Children.map(head.props.children, (column, i) =>
-    isValidElement<{ width?: string }>(column) && column.props.width === "fill" ? i : -1,
+  return headColumns(grid).findIndex(
+    (column) => isValidElement<{ width?: string }>(column) && column.props.width === "fill",
   );
-  return fills?.find((i) => i !== -1) ?? -1;
 }
 
 /*
@@ -461,14 +502,19 @@ export function TableIndex({ children }: { children: ReactNode }) {
 /**
  * The body of a table with no rows: one row across every column that says
  * why it is empty (`message`) and, as `children`, the one way out — a
- * `Button variant="ghost"` that clears the filters. The head and the
- * footer stay, so the reader sees which list is empty. Where the list has
- * never held anything, show a `Notice variant="empty"` instead of the table.
+ * `Button variant="ghost"` that clears the filters. The head stays, so the
+ * reader sees which list is empty, and the message starts on the first
+ * data column's line, past the index column; the footer goes, since a count
+ * of nothing repeats the message. Where the list has never held anything,
+ * show a `Notice variant="empty"` instead of the table.
  */
 export function TableEmpty({ message, children }: { message: string; children?: ReactNode }) {
+  const indexColumn = useContext(IndexColumnContext);
+  const cell = useRole("cell");
   return (
     <tr role={useRole("row")} className="di-table-empty">
-      <td role={useRole("cell")} colSpan={1000}>
+      {indexColumn ? <td role={cell} className="di-table-index" /> : null}
+      <td role={cell} colSpan={1000}>
         <span className="di-table-empty-body">
           <span className="di-table-empty-message">{message}</span>
           {children}

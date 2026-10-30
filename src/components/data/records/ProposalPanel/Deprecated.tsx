@@ -12,7 +12,7 @@ import {
   ProposalQuestion,
 } from "./ProposalPanel";
 
-/** @deprecated Use `ProposalPanel` with `ProposalAnswer`, a `Figure`, `FactList layout="stacked"`, `ProposalIgnored` and `ProposalNote`. Removed in 0.12. */
+/** @deprecated Use `ProposalPanel` with `ProposalAnswer`, a `Figure`, a `FactList` (rows), `ProposalIgnored` and `ProposalNote`. Removed in 0.12. */
 export function ExplainPanel({
   label,
   answer,

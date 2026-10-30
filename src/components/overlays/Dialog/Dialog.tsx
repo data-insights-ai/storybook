@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { X } from "lucide-react";
+import { OctagonAlert, X } from "lucide-react";
 import { PageSide } from "../../layout/page/pageSide";
 import { cx } from "../../../internal/cx";
 import { focusFirstField } from "../../../internal/shortcutKeys";
@@ -30,6 +30,8 @@ export type DialogProps = {
   eyebrow?: string;
   /** `danger` only when the dialog asks before something that cannot be taken back; otherwise the quiet label ink. */
   eyebrowTone?: "quiet" | "danger";
+  /** `danger` when the dialog asks before something that cannot be taken back: the danger mark leads the title, and the eyebrow takes the danger ink. */
+  tone?: "neutral" | "danger";
   /** The close button's accessible name. A `side` or `bottom` dialog always has one; a `center` decision may rely on its Cancel. */
   closeLabel?: string;
   /** `side` from the right edge (a record, a form); `center` a decision; `bottom` a picker on a phone. */
@@ -173,6 +175,7 @@ function DialogFrame({
   lede,
   eyebrow,
   eyebrowTone = "quiet",
+  tone = "neutral",
   closeLabel,
   onClose,
   onSubmit,
@@ -194,11 +197,12 @@ function DialogFrame({
     <div className="di-dialog-frame">
       <header className="di-dialog-head">
         {eyebrow ? (
-          <Eyebrow variant="plain" tone={eyebrowTone}>
+          <Eyebrow variant="plain" tone={tone === "danger" ? "danger" : eyebrowTone}>
             {eyebrow}
           </Eyebrow>
         ) : null}
         <div className="di-dialog-title-row">
+          {tone === "danger" ? <OctagonAlert className="di-dialog-mark" aria-hidden /> : null}
           <h2 className="di-dialog-title" id={titleId} tabIndex={-1}>
             {title}
           </h2>

@@ -4,7 +4,6 @@ import { cx } from "../../../../internal/cx";
 import { surfaceClass } from "../../../../internal/surface";
 import { takeSlot } from "../../../../internal/slots";
 import { Disclosure } from "../../../layout/folding/Disclosure";
-import { SealMark } from "../../../marks/status/SealValue";
 import { Figure } from "../../figures/Figure";
 import "./ProposalPanel.css";
 
@@ -14,7 +13,7 @@ import "./ProposalPanel.css";
  * and the actions.
  *
  * Without `ProposalActions` it explains: the answer, the confidence
- * `Figure`, the evidence as a `FactList layout="stacked"`, what was not
+ * `Figure`, the evidence as a `FactList` in rows, what was not
  * considered and the caveat, read top to bottom. With `ProposalActions`
  * it asks: the `ProposalQuestion`, the facts the decision rests on (the
  * `FactList`s stay in view), the actions, and the explanation folded
@@ -24,6 +23,7 @@ export function ProposalPanel({
   label,
   heading = 3,
   whyLabel = "",
+  defaultWhyOpen = false,
   className,
   children,
 }: {
@@ -33,10 +33,12 @@ export function ProposalPanel({
   heading?: 2 | 3 | 4;
   /** Names the folded explanation when the panel asks: "Why was this proposed?" */
   whyLabel?: string;
+  /** The explanation starts open, for a reader who arrived asking why (a link from a notification). */
+  defaultWhyOpen?: boolean;
   className?: string;
   /**
    * `ProposalQuestion`, `ProposalAnswer`, a confidence `Figure size="compact"`,
-   * `FactList layout="stacked"`, `ProposalIgnored`, `ProposalNote` and
+   * `FactList` (rows, the record's own fact style), `ProposalIgnored`, `ProposalNote` and
    * `ProposalActions`, placed in that order whatever order they are written in.
    */
   children: ReactNode;
@@ -57,7 +59,6 @@ export function ProposalPanel({
     <section className={cx(surfaceClass(), "di-proposal", className)} aria-labelledby={asked ? questionId : labelId}>
       <div className="di-proposal-head">
         <p className="di-proposal-label" id={labelId}>
-          <SealMark state="inferred" size={7} />
           {label}
         </p>
         {asked ? (
@@ -70,7 +71,7 @@ export function ProposalPanel({
         <>
           {facts}
           {explanation.length || ignored.length || note.length ? (
-            <ProposalWhy label={whyLabel}>
+            <ProposalWhy label={whyLabel} defaultOpen={defaultWhyOpen}>
               {explanation}
               {ignored}
               {note}
@@ -90,9 +91,9 @@ export function ProposalPanel({
   );
 }
 
-function ProposalWhy({ label, children }: { label: string; children: ReactNode }) {
+function ProposalWhy({ label, defaultOpen, children }: { label: string; defaultOpen: boolean; children: ReactNode }) {
   const id = useId();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   return (
     <Disclosure id={id} open={open} onOpenChange={setOpen} toggle="head" title={label} className="di-proposal-why">
       <div className="di-proposal-why-body">{children}</div>

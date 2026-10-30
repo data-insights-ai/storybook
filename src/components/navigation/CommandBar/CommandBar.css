@@ -1,5 +1,12 @@
 @layer components {
+  /*
+   * Three zones, a step apart in tone and never a line between them: the
+   * field on the ground's tone, the results on the plane's surface, the foot
+   * a quiet strip a step lower. Every zone keeps its text on one edge, 12px
+   * from the plane's.
+   */
   .di-command {
+    --di-command-edge: var(--di-space-12);
     width: min(var(--di-command-width), 100%);
     overflow: hidden;
     border: 1px solid var(--di-border-strong);
@@ -13,7 +20,7 @@
     align-items: center;
     gap: var(--di-gap-8);
     height: var(--di-command-input-h);
-    padding: 0 var(--di-space-12);
+    padding: 0 var(--di-command-edge);
     background: var(--di-bg-page);
   }
 
@@ -42,15 +49,20 @@
     color: var(--di-text-subtle);
   }
 
-  /* The groups are spaced apart by distance, not ruled: the label names each one. */
+  /*
+   * The groups are spaced apart by distance, not ruled: the label names each
+   * one. The highlight keeps an inset from the zone's edges; the rows give
+   * back the difference, so their text stays on the zone's edge.
+   */
   .di-command-list {
+    --di-command-row-inset: calc(var(--di-command-edge) - var(--di-gap-8));
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-8);
     max-height: var(--di-command-list-max);
-    padding: var(--di-gap-4);
+    padding: var(--di-gap-8);
     overflow-y: auto;
-    scroll-padding-block: var(--di-gap-4);
+    scroll-padding-block: var(--di-gap-8);
   }
 
   .di-command-list:empty {
@@ -58,7 +70,7 @@
   }
 
   .di-command-group-label {
-    padding: var(--di-gap-6) var(--di-gap-8) var(--di-gap-4);
+    padding: var(--di-gap-4) var(--di-command-row-inset);
     font-family: var(--di-mono-label-family);
     font-size: var(--di-mono-label-size);
     font-weight: var(--di-mono-label-weight);
@@ -94,6 +106,20 @@
     --di-command-line: calc(var(--di-font-size-400) * var(--di-leading-snug));
     align-items: flex-start;
     padding-block: calc((var(--di-option-h) - var(--di-command-line)) / 2);
+    padding-inline: var(--di-command-row-inset);
+  }
+
+  /* An answer is a sentence: its note sits under it, beside the words it qualifies. */
+  .di-command-answer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--di-gap-2);
+    min-width: 0;
+  }
+
+  .di-command-answer > .di-option-meta {
+    margin-left: 0;
   }
 
   @media (pointer: coarse) {
@@ -104,7 +130,7 @@
   }
 
   .di-command-empty {
-    padding: var(--di-space-12);
+    padding: var(--di-command-edge);
     color: var(--di-text-muted);
     font-size: var(--di-font-size-400);
   }
@@ -113,16 +139,18 @@
     display: none;
   }
 
-  /* The foot is a row inside the plane, no band: the key legend, then where the query goes. */
+  /* The foot: a quiet strip a step below the results, the key legend first, where the query goes at its end. */
   .di-command-foot {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-gap-4) var(--di-gap-12);
-    padding: var(--di-gap-8) var(--di-space-12) var(--di-space-12);
+    gap: var(--di-gap-4) var(--di-gap-16);
+    padding: var(--di-command-edge);
+    background: var(--di-bg-subtle);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
-    color: var(--di-text-subtle);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
   }
 
   .di-command-hints {
@@ -131,7 +159,10 @@
     gap: var(--di-gap-4) var(--di-gap-12);
   }
 
-  .di-command-hints > span {
+  .di-command-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-gap-6);
     white-space: nowrap;
   }
 

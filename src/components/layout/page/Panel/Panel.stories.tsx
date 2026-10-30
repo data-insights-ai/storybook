@@ -279,6 +279,22 @@ export const Danger: Story = {
     await expect(getComputedStyle(title).fontFamily).toContain("Space Grotesk");
     const action = canvas.getByText("Delete organization", { selector: "p" });
     await expect(Number(getComputedStyle(action).fontWeight)).toBeLessThan(600);
+    // The edge is the one red object: a full-strength danger line, the words inside stay ink.
+    const panel = canvasElement.querySelector<HTMLElement>(".di-panel")!;
+    const resolve = (token: string) => {
+      const probe = document.createElement("span");
+      probe.style.color = `var(${token})`;
+      panel.append(probe);
+      const colour = getComputedStyle(probe).color;
+      probe.remove();
+      return colour;
+    };
+    await expect(getComputedStyle(panel).boxShadow).toContain(resolve("--di-status-danger-dot"));
+    const lead = canvas.getByText("These actions remove access and cannot be undone.");
+    for (const words of [lead, title])
+      await expect([resolve("--di-status-danger-dot"), resolve("--di-status-danger-fg")]).not.toContain(
+        getComputedStyle(words).color,
+      );
   },
 };
 

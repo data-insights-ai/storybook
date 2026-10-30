@@ -39,6 +39,7 @@ export const Remove: Story = {
     await waitFor(() => expect(within(dialog).getByRole("button", { name: "Cancel" })).toHaveFocus());
     await expect(within(dialog).getByText("Member · Northwind").closest(".di-eyebrow")).toHaveClass("is-danger");
     await expect(dialog.querySelector("svg.lucide-triangle-alert")).toBeNull();
+    await readsAsDanger(dialog, within(dialog).getByRole("button", { name: "Remove member" }));
     await waitFor(() => expect(getComputedStyle(dialog).opacity).toBe("1"));
   },
 };
@@ -57,11 +58,28 @@ export const Ordinary: Story = {
     await expect(within(dialog).getByText("Organization · Northwind").closest(".di-eyebrow")).not.toHaveClass(
       "is-danger",
     );
+    await expect(dialog.querySelector(".di-dialog-mark")).toBeNull();
     await waitFor(() => expect(getComputedStyle(dialog).opacity).toBe("1"));
   },
 };
 
-/** Irreversible: the name has to be typed before the button acts. */
+/** The danger reads in the dialog itself: the mark leads the title, and the commit is filled in the danger colour. */
+async function readsAsDanger(dialog: HTMLElement, confirm: HTMLElement) {
+  const mark = dialog.querySelector(".di-dialog-mark");
+  await expect(mark).not.toBeNull();
+  const red = getComputedStyle(mark!).color;
+  const title = dialog.querySelector(".di-dialog-title")!.getBoundingClientRect();
+  const markBox = mark!.getBoundingClientRect();
+  await expect(Math.abs(markBox.top + markBox.height / 2 - (title.top + title.height / 2))).toBeLessThanOrEqual(2);
+  await expect(getComputedStyle(confirm).backgroundColor).not.toBe(getComputedStyle(dialog).backgroundColor);
+  return red;
+}
+
+/**
+ * Irreversible: the name has to be typed before the button acts. Until
+ * then the button keeps a danger tint, not the grey of any disabled
+ * control, so the dialog reads as destructive before anything is typed.
+ */
 export const TypeToConfirm: Story = {
   args: {
     title: "Delete workspace Field Research?",
@@ -76,6 +94,11 @@ export const TypeToConfirm: Story = {
     const dialog = within(canvasElement.ownerDocument.body).getByRole("dialog");
     const confirm = within(dialog).getByRole("button", { name: "Delete workspace" });
     await expect(confirm).toBeDisabled();
+    const red = await readsAsDanger(dialog, confirm);
+    const cancel = within(dialog).getByRole("button", { name: "Cancel" });
+    await expect(getComputedStyle(confirm).borderTopColor).not.toBe(getComputedStyle(cancel).borderTopColor);
+    await expect(getComputedStyle(confirm).color).not.toBe(getComputedStyle(cancel).color);
+    await expect(red).not.toBe(getComputedStyle(within(dialog).getByRole("heading")).color);
     await userEvent.type(within(dialog).getByLabelText("Type Field Research to confirm"), "Field Research");
     await expect(confirm).toBeEnabled();
     await userEvent.click(confirm);
