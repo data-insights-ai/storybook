@@ -12,7 +12,18 @@ import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
 import { Toolbar } from "./Toolbar";
 import { ToolbarAction, ToolbarEnd, ToolbarNote, ToolbarSelection, ToolbarStatus } from "./ToolbarParts";
-import { MembersFilter, MembersTable, words, type Words } from "./Toolbar.sample";
+import { MembersFilter, MembersTable, toolbarRows, words, type Words } from "./Toolbar.sample";
+
+const phone = () => window.innerWidth <= 600;
+
+/** On a phone: at most two rows, and a row of one only when it is the search or the requested action. */
+async function expectTwoRows(bar: Element) {
+  const rows = toolbarRows(bar);
+  await expect(rows.length).toBeLessThanOrEqual(phone() ? 2 : 1);
+  for (const row of rows.slice(1)) {
+    if (row.length === 1) await expect(row[0]).toHaveClass(/di-search|di-btn-primary/);
+  }
+}
 
 const meta = {
   title: "Actions/Toolbar",
@@ -47,6 +58,9 @@ export const AboveAList: Story = {
     const select = canvas.getByLabelText("Role").getBoundingClientRect();
     await expect(Math.abs(search.height - select.height)).toBeLessThanOrEqual(1);
     await expect(bar.getBoundingClientRect().height).toBeGreaterThanOrEqual(search.height);
+    await expectTwoRows(bar);
+    const exportButton = canvas.getByRole("button", { name: "Export CSV" });
+    await expect(exportButton.classList.contains("di-btn-icon")).toBe(phone());
   },
 };
 
@@ -155,6 +169,7 @@ export const Selection: Story = {
     const textEdge = cell.getBoundingClientRect().left + parseFloat(getComputedStyle(cell).paddingLeft);
     const status = within(bar).getByText("3 selected").getBoundingClientRect().left;
     await expect(Math.abs(status - textEdge)).toBeLessThanOrEqual(1);
+    await expectTwoRows(bar);
     (document.activeElement as HTMLElement | null)?.blur();
   },
 };
@@ -221,7 +236,7 @@ export const UnsavedChanges: Story = {
   },
 };
 
-/** The buttons that close a form, at its end (`align="end"`); on a phone they stack at full width. */
+/** The buttons that close a form, at its end (`align="end"`); on a phone they share the row. */
 export const FormEnd: Story = {
   render: () => (
     <Panel title="Invite people" heading={2}>
@@ -240,6 +255,30 @@ export const FormEnd: Story = {
     const send = within(canvasElement).getByRole("button", { name: "Send invitations" }).getBoundingClientRect();
     const field = within(canvasElement).getByLabelText("Email addresses").getBoundingClientRect();
     await expect(Math.abs(send.right - field.right)).toBeLessThanOrEqual(1);
+    await expect(toolbarRows(canvasElement.querySelector(".di-toolbar")!)).toHaveLength(1);
+  },
+};
+
+/**
+ * The actions a block leads with (`align="start"`): a case's decision and
+ * two others. On a phone they wrap rather than stack: the requested action
+ * takes the first row, the others share the second.
+ */
+export const LeadsABlock: Story = {
+  name: "Leads a block",
+  render: () => (
+    <Panel title="Isolate the file server before more data leaves" heading={2}>
+      <Toolbar align="start">
+        <Button>Isolate srv-fs-02</Button>
+        <Button variant="secondary">Reset svc-backup</Button>
+        <Button variant="ghost">Set a verdict</Button>
+      </Toolbar>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const rows = toolbarRows(canvasElement.querySelector(".di-toolbar")!);
+    await expect(rows.map((row) => row.length)).toEqual(phone() ? [1, 2] : [3]);
+    await expect(rows[0][0]).toHaveTextContent("Isolate srv-fs-02");
   },
 };
 
@@ -388,6 +427,7 @@ export const German: Story = {
   play: async ({ canvasElement }) => {
     for (const bar of canvasElement.querySelectorAll(".di-toolbar:not(.is-row)")) {
       await expect(bar.scrollWidth).toBeLessThanOrEqual(bar.clientWidth + 1);
+      await expectTwoRows(bar);
     }
     await expect(within(canvasElement).getByRole("group", { name: /ausgewählten Mitglieder/ })).toBeVisible();
   },

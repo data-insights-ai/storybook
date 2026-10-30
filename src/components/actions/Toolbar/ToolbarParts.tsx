@@ -13,8 +13,9 @@ export function ToolbarEnd({ children }: { children: ReactNode }) {
 /**
  * An action in `ToolbarEnd` with a compact form: an icon and a label on a
  * wide screen; on a phone the icon alone, named by the label for a screen
- * reader and in a tooltip for the eye, so the list toolbar keeps to two
- * rows (the search, then the filters with this action at their end).
+ * reader and in a tooltip for the eye, so it fits beside the search and
+ * the list toolbar keeps to two rows (the search with its actions, then the
+ * filters).
  */
 export function ToolbarAction({
   icon,

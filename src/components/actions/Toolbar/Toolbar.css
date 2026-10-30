@@ -136,10 +136,41 @@
     }
 
     /*
-     * Above a list on a phone: the search, then one row of filters with the
-     * end actions. The filters share the width (a long option is cut, the
-     * picker shows it whole) and wrap only below 6rem each.
+     * Above a list on a phone, two rows and no action alone on a third: the
+     * search with the end actions (folded to icons, see ToolbarAction) on the
+     * first, then the filters. A zero-height break keeps the filters off the
+     * first row; the rows space themselves by the filters own margin, so the
+     * break adds no gap. The
+     * filters share their row (a long option is cut, the picker shows it
+     * whole) and wrap only below --di-toolbar-filter-min each.
      */
+    .di-toolbar[role="search"]:has(> .di-search) > .di-search {
+      flex: 1 1 0;
+      order: -3;
+    }
+
+    .di-toolbar[role="search"]:has(> .di-search) > .di-toolbar-end {
+      order: -2;
+    }
+
+    .di-toolbar[role="search"]:has(> .di-search) {
+      row-gap: 0;
+    }
+
+    .di-toolbar[role="search"]:has(> .di-search) > :not(.di-search, .di-toolbar-end) {
+      margin-block-start: var(--di-gap-8);
+    }
+
+    .di-toolbar[role="search"]:has(> .di-search)::after {
+      content: "";
+      flex-basis: 100%;
+      order: -1;
+    }
+
+    .di-toolbar[role="search"]:has(> .di-search):not(:has(> :not(.di-search, .di-toolbar-end)))::after {
+      content: none;
+    }
+
     .di-toolbar[role="search"] > .di-field {
       flex: 1 1 0;
       min-width: var(--di-toolbar-filter-min);
@@ -149,9 +180,25 @@
       width: 100%;
     }
 
-    .di-toolbar:is(.is-align-end, .is-align-start) {
-      flex-direction: column;
-      align-items: stretch;
+    /* A drawn select cuts its choice under the caret; the plain control keeps the caret clear. */
+    .di-toolbar[role="search"] > .di-field .di-select-control {
+      appearance: none;
+    }
+
+    /*
+     * The buttons that close or lead a block: they share a row and wrap
+     * rather than stack one per row. With three or more, the requested
+     * action takes the first row whole and the others share the second, so
+     * no action is left alone on a row of its own.
+     */
+    .di-toolbar:is(.is-align-end, .is-align-start) > * {
+      flex: 1 1 0;
+      min-width: max-content;
+    }
+
+    .di-toolbar:is(.is-align-end, .is-align-start):has(> :nth-child(3)) > .di-btn-primary {
+      flex-basis: 100%;
+      order: -1;
     }
   }
 

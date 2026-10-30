@@ -4,7 +4,15 @@ import { Button } from "../Button";
 import { Checkbox } from "../../forms/choice/Checkbox";
 import { SearchField } from "../../forms/text/SearchField";
 import { Select } from "../../forms/select/Select";
-import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
+import {
+  CellStack,
+  DataTable,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHead,
+  TableRow,
+} from "../../data/table/DataTable";
 import { useShortcut } from "../../../internal/useShortcut";
 import { Toolbar, type ToolbarProps } from "./Toolbar";
 import { ToolbarAction, ToolbarEnd } from "./ToolbarParts";
@@ -14,6 +22,7 @@ export const words = {
     filter: "Filter members",
     search: "Search members",
     placeholder: "Name or email",
+    name: "Name",
     role: "Role",
     allRoles: "All roles",
     owners: "Owners",
@@ -37,6 +46,7 @@ export const words = {
     filter: "Mitglieder filtern",
     search: "Mitglieder durchsuchen",
     placeholder: "Name oder E-Mail-Adresse",
+    name: "Name",
     role: "Rolle",
     allRoles: "Alle Rollen",
     owners: "Inhaberinnen und Inhaber",
@@ -123,8 +133,7 @@ export function MembersTable({
             />
           </TableColumn>
         ) : null}
-        <TableColumn width="fill">Name</TableColumn>
-        <TableColumn>Email</TableColumn>
+        <TableColumn width="fill">{w.name}</TableColumn>
         <TableColumn>{w.role}</TableColumn>
         <TableColumn align="end">{w.actions}</TableColumn>
       </TableHead>
@@ -144,8 +153,9 @@ export function MembersTable({
                 />
               </TableCell>
             ) : null}
-            <TableCell>{m.name}</TableCell>
-            <TableCell mono>{m.email}</TableCell>
+            <TableCell>
+              <CellStack primary={m.name} secondary={m.email} prose />
+            </TableCell>
             <TableCell>{m.role}</TableCell>
             <TableCell align="end">
               <Toolbar variant="row" label={`Actions for ${m.name}`}>
@@ -162,4 +172,27 @@ export function MembersTable({
       </TableBody>
     </DataTable>
   );
+}
+
+/**
+ * The rows a toolbar's controls fall into, top to bottom, each a list of
+ * the controls on it. A control whose centre is within 8px of the row's
+ * belongs to it. Used by the stories to hold a toolbar to two rows on a
+ * phone with no action alone on a row.
+ */
+export function toolbarRows(bar: Element): Element[][] {
+  const controls = [...bar.querySelectorAll(":scope > *, :scope > .di-toolbar-end > *")].filter(
+    (el) => !el.matches(".di-toolbar-end, .di-toolbar-note") && el.getBoundingClientRect().width > 0,
+  );
+  const centre = (el: Element) => {
+    const box = el.getBoundingClientRect();
+    return box.top + box.height / 2;
+  };
+  const rows: Element[][] = [];
+  for (const el of controls.sort((a, b) => centre(a) - centre(b))) {
+    const last = rows.at(-1);
+    if (last && centre(el) - centre(last[0]) <= 8) last.push(el);
+    else rows.push([el]);
+  }
+  return rows;
 }
