@@ -64,7 +64,8 @@ export function Button(props: ButtonProps | LinkProps) {
      * it cannot be followed, cannot be tabbed to, and says why. Leaving
      * the href and cancelling the click would still navigate on
      * middle-click, and on the keyboard for anyone who never sees the
-     * cursor change.
+     * cursor change. Without its `href` an anchor is no longer a link, so
+     * `role="link"` keeps it one and `aria-disabled` is read on a link.
      */
     const blocked = disabled || loading;
     return (
@@ -72,6 +73,7 @@ export function Button(props: ButtonProps | LinkProps) {
         {...rest}
         {...keyed}
         href={blocked ? undefined : href}
+        role={blocked ? "link" : undefined}
         aria-disabled={blocked || undefined}
         aria-busy={loading || undefined}
         className={className}

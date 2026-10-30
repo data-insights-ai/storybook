@@ -171,6 +171,12 @@ export function EventTimeline({
     onPick: pick,
   });
 
+  // Set as a property: React 18.3 does not pass `inert` through as a boolean attribute.
+  const canvas = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (canvas.current) canvas.current.inert = loading;
+  });
+
   const hoverPx =
     gestures.hover !== null && gestures.hover >= 0 && gestures.hover <= plotPx
       ? gestures.hover
@@ -255,79 +261,79 @@ export function EventTimeline({
               {...gestures.handlers}
             >
               {/* Under the loading veil the plot is stale and inactive, so it is inert. */}
-              <div className="di-timeline-canvas" inert={loading}>
-              <svg width={plotPx} height={axisTop + AXIS_H} className="di-timeline-svg" aria-hidden>
-                <TimeAxis
-                  ticks={ticks}
-                  label={clock.tick}
-                  scale={scale}
-                  plotPx={plotPx}
-                  top={axisTop}
-                />
-                {score ? (
-                  <ScoreTrack
-                    score={score}
-                    markers={markers}
+              <div ref={canvas} className="di-timeline-canvas">
+                <svg width={plotPx} height={axisTop + AXIS_H} className="di-timeline-svg" aria-hidden>
+                  <TimeAxis
+                    ticks={ticks}
+                    label={clock.tick}
                     scale={scale}
                     plotPx={plotPx}
-                    format={(v) => number.format(v)}
+                    top={axisTop}
                   />
-                ) : null}
-                <line x1={0} x2={plotPx} y1={mid} y2={mid} className="di-timeline-axisline" />
-                {events ? (
-                  <Events events={events} scale={scale} plotPx={plotPx} mid={mid} half={half} />
-                ) : (
-                  <g transform={`translate(0 ${waveTop})`}>
-                    <Waveform
-                      bars={bars}
+                  {score ? (
+                    <ScoreTrack
+                      score={score}
+                      markers={markers}
                       scale={scale}
                       plotPx={plotPx}
-                      mid={WAVE_H / 2}
-                      half={half}
-                      peak={peak}
+                      format={(v) => number.format(v)}
+                    />
+                  ) : null}
+                  <line x1={0} x2={plotPx} y1={mid} y2={mid} className="di-timeline-axisline" />
+                  {events ? (
+                    <Events events={events} scale={scale} plotPx={plotPx} mid={mid} half={half} />
+                  ) : (
+                    <g transform={`translate(0 ${waveTop})`}>
+                      <Waveform
+                        bars={bars}
+                        scale={scale}
+                        plotPx={plotPx}
+                        mid={WAVE_H / 2}
+                        half={half}
+                        peak={peak}
+                      />
+                    </g>
+                  )}
+                  {highlighted?.map((e) => {
+                    const x = scale.x(e.at);
+                    const reach = reachOf(e, half);
+                    return (
+                      <line
+                        key={e.id}
+                        x1={x}
+                        x2={x}
+                        y1={mid - reach}
+                        y2={mid + reach}
+                        className={`di-timeline-active is-${e.tone}`}
+                      />
+                    );
+                  })}
+                  <g transform={`translate(0 ${waveTop})`}>
+                    <Markers
+                      markers={markers}
+                      scale={scale}
+                      plotPx={plotPx}
+                      height={axisTop - waveTop}
                     />
                   </g>
-                )}
-                {highlighted?.map((e) => {
-                  const x = scale.x(e.at);
-                  const reach = reachOf(e, half);
-                  return (
-                    <line
-                      key={e.id}
-                      x1={x}
-                      x2={x}
-                      y1={mid - reach}
-                      y2={mid + reach}
-                      className={`di-timeline-active is-${e.tone}`}
+                  {gestures.brush ? (
+                    <rect
+                      x={Math.min(gestures.brush.from, gestures.brush.to)}
+                      width={Math.abs(gestures.brush.to - gestures.brush.from)}
+                      height={axisTop}
+                      className="di-timeline-selecting"
                     />
-                  );
-                })}
-                <g transform={`translate(0 ${waveTop})`}>
-                  <Markers
-                    markers={markers}
-                    scale={scale}
-                    plotPx={plotPx}
-                    height={axisTop - waveTop}
-                  />
-                </g>
-                {gestures.brush ? (
-                  <rect
-                    x={Math.min(gestures.brush.from, gestures.brush.to)}
-                    width={Math.abs(gestures.brush.to - gestures.brush.from)}
-                    height={axisTop}
-                    className="di-timeline-selecting"
-                  />
-                ) : null}
-                {hoverPx !== null && !gestures.brush ? (
-                  <line
-                    x1={hoverPx}
-                    x2={hoverPx}
-                    y1={0}
-                    y2={axisTop}
-                    className="di-timeline-cursor"
-                  />
-                ) : null}
-              </svg>
+                  ) : null}
+                  {hoverPx !== null && !gestures.brush ? (
+                    <line
+                      x1={hoverPx}
+                      x2={hoverPx}
+                      y1={0}
+                      y2={axisTop}
+                      className="di-timeline-cursor"
+                    />
+                  ) : null}
+                </svg>
               </div>
               {target && hoverPx !== null ? (
                 <ReadoutPlace.Provider value={{ x: hoverPx, flipped: hoverPx > plotPx - FLIP_PX }}>
