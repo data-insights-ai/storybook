@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import { Plus } from "lucide-react";
 import {
   Button,
@@ -16,7 +17,7 @@ import {
   Toolbar,
 } from "../../index";
 import { Doc, DocSection, Rules } from "../guide/Doc";
-import { corner, length, TokenTable } from "../guide/Tokens";
+import { corner, length, brokenTokenCells, TokenTable } from "../guide/Tokens";
 
 const space = [
   { token: "--di-space-4", use: "A mark to its word: the seal dot, a pill's dot." },
@@ -171,4 +172,9 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
-export const Scale: StoryObj = { render: () => <ScalePage /> };
+export const Scale: StoryObj = {
+  render: () => <ScalePage />,
+  play: async ({ canvasElement }) => {
+    await expect(brokenTokenCells(canvasElement)).toEqual([]);
+  },
+};

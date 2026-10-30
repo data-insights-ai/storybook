@@ -44,6 +44,10 @@ export const Default: Story = {
     const input = canvas.getByLabelText("Search the register");
     await userEvent.type(input, "a4f9c21e");
     await expect(input).toHaveValue("a4f9c21e");
+    // The key is the one every control carries: a tone of the ink, no frame of its own inside the field's frame.
+    const key = canvasElement.querySelector(".di-search-kbd")!;
+    await expect(key).toHaveClass("di-kbd-on-control");
+    await expect(getComputedStyle(key).borderTopColor).toBe("rgba(0, 0, 0, 0)");
   },
 };
 

@@ -106,11 +106,24 @@
     padding: var(--di-gap-12);
   }
 
-  /* Between the first and last day: a band in the selection tint, in ink; the two ends filled. */
+  /*
+   * Between the first and last day: a band in the selection tint, in ink; the
+   * two ends filled. The tint alone is too pale to find on the popup's ground,
+   * so a cornflower line runs along the band's top and bottom. In focus the
+   * ring is the one indicator, so the lines give way to it.
+   */
   .di-date-range-calendar .di-calendar-cell[data-selected]:not([data-selection-start], [data-selection-end]) {
     border-radius: 0;
     background: var(--di-choice-selected-bg);
+    box-shadow:
+      inset 0 1px 0 var(--di-select),
+      inset 0 -1px 0 var(--di-select);
     color: var(--di-text);
+  }
+
+  .di-date-range-calendar
+    .di-calendar-cell[data-selected]:not([data-selection-start], [data-selection-end]):focus-visible {
+    box-shadow: none;
   }
 
   .di-date-range-months {

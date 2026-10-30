@@ -140,6 +140,23 @@
     background: var(--di-status-danger-bg);
   }
 
+  /*
+   * The final commit of a destructive flow is filled: the danger button in a
+   * dialog's footer or a proposal's actions, where the question has been
+   * asked and this is the answer. Everywhere else a danger button opens that
+   * question, so it stays quiet.
+   */
+  :is(.di-dialog-footer, .di-proposal-actions) .di-btn-danger:not(:disabled, [aria-disabled="true"]) {
+    border-color: var(--di-status-danger-dot);
+    background: var(--di-status-danger-dot);
+    color: var(--di-button-primary-fg);
+  }
+
+  :is(.di-dialog-footer, .di-proposal-actions) .di-btn-danger:hover:not(:disabled, [aria-disabled="true"]) {
+    border-color: var(--di-status-danger-fg);
+    background: var(--di-status-danger-fg);
+  }
+
   /* Seals a record. Gold marks the control's edge; in daylight its words stay ink. */
   .di-btn-seal {
     border-color: var(--di-seal);
@@ -169,19 +186,6 @@
     background: var(--di-bg-disabled);
     color: var(--di-text-disabled);
     text-decoration: none;
-  }
-
-  /* A blocked destructive action still says what it would do: the danger edge stays, on the disabled ground. */
-  .di-btn-danger:is(:disabled, [aria-disabled="true"]) {
-    border-color: var(--di-status-danger-border);
-    color: color-mix(in srgb, var(--di-status-danger-fg) 60%, var(--di-text-disabled));
-  }
-
-  /* After dark the danger border and the disabled ground both sink into the panel: the edge comes from the
-     danger ink and the ground stays the panel's, so a blocked danger action still reads as one. */
-  [data-theme="dark"] .di-btn-danger:is(:disabled, [aria-disabled="true"]) {
-    border-color: color-mix(in srgb, var(--di-status-danger-fg) 50%, transparent);
-    background: transparent;
   }
 
   .di-btn-loading {

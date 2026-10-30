@@ -16,7 +16,8 @@ import "./Pagination.css";
  * keeps the first, the last and the pages round the current one, and an
  * ellipsis stands for the rest, so the control never runs wider than seven
  * slots. `numbered={false}` leaves only the arrows and the current page,
- * for a footer with no room.
+ * for a footer with no room. With one page there is nowhere to move, so it
+ * draws nothing and the count beside it says the rest.
  *
  * Placement: under a table it sits at the end of the footer row, with the
  * count of what the page shows ("118–120 of 120") at its start: in a
@@ -57,6 +58,7 @@ export function Pagination({
   /** Off leaves only the arrows and the current page. */
   numbered?: boolean;
 }) {
+  if (pages <= 1) return null;
   return (
     <nav className="di-pages" aria-label={label}>
       <button

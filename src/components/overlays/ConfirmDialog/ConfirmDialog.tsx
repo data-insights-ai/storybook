@@ -1,5 +1,6 @@
 import { useId, useState, type FormEvent } from "react";
 import { Button } from "../../actions/Button";
+import { FieldHint } from "../../forms/field/FieldHint";
 import { TextField } from "../../forms/text/TextField";
 import { Dialog, DialogFooter } from "../Dialog";
 import "./ConfirmDialog.css";
@@ -109,21 +110,17 @@ export function ConfirmDialog({
         />
       ) : null}
       {error ? (
-        <p className="di-confirm-error" role="alert">
-          {error}
-        </p>
+        <div role="alert">
+          <FieldHint id={`${fieldId}-error`} tone="error">
+            {error}
+          </FieldHint>
+        </div>
       ) : null}
       <DialogFooter>
         <Button variant="secondary" onClick={close} data-autofocus={needsText ? undefined : true} disabled={busy}>
           {cancelLabel}
         </Button>
-        <Button
-          type="submit"
-          variant={tone === "danger" ? "danger" : "primary"}
-          className={tone === "danger" ? "di-confirm-commit" : undefined}
-          loading={busy}
-          disabled={!allowed}
-        >
+        <Button type="submit" variant={tone === "danger" ? "danger" : "primary"} loading={busy} disabled={!allowed}>
           {confirmLabel}
         </Button>
       </DialogFooter>

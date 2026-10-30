@@ -192,7 +192,7 @@ export const Complete: Story = {
   ),
 };
 
-/** An irreversible proposal says so in its facts, and its action is the danger button. */
+/** An irreversible proposal says so in its facts, and its action is the final commit: the filled danger button. */
 export const Irreversible: Story = {
   render: (args) => (
     <div style={{ maxWidth: 560 }}>
@@ -216,7 +216,13 @@ export const Irreversible: Story = {
     </div>
   ),
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByRole("button", { name: "Revoke" })).toHaveClass("di-btn-danger");
+    const revoke = within(canvasElement).getByRole("button", { name: "Revoke" });
+    await expect(revoke).toHaveClass("di-btn-danger");
+    const probe = document.createElement("span");
+    probe.style.color = "var(--di-status-danger-dot)";
+    revoke.append(probe);
+    await expect(getComputedStyle(revoke).backgroundColor).toBe(getComputedStyle(probe).color);
+    probe.remove();
   },
 };
 

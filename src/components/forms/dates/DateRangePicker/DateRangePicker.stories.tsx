@@ -73,10 +73,24 @@ const tokenColour = (from: Element, token: string) => {
   return colour;
 };
 
+/** WCAG contrast of two opaque rgb() colours. */
+const contrast = (a: string, b: string) => {
+  const lum = (colour: string) => {
+    const [r, g, b] = (colour.match(/[\d.]+/g) ?? []).slice(0, 3).map((v) => {
+      const c = Number(v) / 255;
+      return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+
 /**
  * A fixed range shows its days in the reader's language; the end is exclusive, so the last day shown is 7 October.
  * Open, the chosen period is marked in the list and the days carry the selection: both ends filled with the primary ink, the
- * days between in the selection tint. It rests open.
+ * days between in the selection tint, edged above and below by a cornflower line that stands at least 3:1 against the
+ * popup. It rests open.
  */
 
 export const CustomRange: Story = {
@@ -90,6 +104,10 @@ export const CustomRange: Story = {
     await expect(getComputedStyle(first).backgroundColor).toBe(tokenColour(first, "--di-choice-on-bg"));
     const between = page.getAllByRole("button", { name: /4 October 2026/ })[0];
     await expect(getComputedStyle(between).backgroundColor).toBe(tokenColour(between, "--di-bg-selected"));
+    const edge = tokenColour(between, "--di-select");
+    await expect(getComputedStyle(between).boxShadow.split(edge).length - 1).toBe(2);
+    const popup = getComputedStyle(between.closest(".di-date-range-popover, .di-date-range-sheet")!).backgroundColor;
+    await expect(contrast(edge, popup)).toBeGreaterThanOrEqual(3);
   },
 };
 

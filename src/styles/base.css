@@ -32,12 +32,75 @@
    */
   [data-theme] {
     color: var(--di-text);
-    accent-color: var(--di-select);
+    accent-color: var(--di-fill-strong);
   }
 
-  /* A native control a product renders itself (a range, a checkbox, a progress) fills in the selection colour, never the browser's blue. */
+  /*
+   * A native control a product renders itself (a checkbox, a radio, a
+   * progress) fills in the strong primary fill, like a toggle or a chosen
+   * day, never the browser's blue: cornflower is the selection's tint and
+   * the focus ring, not a control's paint.
+   */
   body {
-    accent-color: var(--di-select);
+    accent-color: var(--di-fill-strong);
+  }
+
+  /*
+   * A native range: the track in the input border tone, the part up to the
+   * thumb and the thumb in the strong fill, the focus ring cornflower like
+   * every other. Chromium has no part for the filled side, so the thumb's
+   * border image reaches out to both ends, a line's height, and the input
+   * clips it.
+   */
+  input[type="range"] {
+    --di-range-thumb: var(--di-choice-mark);
+    --di-range-line: var(--di-space-4);
+    --di-range-fill: var(--di-fill-strong);
+    --di-range-track: var(--di-border-input);
+    --di-range-turn: 90deg;
+    appearance: none;
+    block-size: var(--di-range-thumb);
+    overflow: hidden;
+    background: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]:dir(rtl) {
+    --di-range-turn: -90deg;
+  }
+
+  input[type="range"]:disabled {
+    --di-range-fill: var(--di-text-disabled);
+    --di-range-track: var(--di-bg-disabled);
+    cursor: not-allowed;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    inline-size: var(--di-range-thumb);
+    block-size: var(--di-range-thumb);
+    border-radius: 50%;
+    background: var(--di-range-fill);
+    border-image: linear-gradient(var(--di-range-turn), var(--di-range-fill) 50%, var(--di-range-track) 0) 0 1 /
+      calc(50% - var(--di-range-line) / 2) 100vw / 0 100vw;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    inline-size: var(--di-range-thumb);
+    block-size: var(--di-range-thumb);
+    border: 0;
+    border-radius: 50%;
+    background: var(--di-range-fill);
+  }
+
+  input[type="range"]::-moz-range-track {
+    block-size: var(--di-range-line);
+    background: var(--di-range-track);
+  }
+
+  input[type="range"]::-moz-range-progress {
+    block-size: var(--di-range-line);
+    background: var(--di-range-fill);
   }
 
   h1,

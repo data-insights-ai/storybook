@@ -192,12 +192,35 @@ export const ArrowsOnly: Story = {
   args: { numbered: false, page: 2 },
 };
 
-/** One page: both arrows are unavailable and the control still reads. */
+/** One page: nowhere to move, so the footer shows only the count. */
 export const SinglePage: Story = {
   args: { pages: 1 },
+  render: (args) => (
+    <DataTable caption="Sources" indexed={false}>
+      <TableHead>
+        <TableColumn>Host</TableColumn>
+        <TableColumn align="end">Entries</TableColumn>
+      </TableHead>
+      <TableBody>
+        {["feed.example.io", "beta.example.dev"].map((host, i) => (
+          <TableRow key={host}>
+            <TableCell mono>{host}</TableCell>
+            <TableCell align="end" mono>
+              {(i + 1) * 412}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+      <TableFooter>
+        <span>1–2 of 2 sources</span>
+        <Pagination {...args} />
+      </TableFooter>
+    </DataTable>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("button", { name: "Previous page" })).toBeDisabled();
-    await expect(canvas.getByRole("button", { name: "Next page" })).toBeDisabled();
+    await expect(canvas.getByText("1–2 of 2 sources")).toBeVisible();
+    await expect(canvas.queryByRole("navigation", { name: "Register pages" })).toBeNull();
+    await expect(canvas.queryByRole("button")).toBeNull();
   },
 };

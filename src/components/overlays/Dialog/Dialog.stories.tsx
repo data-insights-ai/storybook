@@ -250,6 +250,34 @@ export const APhonePicker: Story = {
         canvasElement.ownerDocument.documentElement.clientHeight,
       ),
     );
+    await expectPickerWidth(dialog);
+  },
+};
+
+/** On a phone the picker spans the screen; above 600px it keeps a form's width, centred on the bottom edge. */
+async function expectPickerWidth(dialog: HTMLElement) {
+  const page = dialog.ownerDocument.documentElement.clientWidth;
+  const probe = dialog.ownerDocument.createElement("div");
+  probe.style.width = "var(--di-measure-form)";
+  dialog.ownerDocument.body.append(probe);
+  const form = probe.getBoundingClientRect().width;
+  probe.remove();
+  const box = dialog.getBoundingClientRect();
+  await expect(Math.round(box.width)).toBe(Math.round(page > 600 ? Math.min(page, form) : page));
+  await expect(Math.abs(box.left - (page - box.right))).toBeLessThanOrEqual(1);
+}
+
+/** The same picker on a wide screen: a form's width, centred, still rising from the bottom edge. */
+export const APickerOnAWideScreen: Story = {
+  args: { placement: "bottom", title: "Show entries from", lede: undefined, eyebrow: undefined },
+  globals: { viewport: { value: "desk", isRotated: false } },
+  render: (args) => <Picker {...args} />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "Last 7 days" }));
+    const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog", { name: "Show entries from" });
+    await waitFor(() => expect(dialog).toBeVisible());
+    await waitFor(() => expect(dialog.getAnimations().length).toBe(0));
+    await expectPickerWidth(dialog);
   },
 };
 
