@@ -48,10 +48,10 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
       <Rule>The toolbar and the table head stay in view while the list scrolls.</Rule>
       <Rule>Entries pushed in realtime appear in place in a sorted list; in a newest-first list they wait behind the `n new` notice while the reader is further down.</Rule>
       <Rule>The first load is a skeleton, not a spinner. An empty result names why and offers one way out: clear the filters, or create the first entry.</Rule>
-      <Rule>A row's detail and a create or edit form open in a `Sheet`. Where the page has its side column an `md` sheet docks there and the list keeps working beside it; narrower, and always at `lg` and `xl`, the sheet covers the page. A confirmation stays a `Modal` or `ConfirmDialog`.</Rule>
+      <Rule>A row's detail and a create or edit form open in a side `Dialog`. Where the page has its side column an `md` dialog docks there and the list keeps working beside it; narrower, and always at `lg` and `xl`, the dialog covers the page. A confirmation stays a centred `Dialog` or `ConfirmDialog`.</Rule>
     </Rules>
     <Columns>
-      <Lines title="Do" items={["The create form opens in a Sheet or its own page from the header action.", "Filters are selects whose first option names them: All roles.", "One EmptyState, no eyebrow, an icon and the one action."]} />
+      <Lines title="Do" items={["The create form opens in a side Dialog or its own page from the header action.", "Filters are selects whose first option names them: All roles.", "One EmptyState, no eyebrow, an icon and the one action."]} />
       <Lines title="Don't" items={["An add form that is always open above the list.", "A list that loads everything and filters in the browser.", "An empty card repeating the page's eyebrow over the full width."]} />
     </Columns>
   </Section>
@@ -64,7 +64,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
     <Rules>
       <Rule>A section reads by default — a `FactList layout="columns"`, ids as `CopyValue`. Its `Edit` switches only that section into its form with Save and Cancel; focus moves in and back.</Rule>
       <Rule>A change of several independent settings in one section (switches) collects in a sticky `SaveBar` instead of saving each.</Rule>
-      <Rule>A change too large for a section opens a `Sheet`. A record opened from a list row may live in a `Sheet` too, with the same sections inside.</Rule>
+      <Rule>A change too large for a section opens a side `Dialog`. A record opened from a list row may live in a side `Dialog` too, with the same sections inside.</Rule>
       <Rule>Each `DangerAction` states the consequence and has one danger button. When it is unavailable, `note` says why — "You are the only owner" — and the button is disabled, not hidden.</Rule>
       <Rule>An irreversible action asks for the record's name in the `ConfirmDialog` (`confirmText`). A reversible removal confirms with a toast that offers Undo.</Rule>
     </Rules>
@@ -77,7 +77,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
   <Section
     eyebrow="Create flow"
     title="Choose, fill in, review, create."
-    lede="`CreateFlow` with a `Stepper`: the type as `ChoiceCards`, then the details, then a review of what will be created. On its own page (`Page width='detail'`, `CreateFlow width='page'`) or in a `Sheet` when it is short."
+    lede="`CreateFlow` with a `Stepper`: the type as `ChoiceCards`, then the details, then a review of what will be created. On its own page (`Page width='detail'`, `CreateFlow width='page'`) or in a side `Dialog` when it is short."
   >
     <Rules>
       <Rule>Enter moves on, Back keeps what was entered, Next stays disabled until the step is complete.</Rule>
@@ -96,7 +96,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
       <Rule>Rhythm: header to content `--di-rhythm-header` (24), toolbar to its list `--di-rhythm-toolbar` (12), section to section `--di-rhythm-section` (32), field to field `--di-rhythm-field` (16). `Page` applies them.</Rule>
       <Rule>Fields by content: text, an email or a URL spans the form column; a select is as wide as its options; a number is short (`FieldStack`). On one line, the first field grows and the button sits on the control row (`Toolbar fillFirst`).</Rule>
       <Rule>Headings: one `h1` per page. Section titles only where there are several sections. No eyebrow repeated inside cards, empty states or dialogs on a page that already has one.</Rule>
-      <Rule>At phone width the gutter is 16px, toolbars wrap, the search takes its own line, a `Sheet` takes the screen and nothing scrolls sideways but a table frame.</Rule>
+      <Rule>At phone width the gutter is 16px, toolbars wrap, the search takes its own line, a side `Dialog` takes the screen and nothing scrolls sideways but a table frame.</Rule>
     </Rules>
   </Section>
 

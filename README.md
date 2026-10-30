@@ -65,7 +65,7 @@ When a page has more than one tab strip, give each `Tabs` and its `TabPanel` the
 
 A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around the bar and the page. Give `SidebarProvider` a `skipLabel` (or `AppShell` its required one) and the first Tab stop is a skip link to the page.
 
-`Modal` is a native modal dialog. `Sheet` is one too, except an `md` sheet inside a `list` or `detail` `Page` wide enough for its side column: it docks there and the page beside it stays usable. Either way focus moves in, Escape closes it and focus returns to the opener.
+`Dialog` is a native modal dialog (placement side, center or bottom), except an `md` side dialog inside a `list` or `detail` `Page` wide enough for its side column: it docks there and the page beside it stays usable. Either way focus moves in, Escape closes it and focus returns to the opener.
 
 ## Periods and counts
 
@@ -98,7 +98,7 @@ Whole screens built only from public components. They are examples, not exports.
 | Story | What it shows |
 | --- | --- |
 | Patterns / Security overview | Attention list, a navy hero with its figures, severity and sources. |
-| Patterns / Case triage | A list beside its record (`ListDetail`), one view at a time on a phone. |
+| Patterns / Case triage | A list beside its record (`Split variant="list"`), one view at a time on a phone. |
 | Patterns / Organization home | An organization's home page, one story per role. |
 | Patterns / Login | Sign-in. A card on a navy field. |
 | Patterns / Watchlist | Identities under watch. |

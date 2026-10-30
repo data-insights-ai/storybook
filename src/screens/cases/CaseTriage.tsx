@@ -7,13 +7,6 @@ import {
   EmptyState,
   Figure,
   FigureRow,
-  ListDetail,
-  ListDetailBack,
-  ListDetailHead,
-  ListDetailItem,
-  ListDetailItems,
-  ListDetailList,
-  ListDetailPane,
   MetaLine,
   Numbered,
   PageHeader,
@@ -21,11 +14,18 @@ import {
   PageHeaderStatus,
   PageHeaderTitle,
   Panel,
-  PanelMeta,
   PanelLead,
+  PanelMeta,
   PanelNote,
   SegmentedControl,
   SeverityMark,
+  Split,
+  SplitBack,
+  SplitList,
+  SplitListHead,
+  SplitListItem,
+  SplitListItems,
+  SplitMain,
   Stack,
   StatusPill,
   TableBody,
@@ -62,9 +62,9 @@ export function CaseTriage({ showing: initial = "list" }: { showing?: "list" | "
         <PageHeaderTitle>Cases</PageHeaderTitle>
         <PageHeaderMeta>5 open · 1 resolved this week · updates live</PageHeaderMeta>
       </PageHeader>
-      <ListDetail showing={showing}>
-        <ListDetailList label="Cases">
-          <ListDetailHead>
+      <Split variant="list" showing={showing}>
+        <SplitList label="Cases">
+          <SplitListHead>
             <SegmentedControl
               name="case-filter"
               legend="Show"
@@ -75,10 +75,10 @@ export function CaseTriage({ showing: initial = "list" }: { showing?: "list" | "
               value={filter}
               onChange={setFilter}
             />
-          </ListDetailHead>
-          <ListDetailItems>
+          </SplitListHead>
+          <SplitListItems>
             {list.map((c) => (
-              <ListDetailItem
+              <SplitListItem
                 key={c.n}
                 title={c.title}
                 meta={`Case ${c.n} · ${c.assignee ?? "unassigned"} · ${c.updated}`}
@@ -90,15 +90,15 @@ export function CaseTriage({ showing: initial = "list" }: { showing?: "list" | "
               >
                 <SeverityMark level={c.severity} label={severityWords[c.severity]} />
                 {c.status === "Open" ? null : <StatusPill tone="neutral">{c.status}</StatusPill>}
-              </ListDetailItem>
+              </SplitListItem>
             ))}
-          </ListDetailItems>
-        </ListDetailList>
-        <ListDetailPane label={`Case ${record.n}`}>
-          <ListDetailBack label="All cases" onBack={() => setShowing("list")} />
+          </SplitListItems>
+        </SplitList>
+        <SplitMain label={`Case ${record.n}`}>
+          <SplitBack label="All cases" onBack={() => setShowing("list")} />
           {record.n === 4 ? <CaseFour record={record} /> : <CaseWithoutVerdict record={record} />}
-        </ListDetailPane>
-      </ListDetail>
+        </SplitMain>
+      </Split>
     </ProductShell>
   );
 }

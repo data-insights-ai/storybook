@@ -15,10 +15,11 @@ import {
   NoticeIcon,
   NoticeText,
   NoticeTitle,
+  PageHeader,
+  PageHeaderTitle,
   Pagination,
+  Panel,
   SearchField,
-  SectionTitle,
-  SectionTitleHeading,
   Stack,
   StatusPill,
   TableBody,
@@ -29,7 +30,6 @@ import {
   TableRow,
   Toolbar,
   ToolbarEnd,
-  Panel,
 } from "../..";
 
 type StatusTone = NonNullable<ComponentProps<typeof StatusPill>["tone"]>;
@@ -223,26 +223,26 @@ export function CoverageScreen() {
         </DataTable>
 
         <section>
-          <SectionTitle lede="How sources are handled">
-            <SectionTitleHeading>Method and collection</SectionTitleHeading>
-          </SectionTitle>
+          <PageHeader level={2} lede="How sources are handled">
+            <PageHeaderTitle>Method and collection</PageHeaderTitle>
+          </PageHeader>
           <Grid min="220px">
             <Panel>
-              <SectionTitle>
-                <SectionTitleHeading>Full history</SectionTitleHeading>
-              </SectionTitle>
+              <PageHeader level={2}>
+                <PageHeaderTitle>Full history</PageHeaderTitle>
+              </PageHeader>
               <p>Archive data is kept in full, so older entries stay traceable.</p>
             </Panel>
             <Panel>
-              <SectionTitle>
-                <SectionTitleHeading>Automatic matching</SectionTitleHeading>
-              </SectionTitle>
+              <PageHeader level={2}>
+                <PageHeaderTitle>Automatic matching</PageHeaderTitle>
+              </PageHeader>
               <p>New finds are matched against the watchlist — terms, domains, and identities — and reported.</p>
             </Panel>
             <Panel>
-              <SectionTitle>
-                <SectionTitleHeading>Privacy</SectionTitleHeading>
-              </SectionTitle>
+              <PageHeader level={2}>
+                <PageHeaderTitle>Privacy</PageHeaderTitle>
+              </PageHeader>
               <p>Records are held under the applicable privacy rules. Review uses encrypted logs.</p>
             </Panel>
           </Grid>
