@@ -56,7 +56,7 @@ export const Danger: Story = {
   args: { variant: "danger", children: "Revoke key" },
 };
 
-/** Seals a record. The only gold control in daylight. */
+/** A brand moment: sign-in, onboarding, a licence or a certificate. Never in an operational view. */
 export const Seal: Story = {
   args: { variant: "seal", children: "Seal entry" },
 };
@@ -193,7 +193,7 @@ export const AllVariants: Story = {
 };
 
 /**
- * After dark the fill turns gold: navy has nothing left to act against.
+ * After dark the fill turns paper-white: navy has nothing left to act against.
  *
  * The ground is a `data-theme="dark"` region rather than the whole canvas,
  * so the night sheet can be shown beside daylight — and so this story is a

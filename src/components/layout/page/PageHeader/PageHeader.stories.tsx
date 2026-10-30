@@ -13,7 +13,7 @@ import {
   PageHeaderTitle,
 } from "./PageHeader";
 import { Highlight } from "../../../data/text/Highlight";
-import { StatusPill } from "../../../marks/StatusPill";
+import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {
   title: "Layout/Page/PageHeader",

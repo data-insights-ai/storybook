@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { TrendChart } from "../../../charts/TrendChart";
 import { Figure, FigureRow } from "../../../data/figures/FigureRow";
 import { HeroFigure } from "../../../data/figures/HeroFigure";
-import { SeverityMark } from "../../../marks/SeverityMark";
+import { SeverityMark } from "../../../marks/status/SeverityMark";
 import { TextLink } from "../../../navigation/TextLink";
 import { Hero, HeroAside, HeroFooter, HeroLead, HeroVisual } from "./Hero";
 

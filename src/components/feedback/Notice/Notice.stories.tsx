@@ -80,7 +80,7 @@ export const Warn: Story = {
           <NoticeBody>After 2026-09-29 no new entry can be sealed with it.</NoticeBody>
         </div>
         <NoticeAction>
-          <Button variant="seal" size="dense">
+          <Button variant="secondary" size="dense">
             Rotate key
           </Button>
         </NoticeAction>

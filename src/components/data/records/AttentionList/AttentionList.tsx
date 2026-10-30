@@ -1,6 +1,6 @@
 import { useId, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
-import { SeverityMark, type Severity } from "../../../marks/SeverityMark";
+import { SeverityMark, type Severity } from "../../../marks/status/SeverityMark";
 import { MetaLine } from "../../text/MetaLine";
 import "./AttentionList.css";
 

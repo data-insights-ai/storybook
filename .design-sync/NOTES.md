@@ -83,10 +83,14 @@ values.
   owns. The card is `AppShell`. Since 0.10.0 `Console` and `ConsoleFrame` live in
   `.storybook/Console.tsx`, outside the bundle.
   `null` excludes: `Foundations/*` (Color, Type, Logo, Scale, Decisions — doc
-  pages with no component) and `Patterns/*` (Architecture, Case triage, Coverage,
-  Inference, Login, Organization home, Register, Security overview, Settings,
-  Watchlist). **A new Foundations page needs a new
-  null**, or it gets scanned as a component.
+  pages with no component) and every `Patterns/*` story (Architecture, Case
+  triage, Coverage, Create flow, Detail page, Inference, List page, Login,
+  Organization home, Register, Security overview, Settings, Watchlist). The
+  MDX pages are guidelines (`guidelinesGlob`), not stories, and need none.
+  **A new Foundations story or pattern needs a new null**, or it gets scanned
+  as a component. The converter's source is not in this repo; the check is
+  that every `Foundations/*` and `Patterns/*` story title's last segment is a
+  key here.
 - **`guidelinesGlob: ["src/foundations/*.mdx"]`** — the converter's defaults
   (`docs/*.md`, `docs/guides/**`, `guides/**`) match nothing here, which is why
   `guidelines/` came out empty and silent on the first upload. The six MDX brand

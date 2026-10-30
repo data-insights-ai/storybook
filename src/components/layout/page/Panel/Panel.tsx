@@ -114,6 +114,16 @@ export function PanelFooter({ children }: { children: ReactNode }) {
 }
 
 /**
+ * What the block asks of the reader, as its lead line: "Isolate srv-fs-02
+ * before the next upload." Written first in the content, above the proof
+ * and the actions. In the `emphasis` block it is set in the one ink —
+ * navy by day, gold after dark.
+ */
+export function PanelLead({ children }: { children: string }) {
+  return <p className="di-panel-lead">{children}</p>;
+}
+
+/**
  * A quiet line under a panel's content: the caveat, the unit, the thing
  * the numbers above do not say. It is never where a fact lives.
  */

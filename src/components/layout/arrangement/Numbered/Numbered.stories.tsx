@@ -8,9 +8,10 @@ const meta = {
   title: "Layout/Arrangement/Numbered",
   component: Numbered,
   tags: ["layer:pattern", "autodocs"],
-  args: { index: "01", children: null },
+  args: { index: "01", variant: "step", children: null },
   argTypes: {
     index: { control: "text" },
+    variant: { control: "inline-radio", options: ["step", "row"] },
     children: { control: false },
   },
 } satisfies Meta<typeof Numbered>;
@@ -47,4 +48,29 @@ export const Run: Story = {
       </Numbered>
     </Stack>
   ),
+};
+
+/** Rows inside a surface: a list of steps, ruled, with no box of their own. */
+export const Rows: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Panel title="What the playbook asks for">
+      <div>
+        <Numbered index="01" variant="row">
+          Isolate the file server
+        </Numbered>
+        <Numbered index="02" variant="row">
+          Reset the service account's credentials
+        </Numbered>
+        <Numbered index="03" variant="row">
+          Revoke its sessions and tokens
+        </Numbered>
+      </div>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const rows = canvasElement.querySelectorAll(".di-numbered.is-row");
+    await expect(rows).toHaveLength(3);
+    await expect(getComputedStyle(rows[1]).borderTopStyle).toBe("solid");
+  },
 };

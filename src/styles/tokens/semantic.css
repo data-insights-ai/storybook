@@ -39,7 +39,7 @@
     --di-bg-selected: var(--di-cornflower-100);
     --di-bg-disabled: var(--di-paper-inset);
     /* The hero zone is navy in both themes; it sets the dark theme on itself. */
-    --di-bg-hero: var(--di-night-plane);
+    --di-bg-hero: var(--di-night-glow);
 
     --di-text: var(--di-navy-900);
     --di-text-press: var(--di-navy-950);
@@ -69,6 +69,8 @@
     --di-one: var(--di-gold-500);
     --di-one-ink: var(--di-navy-900);
     --di-one-edge: var(--di-gold-600);
+    /* Ink on the gold pill that names the one thing: navy in both themes. */
+    --di-text-on-one: var(--di-navy-900);
     --di-one-glow: 0 0 0 4px rgba(201, 162, 74, 0.16), 0 12px 32px -12px rgba(122, 92, 14, 0.35);
 
     /* Selection and focus are cornflower, in both themes. */
@@ -217,7 +219,7 @@
     --di-bg-row-hover: rgba(168, 182, 210, 0.08);
     --di-bg-selected: rgba(121, 174, 234, 0.16);
     --di-bg-disabled: var(--di-night-inset);
-    --di-bg-hero: var(--di-night-plane);
+    --di-bg-hero: var(--di-night-glow);
 
     --di-text: var(--di-night-ink);
     --di-text-press: #ffffff;
@@ -239,6 +241,7 @@
     --di-one: var(--di-gold-400);
     --di-one-ink: var(--di-gold-300);
     --di-one-edge: rgba(217, 180, 94, 0.75);
+    --di-text-on-one: var(--di-navy-900);
     --di-one-glow: 0 0 60px rgba(217, 180, 94, 0.14), 0 0 0 1px rgba(217, 180, 94, 0.2);
 
     --di-select: var(--di-cornflower-300);

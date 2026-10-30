@@ -3,8 +3,6 @@ import {
   AttentionList,
   Button,
   DataTable,
-  Fact,
-  FactList,
   Figure,
   FigureRow,
   Grid,
@@ -176,15 +174,13 @@ export function SecurityOverview() {
         </Panel>
       </Grid>
 
-      <Panel label="Delivery" surface="inset">
-        <FactList layout="inline">
-          {delivery.map((fact) => (
-            <Fact key={fact.label} label={fact.label}>
-              {fact.value}
-            </Fact>
-          ))}
-        </FactList>
-      </Panel>
+      <FigureRow label="Delivery" variant="strip">
+        {delivery.map((figure) => (
+          <Figure key={figure.label} label={figure.label} value={figure.value} tone={figure.tone}>
+            {figure.note}
+          </Figure>
+        ))}
+      </FigureRow>
     </ProductShell>
   );
 }

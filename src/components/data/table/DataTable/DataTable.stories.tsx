@@ -9,8 +9,8 @@ import { LevelMeter } from "../../../charts/LevelMeter";
 import { Pagination } from "../../../navigation/Pagination";
 import { SearchField } from "../../../forms/text/SearchField";
 import { Select } from "../../../forms/select/Select";
-import { SealValue } from "../../../marks/SealValue";
-import { StatusPill } from "../../../marks/StatusPill";
+import { SealValue } from "../../../marks/status/SealValue";
+import { StatusPill } from "../../../marks/status/StatusPill";
 import { TextLink } from "../../../navigation/TextLink";
 import { sources, SourceRows, SortableSources, SelectableSources, people, events, devices, windowed } from "./DataTable.sample";
 

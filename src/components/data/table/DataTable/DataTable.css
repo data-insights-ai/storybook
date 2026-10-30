@@ -215,18 +215,22 @@
   }
 
   /* The ordinal column: the row's handle, never its content. */
+  /* Plain mono ordinals at the table's edge: no band of their own. */
   .di-table-index {
     width: var(--di-index-col);
     /* A filling column claims the rest; the index column still keeps its 38px. */
     min-width: var(--di-index-col);
-    padding: 0 !important;
-    border-right: 1px solid var(--di-table-rule);
-    background: var(--di-table-head-bg);
-    text-align: center;
+    padding: 0 0 0 var(--di-table-edge) !important;
+    text-align: left;
     font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
+    font-size: var(--di-font-size-200);
     font-variant-numeric: tabular-nums;
-    color: var(--di-text-subtle);
+    letter-spacing: var(--di-tracking-mono);
+    color: var(--di-text-muted);
+  }
+
+  tbody .di-table-index {
+    background: none;
   }
 
   .di-table tbody tr.is-danger .di-table-index {
@@ -351,7 +355,7 @@
     }
 
     .di-table-wrap.is-stackable .di-table:has(.di-table-index) tr {
-      padding-left: calc(var(--di-index-col) + var(--di-space-12));
+      padding-left: calc(var(--di-table-edge) + var(--di-index-col));
     }
 
     .di-table-wrap.is-stackable :is(th, td) {
@@ -432,15 +436,9 @@
       position: absolute;
       inset: 0 auto 0 0;
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       padding-top: var(--di-space-12) !important;
-      border-right: 1px solid var(--di-table-rule);
-      background: var(--di-table-head-bg);
-    }
-
-    .di-table-wrap.is-stackable tbody tr:hover .di-table-index,
-    .di-table-wrap.is-stackable tbody tr.is-active .di-table-index {
-      background: var(--di-table-head-bg);
+      background: none;
     }
 
     .di-table-wrap.is-stackable tbody tr.is-danger .di-table-index {

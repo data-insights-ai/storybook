@@ -22,6 +22,7 @@ import {
   PageHeaderTitle,
   Panel,
   PanelMeta,
+  PanelLead,
   PanelNote,
   SegmentedControl,
   SeverityMark,
@@ -120,6 +121,7 @@ function CaseFour({ record }: { record: CaseRow }) {
 
       <Panel emphasis label="Verdict · proved by rule 14" title={caseFour.verdict} heading={3}>
         <Stack gap={16}>
+          <PanelLead>{caseFour.asks}</PanelLead>
           <MetaLine items={caseFour.path} separator="arrow" />
           <Actions align="start">
             <Button>Isolate srv-fs-02</Button>
@@ -202,13 +204,13 @@ function CaseFour({ record }: { record: CaseRow }) {
       </Panel>
 
       <Panel label="Next steps" title="What the playbook asks for" heading={3}>
-        <Stack gap={8}>
+        <div>
           {caseFour.steps.map((step, i) => (
-            <Numbered key={step} index={String(i + 1).padStart(2, "0")}>
+            <Numbered key={step} index={String(i + 1).padStart(2, "0")} variant="row">
               {step}
             </Numbered>
           ))}
-        </Stack>
+        </div>
       </Panel>
     </>
   );

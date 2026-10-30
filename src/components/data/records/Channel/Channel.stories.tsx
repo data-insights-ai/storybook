@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Mail } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./Channel";
-import { StatusPill } from "../../../marks/StatusPill";
+import { StatusPill } from "../../../marks/status/StatusPill";
 import { KeyValue, KeyValues } from "../KeyValues";
 
 const meta = {

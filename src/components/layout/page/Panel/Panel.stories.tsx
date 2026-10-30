@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { Panel, PanelFooter, PanelMeta, PanelNote } from "./Panel";
-import { SealValue } from "../../../marks/SealValue";
-import { StatusPill } from "../../../marks/StatusPill";
+import { Panel, PanelFooter, PanelLead, PanelMeta, PanelNote } from "./Panel";
+import { SealValue } from "../../../marks/status/SealValue";
+import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {
   title: "Layout/Page/Panel",
@@ -98,7 +98,10 @@ export const Labelled: Story = {
   args: { index: undefined, label: "Coverage · last 24 h", title: "Two of nine tables are not arriving", heading: 2 },
 };
 
-/** The one block that matters in the view carries the gold edge. One per view. */
+/**
+ * The one block that matters in the view carries the gold edge. One per
+ * view. `PanelLead` says what it asks for, above the actions.
+ */
 export const Emphasis: Story = {
   args: {
     index: undefined,
@@ -106,7 +109,20 @@ export const Emphasis: Story = {
     label: "Verdict",
     title: "Credentials were used to reach the file server",
     heading: 2,
-    children: "Isolate the server before the next sync window.",
+    children: null,
+  },
+  render: (args) => (
+    <Panel {...args}>
+      <PanelLead>Isolate the server before the next sync window.</PanelLead>
+      <span style={{ display: "flex", gap: "var(--di-space-8)", marginTop: "var(--di-space-16)" }}>
+        <Button>Isolate the server</Button>
+        <Button variant="secondary">Reset the account</Button>
+      </span>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("Isolate the server before the next sync window.")).toHaveClass("di-panel-lead");
   },
 };
 
@@ -148,7 +164,7 @@ export const WithFooter: Story = {
       <PanelFooter>
         <StatusPill tone="warn">expiring</StatusPill>
         <span style={{ marginLeft: "auto" }}>
-          <Button variant="seal" size="dense">
+          <Button variant="secondary" size="dense">
             Rotate now
           </Button>
         </span>

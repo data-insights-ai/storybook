@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Globe, Server } from "lucide-react";
 import { CellIcon, CellLead, CellStack, DataTable, TableBody, TableCell, TableColumn, TableHead, TableIndex, TableRow } from "./DataTable";
-import { SealValue } from "../../../marks/SealValue";
-import { StatusPill } from "../../../marks/StatusPill";
+import { SealValue } from "../../../marks/status/SealValue";
+import { StatusPill } from "../../../marks/status/StatusPill";
 import { TextLink } from "../../../navigation/TextLink";
 
 export type Source = {

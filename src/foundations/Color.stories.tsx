@@ -22,7 +22,7 @@ const families = [
     swatches: [
       ["--di-one", "#C9A24A", "#0a1f44", "Marks the one object that matters in a view. In daylight never text."],
       ["--di-one-edge", "#A6811F", "#061631", "Its edge: the attention item, the verdict."],
-      ["--di-seal", "#C9A24A", "#0a1f44", "The seal mark beside a recorded value."],
+      ["--di-seal", "#C9A24A", "#0a1f44", "The seal: a brand moment — sign-in, onboarding, a licence or certificate. Never beside the one."],
       ["--di-ai-ring", "#A6811F", "#061631", "The hollow ring beside an inferred value."],
     ],
   },
@@ -65,7 +65,8 @@ const night = [
   ["--di-bg-page", "--di-text", "#0A1F44", "The ground is brand navy, not near-black."],
   ["--di-bg-subtle", "--di-text", "#0C2350", "Inset and strip."],
   ["--di-bg-surface", "--di-text", "#0F2A57", "A surface lifts from the ground."],
-  ["--di-bg-plane", "--di-text", "#133068", "The plane and the hero zone."],
+  ["--di-bg-plane", "--di-text", "#133068", "The plane: a menu, a lifted row."],
+  ["--di-bg-hero", "--di-text", "#1A3A78", "The hero zone, a clear step above a surface (ΔL* ≥ 3, checked in zones.test.ts)."],
   ["--di-fill-strong", "--di-text-on-strong", "#F2F0E6", "The committing control turns paper-white."],
   ["--di-one-ink", "--di-bg-page", "#E6C677", "After dark gold may be read as text."],
   ["--di-select", "--di-bg-page", "#79AEEA", "Selection and focus stay cornflower."],
@@ -180,6 +181,10 @@ function Board() {
         title="Every swatch is a token."
         lede="A component binds to the name on the left, never to the hex. The hex is printed so a designer can check a mock against the build, not so it can be typed into one."
       >
+        <Rules>
+          <Rule>In an operational view gold marks one object: the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small pill with navy words that names that object; never gold text.</Rule>
+          <Rule>The seal is gold too, and so it is a brand moment only: sign-in, the brand mark, an empty or onboarding state, a licence or certificate seal. It never appears in an operational view beside the one, and the seal button is never an operational action.</Rule>
+        </Rules>
         <div className="di-swatches">
         {families.map((family) => (
           <section key={family.name} className="di-swatch-col">
