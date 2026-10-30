@@ -1,6 +1,7 @@
-import type { ReactElement } from "react";
+import { useState, type ReactElement } from "react";
 import { Tooltip as Base } from "@base-ui/react/tooltip";
 import { Badge } from "../../marks/Badge";
+import { alignToFit, type Align, type Side } from "./alignToFit";
 import "./Tooltip.css";
 
 /**
@@ -13,8 +14,12 @@ import "./Tooltip.css";
  * focusable term). It opens on hover and on keyboard focus, closes on
  * Escape and when the pointer leaves, and is placed in the top layer beside
  * the trigger, so a scroll frame or a clipped panel does not cut it off.
- * It keeps 8px from the viewport's edge, shifting along its side rather
- * than onto the trigger's neighbours.
+ *
+ * Placement: centred on the trigger, its arrow on the trigger's centre.
+ * Where a centred bubble would come closer than 8px to the window's edge,
+ * it lines up with the trigger's edge on that side instead, and the arrow
+ * stays on the trigger. Where its side has no room, it opens on the
+ * opposite side.
  * The trigger keeps its own accessible name; the tooltip repeats it for
  * the eye.
  *
@@ -30,19 +35,32 @@ export function Tooltip({
 }: {
   label: string;
   /** Where it opens from the trigger; it flips when there is no room. */
-  side?: "top" | "right" | "bottom" | "left";
+  side?: Side;
   /** A count beside the label. Empty means none. */
   badge?: string;
   badgeTone?: "neutral" | "alert" | "seal";
   /** The trigger: one element that takes a ref. */
   children: ReactElement;
 }) {
+  const [trigger, setTrigger] = useState<HTMLElement | null>(null);
+  const [align, setAlign] = useState<Align>("center");
+  const measure = (popup: HTMLElement | null) => {
+    if (popup && trigger) setAlign(alignToFit(trigger, popup, side));
+  };
   return (
-    <Base.Root>
-      <Base.Trigger delay={300} render={children} />
+    <Base.Root onOpenChange={(open) => (open ? undefined : setAlign("center"))}>
+      <Base.Trigger ref={setTrigger} delay={300} render={children} />
       <Base.Portal>
-        <Base.Positioner side={side} sideOffset={8} collisionPadding={8} className="di-tooltip-positioner">
-          <Base.Popup className="di-tooltip">
+        <Base.Positioner
+          side={side}
+          align={align}
+          sideOffset={8}
+          collisionPadding={8}
+          arrowPadding={8}
+          className="di-tooltip-positioner"
+        >
+          <Base.Popup ref={measure} className="di-tooltip">
+            <Base.Arrow className="di-tooltip-arrow" />
             {label}
             {badge === "" ? null : <Badge tone={badgeTone}>{badge}</Badge>}
           </Base.Popup>

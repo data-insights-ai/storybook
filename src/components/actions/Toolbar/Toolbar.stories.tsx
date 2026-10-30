@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, UserMinus } from "lucide-react";
 import { useState } from "react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../Button";
@@ -11,7 +11,7 @@ import { Stack } from "../../layout/arrangement/Stack";
 import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
 import { Toolbar } from "./Toolbar";
-import { ToolbarEnd, ToolbarNote, ToolbarSelection, ToolbarStatus } from "./ToolbarParts";
+import { ToolbarAction, ToolbarEnd, ToolbarNote, ToolbarSelection, ToolbarStatus } from "./ToolbarParts";
 import { MembersFilter, MembersTable, words, type Words } from "./Toolbar.sample";
 
 const meta = {
@@ -122,9 +122,7 @@ function MembersSelection({
               <MenuItem onSelect={() => setMenu(false)}>Administrator</MenuItem>
               <MenuItem onSelect={() => setMenu(false)}>Member</MenuItem>
             </Menu>
-            <Button variant="danger" size="sm">
-              {w.remove}
-            </Button>
+            <ToolbarAction variant="danger" size="sm" icon={<UserMinus aria-hidden />} label={w.remove} />
           </ToolbarEnd>
         </Toolbar>
       ) : (

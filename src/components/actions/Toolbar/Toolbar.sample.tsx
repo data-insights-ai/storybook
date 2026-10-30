@@ -7,7 +7,7 @@ import { Select } from "../../forms/select/Select";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
 import { useShortcut } from "../../../internal/useShortcut";
 import { Toolbar, type ToolbarProps } from "./Toolbar";
-import { ToolbarEnd } from "./ToolbarParts";
+import { ToolbarAction, ToolbarEnd } from "./ToolbarParts";
 
 export const words = {
   en: {
@@ -93,10 +93,7 @@ export function MembersFilter({ w = words.en, sticky }: { w?: Words; sticky?: To
         <option value="assigned">{w.withSeat}</option>
       </Select>
       <ToolbarEnd>
-        <Button variant="secondary">
-          <Download aria-hidden />
-          {w.export}
-        </Button>
+        <ToolbarAction icon={<Download aria-hidden />} label={w.export} />
       </ToolbarEnd>
     </Toolbar>
   );

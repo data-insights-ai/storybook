@@ -135,6 +135,20 @@
       max-width: none;
     }
 
+    /*
+     * Above a list on a phone: the search, then one row of filters with the
+     * end actions. The filters share the width (a long option is cut, the
+     * picker shows it whole) and wrap only below 6rem each.
+     */
+    .di-toolbar[role="search"] > .di-field {
+      flex: 1 1 0;
+      min-width: var(--di-toolbar-filter-min);
+    }
+
+    .di-toolbar[role="search"] > .di-field :is(.di-select, select, button) {
+      width: 100%;
+    }
+
     .di-toolbar:is(.is-align-end, .is-align-start) {
       flex-direction: column;
       align-items: stretch;

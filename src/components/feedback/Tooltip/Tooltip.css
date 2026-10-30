@@ -5,6 +5,7 @@
   }
 
   .di-tooltip {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: var(--di-gap-6);
@@ -24,5 +25,29 @@
   .di-tooltip[data-starting-style],
   .di-tooltip[data-ending-style] {
     opacity: 0;
+  }
+
+  /* A square turned on its corner, half of it under the bubble: the point that names the trigger. */
+  .di-tooltip-arrow {
+    width: var(--di-tooltip-arrow);
+    height: var(--di-tooltip-arrow);
+    background: inherit;
+    rotate: 45deg;
+  }
+
+  .di-tooltip-arrow[data-side="top"] {
+    bottom: calc(var(--di-tooltip-arrow) / -2);
+  }
+
+  .di-tooltip-arrow[data-side="bottom"] {
+    top: calc(var(--di-tooltip-arrow) / -2);
+  }
+
+  .di-tooltip-arrow[data-side="left"] {
+    right: calc(var(--di-tooltip-arrow) / -2);
+  }
+
+  .di-tooltip-arrow[data-side="right"] {
+    left: calc(var(--di-tooltip-arrow) / -2);
   }
 }
