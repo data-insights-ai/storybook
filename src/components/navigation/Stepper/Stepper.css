@@ -80,7 +80,7 @@
   .di-step-bullet.is-done {
     border-color: var(--di-seal);
     background: var(--di-seal);
-    color: var(--di-seal-ink);
+    color: var(--di-text-on-seal);
   }
 
   .di-step-bullet.is-current {

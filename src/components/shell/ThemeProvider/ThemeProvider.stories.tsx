@@ -98,7 +98,7 @@ const root = () => document.documentElement.getAttribute("data-theme");
 
 /** Auto follows the device; Light and Dark hold whatever the device says. */
 export const Choice: Story = {
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement, globals }) => {
     const canvas = within(canvasElement);
     const device = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     await expect(canvas.getByText(`Chosen: auto. Showing: ${device}.`)).toBeVisible();
@@ -112,6 +112,13 @@ export const Choice: Story = {
     await expect(within(document.body).getByRole("menuitemradio", { name: "Dark" })).toHaveAttribute("aria-checked", "true");
     await userEvent.click(within(document.body).getByRole("menuitemradio", { name: "Light" }));
     await waitFor(() => expect(root()).toBe("light"));
+
+    // End on the toolbar's theme, so the accessibility check reads the sheet the run is for.
+    if (globals.theme === "dark") {
+      await userEvent.click(canvas.getByRole("button", { name: "Theme: Light" }));
+      await userEvent.click(within(document.body).getByRole("menuitemradio", { name: "Dark" }));
+      await waitFor(() => expect(root()).toBe("dark"));
+    }
   },
 };
 

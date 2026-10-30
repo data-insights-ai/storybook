@@ -62,6 +62,7 @@
     --di-text: var(--di-ink);
     --di-text-muted: var(--di-navy-600);
     --di-text-subtle: var(--di-navy-500);
+    --di-label-color: var(--di-navy-600);
     --di-text-on-strong: var(--di-inverse-text);
     --di-bg-surface: var(--di-sheet);
     --di-bg-page: var(--di-paper);

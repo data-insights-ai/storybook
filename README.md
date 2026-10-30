@@ -20,7 +20,7 @@ pnpm build
 pnpm build-storybook
 ```
 
-`pnpm test` runs every story in a browser. `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
+`pnpm test` runs every story in a browser, once in the light theme and once in the dark, and fails on an accessibility violation in either. `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
 
 ## Use a released version
 

@@ -101,6 +101,8 @@
     --di-seal-ink: var(--di-gold-700);
     --di-seal-bg: var(--di-gold-100);
     --di-seal-border: var(--di-gold-200);
+    /* Ink on the filled seal, in both themes: gold ink on the seal is 2.6:1, navy is 6.8:1. */
+    --di-text-on-seal: var(--di-ink);
     /* The hollow ring. A model inferred it; nothing has been sealed. */
     --di-ai-ring: var(--di-gold-600);
     --di-ai-surface: var(--di-gold-50);
