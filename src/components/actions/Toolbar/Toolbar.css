@@ -134,9 +134,20 @@
     padding-inline: var(--di-table-edge);
   }
 
-  @media (min-width: 601px) {
+  /* In the filter row's place it keeps that row's height, on a phone too, where both take two rows. */
+  .di-toolbar-bar.is-list {
+    padding-block: var(--di-gap-8);
+  }
+
+  /*
+   * On a phone the count, its Clear and Select all share the first row, as close as a focus ring allows; the ghost
+   * buttons' own inset spaces them.
+   * The bar keeps the 8px a control needs from its edge in either density.
+   */
+  @media (max-width: 600px) {
     .di-toolbar-bar.is-list {
-      padding-block: var(--di-gap-8);
+      padding-block: var(--di-space-8);
+      column-gap: var(--di-focus-ring-reach);
     }
   }
 
