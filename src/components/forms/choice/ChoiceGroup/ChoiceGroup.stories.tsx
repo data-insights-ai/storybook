@@ -5,10 +5,11 @@ import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Notice, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../../../feedback/Notice";
 import { Stack } from "../../../layout/arrangement/Stack";
-import { Toolbar, ToolbarEnd } from "../../../layout/arrangement/Toolbar";
+import { Toolbar, ToolbarEnd } from "../../../actions/Toolbar";
 import { PageHeader, PageHeaderTitle } from "../../../layout/page/PageHeader";
 import { Panel } from "../../../layout/page/Panel";
 import { TimeField } from "../../dates/TimeField";
+import { TextField } from "../../text/TextField";
 import { SearchField } from "../../text/SearchField";
 import { ChoiceGroup, type ChoiceOption } from "./ChoiceGroup";
 import { ChoiceCards, SegmentedControl, ToggleGroup } from "./deprecated";
@@ -64,6 +65,119 @@ export const InAForm: Story = {
   },
 };
 
+type RequiredText = {
+  title: string;
+  name: string;
+  legend: string;
+  options: ChoiceOption[];
+  error: string;
+  save: string;
+};
+
+function RequiredChoice({ text }: { text: RequiredText }) {
+  const [value, setValue] = useState("");
+  const [tried, setTried] = useState(false);
+  const missing = tried && value === "";
+  return (
+    <div style={column(560)}>
+      <Panel title={text.title} heading={2}>
+        <form
+          noValidate
+          onSubmit={(event) => {
+            event.preventDefault();
+            setTried(true);
+          }}
+        >
+          <Stack gap={16}>
+            <TextField id={`${text.name}-workspace`} label="Workspace" defaultValue="Vienna SOC" />
+            <ChoiceGroup
+              legend={text.legend}
+              name={text.name}
+              required
+              options={text.options}
+              value={value}
+              onChange={setValue}
+              hint={missing ? text.error : ""}
+              hintTone="error"
+            />
+            <div>
+              <Button type="submit">{text.save}</Button>
+            </div>
+          </Stack>
+        </form>
+      </Panel>
+    </div>
+  );
+}
+
+/** The gap from the last option to the line under it, and from a field's control to its hint: one rhythm. */
+const measureHint = async (canvasElement: HTMLElement) => {
+  const hint = canvasElement.querySelector<HTMLElement>(".di-choice-group > .di-field-hint")!;
+  const options = hint.previousElementSibling!.getBoundingClientRect();
+  const fieldHint = getComputedStyle(canvasElement.querySelector(".di-field")!).rowGap;
+  await expect(Math.round(hint.getBoundingClientRect().top - options.bottom)).toBe(Math.round(parseFloat(fieldHint)));
+};
+
+/**
+ * A choice the form cannot go without: the legend carries the required
+ * mark, and a save without a choice puts the error on the group's one line,
+ * the way a field shows it. The group is described by that line, so a
+ * screen reader hears it with the legend.
+ */
+export const Required: Story = {
+  name: "Required, after a save",
+  render: () => (
+    <RequiredChoice
+      text={{
+        title: "Retention",
+        name: "retention-required",
+        legend: "Keep events for",
+        options: retention,
+        error: "Choose how long to keep events.",
+        save: "Save",
+      }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const group = canvas.getByRole("group", { name: "Keep events for" });
+    await expect(group).not.toHaveAttribute("aria-describedby");
+    await userEvent.click(canvas.getByRole("button", { name: "Save" }));
+    await expect(group).toHaveAccessibleDescription("Choose how long to keep events.");
+    await measureHint(canvasElement);
+    rest();
+  },
+};
+
+/** The same in German: a long legend wraps, the error wraps under its icon. */
+export const RequiredGerman: Story = {
+  name: "Required, German",
+  render: () => (
+    <RequiredChoice
+      text={{
+        title: "Aufbewahrung",
+        name: "aufbewahrung-pflicht",
+        legend: "Aufbewahrungsdauer der Ereignisdaten im Arbeitsbereich",
+        options: [
+          { value: "monat", label: "30 Tage", description: "Die Voreinstellung für einen neuen Arbeitsbereich." },
+          { value: "jahr", label: "1 Jahr" },
+          { value: "immer", label: "Unbegrenzt", description: "Erfordert einen Prüfschlüssel der Revisionsabteilung." },
+        ],
+        error: "Wählen Sie, wie lange die Ereignisdaten aufbewahrt werden, bevor Sie speichern.",
+        save: "Speichern",
+      }}
+    />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Speichern" }));
+    await expect(canvas.getByText(/Wählen Sie, wie lange/)).toBeVisible();
+    await measureHint(canvasElement);
+    await expect(canvasElement.scrollWidth).toBeLessThanOrEqual(canvasElement.clientWidth + 1);
+    rest();
+  },
+};
+
 /** Several of a list: checkboxes in the same markup, each its own tab stop. */
 export const Several: Story = {
   render: function Render() {
@@ -82,6 +196,7 @@ export const Several: Story = {
             ]}
             value={value}
             onChange={setValue}
+            hint="At most one email per case an hour."
           />
         </Panel>
       </div>
@@ -89,6 +204,9 @@ export const Several: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await expect(canvas.getByRole("group", { name: "Notify on" })).toHaveAccessibleDescription(
+      "At most one email per case an hour.",
+    );
     await userEvent.click(canvas.getByRole("checkbox", { name: "A case is resolved" }));
     await expect(canvas.getByRole("checkbox", { name: "A case is opened" })).toBeChecked();
     await expect(canvas.getByRole("checkbox", { name: "A case is resolved" })).toBeChecked();
