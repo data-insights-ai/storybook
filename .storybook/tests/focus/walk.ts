@@ -28,6 +28,25 @@ const scope = () =>
     .find((el) => el.getClientRects().length > 0) ??
   document.body;
 
+const TABBABLE =
+  "a[href], button, input, select, textarea, summary, iframe, [contenteditable=''], [contenteditable='true'], audio[controls], video[controls], [tabindex]";
+
+/*
+ * Whether Tab has anywhere to land in the scope: a tabbable control, or a scroller Chrome makes focusable. With
+ * nowhere, Tab leaves the story's frame for the runner's page, which can detach the frame mid-step.
+ */
+const hasTabStop = (root: Element) =>
+  [...root.querySelectorAll<HTMLElement>(TABBABLE)].some(
+    (el) => el.tabIndex >= 0 && !el.matches(":disabled") && el.getClientRects().length > 0,
+  ) ||
+  [...root.querySelectorAll<HTMLElement>("*")].some((el) => {
+    const { overflowX, overflowY } = getComputedStyle(el);
+    return (
+      (/auto|scroll/.test(overflowY) && el.scrollHeight > el.clientHeight) ||
+      (/auto|scroll/.test(overflowX) && el.scrollWidth > el.clientWidth)
+    );
+  });
+
 /**
  * Tab through the story with the real keyboard, as a person would, and step
  * with the arrows through each menu, list, tab row, radio group and grid
@@ -82,6 +101,7 @@ export async function walkFocus(): Promise<RingFinding[]> {
     await arrows();
     await tabs();
   }
+  if (!hasTabStop(scope())) return [...found.values()];
   const start = document.createElement("span");
   start.tabIndex = -1;
   scope().prepend(start);
