@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import { Plus } from "lucide-react";
 import {
   Button,
@@ -171,4 +172,12 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
-export const Scale: StoryObj = { render: () => <ScalePage /> };
+/** The code samples wrap inside their frame on a phone; none runs past it. */
+export const Scale: StoryObj = {
+  render: () => <ScalePage />,
+  play: async ({ canvasElement }) => {
+    for (const code of canvasElement.querySelectorAll<HTMLElement>(".di-codeblock-scroll")) {
+      await expect(code.scrollWidth).toBeLessThanOrEqual(code.clientWidth + 1);
+    }
+  },
+};

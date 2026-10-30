@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 import logo from "../../assets/logo.svg";
 import logoInverse from "../../assets/logo-inverse.svg";
 import logoMono from "../../assets/logo-mono.svg";
@@ -108,4 +109,12 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
-export const Logo: StoryObj = { render: () => <LogoPage /> };
+/** The code samples wrap inside their frame on a phone; none runs past it. */
+export const Logo: StoryObj = {
+  render: () => <LogoPage />,
+  play: async ({ canvasElement }) => {
+    for (const code of canvasElement.querySelectorAll<HTMLElement>(".di-codeblock-scroll")) {
+      await expect(code.scrollWidth).toBeLessThanOrEqual(code.clientWidth + 1);
+    }
+  },
+};
