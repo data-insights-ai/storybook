@@ -1,8 +1,7 @@
 import { useId, useState, type FormEvent } from "react";
-import { TriangleAlert } from "lucide-react";
 import { Button } from "../../actions/Button";
 import { TextField } from "../../forms/text/TextField";
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalIcon, ModalTitle } from "../Modal";
+import { Dialog, DialogFooter } from "../Dialog";
 import "./ConfirmDialog.css";
 
 /**
@@ -14,12 +13,17 @@ import "./ConfirmDialog.css";
  * workspace) sets `confirmText`, usually the record's name: the confirm
  * button stays disabled until it is typed, and focus opens on that field.
  *
- * Built on `Modal`, a native dialog: focus is trapped, the page behind is
- * inert, Escape closes and focus returns to the button that opened it.
+ * `eyebrow` names the record the action acts on ("Workspace · Field
+ * Research"); it takes the danger ink only with `tone="danger"`.
+ *
+ * Built on `Dialog placement="center"`, a native dialog: focus is trapped,
+ * the page behind is inert, Escape closes and focus returns to the button
+ * that opened it.
  */
 export function ConfirmDialog({
   open,
   title,
+  eyebrow = "",
   body,
   consequences = [],
   confirmLabel,
@@ -34,6 +38,8 @@ export function ConfirmDialog({
 }: {
   open: boolean;
   title: string;
+  /** The record the action acts on, above the title. Empty means none. */
+  eyebrow?: string;
   /** What happens, in a sentence. */
   body: string;
   /** What follows from it, one item each. */
@@ -52,7 +58,6 @@ export function ConfirmDialog({
   onConfirm: () => void;
   onClose: () => void;
 }) {
-  const titleId = useId();
   const fieldId = useId();
   const [typed, setTyped] = useState("");
   const needsText = confirmText !== "";
@@ -68,60 +73,48 @@ export function ConfirmDialog({
   };
 
   return (
-    <Modal open={open} onClose={close} labelledBy={titleId}>
-      <form onSubmit={submit} className="di-confirm-dialog">
-        <ModalFrame>
-          <ModalIcon>
-            <TriangleAlert aria-hidden />
-          </ModalIcon>
-          <ModalContent>
-            <ModalTitle id={titleId}>{title}</ModalTitle>
-            <ModalBody>
-              <p>{body}</p>
-              {consequences.length > 0 ? (
-                <ul className="di-confirm-consequences">
-                  {consequences.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              ) : null}
-            </ModalBody>
-            {needsText ? (
-              <TextField
-                id={fieldId}
-                className="di-confirm-field"
-                label={confirmTextLabel}
-                labelTrack="prose"
-                value={typed}
-                autoComplete="off"
-                spellCheck={false}
-                // eslint-disable-next-line jsx-a11y/no-autofocus -- a dialog takes focus on open, here in the field the confirmation is typed into
-                autoFocus
-                onChange={(event) => setTyped(event.target.value)}
-              />
-            ) : null}
-            {error ? (
-              <p className="di-confirm-error" role="alert">
-                {error}
-              </p>
-            ) : null}
-            <ModalFooter>
-              {/* eslint-disable-next-line jsx-a11y/no-autofocus -- a dialog takes focus on open, here on Cancel, the choice that changes nothing */}
-              <Button variant="secondary" onClick={close} autoFocus={!needsText} disabled={busy}>
-                {cancelLabel}
-              </Button>
-              <Button
-                type="submit"
-                variant={tone === "danger" ? "danger" : "primary"}
-                loading={busy}
-                disabled={!allowed}
-              >
-                {confirmLabel}
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </ModalFrame>
-      </form>
-    </Modal>
+    <Dialog
+      open={open}
+      onClose={close}
+      title={title}
+      eyebrow={eyebrow || undefined}
+      eyebrowTone={tone === "danger" ? "danger" : "quiet"}
+      placement="center"
+      size="md"
+      onSubmit={submit}
+    >
+      <p>{body}</p>
+      {consequences.length > 0 ? (
+        <ul className="di-confirm-consequences">
+          {consequences.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      ) : null}
+      {needsText ? (
+        <TextField
+          id={fieldId}
+          label={confirmTextLabel}
+          labelTrack="prose"
+          value={typed}
+          autoComplete="off"
+          spellCheck={false}
+          onChange={(event) => setTyped(event.target.value)}
+        />
+      ) : null}
+      {error ? (
+        <p className="di-confirm-error" role="alert">
+          {error}
+        </p>
+      ) : null}
+      <DialogFooter>
+        <Button variant="secondary" onClick={close} data-autofocus={needsText ? undefined : true} disabled={busy}>
+          {cancelLabel}
+        </Button>
+        <Button type="submit" variant={tone === "danger" ? "danger" : "primary"} loading={busy} disabled={!allowed}>
+          {confirmLabel}
+        </Button>
+      </DialogFooter>
+    </Dialog>
   );
 }

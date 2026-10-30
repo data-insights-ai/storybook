@@ -22,8 +22,6 @@ import {
   PageHeaderTitle,
   Panel,
   PrivacyBadge,
-  SectionTitle,
-  SectionTitleHeading,
   Sparkline,
   TextField,
   Toast,
@@ -60,9 +58,9 @@ export function InferenceScreen() {
         <PageHeaderTitle>Sources</PageHeaderTitle>
       </PageHeader>
 
-      <SectionTitle>
-        <SectionTitleHeading>The claim, and the question before it runs</SectionTitleHeading>
-      </SectionTitle>
+      <PageHeader level={2}>
+        <PageHeaderTitle>The claim, and the question before it runs</PageHeaderTitle>
+      </PageHeader>
       <div className="inference-grid">
         <LivingCard title="Unsealed entries" insightLabel="ai insight">
           <LivingActions>
@@ -174,9 +172,9 @@ export function InferenceScreen() {
         </div>
       </div>
 
-      <SectionTitle>
-        <SectionTitleHeading>Asking</SectionTitleHeading>
-      </SectionTitle>
+      <PageHeader level={2}>
+        <PageHeaderTitle>Asking</PageHeaderTitle>
+      </PageHeader>
       <div className="inference-grid">
         <CommandBar
           id="screen-command"

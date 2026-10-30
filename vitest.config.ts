@@ -58,6 +58,16 @@ function stories(
  * so the testing panel in the sidebar can start Vitest itself.
  */
 export default defineConfig({
+  // The lazy chunks (the phone drawer, the rail tooltip) are transformed up front: on a busy run their first
+  // transform mid-story outlasted the play's wait.
+  server: {
+    warmup: {
+      clientFiles: [
+        "./src/components/navigation/Sidebar/frame/SidebarDrawer.tsx",
+        "./src/components/navigation/Sidebar/menu/SidebarRailTooltip.tsx",
+      ],
+    },
+  },
   test: {
     projects: [
       {

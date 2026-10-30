@@ -1,11 +1,6 @@
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
-import { SeverityMark, type Severity } from "../../../marks/status/SeverityMark";
-import { StatusPill } from "../../../marks/status/StatusPill";
-import { Fact, FactList } from "../../../data/records/FactList";
-import { Panel } from "../../page/Panel";
-import { SectionTitle, SectionTitleHeading } from "../../page/SectionTitle";
 import {
   ListDetail,
   ListDetailBack,
@@ -16,163 +11,51 @@ import {
   ListDetailPane,
 } from "./ListDetail";
 
-const records: Array<{ n: number; title: string; severity: Severity; word: string; status: string; owner: string }> = [
-  {
-    n: 4,
-    title: "Leaked VPN credentials used to move through finance",
-    severity: "critical",
-    word: "Critical",
-    status: "In progress",
-    owner: "Sam Analyst",
-  },
-  {
-    n: 7,
-    title: "Unusual sign-ins from a new country",
-    severity: "high",
-    word: "High",
-    status: "Open",
-    owner: "unassigned",
-  },
-  {
-    n: 2,
-    title: "Macro document opened on a workstation",
-    severity: "medium",
-    word: "Medium",
-    status: "Open",
-    owner: "unassigned",
-  },
-];
-
-function Split({ initial = "list" }: { initial?: "list" | "detail" }) {
-  const [open, setOpen] = useState(4);
-  const [showing, setShowing] = useState<"list" | "detail">(initial);
-  const record = records.find((r) => r.n === open) ?? records[0];
-  return (
-    <ListDetail showing={showing}>
-      <ListDetailList label="Cases">
-        <ListDetailHead>
-          <span>3 open cases</span>
-        </ListDetailHead>
-        <ListDetailItems>
-          {records.map((r) => (
-            <ListDetailItem
-              key={r.n}
-              title={r.title}
-              meta={`Case ${r.n} · ${r.owner}`}
-              selected={r.n === open}
-              onSelect={() => {
-                setOpen(r.n);
-                setShowing("detail");
-              }}
-            >
-              <SeverityMark level={r.severity} label={r.word} />
-              {r.status === "Open" ? null : <StatusPill tone="neutral">{r.status}</StatusPill>}
-            </ListDetailItem>
-          ))}
-        </ListDetailItems>
-      </ListDetailList>
-      <ListDetailPane label={`Case ${record.n}`}>
-        <ListDetailBack label="All cases" onBack={() => setShowing("list")} />
-        <SectionTitle
-          eyebrow={`Case ${record.n}`}
-          lede={record.owner === "unassigned" ? "Not assigned yet" : `Assigned to ${record.owner}`}
-        >
-          <SectionTitleHeading>{record.title}</SectionTitleHeading>
-        </SectionTitle>
-        <Panel title="What happened">
-          <FactList layout="columns">
-            <Fact label="Severity">
-              <SeverityMark level={record.severity} label={record.word} />
-            </Fact>
-            <Fact label="Status">{record.status}</Fact>
-          </FactList>
-        </Panel>
-      </ListDetailPane>
-    </ListDetail>
-  );
-}
-
+/** Deprecated: `ListDetail` is `Split variant="list"`. Removed in 0.12. */
 const meta = {
   title: "Layout/Panes/ListDetail",
   component: ListDetail,
-  tags: ["layer:pattern", "autodocs"],
+  tags: ["layer:pattern", "status:deprecated"],
   args: { showing: "list", children: null },
-  argTypes: {
-    showing: { control: "radio", options: ["list", "detail"] },
-    children: { control: false },
-  },
-  parameters: { layout: "padded" },
+  argTypes: { children: { control: false } },
 } satisfies Meta<typeof ListDetail>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Both halves on screen: the list as its own pane, the selected record lifted with the cornflower edge. */
-export const Default: Story = {
-  globals: { viewport: { value: "wide" } },
-  render: () => <Split />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const current = canvas.getByRole("button", { current: true });
-    await expect(current).toHaveTextContent("Leaked VPN credentials");
-    current.focus();
-    await userEvent.keyboard("{ArrowDown}");
-    await expect(canvas.getByRole("button", { name: /Unusual sign-ins/ })).toHaveFocus();
-    await userEvent.keyboard("{End}");
-    await expect(canvas.getByRole("button", { name: /Macro document/ })).toHaveFocus();
-    await userEvent.keyboard("{Enter}");
-    await expect(canvas.getByRole("heading", { level: 2 })).toHaveTextContent("Macro document opened on a workstation");
-  },
-};
-
-/** On a phone the halves take turns; the record carries the way back. */
-export const PhoneRecord: Story = {
-  name: "Phone, record open",
-  globals: { viewport: { value: "phone" } },
-  render: () => <Split initial="detail" />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.queryByRole("region", { name: "Cases" })).toBeNull();
-    await userEvent.click(canvas.getByRole("button", { name: "All cases" }));
-    await expect(canvas.getByRole("region", { name: "Cases" })).toBeVisible();
-  },
-};
-
-/** On a phone focus follows the swap: into the record, and back to the item it came from. */
-export const PhoneFocus: Story = {
-  name: "Phone, focus follows",
-  globals: { viewport: { value: "phone" } },
-  render: () => <Split />,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole("button", { name: /Unusual sign-ins/ }));
-    await expect(document.activeElement).toBe(canvas.getByRole("region", { name: "Case 7" }));
-    await userEvent.click(canvas.getByRole("button", { name: "All cases" }));
-    await expect(document.activeElement).toBe(canvas.getByRole("button", { name: /Unusual sign-ins/ }));
-  },
-};
-
-/** `ListDetailHead` sits above the items even when it is written after them. */
-export const HeadWrittenLast: Story = {
-  globals: { viewport: { value: "wide" } },
-  render: () => (
-    <ListDetail>
+function Cases() {
+  const [showing, setShowing] = useState<"list" | "detail">("list");
+  return (
+    <ListDetail showing={showing}>
       <ListDetailList label="Cases">
-        <ListDetailItems>
-          <ListDetailItem title="Port scan from a workstation" meta="Case 3" selected onSelect={() => {}} />
-        </ListDetailItems>
         <ListDetailHead>
           <span>1 open case</span>
         </ListDetailHead>
+        <ListDetailItems>
+          <ListDetailItem
+            title="Port scan from a workstation"
+            meta="Case 3"
+            selected
+            onSelect={() => setShowing("detail")}
+          />
+        </ListDetailItems>
       </ListDetailList>
       <ListDetailPane label="Case 3">
-        <h2>Case 3</h2>
+        <ListDetailBack label="All cases" onBack={() => setShowing("list")} />
+        <p>Port scan from a workstation.</p>
       </ListDetailPane>
     </ListDetail>
-  ),
+  );
+}
+
+/** The old names render `Split variant="list"`. */
+export const Deprecated: Story = {
+  globals: { viewport: { value: "wide" } },
+  render: () => <Cases />,
   play: async ({ canvasElement }) => {
-    const head = canvasElement.querySelector(".di-ld-head")!.getBoundingClientRect();
-    const items = canvasElement.querySelector(".di-ld-items")!.getBoundingClientRect();
-    await expect(head.bottom).toBeLessThanOrEqual(items.top + 1);
+    const canvas = within(canvasElement);
+    const item = canvas.getByRole("button", { current: true });
+    await userEvent.click(item);
+    await expect(canvas.getByRole("region", { name: "Case 3" })).toBeVisible();
   },
 };

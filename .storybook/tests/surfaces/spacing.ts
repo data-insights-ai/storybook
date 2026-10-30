@@ -138,11 +138,12 @@ function seen(el: Element): boolean {
   return true;
 }
 
-/* Hidden by its own style; a box of no size is walked through, since what it holds can overflow it. */
+/* Hidden by its own style (a visually hidden input clips itself to nothing); a box of no size is walked through, since what it holds can overflow it. */
 function hiddenItself(el: Element): boolean {
   if (el.matches(".di-sr, [hidden]")) return true;
   if (el.parentElement?.matches("details:not([open])") && !el.matches("summary")) return true;
   const style = getComputedStyle(el);
+  if (style.clipPath === "inset(50%)") return true;
   return style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0;
 }
 

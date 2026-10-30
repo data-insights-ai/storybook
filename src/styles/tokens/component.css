@@ -158,9 +158,11 @@
     --di-flyout-width: 440px;
     --di-flyout-max-height: 640px;
     --di-modal-width: 480px;
-    --di-sheet-width-md: 480px;
-    --di-sheet-width-lg: 760px;
-    --di-sheet-width-xl: 1120px;
+    --di-dialog-width-sm: 400px;
+    --di-dialog-width-md: 480px;
+    --di-dialog-width-lg: 760px;
+    --di-dialog-width-xl: 1120px;
+    --di-dialog-bottom-max: 88dvh;
     --di-shell-rail-width: 248px;
     --di-shell-drawer-width: 360px;
     --di-shell-logo-width: 124px;

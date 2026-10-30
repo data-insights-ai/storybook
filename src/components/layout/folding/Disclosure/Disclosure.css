@@ -1,31 +1,137 @@
 @layer components {
-  /* A group, so the inset tone: a step below the surface it sits in, no line around it. */
+  /*
+   * A group, so the inset tone: a step below the surface it sits in, no
+   * line around it. One inset all round: the head's top and the body's
+   * bottom are the same distance from the edge, and the body starts on the
+   * title's left edge.
+   */
   .di-disclosure {
+    --di-disclosure-inset: var(--di-inset-group);
+    --di-disclosure-gap: var(--di-gap-12);
+    position: relative;
+    isolation: isolate;
+    padding: var(--di-disclosure-inset);
     border-radius: var(--di-radius-inset);
     background: var(--di-bg-subtle);
+  }
+
+  .di-disclosure-heading {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    font: inherit;
   }
 
   .di-disclosure-head {
     display: flex;
     align-items: center;
     gap: var(--di-gap-12);
-    padding: var(--di-space-12);
+    width: 100%;
+  }
+
+  /*
+   * The whole head is the button. Its target and its hover tint reach the
+   * group's edges through a layer behind it, so the row is the target while
+   * the text keeps the inset.
+   */
+  button.di-disclosure-head {
+    position: relative;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--di-text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  button.di-disclosure-head::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: calc(-1 * var(--di-disclosure-inset));
+    border-radius: var(--di-radius-inset);
+    transition: background-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-disclosure.is-open button.di-disclosure-head::before {
+    bottom: calc(-1 * var(--di-disclosure-gap));
+    border-radius: var(--di-radius-inset) var(--di-radius-inset) 0 0;
+  }
+
+  button.di-disclosure-head:hover::before {
+    background: var(--di-row-hover-bg);
+  }
+
+  button.di-disclosure-head:focus-visible {
+    outline: none;
+  }
+
+  button.di-disclosure-head:focus-visible::before {
+    outline: 2px solid var(--di-focus);
+    outline-offset: -2px;
   }
 
   .di-disclosure-lead {
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 0;
+  }
+
+  .di-disclosure-titles {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-4);
+    min-width: 0;
+  }
+
+  /* The group's name is a heading: the display face, a step under the title of the surface that holds it. */
+  .di-disclosure-title {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-family: var(--di-heading-family);
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-disclosure-detail {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-family: var(--di-meta-family);
+    font-size: var(--di-meta-size);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-meta-color);
   }
 
   .di-disclosure-meta {
     flex: none;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--di-gap-8);
+    font-family: var(--di-meta-family);
+    font-size: var(--di-meta-size);
     font-variant-numeric: tabular-nums;
-    color: var(--di-text-subtle);
+    color: var(--di-meta-color);
+  }
+
+  .di-disclosure-chevron {
+    flex: none;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+    color: var(--di-text-muted);
+    transition: transform var(--di-duration) var(--di-ease);
+  }
+
+  .di-disclosure.is-open .di-disclosure-chevron {
+    transform: rotate(180deg);
   }
 
   .di-disclosure-toggle {
+    position: relative;
     flex: none;
     display: inline-flex;
     align-items: center;
@@ -36,23 +142,15 @@
     border: 0;
     border-radius: var(--di-radius-control);
     background: transparent;
-    color: var(--di-text-muted);
     cursor: pointer;
   }
 
-  .di-disclosure-toggle > svg {
-    width: var(--di-icon-md);
-    height: var(--di-icon-md);
-    transition: transform var(--di-duration) var(--di-ease);
-  }
-
-  .di-disclosure.is-open .di-disclosure-toggle > svg {
-    transform: rotate(180deg);
-  }
-
   .di-disclosure-toggle:hover {
+    background: var(--di-row-hover-bg);
+  }
+
+  .di-disclosure-toggle:hover > .di-disclosure-chevron {
     color: var(--di-text);
-    background: var(--di-bg-row-hover);
   }
 
   .di-disclosure-toggle:focus-visible {
@@ -60,7 +158,88 @@
     outline-offset: 2px;
   }
 
+  /* A finger gets the full target; the chevron keeps its size. */
+  @media (pointer: coarse) {
+    .di-disclosure-toggle::after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: var(--di-target);
+      height: var(--di-target);
+      translate: -50% -50%;
+    }
+
+    button.di-disclosure-head::before {
+      min-height: var(--di-target);
+    }
+  }
+
+  /*
+   * Folds by a grid row, which can animate to the content's height where
+   * height: auto cannot. Folded, it turns invisible once the motion ends, so
+   * nothing inside is focusable or read; opening shows it at once. Reduced
+   * motion drops the transition with every other one (base.css).
+   */
+  .di-disclosure-fold {
+    display: grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--di-duration-slow) var(--di-ease),
+      visibility 0s linear var(--di-duration-slow);
+  }
+
+  .di-disclosure.is-open > .di-disclosure-fold {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    transition:
+      grid-template-rows var(--di-duration-slow) var(--di-ease),
+      visibility 0s;
+  }
+
+  /* clip, not hidden: it does not become a scroll container, so a table's sticky head still sticks. */
+  .di-disclosure-clip {
+    min-height: 0;
+    overflow: clip;
+  }
+
   .di-disclosure-body {
-    padding: 0 var(--di-space-12) var(--di-space-12);
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-16);
+    min-width: 0;
+    padding-top: var(--di-disclosure-gap);
+  }
+
+  /* A table in a group sits on the group's tone, its first column on the body's edge. */
+  .di-disclosure-body {
+    --di-table-bg: transparent;
+    --di-table-shadow: none;
+    --di-table-edge: 0px;
+  }
+
+  /* Groups in a list: a step apart, no rule between them. */
+  .di-disclosure-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+    min-width: 0;
+  }
+
+  /* On a phone the meta goes under the title rather than squeezing it. */
+  @media (max-width: 600px) {
+    button.di-disclosure-head {
+      flex-wrap: wrap;
+    }
+
+    button.di-disclosure-head > .di-disclosure-titles {
+      flex-basis: calc(100% - var(--di-icon-md) - var(--di-gap-12));
+    }
+
+    button.di-disclosure-head > .di-disclosure-meta {
+      order: 3;
+      justify-content: flex-start;
+      flex: 1 1 100%;
+    }
   }
 }

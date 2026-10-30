@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateField, defaultDateFieldLabels } from "./DateField";
 import { Grid } from "../../../layout/arrangement/Grid";
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalTitle } from "../../../overlays/Modal";
+import { Dialog, DialogFooter } from "../../../overlays/Dialog";
 import { Button } from "../../../actions/Button";
 
 const meta = {
@@ -208,21 +208,21 @@ export const InModal: Story = {
     return (
       <>
         <Button onClick={() => setOpen(true)}>Grant access</Button>
-        <Modal open={open} labelledBy="grant-title" onClose={() => setOpen(false)}>
-          <ModalFrame>
-            <ModalContent>
-              <ModalTitle id="grant-title">Grant access</ModalTitle>
-              <ModalBody>The auditor can read the register until the day you set.</ModalBody>
-              <DateField {...args} id="expires" label="Expires" value={value} onChange={setValue} />
-            </ModalContent>
-            <ModalFooter>
-              <Button variant="secondary" onClick={() => setOpen(false)}>
-                Cancel
-              </Button>
-              <Button onClick={() => setOpen(false)}>Grant access</Button>
-            </ModalFooter>
-          </ModalFrame>
-        </Modal>
+        <Dialog
+          placement="center"
+          open={open}
+          title="Grant access"
+          lede="The auditor can read the register until the day you set."
+          onClose={() => setOpen(false)}
+        >
+          <DateField {...args} id="expires" label="Expires" value={value} onChange={setValue} />
+          <DialogFooter>
+            <Button variant="secondary" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => setOpen(false)}>Grant access</Button>
+          </DialogFooter>
+        </Dialog>
       </>
     );
   },

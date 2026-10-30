@@ -1,24 +1,16 @@
 @layer components {
-  .di-confirm-dialog .di-modal-icon {
-    background: var(--di-status-danger-bg);
-    color: var(--di-status-danger-fg);
-  }
-
+  /* The consequences belong to the sentence above them: a step closer than the next block. */
   .di-confirm-consequences {
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-4);
-    margin: var(--di-gap-8) 0 0;
+    margin: calc(var(--di-gap-8) - var(--di-rhythm-field)) 0 0;
     padding-left: var(--di-gap-16);
     list-style: disc;
-  }
-
-  .di-confirm-field {
-    margin-top: var(--di-gap-16);
+    color: var(--di-text-muted);
   }
 
   .di-confirm-error {
-    margin-top: var(--di-gap-12);
     font-size: var(--di-font-size-300);
     color: var(--di-status-danger-fg);
   }

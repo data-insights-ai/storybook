@@ -9,12 +9,14 @@
 
   /* A one-line form: fields and their actions share the control row, so a
      button lines up with the input next to it, not with the label above it,
-     and an error line under a field does not move the button. */
+     and an error line under a field does not move the button. The hint row
+     exists only when a field has a hint, so a toolbar without one ends on
+     its controls rather than on an empty row and its gap. */
   .di-toolbar:has(> .di-field) {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: minmax(0, max-content);
-    grid-template-rows: auto auto auto;
+    grid-template-rows: auto auto;
     align-items: center;
     justify-content: start;
     column-gap: var(--di-gap-8);
@@ -22,10 +24,18 @@
   }
 
   .di-toolbar:has(> .di-field) > .di-field {
-    grid-row: 1 / span 3;
+    grid-row: 1 / span 2;
     display: grid;
     grid-template-rows: subgrid;
     min-width: 0;
+  }
+
+  .di-toolbar:has(> .di-field > .di-field-hint) {
+    grid-template-rows: auto auto auto;
+  }
+
+  .di-toolbar:has(> .di-field > .di-field-hint) > .di-field {
+    grid-row: 1 / span 3;
   }
 
   /* A hidden label leaves the flow, so the control would take the label's row. */

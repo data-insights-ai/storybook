@@ -95,19 +95,4 @@
     white-space: nowrap;
     clip-path: inset(50%);
   }
-
-  .di-sb-tooltip {
-    z-index: 20;
-  }
-
-  .di-sb-tooltip .di-tooltip {
-    gap: var(--di-gap-6);
-    font-family: var(--di-font-ui);
-    transition: opacity var(--di-duration) var(--di-ease);
-  }
-
-  .di-sb-tooltip .di-tooltip[data-starting-style],
-  .di-sb-tooltip .di-tooltip[data-ending-style] {
-    opacity: 0;
-  }
 }

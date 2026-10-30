@@ -1,6 +1,6 @@
-import { useId, useState } from "react";
+import { useState } from "react";
 import { Button } from "../../actions/Button";
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalTitle } from "../Modal";
+import { Dialog, DialogFooter } from "../Dialog";
 import { Kbd } from "../../text/Kbd";
 import { shortcutLabel, shortcutTarget } from "../../../internal/shortcutKeys";
 import { useShortcut } from "../../../internal/useShortcut";
@@ -18,6 +18,9 @@ export type AppShortcut = { keys: string[]; what: string };
  * control is on screen right now (`/`, `n`, `e`), then `?` and Esc. Mount
  * it once in the app shell; the copy comes translated from the product.
  * `appKeys` come first: the product's own keys, such as ⌘K or j/k on a list.
+ *
+ * A `Dialog placement="center"`: focus lands on its title, Escape and
+ * the close button close it, and focus returns where it was.
  */
 export function ShortcutHelp({
   title,
@@ -41,7 +44,6 @@ export function ShortcutHelp({
   };
   appKeys?: AppShortcut[];
 }) {
-  const titleId = useId();
   const [rows, setRows] = useState<Row[] | null>(null);
   useShortcut("?", () => {
     const page: Row[] = [];
@@ -59,32 +61,26 @@ export function ShortcutHelp({
     }
     setRows([...appKeys, ...page, { keys: ["?"], what: labels.help }, { keys: ["Esc"], what: labels.close }]);
   });
+  const close = () => setRows(null);
   return (
-    <Modal open={rows !== null} onClose={() => setRows(null)} labelledBy={titleId}>
-      <ModalFrame>
-        <ModalContent>
-          <ModalTitle id={titleId}>{title}</ModalTitle>
-          <ModalBody>
-            <dl className="di-shortcut-help">
-              {(rows ?? []).map((r) => (
-                <div key={r.keys.join(" ")} className="di-shortcut-help-row">
-                  <dt>
-                    {r.keys.map((key) => (
-                      <Kbd key={key}>{key.length === 1 ? key.toUpperCase() : key}</Kbd>
-                    ))}
-                  </dt>
-                  <dd>{r.what}</dd>
-                </div>
+    <Dialog open={rows !== null} onClose={close} title={title} placement="center" size="sm">
+      <dl className="di-shortcut-help">
+        {(rows ?? []).map((r) => (
+          <div key={r.keys.join(" ")} className="di-shortcut-help-row">
+            <dt>
+              {r.keys.map((key) => (
+                <Kbd key={key}>{key.length === 1 ? key.toUpperCase() : key}</Kbd>
               ))}
-            </dl>
-          </ModalBody>
-          <ModalFooter>
-            <Button variant="secondary" onClick={() => setRows(null)}>
-              {closeLabel}
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </ModalFrame>
-    </Modal>
+            </dt>
+            <dd>{r.what}</dd>
+          </div>
+        ))}
+      </dl>
+      <DialogFooter>
+        <Button variant="secondary" onClick={close}>
+          {closeLabel}
+        </Button>
+      </DialogFooter>
+    </Dialog>
   );
 }

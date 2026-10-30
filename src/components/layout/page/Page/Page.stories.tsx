@@ -9,7 +9,7 @@ import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } fro
 import { TextLink } from "../../../navigation/TextLink";
 import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../PageHeader";
 import { DetailSection } from "../DetailSection";
-import { Sheet, SheetFooter } from "../../../overlays/Sheet";
+import { Dialog, DialogFooter } from "../../../overlays/Dialog";
 import { Page, PageAside } from "./Page";
 
 const meta = {
@@ -100,6 +100,9 @@ export const WithAside: Story = {
   ),
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByRole("complementary", { name: "Triage" })).toBeVisible();
+    // Outside the shell there is no bar: the side column sticks 16px under the window's top, not under a bar.
+    const side = canvasElement.querySelector<HTMLElement>(".di-page[data-frame='side'] > .di-page-side");
+    if (side) await expect(getComputedStyle(side).top).toBe("16px");
   },
 };
 
@@ -138,7 +141,7 @@ function ListWithSheet() {
           ))}
         </TableBody>
       </DataTable>
-      <Sheet
+      <Dialog
         open={open !== undefined}
         onClose={() => setOpen(undefined)}
         title={open?.name ?? ""}
@@ -151,12 +154,12 @@ function ListWithSheet() {
             <Fact label="Version">2.14.0</Fact>
           </FactList>
         </DetailSection>
-        <SheetFooter>
+        <DialogFooter>
           <Button variant="secondary" onClick={() => setOpen(undefined)}>
             Done
           </Button>
-        </SheetFooter>
-      </Sheet>
+        </DialogFooter>
+      </Dialog>
     </Page>
   );
 }

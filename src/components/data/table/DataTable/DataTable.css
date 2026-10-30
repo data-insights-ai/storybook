@@ -8,7 +8,7 @@
   }
 
   /* On any other surface (a sign-in card, an accordion, a sheet, a dialog, a flyout) the table drops its frame, as in a Panel. */
-  :is(.di-login-card, .di-accordion, .di-sheet, .di-sheet-docked, .di-modal, .di-flyout, .di-living) .di-table-wrap {
+  :is(.di-login-card, .di-dialog, .di-dialog-docked, .di-modal, .di-flyout, .di-living) .di-table-wrap {
     --di-table-bg: transparent;
     --di-table-shadow: none;
   }

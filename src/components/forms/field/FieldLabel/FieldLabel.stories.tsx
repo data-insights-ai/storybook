@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { FieldStack } from "../../../layout/arrangement/FieldStack";
+import { Stack } from "../../../layout/arrangement/Stack";
 import { ComboBox } from "../../select/ComboBox";
 import { DateRangePicker } from "../../dates/DateRangePicker";
 import { SearchField } from "../../text/SearchField";
@@ -77,7 +77,7 @@ export const EveryFieldGerman: Story = {
     const [day, setDay] = useState("2026-11-02");
     const [time, setTime] = useState("22:00");
     return (
-      <FieldStack>
+      <Stack variant="form">
         <Select
           id="de-severity"
           label="Mindestschweregrad für Benachrichtigungen an das Bereitschaftsteam"
@@ -154,7 +154,7 @@ export const EveryFieldGerman: Story = {
           onChange={setTime}
           required={true}
         />
-      </FieldStack>
+      </Stack>
     );
   },
   play: async ({ canvasElement }) => {
@@ -200,7 +200,7 @@ export const FramesBesideAButton: Story = {
     const row = { display: "flex", alignItems: "flex-end", gap: "var(--di-gap-8)", flexWrap: "wrap" } as const;
     const cell = { flex: "1 1 14rem", minWidth: 0 } as const;
     return (
-      <FieldStack>
+      <Stack variant="form">
         <div style={row} data-frame="text">
           <div style={cell}>
             <TextField
@@ -292,7 +292,7 @@ export const FramesBesideAButton: Story = {
             <TextArea id="f-area" label="Note" placeholder="Why this host is trusted" />
           </div>
         </div>
-      </FieldStack>
+      </Stack>
     );
   },
   play: async ({ canvasElement }) => {

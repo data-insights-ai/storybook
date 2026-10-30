@@ -25,15 +25,15 @@
   }
 
   @media (min-width: 1024px) {
-    .di-split:not(.is-preview) {
+    .di-split:not(.is-preview, .is-list) {
       grid-template-columns: minmax(0, 1fr) var(--di-rail-width);
     }
 
-    .di-split.is-aside-first:not(.is-preview) .di-split-aside {
+    .di-split.is-aside-first:not(.is-preview, .is-list) .di-split-aside {
       order: 0;
     }
 
-    .di-split:not(.is-preview) > .di-split-aside {
+    .di-split:not(.is-preview, .is-list) > .di-split-aside {
       position: sticky;
       top: calc(var(--di-sticky-top) + var(--di-space-16));
       max-height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
@@ -56,6 +56,159 @@
       top: calc(var(--di-sticky-top) + var(--di-space-16));
       max-height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
       overflow-y: auto;
+    }
+  }
+}
+
+/*
+ * The list variant: the list beside its open record. The frame is the
+ * container, so the halves take turns by the space the split has, not by
+ * the window.
+ */
+@layer components {
+  .di-split-frame {
+    container-type: inline-size;
+    min-width: 0;
+  }
+
+  .di-split.is-list > .di-split-main {
+    gap: var(--di-gap-24);
+  }
+
+  /* The record takes focus when a narrow screen swaps to it, for the screen reader; it is not a control, so no ring. */
+  .di-split.is-list > .di-split-main:focus {
+    outline: none;
+  }
+
+  .di-split-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+    min-width: 0;
+  }
+
+  /* The head starts on the items' text edge, so the pane has one left edge. */
+  .di-split-list-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-gap-8);
+    padding: 0 var(--di-gap-16);
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
+
+  .di-split-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-split-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-6);
+    width: 100%;
+    padding: var(--di-gap-12) var(--di-gap-16);
+    border: 0;
+    border-radius: var(--di-radius-inset);
+    color: var(--di-text);
+    text-align: left;
+  }
+
+  /* Zero specificity, so the row's hover tint and the current row (`.di-row-current`) paint over it. */
+  :where(.di-split-item) {
+    background: transparent;
+  }
+
+  .di-split-item:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .di-split-item-marks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-8);
+  }
+
+  /* The item's name is its one semibold line; the marks and the meta stay regular. */
+  .di-split-item-title {
+    font-weight: var(--di-weight-semibold);
+    line-height: var(--di-leading-snug);
+    text-wrap: pretty;
+    overflow-wrap: break-word;
+  }
+
+  .di-split-item-meta {
+    font-family: var(--di-meta-family);
+    font-size: var(--di-meta-size);
+    color: var(--di-meta-color);
+  }
+
+  .di-split-back {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-gap-6);
+    min-height: var(--di-control-h-md);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--di-text-muted);
+    font-size: var(--di-font-size-300);
+    cursor: pointer;
+  }
+
+  .di-split-back:hover {
+    color: var(--di-text);
+  }
+
+  .di-split-back > svg {
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
+  }
+
+  @media (pointer: coarse) {
+    .di-split-back {
+      min-height: var(--di-target);
+    }
+  }
+
+  @container (width < 56rem) {
+    .di-split-frame[data-showing="list"] .di-split.is-list > .di-split-main,
+    .di-split-frame[data-showing="detail"] .di-split-list {
+      display: none;
+    }
+  }
+
+  @container (width >= 56rem) {
+    .di-split.is-list {
+      grid-template-columns:
+        minmax(var(--di-list-detail-list-min), var(--di-list-detail-list-max))
+        minmax(0, 1fr);
+      gap: var(--di-gap-32);
+    }
+
+    /* The list is a pane of its own, a step above the ground and full height. */
+    .di-split-list {
+      position: sticky;
+      top: calc(var(--di-sticky-top) + var(--di-space-16));
+      height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
+      overflow: auto;
+      /* 8 in both densities: the rows span the pane, a control's width from its edge. */
+      padding: var(--di-gap-16) var(--di-space-8);
+      border-radius: var(--di-radius-surface);
+      background: var(--di-bg-pane);
+      box-shadow: var(--di-elevation-surface);
+    }
+
+    .di-split-back {
+      display: none;
     }
   }
 }
