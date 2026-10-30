@@ -25,7 +25,7 @@
 
   .di-section-heading {
     grid-area: heading;
-    font-family: var(--di-font-ui);
+    font-family: var(--di-heading-family);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
     color: var(--di-text);

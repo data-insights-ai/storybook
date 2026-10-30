@@ -3,24 +3,23 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--di-space-16);
-    padding: var(--di-space-12) var(--di-space-12);
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
+    padding: var(--di-space-16) var(--di-space-24);
+    border-radius: var(--di-radius-inset);
+    background: var(--di-bg-strip);
   }
 
   .di-stat-label {
-    font-family: var(--di-label-family);
-    font-size: var(--di-label-size);
-    font-weight: var(--di-label-weight);
-    letter-spacing: normal;
-    text-transform: none;
-    color: var(--di-label-color);
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
   }
 
   .di-stat-value {
     margin-top: var(--di-space-4);
-    font-family: var(--di-font-ui);
+    font-family: var(--di-heading-family);
     font-size: var(--di-font-size-700);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);

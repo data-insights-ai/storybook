@@ -1,0 +1,165 @@
+@layer components {
+  .di-attention-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-16);
+  }
+
+  .di-attention-heading {
+    font-family: var(--di-heading-family);
+    font-size: var(--di-section-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-tight);
+    color: var(--di-text);
+  }
+
+  /* Flex, not grid: the items after a full-width first item share its row between them. */
+  .di-attention {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-attention-item {
+    flex: 1 1 280px;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    align-items: baseline;
+    gap: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-space-16) var(--di-space-24) var(--di-space-24) var(--di-space-16);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-surface);
+    box-shadow: var(--di-elevation-surface);
+  }
+
+  .di-attention-item.is-emphasis {
+    flex-basis: 100%;
+    padding-block: var(--di-space-24);
+    box-shadow: 0 0 0 1px var(--di-one-edge), var(--di-one-glow);
+  }
+
+  .di-attention-rank {
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: start;
+    font-family: var(--di-heading-family);
+    font-size: var(--di-figure-size);
+    font-weight: var(--di-weight-bold);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--di-text-subtle);
+  }
+
+  /* The gold bar under the rank is part of the one object, not a second mark. */
+  .di-attention-item.is-emphasis .di-attention-rank {
+    padding-bottom: var(--di-space-4);
+    box-shadow: inset 0 -3px 0 var(--di-one);
+    color: var(--di-one-ink);
+  }
+
+  .di-attention-body {
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-6);
+    min-width: 0;
+  }
+
+  .di-attention-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-space-12);
+  }
+
+  .di-attention-one {
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-weight-semibold);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-one-ink);
+  }
+
+  .di-attention-title {
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-semibold);
+    line-height: var(--di-leading-snug);
+    text-wrap: balance;
+    overflow-wrap: break-word;
+    color: var(--di-text);
+  }
+
+  .di-attention-item.is-emphasis .di-attention-title {
+    font-family: var(--di-heading-family);
+    font-size: var(--di-section-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-tight);
+  }
+
+  .di-attention-reason {
+    max-width: 70ch;
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  .di-attention-action {
+    grid-row: 2;
+    grid-column: 2;
+    align-self: end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-8);
+  }
+
+  /* On a phone the one button runs the item's width. */
+  @media (max-width: 600px) {
+    .di-attention-item {
+      grid-template-columns: 1.75rem minmax(0, 1fr);
+      gap: var(--di-space-12);
+      padding: var(--di-space-16);
+    }
+
+    .di-attention-rank {
+      font-size: var(--di-font-size-600);
+    }
+
+    .di-attention-action {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  .di-attention-clear {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-space-4) var(--di-space-16);
+    padding: var(--di-space-16) 0;
+    border-block: 1px solid var(--di-rule);
+  }
+
+  .di-attention-clear-title {
+    font-family: var(--di-heading-family);
+    font-size: var(--di-font-size-550);
+    font-weight: var(--di-weight-bold);
+    color: var(--di-text);
+  }
+
+  .di-attention-clear-title::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: var(--di-space-12);
+    border-radius: 50%;
+    background: var(--di-status-ok-dot);
+    vertical-align: 0.1em;
+  }
+}

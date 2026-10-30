@@ -8,6 +8,7 @@ import {
   PageHeaderAside,
   PageHeaderCrumbs,
   PageHeaderFacts,
+  PageHeaderMeta,
   PageHeaderStatus,
   PageHeaderTitle,
 } from "./PageHeader";
@@ -48,51 +49,89 @@ export const TitleOnly: Story = {
 };
 
 /**
- * The aside holds what sits beside the title. The slots are placed by grid
- * area, so this story writes the aside first and it still lands on the right.
+ * An overview's header only orients: the name, its state beside it, and as
+ * of when at the right. The slots are placed by grid area, so this story
+ * writes the meta first and it still lands on the right.
  */
-export const WithStatus: Story = {
+export const Orientation: Story = {
+  args: { eyebrow: undefined, lede: undefined },
   render: (args) => (
     <PageHeader {...args}>
-      <PageHeaderAside>
-        <StatusPill tone="ok" dot={true}>
-          Monitoring active
+      <PageHeaderMeta>As of 12 Oct, 10:00 · 14 sources · updates live</PageHeaderMeta>
+      <PageHeaderTitle>Production</PageHeaderTitle>
+      <PageHeaderStatus>
+        <StatusPill tone="danger" dot={true}>
+          Needs attention
         </StatusPill>
-      </PageHeaderAside>
-      <PageHeaderTitle>Watched identities</PageHeaderTitle>
+      </PageHeaderStatus>
     </PageHeader>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const title = canvas.getByRole("heading", { name: "Watched identities" });
-    const status = canvas.getByText("Monitoring active");
-    await expect(status.getBoundingClientRect().left).toBeGreaterThan(title.getBoundingClientRect().left);
+    const title = canvas.getByRole("heading", { level: 1, name: "Production" }).getBoundingClientRect();
+    const status = canvas.getByText("Needs attention").getBoundingClientRect();
+    const meta = canvas.getByText("updates live").getBoundingClientRect();
+    await expect(status.left).toBeGreaterThan(title.right);
+    await expect(Math.abs(status.top + status.height / 2 - (title.top + title.height / 2))).toBeLessThan(6);
+    await expect(meta.left).toBeGreaterThan(status.right);
+  },
+};
+
+/** A list page keeps its one primary action at the right; the meta moves under the name. */
+export const WithAction: Story = {
+  args: { eyebrow: undefined, lede: undefined },
+  render: (args) => (
+    <PageHeader {...args}>
+      <PageHeaderTitle>Watched identities</PageHeaderTitle>
+      <PageHeaderMeta>214 identities · 3 added today</PageHeaderMeta>
+      <PageHeaderAside>
+        <Button shortcut="n">Add identity</Button>
+      </PageHeaderAside>
+    </PageHeader>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const title = canvas.getByRole("heading", { name: "Watched identities" }).getBoundingClientRect();
+    const meta = canvas.getByText("214 identities").getBoundingClientRect();
+    const action = canvas.getByRole("button", { name: /Add identity/ }).getBoundingClientRect();
+    await expect(meta.top).toBeGreaterThan(title.bottom - 1);
+    await expect(action.left).toBeGreaterThan(title.right);
   },
 };
 
 /**
- * On a phone the aside keeps its width and wraps beneath the lede, rather
- * than squeezing the title to one word a line.
+ * On a phone the header is one column: the name, its state, the meta under
+ * it, the action at full width, rather than a title squeezed to one word a
+ * line.
  */
 export const Narrow: Story = {
   parameters: { controls: { disable: true } },
+  args: { eyebrow: undefined, lede: undefined },
   render: (args) => (
-    <div style={{ maxWidth: 360 }}>
+    <div style={{ maxWidth: 358 }}>
       <PageHeader {...args}>
         <PageHeaderTitle>Watched identities</PageHeaderTitle>
-        <PageHeaderAside>
+        <PageHeaderStatus>
           <StatusPill tone="ok" dot={true}>
             Monitoring active
           </StatusPill>
+        </PageHeaderStatus>
+        <PageHeaderMeta>As of 12 Oct, 10:00 · 214 identities</PageHeaderMeta>
+        <PageHeaderAside>
+          <Button>Add identity</Button>
         </PageHeaderAside>
       </PageHeader>
     </div>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const title = canvas.getByRole("heading", { name: "Watched identities" });
-    const status = canvas.getByText("Monitoring active");
-    await expect(status.getBoundingClientRect().top).toBeGreaterThan(title.getBoundingClientRect().bottom);
+    const title = canvas.getByRole("heading", { name: "Watched identities" }).getBoundingClientRect();
+    const status = canvas.getByText("Monitoring active").getBoundingClientRect();
+    const meta = canvas.getByText("214 identities").getBoundingClientRect();
+    const action = canvas.getByRole("button", { name: "Add identity" }).getBoundingClientRect();
+    await expect(status.top).toBeGreaterThan(title.bottom - 1);
+    await expect(meta.top).toBeGreaterThan(status.bottom - 1);
+    await expect(action.width).toBeGreaterThan(300);
   },
 };
 

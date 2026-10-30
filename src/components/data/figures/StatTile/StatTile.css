@@ -6,13 +6,13 @@
     height: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
+    box-shadow: var(--di-elevation-surface);
   }
 
   .di-stat-tile.is-danger {
-    border-color: var(--di-status-danger-border);
+    box-shadow: 0 0 0 1px var(--di-status-danger-border);
   }
 
   .di-stat-tile-index {
@@ -22,7 +22,7 @@
     flex: none;
     padding-top: var(--di-space-12);
     border-right: 1px solid var(--di-border);
-    background: var(--di-bg-page);
+    background: var(--di-bg-subtle);
   }
 
   .di-stat-tile.is-danger .di-stat-tile-index {
@@ -50,20 +50,20 @@
   }
 
   .di-stat-tile-label {
-    font-family: var(--di-label-family);
-    font-size: var(--di-label-size);
-    font-weight: var(--di-label-weight);
-    letter-spacing: normal;
-    text-transform: none;
-    color: var(--di-label-color);
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
   }
 
   /* The measurement, in the mono track so a column of them stays still. */
   .di-stat-tile-value {
     margin-top: var(--di-space-6);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-700);
-    font-weight: var(--di-weight-medium);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-figure-size);
+    font-weight: var(--di-weight-bold);
     font-variant-numeric: tabular-nums;
     letter-spacing: var(--di-tracking-tight);
     line-height: var(--di-leading-tight);

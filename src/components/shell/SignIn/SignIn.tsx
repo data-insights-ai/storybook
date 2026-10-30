@@ -5,13 +5,15 @@ import { TickRule } from "../../data/text/TickRule";
 import "./SignIn.css";
 
 /**
- * Navy sheet, paper card, gold seal. The card carries the register's
- * index column, with the seal where the ordinal would sit: this is the
- * boundary of the record, and it is sealed.
+ * Navy sheet, paper card, gold seal. The card carries the index column,
+ * with the seal where the ordinal would sit: this is the boundary of the
+ * record, and it is sealed.
  *
  * The access boundary is stated in plain words under the button, never
- * in a tooltip. The card pins the daylight colours in both themes,
- * because it sits on a navy ground either way.
+ * in a tooltip. The sheet is the dark theme and the card the daylight one
+ * in both themes: each sets its theme on itself, so everything inside the
+ * card — a field, a notice, a panel, a table — resolves the daylight
+ * roles without the card naming a colour.
  */
 export function SignIn({
   kicker,
@@ -52,14 +54,14 @@ export function SignIn({
   }
 
   return (
-    <main className="di-login">
+    <main className="di-login" data-theme="dark">
       <div className="di-login-stack">
         <p className="di-login-kicker">
           <img className="di-login-logo" src={logoInverse} alt="datAInsights" />
           {version}
         </p>
 
-        <form className="di-login-card" aria-label={title} onSubmit={handleSubmit}>
+        <form className="di-login-card" data-theme="light" aria-label={title} onSubmit={handleSubmit}>
           <div className="di-login-index">
             <SealMark state="sealed" />
             <span className="di-login-index-rule" aria-hidden />

@@ -372,4 +372,17 @@
       padding-inline: var(--di-space-16);
     }
   }
+
+  /* The rail is paper in daylight and navy after dark; the lockup follows it. */
+  .di-brand-night {
+    display: none;
+  }
+
+  [data-theme="dark"] .di-brand-day {
+    display: none;
+  }
+
+  [data-theme="dark"] .di-brand-night {
+    display: block;
+  }
 }

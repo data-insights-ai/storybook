@@ -1,0 +1,73 @@
+@layer components {
+  .di-figure-row-strip {
+    padding: var(--di-space-16) var(--di-space-24);
+    border-radius: var(--di-radius-inset);
+    background: var(--di-bg-strip);
+  }
+
+  /* The rule stands in the middle of the gap before each figure. The one
+     before the first figure of a line falls outside the list and is
+     clipped, so a rule only ever separates two figures, however it wraps. */
+  .di-figure-list {
+    --di-figure-gap: var(--di-space-32);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+    gap: var(--di-space-16) var(--di-figure-gap);
+    margin: 0;
+    clip-path: inset(-8px -8px -8px 0);
+  }
+
+  .di-figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    min-width: 0;
+    margin-inline-start: calc(-0.5 * var(--di-figure-gap));
+    padding-inline-start: calc(0.5 * var(--di-figure-gap));
+    border-inline-start: 1px solid var(--di-rule);
+  }
+
+  .di-figure-label {
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
+  }
+
+  .di-figure-value {
+    margin: 0;
+    font-family: var(--di-heading-family);
+    font-size: var(--di-figure-size);
+    font-weight: var(--di-weight-bold);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--di-leading-tight);
+    color: var(--di-text);
+  }
+
+  .di-figure.is-warn .di-figure-value {
+    color: var(--di-status-warn-fg);
+  }
+
+  .di-figure.is-danger .di-figure-value {
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-figure-note {
+    margin: 0;
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-subtle);
+  }
+
+  @media (max-width: 600px) {
+    .di-figure-row-strip {
+      padding: var(--di-space-16);
+    }
+
+    .di-figure-list {
+      --di-figure-gap: var(--di-space-24);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr));
+    }
+  }
+}

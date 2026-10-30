@@ -11,28 +11,31 @@
     container-type: inline-size;
   }
 
+  /*
+   * Three columns: the name as wide as it needs, its state right after it,
+   * and the rest — the meta, or the page's action — against the right edge.
+   */
   .di-page-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, max-content) minmax(0, 1fr) auto;
     grid-template-areas:
-      "crumbs"
-      "eyebrow"
-      "title"
-      "status"
-      "lede"
-      "facts";
+      "crumbs crumbs crumbs"
+      "eyebrow eyebrow eyebrow"
+      "title status meta"
+      "lede lede lede"
+      "facts facts facts";
+    column-gap: var(--di-space-12);
+    align-items: center;
   }
 
   .di-page-grid:has(> .di-page-aside) {
-    grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
-      "crumbs crumbs"
-      "eyebrow aside"
-      "title aside"
-      "status aside"
-      "lede aside"
-      "facts facts";
-    column-gap: var(--di-space-24);
+      "crumbs crumbs crumbs"
+      "eyebrow eyebrow aside"
+      "title status aside"
+      "meta meta aside"
+      "lede lede aside"
+      "facts facts facts";
   }
 
   .di-page-crumbs {
@@ -42,11 +45,30 @@
 
   .di-page-status {
     grid-area: status;
+    justify-self: start;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--di-space-6);
+  }
+
+  .di-page-meta {
+    --di-meta-justify: flex-end;
+    grid-area: meta;
+    justify-self: end;
+    min-width: 0;
+    max-width: 48ch;
+    padding-left: var(--di-space-12);
+    text-align: right;
+  }
+
+  .di-page-grid:has(> .di-page-aside) .di-page-meta {
+    --di-meta-justify: flex-start;
+    justify-self: start;
+    max-width: none;
     margin-top: var(--di-space-8);
+    padding-left: 0;
+    text-align: left;
   }
 
   .di-page-facts {
@@ -61,16 +83,17 @@
 
   .di-page-title {
     min-width: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     grid-area: title;
-    font-family: var(--di-font-ui);
+    font-family: var(--di-heading-family);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
+    text-wrap: balance;
     color: var(--di-text);
   }
 
   .di-lede {
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     grid-area: lede;
     color: var(--di-text-muted);
     text-wrap: pretty;
@@ -84,9 +107,17 @@
     align-items: center;
     justify-content: flex-end;
     gap: var(--di-space-8);
+    padding-left: var(--di-space-12);
   }
 
-  @container (width < 36rem) {
+  /*
+   * Narrower than 40rem the header is one column: the name, its state, the
+   * meta under it, and the action at full width below, rather than a title
+   * squeezed to one word a line. The header is the container, so that is
+   * the header's width and not the viewport's.
+   */
+  @container (width < 40rem) {
+    .di-page-grid,
     .di-page-grid:has(> .di-page-aside) {
       grid-template-columns: minmax(0, 1fr);
       grid-template-areas:
@@ -94,18 +125,36 @@
         "eyebrow"
         "title"
         "status"
+        "meta"
         "lede"
         "aside"
         "facts";
     }
 
-    .di-page-aside {
+    .di-page-status {
+      margin-top: var(--di-space-8);
+    }
+
+    .di-page-meta,
+    .di-page-grid:has(> .di-page-aside) .di-page-meta {
+      --di-meta-justify: flex-start;
       justify-self: start;
+      max-width: none;
+      margin-top: var(--di-space-8);
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .di-page-aside {
+      flex-direction: column;
+      align-items: stretch;
+      justify-self: stretch;
       margin-top: var(--di-space-16);
+      padding-left: 0;
     }
   }
 
-  /* The console tier: 28px over a 12px lede. Like the brand tier it carries
+  /* The console tier: a 28px name in the display face over a 14px lede. Like the brand tier it carries
      no bottom margin; the page or Stack around it owns the rhythm. */
   .di-page-head-console {
     --di-eyebrow-gap: var(--di-space-8);
@@ -113,14 +162,14 @@
 
   .di-page-head-console .di-page-title {
     max-width: 680px;
-    font-size: var(--di-font-size-700);
+    font-size: var(--di-page-title-size);
     line-height: var(--di-leading-tight);
   }
 
   .di-page-head-console .di-lede {
     margin-top: var(--di-space-8);
     max-width: 62ch;
-    font-size: var(--di-font-size-300);
+    font-size: var(--di-font-size-400);
     line-height: var(--di-leading-snug);
   }
 
@@ -146,7 +195,6 @@
     max-width: 16ch;
     font-size: clamp(var(--di-font-size-800), 6vw, var(--di-font-size-1000));
     line-height: 1.02;
-    text-wrap: balance;
   }
 
   .di-page-head-brand .di-lede {

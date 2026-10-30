@@ -246,6 +246,44 @@ export const FillColumn: Story = {
 };
 
 /**
+ * Prose in the filling column wraps inside it; the other columns keep
+ * their line, and the table does not run past its frame.
+ */
+export const FillColumnProse: Story = {
+  name: "Fill column with prose",
+  args: { caption: "Findings", indexed: false },
+  render: (args) => (
+    <div style={{ maxWidth: 560 }}>
+      <DataTable {...args}>
+        <TableHead>
+          <TableColumn>Finding</TableColumn>
+          <TableColumn width="fill">What happened</TableColumn>
+          <TableColumn>Seen</TableColumn>
+        </TableHead>
+        <TableBody>
+          {[
+            { id: "F-1042", text: "A service account signed in from a host it had never used, then read the payroll share for forty minutes." },
+            { id: "F-1043", text: "The mail gateway stopped sending audit events after its certificate was renewed." },
+          ].map((row) => (
+            <TableRow key={row.id}>
+              <TableCell mono>{row.id}</TableCell>
+              <TableCell>{row.text}</TableCell>
+              <TableCell mono>09:12</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </DataTable>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const scroll = canvasElement.querySelector(".di-table-scroll") as HTMLElement;
+    await expect(scroll.scrollWidth).toBeLessThanOrEqual(scroll.clientWidth + 1);
+    const prose = within(canvasElement).getByText(/payroll share/);
+    await expect(getComputedStyle(prose).whiteSpace).toBe("normal");
+  },
+};
+
+/**
  * `onSelect`: the whole row is the pointer target for the pane it opens.
  * The identifier stays a control, because a keyboard cannot reach a row.
  */

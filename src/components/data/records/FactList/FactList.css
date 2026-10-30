@@ -74,14 +74,18 @@
     background: var(--di-bg-surface);
   }
 
-  /* Small gold on paper is seal ink. Gold 500 is a mark, not type. */
+  /* The label above a figure: a mono label, so the value reads first. */
   .di-facts-grid .di-fact-label {
-    font-size: var(--di-font-size-100);
-    color: var(--di-seal-ink);
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
   }
 
   .di-facts-grid .di-fact-value {
-    font-family: var(--di-font-ui);
+    font-family: var(--di-heading-family);
     font-size: var(--di-font-size-600);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);

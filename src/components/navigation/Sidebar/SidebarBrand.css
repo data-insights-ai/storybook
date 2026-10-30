@@ -16,3 +16,17 @@
     margin-inline: auto;
   }
 }
+
+@layer components {
+  .di-sb-brand-night {
+    display: none;
+  }
+
+  [data-theme="dark"] .di-sb-brand-day {
+    display: none;
+  }
+
+  [data-theme="dark"] .di-sb-brand-night {
+    display: block;
+  }
+}

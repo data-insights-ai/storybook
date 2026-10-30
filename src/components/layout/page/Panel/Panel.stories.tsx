@@ -15,6 +15,7 @@ const meta = {
     indexTone: "neutral",
     indexRule: true,
     surface: "sheet",
+    emphasis: false,
     title: "Source register",
     padded: true,
     children: "A panel holds one thing the register knows about.",
@@ -24,7 +25,10 @@ const meta = {
     indexSize: { control: "radio", options: ["md", "sm"] },
     indexTone: { control: "radio", options: ["neutral", "danger"] },
     indexRule: { control: "boolean" },
-    surface: { control: "radio", options: ["sheet", "grid"] },
+    surface: { control: "radio", options: ["sheet", "inset"] },
+    emphasis: { control: "boolean" },
+    label: { control: "text" },
+    heading: { control: "radio", options: [2, 3] },
     title: { control: "text" },
     padded: { control: "boolean" },
     children: { control: "text" },
@@ -76,9 +80,34 @@ export const MetaStatus: Story = {
   ),
 };
 
-/** The cold surface. For a dense field of mono values only. */
-export const Grid: Story = {
-  args: { surface: "grid", title: "Extract" },
+/** A step below the surface it sits in: a group inside a panel, a quoted extract. */
+export const Inset: Story = {
+  args: { index: undefined, surface: "inset", title: "Extract" },
+  render: (args) => (
+    <Panel index={undefined} title="Manifest">
+      <Panel {...args}>a4f9c21e · 2026-09-18T09:12:04Z</Panel>
+    </Panel>
+  ),
+};
+
+/**
+ * A mono label above the title, and the title as a heading the page outline
+ * reads. The label is a kind or a source; the title says what the block shows.
+ */
+export const Labelled: Story = {
+  args: { index: undefined, label: "Coverage · last 24 h", title: "Two of nine tables are not arriving", heading: 2 },
+};
+
+/** The one block that matters in the view carries the gold edge. One per view. */
+export const Emphasis: Story = {
+  args: {
+    index: undefined,
+    emphasis: true,
+    label: "Verdict",
+    title: "Credentials were used to reach the file server",
+    heading: 2,
+    children: "Isolate the server before the next sync window.",
+  },
 };
 
 /** A short tile: no rule, because there is no height for it to run down. */

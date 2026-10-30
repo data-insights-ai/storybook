@@ -31,7 +31,8 @@ export type ChoiceCardsPlanned = {
  *
  * `planned` lists the kinds that cannot be chosen yet below the cards:
  * smaller, quieter tiles in a list, not radios, so the keyboard passes
- * them by.
+ * them by. `children` sit between the two: what the chosen card asks of
+ * the reader next, such as a guide to set it up.
  */
 export function ChoiceCards({
   name,
@@ -42,6 +43,7 @@ export function ChoiceCards({
   onChange,
   planned,
   className,
+  children,
 }: {
   name: string;
   /** Names the choice, shown above the cards. */
@@ -53,6 +55,8 @@ export function ChoiceCards({
   onChange: (value: string) => void;
   planned?: ChoiceCardsPlanned;
   className?: string;
+  /** Under the cards, before `planned`: what follows from the chosen card. */
+  children?: ReactNode;
 }) {
   const plannedId = useId();
   const groups = [...new Set(options.map((o) => o.group ?? ""))];
@@ -96,6 +100,7 @@ export function ChoiceCards({
           </div>
         </div>
       ))}
+      {children ? <div className="di-choicecards-detail">{children}</div> : null}
       {planned && planned.options.length > 0 ? (
         <div className="di-choicecards-planned">
           <p className="di-choicecards-planned-head">
