@@ -724,9 +724,10 @@ export const DeprecatedNames: Story = {
     await expect(canvas.getByRole("radio", { name: /Event Hub/ })).toBeChecked();
     const chosen = [...canvasElement.querySelectorAll(".is-chosen")];
     await expect(chosen).toHaveLength(4);
-    const fills = new Set(
-      chosen.filter((c) => !c.classList.contains("di-choice-card")).map((c) => getComputedStyle(c).backgroundColor),
-    );
-    await expect(fills.size).toBe(1);
+    const fill = (selector: string) =>
+      new Set(chosen.filter((c) => c.matches(selector)).map((c) => getComputedStyle(c).backgroundColor));
+    const toggles = fill(".di-choice-toggle");
+    await expect(toggles.size).toBe(1);
+    await expect([...fill(".di-choice-segment")].some((bg) => toggles.has(bg))).toBe(false);
   },
 };
