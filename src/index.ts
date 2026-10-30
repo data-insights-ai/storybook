@@ -242,7 +242,7 @@ export {
 } from "./components/layout/arrange/Split";
 export { StatusPill } from "./components/status/StatusPill";
 export { Step, StepFooter, StepIcon, Steps } from "./components/navigation/Steps";
-export type { StepState, StepsVariant } from "./components/navigation/Steps";
+export type { StepState, StepsVariant, StepTone } from "./components/navigation/Steps";
 export { Switch } from "./components/forms/choice/Switch";
 export { TabPanel, Tabs } from "./components/navigation/Tabs";
 export { TabNav, TabNavLink } from "./components/navigation/TabNav";
