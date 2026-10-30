@@ -108,7 +108,7 @@ export function CoverageScreen({ state = "ready" }: { state?: CoverageState }) {
               </TableHead>
               <TableBody>
                 {shown.map((row) => (
-                  <TableRow key={row.table} tone={row.arrival === "missing" ? "danger" : "neutral"}>
+                  <TableRow key={row.table}>
                     <TableCell>
                       <CellStack primary={row.table} secondary={row.source} />
                     </TableCell>

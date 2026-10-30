@@ -7,7 +7,7 @@ import { TextField } from "../../forms/text/TextField";
 import { Tag } from "../../marks/Tag";
 import { TextLink } from "../../navigation/TextLink";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
-import { Panel } from "../../layout/page/Panel";
+import { Fact, FactList } from "../../data/records/FactList";
 import { StatusPill } from "../../marks/status/StatusPill";
 
 const meta = {
@@ -20,8 +20,8 @@ const meta = {
     eyebrow: "Sealed workspace",
     title: "Sign in",
     lede: "The register opens once the key is verified.",
-    restriction: "access restricted to authorised operators",
-    foot: "SSO and 2FA · end-to-end encrypted",
+    restriction: "Access is restricted to authorised operators.",
+    foot: "SSO and 2FA · End-to-end encrypted",
     onSubmit: fn(),
     children: null,
   },
@@ -76,6 +76,8 @@ export const Default: Story = {
     await expect(getComputedStyle(document.documentElement).backgroundColor).toBe(
       getComputedStyle(sheet).backgroundColor,
     );
+    const [kicker, first] = [...canvasElement.querySelectorAll(".di-login-foot > li")];
+    await expect(first.getBoundingClientRect().top).toBe(kicker.getBoundingClientRect().top);
   },
 };
 
@@ -172,17 +174,19 @@ export const SecondFactor: Story = {
 };
 
 /**
- * The card resolves its tokens from the theme around it, so a panel or a
- * table inside it follows the theme with nothing pinned by hand.
+ * After the key: choosing where to go. The card resolves its tokens from the
+ * theme around it, so a fact list and a table inside it follow the theme with
+ * nothing pinned by hand. The table keeps to the card's content edge like the
+ * line above it and the button below it: one left edge for the whole card.
  */
 export const WithPanelAndTable: Story = {
-  name: "With a panel and a table",
+  name: "Choosing a workspace",
   args: { title: "Choose a workspace", lede: "Your account opens two workspaces." },
   render: (args) => (
     <SignIn {...args}>
-      <Panel surface="inset" title="Last sign-in">
-        Yesterday, 18:04, from Vienna.
-      </Panel>
+      <FactList layout="pairs">
+        <Fact label="Last sign-in">Yesterday, 18:04, from Vienna</Fact>
+      </FactList>
       <DataTable caption="Workspaces" indexed={false}>
         <TableHead>
           <TableColumn>Workspace</TableColumn>
@@ -216,6 +220,11 @@ export const WithPanelAndTable: Story = {
     await expect(getComputedStyle(card).getPropertyValue("--di-bg-surface")).toBe(
       getComputedStyle(canvasElement).getPropertyValue("--di-bg-surface"),
     );
+    const box = (selector: string) => card.querySelector(selector)!.getBoundingClientRect();
+    const edge = box(".di-eyebrow").left;
+    for (const part of [".di-fact-label", ".di-table-wrap", "thead tr", ".di-btn"])
+      await expect(Math.abs(box(part).left - edge)).toBeLessThan(1);
+    await expect(Math.abs(box(".di-table-wrap").right - box(".di-btn").right)).toBeLessThan(1);
   },
 };
 
@@ -243,7 +252,7 @@ export const German: Story = {
     eyebrow: "Versiegelter Arbeitsbereich",
     title: "Anmelden",
     lede: "Das Register öffnet sich, sobald Ihr Schlüssel bestätigt ist.",
-    restriction: "Zugang nur für berechtigte Bedienerinnen und Bediener",
+    restriction: "Der Zugang ist auf berechtigte Bedienerinnen und Bediener beschränkt.",
     foot: "SSO und Zwei-Faktor · Ende-zu-Ende-verschlüsselt",
   },
   render: (args) => (
