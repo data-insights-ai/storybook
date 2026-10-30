@@ -663,6 +663,10 @@ export const ScrollingSideways: Story = {
       await expect(wrap).toHaveClass("is-overflowing", "is-more-end");
       await expect(wrap).not.toHaveClass("is-more-start");
       await expect(getComputedStyle(name).position).toBe("sticky");
+      // The selection box keeps the cell inset from the frame's edge, like any first column.
+      const mark = table.querySelector("tbody .di-choice-mark")!.getBoundingClientRect();
+      const edge = frame.getBoundingClientRect();
+      await expect(rtl ? edge.right - mark.right : mark.left - edge.left).toBeGreaterThanOrEqual(11.5);
       frame.scrollLeft = rtl ? -frame.scrollWidth : frame.scrollWidth;
       await waitFor(() => expect(wrap).toHaveClass("is-more-start"));
       await expect(wrap).not.toHaveClass("is-more-end");
