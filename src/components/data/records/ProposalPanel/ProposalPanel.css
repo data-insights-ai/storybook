@@ -1,0 +1,131 @@
+@layer components {
+  /* One surface, one inset all round; blocks 16px apart, the head's two lines 8px. */
+  .di-proposal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-16);
+    min-width: 0;
+  }
+
+  .di-proposal-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+  }
+
+  .di-proposal-label {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-8);
+    margin: 0;
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
+  }
+
+  /* The question is the panel's title: the display face, its one bold line. */
+  .di-proposal-question {
+    margin: 0;
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
+    text-wrap: balance;
+    color: var(--di-text);
+  }
+
+  .di-proposal-answer {
+    margin: 0;
+    max-width: var(--di-measure-prose);
+    font-size: var(--di-font-size-500);
+    line-height: var(--di-leading-snug);
+    text-wrap: pretty;
+    color: var(--di-text);
+  }
+
+  .di-proposal-why-label {
+    font-size: var(--di-font-size-400);
+    color: var(--di-text);
+  }
+
+  .di-proposal-why-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-16);
+  }
+
+  .di-proposal-ignored summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-gap-4);
+    width: fit-content;
+    list-style: none;
+    cursor: pointer;
+    color: var(--di-text-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--di-select);
+    text-underline-offset: 3px;
+  }
+
+  .di-proposal-ignored summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .di-proposal-ignored summary > svg {
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
+    transition: transform var(--di-duration) var(--di-ease);
+  }
+
+  .di-proposal-ignored[open] summary > svg {
+    transform: rotate(180deg);
+  }
+
+  .di-proposal-ignored summary:hover {
+    color: var(--di-text);
+  }
+
+  .di-proposal-ignored summary:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-proposal-ignored ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-4);
+    margin: var(--di-gap-8) 0 0;
+    padding-inline-start: var(--di-gap-16);
+    color: var(--di-text-muted);
+  }
+
+  .di-proposal-note {
+    margin: 0;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-subtle);
+  }
+
+  .di-proposal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--di-gap-8);
+  }
+
+  /* The deprecated ConfirmPanel keeps its why link, at the start of the action row. */
+  .di-proposal-why-link {
+    margin-inline-end: auto;
+  }
+
+  @media (max-width: 600px) {
+    .di-proposal-actions {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+  }
+}
