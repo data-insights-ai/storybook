@@ -37,6 +37,7 @@ function stories(
     test: {
       name,
       setupFiles: [
+        "./.storybook/tests/surfaces/spacing.setup.ts",
         "./.storybook/tests/contrast/vitest.setup.ts",
         "./.storybook/tests/surfaces/vitest.setup.ts",
         ...setupFiles,

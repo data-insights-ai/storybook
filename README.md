@@ -22,7 +22,7 @@ pnpm build
 pnpm build-storybook
 ```
 
-`pnpm format` rewrites the files in place; `pnpm lint` is ESLint (typescript-eslint, the React hooks rules, jsx-a11y) at zero findings. `pnpm test` runs every story in a browser four times — light and dark, at desktop width and at 390px — and fails on an accessibility violation in either, and measures the contrast of all visible text itself, at several points on each line, where axe cannot decide (chart labels, text over a pseudo-element). `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
+`pnpm format` rewrites the files in place; `pnpm lint` is ESLint (typescript-eslint, the React hooks rules, jsx-a11y) at zero findings. `pnpm test` runs every story in a browser four times — light and dark, at desktop width and at 390px — and fails on an accessibility violation in either, and measures the contrast of all visible text itself, at several points on each line, where axe cannot decide (chart labels, text over a pseudo-element). It also measures every surface: the same inset above and below its content, and the gaps between its head, body and foot on the space scale. `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
 
 ## Use a released version
 

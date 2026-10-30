@@ -5,6 +5,11 @@
     padding: var(--di-space-8) var(--di-space-8);
   }
 
+  /* At the foot the logo keeps the frame's inset to the bottom edge, not its own on top of it. */
+  .di-sb-footer > .di-sb-brand:last-child {
+    padding-bottom: 0;
+  }
+
   .di-sb-brand-logo {
     height: 24px;
     width: auto;

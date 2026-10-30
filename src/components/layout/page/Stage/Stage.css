@@ -42,7 +42,12 @@
     color: var(--di-text-muted);
   }
 
+  /* A flex row, so a spinner or a pill sets the footer's height rather than a text strut under it. */
   .di-stage-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8);
     margin-top: auto;
   }
 

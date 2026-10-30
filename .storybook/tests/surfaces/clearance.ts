@@ -23,13 +23,13 @@ const FULL_BLEED: [selector: string, reason: string][] = [
   [".di-chart-tip", "a chart tooltip is a label, padded at the label scale"],
   [".di-icon-catalog", "an icon specimen grid: each cell is sized to its icon and longest name"],
 ];
-const BLEED = FULL_BLEED.map(([selector]) => selector).join(", ");
+export const BLEED = FULL_BLEED.map(([selector]) => selector).join(", ");
 /* The entries past the generic ones name controls that are themselves full-bleed rows or fields. */
 const BLEED_CONTROLS = FULL_BLEED.slice(4)
   .map(([selector]) => selector)
   .join(", ");
 
-function isSurface(el: Element): boolean {
+export function isSurface(el: Element): boolean {
   if (el.matches(BLEED) || el === document.body || el === document.documentElement) return false;
   const style = getComputedStyle(el);
   const rect = el.getBoundingClientRect();
