@@ -23,8 +23,8 @@ const meta = {
     children: { control: false },
   },
   decorators: [
-    (Story) => (
-      <div style={{ maxWidth: 260 }}>
+    (Story, { parameters }) => (
+      <div style={{ maxWidth: parameters.track ? undefined : 260 }}>
         {/* A stage sits under a section title on a screen; the story
             supplies that level so the heading order stays valid. */}
         <h2 className="di-sr">Pipeline</h2>
@@ -88,15 +88,7 @@ export const SealedFoot: Story = {
 
 /** The whole track, which is how a stage is read. */
 export const Track: Story = {
-  parameters: { controls: { disable: true } },
-  decorators: [
-    (Story) => (
-      <>
-        <h2 className="di-sr">Pipeline</h2>
-        <Story />
-      </>
-    ),
-  ],
+  parameters: { controls: { disable: true }, track: true },
   render: () => (
     <StageTrack>
       <Stage step="01" title="Connect" body="A source is named, reached and checked for a manifest.">

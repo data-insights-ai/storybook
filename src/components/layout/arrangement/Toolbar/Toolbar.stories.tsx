@@ -71,7 +71,7 @@ export const InlineForm: Story = {
           <option value="nora">Nora Feld</option>
           <option value="jonas">Jonas Brandt</option>
         </Select>
-        <TextField id="toolbar-note" label="Note" hint="Use 1 to 80 characters." hintTone="error" />
+        <TextField id="toolbar-note" label="Note" defaultValue="Covers the night shift until Friday, when the rota changes back to the usual handover" hint="Use 1 to 80 characters." hintTone="error" />
         <Button type="submit">Grant</Button>
       </Toolbar>
     </form>
@@ -85,14 +85,49 @@ export const InlineForm: Story = {
   },
 };
 
+/**
+ * A one-line add form (`fillFirst`): the first field takes the free width,
+ * the select fits its options, the button sits on the control row. When the
+ * toolbar itself is narrower than 600px, in a sheet or on a phone, it stacks.
+ */
+export const AddForm: Story = {
+  name: "Add form",
+  render: () => (
+    <form onSubmit={(event) => event.preventDefault()}>
+      <Toolbar fillFirst>
+        <TextField id="tb-domain" label="Domain" mono placeholder="northwind.example" hint="Verified by a DNS record." />
+        <Select id="tb-mode" label="Sign-in" mono={false} defaultValue="required">
+          <option value="required">Required</option>
+          <option value="optional">Optional</option>
+        </Select>
+        <Button type="submit">Add domain</Button>
+      </Toolbar>
+    </form>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText("Domain").getBoundingClientRect();
+    const select = canvas.getByLabelText("Sign-in").getBoundingClientRect();
+    const button = canvas.getByRole("button", { name: "Add domain" }).getBoundingClientRect();
+    if (canvasElement.getBoundingClientRect().width >= 640) {
+      await expect(Math.abs(input.top + input.height / 2 - (button.top + button.height / 2))).toBeLessThan(2);
+      await expect(input.width).toBeGreaterThan(select.width * 2);
+    } else {
+      await expect(button.top).toBeGreaterThan(input.bottom);
+    }
+  },
+};
+
 /** `ToolbarEnd` sits at the far end even when it is written first. */
 export const EndWrittenFirst: Story = {
   render: () => (
     <Toolbar>
       <ToolbarEnd>
-        <Button variant="secondary">Export</Button>
+        <Button variant="secondary" size="dense">
+          Export
+        </Button>
       </ToolbarEnd>
-      <SearchField id="toolbar-first-search" label="Search sources" dense={true} />
+      <SearchField id="toolbar-first-search" label="Search sources" placeholder="host or hash" dense={true} />
     </Toolbar>
   ),
   play: async ({ canvasElement }) => {

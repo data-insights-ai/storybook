@@ -121,11 +121,12 @@
     min-width: 0;
   }
 
+  /* A sheet is a page of its own: its name is a section head in the display face. */
   .di-sheet-title {
     overflow-wrap: anywhere;
-    font-size: var(--di-font-size-600);
-    font-weight: var(--di-weight-semibold);
-    letter-spacing: var(--di-tracking-tight);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-section-title-size);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
     color: var(--di-text);
   }
@@ -203,16 +204,18 @@
     }
   }
 
-  /* Docked in a page's side column: a panel beside the content, no shadow,
-     no scrim; it arrives in place and the page stays as it was. */
+  /* Docked in a page's side column: a panel beside the content, drawn as a
+     Panel is (tone, the surface shadow, the same insets), no scrim; it
+     arrives in place and the page stays as it was. */
   .di-sheet-docked {
     display: flex;
     flex-direction: column;
     min-width: 0;
     min-height: 0;
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
+    border: 1px solid var(--di-panel-border);
+    border-radius: var(--di-panel-radius);
+    background: var(--di-panel-bg);
+    box-shadow: var(--di-elevation-surface);
     color: var(--di-text);
     opacity: 1;
     transition: opacity var(--di-duration-slow) var(--di-ease);
@@ -230,13 +233,10 @@
     min-height: 0;
   }
 
-  .di-sheet-docked .di-sheet-head {
-    padding: var(--di-space-12) var(--di-space-8) var(--di-space-12)
-      var(--di-space-16);
-  }
-
   .di-sheet-docked .di-sheet-title {
-    font-size: var(--di-font-size-500);
+    font-family: inherit;
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-semibold);
   }
 
   .di-sheet-docked .di-sheet-close {
@@ -251,11 +251,9 @@
 
   .di-sheet-docked .di-sheet-body {
     flex: 0 1 auto;
-    padding: var(--di-space-16);
   }
 
   .di-sheet-docked .di-sheet-footer {
-    padding: var(--di-space-12) var(--di-space-16);
     border-bottom-left-radius: var(--di-radius-surface);
     border-bottom-right-radius: var(--di-radius-surface);
   }

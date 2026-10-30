@@ -72,22 +72,24 @@
   /* On a page the step is a panel, as a record's sections are, and its
      actions are the panel's footer. */
   .di-create-flow[data-width="page"] .di-create-flow-panel {
+    --di-create-flow-pad: var(--di-panel-pad);
     gap: 0;
     border: 1px solid var(--di-panel-border);
     border-radius: var(--di-panel-radius);
     background: var(--di-panel-bg);
+    box-shadow: var(--di-elevation-surface);
   }
 
   .di-create-flow[data-width="page"] .di-create-flow-step {
-    padding: var(--di-space-16);
+    padding: var(--di-create-flow-pad);
   }
 
   .di-create-flow[data-width="page"] .di-create-flow-error {
-    padding: 0 var(--di-space-16) var(--di-space-12);
+    padding: 0 var(--di-create-flow-pad) var(--di-space-12);
   }
 
   .di-create-flow[data-width="page"] .di-create-flow-actions {
-    padding: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-space-12) var(--di-create-flow-pad);
     border-radius: 0 0 var(--di-panel-radius) var(--di-panel-radius);
     background: var(--di-panel-bg);
   }
@@ -105,16 +107,8 @@
   }
 
   @media (max-width: 600px) {
-    .di-create-flow[data-width="page"] .di-create-flow-step {
-      padding: var(--di-space-12);
-    }
-
-    .di-create-flow[data-width="page"] .di-create-flow-error {
-      padding: 0 var(--di-space-12) var(--di-space-12);
-    }
-
-    .di-create-flow[data-width="page"] .di-create-flow-actions {
-      padding: var(--di-space-12);
+    .di-create-flow[data-width="page"] .di-create-flow-panel {
+      --di-create-flow-pad: var(--di-space-16);
     }
   }
 }

@@ -26,13 +26,9 @@
     animation: di-flyout-in var(--di-duration) var(--di-ease) both;
   }
 
+  /* The panel takes focus only so Tab starts inside it; the reader sees it open, not a ring around it. */
   .di-flyout:focus {
     outline: none;
-  }
-
-  .di-flyout:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
   }
 
   @keyframes di-flyout-in {

@@ -20,7 +20,7 @@
    * Never a surface on the same surface: a panel or a tile inside a panel
    * takes the inset tone and drops its edge, whatever the caller wrote.
    */
-  .di-panel-content :is(.di-panel, .di-stat-tile) {
+  .di-panel-content :is(.di-panel, .di-stat-tile, .di-stage:not(.is-current)) {
     --di-panel-bg: var(--di-bg-subtle);
     border-color: transparent;
     border-radius: var(--di-radius-inset);
@@ -204,6 +204,11 @@
    */
   .di-panel-content > :has(+ .di-panel-footer) {
     margin-bottom: var(--di-panel-pad);
+  }
+
+  /* The lead belongs to what follows it, a step apart rather than run into it. */
+  .di-panel-lead:not(:last-child) {
+    margin-bottom: var(--di-space-12);
   }
 
   .di-panel-lead {

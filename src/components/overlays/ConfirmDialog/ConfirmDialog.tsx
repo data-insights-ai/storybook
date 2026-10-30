@@ -1,6 +1,7 @@
 import { useId, useState, type FormEvent } from "react";
 import { TriangleAlert } from "lucide-react";
 import { Button } from "../../actions/Button";
+import { TextField } from "../../forms/text/TextField";
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalIcon, ModalTitle } from "../Modal";
 import "./ConfirmDialog.css";
 
@@ -86,20 +87,17 @@ export function ConfirmDialog({
               ) : null}
             </ModalBody>
             {needsText ? (
-              <div className="di-field di-confirm-field">
-                <label className="di-field-label di-field-label-prose" htmlFor={fieldId}>
-                  {confirmTextLabel}
-                </label>
-                <input
-                  id={fieldId}
-                  className="di-control"
-                  value={typed}
-                  autoComplete="off"
-                  spellCheck={false}
-                  autoFocus
-                  onChange={(event) => setTyped(event.target.value)}
-                />
-              </div>
+              <TextField
+                id={fieldId}
+                className="di-confirm-field"
+                label={confirmTextLabel}
+                labelTrack="prose"
+                value={typed}
+                autoComplete="off"
+                spellCheck={false}
+                autoFocus
+                onChange={(event) => setTyped(event.target.value)}
+              />
             ) : null}
             {error ? (
               <p className="di-confirm-error" role="alert">

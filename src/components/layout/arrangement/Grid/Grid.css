@@ -7,4 +7,12 @@
     grid-template-columns: repeat(auto-fit, minmax(min(var(--di-grid-min), 100%), 1fr));
     min-width: 0;
   }
+
+  .di-grid[data-gap="16"] {
+    gap: var(--di-space-16);
+  }
+
+  .di-grid[data-gap="24"] {
+    gap: var(--di-space-24);
+  }
 }

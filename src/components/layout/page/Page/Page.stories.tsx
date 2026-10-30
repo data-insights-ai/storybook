@@ -1,10 +1,10 @@
-import type React from "react";
 import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Fact, FactList } from "../../../data/records/FactList";
 import { StatusPill } from "../../../marks/status/StatusPill";
+import { SeverityMark } from "../../../marks/status/SeverityMark";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
 import { TextLink } from "../../../navigation/TextLink";
 import { PageHeader, PageHeaderAside, PageHeaderTitle } from "../PageHeader";
@@ -16,6 +16,8 @@ const meta = {
   title: "Layout/Page/Page",
   component: Page,
   tags: ["layer:pattern", "autodocs"],
+  /* Full-bleed: these stories render the page without the shell, so the frame they show is the page's own. */
+  parameters: { layout: "fullscreen" },
   args: { width: "detail", children: null },
   argTypes: {
     width: { control: "radio", options: ["list", "detail", "full", "form"] },
@@ -26,16 +28,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* A page has no gutter of its own: the AppShell's workpane gives it one. A full-width story stands in for that pane. */
-function workpane(Story: () => React.ReactElement) {
-  return (
-    <div style={{ padding: "var(--di-space-24) var(--di-content-pad) var(--di-space-32)" }}>
-      <Story />
-    </div>
-  );
-}
-
-/** A header, then sections in the section rhythm; the width follows what the page holds. */
+/**
+ * A header, then sections in the section rhythm; the width follows what the
+ * page holds. Rendered here without the shell, as an error route outside it
+ * would be: the page keeps the shell's frame itself, so nothing runs to the
+ * window's edge. Inside `AppShellContent` the shell frames it instead.
+ */
 export const Detail: Story = {
   render: (args) => (
     <Page {...args}>
@@ -60,6 +58,9 @@ export const Detail: Story = {
   ),
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByRole("heading", { level: 1 })).toHaveTextContent("Northwind Survey");
+    const page = canvasElement.querySelector(".di-page")!.getBoundingClientRect();
+    const title = within(canvasElement).getByRole("heading", { level: 1 }).getBoundingClientRect();
+    await expect(title.left - page.left).toBeGreaterThanOrEqual(16);
   },
 };
 
@@ -69,8 +70,6 @@ export const Detail: Story = {
  * follows the sections.
  */
 export const WithAside: Story = {
-  parameters: { layout: "fullscreen" },
-  decorators: [workpane],
   render: (args) => (
     <Page {...args}>
       <PageHeader lede="What happened, and who works on it.">
@@ -84,7 +83,9 @@ export const WithAside: Story = {
       </DetailSection>
       <DetailSection title="Findings">
         <FactList layout="columns">
-          <Fact label="Credential access">high</Fact>
+          <Fact label="Credential access">
+            <SeverityMark level="high" label="High" />
+          </Fact>
         </FactList>
       </DetailSection>
       <PageAside label="Triage">
@@ -167,8 +168,6 @@ function ListWithSheet() {
  * list takes the whole width and the sheet covers it.
  */
 export const WithSheet: Story = {
-  parameters: { layout: "fullscreen" },
-  decorators: [workpane],
   args: { width: "list" },
   render: () => <ListWithSheet />,
   play: async ({ canvasElement }) => {

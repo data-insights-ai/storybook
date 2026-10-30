@@ -90,6 +90,11 @@
     min-width: 0;
   }
 
+  /* The pane takes focus when a narrow screen swaps to it, for the screen reader; it is not a control, so no ring. */
+  .di-ld-pane:focus {
+    outline: none;
+  }
+
   .di-ld-back {
     align-self: flex-start;
     display: inline-flex;

@@ -259,6 +259,11 @@
     background: var(--di-bg-page);
   }
 
+  /* What follows the sticky bar stops under it. */
+  .di-topbar ~ * {
+    --di-sticky-top: 59px;
+  }
+
   .di-topbar {
     min-width: 0;
     overflow-wrap: anywhere;

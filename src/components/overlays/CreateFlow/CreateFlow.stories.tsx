@@ -94,10 +94,8 @@ export const OnAPage: Story = {
   args: { width: "page" },
   parameters: { layout: "fullscreen" },
   render: (args) => (
-    <div style={{ padding: 32 }}>
-      <Page width="detail">
-        <Flow {...args} />
-      </Page>
-    </div>
+    <Page width="detail">
+      <Flow {...args} />
+    </Page>
   ),
 };

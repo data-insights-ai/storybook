@@ -26,7 +26,7 @@ const entries = [
 function Notifications() {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end", minHeight: 420 }}>
+    <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start", minHeight: 420 }}>
       <Flyout id="latest" title="Notifications" open={open} onOpenChange={setOpen}>
         <FlyoutTrigger>
           <CountButton

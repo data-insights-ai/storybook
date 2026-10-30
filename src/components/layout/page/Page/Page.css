@@ -11,6 +11,26 @@
     max-width: var(--di-measure-form);
   }
 
+  /* Outside AppShellContent (an error page, a route of its own) a page
+     brings the shell's frame itself, so it never runs to the window's edge. */
+  .di-page:not(.di-content .di-page) {
+    padding: var(--di-space-24) var(--di-content-pad) var(--di-space-32);
+  }
+
+  .di-page[data-width="form"]:not(.di-content .di-page) {
+    max-width: calc(var(--di-measure-form) + 2 * var(--di-content-pad));
+  }
+
+  @media (max-width: 900px) {
+    .di-page:not(.di-content .di-page) {
+      padding-inline: var(--di-space-16);
+    }
+
+    .di-page[data-width="form"]:not(.di-content .di-page) {
+      max-width: calc(var(--di-measure-form) + 2 * var(--di-space-16));
+    }
+  }
+
   /* The header sits closer to what it introduces than sections sit to each other. */
   .di-page > .di-page-head,
   .di-page-body > .di-page-head {

@@ -3,12 +3,11 @@
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
-    gap: var(--di-space-6);
+    gap: var(--di-space-8);
   }
 
   .di-inline-actions.is-start {
     justify-content: flex-start;
-    gap: var(--di-space-8);
   }
 
   @media (max-width: 600px) {
