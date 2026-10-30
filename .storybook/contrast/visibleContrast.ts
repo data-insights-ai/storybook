@@ -24,8 +24,9 @@
  * pixel wide or less is the visually hidden pattern), the part beyond the
  * document's top or left edge, which no scroll reaches, and a point an
  * opaque layer covers. Inactive content is out, as in WCAG: disabled
- * controls, `[aria-disabled="true"]`, `[inert]`, and the page behind a
- * modal dialog.
+ * controls, a control or composite input group marked `aria-disabled`,
+ * `[inert]`, and what an open modal dialog makes inert (a popover shown
+ * above it is still measured).
  */
 
 export type ContrastFinding = {
@@ -211,7 +212,7 @@ function hitTarget(element: Element) {
   return node;
 }
 
-type Measure ={ fg: Rgba; bg: Rgba; ratio: number } | string | null;
+type Measure = { fg: Rgba; bg: Rgba; ratio: number } | string | null;
 
 /** One point: the text and its ground as the eye gets them there, or null where an opaque layer covers it. */
 function measureAt(element: Element, fg: Rgba, x: number, y: number): Measure {
@@ -252,10 +253,29 @@ function large(element: Element) {
   return px >= 24 || (bold && px >= 18.66);
 }
 
+/* The controls WCAG means by an inactive user interface component, and the composite inputs that group them. */
+const CONTROL =
+  "button, input, select, textarea, a[href], [role='button'], [role='link'], [role='checkbox'], [role='radio'], " +
+  "[role='switch'], [role='textbox'], [role='searchbox'], [role='combobox'], [role='listbox'], [role='option'], " +
+  "[role='menuitem'], [role='menuitemcheckbox'], [role='menuitemradio'], [role='slider'], [role='spinbutton'], " +
+  "[role='tab'], [role='treeitem'], [role='gridcell']";
+
+function disabledControl(element: Element) {
+  const marked = element.closest("[aria-disabled='true']");
+  if (!marked) return false;
+  if (marked.matches(CONTROL)) return true;
+  const role = marked.getAttribute("role");
+  return (role === "group" || role === "radiogroup") && marked.querySelector(CONTROL) !== null;
+}
+
+/** Content an open modal dialog makes inert: outside every modal and every popover shown above it. */
+function behindModal(element: Element) {
+  if (!document.querySelector(":modal")) return false;
+  return !element.closest(":modal, :popover-open");
+}
+
 function inactive(element: Element) {
-  if (element.closest("[inert], :disabled, [aria-disabled='true']")) return true;
-  const modal = document.querySelector(":modal");
-  if (modal && !modal.contains(element)) return true;
+  if (element.closest("[inert], :disabled") || disabledControl(element) || behindModal(element)) return true;
   const label = element.closest("label");
   const control = label?.control ?? null;
   return control !== null && (control as HTMLInputElement).disabled;

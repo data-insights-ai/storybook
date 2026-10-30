@@ -86,3 +86,22 @@ test("readable text passes, and hidden text is not measured", async () => {
     <button disabled style="color: #dddddd;">Inactive</button>`);
   expect(await visibleContrast(host)).toEqual([]);
 });
+
+test("a popover shown above an open modal is still measured", async () => {
+  const host = fixture(`
+    <dialog id="modal"><p style="color: #0a1f44;">In the dialog</p></dialog>
+    <p style="color: #dddddd;">Behind the dialog, inert</p>
+    <div id="pop" popover="manual" style="background: #ffffff; color: #cccccc;">Pale popover</div>`);
+  host.querySelector<HTMLDialogElement>("#modal")!.showModal();
+  host.querySelector<HTMLElement>("#pop")!.showPopover();
+  const findings = await visibleContrast(document.body);
+  expect(findings.map((f) => f.text)).toEqual(["Pale popover"]);
+});
+
+test("aria-disabled on a section is not an inactive control: its pale prose fails", async () => {
+  const host = fixture(`
+    <section aria-disabled="true"><p style="color: #cccccc;">Pale prose in a section</p></section>
+    <div role="button" aria-disabled="true" style="color: #cccccc;">Disabled control</div>`);
+  const findings = await visibleContrast(host);
+  expect(findings.map((f) => f.text)).toEqual(["Pale prose in a section"]);
+});
