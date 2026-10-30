@@ -50,13 +50,8 @@ export function Tabs({
   }
 
   return (
-    <div
-      ref={strip}
-      role="tablist"
-      aria-label={label}
-      className={cx("di-tabs", className)}
-      onKeyDown={onKeyDown}
-    >
+    // eslint-disable-next-line jsx-a11y/interactive-supports-focus -- focus roves over the tabs inside; the list itself is not a stop (APG tabs pattern)
+    <div ref={strip} role="tablist" aria-label={label} className={cx("di-tabs", className)} onKeyDown={onKeyDown}>
       {items.map((item) => {
         const selected = item.value === value;
         return (
@@ -88,7 +83,8 @@ export function Tabs({
 
 /** Values are encoded without selector interpolation, including unmatched UTF-16 surrogates. */
 function tabId(kind: "tab" | "panel", value: string, prefix?: string) {
-  const encode = (part: string) => part.replace(/[^A-Za-z0-9_-]/g, (char) => `%${char.charCodeAt(0).toString(16).padStart(4, "0")}`);
+  const encode = (part: string) =>
+    part.replace(/[^A-Za-z0-9_-]/g, (char) => `%${char.charCodeAt(0).toString(16).padStart(4, "0")}`);
   return `${prefix === undefined ? "" : `${encode(prefix)}:`}${kind}-${encode(value)}`;
 }
 
@@ -99,7 +95,13 @@ function tabId(kind: "tab" | "panel", value: string, prefix?: string) {
  */
 export function TabPanel({ value, idPrefix, children }: { value: string; idPrefix?: string; children: ReactNode }) {
   return (
-    <div role="tabpanel" id={tabId("panel", value, idPrefix)} aria-labelledby={tabId("tab", value, idPrefix)} tabIndex={0} className="di-tabpanel">
+    <div
+      role="tabpanel"
+      id={tabId("panel", value, idPrefix)}
+      aria-labelledby={tabId("tab", value, idPrefix)}
+      tabIndex={0}
+      className="di-tabpanel"
+    >
       {children}
     </div>
   );

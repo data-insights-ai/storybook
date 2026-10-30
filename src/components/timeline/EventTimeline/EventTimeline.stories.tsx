@@ -89,20 +89,12 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
   const loaded = { start: view.start - width, end: view.end + width };
   const bars = foldBars(sample, loaded, bucketMs);
   const readable = eventsReadable(bars);
-  const events = readable
-    ? sample.filter((e) => e.at >= loaded.start && e.at < loaded.end)
-    : undefined;
+  const events = readable ? sample.filter((e) => e.at >= loaded.start && e.at < loaded.end) : undefined;
   const lanes = readable ? sampleLanes : foldLanes(sampleLanes, sample, loaded, bucketMs);
   const inView = sample.filter((e) => e.at >= view.start && e.at < view.end).length;
   const start = sample[0]?.at ?? NOW;
-  const overviewBars = useMemo(
-    () => foldBars(sample, bounds, overviewBucketMs),
-    [sample, bounds, overviewBucketMs],
-  );
-  const score = useMemo(
-    () => (withScore ? scoreOf(sample, bounds) : undefined),
-    [withScore, sample, bounds],
-  );
+  const overviewBars = useMemo(() => foldBars(sample, bounds, overviewBucketMs), [sample, bounds, overviewBucketMs]);
+  const score = useMemo(() => (withScore ? scoreOf(sample, bounds) : undefined), [withScore, sample, bounds]);
 
   return (
     <EventTimeline
@@ -206,9 +198,7 @@ type Story = StoryObj<typeof meta>;
  * staircase in the order the stages started.
  */
 export const Default: Story = {
-  render: (args) => (
-    <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} withScore withMarkers />
-  ),
+  render: (args) => <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} withScore withMarkers />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const back = await canvas.findByRole("button", { name: "Back to the previous view" });
@@ -233,9 +223,7 @@ export const Default: Story = {
  * close up. Zooming in far enough turns the bars into the events themselves.
  */
 export const Resolving: Story = {
-  render: (args) => (
-    <Sample {...args} sample={RHYTHM} sampleLanes={[{ id: "health", label: "Health checks" }]} />
-  ),
+  render: (args) => <Sample {...args} sample={RHYTHM} sampleLanes={[{ id: "health", label: "Health checks" }]} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const stage = await canvas.findByRole("group", { name: "Event sequence" });
@@ -250,9 +238,7 @@ export const Resolving: Story = {
 
 /** Few enough to draw one by one from the start. Picking one hands it to the caller. */
 export const FewEvents: Story = {
-  render: (args) => (
-    <Sample {...args} sample={SPARSE} sampleLanes={[{ id: "notes", label: "Corrections" }]} />
-  ),
+  render: (args) => <Sample {...args} sample={SPARSE} sampleLanes={[{ id: "notes", label: "Corrections" }]} />,
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const stage = await canvas.findByRole("group", { name: "Event sequence" });

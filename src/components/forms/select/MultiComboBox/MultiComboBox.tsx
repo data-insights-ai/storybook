@@ -86,7 +86,9 @@ export function MultiComboBox({
     setOpen(true);
   };
   // While nothing matches what was typed the toggle leaves the text alone and opens nothing, as in ComboBox.
-  const toggle = useListToggle(input, () => (visible ? setOpen(false) : shown.length > 0 || emptyLabel ? show() : undefined));
+  const toggle = useListToggle(input, () =>
+    visible ? setOpen(false) : shown.length > 0 || emptyLabel ? show() : undefined,
+  );
   const set = (next: string[]) => {
     onChange(next);
     setQuery("");
@@ -122,6 +124,7 @@ export function MultiComboBox({
         disabled={disabled}
       >
         <FieldLabel id={`${id}-label`} htmlFor={id} label={label} labelTrack={labelTrack} />
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- a press on the frame puts focus in the input, which takes the keys */}
         <div
           ref={control}
           className={cx("di-token-field", "di-multicombo-control", invalid && "is-invalid", disabled && "is-disabled")}

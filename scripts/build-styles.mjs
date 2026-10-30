@@ -11,10 +11,7 @@ const seen = new Set();
 
 function fontFace(spec) {
   const cssPath = require.resolve(spec);
-  const css = readFileSync(cssPath, "utf8").replace(
-    /, url\(\.\/files\/[^)]+\.woff\) format\('woff'\)/g,
-    "",
-  );
+  const css = readFileSync(cssPath, "utf8").replace(/, url\(\.\/files\/[^)]+\.woff\) format\('woff'\)/g, "");
   return css.replace(/url\(\.\/files\/([^)]+\.woff2)\)/g, (_, file) => {
     if (!seen.has(file)) {
       copyFileSync(join(dirname(cssPath), "files", file), join(fontDir, file));

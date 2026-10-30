@@ -169,8 +169,7 @@ export const WithHighlight: Story = {
   render: (args) => (
     <PageHeader {...args}>
       <PageHeaderTitle>
-        Coverage rose to <Highlight variant="figure">94 %</Highlight> —{" "}
-        <Highlight>without a new source</Highlight>.
+        Coverage rose to <Highlight variant="figure">94 %</Highlight> — <Highlight>without a new source</Highlight>.
       </PageHeaderTitle>
     </PageHeader>
   ),

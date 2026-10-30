@@ -38,13 +38,13 @@ export const InProse: Story = {
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 620 }}>
       <p>
-        A cool grey canvas with a blue accent is what every tool in this field looks like. Warm
-        paper reads as a record before a single word is parsed.
+        A cool grey canvas with a blue accent is what every tool in this field looks like. Warm paper reads as a record
+        before a single word is parsed.
       </p>
       <PullQuote>What writes is what commits.</PullQuote>
       <p>
-        Body text is navy; the one filled control on a sheet is navy. An operator never has to ask
-        which button commits, because only one of them is solid.
+        Body text is navy; the one filled control on a sheet is navy. An operator never has to ask which button commits,
+        because only one of them is solid.
       </p>
     </div>
   ),

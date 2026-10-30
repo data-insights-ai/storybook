@@ -39,7 +39,14 @@ export const OwnControl: Story = {
   render: (args) => (
     <div className="di-field">
       <FieldLabel {...args} id="floor-label" />
-      <input type="range" aria-labelledby="floor-label" aria-describedby="floor-hint" min={1} max={4} defaultValue={3} />
+      <input
+        type="range"
+        aria-labelledby="floor-label"
+        aria-describedby="floor-hint"
+        min={1}
+        max={4}
+        defaultValue={3}
+      />
       <FieldHint id="floor-hint" tone="neutral">
         Cases below high are filed without a notification.
       </FieldHint>
@@ -66,7 +73,12 @@ export const EveryFieldGerman: Story = {
     const [time, setTime] = useState("22:00");
     return (
       <FieldStack>
-        <Select id="de-severity" label="Mindestschweregrad für Benachrichtigungen an das Bereitschaftsteam" required={true} defaultValue="high">
+        <Select
+          id="de-severity"
+          label="Mindestschweregrad für Benachrichtigungen an das Bereitschaftsteam"
+          required={true}
+          defaultValue="high"
+        >
           <option value="critical">Kritisch</option>
           <option value="high">Hoch</option>
           <option value="medium">Mittel</option>
@@ -120,8 +132,22 @@ export const EveryFieldGerman: Story = {
           disabled={true}
           hint="Vom Lizenzvertrag festgelegt."
         />
-        <DateField id="de-from" label="Erster Tag der Aufbewahrungsfrist" locale="de-DE" value={day} onChange={setDay} readOnly={true} />
-        <TimeField id="de-quiet" label="Beginn der Ruhezeit für Benachrichtigungen" locale="de-DE" value={time} onChange={setTime} required={true} />
+        <DateField
+          id="de-from"
+          label="Erster Tag der Aufbewahrungsfrist"
+          locale="de-DE"
+          value={day}
+          onChange={setDay}
+          readOnly={true}
+        />
+        <TimeField
+          id="de-quiet"
+          label="Beginn der Ruhezeit für Benachrichtigungen"
+          locale="de-DE"
+          value={time}
+          onChange={setTime}
+          required={true}
+        />
       </FieldStack>
     );
   },
@@ -130,6 +156,8 @@ export const EveryFieldGerman: Story = {
       getComputedStyle(label, "::after").content.includes("*"),
     );
     await expect(marked).toHaveLength(5);
-    await expect(within(canvasElement).getByLabelText("Client-Zertifikat des Sammlers", { selector: "input" })).toBeRequired();
+    await expect(
+      within(canvasElement).getByLabelText("Client-Zertifikat des Sammlers", { selector: "input" }),
+    ).toBeRequired();
   },
 };

@@ -58,12 +58,7 @@ export function CoverageMatrix({
 }) {
   const id = useId();
   return (
-    <div
-      className={cx("di-matrix", className)}
-      role="region"
-      aria-label={label}
-      tabIndex={0}
-    >
+    <div className={cx("di-matrix", className)} role="region" aria-label={label} tabIndex={0}>
       <div className="di-matrix-columns">
         {columns.map((column, i) => {
           const headId = `${id}-${i}`;

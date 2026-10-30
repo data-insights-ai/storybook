@@ -31,7 +31,7 @@
     grid-template-rows: 1fr auto;
     align-items: baseline;
     gap: var(--di-space-12) var(--di-space-16);
-    padding: var(--di-space-16) var(--di-space-24) var(--di-space-24) var(--di-space-16);
+    padding: var(--di-space-24);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
     box-shadow: var(--di-elevation-surface);
@@ -39,8 +39,9 @@
 
   .di-attention-item.is-emphasis {
     flex-basis: 100%;
-    padding-block: var(--di-space-24);
-    box-shadow: 0 0 0 1px var(--di-one-edge), var(--di-one-glow);
+    box-shadow:
+      0 0 0 1px var(--di-one-edge),
+      var(--di-one-glow);
   }
 
   .di-attention-rank {

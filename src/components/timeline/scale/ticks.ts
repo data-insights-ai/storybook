@@ -61,16 +61,10 @@ const labelChars = (step: number) => (step < MINUTE ? 8 : 6);
 // shifts its ticks by an hour.
 export function ticksFor(span: Span, plotPx: number, offsetOf: (ms: number) => number): Tick[] {
   const msPerPx = widthOf(span) / Math.max(1, plotPx);
-  const step =
-    STEPS.find((s) => s / msPerPx >= textWidth("0".repeat(labelChars(s)), TICK_FONT) + LABEL_GAP) ??
-    7 * DAY;
+  const step = STEPS.find((s) => s / msPerPx >= textWidth("0".repeat(labelChars(s)), TICK_FONT) + LABEL_GAP) ?? 7 * DAY;
   const offset = offsetOf(span.start);
   const ticks: Tick[] = [];
-  for (
-    let at = Math.ceil((span.start + offset) / step) * step - offset;
-    at <= span.end;
-    at += step
-  ) {
+  for (let at = Math.ceil((span.start + offset) / step) * step - offset; at <= span.end; at += step) {
     const local = at + offsetOf(at);
     const kind: TickKind = local % DAY === 0 ? "day" : step < MINUTE ? "second" : "time";
     ticks.push({ at, kind });
@@ -86,8 +80,7 @@ export function clockFormats(locale: string, timeZone: string) {
   const time = make({ hour: "2-digit", minute: "2-digit" });
   const clock = make({ hour: "2-digit", minute: "2-digit", second: "2-digit" });
   return {
-    tick: (tick: Tick) =>
-      (tick.kind === "day" ? day : tick.kind === "second" ? clock : time).format(tick.at),
+    tick: (tick: Tick) => (tick.kind === "day" ? day : tick.kind === "second" ? clock : time).format(tick.at),
     offsetOf: zoneOffset(timeZone),
   };
 }

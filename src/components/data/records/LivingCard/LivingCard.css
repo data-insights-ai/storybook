@@ -1,26 +1,31 @@
 @layer components {
+  /* One inset all round; the head, the figure and the insight are rows of one surface, 16px apart. */
   .di-living {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-16);
     overflow: hidden;
+    padding: var(--di-space-16);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
   }
 
+  /* No rule under the head: the title and the figure belong to one block. */
   .di-living-head {
     display: flex;
     align-items: center;
     gap: var(--di-space-8);
-    padding: var(--di-space-12) var(--di-space-12) var(--di-space-12)
-      var(--di-space-16);
-    border-bottom: 1px solid var(--di-rule-hairline);
   }
 
+  /* The card's name is a heading in the display face, its one bold line. */
   .di-living-title {
     flex: 1;
     min-width: 0;
-    font-size: var(--di-font-size-400);
-    font-weight: var(--di-weight-semibold);
-    letter-spacing: var(--di-tracking-tight);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
     color: var(--di-text);
   }
 
@@ -37,7 +42,6 @@
     flex-wrap: wrap;
     align-items: flex-end;
     gap: var(--di-space-16) var(--di-space-24);
-    padding: var(--di-space-16);
   }
 
   .di-living-body > :last-child:not(:first-child) {
@@ -50,8 +54,9 @@
    * rule: one surface, two levels, quieter than the measurement.
    */
   .di-living-insight {
-    padding: var(--di-space-16);
-    border-top: 1px solid var(--di-mark-ring);
+    margin-inline: calc(-1 * var(--di-space-16));
+    padding: var(--di-space-16) var(--di-space-16) 0;
+    box-shadow: inset 0 1px 0 var(--di-mark-ring);
   }
 
   .di-living-insight-row {

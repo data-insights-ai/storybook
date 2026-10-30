@@ -36,13 +36,7 @@ export const ScoreTrack = memo(function ScoreTrack({
 }) {
   const y = (value: number) => TOP + (1 - value / score.max) * (SCORE_H - TOP - PAD);
   const band = (from: number, to: number, tone: string) => (
-    <rect
-      x={0}
-      y={y(to)}
-      width={plotPx}
-      height={y(from) - y(to)}
-      className={`di-timeline-band is-${tone}`}
-    />
+    <rect x={0} y={y(to)} width={plotPx} height={y(from) - y(to)} className={`di-timeline-band is-${tone}`} />
   );
 
   let d = "";
@@ -70,13 +64,7 @@ export const ScoreTrack = memo(function ScoreTrack({
         <g className="di-timeline-compare">
           {compareX >= 0 && compareX <= plotPx ? (
             <>
-              <line
-                x1={compareX}
-                x2={compareX}
-                y1={0}
-                y2={SCORE_H}
-                className="di-timeline-compare-rule"
-              />
+              <line x1={compareX} x2={compareX} y1={0} y2={SCORE_H} className="di-timeline-compare-rule" />
               <text x={compareX + 4} y={10} className="di-timeline-mark-label">
                 {compare.label}
               </text>
@@ -96,13 +84,7 @@ export const ScoreTrack = memo(function ScoreTrack({
         const value = valueAt(score.points, m.at);
         const x = scale.x(m.at);
         return value === undefined || x < 0 || x > plotPx ? null : (
-          <circle
-            key={`${m.at}-${m.label}`}
-            cx={x}
-            cy={y(value)}
-            r={3.5}
-            className="di-timeline-score-dot"
-          />
+          <circle key={`${m.at}-${m.label}`} cx={x} cy={y(value)} r={3.5} className="di-timeline-score-dot" />
         );
       })}
       <text x={4} y={10} className="di-timeline-mark-label is-strong">
@@ -115,13 +97,7 @@ export const ScoreTrack = memo(function ScoreTrack({
             {format(v)}
           </text>
         ))}
-      <line
-        x1={0}
-        x2={plotPx}
-        y1={SCORE_H + 0.5}
-        y2={SCORE_H + 0.5}
-        className="di-timeline-baseline"
-      />
+      <line x1={0} x2={plotPx} y1={SCORE_H + 0.5} y2={SCORE_H + 0.5} className="di-timeline-baseline" />
     </g>
   );
 });

@@ -12,7 +12,9 @@
     background: var(--di-bg-surface);
     color: var(--di-text-muted);
     text-align: center;
-    transition: border-color var(--di-duration) var(--di-ease), background var(--di-duration) var(--di-ease);
+    transition:
+      border-color var(--di-duration) var(--di-ease),
+      background var(--di-duration) var(--di-ease);
   }
 
   /* A file held over the area: the place it lands is selected. */
@@ -21,8 +23,8 @@
     background: var(--di-bg-selected);
   }
 
-  .di-file-drop[aria-invalid="true"],
-  .di-file-row[aria-invalid="true"] {
+  .di-file-drop[data-invalid],
+  .di-file-row[data-invalid] {
     border-color: var(--di-field-border-invalid);
   }
 

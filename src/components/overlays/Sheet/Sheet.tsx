@@ -1,10 +1,18 @@
-import { Children, isValidElement, useContext, useEffect, useId, useRef, type ReactNode } from "react";
+import {
+  Children,
+  isValidElement,
+  useContext,
+  useEffect,
+  useId,
+  useInsertionEffect,
+  useRef,
+  type ReactNode,
+} from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { PageSide } from "../../layout/page/pageSide";
 import { focusFirstField } from "../../../internal/shortcutKeys";
 import { useShortcut } from "../../../internal/useShortcut";
-import { cx } from "../../../internal/cx";
 import { useModalDialog } from "../useModalDialog";
 import "./Sheet.css";
 
@@ -13,11 +21,6 @@ type SheetProps = {
   onClose: () => void;
   title: string;
   lede?: string;
-  /**
-   * The ordinal of the row the sheet opened from, in an index column, so
-   * the row and its detail read as one object. Omit for a create or invite.
-   */
-  index?: string;
   /** A line above the title naming what kind of record it is, such as `Source · WS-01`. */
   eyebrow?: string;
   /** The close button's accessible name. */
@@ -39,7 +42,8 @@ type SheetProps = {
  * button close it, and focus returns to whatever opened it.
  *
  * Anywhere else, and always at `lg` and `xl`, it is a modal native
- * `<dialog>` from the right edge: focus moves in and is trapped, the page
+ * `<dialog>` from the right edge: focus moves in, to the first field or,
+ * with none, to the title (never the close button), and is trapped; the page
  * behind is inert, and on a phone it takes the screen. `SheetFooter` holds
  * its actions and stays in view while the body scrolls.
  */
@@ -54,17 +58,17 @@ export function SheetFooter({ children }: { children: ReactNode }) {
   return <div className="di-sheet-footer">{children}</div>;
 }
 
-function ModalSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, size = "md", children }: SheetProps) {
+function ModalSheet({ open, onClose, title, lede, eyebrow, closeLabel, size = "md", children }: SheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
-  useModalDialog(ref, open);
+  useModalDialog(ref, open, ".di-sheet-title");
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc and a press on the backdrop close the dialog
     <dialog
       ref={ref}
       className="di-sheet"
-      role="dialog"
       aria-modal="true"
       data-size={size}
       aria-labelledby={titleId}
@@ -83,7 +87,14 @@ function ModalSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, si
       }}
     >
       {open ? (
-        <SheetFrame titleId={titleId} title={title} lede={lede} index={index} eyebrow={eyebrow} closeLabel={closeLabel} onClose={onClose}>
+        <SheetFrame
+          titleId={titleId}
+          title={title}
+          lede={lede}
+          eyebrow={eyebrow}
+          closeLabel={closeLabel}
+          onClose={onClose}
+        >
           {children}
         </SheetFrame>
       ) : null}
@@ -91,17 +102,28 @@ function ModalSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, si
   );
 }
 
-function DockedSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, children, side }: SheetProps & { side: HTMLElement }) {
+function DockedSheet({
+  open,
+  onClose,
+  title,
+  lede,
+  eyebrow,
+  closeLabel,
+  children,
+  side,
+}: SheetProps & { side: HTMLElement }) {
   const ref = useRef<HTMLElement>(null);
   const titleId = useId();
   const opener = useRef<HTMLElement | null>(null);
   const shown = useRef(false);
-  // Read while rendering, before the sheet takes focus, as the modal does.
-  if (open && !shown.current && typeof document !== "undefined") {
-    const active = document.activeElement;
-    if (active instanceof HTMLElement && active !== document.body) opener.current = active;
-  }
-  shown.current = open;
+  // Read before any other effect, before the sheet takes focus, as the modal does.
+  useInsertionEffect(() => {
+    if (open && !shown.current) {
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && active !== document.body) opener.current = active;
+    }
+    shown.current = open;
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;
@@ -120,6 +142,7 @@ function DockedSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, c
 
   if (!open) return null;
   return createPortal(
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc inside the docked sheet closes it
     <section
       ref={ref}
       className="di-sheet-docked"
@@ -130,7 +153,14 @@ function DockedSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, c
         onClose();
       }}
     >
-      <SheetFrame titleId={titleId} title={title} lede={lede} index={index} eyebrow={eyebrow} closeLabel={closeLabel} onClose={onClose}>
+      <SheetFrame
+        titleId={titleId}
+        title={title}
+        lede={lede}
+        eyebrow={eyebrow}
+        closeLabel={closeLabel}
+        onClose={onClose}
+      >
         {children}
       </SheetFrame>
     </section>,
@@ -142,12 +172,13 @@ function SheetFrame({
   titleId,
   title,
   lede,
-  index,
   eyebrow,
   closeLabel,
   onClose,
   children,
-}: Pick<SheetProps, "title" | "lede" | "index" | "eyebrow" | "closeLabel" | "onClose" | "children"> & { titleId: string }) {
+}: Pick<SheetProps, "title" | "lede" | "eyebrow" | "closeLabel" | "onClose" | "children"> & {
+  titleId: string;
+}) {
   const footer: ReactNode[] = [];
   const body: ReactNode[] = [];
   Children.forEach(children, (child) => {
@@ -155,17 +186,11 @@ function SheetFrame({
     else body.push(child);
   });
   return (
-    <div className={cx("di-sheet-frame", index !== undefined && "has-index")}>
-      {index === undefined ? null : (
-        <div className="di-sheet-index">
-          <span className="di-sheet-index-label">{index}</span>
-          <span className="di-sheet-index-rule" aria-hidden />
-        </div>
-      )}
+    <div className="di-sheet-frame">
       <header className="di-sheet-head">
         <div className="di-sheet-heading">
           {eyebrow ? <p className="di-sheet-eyebrow">{eyebrow}</p> : null}
-          <h2 className="di-sheet-title" id={titleId}>
+          <h2 className="di-sheet-title" id={titleId} tabIndex={-1}>
             {title}
           </h2>
           {lede ? <p className="di-sheet-lede">{lede}</p> : null}

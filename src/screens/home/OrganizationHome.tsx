@@ -21,7 +21,18 @@ import {
 } from "../../index";
 import { ProductShell } from "../shell/ProductShell";
 import type { Role } from "../shell/shell.sample";
-import { allRunning, audit, can, credits, firstDue, people, products, roleNames, team, type OrganizationState } from "./home.sample";
+import {
+  allRunning,
+  audit,
+  can,
+  credits,
+  firstDue,
+  people,
+  products,
+  roleNames,
+  team,
+  type OrganizationState,
+} from "./home.sample";
 
 /**
  * An organization's home, ordered by why people come. The header orients;
@@ -36,7 +47,13 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
   const due = firstDue(state, role);
   const user = people[role];
   return (
-    <ProductShell area="organization" active="overview" crumbs={["Example Security GmbH", "Overview"]} role={role} user={user}>
+    <ProductShell
+      area="organization"
+      active="overview"
+      crumbs={["Example Security GmbH", "Overview"]}
+      role={role}
+      user={user}
+    >
       <PageHeader>
         <PageHeaderTitle>Example Security GmbH</PageHeaderTitle>
         {due ? (
@@ -51,7 +68,14 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
 
       {due ? (
         <AttentionList label="Due" title="1 decision is due">
-          <AttentionItem rank="01" emphasis emphasisLabel={due.deadline} title={due.title} reason={due.reason} meta={due.meta}>
+          <AttentionItem
+            rank="01"
+            emphasis
+            emphasisLabel={due.deadline}
+            title={due.title}
+            reason={due.reason}
+            meta={due.meta}
+          >
             <Button>{due.action}</Button>
           </AttentionItem>
         </AttentionList>
@@ -89,7 +113,12 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
                 last 30 days
               </Figure>
             </FigureRow>
-            <TrendChart label="Credit balance, last 30 days" height="sm" data={credits} series={[{ key: "balance", label: "Balance", kind: "area" }]} />
+            <TrendChart
+              label="Credit balance, last 30 days"
+              height="sm"
+              data={credits}
+              series={[{ key: "balance", label: "Balance", kind: "area" }]}
+            />
           </Grid>
         </Panel>
       ) : null}
@@ -105,7 +134,11 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
               ) : null}
               <KeyValues>
                 {team.map((member) => (
-                  <KeyValue key={member.name} term={member.name === user ? `${member.name} (you)` : member.name} value={member.role} />
+                  <KeyValue
+                    key={member.name}
+                    term={member.name === user ? `${member.name} (you)` : member.name}
+                    value={member.role}
+                  />
                 ))}
               </KeyValues>
               {can.manageTeam(role) ? <PanelNote>1 invitation is open.</PanelNote> : null}
@@ -130,7 +163,8 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
 }
 
 function calm(role: Role, state: OrganizationState) {
-  if (can.billing(role)) return `${state.licencesActive} licences active · nothing to decide before ${state.nextRenewal}`;
+  if (can.billing(role))
+    return `${state.licencesActive} licences active · nothing to decide before ${state.nextRenewal}`;
   if (can.manageTeam(role)) return "1 invitation still open";
   return "your products are ready";
 }

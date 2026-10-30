@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Actions } from "../../arrangement/Actions";
-import { Panel, PanelFooter, PanelLead, PanelMeta, PanelNote } from "./Panel";
+import { Panel, PanelActions, PanelFooter, PanelLead, PanelMeta, PanelNote, PanelStatus } from "./Panel";
 import { SealValue } from "../../../marks/status/SealValue";
 import { StatusPill } from "../../../marks/status/StatusPill";
 
@@ -11,10 +11,6 @@ const meta = {
   component: Panel,
   tags: ["layer:block", "autodocs"],
   args: {
-    index: "01",
-    indexSize: "md",
-    indexTone: "neutral",
-    indexRule: true,
     surface: "sheet",
     emphasis: false,
     title: "Graz office",
@@ -22,10 +18,6 @@ const meta = {
     children: "Fourteen sources report here; the last event arrived two minutes ago.",
   },
   argTypes: {
-    index: { control: "text" },
-    indexSize: { control: "radio", options: ["md", "sm"] },
-    indexTone: { control: "radio", options: ["neutral", "danger"] },
-    indexRule: { control: "boolean" },
     surface: { control: "radio", options: ["sheet", "inset"] },
     emphasis: { control: "boolean" },
     label: { control: "text" },
@@ -34,16 +26,32 @@ const meta = {
     padded: { control: "boolean" },
     children: { control: "text" },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 560 }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Panel>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The default sheet, with the index column that names the system. */
+/* The inset of the surface, measured: the same above the first line as below the last. */
+async function sameInset(canvasElement: HTMLElement) {
+  const panel = canvasElement.querySelector<HTMLElement>(".di-panel")!;
+  const style = getComputedStyle(panel);
+  await expect(style.paddingTop).toBe(style.paddingBottom);
+  await expect(style.paddingLeft).toBe(style.paddingTop);
+}
+
+/** The default sheet: a title in the display face over its content, the same inset all round. */
 export const Default: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByText("01")).toBeVisible();
+    await sameInset(canvasElement);
+    const title = within(canvasElement).getByText("Graz office");
+    await expect(getComputedStyle(title).fontFamily).toContain("Space Grotesk");
   },
 };
 
@@ -67,25 +75,31 @@ export const WithMeta: Story = {
   },
 };
 
-/** A state, rather than a measurement, in the same slot. */
-export const MetaStatus: Story = {
-  name: "Meta status",
-  args: { index: "04", title: "Ingest run", indexTone: "danger", children: null },
+/** A state sits beside the title it qualifies: a failure says so in words, next to the run that failed. */
+export const Status: Story = {
+  args: { title: "Ingest run", children: null },
   render: (args) => (
     <Panel {...args}>
-      <PanelMeta>
+      <PanelStatus>
         <StatusPill tone="danger">failed</StatusPill>
-      </PanelMeta>
-      The run stopped after four consecutive rate limits.
+      </PanelStatus>
+      Connection reset by the upstream host after 2 of 14 batches.
     </Panel>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const title = canvas.getByText("Ingest run").getBoundingClientRect();
+    const pill = canvas.getByText("failed").getBoundingClientRect();
+    await expect(Math.abs(pill.top + pill.height / 2 - (title.top + title.height / 2))).toBeLessThanOrEqual(3);
+    await expect(pill.left - title.right).toBeLessThanOrEqual(12);
+  },
 };
 
 /** A step below the surface it sits in: a group inside a panel, a quoted extract. */
 export const Inset: Story = {
-  args: { index: undefined, surface: "inset", title: "Extract" },
+  args: { surface: "inset", title: "Extract" },
   render: (args) => (
-    <Panel index={undefined} title="Manifest">
+    <Panel title="Manifest">
       <Panel {...args}>a4f9c21e · 2026-09-18T09:12:04Z</Panel>
     </Panel>
   ),
@@ -97,7 +111,6 @@ export const Inset: Story = {
  */
 export const Labelled: Story = {
   args: {
-    index: undefined,
     label: "Coverage · last 24 h",
     title: "Two of nine tables are not arriving",
     heading: 2,
@@ -107,11 +120,11 @@ export const Labelled: Story = {
 
 /**
  * The one block that matters in the view carries the gold edge. One per
- * view. `PanelLead` says what it asks for, above the actions.
+ * view. `PanelLead` says what it asks for, above the actions, in regular
+ * weight: the title is the block's one bold line.
  */
 export const Emphasis: Story = {
   args: {
-    index: undefined,
     emphasis: true,
     label: "Verdict",
     title: "Credentials were used to reach the file server",
@@ -129,61 +142,86 @@ export const Emphasis: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("Isolate the server before the next sync window.")).toHaveClass("di-panel-lead");
+    const lead = canvas.getByText("Isolate the server before the next sync window.");
+    await expect(lead).toHaveClass("di-panel-lead");
+    await expect(Number(getComputedStyle(lead).fontWeight)).toBeLessThan(500);
+    await expect(Number(getComputedStyle(canvas.getByRole("heading", { level: 2 })).fontWeight)).toBeGreaterThanOrEqual(
+      600,
+    );
   },
 };
 
-/** A short tile: no rule, because there is no height for it to run down. */
+/** A short tile: no title, only what it reports, at the same inset. */
 export const Tile: Story = {
   args: {
-    index: "A",
-    indexSize: "sm",
-    indexRule: false,
     title: undefined,
     children: "Four sources ingested since the last seal.",
   },
 };
 
-/** A failure keeps its index, tinted. The row is still a record. */
-export const Failed: Story = {
-  args: {
-    index: "07",
-    indexTone: "danger",
-    title: "Ingest run",
-    children: "Connection reset by the upstream host after 2 of 14 batches.",
-  },
-};
-
-/** No index at all, for a panel that is not part of a register. */
-export const WithoutIndex: Story = {
-  args: { index: undefined, title: "Notes", children: "Rotate the collector key before the audit in March." },
-};
-
-/** The footer strip under the body: the state and the one action it asks for. */
+/**
+ * The footer is a row inside the surface, 16px under the content and at
+ * the same inset as the head: what it reports at its start, the action at
+ * its end. The state sits beside the title it qualifies.
+ */
 export const WithFooter: Story = {
   args: {
-    index: "02",
     title: "Key rotation",
     children: "The signing key for this workspace expires on 2026-09-29.",
   },
   render: (args) => (
     <Panel {...args}>
-      <p>{args.children}</p>
-      <PanelFooter>
+      <PanelStatus>
         <StatusPill tone="warn">expiring</StatusPill>
-        <span style={{ marginLeft: "auto" }}>
-          <Button variant="secondary" size="dense">
-            Rotate now
-          </Button>
-        </span>
-      </PanelFooter>
+      </PanelStatus>
+      <p>{args.children}</p>
+      <PanelFooter>Rotated last on 2025-09-29 by Nora Feld</PanelFooter>
+      <PanelActions>
+        <Button variant="secondary" size="dense">
+          Rotate now
+        </Button>
+      </PanelActions>
     </Panel>
   ),
+  play: async ({ canvasElement }) => {
+    await sameInset(canvasElement);
+    const canvas = within(canvasElement);
+    const body = canvas.getByText(/expires on/).getBoundingClientRect();
+    const footer = canvas.getByText(/Rotated last/).getBoundingClientRect();
+    const action = canvas.getByRole("button", { name: "Rotate now" }).getBoundingClientRect();
+    const panel = canvasElement.querySelector(".di-panel")!.getBoundingClientRect();
+    await expect(footer.top - body.bottom).toBeGreaterThanOrEqual(16);
+    await expect(Math.round(panel.right - action.right)).toBe(Math.round(footer.left - panel.left));
+  },
+};
+
+/** With nothing else to say below the content, the action goes to the head's end. */
+export const ActionInHead: Story = {
+  args: {
+    title: "Retention",
+    children: "Entries are kept for 400 days, then sealed into the cold archive.",
+  },
+  render: (args) => (
+    <Panel {...args}>
+      <PanelActions>
+        <Button variant="secondary" size="dense">
+          Edit
+        </Button>
+      </PanelActions>
+      {args.children}
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const title = canvas.getByText("Retention").getBoundingClientRect();
+    const edit = canvas.getByRole("button", { name: "Edit" }).getBoundingClientRect();
+    await expect(edit.bottom).toBeLessThanOrEqual(title.bottom + 6);
+  },
 };
 
 /** What a panel holds in practice: a measured value under its seal. */
 export const WithSealedValue: Story = {
-  args: { index: "03", title: "Manifest" },
+  args: { title: "Manifest" },
   render: (args) => (
     <Panel {...args}>
       <SealValue state="sealed" stateLabel="Sealed">
@@ -198,7 +236,7 @@ export const WithSealedValue: Story = {
  * thing the numbers above do not say. It is never where a fact lives.
  */
 export const WithNote: Story = {
-  args: { index: "04", title: "Coverage" },
+  args: { title: "Coverage" },
   render: (args) => (
     <Panel {...args}>
       <SealValue state="sealed" stateLabel="Sealed">
@@ -214,23 +252,34 @@ export const SlotsWrittenReversed: Story = {
   args: { title: "Delivery" },
   render: (args) => (
     <Panel {...args}>
-      <PanelFooter>
+      <PanelActions>
         <Button size="dense">Retry</Button>
-      </PanelFooter>
+      </PanelActions>
+      <PanelFooter>3 attempts left</PanelFooter>
       <PanelNote>Retries stop after three attempts.</PanelNote>
       <p>The Sentinel export has failed since 08:40; the other two deliver.</p>
       <PanelLead>Three exports, one failing.</PanelLead>
       <PanelMeta>live</PanelMeta>
+      <PanelStatus>
+        <StatusPill tone="warn">degraded</StatusPill>
+      </PanelStatus>
     </Panel>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const order = ["Three exports, one failing.", "The Sentinel export has failed since 08:40; the other two deliver.", "Retries stop after three attempts.", "Retry"].map(
-      (text) => canvas.getByText(text).getBoundingClientRect().top,
-    );
+    const order = [
+      "Delivery",
+      "Three exports, one failing.",
+      "The Sentinel export has failed since 08:40; the other two deliver.",
+      "Retries stop after three attempts.",
+      "3 attempts left",
+    ].map((text) => canvas.getByText(text).getBoundingClientRect().top);
     await expect([...order].sort((a, b) => a - b)).toEqual(order);
     const meta = canvas.getByText("live").getBoundingClientRect();
     const title = canvas.getByText("Delivery").getBoundingClientRect();
     await expect(Math.abs(meta.top + meta.height / 2 - (title.top + title.height / 2))).toBeLessThanOrEqual(4);
+    const retry = canvas.getByRole("button", { name: "Retry" }).getBoundingClientRect();
+    const footer = canvas.getByText("3 attempts left").getBoundingClientRect();
+    await expect(Math.abs(retry.top + retry.height / 2 - (footer.top + footer.height / 2))).toBeLessThanOrEqual(2);
   },
 };

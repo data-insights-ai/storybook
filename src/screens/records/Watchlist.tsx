@@ -35,7 +35,7 @@ import {
   TableHead,
   TableRow,
   TextLink,
-} from "../.."; 
+} from "../..";
 
 type Identity = {
   id: string;

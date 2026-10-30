@@ -17,9 +17,30 @@ import {
 } from "./ListDetail";
 
 const records: Array<{ n: number; title: string; severity: Severity; word: string; status: string; owner: string }> = [
-  { n: 4, title: "Leaked VPN credentials used to move through finance", severity: "critical", word: "Critical", status: "In progress", owner: "Sam Analyst" },
-  { n: 7, title: "Unusual sign-ins from a new country", severity: "high", word: "High", status: "Open", owner: "unassigned" },
-  { n: 2, title: "Macro document opened on a workstation", severity: "medium", word: "Medium", status: "Open", owner: "unassigned" },
+  {
+    n: 4,
+    title: "Leaked VPN credentials used to move through finance",
+    severity: "critical",
+    word: "Critical",
+    status: "In progress",
+    owner: "Sam Analyst",
+  },
+  {
+    n: 7,
+    title: "Unusual sign-ins from a new country",
+    severity: "high",
+    word: "High",
+    status: "Open",
+    owner: "unassigned",
+  },
+  {
+    n: 2,
+    title: "Macro document opened on a workstation",
+    severity: "medium",
+    word: "Medium",
+    status: "Open",
+    owner: "unassigned",
+  },
 ];
 
 function Split({ initial = "list" }: { initial?: "list" | "detail" }) {
@@ -52,7 +73,10 @@ function Split({ initial = "list" }: { initial?: "list" | "detail" }) {
       </ListDetailList>
       <ListDetailPane label={`Case ${record.n}`}>
         <ListDetailBack label="All cases" onBack={() => setShowing("list")} />
-        <SectionTitle eyebrow={`Case ${record.n}`} lede={record.owner === "unassigned" ? "Not assigned yet" : `Assigned to ${record.owner}`}>
+        <SectionTitle
+          eyebrow={`Case ${record.n}`}
+          lede={record.owner === "unassigned" ? "Not assigned yet" : `Assigned to ${record.owner}`}
+        >
           <SectionTitleHeading>{record.title}</SectionTitleHeading>
         </SectionTitle>
         <Panel title="What happened">

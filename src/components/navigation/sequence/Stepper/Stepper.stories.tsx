@@ -122,7 +122,9 @@ export const ConnectorsClearTheCircles: StoryObj<typeof meta> = {
     for (const step of steps.slice(1)) {
       const line = getComputedStyle(step, "::before");
       const bullet = step.querySelector<HTMLElement>(".di-step-bullet")!.getBoundingClientRect();
-      const previous = step.previousElementSibling!.querySelector<HTMLElement>(".di-step-bullet")!.getBoundingClientRect();
+      const previous = step
+        .previousElementSibling!.querySelector<HTMLElement>(".di-step-bullet")!
+        .getBoundingClientRect();
       const stepBox = step.getBoundingClientRect();
       const lineLeft = stepBox.left + parseFloat(line.left);
       const lineRight = stepBox.right - parseFloat(line.right);

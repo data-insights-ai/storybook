@@ -1,4 +1,5 @@
-import { Panel, PanelMeta } from "../../components/layout/page/Panel";
+import { Numbered } from "../../components/layout/arrangement/Numbered";
+import { Panel } from "../../components/layout/page/Panel";
 import { SealMark } from "../../components/marks/status/SealValue";
 import "./RegisterSpecimens.css";
 
@@ -43,17 +44,16 @@ export function SealSpecimen() {
 export function IndexSpecimen() {
   return (
     <div className="di-index-specimen">
-      <Panel index="01" title="Source">
-        <PanelMeta>sealed 09:12Z</PanelMeta>
-        An ordinal: the row's handle, and what an operator says out loud.
-      </Panel>
-      <Panel index="C" title="Coverage">
-        <PanelMeta>4 sources</PanelMeta>
-        A letter, where the entries are kinds rather than a sequence.
-      </Panel>
-      <Panel index="!!" indexTone="danger" title="Ingest run">
-        <PanelMeta>failed 08:44Z</PanelMeta>
-        A failure keeps its column, tinted. It is still a record.
+      <Panel title="Rotate the collector key">
+        <Numbered index="01" variant="row">
+          Issue the new key on the collector.
+        </Numbered>
+        <Numbered index="02" variant="row">
+          Seal the first batch signed with it.
+        </Numbered>
+        <Numbered index="03" variant="row">
+          Revoke the old key.
+        </Numbered>
       </Panel>
     </div>
   );

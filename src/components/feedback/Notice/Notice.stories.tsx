@@ -167,8 +167,8 @@ export const Comfort: Story = {
         <div>
           <NoticeTitle>Nothing a model proposes runs before an operator confirms it.</NoticeTitle>
           <NoticeBody>
-            The confirmation states basis, scope and reversibility first, and what follows is a
-            receipt carrying an audit id.
+            The confirmation states basis, scope and reversibility first, and what follows is a receipt carrying an
+            audit id.
           </NoticeBody>
         </div>
         <NoticeAction>

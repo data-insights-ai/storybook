@@ -92,7 +92,14 @@ export function Chart({
   return (
     <ChartContext.Provider value={config}>
       <TooltipDismissedContext.Provider value={dismissed}>
-        <div ref={frame} className={cx("di-chart", className)} data-chart={chartId} role="group" aria-label={label} style={colors}>
+        <div
+          ref={frame}
+          className={cx("di-chart", className)}
+          data-chart={chartId}
+          role="group"
+          aria-label={label}
+          style={colors}
+        >
           <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 320, height: 220 }}>
             {children}
           </ResponsiveContainer>

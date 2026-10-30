@@ -30,17 +30,17 @@ import {
   StatusPill,
   Panel,
   StatTile,
-} from "../.."; 
+} from "../..";
 
-const days = [46, 62, 70, 80, 58, 90, 84, 76, 88, 64, 72, 86, 91, 77, 69, 95, 100, 82, 74, 88, 93, 70, 81, 96, 85, 78, 90, 87, 73, 92];
+const days = [
+  46, 62, 70, 80, 58, 90, 84, 76, 88, 64, 72, 86, 91, 77, 69, 95, 100, 82, 74, 88, 93, 70, 81, 96, 85, 78, 90, 87, 73,
+  92,
+];
 
 export function SettingsScreen() {
   return (
     <>
-      <PageHeader
-        eyebrow="Session"
-        lede="The signed-in session, notification channels, and security checks."
-      >
+      <PageHeader eyebrow="Session" lede="The signed-in session, notification channels, and security checks.">
         <PageHeaderTitle>Settings and session</PageHeaderTitle>
         <PageHeaderAside>
           <StatusPill tone="ok">Company environment active</StatusPill>
@@ -50,7 +50,7 @@ export function SettingsScreen() {
       <Stack>
         <Numbered index="01">
           <Session name="Nora Feld">
-<SessionDetail>nora.feld@data-insights.ai · Valid until 22 Sep 2026</SessionDetail>
+            <SessionDetail>nora.feld@data-insights.ai · Valid until 22 Sep 2026</SessionDetail>
             <SessionMark>
               <IconTile variant="inverse">
                 <span aria-hidden>NF</span>
@@ -137,13 +137,7 @@ export function SettingsScreen() {
         <Panel>
           <Grid min="220px">
             <StatTile label="Notification availability, last 30 days, every channel" value="99.98%" />
-            <Bars
-              values={days}
-              highlight={16}
-              startLabel="30 days ago"
-              midLabel="Full operation"
-              endLabel="Today"
-            />
+            <Bars values={days} highlight={16} startLabel="30 days ago" midLabel="Full operation" endLabel="Today" />
           </Grid>
         </Panel>
 

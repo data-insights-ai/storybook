@@ -8,7 +8,6 @@ const meta = {
   component: StatTile,
   tags: ["layer:block", "autodocs"],
   args: {
-    index: "01",
     label: "Entries sealed",
     value: "4,182",
     tone: "neutral",
@@ -17,7 +16,6 @@ const meta = {
     children: null,
   },
   argTypes: {
-    index: { control: "text" },
     label: { control: "text" },
     value: { control: "text" },
     tone: { control: "radio", options: ["neutral", "danger"] },
@@ -51,7 +49,7 @@ export const Default: Story = {
 
 /** The delta names its direction in words, not only in colour. */
 export const Falling: Story = {
-  args: { index: "02", label: "Coverage", value: "86.4%" },
+  args: { label: "Coverage", value: "86.4%" },
   render: (args) => (
     <StatTile {...args}>
       <StatTileDelta tone="warn">down 2.1 points</StatTileDelta>
@@ -61,7 +59,7 @@ export const Falling: Story = {
 
 /** A value that crossed a threshold. The whole tile says so. */
 export const OverThreshold: Story = {
-  args: { index: "03", tone: "danger", label: "Unsealed entries", value: "1,284" },
+  args: { tone: "danger", label: "Unsealed entries", value: "1,284" },
   render: (args) => (
     <StatTile {...args}>
       <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
@@ -76,7 +74,7 @@ export const OverThreshold: Story = {
  */
 export const WithSparkline: Story = {
   name: "With sparkline",
-  args: { index: "03", tone: "danger", label: "Unsealed entries", value: "1,284" },
+  args: { tone: "danger", label: "Unsealed entries", value: "1,284" },
   render: (args) => (
     <StatTile {...args}>
       <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
@@ -95,22 +93,9 @@ export const WithSparkline: Story = {
   ),
 };
 
-/**
- * No index, for a tile that is not one of a sequence. A count, a time and a duration are
- * different measures; numbering them 01 to 03 would claim an order they do not have.
- */
-export const WithoutIndex: Story = {
-  args: { index: undefined, label: "Sources on record", value: "24" },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByText("24")).toBeVisible();
-    await expect(canvasElement.querySelector(".di-stat-tile-index")).toBeNull();
-  },
-};
-
 /** Without a delta, where there is no previous reading to compare. */
 export const WithoutDelta: Story = {
-  args: { index: "04", label: "Sources on record", value: "24" },
+  args: { label: "Sources on record", value: "24" },
 };
 
 /** Closed on the tick scale: this tile reports a measurement. */
@@ -125,7 +110,7 @@ export const Ruled: Story = {
 
 /** One size down, for a row of tiles inside a panel. */
 export const Compact: Story = {
-  args: { compact: true, index: "A", label: "Ingest rate", value: "412/s" },
+  args: { compact: true, label: "Ingest rate", value: "412/s" },
   render: (args) => (
     <StatTile {...args}>
       <StatTileDelta>steady</StatTileDelta>
@@ -139,16 +124,16 @@ export const Row: Story = {
   decorators: [],
   render: () => (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: 10 }}>
-      <StatTile index="01" label="Entries sealed" value="4,182" ruled={true}>
+      <StatTile label="Entries sealed" value="4,182" ruled={true}>
         <StatTileDelta>+112 since 09:00Z</StatTileDelta>
       </StatTile>
-      <StatTile index="02" label="Coverage" value="86.4%" ruled={true}>
+      <StatTile label="Coverage" value="86.4%" ruled={true}>
         <StatTileDelta tone="warn">down 2.1 points</StatTileDelta>
       </StatTile>
-      <StatTile index="03" label="Unsealed" value="1,284" tone="danger" ruled={true}>
+      <StatTile label="Unsealed" value="1,284" tone="danger" ruled={true}>
         <StatTileDelta tone="danger">up 940</StatTileDelta>
       </StatTile>
-      <StatTile index="04" label="Sources" value="24" ruled={true} />
+      <StatTile label="Sources" value="24" ruled={true} />
     </div>
   ),
 };

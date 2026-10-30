@@ -66,7 +66,9 @@ export const OnAPage: Story = {
     await expect(within(dialog).queryByText("Search")).toBeNull();
     await expect(within(dialog).getByText("Move between rows")).toBeInTheDocument();
     await expect(within(dialog).getByText("Open the row")).toBeInTheDocument();
-    const edges = new Set(Array.from(dialog.querySelectorAll("dd")).map((dd) => Math.round(dd.getBoundingClientRect().left)));
+    const edges = new Set(
+      Array.from(dialog.querySelectorAll("dd")).map((dd) => Math.round(dd.getBoundingClientRect().left)),
+    );
     await expect(edges.size).toBe(1);
     await userEvent.keyboard("{Escape}");
   },

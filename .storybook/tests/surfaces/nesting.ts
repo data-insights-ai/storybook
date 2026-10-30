@@ -13,18 +13,14 @@ const NOT_A_SURFACE =
 export function nestingFindings(root: Element): string[] {
   const findings: string[] = [];
   for (const el of root.querySelectorAll<HTMLElement>("*")) {
-    if (el.matches(NOT_A_SURFACE) || el.closest("button, a, [role=button]"))
-      continue;
+    if (el.matches(NOT_A_SURFACE) || el.closest("button, a, [role=button]")) continue;
     const style = getComputedStyle(el);
     if (style.position === "fixed" || style.position === "absolute") continue;
     const rect = el.getBoundingClientRect();
-    if (rect.width < 120 || rect.height < 48 || !hasEdge(style) || !shown(el))
-      continue;
+    if (rect.width < 120 || rect.height < 48 || !hasEdge(style) || !shown(el)) continue;
     const ground = groundOf(el);
     if (!ground || ground.color !== style.backgroundColor) continue;
-    findings.push(
-      `${describe(el)} draws an edge on ${describe(ground.element)} in the same colour ${ground.color}`,
-    );
+    findings.push(`${describe(el)} draws an edge on ${describe(ground.element)} in the same colour ${ground.color}`);
   }
   return findings;
 }

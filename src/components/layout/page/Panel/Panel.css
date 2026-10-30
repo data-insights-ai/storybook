@@ -1,8 +1,16 @@
 @layer components {
-  /* A surface is a step in tone with a faint edge, not a box drawn with a line. */
+  /*
+   * A surface is a step in tone with a faint edge, not a box drawn with a
+   * line. The head, the content and the footer are rows inside it, at one
+   * inset all round and 16px apart: no band, no rule between them.
+   */
   .di-panel {
+    --di-panel-inner: var(--di-panel-pad);
     display: flex;
+    flex-direction: column;
+    gap: var(--di-space-16);
     overflow: hidden;
+    padding: var(--di-panel-inner);
     border: 1px solid var(--di-panel-border);
     border-radius: var(--di-panel-radius);
     background: var(--di-panel-bg);
@@ -12,8 +20,15 @@
   /* A step below the surface it sits in: the deepest a region goes. */
   .di-panel-inset {
     --di-panel-bg: var(--di-bg-subtle);
+    --di-panel-inner: var(--di-space-16);
     border-radius: var(--di-radius-inset);
     box-shadow: none;
+  }
+
+  @media (max-width: 600px) {
+    .di-panel {
+      --di-panel-inner: var(--di-space-16);
+    }
   }
 
   /*
@@ -28,8 +43,8 @@
     box-shadow: none;
   }
 
-  .di-panel.is-danger {
-    border-color: var(--di-status-danger-border);
+  .di-panel-content .di-panel {
+    --di-panel-inner: var(--di-space-16);
   }
 
   /* The one thing that matters in the view. Gold marks the object, never its words. */
@@ -39,84 +54,27 @@
       var(--di-one-glow);
   }
 
-  .di-panel-index {
-    width: var(--di-index-col);
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: var(--di-space-12) 0;
-    border-right: 1px solid var(--di-panel-border);
-    background: var(--di-panel-index-bg);
-  }
-
-  .di-panel-index-sm {
-    width: var(--di-index-col-sm);
-  }
-
-  .di-panel.is-danger .di-panel-index {
-    border-right-color: var(--di-status-danger-border);
-    background: var(--di-status-danger-bg);
-  }
-
-  .di-panel-index-label {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    font-weight: var(--di-weight-medium);
-    font-variant-numeric: tabular-nums;
-    color: var(--di-text-subtle);
-  }
-
-  .di-panel.is-danger .di-panel-index-label {
-    color: var(--di-status-danger-fg);
-  }
-
-  .di-panel-index-rule {
-    width: 1px;
-    flex: 1;
-    margin-top: var(--di-space-8);
-    background: var(--di-rule);
-  }
-
-  .di-panel-body {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /*
-   * The header has no rule under it: the title and the content belong to
-   * one block. On a narrow panel the meta drops under the title rather than
-   * off the edge.
-   */
-  .di-panel-body {
-    --di-panel-inner: var(--di-panel-pad);
-  }
-
-  .di-panel-inset > .di-panel-body {
-    --di-panel-inner: var(--di-space-16);
-  }
-
-  @media (max-width: 600px) {
-    .di-panel-body {
-      --di-panel-inner: var(--di-space-16);
-    }
-  }
-
+  /* On a narrow panel the meta and the actions drop under the title rather than off the edge. */
   .di-panel-header {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
-    justify-content: space-between;
     gap: var(--di-space-8) var(--di-space-16);
-    padding: var(--di-panel-inner) var(--di-panel-inner) 0;
   }
 
   .di-panel-titles {
+    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     gap: var(--di-space-4);
+    min-width: 0;
+  }
+
+  .di-panel-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-4) var(--di-space-8);
     min-width: 0;
   }
 
@@ -129,12 +87,20 @@
     color: var(--di-mono-label-color);
   }
 
+  /* A panel's name is a heading: the display face, the one bold line of the block. */
   .di-panel-title {
+    min-width: 0;
+    font-family: var(--di-heading-family);
     font-size: var(--di-block-title-size);
-    font-weight: var(--di-weight-semibold);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
     text-wrap: balance;
     color: var(--di-text);
+  }
+
+  .di-panel-status {
+    display: inline-flex;
+    flex: none;
   }
 
   .di-panel-meta {
@@ -149,20 +115,18 @@
     color: var(--di-text-subtle);
   }
 
+  .di-panel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8);
+  }
+
   .di-panel-content {
-    --di-panel-pad: var(--di-panel-inner);
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: var(--di-panel-pad);
-  }
-
-  .di-panel-header + .di-panel-content {
-    padding-top: var(--di-space-16);
-  }
-
-  .di-panel-content.di-panel-content-flush {
-    --di-panel-pad: 0px;
+    min-width: 0;
   }
 
   /* A table in a panel sits on the panel's surface: it drops a surface of its own. */
@@ -172,38 +136,52 @@
     --di-table-radius: 0;
   }
 
+  /*
+   * Flush content runs to the panel's sides, and to its top or bottom edge
+   * where nothing stands between: a list's rows span the surface while its
+   * first column keeps the title's line.
+   */
   .di-panel-content-flush {
     --di-table-edge: var(--di-panel-inner);
+    margin-inline: calc(-1 * var(--di-panel-inner));
+  }
+
+  .di-panel-content-flush:first-child {
+    margin-top: calc(-1 * var(--di-panel-inner));
+  }
+
+  .di-panel-content-flush:last-child {
+    margin-bottom: calc(-1 * var(--di-panel-inner));
   }
 
   .di-panel-content-flush > .di-panel-note {
-    margin-top: 0;
-    padding: var(--di-space-12) var(--di-panel-inner) var(--di-panel-inner);
+    padding: 0 var(--di-panel-inner);
   }
 
-  /*
-   * The footer is written as a child, so it has to reach back out through
-   * the content padding to sit on the panel's own edges. When the panel is
-   * flush the padding is zero and these margins come to nothing.
-   */
+  .di-panel-content-flush:last-child > .di-panel-note:last-child {
+    padding-bottom: var(--di-panel-inner);
+  }
+
+  /* The footer row: what it reports at its start, the actions at its end. */
+  .di-panel-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8) var(--di-space-16);
+  }
+
   .di-panel-footer {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--di-space-8);
-    margin: auto calc(-1 * var(--di-panel-pad)) calc(-1 * var(--di-panel-pad));
-    padding: var(--di-space-12) var(--di-panel-inner);
-    border-top: 1px solid var(--di-rule-hairline);
-    background: var(--di-bg-subtle);
+    min-width: 0;
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
   }
 
-  /*
-   * The footer's top margin is `auto`, so it sinks to the bottom of a panel
-   * taller than its content. That leaves no room above it when the panel is
-   * not, so the last block before it keeps the panel's padding instead.
-   */
-  .di-panel-content > :has(+ .di-panel-footer) {
-    margin-bottom: var(--di-panel-pad);
+  .di-panel-foot > .di-panel-actions {
+    margin-left: auto;
   }
 
   /* The lead belongs to what follows it, a step apart rather than run into it. */
@@ -214,7 +192,7 @@
   .di-panel-lead {
     max-width: 70ch;
     font-size: var(--di-font-size-400);
-    font-weight: var(--di-weight-semibold);
+    font-weight: var(--di-weight-regular);
     line-height: var(--di-leading-snug);
     text-wrap: pretty;
     color: var(--di-text);

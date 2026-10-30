@@ -39,7 +39,12 @@ export function TextLink(props: ButtonProps | LinkProps | RenderProps) {
     return routed;
   }
   if (props.href !== undefined) {
-    return <a {...(rest as AnchorHTMLAttributes<HTMLAnchorElement>)} className={classes} />;
+    const { children, ...anchor } = rest as AnchorHTMLAttributes<HTMLAnchorElement>;
+    return (
+      <a {...anchor} className={classes}>
+        {children}
+      </a>
+    );
   }
   const { type = "button", ...buttonRest } = rest as ButtonHTMLAttributes<HTMLButtonElement>;
   return <button {...buttonRest} type={type} className={classes} />;

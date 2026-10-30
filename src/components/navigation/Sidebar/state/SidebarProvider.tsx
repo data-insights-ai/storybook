@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useId, useMemo, useState, type ReactNode } from "react";
 import { Tooltip } from "@base-ui/react/tooltip";
 import { SidebarContext } from "./SidebarContext";
 import { readStoredExpanded, usePersistExpanded } from "./sidebarStorage";
@@ -40,9 +40,7 @@ export function SidebarProvider({
   const sidebarId = useId();
 
   usePersistExpanded(storageKey, expanded);
-  useEffect(() => {
-    if (!mobile) setMobileOpen(false);
-  }, [mobile]);
+  if (!mobile && mobileOpen) setMobileOpen(false);
 
   const setExpanded = useCallback(
     (next: boolean) => {

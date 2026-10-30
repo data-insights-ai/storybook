@@ -1,4 +1,15 @@
-import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, XAxis, YAxis, type ActiveDotProps, type DotItemDotProps } from "recharts";
+import {
+  Area,
+  Bar,
+  CartesianGrid,
+  Cell,
+  ComposedChart,
+  Line,
+  XAxis,
+  YAxis,
+  type ActiveDotProps,
+  type DotItemDotProps,
+} from "recharts";
 import { Chart, ChartLegend, ChartTooltip, type ChartConfig } from "../../components/charts/Chart";
 
 const series = [
@@ -50,7 +61,9 @@ function SeriesActive(props: ActiveDotProps) {
   const point = at(props);
   if (!point) return <g />;
   const cited = Boolean((props.payload as { cited?: boolean } | undefined)?.cited);
-  return <circle cx={point.cx} cy={point.cy} r={4} fill={cited ? "var(--di-chart-highlight)" : "var(--di-chart-series)"} />;
+  return (
+    <circle cx={point.cx} cy={point.cy} r={4} fill={cited ? "var(--di-chart-highlight)" : "var(--di-chart-series)"} />
+  );
 }
 
 export function SeriesChart({ legend = false }: { legend?: boolean }) {
@@ -135,7 +148,13 @@ export function CompareChart() {
         <XAxis type="number" domain={[0, 100]} hide />
         <YAxis type="category" dataKey="name" tickLine={false} axisLine={false} width={52} interval={0} />
         <ChartTooltip />
-        <Bar dataKey="value" barSize={14} radius={0} label={(props) => shareLabel(props as Parameters<typeof shareLabel>[0])} {...draw}>
+        <Bar
+          dataKey="value"
+          barSize={14}
+          radius={0}
+          label={(props) => shareLabel(props as Parameters<typeof shareLabel>[0])}
+          {...draw}
+        >
           {bars.map((entry) => (
             <Cell key={entry.name} fill={entry.fill} />
           ))}
@@ -186,11 +205,44 @@ export function RangeChart() {
         <XAxis dataKey="month" tickLine={false} axisLine={false} interval={0} padding={{ left: 16, right: 28 }} />
         <YAxis hide domain={[0, 100]} />
         <ChartTooltip />
-        <Area dataKey="low" stackId="band" stroke="none" fill="transparent" legendType="none" tooltipType="none" activeDot={false} {...draw} />
+        <Area
+          dataKey="low"
+          stackId="band"
+          stroke="none"
+          fill="transparent"
+          legendType="none"
+          tooltipType="none"
+          activeDot={false}
+          {...draw}
+        />
         <Area dataKey="span" stackId="band" stroke="none" fill="var(--color-span)" activeDot={false} {...draw} />
-        <Line dataKey="high" stroke="none" dot={false} legendType="none" tooltipType="none" isAnimationActive={false} label={(props) => edgeLabel("P90", -4)(props as Parameters<ReturnType<typeof edgeLabel>>[0])} />
-        <Line dataKey="low" stroke="none" dot={false} legendType="none" tooltipType="none" isAnimationActive={false} label={(props) => edgeLabel("P10", 14)(props as Parameters<ReturnType<typeof edgeLabel>>[0])} />
-        <Line dataKey="median" stroke="var(--color-median)" strokeWidth={1.6} strokeLinecap="round" dot={false} activeDot={false} {...draw} />
+        <Line
+          dataKey="high"
+          stroke="none"
+          dot={false}
+          legendType="none"
+          tooltipType="none"
+          isAnimationActive={false}
+          label={(props) => edgeLabel("P90", -4)(props as Parameters<ReturnType<typeof edgeLabel>>[0])}
+        />
+        <Line
+          dataKey="low"
+          stroke="none"
+          dot={false}
+          legendType="none"
+          tooltipType="none"
+          isAnimationActive={false}
+          label={(props) => edgeLabel("P10", 14)(props as Parameters<ReturnType<typeof edgeLabel>>[0])}
+        />
+        <Line
+          dataKey="median"
+          stroke="var(--color-median)"
+          strokeWidth={1.6}
+          strokeLinecap="round"
+          dot={false}
+          activeDot={false}
+          {...draw}
+        />
       </ComposedChart>
     </Chart>
   );

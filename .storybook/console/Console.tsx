@@ -36,15 +36,7 @@ export type ConsoleChrome = {
  * The canvas and the window. The dotted ground is what a console sits
  * on in these stories; a product renders `AppShell` alone, full-bleed.
  */
-export function ConsoleFrame({
-  title,
-  lang,
-  children,
-}: {
-  title: string;
-  lang: string;
-  children: ReactNode;
-}) {
+export function ConsoleFrame({ title, lang, children }: { title: string; lang: string; children: ReactNode }) {
   return (
     <div className="sb-canvas" lang={lang}>
       <p className="sb-window-title">
@@ -117,12 +109,7 @@ export function Console({
               ))}
             </p>
             <AppShellBarEnd>
-              <button
-                type="button"
-                className="sb-demo"
-                aria-pressed={demo}
-                onClick={() => setDemo((value) => !value)}
-              >
+              <button type="button" className="sb-demo" aria-pressed={demo} onClick={() => setDemo((value) => !value)}>
                 <span className="sb-demo-dot" aria-hidden />
                 {demo ? chrome.demoOn : chrome.demoOff}
               </button>

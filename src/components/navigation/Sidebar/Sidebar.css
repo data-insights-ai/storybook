@@ -17,14 +17,15 @@
     gap: var(--di-space-16);
     width: var(--di-sb-width);
     height: 100dvh;
-    padding: var(--di-space-16) var(--di-space-12) var(--di-space-12);
+    padding: var(--di-space-16) var(--di-space-12);
     box-sizing: border-box;
     overflow: hidden auto;
     overflow-wrap: anywhere;
     background: var(--di-sidebar-bg);
     color: var(--di-sidebar-fg);
     border-right: 1px solid var(--di-sidebar-edge);
-    transition: width var(--di-duration-slow) var(--di-ease),
+    transition:
+      width var(--di-duration-slow) var(--di-ease),
       padding var(--di-duration-slow) var(--di-ease);
   }
 
@@ -45,10 +46,9 @@
     min-width: 0;
   }
 
+  /* The footer sits at the foot by distance, 16px under the last group at least: no rule over it. */
   .di-sb-footer {
     margin-top: auto;
-    padding-top: var(--di-space-12);
-    border-top: 1px solid var(--di-sidebar-edge);
   }
 
   .di-sb-content {
@@ -57,6 +57,10 @@
     flex-direction: column;
     gap: var(--di-space-16);
     min-width: 0;
+  }
+
+  .di-sb-content:empty {
+    display: none;
   }
 
   .di-sb-group {

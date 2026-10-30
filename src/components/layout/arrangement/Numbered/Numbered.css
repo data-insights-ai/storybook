@@ -33,4 +33,13 @@
   .di-numbered.is-row + .di-numbered.is-row {
     border-top: 1px solid var(--di-table-rule);
   }
+
+  /* The run of rows starts and ends on its text: the panel around it owns the inset. */
+  .di-numbered.is-row:first-child {
+    padding-top: 0;
+  }
+
+  .di-numbered.is-row:last-child {
+    padding-bottom: 0;
+  }
 }

@@ -94,6 +94,7 @@ export function DataTable({
         reachable from the keyboard, so it takes a tab stop then, and only
         then: a frame that fits would be a stop that does nothing.
       */}
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the frame takes the arrow keys for the rows inside it */}
       <div
         ref={scroll}
         className="di-table-scroll"
@@ -144,7 +145,11 @@ function moveBetweenRows(event: KeyboardEvent<HTMLDivElement>) {
   const rows = Array.from(event.currentTarget.querySelectorAll("tbody tr")).filter((r) => controls(r).length > 0);
   const at = rows.indexOf(row);
   const next =
-    event.key === "Home" ? rows[0] : event.key === "End" ? rows[rows.length - 1] : rows[at + (event.key === "ArrowDown" ? 1 : -1)];
+    event.key === "Home"
+      ? rows[0]
+      : event.key === "End"
+        ? rows[rows.length - 1]
+        : rows[at + (event.key === "ArrowDown" ? 1 : -1)];
   if (!next || next === row) return;
   event.preventDefault();
   const column = Math.max(0, controls(row).indexOf(target));
@@ -155,7 +160,7 @@ function moveBetweenRows(event: KeyboardEvent<HTMLDivElement>) {
 }
 
 function controls(row: Element) {
-  return Array.from(row.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), summary, [tabindex=\"0\"]"));
+  return Array.from(row.querySelectorAll<HTMLElement>('a[href], button:not(:disabled), summary, [tabindex="0"]'));
 }
 
 const StackContext = createContext(false);
@@ -202,6 +207,7 @@ function useOverflowing(frame: { current: HTMLDivElement | null }) {
  */
 function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: boolean) {
   const [widths, setWidths] = useState<number[]>();
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- measures after every render until the head and a first row exist; once set it stops
   useLayoutEffect(() => {
     const el = frame.current;
     const table = el?.querySelector("table");
@@ -209,6 +215,7 @@ function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: 
     const heads = table.tHead?.rows[0]?.cells;
     const row = table.tBodies[0]?.querySelector("tr:not(.di-table-spacer)");
     if (!heads || !row || getComputedStyle(table).display !== "table") return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- column widths are read from the laid-out table before paint
     setWidths(Array.from(heads, (th) => th.getBoundingClientRect().width));
   });
   useLayoutEffect(() => {
@@ -286,7 +293,11 @@ export function TableColumn({
 }) {
   const role = useRole("columnheader");
   if (index) {
-    return <th scope="col" role={role} className="di-table-index"><span className="di-sr">{children}</span></th>;
+    return (
+      <th scope="col" role={role} className="di-table-index">
+        <span className="di-sr">{children}</span>
+      </th>
+    );
   }
   // A sortable column that is not the sorted one still says so, quietly: a
   // header that only reveals it is a control once pressed is a guess.
@@ -403,7 +414,11 @@ export function TableSpacer({ height, ref }: { height: number; ref?: Ref<HTMLTab
 
 /** The ordinal cell. Mono, quiet, and the row's handle in conversation. */
 export function TableIndex({ children }: { children: ReactNode }) {
-  return <td role={useRole("cell")} className="di-table-index">{children}</td>;
+  return (
+    <td role={useRole("cell")} className="di-table-index">
+      {children}
+    </td>
+  );
 }
 
 /**
@@ -434,12 +449,19 @@ export function TableCell({
 }) {
   const measured = useContext(MeasuredContext);
   const fill = useContext(FillColumnContext);
-  const fills = fill !== -1 && fill === useContext(ColumnContext);
+  const column = useContext(ColumnContext);
+  const fills = fill !== -1 && fill === column;
   return (
     <td
       role={useRole("cell")}
       data-label={label}
-      className={cx(align === "end" && "is-end", mono && "di-mono", pinned && "is-pinned", label && "is-labelled", fills && "is-fill")}
+      className={cx(
+        align === "end" && "is-end",
+        mono && "di-mono",
+        pinned && "is-pinned",
+        label && "is-labelled",
+        fills && "is-fill",
+      )}
       /* A value cut by a measured column shows whole in its tooltip. */
       onMouseEnter={measured ? revealCut : undefined}
     >

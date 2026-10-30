@@ -23,7 +23,8 @@ const SPACE = [2, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96];
 const SPACE_PROPS = /\b(gap|row-gap|column-gap|padding|margin)(-(top|right|bottom|left|inline|block)(-(start|end))?)?$/;
 
 /* Primitive tokens a component may not bind to. A component names a role. */
-const PRIMITIVE = /--di-(navy-\d+|gold-\d+|poppy-\d+|cornflower-\d+|ok-\d+|amber-\d+|danger-\d+|slate-[\w-]+|night-[\w]+|paper-[\w]+|severity-[\w]+-(?:day|night)|font-sans(?:-band)?|font-mono|font-grotesk(?:-band)?|radius-[smlx]+)(?![\w-])/;
+const PRIMITIVE =
+  /--di-(navy-\d+|gold-\d+|poppy-\d+|cornflower-\d+|ok-\d+|amber-\d+|danger-\d+|slate-[\w-]+|night-[\w]+|paper-[\w]+|severity-[\w]+-(?:day|night)|font-sans(?:-band)?|font-mono|font-grotesk(?:-band)?|radius-[smlx]+)(?![\w-])/;
 
 /* Where a primitive legitimately appears: the token files define them, and
  * a surface that re-points its own tokens is naming a value on purpose. */
@@ -60,8 +61,7 @@ function allowed(lines, i, rule) {
 }
 
 const problems = [];
-const add = (file, line, rule, message) =>
-  problems.push({ file: relative(ROOT, file), line, rule, message });
+const add = (file, line, rule, message) => problems.push({ file: relative(ROOT, file), line, rule, message });
 
 for (const file of files) {
   const text = readFileSync(file, "utf8");
@@ -84,8 +84,15 @@ for (const file of files) {
         for (const px of decl[2].matchAll(/(\d+)px/g)) {
           const n = Number(px[1]);
           if (n !== 0 && !SPACE.includes(n)) {
-            const near = SPACE.reduce((a, b) => (Math.abs(b - n) < Math.abs(a - n) || (Math.abs(b - n) === Math.abs(a - n) && b < a) ? b : a));
-            add(file, line, "space", `${decl[1]}: ${n}px is not on the ramp (${SPACE.join(", ")}). Nearest is var(--di-space-${near}).`);
+            const near = SPACE.reduce((a, b) =>
+              Math.abs(b - n) < Math.abs(a - n) || (Math.abs(b - n) === Math.abs(a - n) && b < a) ? b : a,
+            );
+            add(
+              file,
+              line,
+              "space",
+              `${decl[1]}: ${n}px is not on the ramp (${SPACE.join(", ")}). Nearest is var(--di-space-${near}).`,
+            );
           } else if (n !== 0) {
             add(file, line, "space", `${decl[1]}: ${n}px is on the ramp but written raw. Use var(--di-space-${n}).`);
           }
@@ -95,13 +102,23 @@ for (const file of files) {
       /* A sign in front of var() is not CSS: the declaration is dropped
        *    silently. Negate with calc(-1 * var(...)). */
       for (const neg of code.matchAll(/(^|[\s:(,])-var\(/g)) {
-        add(file, line, "negative-var", `"${neg[0].trim()}" is invalid CSS and is ignored by the browser. Use calc(-1 * var(...)).`);
+        add(
+          file,
+          line,
+          "negative-var",
+          `"${neg[0].trim()}" is invalid CSS and is ignored by the browser. Use calc(-1 * var(...)).`,
+        );
       }
 
       /* 2. Radius comes from the ramp. */
       const rad = code.match(/^\s*border-radius\s*:\s*([^;]+);/);
       if (rad && !/var\(|50%|^0$/.test(rad[1].trim()) && /\d+px/.test(rad[1])) {
-        add(file, line, "radius", `border-radius: ${rad[1].trim()} is hand-set. Use --di-radius-micro | -control | -surface | -container | -pill.`);
+        add(
+          file,
+          line,
+          "radius",
+          `border-radius: ${rad[1].trim()} is hand-set. Use --di-radius-micro | -control | -surface | -container | -pill.`,
+        );
       }
 
       /* 3. Type comes from the scale. */
@@ -126,7 +143,12 @@ for (const file of files) {
       const isDefinition = /^\s*--di-[\w-]+\s*:/.test(code);
       const prim = code.match(PRIMITIVE);
       if (prim && /var\(/.test(code) && !isDefinition && !fileAllows("layer") && !allowed(lines, i, "layer")) {
-        add(file, line, "layer", `${prim[0]} is a primitive used directly. Bind to a semantic role, or define a local --di-* from it if this surface re-points its own roles.`);
+        add(
+          file,
+          line,
+          "layer",
+          `${prim[0]} is a primitive used directly. Bind to a semantic role, or define a local --di-* from it if this surface re-points its own roles.`,
+        );
       }
     }
 
@@ -141,17 +163,19 @@ for (const file of files) {
     if (isComponent && !isStory) {
       const node = code.match(/^\s*(\w+)\??:\s*ReactNode;/);
       const name = node?.[1];
-      if (name && name !== "children" && name !== "icon" && name !== "trigger"
-          && !allowed(lines, i, "api")) {
-        add(file, line, "api", `\`${name}: ReactNode\` — only \`children\`, \`NavItem.icon\` and \`Menu.trigger\` may be ReactNode. Make it a string prop, or a named slot the caller writes as a child.`);
+      if (name && name !== "children" && name !== "icon" && name !== "trigger" && !allowed(lines, i, "api")) {
+        add(
+          file,
+          line,
+          "api",
+          `\`${name}: ReactNode\` — only \`children\`, \`NavItem.icon\` and \`Menu.trigger\` may be ReactNode. Make it a string prop, or a named slot the caller writes as a child.`,
+        );
       }
     }
   });
 }
 
-const only = process.argv.includes("--rule")
-  ? process.argv[process.argv.indexOf("--rule") + 1]
-  : null;
+const only = process.argv.includes("--rule") ? process.argv[process.argv.indexOf("--rule") + 1] : null;
 const shown = only ? problems.filter((p) => p.rule === only) : problems;
 
 if (shown.length === 0) {
@@ -166,5 +190,7 @@ for (const [rule, list] of Object.entries(byRule)) {
   console.log(`\n  ${rule}  (${list.length})`);
   for (const p of list) console.log(`    ${p.file}:${p.line}  ${p.message}`);
 }
-console.log(`\n${shown.length} problem${shown.length === 1 ? "" : "s"}. These ramps are stated in Foundations/Scale; a value between two steps is a decision nobody made.\n`);
+console.log(
+  `\n${shown.length} problem${shown.length === 1 ? "" : "s"}. These ramps are stated in Foundations/Scale; a value between two steps is a decision nobody made.\n`,
+);
 process.exit(1);

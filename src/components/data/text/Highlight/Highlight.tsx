@@ -13,12 +13,6 @@ import "./Highlight.css";
  * knows whether it is prose or a measured value. A passage is prose, and is
  * set in the sans band face so its tint cannot reach the line above.
  */
-export function Highlight({
-  variant = "passage",
-  children,
-}: {
-  variant?: "passage" | "figure";
-  children: string;
-}) {
+export function Highlight({ variant = "passage", children }: { variant?: "passage" | "figure"; children: string }) {
   return <mark className={cx("di-highlight", `di-highlight-${variant}`)}>{children}</mark>;
 }

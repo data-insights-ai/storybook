@@ -18,7 +18,9 @@ const storyFiles = (dir) =>
     if (statSync(full).isDirectory()) return storyFiles(full);
     return name.endsWith(".stories.tsx") || name.endsWith(".mdx") ? [full] : [];
   });
-const titles = storyFiles("src").flatMap((f) => [...readFileSync(f, "utf8").matchAll(/title[:=]\s*"([^"]+)"/g)].map((m) => m[1]));
+const titles = storyFiles("src").flatMap((f) =>
+  [...readFileSync(f, "utf8").matchAll(/title[:=]\s*"([^"]+)"/g)].map((m) => m[1]),
+);
 
 const findings = [];
 for (const [, name] of text.matchAll(/`([A-Z][A-Za-z0-9]+)`/g)) {
@@ -30,7 +32,8 @@ for (const [, ref] of text.matchAll(/`([A-Z][A-Za-z]+\/[A-Za-z/*]*)`/g)) {
   groups.add(group);
   if (!sections.includes(group)) findings.push(`names the group \`${group}/\`, which the sidebar does not have`);
   const rest = ref.slice(group.length + 1);
-  if (rest && rest !== "*" && !titles.some((t) => t === ref || t.startsWith(ref + "/"))) findings.push(`names \`${ref}\`, which no story has as its title`);
+  if (rest && rest !== "*" && !titles.some((t) => t === ref || t.startsWith(ref + "/")))
+    findings.push(`names \`${ref}\`, which no story has as its title`);
 }
 for (const section of sections) {
   if (!unlisted.has(section) && !groups.has(section)) findings.push(`does not list the sidebar group \`${section}/\``);

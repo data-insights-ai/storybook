@@ -31,7 +31,8 @@
     font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-medium);
     white-space: nowrap;
-    transition: color var(--di-duration) var(--di-ease),
+    transition:
+      color var(--di-duration) var(--di-ease),
       border-color var(--di-duration) var(--di-ease);
   }
 

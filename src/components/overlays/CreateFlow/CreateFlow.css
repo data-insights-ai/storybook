@@ -81,15 +81,17 @@
   }
 
   .di-create-flow[data-width="page"] .di-create-flow-step {
-    padding: var(--di-create-flow-pad);
+    padding: var(--di-create-flow-pad) var(--di-create-flow-pad) 0;
   }
 
   .di-create-flow[data-width="page"] .di-create-flow-error {
     padding: 0 var(--di-create-flow-pad) var(--di-space-12);
   }
 
+  /* The actions are the panel's last row at its inset, no rule over them; they stay in view on a long step. */
   .di-create-flow[data-width="page"] .di-create-flow-actions {
-    padding: var(--di-space-12) var(--di-create-flow-pad);
+    padding: var(--di-create-flow-pad);
+    border-top: 0;
     border-radius: 0 0 var(--di-panel-radius) var(--di-panel-radius);
     background: var(--di-panel-bg);
   }

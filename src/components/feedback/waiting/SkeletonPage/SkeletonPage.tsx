@@ -64,12 +64,7 @@ export function SkeletonPage({
 }
 
 function Bar({ className, width, step = 0 }: { className?: string; width?: number | string; step?: number }) {
-  return (
-    <span
-      className={cx("di-skp-bar", className)}
-      style={{ width, "--di-skeleton-row": step } as CSSProperties}
-    />
-  );
+  return <span className={cx("di-skp-bar", className)} style={{ width, "--di-skeleton-row": step } as CSSProperties} />;
 }
 
 function ListBody({ rows, label }: { rows: number; label: string }) {

@@ -71,7 +71,7 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
   {
     pattern: "Making an AI control look unlike the others",
     verdict: "adapted",
-    built: "SealMark, Button variant=\"inferred\"",
+    built: 'SealMark, Button variant="inferred"',
     reason: "A gold hairline and a hollow ring — unsealed. Not a gradient, not a sparkle.",
   },
   {
@@ -98,8 +98,7 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
     pattern: "Gradient edges, glow, pulse, sparkle glyphs",
     verdict: "refused",
     built: "—",
-    reason:
-      "The least verifiable output cannot be the most decorated one. Cyan-to-violet also belongs to no one.",
+    reason: "The least verifiable output cannot be the most decorated one. Cyan-to-violet also belongs to no one.",
   },
   {
     pattern: "A floating dock that reorders itself",

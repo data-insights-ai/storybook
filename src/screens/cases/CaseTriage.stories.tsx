@@ -23,7 +23,9 @@ export const Default: Story = {
     await expect(canvas.getByRole("button", { current: true })).toHaveTextContent("Leaked VPN credentials");
     await expect(canvasElement.querySelectorAll(".is-emphasis")).toHaveLength(1);
     if (window.innerWidth >= 900) {
-      await expect(canvas.getByRole("heading", { level: 3, name: /Leaked VPN credentials reached the file server/ })).toBeVisible();
+      await expect(
+        canvas.getByRole("heading", { level: 3, name: /Leaked VPN credentials reached the file server/ }),
+      ).toBeVisible();
     }
   },
 };
@@ -45,6 +47,8 @@ export const CaseOpen: Story = {
   args: { showing: "detail" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("heading", { level: 3, name: /Leaked VPN credentials reached the file server/ })).toBeVisible();
+    await expect(
+      canvas.getByRole("heading", { level: 3, name: /Leaked VPN credentials reached the file server/ }),
+    ).toBeVisible();
   },
 };

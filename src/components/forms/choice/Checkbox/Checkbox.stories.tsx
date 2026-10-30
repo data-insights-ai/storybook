@@ -100,7 +100,13 @@ export const Group: Story = {
       <Checkbox id="n1" label="Failed ingest" defaultChecked={true} />
       <Checkbox id="n2" label="Key expiry" defaultChecked={true} />
       <Checkbox id="n3" label="New source" />
-      <Checkbox id="n4" label="Seal broken" description="Always on for an admin." disabled={true} defaultChecked={true} />
+      <Checkbox
+        id="n4"
+        label="Seal broken"
+        description="Always on for an admin."
+        disabled={true}
+        defaultChecked={true}
+      />
     </ChoiceGroup>
   ),
 };

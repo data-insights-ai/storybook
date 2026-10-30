@@ -21,7 +21,11 @@ export function Breadcrumb({
           const last = i === items.length - 1;
           return (
             <li key={item.label} className="di-breadcrumb-item">
-              {i > 0 ? <span className="di-breadcrumb-sep" aria-hidden>/</span> : null}
+              {i > 0 ? (
+                <span className="di-breadcrumb-sep" aria-hidden>
+                  /
+                </span>
+              ) : null}
               {last ? (
                 <span className="di-breadcrumb-current" aria-current="page">
                   {item.label}

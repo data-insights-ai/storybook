@@ -34,7 +34,9 @@ export const Unsaved: Story = {
             label="Body"
             rows={14}
             mono={true}
-            defaultValue={"Case {{case.id}} was opened at {{case.opened}}.\n\nRule: {{rule}}\nHost: {{host}}\nOperator: {{operator}}\n\nOpen the case: {{case.url}}"}
+            defaultValue={
+              "Case {{case.id}} was opened at {{case.opened}}.\n\nRule: {{rule}}\nHost: {{host}}\nOperator: {{operator}}\n\nOpen the case: {{case.url}}"
+            }
           />
         </FieldStack>
       </Panel>

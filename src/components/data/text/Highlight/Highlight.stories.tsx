@@ -47,8 +47,7 @@ export const InClaim: Story = {
         color: "var(--di-text)",
       }}
     >
-      Coverage rose to <Highlight variant="figure">94 %</Highlight> —{" "}
-      <Highlight>without a new source</Highlight>.
+      Coverage rose to <Highlight variant="figure">94 %</Highlight> — <Highlight>without a new source</Highlight>.
     </p>
   ),
 };
@@ -67,8 +66,7 @@ export const NightSheet: Story = {
         fontSize: "var(--di-font-size-600)",
       }}
     >
-      Coverage rose to <Highlight variant="figure">94 %</Highlight> —{" "}
-      <Highlight>without a new source</Highlight>.
+      Coverage rose to <Highlight variant="figure">94 %</Highlight> — <Highlight>without a new source</Highlight>.
     </div>
   ),
 };

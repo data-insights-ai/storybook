@@ -85,7 +85,8 @@ function list(n: number, rail?: boolean) {
   );
 }
 
-const columns = (host: Element) => new Set([...host.querySelectorAll(".tile")].map((t) => Math.round(box(t).left))).size;
+const columns = (host: Element) =>
+  new Set([...host.querySelectorAll(".tile")].map((t) => Math.round(box(t).left))).size;
 
 describe("large screens", () => {
   for (const [width, pad] of [

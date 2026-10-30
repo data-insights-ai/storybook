@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  Globe,
-  MoreVertical,
-  Radar,
-  Search,
-  Settings2,
-  ShieldCheck,
-  Timer,
-} from "lucide-react";
+import { Globe, MoreVertical, Radar, Search, Settings2, ShieldCheck, Timer } from "lucide-react";
 import {
   Button,
   CommandBar,
@@ -63,29 +55,18 @@ export function InferenceScreen() {
   const [receipt, setReceipt] = useState(true);
 
   return (
-    <ProductShell
-      area="workspace"
-      active="sources"
-      crumbs={["Example Security GmbH", "Production", "Sources"]}
-    >
+    <ProductShell area="workspace" active="sources" crumbs={["Example Security GmbH", "Production", "Sources"]}>
       <PageHeader>
         <PageHeaderTitle>Sources</PageHeaderTitle>
       </PageHeader>
 
       <SectionTitle>
-        <SectionTitleHeading>
-          The claim, and the question before it runs
-        </SectionTitleHeading>
+        <SectionTitleHeading>The claim, and the question before it runs</SectionTitleHeading>
       </SectionTitle>
       <div className="inference-grid">
         <LivingCard title="Unsealed entries" insightLabel="ai insight">
           <LivingActions>
-            <Button
-              variant="ghost"
-              size="dense"
-              iconOnly={true}
-              aria-label="Card actions"
-            >
+            <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
               <MoreVertical aria-hidden />
             </Button>
           </LivingActions>
@@ -116,13 +97,9 @@ export function InferenceScreen() {
           whyLabel="Why was this proposed?"
           onWhy={() => undefined}
         >
-          <ExplainRow label="Basis">
-            1,284 entries are queued behind one paused host
-          </ExplainRow>
+          <ExplainRow label="Basis">1,284 entries are queued behind one paused host</ExplainRow>
           <ExplainRow label="Scope">One source in this workspace</ExplainRow>
-          <ExplainRow label="Reversible">
-            Yes, the source can be paused again
-          </ExplainRow>
+          <ExplainRow label="Reversible">Yes, the source can be paused again</ExplainRow>
           <ConfirmActions>
             <Button variant="secondary" size="dense">
               Cancel
@@ -137,9 +114,7 @@ export function InferenceScreen() {
           confidence="0.88"
           confidenceWord="high"
         >
-          <ExplainRow label="Matched on">
-            Host, manifest prefix and queue depth
-          </ExplainRow>
+          <ExplainRow label="Matched on">Host, manifest prefix and queue depth</ExplainRow>
           <ExplainRow label="Window" mono>
             2026-09-22 → 2026-09-23
           </ExplainRow>
@@ -147,9 +122,7 @@ export function InferenceScreen() {
             summary="Not considered (2)"
             items={["Entries sealed before 2026-09-01", "Unsealed drafts"]}
           />
-          <ExplainFooter>
-            This does not account for sources added in the last hour.
-          </ExplainFooter>
+          <ExplainFooter>This does not account for sources added in the last hour.</ExplainFooter>
         </ExplainPanel>
         <div className="inference-column">
           <Panel title="Where a query goes">
@@ -210,19 +183,10 @@ export function InferenceScreen() {
           privacyNote="local processing"
         >
           <CommandGroup label="Records">
-            <CommandRow
-              label="feed.example.io"
-              meta="03 · paused"
-              active={true}
-              onSelect={() => undefined}
-            >
+            <CommandRow label="feed.example.io" meta="03 · paused" active={true} onSelect={() => undefined}>
               <Radar aria-hidden />
             </CommandRow>
-            <CommandRow
-              label="beta.example.dev"
-              meta="11 · paused"
-              onSelect={() => undefined}
-            >
+            <CommandRow label="beta.example.dev" meta="11 · paused" onSelect={() => undefined}>
               <Radar aria-hidden />
             </CommandRow>
           </CommandGroup>
@@ -235,18 +199,10 @@ export function InferenceScreen() {
             />
           </CommandGroup>
           <CommandGroup label="Go to">
-            <CommandRow
-              label="Coverage"
-              meta="G then C"
-              onSelect={() => undefined}
-            >
+            <CommandRow label="Coverage" meta="G then C" onSelect={() => undefined}>
               <Search aria-hidden />
             </CommandRow>
-            <CommandRow
-              label="Settings"
-              meta="G then S"
-              onSelect={() => undefined}
-            >
+            <CommandRow label="Settings" meta="G then S" onSelect={() => undefined}>
               <Settings2 aria-hidden />
             </CommandRow>
           </CommandGroup>

@@ -35,7 +35,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Field({ initial = ["nora.feld@data-insights.ai"], ...args }: Parameters<typeof TokenField>[0] & { initial?: string[] }) {
+function Field({
+  initial = ["nora.feld@data-insights.ai"],
+  ...args
+}: Parameters<typeof TokenField>[0] & { initial?: string[] }) {
   const [values, setValues] = useState<string[]>(initial);
   const bad = values.filter((v) => !email.test(v)).length;
   return (
@@ -66,7 +69,12 @@ export const Addresses: Story = {
 
 /** An entry the field does not take stays where it was typed, marked, until it is corrected or removed. */
 export const WithInvalidEntry: Story = {
-  render: (args) => <Field {...args} initial={["nora.feld@data-insights.ai", "jonas.brandt@data-insights", "lena.vogt@data-insights.ai"]} />,
+  render: (args) => (
+    <Field
+      {...args}
+      initial={["nora.feld@data-insights.ai", "jonas.brandt@data-insights", "lena.vogt@data-insights.ai"]}
+    />
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("1 entry is not an email address.")).toBeVisible();

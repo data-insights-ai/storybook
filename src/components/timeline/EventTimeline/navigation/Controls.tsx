@@ -6,13 +6,7 @@ import type { TimelineNavigation } from "./useTimelineView";
 
 export type ControlLabels = { zoomIn: string; zoomOut: string; back: string; whole: string };
 
-export function Controls({
-  navigation,
-  labels,
-}: {
-  navigation: TimelineNavigation;
-  labels: ControlLabels;
-}) {
+export function Controls({ navigation, labels }: { navigation: TimelineNavigation; labels: ControlLabels }) {
   const { view, bounds, change, back, canGoBack } = navigation;
   const centre = (view.start + view.end) / 2;
   const whole = covers(view, bounds);

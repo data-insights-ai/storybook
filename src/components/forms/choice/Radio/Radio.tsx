@@ -2,14 +2,7 @@ import { cx } from "../../../../internal/cx";
 import { ChoiceText, type ChoiceProps } from "../Choice";
 
 /** A native radio. Group them with a shared `name` inside a `ChoiceGroup`. */
-export function Radio({
-  id,
-  label,
-  description = "",
-  className,
-  disabled = false,
-  ...props
-}: ChoiceProps) {
+export function Radio({ id, label, description = "", className, disabled = false, ...props }: ChoiceProps) {
   return (
     <div className={cx("di-choice", disabled && "is-disabled", className)}>
       <span className="di-choice-control">

@@ -9,7 +9,10 @@ import { Hero, HeroAside, HeroFooter, HeroLead, HeroVisual } from "./Hero";
 
 const counts = [10, 4, 2, 1, 4, 16, 0, 1, 4, 10, 3, 0, 12, 20, 8, 2, 7, 9, 1, 0, 8, 7, 4, 2, 9, 15, 4, 1];
 const days = ["6 Oct", "7 Oct", "8 Oct", "9 Oct", "10 Oct", "11 Oct", "12 Oct"];
-const activity = counts.map((detections, i) => ({ at: `${days[Math.floor(i / 4)]} ${String((i % 4) * 6).padStart(2, "0")}h`, detections }));
+const activity = counts.map((detections, i) => ({
+  at: `${days[Math.floor(i / 4)]} ${String((i % 4) * 6).padStart(2, "0")}h`,
+  detections,
+}));
 
 const meta = {
   title: "Layout/Page/Hero",

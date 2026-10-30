@@ -1,12 +1,4 @@
-import {
-  Database,
-  LockKeyhole,
-  Network,
-  Radar,
-  Share2,
-  ShieldCheck,
-  Workflow,
-} from "lucide-react";
+import { Database, LockKeyhole, Network, Radar, Share2, ShieldCheck, Workflow } from "lucide-react";
 import {
   Button,
   Grid,
@@ -32,7 +24,7 @@ import {
   StageTrack,
   StatusPill,
   StatTile,
-} from "../.."; 
+} from "../..";
 
 const stages = [
   {
@@ -115,13 +107,7 @@ export function ArchitectureScreen() {
           </SectionTitle>
           <StageTrack>
             {stages.map((stage) => (
-              <Stage
-                key={stage.id}
-                step={stage.step}
-                title={stage.title}
-                body={stage.body}
-                current={stage.current}
-              >
+              <Stage key={stage.id} step={stage.step} title={stage.title} body={stage.body} current={stage.current}>
                 <StageIcon>{stage.icon}</StageIcon>
                 <StageFooter>{stage.foot}</StageFooter>
               </Stage>
@@ -131,7 +117,8 @@ export function ArchitectureScreen() {
             <NoticeText>
               <NoticeTitle>Security boundary</NoticeTitle>
               <NoticeBody>
-                Web clients do not reach collectors or graph stores directly. They talk only to authenticated API gateways, with tight rate limits.
+                Web clients do not reach collectors or graph stores directly. They talk only to authenticated API
+                gateways, with tight rate limits.
               </NoticeBody>
             </NoticeText>
           </Notice>
@@ -184,6 +171,3 @@ export function ArchitectureScreen() {
     </>
   );
 }
-
-
-

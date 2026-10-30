@@ -14,15 +14,7 @@ import "../Field/Field.css";
 export type HintTone = "neutral" | "sealed" | "error";
 
 /** The line under a control. Empty text renders nothing. */
-export function FieldHint({
-  id,
-  tone,
-  children,
-}: {
-  id: string;
-  tone: HintTone;
-  children: string;
-}) {
+export function FieldHint({ id, tone, children }: { id: string; tone: HintTone; children: string }) {
   if (children === "") return null;
   if (tone === "error") {
     return (

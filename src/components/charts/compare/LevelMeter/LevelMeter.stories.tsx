@@ -119,8 +119,17 @@ export const Column: Story = {
       { id: "R-0398", now: 38, then: 51 },
       { id: "R-0377", now: 12, then: null },
     ];
-    const grid = { display: "grid", gridTemplateColumns: "64px minmax(0, 1fr) 32px 32px", gap: 12, alignItems: "center" };
-    const mono = { fontFamily: "var(--di-font-code)", fontSize: "var(--di-font-size-200)", textAlign: "right" as const };
+    const grid = {
+      display: "grid",
+      gridTemplateColumns: "64px minmax(0, 1fr) 32px 32px",
+      gap: 12,
+      alignItems: "center",
+    };
+    const mono = {
+      fontFamily: "var(--di-font-code)",
+      fontSize: "var(--di-font-size-200)",
+      textAlign: "right" as const,
+    };
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <LevelMeterLegend valueLabel="Now" compareLabel="Level 7 days ago" />

@@ -4,15 +4,7 @@ import { AlertTriangle } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Fact, FactList } from "../../data/records/FactList";
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalFrame,
-  ModalIcon,
-  ModalTitle,
-} from "./Modal";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalIcon, ModalTitle } from "./Modal";
 import { TextField } from "../../forms/text/TextField";
 
 const meta = {
@@ -81,8 +73,7 @@ export const Confirm: Story = {
                 Revoke four sources?
               </ModalTitle>
               <ModalBody>
-                Revoking removes them from the register. Entries already sealed stay on record and
-                keep citing them.
+                Revoking removes them from the register. Entries already sealed stay on record and keep citing them.
               </ModalBody>
               <FactList>
                 <Fact label="Scope">4 sources · WS-01</Fact>
@@ -107,9 +98,7 @@ export const Confirm: Story = {
     const body = within(canvasElement.ownerDocument.body);
     // The dialog starts at opacity 0 and fades in, so the visibility check
     // belongs inside waitFor rather than after it.
-    await waitFor(() =>
-      expect(body.getByRole("dialog", { name: "Revoke four sources?" })).toBeVisible(),
-    );
+    await waitFor(() => expect(body.getByRole("dialog", { name: "Revoke four sources?" })).toBeVisible());
 
     // Cancel closes it, and says so.
     const dialog = body.getByRole("dialog", { name: "Revoke four sources?" });
@@ -120,7 +109,6 @@ export const Confirm: Story = {
     // And the trigger behind it brings it back.
     await userEvent.click(body.getByRole("button", { name: "Revoke sources" }));
     await waitFor(() => expect(body.getByRole("dialog")).toBeVisible());
-
   },
 };
 
@@ -156,9 +144,7 @@ export const TypeToConfirm: Story = {
               <ModalTitle id="modal-title" eyebrow="Irreversible">
                 Erase the workspace record?
               </ModalTitle>
-              <ModalBody>
-                Every entry, seal and manifest in WS-01 is destroyed. No copy is kept.
-              </ModalBody>
+              <ModalBody>Every entry, seal and manifest in WS-01 is destroyed. No copy is kept.</ModalBody>
               <FactList>
                 <Fact label="Scope">WS-01 · 24,918 entries</Fact>
                 <Fact label="Reversible">No</Fact>
@@ -226,9 +212,7 @@ export const Plain: Story = {
           <ModalFrame>
             <ModalContent>
               <ModalTitle id="modal-title">Export the register?</ModalTitle>
-              <ModalBody>
-                The export carries every seal, so a recipient can verify it offline.
-              </ModalBody>
+              <ModalBody>The export carries every seal, so a recipient can verify it offline.</ModalBody>
               <FactList>
                 <Fact label="Format">JSON Lines, gzip</Fact>
                 <Fact label="Size">≈ 84 MB</Fact>
@@ -337,8 +321,6 @@ export const Transition: Story = {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
     await userEvent.click(canvas.getByRole("button", { name: "Revoke sources" }));
-    await waitFor(() =>
-      expect(body.getByRole("dialog", { name: "Revoke four sources?" })).toBeVisible(),
-    );
+    await waitFor(() => expect(body.getByRole("dialog", { name: "Revoke four sources?" })).toBeVisible());
   },
 };

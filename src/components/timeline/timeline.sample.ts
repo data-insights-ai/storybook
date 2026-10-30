@@ -1,11 +1,4 @@
-import type {
-  TimelineBar,
-  TimelineCell,
-  TimelineEvent,
-  TimelineLane,
-  TimelineSpan,
-  TimelineTone,
-} from "./types";
+import type { TimelineBar, TimelineCell, TimelineEvent, TimelineLane, TimelineSpan, TimelineTone } from "./types";
 import { boundsAround } from "./scale";
 
 /*
@@ -46,10 +39,7 @@ function generate(start: number, phases: Phase[], seed: number): SampleEvent[] {
     const from = start + phase.startH * HOUR;
     const span = phase.durationH * HOUR;
     const rhythm = phase.rhythm;
-    const waves =
-      rhythm && "bursts" in rhythm
-        ? Array.from({ length: rhythm.bursts }, () => from + rnd() * span)
-        : [];
+    const waves = rhythm && "bursts" in rhythm ? Array.from({ length: rhythm.bursts }, () => from + rnd() * span) : [];
     for (let i = 0; i < phase.count; i++) {
       const at =
         rhythm && "everyS" in rhythm
@@ -57,8 +47,7 @@ function generate(start: number, phases: Phase[], seed: number): SampleEvent[] {
           : rhythm && "bursts" in rhythm
             ? Math.min(
                 from + span,
-                waves[Math.floor(rnd() * waves.length)] -
-                  Math.log(1 - rnd()) * rhythm.spreadS * 1000,
+                waves[Math.floor(rnd() * waves.length)] - Math.log(1 - rnd()) * rhythm.spreadS * 1000,
               )
             : from + Math.pow(rnd(), 1.6) * span;
       let roll = rnd() * phase.tones.reduce((n, [, w]) => n + w, 0);
@@ -210,11 +199,7 @@ export const boundsOf = (events: SampleEvent[]): TimelineSpan =>
   boundsAround(events[0]?.at ?? 0, events.at(-1)?.at ?? 0);
 
 /** What a server returns for a window: buckets from `start`, stepping by `bucketMs`. */
-export function foldBars(
-  events: SampleEvent[],
-  span: TimelineSpan,
-  bucketMs: number,
-): TimelineBar[] {
+export function foldBars(events: SampleEvent[], span: TimelineSpan, bucketMs: number): TimelineBar[] {
   const from = Math.floor(span.start / bucketMs) * bucketMs;
   const bars = new Map<number, TimelineBar>();
   for (const e of events) {

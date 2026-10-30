@@ -49,7 +49,9 @@
     border-radius: var(--di-radius-container);
     background: var(--di-bg-surface);
     cursor: pointer;
-    transition: border-color var(--di-duration) var(--di-ease), background-color var(--di-duration) var(--di-ease);
+    transition:
+      border-color var(--di-duration) var(--di-ease),
+      background-color var(--di-duration) var(--di-ease);
   }
 
   .di-choicecard:hover:not(.is-active) {

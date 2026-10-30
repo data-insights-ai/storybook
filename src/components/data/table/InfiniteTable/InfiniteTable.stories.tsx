@@ -29,7 +29,11 @@ function useEntries() {
   const more = useCallback(() => {
     setLoading(true);
     setTimeout(() => {
-      setEntries((all) => [...all, ...Array.from({ length: 40 }, (_, i) => entry(200 - all.length - i))].filter((e) => Number(e.id.slice(1)) > 0));
+      setEntries((all) =>
+        [...all, ...Array.from({ length: 40 }, (_, i) => entry(200 - all.length - i))].filter(
+          (e) => Number(e.id.slice(1)) > 0,
+        ),
+      );
       setLoading(false);
     }, 200);
   }, []);

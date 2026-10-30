@@ -1,8 +1,10 @@
 @layer components {
+  /* The question is the panel's title: the display face, its one bold line. */
   .di-confirm-question {
     margin: 0;
+    font-family: var(--di-heading-family);
     font-size: var(--di-block-title-size);
-    font-weight: var(--di-weight-semibold);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
     text-wrap: balance;
     color: var(--di-text);
@@ -14,7 +16,6 @@
     align-items: center;
     gap: var(--di-space-12);
     margin-top: auto;
-    padding-top: var(--di-space-4);
   }
 
   .di-confirm-why {

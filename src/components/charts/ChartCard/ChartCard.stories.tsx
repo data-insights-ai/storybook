@@ -9,7 +9,8 @@ const days = Array.from({ length: 30 }, (_, i) => {
   const d = new Date(Date.UTC(2026, 9, 1 + i));
   return d.toISOString().slice(0, 10);
 });
-const short = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+const short = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 
 const balance = [
   ...days.map((at, i) => ({ at, balance: i < 20 ? 300 - i * 6 : null, forecast: i === 19 ? 186 : null })),
@@ -36,11 +37,7 @@ export const Dashboard: Story = {
   render: () => (
     <ChartCardGrid>
       <h2 className="di-sr">Organization at a glance</h2>
-      <ChartCard
-        title="Credit"
-        figure="186 credits"
-        note="Lasts about 31 days at 6 credits a day"
-      >
+      <ChartCard title="Credit" figure="186 credits" note="Lasts about 31 days at 6 credits a day">
         <ChartCardAction>
           <TextLink href="#credits">Credits</TextLink>
         </ChartCardAction>
@@ -97,8 +94,24 @@ export const Dashboard: Story = {
           todayLabel="Today"
           formatDate={short}
           periods={[
-            { id: "a", label: "Professional", start: "2026-09-12", end: "2027-05-10", graceEnd: "2027-05-24", tone: "ok", caption: "valid until 10 May 2027" },
-            { id: "b", label: "Team Add-on", start: "2026-10-02", end: "2026-11-02", graceEnd: "2026-11-16", tone: "warn", caption: "renews 2 Nov 2026" },
+            {
+              id: "a",
+              label: "Professional",
+              start: "2026-09-12",
+              end: "2027-05-10",
+              graceEnd: "2027-05-24",
+              tone: "ok",
+              caption: "valid until 10 May 2027",
+            },
+            {
+              id: "b",
+              label: "Team Add-on",
+              start: "2026-10-02",
+              end: "2026-11-02",
+              graceEnd: "2026-11-16",
+              tone: "warn",
+              caption: "renews 2 Nov 2026",
+            },
           ]}
         />
       </ChartCard>

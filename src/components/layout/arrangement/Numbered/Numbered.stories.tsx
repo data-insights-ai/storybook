@@ -46,7 +46,12 @@ export const Run: Story = {
       </Numbered>
       <Numbered index="02">
         <span>Grant it read access to the event hub namespace.</span>
-        <TextField id="numbered-namespace" label="Event hub namespace" mono placeholder="logs-prod.servicebus.windows.net" />
+        <TextField
+          id="numbered-namespace"
+          label="Event hub namespace"
+          mono
+          placeholder="logs-prod.servicebus.windows.net"
+        />
       </Numbered>
       <Numbered index="03">
         <span>Paste its client secret here; it is stored encrypted and never shown again.</span>

@@ -64,7 +64,6 @@
     --di-panel-border: transparent;
     --di-panel-radius: var(--di-radius-surface);
     --di-panel-pad: var(--di-space-24);
-    --di-panel-index-bg: var(--di-bg-subtle);
 
     --di-table-bg: var(--di-bg-surface);
     --di-table-shadow: var(--di-elevation-surface);

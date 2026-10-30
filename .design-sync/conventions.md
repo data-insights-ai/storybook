@@ -67,10 +67,10 @@ The Storybook sidebar is grouped by the job a component does:
 | A severity | `SeverityMark` | a coloured word |
 | What the one emphasised block asks for | `PanelLead`, its lead line above the proof and the actions | the ask buried in a note |
 | A run of steps inside a surface | `Numbered variant="row"`: ruled rows, no box each | a box per step |
-| A block of a record, or a plain surface | `Panel`, with a `title` and an `index` when it is one of a sequence, `surface="inset"` for a group inside another surface | |
-| One measured value on its own surface | `StatTile`, with an `index`, a `StatTileDelta` or a `Sparkline` when it has them | |
+| A block of a record, or a plain surface | `Panel`, with a `title`, `surface="inset"` for a group inside another surface | |
+| One measured value on its own surface | `StatTile`, with a `StatTileDelta` or a `Sparkline` when it has them | |
 | A small labelled figure set in a row inside something else | `Figure` in a `FigureRow` | `Stat` and `StatRow`, deprecated, removed in 0.12.0 |
-| The detail of one row | `Sheet` with the row's `index` and an `eyebrow` naming the kind of record | |
+| The detail of one row | `Sheet` with an `eyebrow` naming the kind of record | |
 | Work that needs more room than an inline form: a multi-field create or invite | `Sheet` | |
 | The first step of a create flow: one of a handful of kinds | `ChoiceCards`, with `planned` for the kinds that cannot be chosen yet | disabled cards |
 | An irreversible action | `Modal` or `ConfirmDialog` | a modal for anything reversible |
@@ -123,7 +123,7 @@ Rules that make output look native rather than approximate:
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
 - **Three families.** `--di-font-display` (Space Grotesk) is the page's name, a figure, a section head. `--di-font-ui` (IBM Plex Sans, 14px body) is prose. `--di-font-code` (IBM Plex Mono) is anything a machine wrote, and the capital label above a value.
 - **Rules only between figures and table rows.** A surface carries a soft shadow at most; a detached plane — menu, modal, toast — a stronger one (`--di-shadow-plane`). No blur behind text.
-- **Indexed records carry a 38px index column** (`--di-index-col`) holding an ordinal or a letter, wherever sequence or record identity matters — panels, tables, sheets opened from a row, notices. A sheet opened from a row keeps that row's ordinal; a failure keeps its ordinal, tinted. An ordinary form, a first-use empty state, and a panel or `StatTile` that is not one of a sequence (a row of different measures, the facts on one record) omit it; never invent a number to fill a decorative rail.
+- **A number only where the order is information.** The rows of a register carry their ordinal in a 38px index column (`--di-index-col`); the steps of a process are `Numbered` or a `Stepper`; the `AttentionList` ranks; a story numbers its phases. A panel, a sheet, a tile or an empty state carries no number: a sheet opened from a row names its record in the `eyebrow`, and a failure says so in words beside its title.
 - Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
 
 ### API shape
@@ -205,11 +205,9 @@ than floating on it. Only a pill is fully round, and only because it is a mark.
 told otherwise. 28 is a toolbar control, a chip, a menu item. 36 is a lone
 primary action, the command bar, the tab strip. 40 is a table row.
 
-**The index column** — 38px (`--di-index-col`), or 26px (`--di-index-col-sm`)
-where the block is too short to give up the full width. It is carried by
-`Panel`, `DataTable`, `Sheet` (opened from a row), `Notice`, `EmptyState`, `Modal`,
-`SignIn`, `StatTile` and `SkeletonTable`. `Toast`, `Stage` and `Session` carry
-none — they report, they are not entries.
+**The index column** — 38px (`--di-index-col`): the ordinal of a row in
+`DataTable` and `SkeletonTable`, and the icon column of `Notice` and `Modal`.
+Nothing else carries a number of its own.
 
 ### What this system refuses
 
@@ -287,7 +285,7 @@ else, which is what keeps the tier honest.
 ### A build
 
 ```jsx
-<Panel title="Source register" index="01">
+<Panel title="Source register">
   <PanelMeta><SealValue stateLabel="Sealed">09:12:04Z</SealValue></PanelMeta>
   <DataTable caption="Sources" indexed={true}>
     <TableHead>
@@ -312,16 +310,12 @@ else, which is what keeps the tier honest.
       </TableRow>
     </TableBody>
   </DataTable>
-  <PanelFooter>
-    <div style={{ display: "flex", gap: "var(--di-space-8)", alignItems: "center" }}>
-      <span style={{ fontFamily: "var(--di-font-code)", fontSize: "var(--di-font-size-200)", color: "var(--di-text-muted)" }}>
-        1–5 of 24
-      </span>
-      <Button variant="primary">Seal entry</Button>
-    </div>
-  </PanelFooter>
+  <PanelFooter>1–5 of 24</PanelFooter>
+  <PanelActions><Button variant="primary">Seal entry</Button></PanelActions>
 </Panel>
 ```
+
+A `Panel` is one surface at one inset all round (24px, 16px on a phone): the head, the content and the footer are rows 16px apart, never bands. The title is the display face and the block's one bold line; `PanelLead`, the body and `PanelNote` are regular weight. A state sits beside the title it qualifies (`PanelStatus` holding a `StatusPill`); a count or a time sits at the head's end (`PanelMeta`); `PanelActions` sit at the end of the `PanelFooter` row, or at the head's end when there is no footer.
 
 `TableHead` holds `TableColumn` (props: `index`, `sort`, `align`) — there is no `as="th"`. `TableRow` takes `active` and `tone`; `TableCell` takes `align` and `mono`. A cell's lead is `CellLead` + `CellIcon` + `CellStack`.
 

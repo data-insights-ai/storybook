@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useInsertionEffect, useRef, useState } from "react";
 import { CalendarDays, ChevronDown } from "lucide-react";
 import {
   type CalendarDate,
@@ -204,7 +204,9 @@ function useNarrow(): boolean {
 // product's own navigation to the new period is not undone by it.
 function useBackCloses(open: boolean, close: () => void): (then: () => void) => void {
   const closeRef = useRef(close);
-  closeRef.current = close;
+  useInsertionEffect(() => {
+    closeRef.current = close;
+  });
   const entry = useRef<{ id: number; then?: () => void } | null>(null);
   useEffect(() => {
     if (!open) return;
@@ -250,21 +252,21 @@ function wrapTab(event: React.KeyboardEvent<HTMLElement>) {
 
 // Dragging the sheet's handle down by more than a quarter of its height, or
 // 96px, closes it; a shorter drag springs back.
-function useDragToClose(sheet: React.RefObject<HTMLElement | null>, close: () => void) {
+function useDragToClose(sheetRef: React.RefObject<HTMLElement | null>, close: () => void) {
   const start = useRef<number | null>(null);
   const move = (y: number) => {
-    if (start.current === null || !sheet.current) return;
-    sheet.current.style.translate = `0 ${Math.max(0, y - start.current)}px`;
+    if (start.current === null || !sheetRef.current) return;
+    sheetRef.current.style.translate = `0 ${Math.max(0, y - start.current)}px`;
   };
   return {
     onPointerDown: (event: React.PointerEvent<HTMLElement>) => {
       start.current = event.clientY;
       event.currentTarget.setPointerCapture(event.pointerId);
-      sheet.current?.setAttribute("data-dragging", "");
+      sheetRef.current?.setAttribute("data-dragging", "");
     },
     onPointerMove: (event: React.PointerEvent<HTMLElement>) => move(event.clientY),
     onPointerUp: (event: React.PointerEvent<HTMLElement>) => {
-      const element = sheet.current;
+      const element = sheetRef.current;
       const distance = start.current === null ? 0 : event.clientY - start.current;
       start.current = null;
       if (!element) return;
@@ -274,8 +276,8 @@ function useDragToClose(sheet: React.RefObject<HTMLElement | null>, close: () =>
     },
     onPointerCancel: () => {
       start.current = null;
-      sheet.current?.removeAttribute("data-dragging");
-      if (sheet.current) sheet.current.style.translate = "";
+      sheetRef.current?.removeAttribute("data-dragging");
+      if (sheetRef.current) sheetRef.current.style.translate = "";
     },
   };
 }

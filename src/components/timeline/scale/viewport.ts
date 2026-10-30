@@ -32,8 +32,7 @@ export const panBy = (span: Span, ms: number, bounds: Span) =>
 
 export const covers = (span: Span, bounds: Span) => widthOf(span) >= widthOf(bounds) * 0.995;
 
-export const sameSpan = (a: Span, b: Span) =>
-  Math.abs(a.start - b.start) < 1 && Math.abs(a.end - b.end) < 1;
+export const sameSpan = (a: Span, b: Span) => Math.abs(a.start - b.start) < 1 && Math.abs(a.end - b.end) < 1;
 
 export type Scale = { x: (ms: number) => number; at: (px: number) => number };
 

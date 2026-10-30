@@ -15,7 +15,8 @@
     line-height: 1;
     white-space: nowrap;
     text-decoration: none;
-    transition: background-color var(--di-duration) var(--di-ease),
+    transition:
+      background-color var(--di-duration) var(--di-ease),
       border-color var(--di-duration) var(--di-ease),
       color var(--di-duration) var(--di-ease);
   }
@@ -174,6 +175,30 @@
   @media (pointer: coarse) {
     .di-btn-kbd {
       display: none;
+    }
+
+    /* On a touch screen a button is as tall as a field, so a toolbar or a form row stays one line. */
+    .di-btn-md {
+      height: var(--di-field-height);
+    }
+
+    .di-btn-icon.di-btn-md {
+      width: var(--di-field-height);
+    }
+
+    /* A dense button keeps its look; the target around it grows to the 40px row. */
+    .di-btn-dense {
+      position: relative;
+    }
+
+    .di-btn-dense::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, var(--di-h-row));
+      height: max(100%, var(--di-h-row));
+      translate: -50% -50%;
     }
   }
 }

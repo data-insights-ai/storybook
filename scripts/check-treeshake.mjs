@@ -40,7 +40,13 @@ try {
       },
       rollupOptions: {
         external(id) {
-          return id.endsWith(".css") || id === "react" || id === "react-dom" || id.startsWith("react/") || id === "lucide-react";
+          return (
+            id.endsWith(".css") ||
+            id === "react" ||
+            id === "react-dom" ||
+            id.startsWith("react/") ||
+            id === "lucide-react"
+          );
         },
       },
     },
@@ -73,12 +79,21 @@ try {
       lib: { entry, formats: ["es"], fileName: "app" },
       rollupOptions: {
         external(id) {
-          return id.endsWith(".css") || id === "react" || id === "react-dom" || id.startsWith("react/") || id === "lucide-react";
+          return (
+            id.endsWith(".css") ||
+            id === "react" ||
+            id === "react-dom" ||
+            id.startsWith("react/") ||
+            id === "lucide-react"
+          );
         },
       },
     },
   });
-  const sidebar = readFileSync(filesUnder(path.join(root, "sidebar")).find((file) => path.basename(file).startsWith("app.")), "utf8");
+  const sidebar = readFileSync(
+    filesUnder(path.join(root, "sidebar")).find((file) => path.basename(file).startsWith("app.")),
+    "utf8",
+  );
   if (sidebar.includes("swipeDirection") || sidebar.includes("DrawerViewport")) {
     console.error("the desktop sidebar loads the mobile drawer up front");
     process.exit(1);

@@ -56,15 +56,9 @@ export function DangerAction({
       <div className="di-danger-action-text">
         <p className="di-danger-action-title">{title}</p>
         <p className="di-danger-action-body">{body}</p>
-        {note ? (
-          <p className="di-danger-action-note">
-            {note}
-          </p>
-        ) : null}
+        {note ? <p className="di-danger-action-note">{note}</p> : null}
       </div>
-      <div className="di-danger-action-control">
-        {children}
-      </div>
+      <div className="di-danger-action-control">{children}</div>
     </div>
   );
 }

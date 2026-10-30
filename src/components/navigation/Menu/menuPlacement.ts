@@ -22,12 +22,18 @@ export function placeMenu(
   const across = (left: number) => clampX(clampX(left, size.width, options.bounds), size.width, screen);
   if (options.beside) {
     const up = at.top + size.height > viewport.height - margin && at.bottom - size.height >= margin;
-    const top = up ? at.bottom - size.height : Math.max(margin, Math.min(at.top, viewport.height - margin - size.height));
+    const top = up
+      ? at.bottom - size.height
+      : Math.max(margin, Math.min(at.top, viewport.height - margin - size.height));
     return { top, left: across(at.right + gap), direction: up ? "right-up" : "right" };
   }
   const up = at.bottom + gap + size.height > viewport.height && at.top - gap - size.height > 0;
   const top = up ? at.top - gap - size.height : at.bottom + gap;
-  return { top, left: across(options.align === "start" ? at.left : at.right - size.width), direction: up ? "up" : "down" };
+  return {
+    top,
+    left: across(options.align === "start" ? at.left : at.right - size.width),
+    direction: up ? "up" : "down",
+  };
 }
 
 function clampX(left: number, width: number, bounds: Span) {

@@ -1,13 +1,5 @@
 import { createElement } from "react";
-import {
-  Activity,
-  Boxes,
-  FileSearch,
-  Radar,
-  Settings2,
-  ShieldAlert,
-  Waypoints,
-} from "lucide-react";
+import { Activity, Boxes, FileSearch, Radar, Settings2, ShieldAlert, Waypoints } from "lucide-react";
 import type { ConsoleChrome } from "./Console";
 
 /** English sample chrome. A product replaces this with its own strings. */
@@ -28,16 +20,16 @@ export const sampleChrome: ConsoleChrome = {
           id: "findings",
           label: "Findings",
           icon: createElement(ShieldAlert),
-          badge: "03",
+          badge: "3",
           badgeTone: "alert",
         },
-        { id: "watchlist", label: "Watchlist", icon: createElement(Radar), badge: "08" },
+        { id: "watchlist", label: "Watchlist", icon: createElement(Radar), badge: "8" },
         { id: "sources", label: "Sources", icon: createElement(Boxes), code: "ACT" },
         {
           id: "coverage",
           label: "Coverage",
           icon: createElement(Activity),
-          badge: "06",
+          badge: "6",
           badgeTone: "seal",
           sealed: true,
         },

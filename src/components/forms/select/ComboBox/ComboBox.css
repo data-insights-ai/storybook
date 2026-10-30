@@ -1,7 +1,13 @@
 @layer components {
-  .di-combobox { min-width: 0; }
-  .di-combobox-control { position: relative; }
-  .di-combobox-control .di-control { padding-right: var(--di-space-48); }
+  .di-combobox {
+    min-width: 0;
+  }
+  .di-combobox-control {
+    position: relative;
+  }
+  .di-combobox-control .di-control {
+    padding-right: var(--di-space-48);
+  }
   .di-combobox-toggle {
     position: absolute;
     inset: 0 0 0 auto;
@@ -14,8 +20,14 @@
     background: transparent;
     color: var(--di-text-muted);
   }
-  .di-combobox-toggle > svg { width: 16px; height: 16px; }
-  .di-combobox-toggle:disabled { color: var(--di-text-disabled); cursor: not-allowed; }
+  .di-combobox-toggle > svg {
+    width: 16px;
+    height: 16px;
+  }
+  .di-combobox-toggle:disabled {
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
   .di-combobox-popover {
     width: var(--anchor-width);
     max-width: calc(100vw - var(--di-space-24));
@@ -29,7 +41,9 @@
     color: var(--di-text);
     box-shadow: var(--di-shadow-plane);
   }
-  .di-combobox-list { outline: none; }
+  .di-combobox-list {
+    outline: none;
+  }
   .di-combobox-option {
     display: flex;
     flex-direction: column;
@@ -40,9 +54,25 @@
     overflow-wrap: anywhere;
     cursor: pointer;
   }
-  .di-combobox-option[data-highlighted] { background: var(--di-bg-page); outline: 2px solid var(--di-focus); outline-offset: -2px; }
-  .di-combobox-option[data-selected] { background: var(--di-bg-selected); }
-  .di-combobox-label { font-size: var(--di-font-size-400); }
-  .di-combobox-value { color: var(--di-text-muted); font-family: var(--di-font-code); font-size: var(--di-font-size-200); }
-  .di-combobox-empty { padding: var(--di-space-8); color: var(--di-text-muted); font-size: var(--di-font-size-300); }
+  .di-combobox-option[data-highlighted] {
+    background: var(--di-bg-page);
+    outline: 2px solid var(--di-focus);
+    outline-offset: -2px;
+  }
+  .di-combobox-option[data-selected] {
+    background: var(--di-bg-selected);
+  }
+  .di-combobox-label {
+    font-size: var(--di-font-size-400);
+  }
+  .di-combobox-value {
+    color: var(--di-text-muted);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+  }
+  .di-combobox-empty {
+    padding: var(--di-space-8);
+    color: var(--di-text-muted);
+    font-size: var(--di-font-size-300);
+  }
 }

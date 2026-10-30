@@ -1,14 +1,5 @@
 import { useState } from "react";
-import {
-  Bug,
-  Download,
-  Globe,
-  MessageSquare,
-  Radar,
-  RefreshCw,
-  Rss,
-  SlidersHorizontal,
-} from "lucide-react";
+import { Bug, Download, Globe, MessageSquare, Radar, RefreshCw, Rss, SlidersHorizontal } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import {
   Button,
@@ -39,7 +30,7 @@ import {
   Toolbar,
   ToolbarEnd,
   Panel,
-} from "../.."; 
+} from "../..";
 
 type StatusTone = NonNullable<ComponentProps<typeof StatusPill>["tone"]>;
 
@@ -260,4 +251,3 @@ export function CoverageScreen() {
     </>
   );
 }
-

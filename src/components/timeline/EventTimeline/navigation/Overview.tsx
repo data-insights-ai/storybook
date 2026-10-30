@@ -35,8 +35,7 @@ export function Overview({
   const left = Math.min(Math.max(0, centre - width / 2), plotPx - width);
   const right = left + width;
 
-  const xOf = (event: PointerEvent<SVGSVGElement>) =>
-    event.clientX - event.currentTarget.getBoundingClientRect().left;
+  const xOf = (event: PointerEvent<SVGSVGElement>) => event.clientX - event.currentTarget.getBoundingClientRect().left;
 
   const onPointerDown = (event: PointerEvent<SVGSVGElement>) => {
     if (event.pointerType === "mouse" && event.button !== 0) {
@@ -70,19 +69,10 @@ export function Overview({
     if (d.mode === "move") {
       onView(panBy(d.view, ms, bounds), record);
     } else if (d.mode === "start") {
-      onView(
-        clampSpan(
-          { start: Math.min(d.view.start + ms, d.view.end - MIN_SPAN), end: d.view.end },
-          bounds,
-        ),
-        record,
-      );
+      onView(clampSpan({ start: Math.min(d.view.start + ms, d.view.end - MIN_SPAN), end: d.view.end }, bounds), record);
     } else if (d.mode === "end") {
       onView(
-        clampSpan(
-          { start: d.view.start, end: Math.max(d.view.end + ms, d.view.start + MIN_SPAN) },
-          bounds,
-        ),
+        clampSpan({ start: d.view.start, end: Math.max(d.view.end + ms, d.view.start + MIN_SPAN) }, bounds),
         record,
       );
     } else {
@@ -115,19 +105,8 @@ export function Overview({
       <line x1={0} x2={plotPx} y1={mid} y2={mid} className="di-timeline-axisline" />
       <Waveform bars={bars} scale={scale} plotPx={plotPx} mid={mid} half={mid - 3} peak={peak} />
       <rect width={left} height={OVERVIEW_H} className="di-timeline-overview-shade" />
-      <rect
-        x={right}
-        width={Math.max(0, plotPx - right)}
-        height={OVERVIEW_H}
-        className="di-timeline-overview-shade"
-      />
-      <rect
-        x={left + 0.5}
-        y={0.5}
-        width={width - 1}
-        height={OVERVIEW_H - 1}
-        className="di-timeline-brush"
-      />
+      <rect x={right} width={Math.max(0, plotPx - right)} height={OVERVIEW_H} className="di-timeline-overview-shade" />
+      <rect x={left + 0.5} y={0.5} width={width - 1} height={OVERVIEW_H - 1} className="di-timeline-brush" />
       <rect x={left - 2} y={mid - 7} width={4} height={14} rx={2} className="di-timeline-handle" />
       <rect x={right - 2} y={mid - 7} width={4} height={14} rx={2} className="di-timeline-handle" />
     </svg>

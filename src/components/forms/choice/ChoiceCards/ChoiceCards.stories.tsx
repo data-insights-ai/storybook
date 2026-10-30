@@ -37,7 +37,7 @@ export const Kinds: StoryObj = {
 /** Cards in groups, each description one line, the rest in a tooltip; the legend hidden under a heading that already names the choice. */
 export const Grouped: StoryObj<typeof meta> = {
   args: { name: "source", legend: "Source type", options: [], value: "", onChange: () => undefined },
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState("defender");
     return (
       <ChoiceCards
@@ -45,10 +45,31 @@ export const Grouped: StoryObj<typeof meta> = {
         legend="Source type"
         hideLegend
         options={[
-          { value: "defender", label: "Microsoft Defender XDR", description: "Incidents and alerts as they happen.", more: "Every Defender product and Sentinel, with each update.", group: "Recommended for Microsoft" },
-          { value: "entra", label: "Microsoft Entra ID", description: "Sign-in and audit logs.", group: "Recommended for Microsoft" },
-          { value: "hub", label: "Azure Event Hub", description: "Streaming API and diagnostic settings.", group: "Azure" },
-          { value: "activity", label: "Azure activity log", description: "Control-plane operations of one subscription.", group: "Azure" },
+          {
+            value: "defender",
+            label: "Microsoft Defender XDR",
+            description: "Incidents and alerts as they happen.",
+            more: "Every Defender product and Sentinel, with each update.",
+            group: "Recommended for Microsoft",
+          },
+          {
+            value: "entra",
+            label: "Microsoft Entra ID",
+            description: "Sign-in and audit logs.",
+            group: "Recommended for Microsoft",
+          },
+          {
+            value: "hub",
+            label: "Azure Event Hub",
+            description: "Streaming API and diagnostic settings.",
+            group: "Azure",
+          },
+          {
+            value: "activity",
+            label: "Azure activity log",
+            description: "Control-plane operations of one subscription.",
+            group: "Azure",
+          },
           { value: "file", label: "File drop", description: "Exports uploaded by hand.", group: "Other" },
         ]}
         value={value}
@@ -70,7 +91,7 @@ export const Grouped: StoryObj<typeof meta> = {
  */
 export const Planned: StoryObj<typeof meta> = {
   args: { name: "source", legend: "Source type", options: [], value: "", onChange: () => undefined },
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState("defender");
     return (
       <ChoiceCards
@@ -78,8 +99,18 @@ export const Planned: StoryObj<typeof meta> = {
         legend="Source type"
         hideLegend
         options={[
-          { value: "defender", label: "Microsoft Defender XDR", description: "Incidents and alerts as they happen.", icon: <Shield /> },
-          { value: "hub", label: "Azure Event Hub", description: "Streaming API and diagnostic settings.", icon: <Cloud /> },
+          {
+            value: "defender",
+            label: "Microsoft Defender XDR",
+            description: "Incidents and alerts as they happen.",
+            icon: <Shield />,
+          },
+          {
+            value: "hub",
+            label: "Azure Event Hub",
+            description: "Streaming API and diagnostic settings.",
+            icon: <Cloud />,
+          },
           { value: "file", label: "File drop", description: "Exports uploaded by hand.", icon: <FileText /> },
         ]}
         value={value}
@@ -123,15 +154,25 @@ const guides: Record<string, string> = {
 export const WithGuide: StoryObj<typeof meta> = {
   name: "With a guide",
   args: { name: "source", legend: "Source type", options: [], value: "", onChange: () => undefined },
-  render: () => {
+  render: function Render() {
     const [value, setValue] = useState("defender");
     return (
       <ChoiceCards
         name="source-guided"
         legend="Source type"
         options={[
-          { value: "defender", label: "Microsoft Defender XDR", description: "Incidents and alerts as they happen.", icon: <Shield /> },
-          { value: "hub", label: "Azure Event Hub", description: "Streaming API and diagnostic settings.", icon: <Cloud /> },
+          {
+            value: "defender",
+            label: "Microsoft Defender XDR",
+            description: "Incidents and alerts as they happen.",
+            icon: <Shield />,
+          },
+          {
+            value: "hub",
+            label: "Azure Event Hub",
+            description: "Streaming API and diagnostic settings.",
+            icon: <Cloud />,
+          },
           { value: "file", label: "File drop", description: "Exports uploaded by hand.", icon: <FileText /> },
         ]}
         value={value}

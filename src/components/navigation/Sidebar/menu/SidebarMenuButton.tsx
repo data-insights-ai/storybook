@@ -1,4 +1,3 @@
-
 import { lazy, Suspense, type HTMLAttributes, type ReactNode } from "react";
 import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";

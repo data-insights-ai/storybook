@@ -32,11 +32,7 @@
     "Modal": {
       "cardMode": "single",
       "primaryStory": "Confirm",
-      "skip": [
-        "overlays-modal--confirm",
-        "overlays-modal--type-to-confirm",
-        "overlays-modal--plain"
-      ]
+      "skip": ["overlays-modal--confirm", "overlays-modal--type-to-confirm", "overlays-modal--plain"]
     },
     "Session": {
       "cardMode": "column"
@@ -45,32 +41,22 @@
       "cardMode": "column"
     },
     "FieldHint": {
-      "skip": [
-        "forms-field-fieldhint--empty"
-      ]
+      "skip": ["forms-field-fieldhint--empty"]
     },
     "Chart": {
       "cardMode": "column"
     },
     "AppShell": {
       "cardMode": "column",
-      "skip": [
-        "shell-appshell--mobile-navigation-night"
-      ]
+      "skip": ["shell-appshell--mobile-navigation-night"]
     },
     "ComboBox": {
-      "skip": [
-        "forms-select-combobox--night"
-      ]
+      "skip": ["forms-select-combobox--night"]
     }
   },
-  "extraEntries": [
-    "recharts"
-  ],
+  "extraEntries": ["recharts"],
   "readmeHeader": ".design-sync/conventions.md",
-  "guidelinesGlob": [
-    "src/foundations/**/*.mdx"
-  ],
+  "guidelinesGlob": ["src/foundations/**/*.mdx"],
   "dtsPropsFor": {
     "Button": "variant?: \"primary\" | \"secondary\" | \"ghost\" | \"danger\" | \"seal\" | \"inferred\";\n  size?: \"dense\" | \"md\" | \"comfort\";\n  /** A square control: a filter, a pagination arrow, a kebab. Needs `aria-label`. */\n  iconOnly?: boolean;\n  /** Swaps the icon for a spinner and blocks the press. */\n  loading?: boolean;\n  disabled?: boolean;\n  /**\n   * Give it an `href` and Button renders a real `<a>` carrying the same\n   * chrome — that is how you make a link that looks like a button. Leave it\n   * off and you get a `<button>`. Never hand-roll an anchor with button\n   * styling, and never wrap a Button in an `<a>`.\n   *\n   * A blocked link (`disabled` or `loading`) drops its `href` and carries\n   * `aria-disabled`, because an anchor has no `disabled`.\n   *\n   * In the package the props are a discriminated union, so `href` is\n   * required on the link branch and `type` is rejected there.\n   */\n  href?: string;\n  /** Link branch only, alongside `href`. */\n  target?: string;\n  /** Link branch only, alongside `href`. */\n  rel?: string;\n  /** Button branch only — not valid together with `href`. */\n  type?: \"button\" | \"submit\" | \"reset\";\n  className?: string;\n  id?: string;\n  style?: CSSProperties;\n  children?: React.ReactNode;"
   }

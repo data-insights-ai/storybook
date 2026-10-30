@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useInsertionEffect, useRef } from "react";
 
 // Choices (radios, checkboxes, a segmented control) take no typed text, so a
 // shortcut still fires while one of them holds focus.
@@ -20,7 +20,9 @@ export function editable(target: EventTarget | null) {
  */
 export function useShortcut(key: string | false, action: () => void) {
   const latest = useRef(action);
-  latest.current = action;
+  useInsertionEffect(() => {
+    latest.current = action;
+  });
 
   useEffect(() => {
     if (key === false) return;

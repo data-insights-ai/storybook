@@ -94,7 +94,9 @@ export const BrandMoment: Story = {
     </div>
   ),
   play: async ({ canvasElement }) => {
-    const [plain, brand] = [...canvasElement.querySelectorAll(".di-seal-mark-sealed")].map((mark) => getComputedStyle(mark).backgroundColor);
+    const [plain, brand] = [...canvasElement.querySelectorAll(".di-seal-mark-sealed")].map(
+      (mark) => getComputedStyle(mark).backgroundColor,
+    );
     await expect(plain).not.toBe(brand);
     await expect(brand).toBe("rgb(201, 162, 74)");
   },

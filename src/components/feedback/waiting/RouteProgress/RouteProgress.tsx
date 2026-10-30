@@ -37,15 +37,18 @@ export function RouteProgress({
   const [phase, setPhase] = useState<Phase>("idle");
   const [value, setValue] = useState(0);
 
+  if (!active && phase === "running") {
+    setPhase("done");
+    setValue(1);
+  }
+
   useEffect(() => {
-    if (active) {
-      const start = setTimeout(() => {
-        setValue(0.2);
-        setPhase("running");
-      }, delay);
-      return () => clearTimeout(start);
-    }
-    setPhase((current) => (current === "running" ? "done" : current));
+    if (!active) return;
+    const start = setTimeout(() => {
+      setValue(0.2);
+      setPhase("running");
+    }, delay);
+    return () => clearTimeout(start);
   }, [active, delay]);
 
   useEffect(() => {
@@ -54,7 +57,6 @@ export function RouteProgress({
       return () => clearInterval(crawl);
     }
     if (phase === "done") {
-      setValue(1);
       const rest = setTimeout(() => setPhase("idle"), settle);
       return () => clearTimeout(rest);
     }

@@ -47,9 +47,11 @@ export function TooltipTarget({
   };
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions -- a term the keyboard reaches so its label opens on focus, as on hover (WCAG 1.4.13)
     <span
       ref={target}
       className={["di-tooltip-target", className].filter(Boolean).join(" ")}
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- focus opens the label, as hover does
       tabIndex={0}
       aria-describedby={id}
       onMouseEnter={show}

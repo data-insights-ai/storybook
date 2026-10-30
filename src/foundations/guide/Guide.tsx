@@ -75,15 +75,7 @@ export function Verdicts({ children }: { children: ReactNode }) {
   return <ol className="di-guide-verdicts">{children}</ol>;
 }
 
-export function Verdict({
-  result,
-  note,
-  children,
-}: {
-  result: "pass" | "fail";
-  note?: string;
-  children: ReactNode;
-}) {
+export function Verdict({ result, note, children }: { result: "pass" | "fail"; note?: string; children: ReactNode }) {
   return (
     <li className={result === "pass" ? "is-pass" : "is-fail"}>
       <span>{result === "pass" ? "Pass" : "Fail"}</span>
@@ -146,15 +138,7 @@ export function Marks({ children }: { children: ReactNode }) {
   return <ul className="di-guide-marks">{children}</ul>;
 }
 
-export function Mark({
-  mark,
-  tone = "ink",
-  children,
-}: {
-  mark: string;
-  tone?: "ink" | "gold";
-  children: ReactNode;
-}) {
+export function Mark({ mark, tone = "ink", children }: { mark: string; tone?: "ink" | "gold"; children: ReactNode }) {
   return (
     <li>
       <span className={tone === "gold" ? "is-gold" : undefined}>{mark}</span>

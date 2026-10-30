@@ -144,7 +144,7 @@ export function FileField({
         onChange={(event) => choose(event.target.files?.[0])}
       />
       {file ? (
-        <div className={cx("di-file-row", disabled && "is-disabled")} aria-invalid={invalid || undefined}>
+        <div className={cx("di-file-row", disabled && "is-disabled")} data-invalid={invalid || undefined}>
           <Icon size={16}>
             <FileText />
           </Icon>
@@ -173,7 +173,7 @@ export function FileField({
           aria-labelledby={labelId}
           aria-describedby={dropId}
           className={cx("di-file-drop", dragging && "is-dragging", disabled && "is-disabled")}
-          aria-invalid={invalid || undefined}
+          data-invalid={invalid || undefined}
           onDragOver={(event) => {
             event.preventDefault();
             setDragging(!disabled);
@@ -227,6 +227,12 @@ function accepts(accept: string | undefined, file: File): boolean {
 }
 
 function defaultSize(bytes: number): string {
-  const [value, unit] = bytes < 1000 ? [bytes, "byte"] : bytes < 1_000_000 ? [bytes / 1000, "kilobyte"] : [bytes / 1_000_000, "megabyte"];
-  return new Intl.NumberFormat(undefined, { style: "unit", unit, unitDisplay: "short", maximumFractionDigits: 1 }).format(value);
+  const [value, unit] =
+    bytes < 1000 ? [bytes, "byte"] : bytes < 1_000_000 ? [bytes / 1000, "kilobyte"] : [bytes / 1_000_000, "megabyte"];
+  return new Intl.NumberFormat(undefined, {
+    style: "unit",
+    unit,
+    unitDisplay: "short",
+    maximumFractionDigits: 1,
+  }).format(value);
 }

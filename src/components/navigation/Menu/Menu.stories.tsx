@@ -93,9 +93,7 @@ export const Opening: Story = {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Actions for entry 04" }));
     await expect(args.onOpenChange).toHaveBeenCalledWith(true);
-    await waitFor(() =>
-      expect(canvas.getByRole("menu", { name: "Actions for entry 04" })).toBeVisible(),
-    );
+    await waitFor(() => expect(canvas.getByRole("menu", { name: "Actions for entry 04" })).toBeVisible());
   },
 };
 
@@ -151,12 +149,19 @@ export const DismissOutside: Story = {
 export const TabExit: Story = {
   render: function Render(args) {
     const [open, setOpen] = useState(false);
-    return <div>
-      <Menu {...args} open={open} onOpenChange={setOpen} trigger={props => <Button {...props}>Entry actions</Button>}>
-        <MenuItem onSelect={() => setOpen(false)}>Open record</MenuItem>
-      </Menu>
-      <Button variant="secondary">Next action</Button>
-    </div>;
+    return (
+      <div>
+        <Menu
+          {...args}
+          open={open}
+          onOpenChange={setOpen}
+          trigger={(props) => <Button {...props}>Entry actions</Button>}
+        >
+          <MenuItem onSelect={() => setOpen(false)}>Open record</MenuItem>
+        </Menu>
+        <Button variant="secondary">Next action</Button>
+      </div>
+    );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -176,17 +181,32 @@ export const GroupedChoices: Story = {
   render: function Render(args) {
     const [open, setOpen] = useState(false);
     const [view, setView] = useState("operations");
-    return <div style={{ paddingBottom: 240 }}>
-      <Menu {...args} open={open} onOpenChange={setOpen} label="Choose workspace" align="start" trigger={props => <Button {...props}>Workspace</Button>}>
-        <MenuGroup label="Example studio">
-          <MenuItem checked={view === "operations"} disabled={false} onSelect={() => setView("operations")}>Operations</MenuItem>
-          <MenuItem checked={view === "archive"} disabled={true} onSelect={() => args.onOpenChange(true)}>Archive unavailable</MenuItem>
-          <MenuItem checked={view === "research"} disabled={false} onSelect={() => setView("research")}>Research</MenuItem>
-        </MenuGroup>
-        <MenuDivider />
-        <MenuItem onSelect={() => setOpen(false)}>Manage workspaces</MenuItem>
-      </Menu>
-    </div>;
+    return (
+      <div style={{ paddingBottom: 240 }}>
+        <Menu
+          {...args}
+          open={open}
+          onOpenChange={setOpen}
+          label="Choose workspace"
+          align="start"
+          trigger={(props) => <Button {...props}>Workspace</Button>}
+        >
+          <MenuGroup label="Example studio">
+            <MenuItem checked={view === "operations"} disabled={false} onSelect={() => setView("operations")}>
+              Operations
+            </MenuItem>
+            <MenuItem checked={view === "archive"} disabled={true} onSelect={() => args.onOpenChange(true)}>
+              Archive unavailable
+            </MenuItem>
+            <MenuItem checked={view === "research"} disabled={false} onSelect={() => setView("research")}>
+              Research
+            </MenuItem>
+          </MenuGroup>
+          <MenuDivider />
+          <MenuItem onSelect={() => setOpen(false)}>Manage workspaces</MenuItem>
+        </Menu>
+      </div>
+    );
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);

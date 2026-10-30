@@ -56,7 +56,9 @@
   /* One step further up than the pane, with the selection's cornflower edge. */
   .di-ld-item.is-selected {
     background: var(--di-bg-selected);
-    box-shadow: inset 3px 0 0 var(--di-select), var(--di-elevation-surface);
+    box-shadow:
+      inset 3px 0 0 var(--di-select),
+      var(--di-elevation-surface);
   }
 
   .di-ld-item:focus-visible {

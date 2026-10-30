@@ -11,36 +11,10 @@
     border-color: var(--di-status-danger-border);
   }
 
-  .di-empty-index {
-    display: flex;
-    justify-content: center;
-    width: var(--di-index-col);
-    flex: none;
-    padding-top: var(--di-space-24);
-    border-right: 1px solid var(--di-border);
-    background: var(--di-bg-page);
-  }
-
-  .di-empty.is-danger .di-empty-index {
-    border-right-color: var(--di-status-danger-border);
-    background: var(--di-status-danger-bg);
-  }
-
-  .di-empty-index-label {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    font-variant-numeric: tabular-nums;
-    color: var(--di-text-subtle);
-  }
-
-  .di-empty.is-danger .di-empty-index-label {
-    color: var(--di-status-danger-fg);
-  }
-
   .di-empty-body {
     flex: 1;
     min-width: 0;
-    padding: var(--di-space-24) var(--di-space-16);
+    padding: var(--di-space-24);
   }
 
   .di-empty-eyebrow {
@@ -80,7 +54,7 @@
   }
 
   .di-empty-icon {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;

@@ -41,10 +41,7 @@ export function useTimelineView({
   selected: Span | null;
   onSettle: (view: Span | null) => void;
 }): TimelineNavigation {
-  const target = useMemo(
-    () => (selected ? clampSpan(selected, bounds) : bounds),
-    [selected, bounds],
-  );
+  const target = useMemo(() => (selected ? clampSpan(selected, bounds) : bounds), [selected, bounds]);
   const [view, setView] = useState(target);
   const [past, setPast] = useState<Span[]>([]);
   const [synced, setSynced] = useState(target);

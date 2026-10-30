@@ -42,5 +42,4 @@ export function bucketFor(spanMs: number, plotPx: number): number {
 }
 
 /** Whether the events behind these bars are far enough apart to be drawn one by one. */
-export const eventsReadable = (bars: Bar[]) =>
-  bars.every((b) => b.neutral + b.warn + b.danger <= READABLE_PER_BAR);
+export const eventsReadable = (bars: Bar[]) => bars.every((b) => b.neutral + b.warn + b.danger <= READABLE_PER_BAR);

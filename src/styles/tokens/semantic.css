@@ -147,7 +147,6 @@
     --di-inverse-focus: var(--di-cornflower-300);
 
     --di-index-col: 38px;
-    --di-index-col-sm: 26px;
 
     /* Navigation is never heavier than the content: a paper tone a step below the ground. */
     --di-sidebar-bg: var(--di-paper-chrome);

@@ -14,13 +14,15 @@ pnpm storybook
 Opens on port 4500. While it is running, agents can read the component catalogue at `http://127.0.0.1:4500/mcp`.
 
 ```bash
+pnpm format:check
+pnpm lint
 pnpm typecheck
 pnpm test
 pnpm build
 pnpm build-storybook
 ```
 
-`pnpm test` runs every story in a browser four times — light and dark, at desktop width and at 390px — and fails on an accessibility violation in either, and measures the contrast of all visible text itself, at several points on each line, where axe cannot decide (chart labels, text over a pseudo-element). `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
+`pnpm format` rewrites the files in place; `pnpm lint` is ESLint (typescript-eslint, the React hooks rules, jsx-a11y) at zero findings. `pnpm test` runs every story in a browser four times — light and dark, at desktop width and at 390px — and fails on an accessibility violation in either, and measures the contrast of all visible text itself, at several points on each line, where axe cannot decide (chart labels, text over a pseudo-element). It also measures every surface: the same inset above and below its content, and the gaps between its head, body and foot on the space scale. `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
 
 ## Use a released version
 
@@ -64,8 +66,6 @@ When a page has more than one tab strip, give each `Tabs` and its `TabPanel` the
 A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around the bar and the page. Give `SidebarProvider` a `skipLabel` (or `AppShell` its required one) and the first Tab stop is a skip link to the page.
 
 `Modal` is a native modal dialog. `Sheet` is one too, except an `md` sheet inside a `list` or `detail` `Page` wide enough for its side column: it docks there and the page beside it stays usable. Either way focus moves in, Escape closes it and focus returns to the opener.
-
-`Panel` and `EmptyState` can omit `index` when no ordinal belongs to the content. Omission removes the index rail completely.
 
 ## Periods and counts
 

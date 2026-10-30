@@ -129,6 +129,7 @@ export function DetailSectionForm({
     onSubmit();
   };
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc from any field in the form cancels the edit
     <form
       className="di-detail-section-form"
       onSubmit={submit}

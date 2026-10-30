@@ -58,7 +58,9 @@ export function Figure({
     <div className={cx("di-figure", `is-${tone}`)}>
       <dt className="di-figure-label">{label}</dt>
       <dd className="di-figure-value">{value}</dd>
-      {children ? <dd className="di-figure-note">{typeof children === "string" ? <MetaLine items={children} /> : children}</dd> : null}
+      {children ? (
+        <dd className="di-figure-note">{typeof children === "string" ? <MetaLine items={children} /> : children}</dd>
+      ) : null}
     </div>
   );
 }

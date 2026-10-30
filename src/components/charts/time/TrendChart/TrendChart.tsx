@@ -30,7 +30,11 @@ const toneColor: Record<TrendTone, string> = {
 
 const markerColor = { neutral: "var(--di-text-muted)", warn: "var(--di-chart-warn)", danger: "var(--di-chart-danger)" };
 // The rule takes the chart colour; its label is text and takes the status ink, which reads at 4.5:1.
-const markerInk = { neutral: "var(--di-text-muted)", warn: "var(--di-status-warn-fg)", danger: "var(--di-status-danger-fg)" };
+const markerInk = {
+  neutral: "var(--di-text-muted)",
+  warn: "var(--di-status-warn-fg)",
+  danger: "var(--di-status-danger-fg)",
+};
 
 /**
  * Values over time, from one datum per period: `{ at: "2026-10-01", seats: 4 }`.
@@ -91,7 +95,17 @@ export function TrendChart({
           const color = `var(--color-${s.key})`;
           const dash = s.dashed ? "4 3" : undefined;
           if (s.kind === "bar") {
-            return <Bar isAnimationActive={false} key={s.key} dataKey={s.key} stackId={s.stack} fill={color} radius={s.stack ? 0 : [2, 2, 0, 0]} maxBarSize={18} />;
+            return (
+              <Bar
+                isAnimationActive={false}
+                key={s.key}
+                dataKey={s.key}
+                stackId={s.stack}
+                fill={color}
+                radius={s.stack ? 0 : [2, 2, 0, 0]}
+                maxBarSize={18}
+              />
+            );
           }
           if (s.kind === "area") {
             return (

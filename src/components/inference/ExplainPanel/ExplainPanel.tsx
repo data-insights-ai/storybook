@@ -48,9 +48,7 @@ export function ExplainPanel({
           <span className="di-inference-term">{confidenceLabel}</span>
           <span className="di-explain-figure-value">
             {confidence}
-            {confidenceWord ? (
-              <span className="di-explain-figure-word">{confidenceWord}</span>
-            ) : null}
+            {confidenceWord ? <span className="di-explain-figure-word">{confidenceWord}</span> : null}
           </span>
         </div>
       ) : null}
@@ -66,21 +64,11 @@ export function ExplainPanel({
  * value is body text; `mono` sets it in the code track when it is a real
  * token — a date range, a host, an id — and never for a sentence.
  */
-export function ExplainRow({
-  label,
-  mono = false,
-  children,
-}: {
-  label: string;
-  mono?: boolean;
-  children: ReactNode;
-}) {
+export function ExplainRow({ label, mono = false, children }: { label: string; mono?: boolean; children: ReactNode }) {
   return (
     <div className="di-inference-row">
       <dt className="di-inference-term">{label}</dt>
-      <dd className={cx("di-inference-value", mono && "is-mono")}>
-        {children}
-      </dd>
+      <dd className={cx("di-inference-value", mono && "is-mono")}>{children}</dd>
     </div>
   );
 }
@@ -89,13 +77,7 @@ export function ExplainRow({
  * The inputs the model did not use, folded under one line — "Not
  * considered (2)" — and listed plainly when opened. Named, never hidden.
  */
-export function ExplainIgnored({
-  summary,
-  items,
-}: {
-  summary: string;
-  items: string[];
-}) {
+export function ExplainIgnored({ summary, items }: { summary: string; items: string[] }) {
   return (
     <details className="di-explain-ignored">
       <summary>{summary}</summary>

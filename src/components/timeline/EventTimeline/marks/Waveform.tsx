@@ -14,14 +14,7 @@ const amplitude = (count: number, peak: number, half: number) =>
 
 // Severest at the core: each bar is mirrored around the axis, and its tones are rings
 // from danger in the middle out to neutral at the rim.
-function wavePaths(
-  bars: TimelineBar[],
-  scale: Scale,
-  plotPx: number,
-  mid: number,
-  half: number,
-  peak: number,
-) {
+function wavePaths(bars: TimelineBar[], scale: Scale, plotPx: number, mid: number, half: number, peak: number) {
   const d: Record<TimelineTone, string> = { neutral: "", warn: "", danger: "" };
   for (const bar of bars) {
     const x0 = scale.x(bar.start);

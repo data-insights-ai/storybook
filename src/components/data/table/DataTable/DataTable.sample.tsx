@@ -1,6 +1,17 @@
 import { useState } from "react";
 import { Globe, Server } from "lucide-react";
-import { CellIcon, CellLead, CellStack, DataTable, TableBody, TableCell, TableColumn, TableHead, TableIndex, TableRow } from "./DataTable";
+import {
+  CellIcon,
+  CellLead,
+  CellStack,
+  DataTable,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHead,
+  TableIndex,
+  TableRow,
+} from "./DataTable";
 import { SealValue } from "../../../marks/status/SealValue";
 import { StatusPill } from "../../../marks/status/StatusPill";
 import { TextLink } from "../../../navigation/TextLink";
@@ -16,11 +27,51 @@ export type Source = {
 };
 
 export const sources: Source[] = [
-  { ordinal: "01", host: "registry.example.org", kind: "Registry", hash: "a4f9c21e", seen: "09:12:04Z", state: "ok", stateLabel: "running" },
-  { ordinal: "02", host: "mirror.example.net", kind: "Mirror", hash: "7f3a99e0", seen: "09:11:52Z", state: "ok", stateLabel: "running" },
-  { ordinal: "03", host: "feed.example.io", kind: "Feed", hash: "c18b70d4", seen: "08:47:11Z", state: "warn", stateLabel: "paused" },
-  { ordinal: "04", host: "archive.example.com", kind: "Archive", hash: "5e0d3a91", seen: "08:44:03Z", state: "danger", stateLabel: "failed" },
-  { ordinal: "05", host: "index.example.dev", kind: "Index", hash: "b207ff6c", seen: "09:09:38Z", state: "ok", stateLabel: "running" },
+  {
+    ordinal: "01",
+    host: "registry.example.org",
+    kind: "Registry",
+    hash: "a4f9c21e",
+    seen: "09:12:04Z",
+    state: "ok",
+    stateLabel: "running",
+  },
+  {
+    ordinal: "02",
+    host: "mirror.example.net",
+    kind: "Mirror",
+    hash: "7f3a99e0",
+    seen: "09:11:52Z",
+    state: "ok",
+    stateLabel: "running",
+  },
+  {
+    ordinal: "03",
+    host: "feed.example.io",
+    kind: "Feed",
+    hash: "c18b70d4",
+    seen: "08:47:11Z",
+    state: "warn",
+    stateLabel: "paused",
+  },
+  {
+    ordinal: "04",
+    host: "archive.example.com",
+    kind: "Archive",
+    hash: "5e0d3a91",
+    seen: "08:44:03Z",
+    state: "danger",
+    stateLabel: "failed",
+  },
+  {
+    ordinal: "05",
+    host: "index.example.dev",
+    kind: "Index",
+    hash: "b207ff6c",
+    seen: "09:09:38Z",
+    state: "ok",
+    stateLabel: "running",
+  },
 ];
 
 /*
@@ -57,7 +108,10 @@ export function SourceRows({ rows = sources, active = "" }: { rows?: Source[]; a
             </TableCell>
             <TableCell>{row.kind}</TableCell>
             <TableCell>
-              <SealValue state={row.state === "danger" ? "absent" : "sealed"} stateLabel={row.state === "danger" ? "Not recorded" : "Sealed"}>
+              <SealValue
+                state={row.state === "danger" ? "absent" : "sealed"}
+                stateLabel={row.state === "danger" ? "Not recorded" : "Sealed"}
+              >
                 {row.hash}
               </SealValue>
             </TableCell>
@@ -154,14 +208,46 @@ export const people = [
 ];
 
 export const events = [
-  { ordinal: "03", at: "2026-10-19 09:12:04", state: "danger", stateLabel: "failed", text: "archive.example.com stopped answering; the last manifest on record is a4f9c21e." },
-  { ordinal: "02", at: "2026-10-19 08:47:11", state: "warn", stateLabel: "paused", text: "Nora Feld paused feed.example.io while its signing key is rotated." },
-  { ordinal: "01", at: "2026-10-19 08:44:03", state: "ok", stateLabel: "running", text: "registry.example.org sealed manifest 7f3a99e0." },
+  {
+    ordinal: "03",
+    at: "2026-10-19 09:12:04",
+    state: "danger",
+    stateLabel: "failed",
+    text: "archive.example.com stopped answering; the last manifest on record is a4f9c21e.",
+  },
+  {
+    ordinal: "02",
+    at: "2026-10-19 08:47:11",
+    state: "warn",
+    stateLabel: "paused",
+    text: "Nora Feld paused feed.example.io while its signing key is rotated.",
+  },
+  {
+    ordinal: "01",
+    at: "2026-10-19 08:44:03",
+    state: "ok",
+    stateLabel: "running",
+    text: "registry.example.org sealed manifest 7f3a99e0.",
+  },
 ] as const;
 
 export const devices = [
-  { name: "srv-vie-212.example.com", criticality: "High", owner: "Nora Feld", unit: "Finance", seen: "4 min ago", source: "Endpoint agent" },
-  { name: "ws-hr-007.example.com", criticality: "Low", owner: "Jonas Wirt", unit: "People", seen: "2 h ago", source: "Directory" },
+  {
+    name: "srv-vie-212.example.com",
+    criticality: "High",
+    owner: "Nora Feld",
+    unit: "Finance",
+    seen: "4 min ago",
+    source: "Endpoint agent",
+  },
+  {
+    name: "ws-hr-007.example.com",
+    criticality: "Low",
+    owner: "Jonas Wirt",
+    unit: "People",
+    seen: "2 h ago",
+    source: "Directory",
+  },
 ] as const;
 
 /*

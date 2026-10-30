@@ -43,9 +43,9 @@ describe("resolveDateRange", () => {
   });
 
   it("passes a fixed range through as instants", () => {
-    expect(resolveDateRange({ from: "2026-10-01T00:00:00+02:00", to: "2026-10-08T00:00:00+02:00" }, now, "UTC")).toEqual(
-      { from: "2026-09-30T22:00:00.000Z", to: "2026-10-07T22:00:00.000Z" },
-    );
+    expect(
+      resolveDateRange({ from: "2026-10-01T00:00:00+02:00", to: "2026-10-08T00:00:00+02:00" }, now, "UTC"),
+    ).toEqual({ from: "2026-09-30T22:00:00.000Z", to: "2026-10-07T22:00:00.000Z" });
   });
 });
 

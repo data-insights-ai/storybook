@@ -31,8 +31,8 @@ import {
   TableRow,
   TextLink,
   useShortcut,
-} from "../.."; 
-import type { InfiniteRowPlace } from "../.."; 
+} from "../..";
+import type { InfiniteRowPlace } from "../..";
 
 type Member = { id: string; name: string; email: string; role: "Owner" | "Administrator" | "Member"; seat: boolean };
 
@@ -55,7 +55,7 @@ const members: Member[] = [
 
 function MemberRow({
   member,
-  place,
+  place: { rowIndex, ref },
   active,
   onOpen,
 }: {
@@ -66,7 +66,7 @@ function MemberRow({
 }) {
   const [menu, setMenu] = useState(false);
   return (
-    <TableRow rowIndex={place.rowIndex} ref={place.ref} active={active} onSelect={onOpen}>
+    <TableRow rowIndex={rowIndex} ref={ref} active={active} onSelect={onOpen}>
       <TableCell>
         <TextLink onClick={onOpen}>{member.name}</TextLink>
       </TableCell>
@@ -107,7 +107,8 @@ export function ListPageScreen() {
   useShortcut("/", () => search.current?.focus());
 
   const shown = members.filter(
-    (m) => (q === "" || `${m.name} ${m.email}`.toLowerCase().includes(q.toLowerCase())) && (role === "" || m.role === role),
+    (m) =>
+      (q === "" || `${m.name} ${m.email}`.toLowerCase().includes(q.toLowerCase())) && (role === "" || m.role === role),
   );
 
   return (
@@ -132,7 +133,14 @@ export function ListPageScreen() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
-          <Select id="screen-members-role" label="Role" hideLabel mono={false} value={role} onChange={(e) => setRole(e.target.value)}>
+          <Select
+            id="screen-members-role"
+            label="Role"
+            hideLabel
+            mono={false}
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
             <option value="">All roles</option>
             <option value="Owner">Owners</option>
             <option value="Administrator">Administrators</option>
@@ -197,7 +205,12 @@ export function ListPageScreen() {
               <Fact label="Role">{open?.role}</Fact>
               <Fact label="Seat">{open?.seat ? "Assigned" : "None"}</Fact>
             </FactList>
-            <DetailSectionForm saveLabel="Save" cancelLabel="Cancel" onSubmit={() => setEditing(false)} onCancel={() => setEditing(false)}>
+            <DetailSectionForm
+              saveLabel="Save"
+              cancelLabel="Cancel"
+              onSubmit={() => setEditing(false)}
+              onCancel={() => setEditing(false)}
+            >
               <Select id="screen-member-role" label="Role" mono={false} defaultValue={open?.role}>
                 <option>Owner</option>
                 <option>Administrator</option>
@@ -206,7 +219,10 @@ export function ListPageScreen() {
             </DetailSectionForm>
           </DetailSection>
           <DangerZone title="Danger zone">
-            <DangerAction title="Remove from organization" body="They lose access to the organization and its products at once.">
+            <DangerAction
+              title="Remove from organization"
+              body="They lose access to the organization and its products at once."
+            >
               <Button variant="danger" onClick={() => setConfirm(true)}>
                 Remove
               </Button>

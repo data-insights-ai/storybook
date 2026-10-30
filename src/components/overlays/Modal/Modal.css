@@ -16,7 +16,8 @@
   .di-modal {
     opacity: 0;
     translate: 0 -8px;
-    transition: opacity var(--di-duration-slow) var(--di-ease),
+    transition:
+      opacity var(--di-duration-slow) var(--di-ease),
       translate var(--di-duration-slow) var(--di-ease),
       overlay var(--di-duration-slow) allow-discrete,
       display var(--di-duration-slow) allow-discrete;
@@ -38,7 +39,8 @@
   .di-modal::backdrop {
     background: var(--di-scrim);
     opacity: 0;
-    transition: opacity var(--di-duration-slow) var(--di-ease),
+    transition:
+      opacity var(--di-duration-slow) var(--di-ease),
       overlay var(--di-duration-slow) allow-discrete,
       display var(--di-duration-slow) allow-discrete;
   }
@@ -86,9 +88,14 @@
     min-width: 0;
   }
 
+  /* One inset all round; the footer is the last row of the same surface, not a band under it. */
+  .di-modal {
+    --di-modal-inset: var(--di-space-24);
+  }
+
   .di-modal-content {
     min-width: 0;
-    padding: var(--di-space-24) var(--di-space-24) var(--di-space-24);
+    padding: var(--di-modal-inset);
   }
 
   .di-modal-eyebrow {
@@ -100,10 +107,11 @@
     color: var(--di-status-danger-fg);
   }
 
+  /* The dialog's name is a heading: the display face, its one bold line. */
   .di-modal-title {
+    font-family: var(--di-heading-family);
     font-size: var(--di-font-size-500);
-    font-weight: var(--di-weight-semibold);
-    letter-spacing: var(--di-tracking-tight);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
     color: var(--di-text);
   }
@@ -137,18 +145,12 @@
     justify-content: flex-end;
     gap: var(--di-space-8);
     flex-wrap: wrap;
-    padding: var(--di-space-12) var(--di-space-24);
-    border-top: 1px solid var(--di-border);
-    background: var(--di-bg-page);
+    padding: 0 var(--di-modal-inset) var(--di-modal-inset);
   }
 
   @media (max-width: 600px) {
-    .di-modal-content {
-      padding: var(--di-space-16);
-    }
-
-    .di-modal-footer {
-      padding-inline: var(--di-space-16);
+    .di-modal {
+      --di-modal-inset: var(--di-space-16);
     }
   }
 }

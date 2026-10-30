@@ -1,4 +1,13 @@
-import { Children, isValidElement, useId, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import {
+  Children,
+  isValidElement,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { Menu as MenuIcon, X } from "lucide-react";
 import logo from "../../../assets/logo.svg";
 import logoInverse from "../../../assets/logo-inverse.svg";
@@ -59,9 +68,15 @@ export function AppShellRail({
   const mobile = !!mobileNavigation && narrow;
   const [open, setOpen] = useState(false);
   const dialogId = useId();
-  useLayoutEffect(() => { setOpen(false); }, [active, workspaceId, mobileNavigation?.contextKey]);
+  const place = { active, workspaceId, contextKey: mobileNavigation?.contextKey };
+  const [seen, setSeen] = useState(place);
+  if (seen.active !== place.active || seen.workspaceId !== place.workspaceId || seen.contextKey !== place.contextKey) {
+    setSeen(place);
+    setOpen(false);
+  }
   useLayoutEffect(() => {
     if (!mobile && open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- closing and moving focus to the page are one step, and focus can only move after commit
       setOpen(false);
       document.getElementById("di-content")?.focus();
     }
@@ -86,16 +101,44 @@ export function AppShellRail({
           </div>
         </div>
         {mobile && (
-          <button type="button" className="di-rail-toggle" aria-expanded={open} aria-controls={dialogId} aria-haspopup="dialog" onClick={() => setOpen(true)}>
-            <MenuIcon aria-hidden />{mobileNavigation.openLabel}
+          <button
+            type="button"
+            className="di-rail-toggle"
+            aria-expanded={open}
+            aria-controls={dialogId}
+            aria-haspopup="dialog"
+            onClick={() => setOpen(true)}
+          >
+            <MenuIcon aria-hidden />
+            {mobileNavigation.openLabel}
           </button>
         )}
       </div>
-      <RailNavigation mobile={mobile} open={open} close={() => setOpen(false)} id={dialogId} label={navLabel} closeLabel={mobileNavigation?.closeLabel ?? ""}>
+      <RailNavigation
+        mobile={mobile}
+        open={open}
+        close={() => setOpen(false)}
+        id={dialogId}
+        label={navLabel}
+        closeLabel={mobileNavigation?.closeLabel ?? ""}
+      >
         {context}
-        <nav className="di-nav" aria-label={navLabel} onClick={(event) => {
-          if (event.target instanceof Element && event.target.closest("a[href]") && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) setOpen(false);
-        }}>
+        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- listens for a followed link, which Enter also clicks, to close the mobile dialog */}
+        <nav
+          className="di-nav"
+          aria-label={navLabel}
+          onClick={(event) => {
+            if (
+              event.target instanceof Element &&
+              event.target.closest("a[href]") &&
+              !event.metaKey &&
+              !event.ctrlKey &&
+              !event.shiftKey &&
+              !event.altKey
+            )
+              setOpen(false);
+          }}
+        >
           {groups.map((group) => (
             <RailGroup key={group.label} group={group} active={active} sealedMark={sealedMark} />
           ))}
@@ -106,7 +149,9 @@ export function AppShellRail({
   );
 }
 
-function narrowRail() { return window.matchMedia("(max-width: 900px)").matches; }
+function narrowRail() {
+  return window.matchMedia("(max-width: 900px)").matches;
+}
 
 function subscribeNarrowRail(changed: () => void) {
   const media = window.matchMedia("(max-width: 900px)");
@@ -116,8 +161,22 @@ function subscribeNarrowRail(changed: () => void) {
 
 /** One copy of the context/footer stays mounted when the mobile dialog closes.
  * Only crossing the desktop breakpoint changes its containing element. */
-function RailNavigation({ mobile, open, close, id, label, closeLabel, children }: {
-  mobile: boolean; open: boolean; close: () => void; id: string; label: string; closeLabel: string; children: ReactNode;
+function RailNavigation({
+  mobile,
+  open,
+  close,
+  id,
+  label,
+  closeLabel,
+  children,
+}: {
+  mobile: boolean;
+  open: boolean;
+  close: () => void;
+  id: string;
+  label: string;
+  closeLabel: string;
+  children: ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const pressedBackdrop = useRef(false);
@@ -126,28 +185,55 @@ function RailNavigation({ mobile, open, close, id, label, closeLabel, children }
     if (!dialog) return;
     if (open && !dialog.open) dialog.showModal();
     if (!open && dialog.open) dialog.close();
-    return () => { if (dialog.open) dialog.close(); };
+    return () => {
+      if (dialog.open) dialog.close();
+    };
   }, [mobile, open]);
   if (!mobile) return <div className="di-rail-content">{children}</div>;
-  return <dialog ref={ref} id={id} className="di-rail-dialog" aria-label={label} onCancel={close} onClose={(event) => { if (!event.currentTarget.open) close(); }}
-    onPointerDown={(event) => { pressedBackdrop.current = railBackdrop(event); }}
-    onClick={(event) => {
-      if (pressedBackdrop.current && railBackdrop(event)) close();
-      pressedBackdrop.current = false;
-    }}>
-    <div className="di-rail-dialog-heading">
-      <span>{label}</span>
-      <button type="button" className="di-rail-toggle" onClick={close}><X aria-hidden />{closeLabel}</button>
-    </div>
-    <div className="di-rail-content">{children}</div>
-  </dialog>;
+  return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions -- a press on the backdrop closes it; Esc is the dialog's own cancel
+    <dialog
+      ref={ref}
+      id={id}
+      className="di-rail-dialog"
+      aria-label={label}
+      onCancel={close}
+      onClose={(event) => {
+        if (!event.currentTarget.open) close();
+      }}
+      onPointerDown={(event) => {
+        pressedBackdrop.current = railBackdrop(event);
+      }}
+      onClick={(event) => {
+        if (pressedBackdrop.current && railBackdrop(event)) close();
+        pressedBackdrop.current = false;
+      }}
+    >
+      <div className="di-rail-dialog-heading">
+        <span>{label}</span>
+        <button type="button" className="di-rail-toggle" onClick={close}>
+          <X aria-hidden />
+          {closeLabel}
+        </button>
+      </div>
+      <div className="di-rail-content">{children}</div>
+    </dialog>
+  );
 }
 
-function railBackdrop(event: { target: EventTarget; currentTarget: HTMLDialogElement; clientX: number; clientY: number }) {
+function railBackdrop(event: {
+  target: EventTarget;
+  currentTarget: HTMLDialogElement;
+  clientX: number;
+  clientY: number;
+}) {
   const bounds = event.currentTarget.getBoundingClientRect();
-  return event.target === event.currentTarget && (
-    event.clientX < bounds.left || event.clientX > bounds.right ||
-    event.clientY < bounds.top || event.clientY > bounds.bottom
+  return (
+    event.target === event.currentTarget &&
+    (event.clientX < bounds.left ||
+      event.clientX > bounds.right ||
+      event.clientY < bounds.top ||
+      event.clientY > bounds.bottom)
   );
 }
 

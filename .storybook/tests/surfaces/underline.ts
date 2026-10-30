@@ -8,16 +8,9 @@ import { describe, shown } from "./paint";
 const CLICKABLE =
   "a[href], button, summary, label[for], [role=link], [role=button], [role=tab], [role=menuitem], [role=option]";
 
-function underlined(
-  el: HTMLElement,
-  style: CSSStyleDeclaration,
-): string | null {
+function underlined(el: HTMLElement, style: CSSStyleDeclaration): string | null {
   if (style.textDecorationLine.includes("underline")) return "text-decoration";
-  if (
-    !style.display.startsWith("inline") ||
-    el.matches("input, select, textarea")
-  )
-    return null;
+  if (!style.display.startsWith("inline") || el.matches("input, select, textarea")) return null;
   const onlyBottom =
     parseFloat(style.borderBottomWidth) > 0 &&
     style.borderBottomStyle !== "none" &&

@@ -28,7 +28,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Opener(args: { title: string; lede?: string; index?: string; eyebrow?: string; closeLabel: string; size?: "md" | "lg" | "xl" }) {
+function Opener(args: {
+  title: string;
+  lede?: string;
+  index?: string;
+  eyebrow?: string;
+  closeLabel: string;
+  size?: "md" | "lg" | "xl";
+}) {
   const [open, setOpen] = useState(false);
   return (
     <>
@@ -51,7 +58,7 @@ function Opener(args: { title: string; lede?: string; index?: string; eyebrow?: 
   );
 }
 
-/** Opens from the right edge; Escape or the close button returns focus to the opener. */
+/** Opens from the right edge; focus goes to its title; Escape or the close button returns focus to the opener. */
 export const Record: Story = {
   render: (args) => <Opener {...args} />,
   play: async ({ canvasElement }) => {
@@ -61,20 +68,26 @@ export const Record: Story = {
     const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog");
     await expect(getComputedStyle(canvasElement.ownerDocument.body).overflow).toBe("hidden");
     await waitFor(() => expect(dialog).toBeVisible());
+    // With no field to start in, focus goes to the title, not to the close button.
+    await waitFor(() => expect(within(dialog).getByRole("heading", { name: "Jonas Brandt" })).toHaveFocus());
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(opener).toHaveFocus());
   },
 };
 
-/** Opened from a row: the row's ordinal in the index column and the kind of record above the title tie the detail to the row. */
+/** Opened from a row: the kind of record and its workspace above the title tie the detail to the row. */
 export const FromARow: Story = {
-  args: { index: "03", eyebrow: "Member · WS-01" },
+  args: { eyebrow: "Member · WS-01" },
   render: (args) => <Opener {...args} />,
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole("button", { name: "Open member" }));
     const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog", { name: "Jonas Brandt" });
     await waitFor(() => expect(dialog).toBeVisible());
-    await expect(within(dialog).getByText("03")).toBeVisible();
+    await expect(within(dialog).queryByText("03")).toBeNull();
+    const head = dialog.querySelector(".di-sheet-head")!;
+    const footer = dialog.querySelector(".di-sheet-footer")!;
+    await expect(getComputedStyle(head).borderBottomWidth).toBe("0px");
+    await expect(getComputedStyle(footer).borderTopWidth).toBe("0px");
     await expect(within(dialog).getByText("Member · WS-01")).toBeVisible();
   },
 };

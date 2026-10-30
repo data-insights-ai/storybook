@@ -15,19 +15,6 @@
     box-shadow: 0 0 0 1px var(--di-status-danger-border);
   }
 
-  /* The index reads as the label's first word, not a band of its own. */
-  .di-stat-tile-ordinal {
-    margin-right: var(--di-space-8);
-    font-family: var(--di-font-code);
-    font-size: inherit;
-    font-variant-numeric: tabular-nums;
-    color: var(--di-text-subtle);
-  }
-
-  .di-stat-tile.is-danger .di-stat-tile-ordinal {
-    color: var(--di-status-danger-fg);
-  }
-
   .di-stat-tile-body {
     display: flex;
     flex-direction: column;

@@ -133,11 +133,7 @@ export function CommandRow({
   children?: ReactNode;
 }) {
   return (
-    <button
-      type="button"
-      className={cx("di-command-row", active && "is-active")}
-      onClick={onSelect}
-    >
+    <button type="button" className={cx("di-command-row", active && "is-active")} onClick={onSelect}>
       <span className="di-command-row-icon">{inferred ? <SealMark state="inferred" size={7} /> : children}</span>
       <span className="di-command-row-label">{label}</span>
       <span className="di-command-row-meta">{meta}</span>
