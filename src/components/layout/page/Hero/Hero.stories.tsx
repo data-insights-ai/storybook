@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { TrendChart } from "../../../charts/TrendChart";
+import { TrendChart } from "../../../charts/time/TrendChart";
 import { Figure, FigureRow } from "../../../data/figures/FigureRow";
 import { HeroFigure } from "../../../data/figures/HeroFigure";
 import { SeverityMark } from "../../../marks/status/SeverityMark";

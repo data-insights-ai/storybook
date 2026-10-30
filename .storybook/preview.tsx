@@ -2,7 +2,7 @@ import type { Preview } from "@storybook/react-vite";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { create } from "storybook/theming";
-import "../src/styles.css";
+import "../src/styles/styles.css";
 import "./preview.css";
 
 const docsTheme = create({

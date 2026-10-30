@@ -1,7 +1,7 @@
 import { afterEach, expect, test } from "vitest";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
-import "../../../styles.css";
+import "../../../styles/styles.css";
 import { Notice, NoticeText, NoticeTitle } from "../Notice";
 import { ToastRegion } from "./Toast";
 

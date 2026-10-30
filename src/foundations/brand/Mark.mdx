@@ -1,0 +1,70 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import logo from "../../assets/logo.svg";
+import logoInverse from "../../assets/logo-inverse.svg";
+import logoMono from "../../assets/logo-mono.svg";
+import mark from "../../assets/mark.svg";
+import markInverse from "../../assets/mark-inverse.svg";
+import markMono from "../../assets/mark-mono.svg";
+import { ClearSpace, Lockup, Lockups, Mark, Marks, Page, Rule, Rules, Section } from "../guide/Guide";
+import { Cobrand, Misuse } from "../guide/Specimens";
+
+<Meta title="Foundations/Mark" />
+
+<Page
+  eyebrow="The mark"
+  title="Every piece means something."
+  lede="The brackets are a temporal interval, the window in which a claim holds. The peak is an A, and the simplest graph. The stem is the I. One node is gold. That tittle is verified truth, and a view gets only one."
+>
+  <Marks>
+    <Mark mark="[ ]">Brackets mark the interval. They are not a decorative frame.</Mark>
+    <Mark mark="/ \">Two edges meet at a peak. That is the A.</Mark>
+    <Mark mark="I">A single stem. Upright, and unornamented.</Mark>
+    <Mark mark="•">Nodes are the feet of the graph.</Mark>
+    <Mark mark="•" tone="gold">The gold tittle is the one moment of verified truth.</Mark>
+  </Marks>
+
+  <Section eyebrow="Lockups" title="Six variants. Six contexts." lede="The primary lockup is the default. The others exist for a substrate where it cannot live. Each is a fixed asset — a lockup is never rebuilt from the mark and a typeface.">
+    <Lockups>
+      <Lockup title="Primary" detail="Ivory, paper, and white. Digital and print.">
+        <img src={logo} alt="datAInsights primary lockup" />
+      </Lockup>
+      <Lockup title="Inverse" detail="Navy only. Never on gold, and never on a photograph." tone="dark">
+        <img src={logoInverse} alt="datAInsights inverse lockup" />
+      </Lockup>
+      <Lockup title="Monochrome" detail="Single-ink print, embossing, and merchandise. The gold tittle becomes navy.">
+        <img src={logoMono} alt="datAInsights monochrome lockup" />
+      </Lockup>
+      <Lockup title="Mark only" detail="A favicon, an avatar, or an app tile. The name is set nearby.">
+        <img className="is-mark" src={mark} alt="datAInsights mark" />
+      </Lockup>
+      <Lockup title="Mark, inverse" detail="The same symbol on navy. The gold node is the tittle." tone="dark">
+        <img className="is-mark" src={markInverse} alt="datAInsights mark, inverse" />
+      </Lockup>
+      <Lockup title="Mark, mono" detail="Single-ink print where the mono lockup has no room: a stamp, an emboss, a favicon in one colour.">
+        <img className="is-mark" src={markMono} alt="datAInsights mark, monochrome" />
+      </Lockup>
+    </Lockups>
+  </Section>
+
+  <Section
+    eyebrow="Clear space"
+    title="Give the mark room to breathe."
+    lede="X is the height of the mark’s cap. Keep at least 1X of empty space on all four sides. The gold squares are that 1X, drawn at this scale."
+  >
+    <ClearSpace />
+  </Section>
+
+  <Section eyebrow="Misuse" title="Six things never to do." lede="The logo is one unit. Each of these breaks the meaning.">
+    <Misuse />
+  </Section>
+
+  <Section eyebrow="Beside another mark" title="Next to another mark, we hold our line.">
+    <Cobrand />
+    <Rules>
+      <Rule>Match optical height, not the bounding box. Do not shrink our mark to fit a taller wordmark.</Rule>
+      <Rule>The separator is a vertical rule. Not an ampersand, a slash, a plus, or a multiplication sign.</Rule>
+      <Rule>In a strip of three or more, use the monochrome logo. Leave the other brand in its own colours.</Rule>
+      <Rule>Order the marks alphabetically, or by the date of the announcement. A photograph is not a background.</Rule>
+    </Rules>
+  </Section>
+</Page>

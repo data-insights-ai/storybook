@@ -28,8 +28,8 @@ export const coverage: Array<{ table: string; state: "silent" | "missing"; since
   { table: "Image loads", state: "silent", since: "silent for 26 h" },
 ];
 
-export const delivery: Array<{ label: string; value: string; note: string; tone: "neutral" | "warn" }> = [
-  { label: "Notifications", value: "2 / 2", note: "channels active", tone: "neutral" },
-  { label: "SIEM exports", value: "1 / 2", note: "delivering", tone: "warn" },
-  { label: "Access", value: "8", note: "people and service accounts", tone: "neutral" },
+export const delivery: Array<{ label: string; value: string; tone: "neutral" | "warn" }> = [
+  { label: "Notifications", value: "2 of 2 active", tone: "neutral" },
+  { label: "SIEM exports", value: "1 of 2 delivering", tone: "warn" },
+  { label: "Access", value: "8 people and service accounts", tone: "neutral" },
 ];

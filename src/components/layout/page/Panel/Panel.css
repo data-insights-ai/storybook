@@ -115,11 +115,6 @@
     color: var(--di-mono-label-color);
   }
 
-  /* After dark the one thing may say so in gold; in daylight one-ink is navy. */
-  .di-panel.is-emphasis .di-panel-label {
-    color: var(--di-one-ink);
-  }
-
   .di-panel-title {
     font-size: var(--di-block-title-size);
     font-weight: var(--di-weight-semibold);

@@ -44,8 +44,8 @@
    */
   .di-living-insight {
     padding: var(--di-space-12) var(--di-space-12);
-    border-top: 1px solid var(--di-ai-ring);
-    background: var(--di-ai-surface);
+    border-top: 1px solid var(--di-mark-ring);
+    background: var(--di-mark-surface);
   }
 
   .di-living-insight-row {
@@ -70,7 +70,7 @@
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     line-height: var(--di-leading-snug);
-    color: var(--di-ai-ink);
+    color: var(--di-mark-ink);
   }
 
   .di-living-insight-actions {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
-import { sampleChrome } from "../../../../.storybook/chrome.sample";
+import { sampleChrome } from "../../../../.storybook/console/chrome.sample";
 import { Button } from "../../actions/Button";
 import { Menu, MenuGroup, MenuItem } from "../../navigation/Menu";
 import { useState } from "react";
@@ -10,7 +10,7 @@ import { Select } from "../../forms/select/Select";
 import { StatusPill } from "../../marks/status/StatusPill";
 import { AppShell, AppShellBar, AppShellBarEnd, AppShellContent, AppShellMain } from "./AppShell";
 import { AppShellContext, AppShellFoot, AppShellRail, type NavGroup } from "./AppShellRail";
-import { Console } from "../../../../.storybook/Console";
+import { Console } from "../../../../.storybook/console/Console";
 
 /* The sample sections, as a product hands them over: every item a link. */
 const linkedGroups: NavGroup[] = sampleChrome.groups.map((group) => ({

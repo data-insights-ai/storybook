@@ -5,7 +5,7 @@
     width: min(360px, 100%);
     overflow: hidden;
     /* The ring's edge, so a claim never wears the register's own border. */
-    border: 1px solid var(--di-ai-ring);
+    border: 1px solid var(--di-mark-ring);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
   }
@@ -17,14 +17,14 @@
     gap: var(--di-space-8);
     padding: var(--di-space-8) var(--di-space-12);
     border-bottom: 1px solid var(--di-rule-hairline);
-    background: var(--di-ai-surface);
+    background: var(--di-mark-surface);
   }
 
   .di-explain-title {
     font-family: var(--di-label-family);
     font-size: var(--di-label-size);
     font-weight: var(--di-label-weight);
-    color: var(--di-ai-ink);
+    color: var(--di-mark-ink);
   }
 
   .di-explain-rows {

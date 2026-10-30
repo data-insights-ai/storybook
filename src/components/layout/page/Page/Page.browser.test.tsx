@@ -2,7 +2,7 @@ import { afterEach, describe, expect, test } from "vitest";
 import { page } from "vitest/browser";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
-import "../../../../styles.css";
+import "../../../../styles/styles.css";
 import { AppShellContent } from "../../../shell/AppShell";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
 import { ListToolbar } from "../../../data/table/ListToolbar";

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ConsoleFrame } from "../../../.storybook/Console";
+import { ConsoleFrame } from "../../../.storybook/console/Console";
 import { LoginScreen } from "./Login";
 
 const meta = {

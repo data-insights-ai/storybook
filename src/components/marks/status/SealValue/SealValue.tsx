@@ -13,9 +13,10 @@ export type SealState = "sealed" | "inferred" | "absent";
  * The mark never carries the meaning alone: pair it with `SealValue`,
  * or name the state in the text beside it.
  *
- * The seal is gold, so it belongs to brand moments — a licence, a
- * certificate, a sealed record shown as such — and never sits beside the
- * one gold object of an operational view.
+ * The mark draws in `--di-mark`: neutral ink in an operational view, so
+ * the one gold object stays alone, and the seal's gold inside a brand
+ * moment (`data-brand` on a sign-in, onboarding, licence or certificate
+ * surface). The shape carries the state either way.
  */
 export function SealMark({
   state = "sealed",

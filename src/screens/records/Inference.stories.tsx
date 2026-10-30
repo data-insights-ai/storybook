@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, waitFor, within } from "storybook/test";
-import { Console } from "../../../.storybook/Console";
-import { sampleChrome } from "../../../.storybook/chrome.sample";
+import { Console } from "../../../.storybook/console/Console";
+import { sampleChrome } from "../../../.storybook/console/chrome.sample";
 import { InferenceScreen } from "./Inference";
 
 const meta = {

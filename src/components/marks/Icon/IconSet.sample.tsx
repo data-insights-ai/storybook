@@ -1,5 +1,5 @@
 import { Braces, ChartColumn, Check, Clock, FileText, Search, Shield, Waypoints } from "lucide-react";
-import { Icon } from "./";
+import { Icon } from ".";
 
 const vocabulary = [
   { meaning: "Search", name: "Search", icon: Search, cited: false },

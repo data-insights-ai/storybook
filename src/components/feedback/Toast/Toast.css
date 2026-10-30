@@ -9,7 +9,7 @@
     --di-text-muted: var(--di-inverse-muted);
     --di-bg-subtle: var(--di-inverse-raised);
     --di-button-secondary-bg: transparent;
-    --di-button-secondary-border: var(--di-seal);
+    --di-button-secondary-border: var(--di-inverse-mark);
     --di-focus: var(--di-inverse-focus);
 
     display: flex;
@@ -77,7 +77,7 @@
     margin-top: var(--di-space-4);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
-    color: var(--di-inverse-seal);
+    color: var(--di-inverse-mark);
   }
 
   .di-toast-action {

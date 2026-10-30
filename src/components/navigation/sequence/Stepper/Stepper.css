@@ -1,0 +1,175 @@
+@layer components {
+  .di-stepper {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  /* The line between bullets runs from one circle's edge to the next's, under them. */
+  .di-step {
+    --di-step-radius: 11px;
+    --di-step-gap: var(--di-space-4);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .di-step:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: var(--di-step-radius);
+    right: calc(50% + var(--di-step-radius) + var(--di-step-gap));
+    left: calc(-50% + var(--di-step-radius) + var(--di-step-gap));
+    height: 1px;
+    background: var(--di-border);
+  }
+
+  .di-step-button {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--di-space-6);
+    min-width: 0;
+    max-width: 100%;
+    padding: 0 var(--di-space-4);
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: center;
+  }
+
+  button.di-step-button {
+    cursor: pointer;
+    border-radius: var(--di-radius-control);
+  }
+
+  button.di-step-button:hover .di-step-label {
+    text-decoration: underline;
+  }
+
+  button.di-step-button:focus-visible {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-step-bullet {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex: none;
+    border: 1px solid var(--di-border-input);
+    border-radius: var(--di-radius-pill);
+    background: var(--di-bg-surface);
+    color: var(--di-text-subtle);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-100);
+    line-height: 1;
+  }
+
+  .di-step-bullet.is-done {
+    border-color: var(--di-mark);
+    background: var(--di-mark);
+    color: var(--di-text-on-mark);
+  }
+
+  .di-step-check {
+    width: 12px;
+    height: 12px;
+    stroke-width: 3;
+  }
+
+  .di-step-bullet.is-current {
+    border-color: var(--di-fill-strong);
+    background: var(--di-fill-strong);
+    color: var(--di-text-on-strong);
+  }
+
+  .di-step-label {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-subtle);
+  }
+
+  .di-step-label.is-done,
+  .di-step-label.is-current {
+    color: var(--di-text);
+  }
+
+  .di-step-label.is-current {
+    font-weight: var(--di-weight-medium);
+  }
+
+  /* Inline: the steps start at the content's edge, each name on one line
+     beside its bullet, joined by a short line that gives way first. */
+  .di-stepper[data-layout="inline"] {
+    display: flex;
+    align-items: center;
+    container-type: inline-size;
+  }
+
+  .di-stepper[data-layout="inline"] .di-step {
+    flex: none;
+    align-items: center;
+  }
+
+  .di-stepper[data-layout="inline"] .di-step:not(:first-child) {
+    flex: 0 1 auto;
+  }
+
+  .di-stepper[data-layout="inline"] .di-step:not(:first-child)::before {
+    position: static;
+    flex: 0 1 auto;
+    width: var(--di-space-32);
+    min-width: var(--di-space-16);
+    margin: 0 var(--di-space-8);
+  }
+
+  .di-stepper[data-layout="inline"] .di-step-button {
+    flex: none;
+    flex-direction: row;
+    gap: var(--di-space-8);
+    max-width: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  .di-stepper[data-layout="inline"] .di-step-label {
+    max-width: none;
+    white-space: nowrap;
+  }
+
+  /* Too narrow for every name on one line: the others are their bullets. */
+  @container (max-width: 800px) {
+    .di-stepper[data-layout="inline"] .di-step:not([aria-current]) .di-step-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+  }
+
+  /* On a phone only the current step keeps its name; the others are their bullets. */
+  @media (max-width: 600px) {
+    .di-step:not([aria-current]) .di-step-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+  }
+}

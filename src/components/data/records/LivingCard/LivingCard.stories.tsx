@@ -4,7 +4,7 @@ import { expect, fn, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./LivingCard";
 import { StatTile, StatTileDelta } from "../../figures/StatTile";
-import { Sparkline } from "../../../charts/Sparkline";
+import { Sparkline } from "../../../charts/time/Sparkline";
 
 const bars = [
   { percent: 38 },

@@ -3,13 +3,13 @@ import { page } from "vitest/browser";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import { House } from "lucide-react";
-import "../../../styles.css";
+import "../../../styles/styles.css";
 import { Sidebar } from "./Sidebar";
-import { SidebarFooter } from "./SidebarSections";
-import { SidebarMenu, SidebarMenuItem } from "./SidebarMenu";
-import { SidebarMenuButton } from "./SidebarMenuButton";
-import { SidebarProvider } from "./SidebarProvider";
-import { SidebarThemeChoice } from "./SidebarThemeChoice";
+import { SidebarFooter } from "./menu/SidebarSections";
+import { SidebarMenu, SidebarMenuItem } from "./menu/SidebarMenu";
+import { SidebarMenuButton } from "./menu/SidebarMenuButton";
+import { SidebarProvider } from "./state/SidebarProvider";
+import { SidebarThemeChoice } from "./frame/SidebarThemeChoice";
 
 let root: Root | undefined;
 

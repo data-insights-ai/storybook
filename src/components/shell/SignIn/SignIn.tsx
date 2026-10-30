@@ -54,7 +54,7 @@ export function SignIn({
   }
 
   return (
-    <main className="di-login" data-theme="dark">
+    <main className="di-login" data-theme="dark" data-brand="">
       <div className="di-login-stack">
         <p className="di-login-kicker">
           <img className="di-login-logo" src={logoInverse} alt="datAInsights" />

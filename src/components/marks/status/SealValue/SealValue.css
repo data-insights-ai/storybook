@@ -6,13 +6,13 @@
   }
 
   .di-seal-mark-sealed {
-    background: var(--di-seal);
+    background: var(--di-mark);
   }
 
   /* A claim, not a fact: the ring is open where the seal is filled. */
   .di-seal-mark-inferred {
     background: transparent;
-    border: 1.5px solid var(--di-ai-ring);
+    border: 1.5px solid var(--di-mark-ring);
   }
 
   .di-seal-mark-absent {

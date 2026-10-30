@@ -73,3 +73,29 @@ export const Marks: Story = {
     </div>
   ),
 };
+
+/**
+ * In an operational view the mark is neutral, so the view's one gold object
+ * stays alone. Inside a brand moment — sign-in, onboarding, a licence or
+ * certificate seal — `data-brand` maps it back to the seal's gold.
+ */
+export const BrandMoment: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div style={{ display: "flex", gap: 28 }}>
+      <SealValue state="sealed" stateLabel="Sealed">
+        operational
+      </SealValue>
+      <div data-brand="">
+        <SealValue state="sealed" stateLabel="Sealed">
+          licence 2026-0042
+        </SealValue>
+      </div>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const [plain, brand] = [...canvasElement.querySelectorAll(".di-seal-mark-sealed")].map((mark) => getComputedStyle(mark).backgroundColor);
+    await expect(plain).not.toBe(brand);
+    await expect(brand).toBe("rgb(201, 162, 74)");
+  },
+};
