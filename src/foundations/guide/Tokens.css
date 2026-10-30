@@ -44,5 +44,6 @@
 .di-tokens-mono {
   font-family: var(--di-font-code);
   font-variant-numeric: tabular-nums;
+  white-space: normal;
   overflow-wrap: anywhere;
 }
