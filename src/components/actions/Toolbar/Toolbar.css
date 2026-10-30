@@ -70,12 +70,15 @@
     z-index: 2;
   }
 
-  /* Over a long form the bar floats: a plane's shadow sets it off the fields scrolling under it. */
+  /*
+   * Over a long form the bar floats: a plane's shadow sets it off the fields scrolling under it, and the ground
+   * fills the strip below it, so nothing shows between the bar and the window's foot.
+   */
   .di-toolbar[data-sticky="bottom"] {
     position: sticky;
     bottom: var(--di-space-16);
     z-index: 2;
-    --di-surface-shadow: var(--di-shadow-plane);
+    --di-surface-shadow: var(--di-shadow-plane), 0 var(--di-space-16) 0 var(--di-bg-page);
   }
 
   /* Tab scrolls a field clear of the floating bar, its ring included. */
