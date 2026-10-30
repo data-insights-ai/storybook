@@ -99,6 +99,9 @@ export const NoMatch: Story = {
     await userEvent.type(input, "zzz");
     await waitFor(() => expect(page.queryByRole("listbox")).toBeNull());
     await expect(canvas.getByText("Each gets the mail at their verified address.")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Show members" }));
+    await expect(page.queryByRole("listbox")).toBeNull();
+    await expect(input).toHaveValue("zzz");
     await userEvent.clear(input);
     await expect(page.getByRole("option", { name: /Nora Feld/ })).toBeVisible();
   },
@@ -114,6 +117,13 @@ export const EmptyText: Story = {
     await userEvent.click(input);
     await userEvent.type(input, "zzz");
     await expect(page.getByText("No member matches.")).toBeVisible();
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(page.queryByText("No member matches.")).toBeNull());
+    await userEvent.click(canvas.getByRole("button", { name: "Show members" }));
+    await expect(page.getByText("No member matches.")).toBeVisible();
+    await expect(input).toHaveValue("zzz");
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(page.queryByText("No member matches.")).toBeNull());
   },
 };
 

@@ -1,5 +1,5 @@
 import { FileText, Upload, X } from "lucide-react";
-import { type DragEvent, useId, useRef, useState } from "react";
+import { type DragEvent, useEffect, useId, useRef, useState } from "react";
 import { cx } from "../../../../internal/cx";
 import { Button } from "../../../actions/Button";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
@@ -12,8 +12,11 @@ import "./FileField.css";
  * A field that takes one file: label above, a dashed drop area, one line
  * under it. The area holds two things that stand alone: a line saying a
  * file can be dropped there, and a button that opens the picker, which is
- * also the way in from the keyboard. The native input stays hidden. A chosen file shows as
- * a row with its name, size and a remove button.
+ * also the way in from the keyboard. The native input stays hidden, also
+ * from assistive technology. A chosen file shows as a row with its name,
+ * size and a remove button. Focus that was in the field follows the swap:
+ * to the remove button once a file is chosen, back to the choose button
+ * once it is removed.
  *
  * `accept` and `maxBytes` are checked on the way in: a file that fails is
  * not passed on, and the line under the field says why. The value is
@@ -79,6 +82,10 @@ export function FileField({
   const chooseId = useId();
   const dropId = useId();
   const statusId = useId();
+  const field = useRef<HTMLDivElement>(null);
+  const chooseButton = useRef<HTMLButtonElement>(null);
+  const clearButton = useRef<HTMLButtonElement>(null);
+  const refocus = useRef(false);
   const line = refused || hint;
   const tone: HintTone = refused ? "error" : hintTone;
   const invalid = line !== "" && tone === "error";
@@ -97,8 +104,20 @@ export function FileField({
       return;
     }
     setRefused("");
+    // Focus is taken only from this field, or from nowhere: some browsers hand it back only after the picker's change.
+    const active = document.activeElement;
+    refocus.current = !active || active === document.body || (field.current?.contains(active) ?? false);
     onFileChange(next);
   };
+
+  // The button that had focus is unmounted with the swap; its counterpart takes it, a frame
+  // later, after the browser has handed focus back from the file picker.
+  useEffect(() => {
+    if (!refocus.current) return;
+    refocus.current = false;
+    const frame = requestAnimationFrame(() => (file ? clearButton : chooseButton).current?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [file]);
 
   const drop = (event: DragEvent) => {
     event.preventDefault();
@@ -109,7 +128,7 @@ export function FileField({
   };
 
   return (
-    <div className={cx("di-field", className)}>
+    <div ref={field} className={cx("di-field", className)}>
       <div className="di-field-row">
         <label id={labelId} className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
           {label}
@@ -121,6 +140,7 @@ export function FileField({
         className="di-sr"
         type="file"
         tabIndex={-1}
+        aria-hidden
         accept={accept}
         disabled={disabled}
         required={required && !file}
@@ -135,6 +155,7 @@ export function FileField({
           <span className="di-file-size">{formatSize(file.size)}</span>
           {!disabled && (
             <Button
+              ref={clearButton}
               type="button"
               variant="ghost"
               size="dense"
@@ -170,6 +191,7 @@ export function FileField({
             {dropLabel}
           </span>
           <Button
+            ref={chooseButton}
             id={chooseId}
             type="button"
             variant="secondary"

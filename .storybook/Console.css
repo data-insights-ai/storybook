@@ -1,4 +1,17 @@
 /* The Storybook window a console example sits in; no product renders it. */
+@layer tokens {
+  :root,
+  [data-theme="light"] {
+    --sb-canvas: var(--di-sunken);
+    --sb-canvas-dot: rgba(10, 31, 68, 0.22);
+  }
+
+  [data-theme="dark"] {
+    --sb-canvas: #030914;
+    --sb-canvas-dot: rgba(242, 245, 251, 0.16);
+  }
+}
+
 @layer components {
   .sb-canvas {
     width: 100%;
@@ -9,8 +22,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--di-space-8);
-    background-color: var(--di-canvas);
-    background-image: radial-gradient(var(--di-canvas-dot) 0.7px, transparent 0.75px);
+    background-color: var(--sb-canvas);
+    background-image: radial-gradient(var(--sb-canvas-dot) 0.7px, transparent 0.75px);
     background-size: 16px 16px;
   }
 
@@ -26,7 +39,7 @@
     gap: var(--di-space-8);
     padding: var(--di-space-2) var(--di-space-8);
     border-radius: var(--di-radius-control);
-    background: var(--di-canvas);
+    background: var(--sb-canvas);
     font-family: var(--di-font-ui);
     font-size: var(--di-font-size-300);
     color: var(--di-text-muted);

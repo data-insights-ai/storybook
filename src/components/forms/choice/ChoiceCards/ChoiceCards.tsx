@@ -104,7 +104,7 @@ export function ChoiceCards({
             </span>
             {planned.lede ? <span className="di-choicecards-planned-lede">{planned.lede}</span> : null}
           </p>
-          <ul className="di-choicecards-planned-grid" aria-labelledby={plannedId}>
+          <ul role="list" className="di-choicecards-planned-grid" aria-labelledby={plannedId}>
             {planned.options.map((option) => (
               <li key={option.value} className="di-choicecard-planned">
                 {option.icon === undefined ? null : (

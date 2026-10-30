@@ -26,8 +26,6 @@
     --di-bg-subtle: var(--di-sunken);
     --di-bg-row-hover: var(--di-wash);
     --di-bg-disabled: var(--di-sunken);
-    --di-canvas: var(--di-sunken);
-    --di-canvas-dot: rgba(10, 31, 68, 0.22);
 
     --di-text: var(--di-ink);
     --di-text-press: var(--di-navy-950);
@@ -201,8 +199,6 @@
     --di-bg-subtle: var(--di-night-800);
     --di-bg-row-hover: var(--di-night-800);
     --di-bg-disabled: var(--di-night-800);
-    --di-canvas: #030914;
-    --di-canvas-dot: rgba(242, 245, 251, 0.16);
 
     --di-text: var(--di-night-100);
     --di-text-press: #ffffff;

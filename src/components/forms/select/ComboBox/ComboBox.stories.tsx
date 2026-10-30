@@ -137,6 +137,51 @@ export const ExternalReset: Story = {
   },
 };
 
+/**
+ * Suggestions that arrive late, after an arrow pressed while there were
+ * none: that arrow opened nothing, so it highlights nothing later either,
+ * and Enter keeps what was typed.
+ */
+export const LateSuggestions: Story = {
+  render: function Render(args) {
+    const [value, setValue] = useState("");
+    const [loaded, setLoaded] = useState<typeof suggestions>([]);
+    useEffect(() => {
+      const timer = setTimeout(() => setLoaded(suggestions), 400);
+      return () => clearTimeout(timer);
+    }, []);
+    return (
+      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+        <ComboBox
+          {...args}
+          suggestions={loaded}
+          value={value}
+          onValueChange={(next) => {
+            args.onValueChange(next);
+            setValue(next);
+          }}
+        />
+        <p>{loaded.length === 0 ? "Loading suggestions" : "Suggestions loaded"}</p>
+      </form>
+    );
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Register code" });
+    await userEvent.click(input);
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(page.queryByRole("listbox")).toBeNull();
+    await canvas.findByText("Suggestions loaded");
+    await expect(page.queryByRole("listbox")).toBeNull();
+    await userEvent.type(input, "r");
+    await expect(page.getByRole("option", { name: /Northern register/ })).toBeVisible();
+    await userEvent.keyboard("{Enter}");
+    await expect(input).toHaveValue("r");
+    await expect(args.onValueChange).toHaveBeenLastCalledWith("r");
+  },
+};
+
 /** No suggestions at all: neither typing nor the toggle opens an empty list. */
 export const EmptySuggestions: Story = {
   args: { suggestions: [] },

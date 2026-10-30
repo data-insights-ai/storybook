@@ -72,23 +72,29 @@ export function ComboBox({
   const root = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [typed, setTyped] = useState(false);
-  const { host: overlay, update: updateOverlay } = useOverlayHost(root, open);
   const locked = readOnly || disabled;
   const invalid = hint !== "" && hintTone === "error";
   const matches = (item: ComboBoxSuggestion) =>
     contains(item.value, value.trim()) || contains(item.label, value.trim());
   const show = (filtered: boolean) => {
     if (locked) return;
+    // A list with nothing in it is not opened, or it would pop up later on its own when suggestions arrive.
+    if (!filtered && suggestions.length === 0 && !emptyLabel) return;
     updateOverlay();
     setTyped(filtered);
     setOpen(true);
   };
   const shown = typed ? suggestions.filter(matches) : suggestions;
   const visible = open && !locked && (shown.length > 0 || Boolean(emptyLabel));
+  const { host: overlay, update: updateOverlay } = useOverlayHost(root, visible);
   const control = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
-  const toggle = useListToggle(input, () => (visible ? setOpen(false) : show(false)));
   const arrowOpened = useRef<string | null>(null);
+  const close = () => {
+    arrowOpened.current = null;
+    setOpen(false);
+  };
+  const toggle = useListToggle(input, () => (visible ? close() : show(false)));
   // An arrow that opens the list also highlights its first or last suggestion;
   // Base UI's autocomplete would wait for a second press.
   useEffect(() => {
@@ -115,7 +121,7 @@ export function ComboBox({
         openOnInputClick={false}
         onOpenChange={(next, details) => {
           if (next) show(details.reason === "input-change");
-          else setOpen(false);
+          else close();
         }}
         onValueChange={(next, details) => {
           if (locked) return;
@@ -140,11 +146,13 @@ export function ComboBox({
             aria-invalid={invalid || undefined}
             aria-describedby={hint === "" ? undefined : `${id}-hint`}
             onBlur={() => {
-              if (!visible) setOpen(false);
+              if (visible) arrowOpened.current = null;
+              else close();
             }}
             onKeyDown={(event) => {
-              if (!visible && !locked && (event.key === "ArrowDown" || event.key === "ArrowUp"))
-                arrowOpened.current = event.key;
+              if (visible || locked || (event.key !== "ArrowDown" && event.key !== "ArrowUp")) return;
+              // Only an arrow that can open the list may highlight in it; a pending one would fire later, on Enter.
+              arrowOpened.current = suggestions.length > 0 || emptyLabel ? event.key : null;
             }}
           />
           <button {...toggle} className="di-combobox-toggle" aria-label={toggleLabel} disabled={locked}>

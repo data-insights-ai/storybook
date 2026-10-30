@@ -72,19 +72,20 @@ export function MultiComboBox({
   const input = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
-  const { host, update } = useOverlayHost(root, open);
   const byValue = new Map(options.map((o) => [o.value, o]));
   const chosen = values.filter((v) => byValue.has(v));
   const shown = options.filter((o) => contains(o.label, query.trim())).map((o) => o.value);
   const invalid = hint !== "" && hintTone === "error";
   const visible = open && !disabled && (shown.length > 0 || Boolean(emptyLabel));
+  const { host, update } = useOverlayHost(root, visible);
 
   const show = () => {
     if (disabled) return;
     update();
     setOpen(true);
   };
-  const toggle = useListToggle(input, () => (visible ? setOpen(false) : (setQuery(""), show())));
+  // While nothing matches what was typed the toggle leaves the text alone and opens nothing, as in ComboBox.
+  const toggle = useListToggle(input, () => (visible ? setOpen(false) : shown.length > 0 || emptyLabel ? show() : undefined));
   const set = (next: string[]) => {
     onChange(next);
     setQuery("");

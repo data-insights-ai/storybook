@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { FileField } from "./FileField";
 import { Toolbar } from "../../../layout/arrangement/Toolbar";
@@ -46,7 +46,9 @@ const certificate = new File(["-----BEGIN CERTIFICATE-----"], "collector-eu-west
 
 /**
  * One dashed area with a line about dropping and a button that opens the
- * picker. A chosen file is a row with its size and a remove button.
+ * picker. A chosen file is a row with its size and a remove button. Focus
+ * moves to that button once a file is chosen and back to the choose button
+ * once it is removed; the native input is hidden from assistive technology.
  */
 export const Default: Story = {
   play: async ({ canvasElement }) => {
@@ -55,11 +57,20 @@ export const Default: Story = {
     await expect(choose).toHaveTextContent("Choose file");
     await expect(choose).toHaveAccessibleDescription("No file chosen PEM-encoded certificate of the collector.");
     await expect(canvas.getByRole("group", { name: "Certificate" })).toHaveAccessibleDescription("Drop a certificate here");
-    await userEvent.upload(canvas.getByLabelText("Certificate", { selector: "input" }), certificate);
+    const input = canvas.getByLabelText("Certificate", { selector: "input" });
+    await expect(input).toHaveAttribute("aria-hidden", "true");
+    // As after the picker: the choose button keeps focus while the file arrives.
+    choose.focus();
+    const picked = new DataTransfer();
+    picked.items.add(certificate);
+    (input as HTMLInputElement).files = picked.files;
+    input.dispatchEvent(new Event("change", { bubbles: true }));
     await expect(canvas.getByText("collector-eu-west.pem")).toBeInTheDocument();
     await expect(canvas.getByText(/byte/)).toBeInTheDocument();
-    await userEvent.click(canvas.getByRole("button", { name: "Remove file: collector-eu-west.pem" }));
-    await expect(canvas.getByRole("button", { name: "Choose file Certificate" })).toBeInTheDocument();
+    const remove = canvas.getByRole("button", { name: "Remove file: collector-eu-west.pem" });
+    await waitFor(() => expect(remove).toHaveFocus());
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(canvas.getByRole("button", { name: "Choose file Certificate" })).toHaveFocus());
   },
 };
 
