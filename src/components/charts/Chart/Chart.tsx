@@ -3,7 +3,6 @@ import {
   useContext,
   useEffect,
   useId,
-  useRef,
   useState,
   type ComponentProps,
   type ComponentType,
@@ -21,6 +20,9 @@ import {
 } from "recharts";
 import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
 import { cx } from "../../../internal/cx";
+import { surfaceClass } from "../../../internal/surface";
+import { useWidth } from "../../../internal/useWidth";
+import { ChartKey } from "../ChartKey";
 import "./Chart.css";
 
 /**
@@ -40,6 +42,10 @@ export type ChartConfig = Record<
 
 const ChartContext = createContext<ChartConfig | null>(null);
 const TooltipDismissedContext = createContext(false);
+const ReadoutContext = createContext<HTMLElement | null>(null);
+
+/* The width at which a tooltip would cover the bars it describes; it matches the container query in Chart.css. */
+const READOUT_BELOW = 480;
 
 function useChart() {
   const config = useContext(ChartContext);
@@ -76,8 +82,10 @@ export function Chart({
   children: ComponentProps<typeof ResponsiveContainer>["children"];
 }) {
   const chartId = `di-chart-${useId().replace(/:/g, "")}`;
-  const frame = useRef<HTMLDivElement>(null);
+  const [frame, width] = useWidth<HTMLDivElement>();
   const dismissed = useTipDismissal(frame);
+  const [readout, setReadout] = useState<HTMLDivElement | null>(null);
+  const narrow = width > 0 && width <= READOUT_BELOW;
   // The series colours are custom properties on the chart's element, set
   // through its style object rather than a style element, so a page with a
   // strict Content-Security-Policy (no inline style elements) shows them.
@@ -92,18 +100,25 @@ export function Chart({
   return (
     <ChartContext.Provider value={config}>
       <TooltipDismissedContext.Provider value={dismissed}>
-        <div
-          ref={frame}
-          className={cx("di-chart", className)}
-          data-chart={chartId}
-          role="group"
-          aria-label={label}
-          style={colors}
-        >
-          <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 320, height: 220 }}>
-            {children}
-          </ResponsiveContainer>
-        </div>
+        <ReadoutContext.Provider value={narrow ? readout : null}>
+          <div
+            ref={frame}
+            className={cx("di-chart", className)}
+            data-chart={chartId}
+            role="group"
+            aria-label={label}
+            style={colors}
+          >
+            <div className="di-chart-plot">
+              <ResponsiveContainer width="100%" height="100%" initialDimension={{ width: 320, height: 220 }}>
+                {children}
+              </ResponsiveContainer>
+            </div>
+            {narrow ? (
+              <div ref={setReadout} className={cx("di-chart-readout", surfaceClass({ plane: "inset" }))} />
+            ) : null}
+          </div>
+        </ReadoutContext.Provider>
       </TooltipDismissedContext.Provider>
     </ChartContext.Provider>
   );
@@ -132,7 +147,9 @@ type TipProps = Partial<TooltipContentProps<ValueType, NameType>>;
 /**
  * Recharts' tooltip, drawn with `ChartTooltipContent` and the series names
  * from the chart's `config`. A tap outside the chart dismisses it on a touch
- * screen.
+ * screen. On a chart as narrow as a phone it would cover the marks it
+ * describes, so it is set as a readout under the plot instead, and the
+ * cursor band shows which period it reads.
  */
 export function ChartTooltip({
   content = <ChartTooltipContent />,
@@ -142,8 +159,10 @@ export function ChartTooltip({
   ...props
 }: TooltipProps<ValueType, NameType>) {
   const dismissed = useContext(TooltipDismissedContext);
+  const readout = useContext(ReadoutContext);
   return (
     <Tooltip
+      portal={readout ?? undefined}
       animationDuration={animationDuration}
       animationEasing={animationEasing}
       content={content}
@@ -224,8 +243,9 @@ export function ChartTooltipContent({
 }
 
 /**
- * Recharts' legend, drawn with `ChartLegendContent`. Pass `verticalAlign` and
- * the rest of Recharts' legend props to place it.
+ * Recharts' legend, drawn with `ChartLegendContent`. Pass `verticalAlign`
+ * and the rest of Recharts' legend props to place it. Above or below, it is
+ * a block of its own: the plot and its axis labels start after it.
  */
 export function ChartLegend(props: Omit<LegendProps, "ref">) {
   return <Legend content={<ChartLegendContent />} {...props} />;
@@ -237,7 +257,13 @@ export function ChartLegend(props: Omit<LegendProps, "ref">) {
  * Give it to `ChartLegend` as `content` when the legend needs props of its
  * own.
  */
-export function ChartLegendContent({ payload }: { payload?: ReadonlyArray<LegendPayload> }) {
+export function ChartLegendContent({
+  payload,
+  verticalAlign,
+}: {
+  payload?: ReadonlyArray<LegendPayload>;
+  verticalAlign?: LegendProps["verticalAlign"];
+}) {
   const config = useChart();
   if (!payload?.length) return null;
   const order = Object.keys(config);
@@ -250,28 +276,15 @@ export function ChartLegendContent({ payload }: { payload?: ReadonlyArray<Legend
   rows.sort((a, b) => order.indexOf(a.key) - order.indexOf(b.key));
   if (!rows.length) return null;
   return (
-    <ul className="di-chart-legend">
-      {rows.map(({ key, item, entry }) => {
-        const Icon = entry.icon;
-        return (
-          <li key={key}>
-            {Icon ? (
-              <Icon />
-            ) : (
-              <i
-                aria-hidden="true"
-                className={entry.dashed ? "is-dashed" : undefined}
-                style={
-                  entry.dashed
-                    ? { borderTopColor: item.color ?? `var(--color-${key})` }
-                    : { background: item.color ?? `var(--color-${key})` }
-                }
-              />
-            )}
-            <span>{entry.label}</span>
-          </li>
-        );
-      })}
-    </ul>
+    <ChartKey
+      className={cx("di-chart-legend", verticalAlign === "top" ? "is-above" : "is-below")}
+      entries={rows.map(({ key, item, entry }) => ({
+        key,
+        label: entry.label,
+        swatch: entry.dashed ? "dash" : "box",
+        color: item.color ?? `var(--color-${key})`,
+        icon: entry.icon,
+      }))}
+    />
   );
 }

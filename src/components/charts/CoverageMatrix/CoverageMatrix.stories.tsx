@@ -123,7 +123,11 @@ export const UnnamedCode: Story = {
   },
 };
 
-/** Narrower than the set, the matrix scrolls in its own frame, reachable from the keyboard. */
+/**
+ * Narrower than the set, the matrix scrolls in its own frame, reachable from
+ * the keyboard. The edge that hides columns fades out, so a column cut at the
+ * frame reads as more to scroll to; at the end only the start fades.
+ */
 export const Scrolling: Story = {
   decorators: [
     (Story) => (
@@ -135,9 +139,20 @@ export const Scrolling: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const frame = canvas.getByRole("region", { name: "Technique matrix" });
+    const fade = () => getComputedStyle(frame).maskImage;
+    await expect(frame.scrollWidth).toBeGreaterThan(frame.clientWidth);
+    await waitFor(() => expect(frame).toHaveClass("is-more-end"));
+    await expect(frame).not.toHaveClass("is-more-start");
+    await expect(fade()).toContain("to left");
+    frame.scrollLeft = frame.scrollWidth;
+    await waitFor(() => expect(frame).toHaveClass("is-more-start"));
+    await expect(frame).not.toHaveClass("is-more-end");
+    await expect(fade()).toContain("to right");
+    frame.scrollLeft = 0;
     await userEvent.tab();
     await waitFor(() => expect(frame).toHaveFocus());
-    await expect(frame.scrollWidth).toBeGreaterThan(frame.clientWidth);
+    // Focused, the ring marks the edge; a fade would take the ring with it.
+    await expect(fade()).toBe("none");
   },
 };
 

@@ -274,14 +274,12 @@
     --di-chain-label-max: 200px;
     --di-chain-label-narrow: 96px;
     --di-chain-count: 24px;
-    --di-timeline-swatch: 10px;
     --di-timeline-readout-min: 180px;
     --di-timeline-readout-max: 280px;
     --di-periods-label: minmax(96px, 22%);
     --di-periods-caption: minmax(120px, 26%);
     --di-period-track-h: 10px;
     --di-tsummary-strip-h: 46px;
-    --di-tsummary-swatch: 12px;
     /* The line an episode stands on: where it is quiet, only this shows. */
     --di-tsummary-base: 3px;
     --di-tsummary-severity: 7rem;

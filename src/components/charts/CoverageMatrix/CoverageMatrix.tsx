@@ -1,10 +1,18 @@
 import { useId } from "react";
 import { cx } from "../../../internal/cx";
+import { useScrollEdges } from "../../../internal/useScrollEdges";
 import { TooltipTarget } from "../../overlays/TooltipTarget";
+import { ChartKey } from "../ChartKey";
 import "./CoverageMatrix.css";
 
 /** The ordered status scale a marked cell takes: the chart's series, warn and danger. */
 export type CoverageMatrixTone = "neutral" | "warn" | "danger";
+
+const TONE_COLOR: Record<CoverageMatrixTone, string> = {
+  neutral: "var(--di-chart-series)",
+  warn: "var(--di-chart-warn)",
+  danger: "var(--di-chart-danger)",
+};
 
 /** One item that was seen in a column: one filled cell and one code beneath the cells. */
 export type CoverageMatrixMark = {
@@ -44,7 +52,8 @@ export type CoverageMatrixColumn = {
  * The cells only fill from the top, so position within a column carries no
  * meaning. They are drawn for the eye and hidden from a screen reader,
  * which reads each column's name, size and codes instead. Wider than its
- * container, the matrix scrolls in its own named, focusable frame.
+ * container, the matrix scrolls in its own named, focusable frame, and an
+ * edge that hides columns fades out.
  */
 export function CoverageMatrix({
   label,
@@ -57,8 +66,15 @@ export function CoverageMatrix({
   className?: string;
 }) {
   const id = useId();
+  const [frame, edges] = useScrollEdges<HTMLDivElement>();
   return (
-    <div className={cx("di-matrix", className)} role="region" aria-label={label} tabIndex={0}>
+    <div
+      ref={frame}
+      className={cx("di-matrix", edges.start && "is-more-start", edges.end && "is-more-end", className)}
+      role="region"
+      aria-label={label}
+      tabIndex={0}
+    >
       <div className="di-matrix-columns">
         {columns.map((column, i) => {
           const headId = `${id}-${i}`;
@@ -114,17 +130,11 @@ export function CoverageMatrixLegend({
   emptyLabel: string;
 }) {
   return (
-    <ul className="di-matrix-legend">
-      {tones.map((item) => (
-        <li key={item.tone} className={cx("di-matrix-key", `is-${item.tone}`)}>
-          <span className="di-matrix-swatch" aria-hidden />
-          {item.label}
-        </li>
-      ))}
-      <li className="di-matrix-key is-empty">
-        <span className="di-matrix-swatch" aria-hidden />
-        {emptyLabel}
-      </li>
-    </ul>
+    <ChartKey
+      entries={[
+        ...tones.map((item) => ({ key: item.tone, label: item.label, color: TONE_COLOR[item.tone] })),
+        { key: "empty", label: emptyLabel, swatch: "empty" as const },
+      ]}
+    />
   );
 }

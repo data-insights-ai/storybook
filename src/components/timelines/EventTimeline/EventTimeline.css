@@ -1,10 +1,5 @@
 @layer components {
-  /*
-   * Routine is the series ink mixed into the surface rather than laid over
-   * it at an opacity, so it keeps 3:1 on the panel and on a lane track.
-   */
   .di-timeline {
-    --di-timeline-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-8);
@@ -108,7 +103,7 @@
 
   /* The ordered scale of the chart tokens, so red means the same here as in every chart. */
   .di-timeline-fill.is-neutral {
-    fill: var(--di-timeline-routine);
+    fill: var(--di-chart-routine);
   }
 
   .di-timeline-fill.is-warn {
@@ -135,7 +130,7 @@
   }
 
   .di-timeline-event.is-neutral .di-timeline-stem {
-    stroke: var(--di-timeline-routine);
+    stroke: var(--di-chart-routine);
   }
 
   .di-timeline-active.is-neutral {
@@ -153,7 +148,7 @@
   }
 
   .di-timeline-event.is-neutral .di-timeline-tip {
-    fill: var(--di-timeline-routine);
+    fill: var(--di-chart-routine);
   }
 
   .di-timeline-event.is-warn .di-timeline-tip {
@@ -316,12 +311,12 @@
     outline-offset: var(--di-focus-ring-offset);
   }
 
-  /* Centred on the legend swatch below it, so the chevron and the swatches share one edge. */
+  /* Centred on the key swatch below it, so the chevron and the swatches share one edge. */
   .di-timeline-lanes-chevron {
     flex: none;
     width: var(--di-icon-md);
     height: var(--di-icon-md);
-    margin-left: calc((var(--di-timeline-swatch) - var(--di-icon-md)) / 2);
+    margin-left: calc((var(--di-chart-swatch) - var(--di-icon-md)) / 2);
     color: var(--di-text-muted);
     transition: transform var(--di-duration) var(--di-ease);
   }
@@ -404,45 +399,6 @@
     display: grid;
     place-items: center;
     background: color-mix(in srgb, var(--di-bg-surface) 60%, transparent);
-  }
-
-  /* Body size, not caption size: the legend and the controls are how the chart is read. */
-  .di-timeline-legend {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--di-gap-4) var(--di-gap-16);
-    font-size: var(--di-font-size-400);
-  }
-
-  .di-timeline-legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--di-gap-6);
-  }
-
-  .di-timeline-swatch {
-    display: inline-block;
-    width: var(--di-timeline-swatch);
-    height: var(--di-timeline-swatch);
-    border-radius: var(--di-radius-micro);
-  }
-
-  .di-timeline-swatch.is-neutral {
-    background: var(--di-timeline-routine);
-  }
-
-  .di-timeline-swatch.is-warn {
-    background: var(--di-chart-warn);
-  }
-
-  .di-timeline-swatch.is-danger {
-    background: var(--di-chart-danger);
-  }
-
-  .di-timeline-note {
-    flex-basis: 100%;
-    color: var(--di-text-muted);
   }
 
   /* How to move the view is the quiet footer of the block: smaller, a step back in tone, under a rule. */

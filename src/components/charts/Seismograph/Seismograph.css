@@ -7,16 +7,16 @@
   }
 
   .di-seismograph-md .di-chart.di-seismograph-plot {
-    height: var(--di-chart-h-lg);
+    --di-chart-height: var(--di-chart-h-lg);
   }
 
   .di-seismograph-lg .di-chart.di-seismograph-plot {
-    height: var(--di-chart-h-xl);
+    --di-chart-height: var(--di-chart-h-xl);
   }
 
   @container (max-width: 600px) {
     .di-seismograph-lg .di-chart.di-seismograph-plot {
-      height: var(--di-chart-h-lg);
+      --di-chart-height: var(--di-chart-h-lg);
     }
   }
 

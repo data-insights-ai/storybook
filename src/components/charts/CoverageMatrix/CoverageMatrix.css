@@ -14,6 +14,30 @@
     padding: var(--di-matrix-bleed);
   }
 
+  /*
+   * An edge that hides columns fades out, so a column cut at the frame
+   * reads as more to scroll to. While the frame has focus its ring marks the
+   * edge instead, and the fade would take the ring with it. A mask reads
+   * only alpha, so any opaque ink does.
+   */
+  .di-matrix.is-more-end:not(:focus-visible) {
+    mask-image: linear-gradient(to left, transparent, var(--di-text) var(--di-space-48));
+  }
+
+  .di-matrix.is-more-start:not(:focus-visible) {
+    mask-image: linear-gradient(to right, transparent, var(--di-text) var(--di-space-48));
+  }
+
+  .di-matrix.is-more-start.is-more-end:not(:focus-visible) {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      var(--di-text) var(--di-space-48),
+      var(--di-text) calc(100% - var(--di-space-48)),
+      transparent
+    );
+  }
+
   .di-matrix:focus-visible {
     outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
     outline-offset: var(--di-focus-ring-offset);
@@ -142,28 +166,5 @@
     width: var(--di-chart-swatch);
     height: var(--di-chart-swatch);
     border-radius: 0;
-  }
-
-  .di-matrix-legend {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--di-gap-8) var(--di-gap-16);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    font-size: var(--di-font-size-200);
-    color: var(--di-text-muted);
-  }
-
-  .di-matrix-key {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--di-gap-6);
-  }
-
-  .di-matrix-key.is-empty > .di-matrix-swatch {
-    background: var(--di-bg-subtle);
-    box-shadow: inset 0 0 0 1px var(--di-border);
   }
 }

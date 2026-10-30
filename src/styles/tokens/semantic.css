@@ -104,6 +104,8 @@
     --di-chart-warn: var(--di-severity-medium-day);
     --di-chart-danger: var(--di-severity-critical-day);
     --di-chart-compare: var(--di-cornflower-600);
+    /* Routine marks on a timeline: the series ink mixed into the surface, not an opacity, so it keeps 3:1 there and on a track. Declared per theme, so it resolves against that theme's surface. */
+    --di-chart-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
 
     /*
      * Poppy marks a passage on a brand page (`Highlight`); cornflower is a
@@ -287,6 +289,7 @@
     --di-chart-warn: var(--di-severity-medium-night);
     --di-chart-danger: var(--di-severity-critical-night);
     --di-chart-compare: var(--di-cornflower-300);
+    --di-chart-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
 
     --di-highlight: var(--di-poppy-300);
     --di-highlight-ink: var(--di-poppy-300);

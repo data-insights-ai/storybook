@@ -162,7 +162,8 @@ export function Seismograph({
               <ReferenceDot
                 key={p.at}
                 x={Date.parse(p.at)}
-                y={0}
+                // Under the lower trace, not on the zero line it dips through.
+                y={-maxBelow * 1.25}
                 r={2}
                 fill="var(--di-text-muted)"
                 stroke="none"

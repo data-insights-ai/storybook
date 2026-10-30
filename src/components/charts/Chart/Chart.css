@@ -2,11 +2,31 @@
   /* A container, so the tooltip can size itself to the chart it floats over. */
   .di-chart {
     container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
     width: 100%;
-    height: var(--di-chart-height);
     color: var(--di-text-muted);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
+  }
+
+  .di-chart-plot {
+    height: var(--di-chart-height);
+    min-width: 0;
+  }
+
+  /* On a phone the tooltip is a readout under the plot, not a box over the marks it describes. */
+  .di-chart-readout:not(:has(.di-chart-tip)) {
+    display: none;
+  }
+
+  /* The readout is an inset group of the surface the chart sits on; the tip inside it drops its own box. */
+  .di-chart-readout .di-chart-tip {
+    max-width: none;
+    padding: 0;
+    border: 0;
+    background: none;
   }
 
   .di-chart .recharts-cartesian-axis-tick-value {
@@ -65,17 +85,13 @@
     color: var(--di-text-muted);
   }
 
-  .di-chart-tip ul,
-  .di-chart-legend {
+  .di-chart-tip ul {
     display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-4);
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  .di-chart-tip ul {
-    flex-direction: column;
-    gap: var(--di-gap-4);
   }
 
   .di-chart-tip li {
@@ -85,8 +101,7 @@
     align-items: center;
   }
 
-  .di-chart-tip i,
-  .di-chart-legend i {
+  .di-chart-tip i {
     width: var(--di-chart-swatch);
     height: var(--di-chart-swatch);
   }
@@ -128,31 +143,17 @@
     }
   }
 
-  .di-chart-legend {
-    flex-wrap: wrap;
-    gap: var(--di-gap-8) var(--di-gap-16);
-    padding: var(--di-space-4) 0 0;
-    color: var(--di-text-muted);
-    font-family: var(--di-font-ui);
-    font-size: var(--di-font-size-300);
+  /*
+   * The legend is a block of its own above or below the plot. Recharts
+   * reserves its measured height, padding included. Above, the padding also
+   * holds the half of the top axis label that rises over the plot.
+   */
+  .di-chart-legend.is-above {
+    padding-bottom: calc(var(--di-gap-12) + var(--di-font-size-200) * 0.6);
   }
 
-  .di-chart-legend li {
-    display: flex;
-    align-items: center;
-    gap: var(--di-gap-6);
-  }
-
-  .di-chart-legend i.is-dashed {
-    width: var(--di-chart-dash);
-    height: 0;
-    border-top: 1.6px dashed var(--di-chart-series);
-    background: none;
-  }
-
-  .di-chart-legend svg {
-    width: var(--di-icon-xs);
-    height: var(--di-icon-xs);
+  .di-chart-legend.is-below {
+    padding-top: var(--di-gap-8);
   }
 }
 

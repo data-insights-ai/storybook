@@ -14,6 +14,16 @@ const points: SeismographPoint[] = [
   { at: "2026-10-06", above: 4, below: 0 },
 ];
 
+/** The day labels sit under the mirrored lower trace, never on the zero line it dips through. */
+async function daysClearTheLowerTrace(canvasElement: HTMLElement) {
+  await waitFor(() => expect(canvasElement.querySelector(".di-seismograph-tick")).not.toBeNull());
+  const trace = canvasElement.querySelector('.recharts-line-curve[stroke="var(--color-below)"]')!;
+  const bottom = trace.getBoundingClientRect().bottom;
+  for (const label of canvasElement.querySelectorAll(".di-seismograph-tick")) {
+    await expect(label.getBoundingClientRect().top).toBeGreaterThanOrEqual(bottom);
+  }
+}
+
 const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 
 const meta = {
@@ -57,7 +67,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  play: async ({ canvasElement }) => daysClearTheLowerTrace(canvasElement),
+};
 
 /** The scrubber under the chart is a slider: arrows, Page Up/Down, Home and End pick a day, read out with its counts. */
 export const KeyboardSelection: Story = {
@@ -100,13 +112,17 @@ export const LogarithmicScale: Story = {
     scale: "log",
     points: points.map((p, i) => (i === 4 ? { ...p, above: 12_000 } : p)),
   },
+  play: async ({ canvasElement }) => daysClearTheLowerTrace(canvasElement),
 };
 
 export const Medium: Story = { args: { height: "md" } };
 
 export const Night: Story = { globals: { theme: "dark" } };
 
-export const Phone: Story = { globals: { viewport: { value: "phone", isRotated: false } } };
+export const Phone: Story = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  play: async ({ canvasElement }) => daysClearTheLowerTrace(canvasElement),
+};
 
 export const SingleDay: Story = { args: { points: [points[0]] } };
 

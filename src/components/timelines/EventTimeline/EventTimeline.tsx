@@ -16,6 +16,7 @@ import { ChevronRight } from "lucide-react";
 import { cx } from "../../../internal/cx";
 import { Kbd } from "../../text/Kbd";
 import { Loading } from "../../feedback/Loading";
+import { ChartKey } from "../../charts/ChartKey";
 import { Events, nearestEvent, reachOf } from "./marks/Events";
 import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";
 import { MARK_BAND, Markers } from "./marks/Markers";
@@ -46,6 +47,11 @@ const GAP = 8;
 const PICK_PX = 10;
 const READOUT_GAP = 12;
 const TONES: TimelineTone[] = ["danger", "warn", "neutral"];
+const TONE_COLOR: Record<TimelineTone, string> = {
+  danger: "var(--di-chart-danger)",
+  warn: "var(--di-chart-warn)",
+  neutral: "var(--di-chart-routine)",
+};
 const NO_BARS: TimelineBar[] = [];
 const NO_LANES: TimelineLane[] = [];
 const NO_MARKERS: TimelineMarker[] = [];
@@ -349,15 +355,10 @@ export function EventTimeline({
         ) : null}
       </div>
 
-      <div className="di-timeline-legend">
-        {TONES.map((tone) => (
-          <span key={tone} className="di-timeline-legend-item">
-            <span className={`di-timeline-swatch is-${tone}`} aria-hidden />
-            {toneLabels[tone]}
-          </span>
-        ))}
-        <span className="di-timeline-note">{scaleNote}</span>
-      </div>
+      <ChartKey
+        entries={TONES.map((tone) => ({ key: tone, label: toneLabels[tone], color: TONE_COLOR[tone] }))}
+        note={scaleNote}
+      />
       <ul id={`${id}-hint`} className="di-timeline-help">
         {instructions.map(({ keys, label: action, pointer }) => (
           <li key={`${action}-${pointer ?? "any"}`} className={pointer ? `is-${pointer}` : undefined}>

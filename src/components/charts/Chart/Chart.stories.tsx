@@ -277,7 +277,8 @@ export const Legend: Story = {
 
 /**
  * `ChartLegendContent` given to `ChartLegend` as its content, when the
- * legend takes props of its own: here it sits above the chart.
+ * legend takes props of its own: here it sits above the chart, as a block of
+ * its own, so the top axis label starts below it.
  */
 export const LegendAbove: Story = {
   render: (args) => (
@@ -310,6 +311,11 @@ export const LegendAbove: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Recorded")).toBeVisible();
     await expect(canvas.getByText("Estimate")).toBeVisible();
+    await waitFor(() => expect(canvas.getByText("100")).toBeVisible());
+    const legend = canvasElement.querySelector(".di-chart-legend ul")!.getBoundingClientRect();
+    for (const label of canvasElement.querySelectorAll(".di-chart text")) {
+      await expect(label.getBoundingClientRect().top).toBeGreaterThanOrEqual(legend.bottom);
+    }
   },
 };
 
@@ -328,7 +334,9 @@ const runConfig = {
 /**
  * `ChartTooltipContent details` adds lines under the series, read off the
  * hovered datum: here a total and an event. They are ruled off and carry
- * no swatch, so they never pass for a series.
+ * no swatch, so they never pass for a series. On a chart as narrow as a
+ * phone the tooltip would cover the bars it describes, so it is a readout
+ * under the plot instead.
  */
 export const TooltipDetails: Story = {
   args: { label: "Runs per day, with what happened", config: runConfig },
@@ -370,5 +378,14 @@ export const TooltipDetails: Story = {
     const canvas = within(canvasElement);
     await waitFor(() => expect(canvas.getByText("Rotated keys · 14:20")).toBeVisible());
     await expect(canvas.getByText("Total")).toBeVisible();
+    const chart = canvas.getByRole("group", { name: "Runs per day, with what happened" });
+    const tip = canvasElement.querySelector(".di-chart-tip")!;
+    if (chart.getBoundingClientRect().width <= 480) {
+      const plot = chart.querySelector(".di-chart-plot")!.getBoundingClientRect();
+      await expect(tip.closest(".di-chart-readout")).not.toBeNull();
+      await expect(tip.getBoundingClientRect().top).toBeGreaterThanOrEqual(plot.bottom);
+    } else {
+      await expect(tip.closest(".di-chart-readout")).toBeNull();
+    }
   },
 };
