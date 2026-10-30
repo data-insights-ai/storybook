@@ -150,6 +150,27 @@ for (const file of files) {
         );
       }
 
+      /* 8. The focus ring is one model (Foundations, Practice): its width,
+       *    colour and offset are the --di-focus-ring-* tokens. An offset
+       *    of 0 puts the ring on a framed item's edge. */
+      const ring = code.match(/^\s*(outline(?:-width|-color|-style)?|outline-offset)\s*:\s*([^;]+);/);
+      if (ring) {
+        const [, prop, value] = ring;
+        const ok =
+          prop === "outline"
+            ? value.trim() === "none" || value.trim() === "var(--di-focus-ring-width) solid var(--di-focus-ring-color)"
+            : prop === "outline-offset"
+              ? /^(0|var\(--di-focus-ring-(offset|inset)\))$/.test(value.trim())
+              : false;
+        if (!ok)
+          add(
+            file,
+            line,
+            "focus-ring",
+            `${prop}: ${value.trim()} leaves the focus ring model. Use outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color) and outline-offset: var(--di-focus-ring-offset) | var(--di-focus-ring-inset) | 0; recolour through --di-focus-ring-color.`,
+          );
+      }
+
       /* 2. Radius comes from the ramp. */
       const rad = code.match(/^\s*border-radius\s*:\s*([^;]+);/);
       if (rad && !/var\(|50%|^0$/.test(rad[1].trim()) && /\d+px/.test(rad[1])) {
