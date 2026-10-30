@@ -1,0 +1,79 @@
+@layer components {
+  /* The same flow as AppShellContent: header, then blocks 24px apart. */
+  .di-loading-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-24);
+  }
+
+  .di-loading-page-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-12);
+    padding-block: var(--di-gap-4);
+  }
+
+  .di-loading-bar.is-title {
+    width: var(--di-skeleton-title-w);
+    height: var(--di-skeleton-title-h);
+  }
+
+  .di-loading-bar.is-lede {
+    width: var(--di-skeleton-lede-w);
+  }
+
+  .di-loading-bar.is-heading {
+    width: var(--di-skeleton-heading-w);
+    height: var(--di-skeleton-heading-h);
+  }
+
+  .di-loading-page-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-gap-12);
+  }
+
+  .di-loading-control {
+    display: block;
+    height: var(--di-field-height);
+    border: 1px solid var(--di-border);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-surface);
+  }
+
+  .di-loading-control.is-search {
+    flex: 0 1 var(--di-skeleton-search-w);
+    min-width: 0;
+  }
+
+  .di-loading-control.is-button {
+    width: var(--di-skeleton-button-w);
+    flex: none;
+    border-color: transparent;
+    background: var(--di-bg-subtle);
+  }
+
+  .di-loading-page-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-16);
+  }
+
+  .di-loading-page-facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--di-skeleton-fact-min), 1fr));
+    gap: var(--di-gap-16) var(--di-gap-24);
+  }
+
+  .di-loading-page-fact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+  }
+
+  .di-loading-page-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

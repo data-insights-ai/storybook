@@ -1,15 +1,11 @@
-import { cx } from "../../../../internal/cx";
-import "./Spinner.css";
+import { Loading } from "../Loading";
 
 /**
- * For a wait too short to count. It carries a word, because a ring
- * turning on its own does not say what is being waited for.
+ * A wait too short to count, with its word.
+ *
+ * @deprecated Removed in 0.12: use `Loading` (its default `shape="inline"`),
+ * which also holds the ring back for the first 150 ms.
  */
 export function Spinner({ label, className }: { label: string; className?: string }) {
-  return (
-    <div className={cx("di-spinner-row", className)} role="status">
-      <span className="di-spinner" aria-hidden />
-      <span className="di-spinner-label">{label}</span>
-    </div>
-  );
+  return <Loading label={label} className={className} delay={0} />;
 }

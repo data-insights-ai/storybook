@@ -15,7 +15,7 @@ import {
 import { ChevronRight } from "lucide-react";
 import { cx } from "../../../internal/cx";
 import { Kbd } from "../../text/Kbd";
-import { Spinner } from "../../feedback/waiting/Spinner";
+import { Loading } from "../../feedback/waiting/Loading";
 import { Events, nearestEvent, reachOf } from "./marks/Events";
 import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";
 import { Markers } from "./marks/Markers";
@@ -307,7 +307,7 @@ export function EventTimeline({
               ) : null}
               {loading ? (
                 <div className="di-timeline-loading">
-                  <Spinner label={loadingLabel} />
+                  <Loading label={loadingLabel} />
                 </div>
               ) : null}
             </div>

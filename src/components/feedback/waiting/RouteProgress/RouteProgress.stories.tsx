@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useRef, useState } from "react";
 import { expect, waitFor, within } from "storybook/test";
-import { AppShellBar } from "../../../shell/AppShell";
+import { AppShellBar, AppShellBarEnd } from "../../../shell/AppShell";
 import { Button } from "../../../actions/Button";
+import { Stack } from "../../../layout/arrangement/Stack";
 import { RouteProgress } from "./RouteProgress";
-import { SkeletonPage } from "../SkeletonPage";
+import { Loading as Skeleton } from "../Loading";
 
 const meta = {
   title: "Feedback/Waiting/RouteProgress",
@@ -55,15 +56,18 @@ export const Navigating: Story = {
       return () => clearTimeout(timer.current);
     }, []);
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <Stack gap={24}>
         <AppShellBar>
-          <Button variant="secondary" size="sm" onClick={navigate}>
-            Navigate
-          </Button>
+          <span>feed.example.io</span>
+          <AppShellBarEnd>
+            <Button variant="secondary" size="sm" onClick={navigate}>
+              Navigate again
+            </Button>
+          </AppShellBarEnd>
           <RouteProgress active={active} label="Loading page" />
         </AppShellBar>
-        {active ? <SkeletonPage variant="detail" label="Loading page" /> : <p>The page has arrived.</p>}
-      </div>
+        {active ? <Skeleton shape="detail" label="Loading the source" /> : <p>The source has arrived.</p>}
+      </Stack>
     );
   },
 };

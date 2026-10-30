@@ -2,7 +2,7 @@
   .di-progress {
     display: flex;
     flex-direction: column;
-    gap: var(--di-gap-6);
+    gap: var(--di-gap-8);
   }
 
   .di-progress-row {
@@ -10,15 +10,16 @@
     align-items: baseline;
     justify-content: space-between;
     gap: var(--di-gap-12);
-    margin-bottom: var(--di-gap-6);
   }
 
   .di-progress-label {
+    min-width: 0;
     font-size: var(--di-font-size-400);
     color: var(--di-text);
   }
 
   .di-progress-count {
+    flex: none;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
     font-variant-numeric: tabular-nums;

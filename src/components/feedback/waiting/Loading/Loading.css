@@ -1,0 +1,113 @@
+@layer components {
+  /* A label that wraps keeps the ring on its first line. */
+  .di-loading-inline {
+    --di-loading-line: calc(var(--di-font-size-300) * var(--di-leading-snug));
+    display: flex;
+    align-items: flex-start;
+    gap: var(--di-gap-8);
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .di-loading-ring {
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
+    flex: none;
+    border: 2px solid var(--di-border-strong);
+    border-top-color: var(--di-fill-strong);
+    border-radius: var(--di-radius-pill);
+    animation: di-loading-turn 700ms linear infinite;
+    margin-top: calc((var(--di-loading-line) - var(--di-icon-sm)) / 2);
+  }
+
+  @keyframes di-loading-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* A sentence a person reads, so the reading font, not the mono track. */
+  .di-loading-label {
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  .di-loading-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--di-gap-16);
+    min-height: 100dvh;
+    background: var(--di-bg-page);
+    color: var(--di-text);
+  }
+
+  .di-loading-mark {
+    width: var(--di-app-loader-mark);
+    height: auto;
+    overflow: visible;
+  }
+
+  .di-loading-strokes {
+    fill: none;
+    stroke: currentColor;
+    stroke-miterlimit: 10;
+    stroke-width: 7.4px;
+  }
+
+  /*
+   * The three ink dots breathe left to right, then the seal; opacity only,
+   * the bars' breath and rest, so a wait looks like one wait wherever it is.
+   */
+  .di-loading-dot,
+  .di-loading-seal {
+    animation: di-loading-breathe calc(var(--di-skeleton-breath) * 1.2) ease-in-out infinite;
+  }
+
+  .di-loading-dot {
+    fill: currentColor;
+  }
+
+  .di-loading-dot:nth-of-type(2) {
+    animation-delay: calc(var(--di-skeleton-stagger) * 2);
+  }
+
+  .di-loading-dot:nth-of-type(3) {
+    animation-delay: calc(var(--di-skeleton-stagger) * 4);
+  }
+
+  .di-loading-seal {
+    fill: var(--di-seal);
+    animation-delay: calc(var(--di-skeleton-stagger) * 6);
+  }
+
+  /*
+   * The bars breathe; frames, rules and the head ground hold still, so what
+   * moves is exactly what is not known yet. Opacity only, staggered down the
+   * page, and nothing sweeps. Without motion the bars rest at full opacity.
+   */
+  .di-loading-bar {
+    display: block;
+    flex: none;
+    max-width: 100%;
+    height: var(--di-skeleton-bar-h);
+    border-radius: var(--di-radius-micro);
+    background: var(--di-bg-subtle);
+    animation: di-loading-breathe var(--di-skeleton-breath) ease-in-out infinite;
+    animation-delay: calc(var(--di-skeleton-row, 0) * var(--di-skeleton-stagger));
+  }
+
+  .di-loading-bar.is-label {
+    width: var(--di-skeleton-label-w);
+    height: var(--di-skeleton-label-h);
+    background: var(--di-border);
+  }
+
+  @keyframes di-loading-breathe {
+    50% {
+      opacity: var(--di-skeleton-rest);
+    }
+  }
+}
