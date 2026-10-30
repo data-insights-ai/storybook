@@ -4,16 +4,25 @@ import { Button } from "../Button";
 import { Checkbox } from "../../forms/choice/Checkbox";
 import { SearchField } from "../../forms/text/SearchField";
 import { Select } from "../../forms/select/Select";
-import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
+import {
+  CellStack,
+  DataTable,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHead,
+  TableRow,
+} from "../../data/table/DataTable";
 import { useShortcut } from "../../../internal/useShortcut";
 import { Toolbar, type ToolbarProps } from "./Toolbar";
-import { ToolbarEnd } from "./ToolbarParts";
+import { ToolbarAction, ToolbarEnd } from "./ToolbarParts";
 
 export const words = {
   en: {
     filter: "Filter members",
     search: "Search members",
     placeholder: "Name or email",
+    name: "Name",
     role: "Role",
     allRoles: "All roles",
     owners: "Owners",
@@ -37,6 +46,7 @@ export const words = {
     filter: "Mitglieder filtern",
     search: "Mitglieder durchsuchen",
     placeholder: "Name oder E-Mail-Adresse",
+    name: "Name",
     role: "Rolle",
     allRoles: "Alle Rollen",
     owners: "Inhaberinnen und Inhaber",
@@ -93,10 +103,7 @@ export function MembersFilter({ w = words.en, sticky }: { w?: Words; sticky?: To
         <option value="assigned">{w.withSeat}</option>
       </Select>
       <ToolbarEnd>
-        <Button variant="secondary">
-          <Download aria-hidden />
-          {w.export}
-        </Button>
+        <ToolbarAction icon={<Download aria-hidden />} label={w.export} />
       </ToolbarEnd>
     </Toolbar>
   );
@@ -126,8 +133,7 @@ export function MembersTable({
             />
           </TableColumn>
         ) : null}
-        <TableColumn width="fill">Name</TableColumn>
-        <TableColumn>Email</TableColumn>
+        <TableColumn width="fill">{w.name}</TableColumn>
         <TableColumn>{w.role}</TableColumn>
         <TableColumn align="end">{w.actions}</TableColumn>
       </TableHead>
@@ -147,8 +153,9 @@ export function MembersTable({
                 />
               </TableCell>
             ) : null}
-            <TableCell>{m.name}</TableCell>
-            <TableCell mono>{m.email}</TableCell>
+            <TableCell>
+              <CellStack primary={m.name} secondary={m.email} prose />
+            </TableCell>
             <TableCell>{m.role}</TableCell>
             <TableCell align="end">
               <Toolbar variant="row" label={`Actions for ${m.name}`}>

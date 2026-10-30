@@ -3,6 +3,8 @@ import { Bell, Check, Plus, Trash2 } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { AppShellBar, AppShellBarEnd, AppShellBarKeep } from "../../shell/AppShellBar";
 import { TextField } from "../../forms/text/TextField";
+import { Page } from "../../layout/page/Page";
+import { Panel, PanelActions, PanelFooter } from "../../layout/page/Panel";
 import { Button } from "./Button";
 
 const row = { display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--di-gap-8)" } as const;
@@ -52,21 +54,35 @@ export const Secondary: Story = {
 };
 
 /**
- * A quiet button among other controls: Cancel beside the action the form
- * exists for. No frame and no underline (an underline says link); a ground
- * on hover.
+ * A quiet button among other controls: Cancel beside the action the panel
+ * exists for, at the end of its footer. No frame and no underline (an
+ * underline says link); a ground on hover. The pair sits on the panel's
+ * inset, the requested action last.
  */
 export const Ghost: Story = {
   args: { variant: "ghost", children: "Cancel" },
   render: (args) => (
-    <div style={{ ...row, justifyContent: "flex-end", maxWidth: 480 }}>
-      <Button {...args} />
-      <Button variant="primary">Save changes</Button>
-    </div>
+    <Page width="form">
+      <Panel title="Workspace name" heading={2}>
+        <TextField id="ghost-name" label="Name" defaultValue="Northwind security" />
+        <PanelFooter>Members see the new name at their next sign-in.</PanelFooter>
+        <PanelActions>
+          <Button {...args} />
+          <Button variant="primary">Save changes</Button>
+        </PanelActions>
+      </Panel>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
-    const ghost = within(canvasElement).getByRole("button", { name: "Cancel" });
+    const canvas = within(canvasElement);
+    const ghost = canvas.getByRole("button", { name: "Cancel" });
     await expect(getComputedStyle(ghost).textDecorationLine).toBe("none");
+    const save = canvas.getByRole("button", { name: "Save changes" }).getBoundingClientRect();
+    const panel = canvasElement.querySelector(".di-panel")!.getBoundingClientRect();
+    const field = canvas.getByLabelText("Name").getBoundingClientRect();
+    await expect(ghost.getBoundingClientRect().right).toBeLessThan(save.left);
+    await expect(Math.abs(save.right - field.right)).toBeLessThanOrEqual(1);
+    await expect(panel.right).toBeLessThanOrEqual(canvasElement.ownerDocument.documentElement.clientWidth);
   },
 };
 
