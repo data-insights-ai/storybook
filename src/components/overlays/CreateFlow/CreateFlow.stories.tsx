@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { ChoiceCards } from "../../forms/choice/ChoiceCards";
+import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
 import { CreateFlow } from "./CreateFlow";
 import { Fact, FactList } from "../../data/records/FactList";
 import { TextField } from "../../forms/text/TextField";
@@ -60,7 +60,7 @@ function Flow(args: Parameters<typeof CreateFlow>[0]) {
       onCancel={() => setStep(0)}
     >
       {step === 0 ? (
-        <ChoiceCards name="kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} />
+        <ChoiceGroup appearance="cards" name="kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} />
       ) : null}
       {step === 1 ? (
         <TextField id="conn-name" label="Name" value={name} onChange={(e) => setName(e.target.value)} />

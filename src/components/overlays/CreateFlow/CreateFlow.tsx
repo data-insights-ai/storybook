@@ -8,7 +8,7 @@ import "./CreateFlow.css";
 
 /**
  * Creating something that needs a choice before its details: choose the
- * type (`ChoiceCards`), fill in the details, review, create. One step is
+ * type (`ChoiceGroup appearance="cards"`), fill in the details, review, create. One step is
  * on screen at a time, under a `Stepper` that says where the reader is.
  * Enter moves on; Back keeps what was entered. Each step starts in its
  * first field, or on its heading when it has none.

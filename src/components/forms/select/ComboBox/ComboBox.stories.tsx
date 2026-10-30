@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fireEvent, fn, userEvent, waitFor, within } from "storybook/test";
 import { ComboBox } from "./ComboBox";
 import { Button } from "../../../actions/Button";
-import { Modal, ModalContent, ModalTitle } from "../../../overlays/Modal";
+import { Modal, ModalContent, ModalFooter, ModalTitle } from "../../../overlays/Modal";
 
 const suggestions = [
   { value: "NR-01", label: "Northern register" },
@@ -13,7 +13,6 @@ const suggestions = [
 const formStyle = {
   display: "flex",
   flexDirection: "column",
-  alignItems: "flex-start",
   gap: "var(--di-rhythm-field)",
   maxWidth: "400px",
 } as const;
@@ -56,7 +55,9 @@ const meta = {
             setValue(next);
           }}
         />
-        <Button type="submit">Save source</Button>
+        <div>
+          <Button type="submit">Save source</Button>
+        </div>
       </form>
     );
   },
@@ -295,25 +296,27 @@ export const ReadOnlyUpdate: Story = {
             setValue(next);
           }}
         />
-        <Button
-          type="button"
-          variant="ghost"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={() => {
-            setValue("NR-01");
-            setReadOnly(true);
-          }}
-        >
-          Lock recorded code
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={() => setReadOnly(false)}
-        >
-          Edit recorded code
-        </Button>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--di-gap-8)" }}>
+          <Button
+            type="button"
+            variant="secondary"
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              setValue("NR-01");
+              setReadOnly(true);
+            }}
+          >
+            Lock recorded code
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => setReadOnly(false)}
+          >
+            Edit recorded code
+          </Button>
+        </div>
       </form>
     );
   },
@@ -373,10 +376,12 @@ export const InDialog: Story = {
           <ModalContent>
             <ModalTitle id="review-code-title">Review the register code</ModalTitle>
             <ComboBox {...args} value={value} onValueChange={setValue} />
+          </ModalContent>
+          <ModalFooter>
             <Button variant="secondary" onClick={() => setOpen(false)}>
               Cancel review
             </Button>
-          </ModalContent>
+          </ModalFooter>
         </Modal>
       </>
     );

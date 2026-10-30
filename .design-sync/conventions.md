@@ -73,7 +73,7 @@ The Storybook sidebar is grouped by the job a component does:
 | A small labelled figure set in a row inside something else | `Figure` in a `FigureRow` | `Stat` and `StatRow`, deprecated, removed in 0.12.0 |
 | The detail of one row | `Sheet` with an `eyebrow` naming the kind of record | |
 | Work that needs more room than an inline form: a multi-field create or invite | `Sheet` | |
-| The first step of a create flow: one of a handful of kinds | `ChoiceCards`, with `planned` for the kinds that cannot be chosen yet | disabled cards |
+| The first step of a create flow: one of a handful of kinds | `ChoiceGroup appearance="cards"`, with `planned` for the kinds that cannot be chosen yet | disabled cards |
 | An irreversible action | `Modal` or `ConfirmDialog` | a modal for anything reversible |
 | A panel dropping from a topbar control | `Flyout` | |
 | Views of one record | `Tabs` | `TabNav`, whose tabs are places with their own URL |
@@ -132,7 +132,7 @@ Rules that make output look native rather than approximate:
 
 - **Only ever text → a `string` prop. Anything that can hold a component → a slot.** A slot is a named sub-component written as a child, in any order: `<Panel><PanelFooter>…</PanelFooter></Panel>`, `<Notice><NoticeIcon/>…`, `<Toast><ToastAction>…`.
 - **A variant is one union prop**, never a family of booleans: `hint` + `hintTone` (`neutral | sealed | error`), `layout`, `tone`, `size`.
-- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `scope` (`PrivacyBadge`), `state` (`CommandChip`), `level` (`ConfidenceField`), `variant` (`Button`, `IconTile`, `Eyebrow`), `tier` (`PageHeader`, `SectionTitle`), `layout` (`FactList`, `Switch`), `labelTrack` (`TextField`, `Select`), `size` (`Button`, `Notice`), `gap` (`Stack`). `neutral` is the word for "nothing special" — never `default`, never `info`.
+- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `scope` (`PrivacyBadge`), `state` (`CommandChip`), `level` (a field’s `confidence`), `variant` (`Button`, `IconTile`, `Eyebrow`), `tier` (`PageHeader`, `SectionTitle`), `layout` (`FactList`, `Switch`), `labelTrack` (`TextField`, `Select`), `size` (`Button`, `Notice`), `gap` (`Stack`). `neutral` is the word for "nothing special" — never `default`, never `info`.
 - **One name per thing.** The hollow ring is `inferred` everywhere: `SealMark`, `StatusPill`, `Button`. Never `ai`. Gold as a value is `seal`, never `gold` — a public prop does not name a colour.
 - **Every visible string is a prop.** Nothing has baked-in language.
 - **`DataTable` takes no `rows` array.** Map your own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, `TableCell`; `TableToolbar` and `TableFooter` are slots. Under 600px of frame the grid scrolls sideways; `narrow="stack"` turns each row into a block instead, for a log or a list of events read row by row.

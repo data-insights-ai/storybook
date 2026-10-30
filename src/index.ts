@@ -29,8 +29,14 @@ export type { TrendMarker, TrendSeries, TrendTone } from "./components/charts/ti
 export { Checkbox } from "./components/forms/choice/Checkbox";
 export { ChoiceGroup } from "./components/forms/choice/ChoiceGroup";
 export { Radio } from "./components/forms/choice/Radio";
-export { ChoiceCards } from "./components/forms/choice/ChoiceCards";
-export type { ChoiceCard, ChoiceCardsPlanned } from "./components/forms/choice/ChoiceCards";
+export type {
+  ChoiceAppearance,
+  ChoiceGroupProps,
+  ChoiceOption,
+  ChoicePlanned,
+} from "./components/forms/choice/ChoiceGroup";
+export { ChoiceCards, SegmentedControl, ToggleGroup } from "./components/forms/choice/ChoiceGroup";
+export type { ChoiceCard, ChoiceCardsPlanned, ToggleOption } from "./components/forms/choice/ChoiceGroup";
 export { Chip } from "./components/marks/Chip";
 export { CommandBar, CommandChip, CommandGroup, CommandRow } from "./components/navigation/CommandBar";
 export { ComboBox } from "./components/forms/select/ComboBox";
@@ -56,7 +62,8 @@ export type {
   DateRangeValue,
   ResolvedDateRange,
 } from "./components/forms/dates/dateRange";
-export { ConfidenceField } from "./components/inference/ConfidenceField";
+export { ConfidenceField } from "./components/forms/field/FieldConfidence";
+export type { FieldConfidenceReading } from "./components/forms/field/FieldConfidence";
 export { ConfirmDialog } from "./components/overlays/ConfirmDialog";
 export { CountButton } from "./components/actions/CountButton";
 export { CopyValue } from "./components/actions/CopyValue";
@@ -208,7 +215,6 @@ export { SearchField } from "./components/forms/text/SearchField";
 export { Seismograph } from "./components/charts/time/Seismograph";
 export type { SeismographPoint } from "./components/charts/time/Seismograph";
 export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/layout/page/SectionTitle";
-export { SegmentedControl } from "./components/forms/choice/SegmentedControl";
 export { Select } from "./components/forms/select/Select";
 export { Sheet, SheetFooter } from "./components/overlays/Sheet";
 export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/data/records/Session";
@@ -260,9 +266,8 @@ export { TextField } from "./components/forms/text/TextField";
 export { TextLink } from "./components/navigation/TextLink";
 export { TimeField } from "./components/forms/dates/TimeField";
 export { Toast, ToastAction, ToastRegion } from "./components/feedback/Toast";
-export { ToggleGroup, type ToggleOption } from "./components/forms/choice/ToggleGroup";
 export { WeekTimeline, type WeekTimelineRow } from "./components/timeline/WeekTimeline";
-export { TokenField } from "./components/forms/text/TokenField";
+export { TokenField } from "./components/forms/select/MultiComboBox";
 export { Tooltip } from "./components/feedback/Tooltip";
 export { TooltipTarget } from "./components/feedback/TooltipTarget";
 export { VersionTag } from "./components/marks/VersionTag";

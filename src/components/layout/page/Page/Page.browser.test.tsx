@@ -11,7 +11,7 @@ import { Page, PageAside } from "./Page";
 import { PageHeader, PageHeaderTitle } from "../PageHeader";
 import { Grid } from "../../arrangement/Grid";
 import { CreateFlow } from "../../../overlays/CreateFlow";
-import { ChoiceCards } from "../../../forms/choice/ChoiceCards";
+import { ChoiceGroup } from "../../../forms/choice/ChoiceGroup";
 import { TextField } from "../../../forms/text/TextField";
 
 let root: Root | undefined;
@@ -244,7 +244,8 @@ describe("large screens", () => {
             onNext={() => {}}
             onSubmit={() => {}}
           >
-            <ChoiceCards
+            <ChoiceGroup
+              appearance="cards"
               name="kind"
               legend="Type"
               options={["a", "b", "c", "d", "e", "f"].map((v) => ({ value: v, label: v }))}
@@ -258,7 +259,7 @@ describe("large screens", () => {
     );
     const panel = box(host.querySelector(".di-create-flow-panel"));
     expect(Math.round(panel.width)).toBe(1920 - 64 - 320 - 24);
-    expect(new Set([...host.querySelectorAll(".di-choicecard")].map((c) => Math.round(box(c).top))).size).toBe(2);
+    expect(new Set([...host.querySelectorAll(".di-choice-card")].map((c) => Math.round(box(c).top))).size).toBe(2);
     expect(box(host.querySelector(".di-field")).width).toBeLessThanOrEqual(800);
   });
 
