@@ -50,7 +50,7 @@
   }
 
   .di-ld-item:hover {
-    background: var(--di-layer-surface, var(--di-bg-surface));
+    background: var(--di-bg-row-hover);
   }
 
   .di-ld-item.is-selected {
@@ -118,13 +118,17 @@
       gap: var(--di-space-32);
     }
 
+    /* The list is a column of its own, a step above the ground and full
+       height, so list and detail read as two panes. */
     .di-ld-list {
       position: sticky;
       top: calc(var(--di-sticky-top) + var(--di-space-16));
-      max-height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
+      height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
       overflow: auto;
-      padding: var(--di-space-4);
-      margin: calc(-1 * var(--di-space-4));
+      padding: var(--di-space-12) var(--di-space-8);
+      border-radius: var(--di-radius-surface);
+      background: var(--di-layer-pane, transparent);
+      box-shadow: var(--di-elevation-surface, none);
     }
 
     .di-ld-back {

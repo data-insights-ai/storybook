@@ -95,7 +95,7 @@ const preview: Preview = {
         if (aSection !== bSection) return aSection.localeCompare(bSection, "en");
 
         if (aSection === "Direction A") {
-          const order = ["Read me", "Foundations", "Composition", "Components", "Screens"];
+          const order = ["Read me", "Foundations", "Composition", "Components", "Screens", "Variants"];
           const curated = rank(order, aName) - rank(order, bName);
           if (curated !== 0) return curated;
         }

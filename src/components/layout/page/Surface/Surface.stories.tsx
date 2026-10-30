@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { TextLink } from "../../../navigation/TextLink";
-import { Surface, SurfaceAside, SurfaceTakeaway } from "./Surface";
+import { Figure, FigureRow } from "../../../data/figures/FigureRow";
+import { Surface, SurfaceAside, SurfaceFooter, SurfaceTakeaway } from "./Surface";
 
 const meta = {
   title: "Layout/Page/Surface",
@@ -37,3 +38,20 @@ export const Emphasis: Story = { ...Default, args: { emphasis: true, label: "Pro
 
 /** The luminous navy zone, in both themes, behind the page's signature visual. */
 export const Hero: Story = { ...Default, args: { level: "hero", label: "Detections · 7 days", title: "Three bursts this week" } };
+
+/** A hero closed by the figures that support its visual, under a fine rule. */
+export const HeroWithFooter: Story = {
+  args: { level: "hero", label: "Detections · 7 days", title: "Three bursts this week, the largest on 9 October" },
+  render: (args) => (
+    <Surface {...args}>
+      <p>The signature visual goes here.</p>
+      <SurfaceFooter>
+        <FigureRow label="Supporting figures">
+          <Figure label="New in 24 h" value="1">1 escalated</Figure>
+          <Figure label="Unassigned" value="2" tone="warn">of 3 open</Figure>
+          <Figure label="Time to acknowledge" value="2.9 h">median · 7 days</Figure>
+        </FigureRow>
+      </SurfaceFooter>
+    </Surface>
+  ),
+};

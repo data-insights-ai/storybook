@@ -23,3 +23,6 @@ export const Default: Story = {
     </FigureRow>
   ),
 };
+
+/** Without a hero to close: a quiet tonal band of its own. */
+export const Strip: Story = { ...Default, args: { variant: "strip" } };

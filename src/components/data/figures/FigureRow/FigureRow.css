@@ -1,9 +1,20 @@
 @layer components {
+  /* The rule stands in the middle of the gap before each figure. The one
+     before the first figure of a row falls outside the row and is clipped,
+     so a rule only ever separates two figures, however the grid wraps. */
   .di-figure-row {
+    --di-figure-gap: var(--di-space-32);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
-    gap: var(--di-space-16) var(--di-space-24);
+    gap: var(--di-space-16) var(--di-figure-gap);
     margin: 0;
+    clip-path: inset(-8px -8px -8px 0);
+  }
+
+  .di-figure-strip {
+    padding: var(--di-space-16) var(--di-space-24);
+    border-radius: var(--di-radius-inset, var(--di-radius-surface));
+    background: var(--di-layer-strip, var(--di-bg-subtle));
   }
 
   .di-figure {
@@ -11,8 +22,9 @@
     flex-direction: column;
     gap: var(--di-space-4);
     min-width: 0;
-    padding-left: var(--di-space-12);
-    border-left: 1px solid var(--di-rule);
+    margin-inline-start: calc(-0.5 * var(--di-figure-gap));
+    padding-inline-start: calc(0.5 * var(--di-figure-gap));
+    border-inline-start: 1px solid var(--di-rule);
   }
 
   .di-figure-label {

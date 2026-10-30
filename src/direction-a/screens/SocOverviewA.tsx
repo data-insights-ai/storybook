@@ -14,6 +14,7 @@ import {
   StatusPill,
   Surface,
   SurfaceAside,
+  SurfaceFooter,
   SurfaceTakeaway,
   TextLink,
   TrendChart,
@@ -23,30 +24,64 @@ import { activity, coverage, devices, kpis } from "./soc.sample";
 import "./screens.css";
 
 /**
- * The same overview in Direction A: the claim first, then what needs the
- * reader ranked, then the one hero (detections on the navy zone), then the
- * figures that support it, then health in one quiet row.
+ * The same overview in Direction A: a head that only orients (the name,
+ * its state, as of when), then the point itself — what needs the reader,
+ * ranked under "3 things need you", the first item carrying the action —
+ * then the one hero (detections on the navy zone) with the figures that
+ * support it as its footer, then health in one quiet row.
+ *
+ * For comparison, `header="claim"` puts a claim sentence and the action in
+ * the head (variants H-a and H-b), and `figures="strip"` sets the figures
+ * on a tonal band of their own under the hero.
  */
-export function SocOverviewA() {
+export function SocOverviewA({ header = "orientation", figures = "hero" }: { header?: "orientation" | "claim"; figures?: "hero" | "strip" }) {
+  const claimed = header === "claim";
   const missing = coverage.filter((c) => c.state !== "arriving");
+  const figureRow = (
+    <FigureRow label="Supporting figures" variant={figures === "strip" ? "strip" : "plain"}>
+      <Figure label="New in 24 h" value={String(kpis.new24h)}>
+        1 escalated
+      </Figure>
+      <Figure label="Unassigned" value={String(kpis.unassigned)} tone="warn">
+        of 3 open
+      </Figure>
+      <Figure label="Time to acknowledge" value={kpis.mtta}>
+        median · 7 days
+      </Figure>
+      <Figure label="Time to resolve" value={kpis.mttr}>
+        median · 7 days
+      </Figure>
+    </FigureRow>
+  );
   return (
     <ProductShell product="soc" active="overview" crumbs={["Example Security GmbH", "Production"]}>
       <div className="dir-a-page">
-        <Briefing context="Workspace" title="Production" ruled>
-          Two things need you: <BriefingMark>a critical case nobody has taken</BriefingMark>, and two sources stopped
-          delivering.
-          <BriefingStatus>
-            <StatusPill tone="danger" dot>
-              Needs attention
-            </StatusPill>
-          </BriefingStatus>
-          <BriefingMeta>As of 12 Oct, 10:00 · 14 sources · 3 open cases · updates live</BriefingMeta>
-          <BriefingAside>
-            <Button>Open case 4</Button>
-          </BriefingAside>
-        </Briefing>
+        {claimed ? (
+          <Briefing context="Workspace" title="Production" ruled>
+            Two things need you: <BriefingMark>a critical case nobody has taken</BriefingMark>, and two sources stopped
+            delivering.
+            <BriefingStatus>
+              <StatusPill tone="danger" dot>
+                Needs attention
+              </StatusPill>
+            </BriefingStatus>
+            <BriefingMeta>As of 12 Oct, 10:00 · 14 sources · 3 open cases · updates live</BriefingMeta>
+            <BriefingAside>
+              <Button>Open case 4</Button>
+            </BriefingAside>
+          </Briefing>
+        ) : (
+          <Briefing title="Production">
+            <BriefingStatus>
+              <StatusPill tone="danger" dot>
+                Needs attention
+              </StatusPill>
+            </BriefingStatus>
+            <BriefingMeta>As of 12 Oct, 10:00 · 14 sources · updates live</BriefingMeta>
+          </Briefing>
+        )}
 
-        <AttentionList label="What needs you, most urgent first">
+        <AttentionList label="What needs you, most urgent first" title={claimed ? undefined : "3 things need you"}>
           <AttentionItem
             rank="01"
             emphasis
@@ -57,7 +92,7 @@ export function SocOverviewA() {
             reason="Data is leaving srv-fs-02 for cloud storage. The case is in progress but nobody has acknowledged the last escalation."
             meta="Opened 7 h ago · 1,064 signals · 39 hosts"
           >
-            <TextLink href="#case-4">Open the case</TextLink>
+            {claimed ? <TextLink href="#case-4">Open the case</TextLink> : <Button href="#case-4">Open case 4</Button>}
           </AttentionItem>
           <AttentionItem
             rank="02"
@@ -105,22 +140,10 @@ export function SocOverviewA() {
               />
             </div>
           </div>
+          {figures === "hero" ? <SurfaceFooter>{figureRow}</SurfaceFooter> : null}
         </Surface>
 
-        <FigureRow label="Supporting figures">
-          <Figure label="New in 24 h" value={String(kpis.new24h)}>
-            1 escalated
-          </Figure>
-          <Figure label="Unassigned" value={String(kpis.unassigned)} tone="warn">
-            of 3 open
-          </Figure>
-          <Figure label="Time to acknowledge" value={kpis.mtta}>
-            median · 7 days
-          </Figure>
-          <Figure label="Time to resolve" value={kpis.mttr}>
-            median · 7 days
-          </Figure>
-        </FigureRow>
+        {figures === "strip" ? figureRow : null}
 
         <div className="dir-a-two">
           <Surface label="Devices" title="Three of the four devices with cases are critical">

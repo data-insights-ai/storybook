@@ -101,28 +101,37 @@
   gap: var(--di-space-8);
 }
 
+/* The arrow sits in the gap before each hop; the one before the first hop
+   of a line is clipped, so no line starts on an arrow. */
 .dir-a-path {
+  --dir-a-hop-gap: var(--di-space-32);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--di-space-8);
-  margin: 0;
+  row-gap: var(--di-space-8);
+  margin: 0 0 0 calc(-1 * var(--dir-a-hop-gap));
   padding: 0;
   list-style: none;
+  clip-path: inset(-8px -8px -8px var(--dir-a-hop-gap));
   font-family: var(--di-font-code);
   font-size: var(--di-font-size-500);
 }
 
 .dir-a-path > li {
+  position: relative;
+  margin-left: var(--dir-a-hop-gap);
   padding: var(--di-space-6) var(--di-space-12);
   border-radius: var(--di-radius-control);
   background: var(--di-layer-inset, var(--di-bg-subtle));
+  white-space: nowrap;
 }
 
-.dir-a-path > li + li::before {
-  content: "→";
-  margin-right: var(--di-space-16);
-  margin-left: calc(-1 * var(--di-space-12) - var(--di-space-8));
+.dir-a-path > li::before {
+  content: "→" / "";
+  position: absolute;
+  top: 50%;
+  left: calc(-0.5 * var(--dir-a-hop-gap));
+  transform: translate(-50%, -50%);
   color: var(--di-one-ink, var(--di-seal-ink));
 }
 
@@ -197,9 +206,9 @@
 }
 
 .dir-a-products {
-  display: flex;
-  flex-direction: column;
-  gap: var(--di-space-8);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--di-space-12);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -210,7 +219,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--di-space-16);
-  padding: var(--di-space-16);
+  min-height: 88px;
+  padding: var(--di-space-16) var(--di-space-24);
   border-radius: var(--di-radius-inset, var(--di-radius-surface));
   background: var(--di-layer-inset, var(--di-bg-subtle));
   color: var(--di-text);
@@ -237,4 +247,101 @@
   font-family: var(--di-type-section-family, var(--di-font-ui));
   font-size: var(--di-type-section-size, var(--di-font-size-600));
   font-weight: var(--di-weight-bold);
+}
+
+@media (max-width: 600px) {
+  .dir-a-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dir-a-actions > * {
+    width: 100%;
+  }
+}
+
+.dir-a-cost {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--di-space-24);
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .dir-a-cost {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* A list without a surface: for what is read last and seldom acted on. */
+.dir-a-quiet {
+  display: flex;
+  flex-direction: column;
+  gap: var(--di-space-8);
+  min-width: 0;
+  padding-top: var(--di-space-16);
+  border-top: 1px solid var(--di-rule);
+}
+
+.dir-a-quiet-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--di-space-8) var(--di-space-16);
+}
+
+.dir-a-quiet-title {
+  font-family: var(--di-type-block-family, var(--di-font-ui));
+  font-size: var(--di-type-block-size, var(--di-font-size-500));
+  font-weight: var(--di-type-block-weight, var(--di-weight-semibold));
+}
+
+.dir-a-nowrap {
+  white-space: nowrap;
+}
+
+/* The overview's first block when nothing needs the reader: one quiet line. */
+.dir-a-calm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--di-space-4) var(--di-space-16);
+  padding: var(--di-space-16) 0;
+  border-block: 1px solid var(--di-rule);
+  font-family: var(--di-type-section-family, var(--di-font-ui));
+  font-size: var(--di-font-size-550);
+  font-weight: var(--di-weight-bold);
+}
+
+.dir-a-calm > span:first-child::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: var(--di-space-12);
+  border-radius: 50%;
+  background: var(--di-status-ok-dot);
+  vertical-align: 0.1em;
+}
+
+.dir-a-calm-meta {
+  font-family: var(--di-type-meta-family, var(--di-font-code));
+  font-size: var(--di-type-meta-size, var(--di-font-size-300));
+  font-weight: var(--di-weight-regular);
+  color: var(--di-text-tertiary, var(--di-text-subtle));
+}
+
+/* What the verdict asks for, set large: the case's one point. */
+.dir-a-ask {
+  font-family: var(--di-type-section-family, var(--di-font-ui));
+  font-size: var(--di-type-section-size, var(--di-font-size-600));
+  font-weight: var(--di-type-section-weight, var(--di-weight-bold));
+  line-height: var(--di-leading-tight);
+  text-wrap: balance;
+}
+
+/* The words that matter in the view: the one gold accent. */
+.dir-a-one-words {
+  color: var(--di-one-ink, var(--di-seal-ink));
 }

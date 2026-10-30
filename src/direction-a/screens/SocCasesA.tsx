@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   Briefing,
-  BriefingMark,
   BriefingMeta,
   BriefingStatus,
   Button,
@@ -35,8 +34,9 @@ const words = { critical: "Critical", high: "High", medium: "Medium", low: "Low"
 
 /**
  * Cases in Direction A: the permanent split. The list stays on the left,
- * sorted by severity; the open case is on the right and starts with the
- * AI SOC's verdict and the one action, then the proof, then the evidence.
+ * sorted by severity; the open case is on the right. Its head only orients
+ * (name, severity, state); the first block is the AI SOC's verdict with the
+ * action it asks for and the proof, then the figures, then the evidence.
  */
 export function SocCasesA({ showing: initial = "list" }: { showing?: "list" | "detail" }) {
   const [filter, setFilter] = useState("open");
@@ -94,22 +94,23 @@ export function SocCasesA({ showing: initial = "list" }: { showing?: "list" | "d
 function CaseFour() {
   return (
     <>
-      <Briefing heading={2} context="Case 4" title="Leaked VPN credentials used to move through the finance network">
+      <Briefing heading={2} title="Case 4 · leaked VPN credentials used to move through the finance network">
         <BriefingStatus>
           <SeverityMark level="critical" label="Critical" variant="chip" />
           <StatusPill tone="neutral">In progress · Sam Analyst</StatusPill>
         </BriefingStatus>
-        {caseFour.verdict} <BriefingMark>{caseFour.action}</BriefingMark>
-        <BriefingMeta>Verdict of the AI SOC · proved by rule 14 · 1,064 signals · opened 7 h ago</BriefingMeta>
+        <BriefingMeta>Opened 7 h ago · 1,064 signals · updates live</BriefingMeta>
       </Briefing>
 
-      <div className="dir-a-actions">
-        <Button>Isolate srv-fs-02</Button>
-        <Button variant="secondary">Reset svc-backup</Button>
-        <Button variant="ghost">Set a verdict</Button>
-      </div>
-
-      <Surface emphasis label="Proved · rule 14" title="A new path to a critical server">
+      <Surface emphasis heading={3} label="Verdict of the AI SOC · proved by rule 14" title={caseFour.verdict}>
+        <p className="dir-a-ask">
+          <span className="dir-a-one-words">{keepIdentifiers(caseFour.action)}</span>
+        </p>
+        <div className="dir-a-actions">
+          <Button>Isolate srv-fs-02</Button>
+          <Button variant="secondary">Reset svc-backup</Button>
+          <Button variant="ghost">Set a verdict</Button>
+        </div>
         <ol className="dir-a-path" aria-label="Path">
           {caseFour.path.map((hop) => (
             <li key={hop}>{hop}</li>
@@ -118,7 +119,7 @@ function CaseFour() {
         <p className="dir-a-muted">{caseFour.reason}</p>
       </Surface>
 
-      <FigureRow label="Case figures">
+      <FigureRow label="Case figures" variant="strip">
         <Figure label="Signals" value="1,064">
           12 rules
         </Figure>
@@ -195,9 +196,25 @@ function CaseFour() {
 
 function OtherCase({ n, title }: { n: number; title: string }) {
   return (
-    <Briefing heading={2} context={`Case ${n}`} title={title}>
-      The AI SOC has not reached a verdict on this case yet.
-      <BriefingMeta>Open the signals to triage it by hand.</BriefingMeta>
-    </Briefing>
+    <>
+      <Briefing heading={2} title={`Case ${n} · ${title}`} />
+      <p className="dir-a-calm">
+        <span>No verdict yet</span>
+        <span className="dir-a-calm-meta">Open the signals to triage it by hand.</span>
+      </p>
+    </>
+  );
+}
+
+/** Host and account names such as srv-fs-02 never break at their hyphens. */
+function keepIdentifiers(text: string) {
+  return text.split(/(\S*\w-\w\S*)/).map((part, i) =>
+    i % 2 === 1 ? (
+      <span key={i} className="dir-a-nowrap">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
   );
 }

@@ -8,7 +8,7 @@ const meta = {
   component: AttentionList,
   tags: ["layer:block", "autodocs", "direction:a"],
   parameters: { direction: "a" },
-  args: { label: "What needs you", children: null },
+  args: { label: "What needs you", title: "3 things need you", children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof AttentionList>;
 

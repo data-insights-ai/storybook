@@ -1,125 +1,169 @@
 import { ArrowUpRight } from "lucide-react";
 import {
+  AttentionItem,
+  AttentionList,
   Briefing,
-  BriefingAside,
-  BriefingMark,
   BriefingMeta,
+  BriefingStatus,
   Button,
   Figure,
   FigureRow,
-  HeroFigure,
+  MetaLine,
   StatusPill,
   Surface,
   SurfaceAside,
-  SurfaceTakeaway,
   TextLink,
   TrendChart,
 } from "../../index";
 import { ProductShell } from "./ProductShell";
-import { audit, credits, licenses } from "./portal.sample";
+import { allRunning, audit, can, credits, firstDue, people, products, roleNames, team, type PortalState, type Role } from "./portal.sample";
 import "./screens.css";
 
 /**
- * The organization's home in Direction A: one sentence on whether anything
- * needs the owner, the products to open as the first thing to reach, the
- * one decision in gold, then the figures that support it.
+ * The organization's home in Direction A, ordered by why people come. The
+ * head only orients; the point is the first block: a due decision the
+ * viewer can act on, as the one gold item under "1 decision is due", or
+ * else one quiet line that everything runs. Then the
+ * products to open, then cost, then the team and recent changes as quiet
+ * lists. What shows follows the viewer's permissions: licences and cost
+ * for those who manage billing, the team for those who may see members,
+ * recent changes for those who may read the audit log. A plain member
+ * sees the claim and their products.
  */
-export function PortalHomeA() {
+export function PortalHomeA({ role = "owner", state = allRunning }: { role?: Role; state?: PortalState }) {
+  const due = firstDue(state, role);
+  const user = people[role];
   return (
-    <ProductShell product="portal" active="overview" crumbs={["Example Security GmbH", "Overview"]}>
+    <ProductShell product="portal" active="overview" crumbs={["Example Security GmbH", "Overview"]} role={role} user={user}>
       <div className="dir-a-page">
-        <Briefing context="Organization" title="Example Security GmbH" ruled>
-          Everything runs. One decision this month: <BriefingMark>the Team add-on ends in 11 days</BriefingMark>, and
-          three of your five seats with it.
-          <BriefingMeta>Company · you are the owner · 4 members · as of 12 Oct</BriefingMeta>
-          <BriefingAside>
-            <Button>Renew the add-on</Button>
-          </BriefingAside>
+        <Briefing title="Example Security GmbH">
+          {due ? (
+            <BriefingStatus>
+              <StatusPill tone="warn" dot>
+                Decision due
+              </StatusPill>
+            </BriefingStatus>
+          ) : null}
+          <BriefingMeta>{`As of 12 Oct, 10:00 · ${roleNames[role]}`}</BriefingMeta>
         </Briefing>
 
-        <div className="dir-a-two">
-          <Surface label="Your products" title="Open a product">
-            <ul className="dir-a-products">
-              <li>
-                <a href="#soc" className="dir-a-product">
+        {due ? null : (
+          <p className="dir-a-calm">
+            <span>Everything is running</span>
+            <MetaLine className="dir-a-calm-meta" items={runningNote(role, state)} />
+          </p>
+        )}
+
+        {due ? (
+          <AttentionList label="Due" title="1 decision is due">
+            <AttentionItem rank="01" emphasis emphasisLabel={due.deadline} title={due.title} reason={due.reason} meta={due.meta}>
+              <Button>{due.action}</Button>
+            </AttentionItem>
+          </AttentionList>
+        ) : null}
+
+        <Surface label="Your products" title="Open a product">
+          <ul className="dir-a-products">
+            {products.map((p) => (
+              <li key={p.id}>
+                <a href={`#${p.id}`} className="dir-a-product">
                   <span>
-                    <span className="dir-a-product-name">AI SOC</span>
-                    <span className="dir-a-muted">Professional · 4 of 5 seats</span>
+                    <span className="dir-a-product-name">{p.name}</span>
+                    <span className="dir-a-muted">{can.billing(role) ? p.owner : p.member}</span>
                   </span>
                   <ArrowUpRight aria-hidden />
                 </a>
               </li>
-              <li>
-                <a href="#reports" className="dir-a-product">
-                  <span>
-                    <span className="dir-a-product-name">Reports</span>
-                    <span className="dir-a-muted">Open to every member</span>
-                  </span>
-                  <ArrowUpRight aria-hidden />
-                </a>
-              </li>
-            </ul>
-          </Surface>
-          <Surface emphasis label="Decide by 23 Oct" title="Licenses">
-            <SurfaceAside>
-              <TextLink href="#licenses">Products & licenses</TextLink>
-            </SurfaceAside>
-            <ul className="dir-a-rows">
-              {licenses.map((l) => (
-                <li key={l.name}>
-                  <span>
-                    {l.name} <span className="dir-a-muted">· {l.seats} seats</span>
-                  </span>
-                  <StatusPill tone={l.tone} dot>
-                    {l.left} left
-                  </StatusPill>
-                </li>
-              ))}
-            </ul>
-            <SurfaceTakeaway>Without the add-on, 2 seats remain for 4 members.</SurfaceTakeaway>
-          </Surface>
-        </div>
+            ))}
+          </ul>
+        </Surface>
 
-        <FigureRow label="The last 30 days">
-          <Figure label="Seats in use" value="4 of 5">
-            3 end on 23 Oct
-          </Figure>
-          <Figure label="Members" value="4">
-            1 invitation open
-          </Figure>
-          <Figure label="AI triage runs" value="520">
-            last 30 days
-          </Figure>
-          <Figure label="Ingested" value="270 GB">
-            last 30 days
-          </Figure>
-        </FigureRow>
+        {can.billing(role) ? (
+          <section className="dir-a-health" aria-label="Licences">
+            <p className="dir-a-label">Licences</p>
+            <p>
+              <strong>{state.licencesActive}</strong> active
+            </p>
+            <p>
+              next renewal <strong>{state.nextRenewal}</strong>
+            </p>
+            <TextLink href="#licences">Products & licences</TextLink>
+          </section>
+        ) : null}
 
-        <div className="dir-a-two">
+        {can.billing(role) ? (
           <Surface label="Credit" title="Enough for about three months">
             <SurfaceAside>
               <TextLink href="#credits">Credits</TextLink>
             </SurfaceAside>
-            <HeroFigure label="Balance" value="182.5" unit="credits">
-              About 2 credits a day · topped up on 8 Oct
-            </HeroFigure>
-            <TrendChart label="Credit balance, last 30 days" height="sm" data={credits} series={[{ key: "balance", label: "Balance", kind: "area" }]} />
+            <div className="dir-a-cost">
+              <FigureRow label="Credit and use" variant="strip">
+                <Figure label="Balance" value="182.5">
+                  credits · topped up 8 Oct
+                </Figure>
+                <Figure label="Use per day" value="2">
+                  credits · last 30 days
+                </Figure>
+                <Figure label="Ingested" value="270 GB">
+                  last 30 days
+                </Figure>
+              </FigureRow>
+              <TrendChart label="Credit balance, last 30 days" height="sm" data={credits} series={[{ key: "balance", label: "Balance", kind: "area" }]} />
+            </div>
           </Surface>
-          <Surface label="Audit log" title="Recent changes">
-            <SurfaceAside>
-              <TextLink href="#audit">Audit log</TextLink>
-            </SurfaceAside>
-            <ul className="dir-a-rows">
-              {audit.map((a) => (
-                <li key={a.when}>
-                  <span>{a.what}</span>
-                  <span className="dir-a-mono dir-a-muted">{a.when}</span>
-                </li>
-              ))}
-            </ul>
-          </Surface>
-        </div>
+        ) : null}
+
+        {can.team(role) || can.audit(role) ? (
+          <div className="dir-a-two">
+            {can.team(role) ? (
+              <section className="dir-a-quiet" aria-labelledby="dir-a-team">
+                <div className="dir-a-quiet-head">
+                  <h2 id="dir-a-team" className="dir-a-quiet-title">
+                    Team
+                  </h2>
+                  {can.manageTeam(role) ? <TextLink href="#members">Members</TextLink> : null}
+                </div>
+                <ul className="dir-a-rows">
+                  {team.map((m) => (
+                    <li key={m.name}>
+                      <span>
+                        {m.name}
+                        {m.name === user ? <span className="dir-a-muted"> · you</span> : null}
+                      </span>
+                      <span className="dir-a-muted">{m.role}</span>
+                    </li>
+                  ))}
+                </ul>
+                {can.manageTeam(role) ? <p className="dir-a-muted">1 invitation open</p> : null}
+              </section>
+            ) : null}
+            {can.audit(role) ? (
+              <section className="dir-a-quiet" aria-labelledby="dir-a-changes">
+                <div className="dir-a-quiet-head">
+                  <h2 id="dir-a-changes" className="dir-a-quiet-title">
+                    Recent changes
+                  </h2>
+                  <TextLink href="#audit">Audit log</TextLink>
+                </div>
+                <ul className="dir-a-rows">
+                  {audit.slice(0, 4).map((a) => (
+                    <li key={a.when}>
+                      <span>{a.what}</span>
+                      <span className="dir-a-mono dir-a-muted">{a.when}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </ProductShell>
   );
+}
+
+function runningNote(role: Role, state: PortalState) {
+  if (can.billing(role)) return ["nothing to decide before " + state.nextRenewal];
+  if (can.manageTeam(role)) return ["1 invitation still open"];
+  return ["your products are ready"];
 }

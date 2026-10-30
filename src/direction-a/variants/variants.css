@@ -1,0 +1,140 @@
+/* The alternatives the variant stories compare, scoped to a wrapper so the
+   rest of Storybook keeps the proposal's defaults. Story-only. */
+.dir-a-variant {
+  display: contents;
+}
+
+/* H-a: a small page name over the claim as the largest text. */
+.dir-a-variant[data-header="a"] {
+  --di-type-page-size: 1.25rem;
+}
+
+/* H-b: the page name as a classic heading, the claim a step below it in size and weight. */
+.dir-a-variant[data-header="b"] {
+  --di-type-page-size: 1.75rem;
+  --di-type-claim-size: clamp(1.375rem, 1.1rem + 0.7vw, 1.875rem);
+  --di-type-claim-weight: 400;
+  --di-type-claim-leading: 1.2;
+}
+
+/* The body face switched back to today's Space Grotesk; display and mono stay. */
+.dir-a-variant[data-body="grotesk"] {
+  --di-font-sans: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --di-font-ui: var(--di-font-sans);
+  --di-type-block-family: var(--di-font-sans);
+  font-family: var(--di-font-ui);
+}
+
+.dir-a-compare {
+  display: flex;
+  flex-direction: column;
+  gap: var(--di-space-32);
+  padding: var(--di-space-32) var(--di-space-16);
+  min-height: 100vh;
+  background: var(--di-layer-ground);
+  color: var(--di-text);
+}
+
+.dir-a-compare-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--di-space-8);
+  max-width: 70ch;
+}
+
+.dir-a-compare-title {
+  font-family: var(--di-type-page-family);
+  font-size: var(--di-type-page-size);
+  font-weight: var(--di-type-page-weight);
+}
+
+.dir-a-compare-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: var(--di-space-24);
+}
+
+.dir-a-compare-row.is-phone {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 390px));
+}
+
+.dir-a-compare-cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--di-space-8);
+  min-width: 0;
+  margin: 0;
+}
+
+.dir-a-compare-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--di-radius-inset);
+  box-shadow: var(--di-elevation-surface);
+  aspect-ratio: 1440 / 1100;
+}
+
+.dir-a-compare-frame > iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1440px;
+  height: 1100px;
+  border: 0;
+  transform-origin: 0 0;
+  transform: scale(var(--dir-a-scale, 0.45));
+}
+
+.dir-a-compare-row.is-phone .dir-a-compare-frame {
+  aspect-ratio: auto;
+  height: 844px;
+}
+
+.dir-a-compare-row.is-phone .dir-a-compare-frame > iframe {
+  width: 100%;
+  height: 844px;
+  transform: none;
+}
+
+/* Gold in daylight, kept as the record (decided: G-3, the default). These
+   change light mode only. G-1 is the first proposal: cream paper and dark
+   gold text. G-2 keeps the cool paper and navy words and adds a
+   highlighter bar under the words that matter. */
+:root:not([data-theme="dark"]) .dir-a-variant[data-gold="1"] {
+  --di-layer-chrome: var(--di-a-cream-chrome);
+  --di-layer-ground: var(--di-a-cream-ground);
+  --di-layer-surface: var(--di-a-cream-surface);
+  --di-layer-inset: var(--di-a-cream-inset);
+  --di-layer-strip: var(--di-a-cream-chrome);
+  --di-layer-pane: var(--di-a-cream-surface);
+  --di-bg-page: var(--di-layer-ground);
+  --di-bg-surface: var(--di-layer-surface);
+  --di-bg-grid: var(--di-layer-surface);
+  --di-bg-subtle: var(--di-layer-inset);
+  --di-bg-row-hover: var(--di-layer-inset);
+  --di-canvas: var(--di-layer-chrome);
+  --di-sidebar-bg: var(--di-layer-chrome);
+  --di-sidebar-raised: var(--di-layer-ground);
+  --di-sidebar-active: var(--di-layer-surface);
+  --di-table-bg: var(--di-layer-surface);
+  --di-one-ink: var(--di-a-gold-ink);
+  --di-seal-ink: var(--di-a-gold-ink);
+  --di-one-label-bg: transparent;
+  --di-one-label-fg: var(--di-a-gold-ink);
+  --di-one-label-pad: 0;
+  --di-one-rank-bar: transparent;
+}
+
+:root:not([data-theme="dark"]) .dir-a-variant[data-gold="2"] {
+  --di-one-label-bg: transparent;
+  --di-one-label-fg: var(--di-a-navy-ground);
+  --di-one-label-pad: 0;
+}
+
+:root:not([data-theme="dark"]) .dir-a-variant[data-gold="2"] :is(.di-attention-item.is-emphasis .di-attention-title, .dir-a-one-words, .di-briefing-mark) {
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, var(--di-one) 45%, transparent);
+  text-decoration-thickness: 0.42em;
+  text-underline-offset: -0.28em;
+  text-decoration-skip-ink: none;
+}

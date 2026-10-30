@@ -41,12 +41,12 @@ export const PageAnatomy: Story = {
   name: "Page anatomy",
   render: () => (
     <DocPage kicker="Composition ·" title="Page anatomy" claim="Every page says its point first, then proves it, then gives the detail.">
-      <DocSection title="Five page types" lede="Each type has one order from the top. The name of the page is the h1, small, because the navigation already says where the reader is; the claim is the largest text.">
+      <DocSection title="Five page types" lede="Each type has one order from the top. The head only orients: the page name as the h1 with its state on one line, as of when small at the right. The point is the first block, such as the attention list under its own heading, with item 01 carrying the action; no sentence above it tells the items in advance. Headings break into balanced lines; meta lines break only between their items.">
         <div className="doc-a-anatomy">
           <Wire
             title="Overview"
-            rows={[[["Context · Name   Claim — what needs you, computed", "claim"]], [["01 the one thing", "one"], ["02"], ["03"]], [["Hero: the product’s signature visual", "hero"]], [["figure", "quiet"], ["figure", "quiet"], ["figure", "quiet"], ["figure", "quiet"]], [["secondary"], ["secondary"]], [["health in one line", "quiet"]]]}
-            rules={["Claim from data, never a sentence about the UI", "Attention list: at most three, ranked, one action each", "One hero, at least twice any other block", "No grid of equal tiles"]}
+            rows={[[["Name · state            as of", "quiet"]], [["N things need you", "claim"]], [["01 the one thing, with its action", "one"]], [["02"], ["03"]], [["Hero: the product’s signature visual, its figures as footer", "hero"]], [["secondary"], ["secondary"]], [["health in one line", "quiet"]]]}
+            rules={["The point from data, never a sentence about the UI", "Attention list: at most three, ranked, one action each; nothing due is one quiet line", "A navy hero only where there is a signature visual; its supporting figures close it as its footer", "Figures without a hero sit on a tonal strip; a rule only ever separates two figures", "No grid of equal tiles"]}
           />
           <Wire
             title="List (and detail)"
@@ -55,7 +55,7 @@ export const PageAnatomy: Story = {
           />
           <Wire
             title="Detail (own page)"
-            rows={[[["crumbs", "quiet"]], [["Context · Name · status   Verdict claim", "claim"]], [["one filled action"], ["secondary", "inset"]], [["proof", "one"]], [["figures", "quiet"]], [["tab"], ["tab"], ["tab"]], [["sections"]]]}
+            rows={[[["crumbs", "quiet"]], [["Name · status            as of", "quiet"]], [["Verdict, the action it asks for, the proof", "one"]], [["figures on a strip", "quiet"]], [["tab"], ["tab"], ["tab"]], [["sections"]]]}
             rules={["Status inline after the name, not 900px away", "No eyebrow when there are crumbs", "The rail holds decisions only after the verdict", "At most five tabs"]}
           />
           <Wire
@@ -80,7 +80,7 @@ export const SurfacesAndEmphasis: Story = {
   render: () => (
     <DocPage kicker="Composition ·" title="Surfaces and emphasis" claim="Two visible levels per region, and one thing that matters per view.">
       <DocSection title="What sits on what">
-        <div className="doc-a-scroll">
+        <div className="doc-a-scroll" role="region" aria-label="What sits on what" tabIndex={0}>
           <table className="doc-a-table">
             <thead>
               <tr>
@@ -92,8 +92,10 @@ export const SurfacesAndEmphasis: Story = {
               </tr>
             </thead>
             <tbody>
-              <tr><td>Chrome</td><td>Navigation, app bar</td><td>Paper a step below the ground</td><td>The ground itself, a hairline apart</td><td>Darker or more saturated than the content</td></tr>
-              <tr><td>Ground</td><td>The page, the claim, figure rows</td><td>Warm paper</td><td>Brand navy, not near-black</td><td>A border around the page</td></tr>
+              <tr><td>Chrome</td><td>Navigation</td><td>Paper a step below the ground (#e9e8e3)</td><td>Navy a step deeper than the ground (#071733)</td><td>Heavier or more saturated than the content; the same tone as the ground</td></tr>
+              <tr><td>Ground</td><td>The page, its head, the detail side of a split</td><td>Cool paper (#f3f2ee), not cream</td><td>Brand navy (#0a1f44), not near-black</td><td>A border around the page</td></tr>
+              <tr><td>Pane</td><td>The list column of a list-and-detail split, full height</td><td>Surface tone</td><td>Surface tone, a step above the ground</td><td>The ground tone, so list and detail blend</td></tr>
+              <tr><td>Strip</td><td>Figures without a hero</td><td>Chrome tone</td><td>Navy inset</td><td>Figures loose on the ground</td></tr>
               <tr><td>Surface</td><td>A block, a table, a list</td><td>Near-white, faint edge</td><td>Navy lifted a step</td><td>A surface inside a surface</td></tr>
               <tr><td>Inset</td><td>A group inside a surface, a table head, code</td><td>Ground tone</td><td>Navy sunk a step</td><td>Anything inside it with a fill</td></tr>
               <tr><td>Emphasis</td><td>The one thing that matters</td><td>Gold edge, soft glow</td><td>Gold edge 75%, 60px glow</td><td>More than one per view</td></tr>
@@ -104,7 +106,7 @@ export const SurfacesAndEmphasis: Story = {
         </div>
       </DocSection>
       <DocSection title="Emphasis levels" lede="Five levels a reader can tell apart at a glance. Each has a limit.">
-        <div className="doc-a-scroll">
+        <div className="doc-a-scroll" role="region" aria-label="Emphasis levels" tabIndex={0}>
           <table className="doc-a-table">
             <thead>
               <tr><th>Level</th><th>Use</th><th>Component</th><th>Limit</th></tr>
@@ -120,7 +122,7 @@ export const SurfacesAndEmphasis: Story = {
         </div>
       </DocSection>
       <DocSection title="Colour roles in a view">
-        <div className="doc-a-scroll">
+        <div className="doc-a-scroll" role="region" aria-label="Colour roles in a view" tabIndex={0}>
           <table className="doc-a-table">
             <thead>
               <tr><th>Role</th><th>Colour</th><th>Never for</th></tr>

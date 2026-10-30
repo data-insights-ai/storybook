@@ -27,6 +27,12 @@ type Story = StoryObj<typeof meta>;
 export const Colour: Story = {
   render: () => (
     <DocPage kicker="Foundations ·" title="Colour" claim="Every colour has one job. Gold has the rarest: the one thing that matters in the view.">
+      <DocSection title="Daylight: gold marks an object, never text." lede="Gold dark enough for text on paper reads as olive, and navy with brown on paper looks old. So in light mode the one thing keeps navy words, and gold marks the object: its edge, a bar under its rank, a gold pill behind the navy “Start here”. Gold is never text colour and never a text background. After dark, gold text on navy works and stays.">
+        <div className="doc-a-grid">
+          <Swatch token="--di-one-edge" role="Edge and rank bar (3:1)" mark />
+          <Swatch token="--di-one" role="Pill behind a navy label (6.8:1)" mark />
+        </div>
+      </DocSection>
       <DocSection title="Text, four levels" lede="Primary for values and reading, secondary for labels and ledes, tertiary for meta, disabled for what cannot be used. Each is its own value in both themes; after dark muted and subtle are no longer one colour.">
         <div className="doc-a-grid">
           <Swatch token="--di-text" role="Primary · values" />
@@ -40,7 +46,7 @@ export const Colour: Story = {
           <Swatch token="--di-action-bg" role="Action fill" mark />
           <Swatch token="--di-select" role="Selection · focus" mark />
           <Swatch token="--di-select-ink" on="--di-layer-ground" role="Selection as text" />
-          <Swatch token="--di-one-ink" role="The one thing (text)" />
+          <Swatch token="--di-one-ink" role="The one thing (text: navy in daylight, gold after dark)" />
           <Swatch token="--di-one" role="The one thing (fill, never alone)" mark />
         </div>
       </DocSection>
@@ -53,7 +59,7 @@ export const Colour: Story = {
         </div>
       </DocSection>
       <DocSection title="Gold, do and don’t">
-        <DoDont doText="One gold region per view, on the referent that matters: the claim’s key words and the item they name." dontText="Gold for an eyebrow, a link underline, a warning and a primary button at once. Nobody can learn what it means.">
+        <DoDont doText="One gold object per view: the item that matters, by its edge and its label. In daylight its words stay navy." dontText="Gold for an eyebrow, a link underline, a warning and a primary button at once. Nobody can learn what it means.">
           <>
             <AttentionList label="Do">
               <AttentionItem rank="01" emphasis emphasisLabel="Start here" severity="critical" severityLabel="Critical" title="Case 4 · nobody owns it" reason="Data is leaving the file server." />
@@ -107,14 +113,15 @@ export const Severity: Story = {
   ),
 };
 
-/** Seven type steps with visible distance between them. */
+/** Eight type steps with visible distance between them. */
 export const Type: Story = {
   render: () => (
-    <DocPage kicker="Foundations ·" title="Type" claim="Seven steps, and you can see each one: the claim first, the body last.">
-      <DocSection title="The ramp" lede="Sansation for what is said large (claim, hero figure, section). IBM Plex Sans for reading. IBM Plex Mono for what a machine wrote and for labels, in capitals, so a label never looks like its value.">
+    <DocPage kicker="Foundations ·" title="Type" claim="Eight steps, and you can see each one: the page name and the claim first, the body last.">
+      <DocSection title="The ramp" lede="Sansation for what is said large (page name, claim, hero figure, section). IBM Plex Sans for reading. IBM Plex Mono for what a machine wrote and for labels, in capitals, so a label never looks like its value.">
         <div>
           {[
-            ["Claim · 26–36 / 700", <p style={{ font: "var(--di-type-claim-weight) var(--di-type-claim-size)/1.12 var(--di-type-claim-family)" }}>Two things need you now.</p>],
+            ["Page name · 20 / 700", <p style={{ font: "var(--di-type-page-weight) var(--di-type-page-size)/1.1 var(--di-type-page-family)" }}>Production</p>],
+            ["Claim · 26–34 / 700", <p style={{ font: "var(--di-type-claim-weight) var(--di-type-claim-size)/1.12 var(--di-type-claim-family)" }}>Two things need you now.</p>],
             ["Hero figure · 44–60", <p style={{ font: "700 var(--di-type-hero-size)/1 var(--di-type-hero-family)" }}>182.5</p>],
             ["Section · 22 / 700", <p style={{ font: "700 var(--di-type-section-size)/1.2 var(--di-type-section-family)" }}>Story of the case</p>],
             ["Block title · 15 / 600", <p style={{ font: "600 var(--di-type-block-size)/1.35 var(--di-type-block-family)" }}>Two sources stopped delivering</p>],
@@ -154,10 +161,11 @@ export const Type: Story = {
 export const Surfaces: Story = {
   render: () => (
     <DocPage kicker="Foundations ·" title="Surfaces and elevation" claim="Depth comes from tone, not from lines. Two visible levels, never more.">
-      <DocSection title="The layers" lede="Chrome holds the navigation and is never heavier than the content. Ground is the page. Surface lifts a block by tone and a faint edge. Inset sinks a group inside a surface. Emphasis is a surface with the gold edge, once per view. Hero is the one luminous navy zone. A plane (menu, sheet, dialog) is the only thing with a real shadow.">
+      <DocSection title="The layers" lede="Chrome holds the navigation and is never heavier than the content: paper a step below the ground in daylight, navy a step deeper after dark, so it is a zone of its own. Ground is the page. Pane is the list column of a split, a step above the ground. Surface lifts a block by tone and a faint edge. Inset sinks a group inside a surface. Emphasis is a surface with the gold edge, once per view. Hero is the one luminous navy zone. A plane (menu, sheet, dialog) is the only thing with a real shadow.">
         <div className="doc-a-grid">
           <Swatch token="--di-text" on="--di-layer-chrome" role="Chrome" />
           <Swatch token="--di-text" on="--di-layer-ground" role="Ground" />
+          <Swatch token="--di-text" on="--di-layer-pane" role="Pane" />
           <Swatch token="--di-text" on="--di-layer-surface" role="Surface" />
           <Swatch token="--di-text" on="--di-layer-inset" role="Inset" />
         </div>

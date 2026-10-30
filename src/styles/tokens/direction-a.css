@@ -8,22 +8,31 @@
  *   surface, inset, emphasis — and a plane for what floats. A border
  *   appears only where two equal tones meet.
  * - Gold means "the one thing that matters" in a view, and nothing else.
+ *   Daylight: gold marks an object, never text.
  *   Warn gets its own amber; the dark primary button turns paper-white;
  *   selection and focus are cornflower.
  * - One severity scale, shared by every product and every chart.
- * - Type with steps you can see: claim, hero figure, section, block title,
- *   body, mono label, meta. Sansation for display, IBM Plex for reading.
+ * - Type with steps you can see: page name, claim, hero figure, section,
+ *   block title, body, mono label, meta. Sansation for display, IBM Plex for reading.
  * - Navigation is never heavier than the content: in daylight it is a
- *   paper tone a step below the ground, after dark it is the ground.
+ *   paper tone a step below the ground, after dark a navy one step deeper.
  */
 
 @layer tokens {
   :root[data-direction="a"] {
     /* ---- Primitives this direction adds ---------------------------- */
-    --di-a-paper-chrome: #e8e3d5;
-    --di-a-paper-ground: #f1ede3;
-    --di-a-paper-surface: #fdfcf9;
-    --di-a-paper-inset: #f3efe6;
+    /* A cool, barely warm daylight paper: a yellow cream read as old paper beside navy. */
+    --di-a-paper-chrome: #e9e8e3;
+    --di-a-paper-ground: #f3f2ee;
+    --di-a-paper-surface: #fdfdfb;
+    --di-a-paper-inset: #efeee9;
+    /* The first proposal's cream and gold text, kept for the record in Variants. */
+    --di-a-cream-chrome: #e8e3d5;
+    --di-a-cream-ground: #f1ede3;
+    --di-a-cream-surface: #fdfcf9;
+    --di-a-cream-inset: #f3efe6;
+    --di-a-gold-ink: #7a5c0e;
+    --di-a-navy-deep: #071733;
     --di-a-navy-ground: #0a1f44;
     --di-a-navy-lift: #133068;
     --di-a-navy-surface: #0f2a57;
@@ -41,8 +50,9 @@
     --di-a-sev-low: #5d7797;
     --di-a-sev-info: #878d99;
     --di-a-sev-critical-night: #ff5f5a;
-    --di-a-sev-high-night: #ff8a4c;
-    --di-a-sev-medium-night: #ffbe4d;
+    --di-a-sev-high-night: #ff7a3d;
+    /* Orange, not yellow: after dark it must not read as the gold #d9b45e. */
+    --di-a-sev-medium-night: #ff9d2e;
     --di-a-sev-low-night: #94abcb;
     --di-a-sev-info-night: #7f8fb0;
 
@@ -59,6 +69,10 @@
     --di-layer-surface: var(--di-a-paper-surface);
     --di-layer-inset: var(--di-a-paper-inset);
     --di-layer-plane: #ffffff;
+    /* A band a step below the ground, for figures without a hero to sit in. */
+    --di-layer-strip: var(--di-a-paper-chrome);
+    /* The list column of a list-and-detail split: a step above the ground. */
+    --di-layer-pane: var(--di-layer-surface);
     /* The hero zone stays navy in both themes: the one luminous place. */
     --di-layer-hero: radial-gradient(120% 140% at 30% 0%, var(--di-a-navy-lift) 0%, var(--di-a-navy-ground) 55%, var(--di-a-navy-edge) 100%);
     --di-layer-hero-solid: var(--di-a-navy-ground);
@@ -73,10 +87,18 @@
     --di-text-subtle: var(--di-text-tertiary);
     --di-text-disabled: #8b877b;
 
-    /* ---- Gold: the one thing that matters ---------------------------- */
+    /* ---- Gold: the one thing that matters ----------------------------
+     * Daylight: gold marks an object, never text. Gold dark enough for
+     * text on paper reads as olive, so the one thing keeps navy words and
+     * gold marks it: its edge, a bar under its rank, a gold pill behind a
+     * navy label. After dark, gold on navy is text again. */
     --di-one: #c9a24a;
-    --di-one-ink: #7a5c0e;
+    --di-one-ink: var(--di-a-navy-ground);
     --di-one-edge: #a6811f;
+    --di-one-label-bg: var(--di-one);
+    --di-one-label-fg: var(--di-a-navy-ground);
+    --di-one-label-pad: 2px var(--di-space-8);
+    --di-one-rank-bar: var(--di-one-edge);
     --di-one-glow: 0 0 0 4px rgba(201, 162, 74, 0.16), 0 12px 32px -12px rgba(122, 92, 14, 0.35);
 
     /* ---- Action, selection, focus ----------------------------------- */
@@ -105,7 +127,7 @@
     --di-status-recorded-border: transparent;
     --di-status-recorded-dot: #2b6cb0;
     --di-status-neutral-fg: #3d4a66;
-    --di-status-neutral-bg: #e8e3d5;
+    --di-status-neutral-bg: var(--di-a-paper-chrome);
     --di-status-neutral-border: transparent;
     --di-status-neutral-dot: #6b7385;
 
@@ -119,11 +141,16 @@
     --di-severity-critical-fg: #8a1b1b;
 
     /* ---- Type roles ----------------------------------------------------
-     * Seven steps with visible distance between them. The claim is the
-     * page's headline sentence; the hero figure the one number the page
-     * exists for. A console never sets type outside these. */
+     * Eight steps with visible distance between them. The page name is the
+     * h1, a heading in the display face that orients; where a page states
+     * a claim, it is the headline sentence under the name; the hero figure
+     * is the one number the page exists for. A console never sets type
+     * outside these. */
+    --di-type-page-family: var(--di-font-display);
+    --di-type-page-size: 1.75rem;
+    --di-type-page-weight: 700;
     --di-type-claim-family: var(--di-font-display);
-    --di-type-claim-size: clamp(1.625rem, 1.05rem + 1.3vw, 2.25rem);
+    --di-type-claim-size: clamp(1.625rem, 1.2rem + 1vw, 2.125rem);
     --di-type-claim-weight: 700;
     --di-type-claim-leading: 1.12;
     --di-type-hero-family: var(--di-font-display);
@@ -200,12 +227,15 @@
   :root[data-direction="a"][data-theme="dark"],
   :root[data-direction="a"] [data-theme="dark"] {
     /* After dark the ground is brand navy, not near-black; surfaces lift
-       from it in tone, and the chrome is the ground itself. */
-    --di-layer-chrome: var(--di-a-navy-ground);
+       from it in tone, and the chrome sits one step deeper, so the
+       navigation recedes but stays a zone of its own. */
+    --di-layer-chrome: var(--di-a-navy-deep);
     --di-layer-ground: var(--di-a-navy-ground);
     --di-layer-surface: var(--di-a-navy-surface);
     --di-layer-inset: var(--di-a-navy-inset);
     --di-layer-plane: var(--di-a-navy-lift);
+    --di-layer-strip: var(--di-a-navy-inset);
+    --di-layer-pane: var(--di-layer-surface);
     --di-layer-hero: radial-gradient(120% 140% at 30% 0%, #1a3a78 0%, var(--di-a-navy-lift) 40%, var(--di-a-navy-surface) 100%);
     --di-layer-hero-solid: var(--di-a-navy-lift);
     --di-layer-hairline: rgba(168, 182, 210, 0.16);
@@ -220,6 +250,10 @@
     --di-one: #d9b45e;
     --di-one-ink: #e6c677;
     --di-one-edge: rgba(217, 180, 94, 0.75);
+    --di-one-label-bg: transparent;
+    --di-one-label-fg: var(--di-one-ink);
+    --di-one-label-pad: 0;
+    --di-one-rank-bar: transparent;
     --di-one-glow: 0 0 60px rgba(217, 180, 94, 0.14), 0 0 0 1px rgba(217, 180, 94, 0.2);
 
     --di-action-bg: #f2f0e6;
@@ -363,5 +397,16 @@
   :root[data-direction="a"] .di-section-heading {
     font-family: var(--di-type-section-family);
     font-size: var(--di-type-section-size);
+  }
+}
+
+/* Headings break into balanced lines, reading text without a lone last word. */
+@layer overrides {
+  :root[data-direction="a"] :is(p, li, dd) {
+    text-wrap: pretty;
+  }
+
+  :root[data-direction="a"] :is(h1, h2, h3, h4, .di-briefing-claim, .di-attention-title, .di-surface-takeaway) {
+    text-wrap: balance;
   }
 }

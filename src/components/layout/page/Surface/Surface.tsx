@@ -14,7 +14,9 @@ import "./Surface.css";
  *
  * The header is a mono `label` above a block `title` (an h2, or h3 under a
  * section heading), with `SurfaceAside` at its right. `SurfaceTakeaway`
- * closes the block with the sentence the reader should leave with.
+ * closes the block with the sentence the reader should leave with;
+ * `SurfaceFooter` holds what belongs to the block's visual below a fine
+ * rule, such as the figures that support a hero chart.
  */
 export function Surface({
   level = "surface",
@@ -35,16 +37,18 @@ export function Surface({
   /** Off when the child draws to the edge, such as a table. */
   padded?: boolean;
   className?: string;
-  /** The content, and optionally `SurfaceAside` and `SurfaceTakeaway`. */
+  /** The content, and optionally `SurfaceAside`, `SurfaceTakeaway` and `SurfaceFooter`. */
   children?: ReactNode;
 }) {
   const id = useId();
   const aside: ReactNode[] = [];
   const takeaway: ReactNode[] = [];
+  const footer: ReactNode[] = [];
   const body: ReactNode[] = [];
   Children.forEach(children, (child) => {
     if (isValidElement(child) && child.type === SurfaceAside) aside.push(child);
     else if (isValidElement(child) && child.type === SurfaceTakeaway) takeaway.push(child);
+    else if (isValidElement(child) && child.type === SurfaceFooter) footer.push(child);
     else body.push(child);
   });
   const Heading = heading === 2 ? "h2" : "h3";
@@ -70,6 +74,7 @@ export function Surface({
       ) : null}
       <div className="di-surface-body">{body}</div>
       {takeaway}
+      {footer}
     </section>
   );
 }
@@ -82,4 +87,9 @@ export function SurfaceAside({ children }: { children: ReactNode }) {
 /** The sentence to leave with, at the foot of the block. */
 export function SurfaceTakeaway({ children }: { children: ReactNode }) {
   return <p className="di-surface-takeaway">{children}</p>;
+}
+
+/** The block's foot, under a fine rule: on a hero, the figures that support its visual. */
+export function SurfaceFooter({ children }: { children: ReactNode }) {
+  return <div className="di-surface-footer">{children}</div>;
 }

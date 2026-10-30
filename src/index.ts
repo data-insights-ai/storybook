@@ -263,9 +263,10 @@ export { VersionTag } from "./components/marks/VersionTag";
 export { SeverityMark } from "./components/marks/SeverityMark";
 export type { Severity } from "./components/marks/SeverityMark";
 export { HeroFigure } from "./components/data/figures/HeroFigure";
+export { MetaLine } from "./components/data/text/MetaLine";
 export { Figure, FigureRow } from "./components/data/figures/FigureRow";
 export { Briefing, BriefingAside, BriefingCrumbs, BriefingMark, BriefingMeta, BriefingStatus } from "./components/layout/page/Briefing";
-export { Surface, SurfaceAside, SurfaceTakeaway } from "./components/layout/page/Surface";
+export { Surface, SurfaceAside, SurfaceFooter, SurfaceTakeaway } from "./components/layout/page/Surface";
 export { AttentionItem, AttentionList } from "./components/data/records/AttentionList";
 export {
   ListDetail,

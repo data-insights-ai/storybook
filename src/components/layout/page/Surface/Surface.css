@@ -115,6 +115,15 @@
     color: var(--di-text);
   }
 
+  .di-surface-footer {
+    padding-top: var(--di-surface-gap);
+    border-top: 1px solid var(--di-rule);
+  }
+
+  .di-surface.is-flush > .di-surface-footer {
+    margin: 0 var(--di-surface-gap) var(--di-surface-gap);
+  }
+
   .di-surface.is-flush > .di-surface-takeaway {
     margin: 0 var(--di-surface-gap) var(--di-surface-gap);
   }

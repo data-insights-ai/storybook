@@ -10,6 +10,21 @@
     margin-bottom: var(--di-space-4);
   }
 
+  .di-briefing-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+  }
+
+  .di-briefing-context {
+    font-family: var(--di-type-label-family, var(--di-font-code));
+    font-size: var(--di-type-label-size, var(--di-font-size-200));
+    font-weight: var(--di-type-label-weight, var(--di-weight-medium));
+    letter-spacing: var(--di-type-label-tracking, var(--di-tracking-eyebrow));
+    text-transform: uppercase;
+    color: var(--di-text-tertiary, var(--di-text-subtle));
+  }
+
   .di-briefing-name {
     display: flex;
     flex-wrap: wrap;
@@ -18,25 +33,17 @@
   }
 
   .di-briefing-title {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--di-space-8);
-    font-family: var(--di-type-label-family, var(--di-font-code));
-    font-size: var(--di-type-meta-size, var(--di-font-size-300));
-    font-weight: var(--di-weight-medium);
-    letter-spacing: var(--di-type-label-tracking, var(--di-tracking-eyebrow));
-    text-transform: uppercase;
+    font-family: var(--di-type-page-family, var(--di-font-ui));
+    font-size: var(--di-type-page-size, var(--di-font-size-600));
+    font-weight: var(--di-type-page-weight, var(--di-weight-bold));
+    line-height: var(--di-leading-tight);
+    text-wrap: balance;
     color: var(--di-text);
   }
 
-  .di-briefing-context {
-    color: var(--di-text-tertiary, var(--di-text-subtle));
-  }
-
-  .di-briefing-context::after {
-    content: "·";
-    margin-left: var(--di-space-8);
+  /* A record opened beside its list is named one step smaller than a page. */
+  h2.di-briefing-title {
+    font-size: var(--di-type-section-size, var(--di-font-size-600));
   }
 
   .di-briefing-status {
@@ -84,9 +91,45 @@
     color: var(--di-text-tertiary, var(--di-text-subtle));
   }
 
+  .di-briefing-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--di-space-8) var(--di-space-24);
+  }
+
+  .di-briefing.is-orientation .di-briefing-meta {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .di-briefing.is-orientation .di-meta-line-items {
+    justify-content: flex-end;
+  }
+
   @container (width < 40rem) {
+    .di-briefing.is-orientation .di-briefing-meta {
+      flex-basis: 100%;
+      margin-left: 0;
+      text-align: left;
+    }
+
+    .di-briefing.is-orientation .di-meta-line-items {
+      justify-content: flex-start;
+    }
+
     .di-briefing-body:has(> .di-briefing-aside) {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .di-briefing-aside {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .di-briefing-aside > * {
+      width: 100%;
     }
   }
 }
