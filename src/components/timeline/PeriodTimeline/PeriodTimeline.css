@@ -26,6 +26,16 @@
     font-size: var(--di-font-size-300);
   }
 
+  /* Rows without captions are a picture of short labels: the label stays beside its track on any width. */
+  .di-periods.is-bare .di-period {
+    grid-template-columns: var(--di-week-label) minmax(0, 1fr);
+    gap: var(--di-gap-8);
+  }
+
+  .di-period-span {
+    display: contents;
+  }
+
   .di-period-label {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -83,15 +93,34 @@
     --di-period-color: var(--di-chart-danger);
   }
 
-  /* Today has a line of its own under the ends, so it never sits on a date. */
+  /* Each label stands at its own point; the ends sit flush with the track. Today has a line of its own under them. */
   .di-periods-scale {
     position: relative;
-    display: flex;
-    padding-bottom: var(--di-space-16);
-    justify-content: space-between;
+    display: block;
+    height: 1lh;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     color: var(--di-text-subtle);
+  }
+
+  .di-periods-scale.has-marker {
+    height: 2lh;
+  }
+
+  .di-periods-scale > span:not(.di-periods-today) {
+    position: absolute;
+    top: 0;
+    left: var(--di-period-at);
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .di-periods-scale > span.is-start {
+    transform: none;
+  }
+
+  .di-periods-scale > span.is-end {
+    transform: translateX(-100%);
   }
 
   /*
@@ -101,11 +130,12 @@
    */
   .di-periods-today {
     position: absolute;
-    top: var(--di-space-16);
+    top: 1lh;
     left: var(--di-period-today);
     transform: translateX(calc(var(--di-period-today) * -1));
     white-space: nowrap;
-    color: var(--di-highlight-ink);
+    font-weight: var(--di-weight-medium);
+    color: var(--di-text);
   }
 
   /* Today, at the same x in every row. */
@@ -118,12 +148,12 @@
   }
 
   @container di-periods (max-width: 520px) {
-    .di-period {
+    .di-periods:not(.is-bare) .di-period {
       grid-template-columns: minmax(0, 1fr);
       gap: var(--di-gap-4);
     }
 
-    .di-periods-axis > span:empty {
+    .di-periods:not(.is-bare) .di-periods-axis > span:empty {
       display: none;
     }
   }
