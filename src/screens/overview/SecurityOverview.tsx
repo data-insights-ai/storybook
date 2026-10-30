@@ -8,7 +8,6 @@ import {
   Grid,
   Hero,
   HeroAside,
-  HeroFigure,
   HeroFooter,
   HeroLead,
   HeroVisual,
@@ -92,11 +91,11 @@ export function SecurityOverview() {
           <TextLink href="#cases">All cases</TextLink>
         </HeroAside>
         <HeroLead>
-          <HeroFigure label="Open cases" value={String(figures.open)}>
+          <Figure size="hero" label="Open cases" value={String(figures.open)}>
             <SeverityMark level="critical" label="1 critical" />
             <SeverityMark level="high" label="1 high" />
             <SeverityMark level="medium" label="1 medium" />
-          </HeroFigure>
+          </Figure>
         </HeroLead>
         <HeroVisual>
           <TrendChart

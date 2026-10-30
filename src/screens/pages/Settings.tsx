@@ -1,11 +1,9 @@
 import { LogOut, Mail, ShieldCheck, Webhook } from "lucide-react";
 import {
-  Bars,
+  Sparkline,
   Button,
-  Channel,
-  ChannelSpecs,
-  ChannelStatus,
-  ChannelValue,
+  Fact,
+  FactList,
   Grid,
   IconTile,
   Notice,
@@ -21,15 +19,16 @@ import {
   SectionTitle,
   SectionTitleHeading,
   SectionTitleMeta,
-  Session,
-  SessionAction,
-  SessionDetail,
-  SessionMark,
-  SessionTag,
+  RecordActions,
+  RecordCard,
+  RecordDetail,
+  RecordMark,
+  RecordStatus,
+  RecordValue,
   Stack,
   StatusPill,
   Panel,
-  StatTile,
+  Figure,
 } from "../..";
 
 const days = [
@@ -49,25 +48,25 @@ export function SettingsScreen() {
 
       <Stack>
         <Numbered index="01">
-          <Session name="Nora Feld">
-            <SessionDetail>nora.feld@data-insights.ai · Valid until 22 Sep 2026</SessionDetail>
-            <SessionMark>
+          <RecordCard title="Nora Feld" layout="row" heading={false}>
+            <RecordDetail>nora.feld@data-insights.ai · Valid until 22 Sep 2026</RecordDetail>
+            <RecordMark>
               <IconTile variant="inverse">
                 <span aria-hidden>NF</span>
               </IconTile>
-            </SessionMark>
-            <SessionTag>
+            </RecordMark>
+            <RecordStatus>
               <StatusPill tone="neutral" dot={false}>
                 Administrator
               </StatusPill>
-            </SessionTag>
-            <SessionAction>
+            </RecordStatus>
+            <RecordActions>
               <Button variant="secondary" size="sm">
                 <LogOut aria-hidden />
                 Sign out
               </Button>
-            </SessionAction>
-          </Session>
+            </RecordActions>
+          </RecordCard>
           <Notice>
             <NoticeText>
               <NoticeBody>Two-factor authentication active · hardware token confirmed</NoticeBody>
@@ -84,32 +83,34 @@ export function SettingsScreen() {
             <SectionTitleMeta>Synced</SectionTitleMeta>
           </SectionTitle>
           <Grid min="240px">
-            <Channel title="Email notifications">
-              <ChannelStatus>
+            <RecordCard title="Email notifications">
+              <RecordStatus>
                 <StatusPill tone="ok">Enabled</StatusPill>
-              </ChannelStatus>
-              <ChannelValue>
+              </RecordStatus>
+              <RecordValue>
                 <Mail aria-hidden />
                 n****@data-insights.ai
-              </ChannelValue>
-              <ChannelSpecs>
-                <span>Routing: primary inbox</span>
-                <span>TLS 1.3 encrypted</span>
-              </ChannelSpecs>
-            </Channel>
-            <Channel title="Webhook">
-              <ChannelStatus>
+              </RecordValue>
+              <FactList layout="pairs">
+                <Fact label="Routing">Primary inbox</Fact>
+                <Fact label="Transport">TLS 1.3</Fact>
+              </FactList>
+            </RecordCard>
+            <RecordCard title="Webhook">
+              <RecordStatus>
                 <StatusPill tone="ok">Enabled</StatusPill>
-              </ChannelStatus>
-              <ChannelValue>
+              </RecordStatus>
+              <RecordValue>
                 <Webhook aria-hidden />
                 https://hooks.data-insights.ai/events
-              </ChannelValue>
-              <ChannelSpecs>
-                <span>Format: JSON</span>
-                <span>HMAC-SHA256 signed</span>
-              </ChannelSpecs>
-            </Channel>
+              </RecordValue>
+              <FactList layout="pairs">
+                <Fact label="Format">JSON</Fact>
+                <Fact label="Signature" mono>
+                  HMAC-SHA256
+                </Fact>
+              </FactList>
+            </RecordCard>
           </Grid>
 
           <Notice tone="warn">
@@ -136,8 +137,15 @@ export function SettingsScreen() {
 
         <Panel>
           <Grid min="220px">
-            <StatTile label="Notification availability, last 30 days, every channel" value="99.98%" />
-            <Bars values={days} highlight={16} startLabel="30 days ago" midLabel="Full operation" endLabel="Today" />
+            <Figure label="Notification availability, last 30 days, every channel" value="99.98%" />
+            <Sparkline
+              values={days}
+              highlight={16}
+              width="fill"
+              height="md"
+              captions={["30 days ago", "Full operation", "Today"]}
+              label="Notification availability per day over the last 30 days, one dip 16 days ago."
+            />
           </Grid>
         </Panel>
 

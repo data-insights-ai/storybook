@@ -111,14 +111,14 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
 | `navigation/` | Breadcrumb, CommandBar, Menu, TextLink; `views/` Tabs, TabNav; `sequence/` Pagination, Stepper; `Sidebar/` the sidebar and its parts behind one index, in `menu/`, `frame/` and `state/` |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker |
-| `data/` | `records/` AttentionList, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` FigureRow, HeroFigure, StatTile, Stat (deprecated, removed in 0.12.0); `table/` DataTable, InfiniteTable, ListToolbar |
+| `data/` | `records/` AttentionList, RecordCard (`layout` card or row), FactList, ProposalPanel; `figures/` Figure, FigureRow, Sparkline; `table/` DataTable, InfiniteTable, ListToolbar, NewEntries. Deprecated until 0.12.0, each a thin wrapper over its replacement: LivingCard, Session, Channel (RecordCard), KeyValues, ExplainRow (FactList), ExplainPanel, ConfirmPanel (ProposalPanel), Stat, StatRow, StatTile, HeroFigure (Figure), Bars (Sparkline) |
 | `text/` | Eyebrow, Highlight, Kbd, MetaLine, TickRule, CodeBlock, PullQuote |
 | `marks/` | Badge, Chip, Tag, VersionTag, Icon (with the `IconSet` gallery the docs show), IconTile; `status/` StatusPill, SeverityMark, SealValue |
 | `feedback/` | DangerZone, Delayed, EmptyState, Notice, Toast, Tooltip, TooltipTarget; `waiting/` AppLoader, Progress, RouteProgress, SkeletonPage, SkeletonTable, Spinner |
 | `overlays/` | ConfirmDialog, CreateFlow, Flyout, Modal, Sheet, ShortcutHelp; `useModalDialog/` the dialog behaviour Modal and Sheet share |
-| `inference/` | ConfidenceField, ConfirmPanel, ExplainPanel, PrivacyBadge, and the `Inference.css` they share |
+| `inference/` | ConfidenceField, PrivacyBadge |
 | `layout/` | `arrangement/` Stack, Grid, Toolbar, Numbered, FieldStack, InlineForm (deprecated: `Toolbar fillFirst`), Actions; `panes/` Split, ListDetail; `page/` Page, PageHeader, SectionTitle, Panel, Hero, Stage, DetailSection, pageSide (the side column a Sheet docks in); `folding/` Accordion, Disclosure |
-| `charts/` | Chart, ChartCard; `time/` TrendChart, Sparkline, Seismograph; `compare/` Bars, Distribution, LevelMeter, CoverageMatrix |
+| `charts/` | Chart, ChartCard; `time/` TrendChart, Seismograph; `compare/` Bars, Distribution, LevelMeter, CoverageMatrix |
 | `timeline/` | ChainTimeline, EventTimeline (with its `marks/` and `navigation/`), PeriodTimeline, WeekTimeline, TimelineSummary; `scale/` and `types/`, shared by EventTimeline and TimelineSummary |
 | `shell/` | AppShell, SignIn, SkipLink, ThemeProvider, DensityProvider |
 
@@ -129,7 +129,7 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Introduction`, then `Foundations/` — the brand, the tokens and the reasoning behind them (Essence, Register, Color, Type, Scale, Logo, Pages, Decisions and the rest). No package component lives here.
 - `Actions/` — what a person presses: Button, CountButton, CopyValue, RowActions, BulkActionBar.
 - `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
-- `Data/` — what a person reads: `Records/` (AttentionList, the cards, FactList, KeyValues, Channel, Session), `Figures/` (FigureRow, HeroFigure, StatTile; Stat is deprecated) and `Table/`.
+- `Data/` — what a person reads: `Records/` (AttentionList, RecordCard, FactList, ProposalPanel), `Figures/` (Figure, FigureRow, Sparkline) and `Table/`.
 - `Text/` — how text is set: Eyebrow, Highlight, Kbd, MetaLine, CodeBlock, PullQuote, TickRule. It imports only marks, so a button, a dialog or an empty state can set a key or an eyebrow with it.
 - `Marks/` — what every other component draws with: Badge, Chip, Tag, VersionTag, Icon, IconTile; `Status/` (StatusPill, SeverityMark, SealValue). A mark imports no other component, so it sits below them all.
 - `Feedback/` — Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `Waiting/` the loaders, progress and skeletons.
@@ -146,12 +146,12 @@ What a component may hold is a second axis, and it is a tag on its story meta, n
 
 - `layer:primitive` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it: Button, Badge, StatusPill, Pagination, Breadcrumb, Tooltip, the loaders.
 - `layer:form` — a labelled control.
-- `layer:block` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, Sheet, Menu, Tabs, StatTile, SignIn.
+- `layer:block` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Modal, Sheet, Menu, Tabs, RecordCard, SignIn.
 - `layer:pattern` — a whole arrangement: AppShell, Sidebar, ShortcutHelp, ThemeProvider and the arrangement components.
 
 A deprecated export says so in its doc comment, `@deprecated Removed in <version>: <why>`, with what to use instead, and every story that shows it carries the tag `status:deprecated`.
 
-The test is one question: **can another component go inside it?** `KeyValues` holds `KeyValue`, and `KeyValue` takes two strings — nothing else fits, so it is a primitive. `Stat` looks just as small, but its `children` holds a `StatusPill` on the Watchlist screen, so it is a block. `Pagination` and `SkeletonTable` are bulky and still primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
+The test is one question: **can another component go inside it?** `Sparkline` takes numbers and a label — nothing else fits, so it is a primitive. `Figure` looks just as small, but its `children` holds a `FigureNote` or a `Sparkline`, so it is a block. `Pagination` and `SkeletonTable` are bulky and still primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
 
 One sidebar entry is one component, and **one module is one component**. An independent component does not share a file with another one: `pnpm build` emits a module per file, so `Breadcrumb` living in `Tabs.tsx` means a product importing a breadcrumb also ships `Tabs` and `Stepper`. Where several are one family they get a subgroup rather than one merged entry (`Feedback/Waiting/Progress`, `/SkeletonTable`, `/Spinner`; `Layout/Arrangement/Stack`, `/Grid`, `/Numbered`, `/Toolbar`).
 
@@ -189,7 +189,7 @@ A variant is one union prop, never a family of booleans or a second prop that ca
 
 A brand page is assembled from those: `PageHeader` and `SectionTitle` at `tier="brand"`, `Stack` at `gap={48}`, `{64}` or `{96}`, `FactList layout="grid"`, `PullQuote`, `Grid` for a two-column band, and `TextField`/`Select` at `labelTrack="prose"` where a person fills a form in for themselves. There is no parallel set of brand components, and `src/foundations/guide/Guide.tsx` renders the Foundations pages from exactly these, which is what keeps it true: the brand-page vocabulary used to live only in that file's stylesheet, so a product installing the package could not reach it and approximated it instead.
 
-A line that reports a measured value is a slot, not a string. A count, a timestamp, a version, a delta, a caveat or a basis arrives sealed, in the mono track, or with a state beside it, and a `string` can carry none of that: `PanelMeta`, `StageFooter`, `ExplainFooter`, `RecordCount`, `SessionDetail`, `StatTileDelta`, `LivingBasis`, `SignInVersion`. Prose a person reads — `title`, `label`, `caption`, `legend`, `body` and every `*Label` accessible name — stays a string. The one exception is the heading of a page or a section, because it can hold a `Highlight`: `PageHeaderTitle` and `SectionTitleHeading` are slots, and what sits beside them is `PageHeaderAside` and `SectionTitleMeta`. A `Panel`, `Modal` or `Card` title stays a string — the page marks one place, and it is never a panel's title. A field says one thing at a time, so `TextField` and `Select` take one `hint` string and one `hintTone` of `neutral | sealed | error`, and `error` also sets `aria-invalid`.
+A line that reports a measured value is a slot, not a string. A count, a timestamp, a version, a delta, a caveat or a basis arrives sealed, in the mono track, or with a state beside it, and a `string` can carry none of that: `PanelMeta`, `StageFooter`, `ProposalNote`, `RecordCount`, `RecordDetail`, `FigureNote`, `RecordBasis`, `SignInVersion`. Prose a person reads — `title`, `label`, `caption`, `legend`, `body` and every `*Label` accessible name — stays a string. The one exception is the heading of a page or a section, because it can hold a `Highlight`: `PageHeaderTitle` and `SectionTitleHeading` are slots, and what sits beside them is `PageHeaderAside` and `SectionTitleMeta`. A `Panel`, `Modal` or `Card` title stays a string — the page marks one place, and it is never a panel's title. A field says one thing at a time, so `TextField` and `Select` take one `hint` string and one `hintTone` of `neutral | sealed | error`, and `error` also sets `aria-invalid`.
 
 A control mark centres on the **first line** of its label — never on the whole block, never on the label's top edge. `--di-choice-line` is that line, and `Checkbox`, `Radio` and `Switch` all bind to it. `Switch` defaults to `layout="inline"`, the checkbox's geometry; `layout="row"` is the settings column, and the distance it opens is that column, not slack.
 

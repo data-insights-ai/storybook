@@ -6,43 +6,36 @@ import {
   CommandGroup,
   CommandRow,
   ConfidenceField,
-  ConfirmActions,
-  ConfirmPanel,
-  ExplainFooter,
-  ExplainIgnored,
-  ExplainPanel,
-  ExplainRow,
+  Fact,
+  FactList,
   Figure,
-  FigureRow,
-  LivingActions,
-  LivingBasis,
-  LivingBody,
-  LivingCard,
-  LivingInsight,
+  FigureNote,
   PageHeader,
   PageHeaderTitle,
   Panel,
   PrivacyBadge,
+  ProposalActions,
+  ProposalAnswer,
+  ProposalIgnored,
+  ProposalNote,
+  ProposalPanel,
+  ProposalQuestion,
+  RecordActions,
+  RecordBasis,
+  RecordBody,
+  RecordCard,
+  RecordInsight,
+  RecordStatus,
   SectionTitle,
   SectionTitleHeading,
   Sparkline,
+  StatusPill,
   Toast,
   ToastAction,
   ToastRegion,
 } from "../..";
 import { ProductShell } from "../shell/ProductShell";
 import "./Inference.css";
-
-const bars = [
-  { percent: 38 },
-  { percent: 46 },
-  { percent: 41 },
-  { percent: 52 },
-  { percent: 49 },
-  { percent: 61 },
-  { percent: 74, tone: "series" as const },
-  { percent: 96, tone: "danger" as const },
-];
 
 /**
  * Everything a model touches, on one screen: the claim in place, the
@@ -64,66 +57,57 @@ export function InferenceScreen() {
         <SectionTitleHeading>The claim, and the question before it runs</SectionTitleHeading>
       </SectionTitle>
       <div className="inference-grid">
-        <LivingCard title="Unsealed entries" insightLabel="ai insight">
-          <LivingActions>
+        <RecordCard title="Unsealed entries">
+          <RecordStatus>
+            <StatusPill tone="inferred">ai insight</StatusPill>
+          </RecordStatus>
+          <RecordActions>
             <Button variant="ghost" size="sm" iconOnly={true} aria-label="Card actions">
               <MoreVertical aria-hidden />
             </Button>
-          </LivingActions>
-          <LivingBody>
-            <FigureRow label="Unsealed entries" variant="footer">
-              <Figure label="Unsealed" value="1,284" tone="danger">
-                up 940 since 08:00
-              </Figure>
-            </FigureRow>
+          </RecordActions>
+          <RecordBody>
+            <Figure label="Unsealed" value="1,284" tone="danger" size="compact">
+              <FigureNote tone="danger">up 940 since 08:00Z</FigureNote>
+            </Figure>
             <Sparkline
-              bars={bars}
-              label="Unsealed entries over the last eight hours, rising sharply in the last two."
+              values={[38, 46, 41, 52, 49, 61, 74, 96]}
+              highlight={7}
+              tone="danger"
+              label="Unsealed entries over the last eight hours, rising sharply in the last hour."
             />
-          </LivingBody>
-          <LivingInsight body="The rise follows the pause on feed.example.io at 08:47. Resuming it clears the backlog.">
-            <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
-            <Button variant="inferred" size="sm">
-              Review the proposal
-            </Button>
-            <Button variant="ghost" size="sm">
+          </RecordBody>
+          <RecordInsight body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
+            <RecordBasis>inferred from 3 sources · confidence 0.88</RecordBasis>
+            <Button size="sm">Review the proposal</Button>
+            <Button variant="secondary" size="sm">
               Dismiss
             </Button>
-          </LivingInsight>
-        </LivingCard>
-        <ConfirmPanel
-          label="Proposed action"
-          question="Resume feed.example.io?"
-          whyLabel="Why was this proposed?"
-          onWhy={() => undefined}
-        >
-          <ExplainRow label="Basis">1,284 entries are queued behind one paused host</ExplainRow>
-          <ExplainRow label="Scope">One source in this workspace</ExplainRow>
-          <ExplainRow label="Reversible">Yes, the source can be paused again</ExplainRow>
-          <ConfirmActions>
+          </RecordInsight>
+        </RecordCard>
+        <ProposalPanel label="Proposed action" whyLabel="Why was this proposed?">
+          <ProposalQuestion>Resume feed.example.io?</ProposalQuestion>
+          <FactList layout="stacked">
+            <Fact label="Basis">1,284 entries are queued behind one paused host</Fact>
+            <Fact label="Scope">One source in this workspace</Fact>
+            <Fact label="Reversible">Yes, the source can be paused again</Fact>
+          </FactList>
+          <ProposalAnswer>Proposed because 1,284 entries are queued behind one paused host.</ProposalAnswer>
+          <Figure size="compact" label="Confidence" value="0.88">
+            high
+          </Figure>
+          <ProposalIgnored
+            summary="Not considered (2)"
+            items={["Entries sealed before 2026-09-01", "Unsealed drafts"]}
+          />
+          <ProposalNote>This does not account for sources added in the last hour.</ProposalNote>
+          <ProposalActions>
             <Button variant="secondary" size="sm">
               Cancel
             </Button>
             <Button size="sm">Resume</Button>
-          </ConfirmActions>
-        </ConfirmPanel>
-        <ExplainPanel
-          label="Why this was proposed"
-          answer="Proposed because 1,284 entries are queued behind one paused host."
-          confidenceLabel="Confidence"
-          confidence="0.88"
-          confidenceWord="high"
-        >
-          <ExplainRow label="Matched on">Host, manifest prefix and queue depth</ExplainRow>
-          <ExplainRow label="Window" mono>
-            2026-09-22 → 2026-09-23
-          </ExplainRow>
-          <ExplainIgnored
-            summary="Not considered (2)"
-            items={["Entries sealed before 2026-09-01", "Unsealed drafts"]}
-          />
-          <ExplainFooter>This does not account for sources added in the last hour.</ExplainFooter>
-        </ExplainPanel>
+          </ProposalActions>
+        </ProposalPanel>
         <div className="inference-column">
           <Panel title="Where a query goes">
             <div className="inference-badges">
