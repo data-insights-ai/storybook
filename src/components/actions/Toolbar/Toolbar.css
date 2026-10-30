@@ -109,7 +109,7 @@
 
   /* On a phone the band is the screen's width: the words on one row, Discard and Save sharing the next. */
   @media (max-width: 600px) {
-    .di-content .di-toolbar[data-sticky="bottom"] {
+    .di-sb-inset .di-content .di-toolbar[data-sticky="bottom"] {
       padding-inline: var(--di-space-16);
     }
 
