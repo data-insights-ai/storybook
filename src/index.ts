@@ -62,7 +62,7 @@ export type {
   DateRangeValue,
   ResolvedDateRange,
 } from "./components/forms/dates/dateRange";
-export { ConfidenceField } from "./components/forms/field/FieldConfidence";
+export { ConfidenceField } from "./components/forms/text/TextField";
 export type { FieldConfidenceReading } from "./components/forms/field/FieldConfidence";
 export { ConfirmDialog } from "./components/overlays/ConfirmDialog";
 export { CountButton } from "./components/actions/CountButton";

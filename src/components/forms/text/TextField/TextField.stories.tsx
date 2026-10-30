@@ -4,7 +4,7 @@ import { Button } from "../../../actions/Button";
 import { FieldStack } from "../../../layout/arrangement/FieldStack";
 import { Toolbar } from "../../../layout/arrangement/Toolbar";
 import { TextField } from "./TextField";
-import { ConfidenceField } from "../../field/FieldConfidence";
+import { ConfidenceField } from "./ConfidenceField";
 import { TextLink } from "../../../navigation/TextLink";
 
 const meta = {

@@ -1,4 +1,4 @@
-import { TextField } from "../../text/TextField";
+import { TextField } from "./TextField";
 
 /**
  * @deprecated Use `<TextField readOnly value={…} confidence={{ value, label, level, whyLabel, onWhy }}>`:
