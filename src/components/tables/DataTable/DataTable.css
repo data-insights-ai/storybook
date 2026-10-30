@@ -106,6 +106,15 @@
     width: 100%;
   }
 
+  /*
+   * The row's name and a filling column keep a readable width: squeezed to
+   * their longest word they break a name at its hyphen and stack a line of
+   * words one per line. Narrower than that, the grid scrolls instead.
+   */
+  .di-table th:is(.is-fill, .is-pin-last) {
+    min-width: var(--di-table-label-min);
+  }
+
   .di-table:has(th.is-fill) :is(th, td):not(.is-fill) {
     white-space: nowrap;
   }

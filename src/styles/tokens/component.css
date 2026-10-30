@@ -206,6 +206,8 @@
     --di-facts-grid-min: 360px;
     --di-facts-grid-cell-h: 108px;
     --di-facts-column-min: 200px;
+    /* Tables: the narrowest the row's name and a filling column get before the grid scrolls instead. */
+    --di-table-label-min: 160px;
     /* Marks: severity steps, the icon specimen grid. */
     --di-sev-step-w: 3px;
     --di-sev-step-1: 5px;

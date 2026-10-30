@@ -105,11 +105,11 @@ export const OneDecision: Story = {
         rank="01"
         emphasis
         emphasisLabel="Due 23 Oct"
-        title="The team add-on ends in 11 days"
+        title="The team add‑on ends in 11 days"
         reason="Three seats lapse with it; the members keep their accounts but lose the product."
         meta="Renews by hand · 3 seats"
       >
-        <Button>Renew the add-on</Button>
+        <Button>Renew the add‑on</Button>
       </AttentionItem>
     </AttentionList>
   ),

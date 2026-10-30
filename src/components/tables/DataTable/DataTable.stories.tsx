@@ -728,7 +728,7 @@ export const PinnedWithoutIndex: Story = {
         <TableBody>
           <TableRow>
             <TableCell pinned>
-              <CellStack primary="Team Add-on" secondary="Yearly · 3 seats per unit" prose />
+              <CellStack primary="Team Add‑on" secondary="Yearly · 3 seats per unit" prose />
             </TableCell>
             <TableCell align="end">
               <CellStack primary="€9,900.00 per year" secondary={["Total €9,900.00 per year"]} prose />
