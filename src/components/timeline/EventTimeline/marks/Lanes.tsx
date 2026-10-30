@@ -6,6 +6,7 @@ export const LANE_H = 34;
 const LABEL_Y = 8;
 const TRACK_Y = 18;
 const CELL_H = 10;
+const LOW_H = 4;
 const MIN_CELL = 2;
 const SHADES = 4;
 const TONES: TimelineTone[] = ["neutral", "warn", "danger"];
@@ -23,7 +24,8 @@ export function cellsOf(lane: TimelineLane, events: TimelineEvent[] | undefined)
 export const countIn = (cells: TimelineCell[], view: Span) =>
   cells.reduce((n, c) => (c.end >= view.start && c.start < view.end ? n + c.count : n), 0);
 
-// A cell takes the tone of its severest event and is darker where the lane was busier.
+// A cell takes the tone of its severest event at full strength, so one critical event still reads as critical,
+// and stands taller where the lane was busier.
 function lanePaths(cells: TimelineCell[], scale: Scale, plotPx: number, y: number) {
   const peak = Math.max(1, ...cells.map((c) => c.count));
   const paths = new Map<string, { tone: TimelineTone; shade: number; d: string }>();
@@ -38,7 +40,8 @@ function lanePaths(cells: TimelineCell[], scale: Scale, plotPx: number, y: numbe
     const path = paths.get(key) ?? { tone: cell.tone, shade, d: "" };
     paths.set(key, path);
     const w = half(x1 - x0);
-    path.d += `M${half(x0)} ${y}h${w}v${CELL_H}h${-w}z`;
+    const h = LOW_H + ((CELL_H - LOW_H) * (shade - 1)) / (SHADES - 1);
+    path.d += `M${half(x0)} ${y + CELL_H - h}h${w}v${h}h${-w}z`;
   }
   return [...paths.values()].sort((a, b) => TONES.indexOf(a.tone) - TONES.indexOf(b.tone) || a.shade - b.shade);
 }
@@ -70,12 +73,7 @@ export const Lanes = memo(function Lanes({
           <g key={lane.id}>
             <rect x={0} y={y} width={plotPx} height={CELL_H} className="di-timeline-lane-track" />
             {lanePaths(cells.get(lane.id) ?? [], scale, plotPx, y).map((p) => (
-              <path
-                key={`${p.tone}-${p.shade}`}
-                d={p.d}
-                className={`di-timeline-fill is-${p.tone}`}
-                fillOpacity={0.25 + (0.75 * p.shade) / SHADES}
-              />
+              <path key={`${p.tone}-${p.shade}`} d={p.d} className={`di-timeline-fill is-${p.tone}`} />
             ))}
             <text
               x={0}

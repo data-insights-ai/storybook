@@ -1,6 +1,7 @@
 import { useMemo, useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
+import { Panel } from "../../layout/page/Panel";
 import { bucketFor } from "../scale";
 import { episodesIn, episodesOf, type TimelineEpisode } from "./episodes";
 import {
@@ -18,37 +19,70 @@ const NOW = Date.UTC(2026, 9, 12, 10, 0, 0);
 const HOUR = 3_600_000;
 const STRIP_PX = 600;
 
-const day = new Intl.DateTimeFormat("en", {
-  timeZone: "UTC",
-  weekday: "short",
-  day: "numeric",
-  month: "short",
-});
-const clock = new Intl.DateTimeFormat("en", {
-  timeZone: "UTC",
-  hour: "2-digit",
-  minute: "2-digit",
-  hourCycle: "h23",
-});
-const count = new Intl.NumberFormat("en");
-const list = new Intl.ListFormat("en");
-
-const TONE: Record<TimelineTone, string> = {
-  danger: "critical",
-  warn: "warning",
-  neutral: "routine",
+type Words = {
+  tone: Record<TimelineTone, string>;
+  unclassified: string;
+  more: (n: number) => string;
+  burst: string;
+  steady: string;
+  events: (n: string) => string;
+  critical: (n: string) => string;
+  episodes: (n: number) => string;
+  holding: (episodes: string, events: string, over: string) => string;
+  minutes: (n: number) => string;
+  hours: (n: number) => string;
 };
+
+const WORDS: Record<string, Words> = {
+  en: {
+    tone: { danger: "critical", warn: "warning", neutral: "routine" },
+    unclassified: "Unclassified activity",
+    more: (n) => `and ${n} more`,
+    burst: "Burst",
+    steady: "Ongoing activity",
+    events: (n) => `${n} events`,
+    critical: (n) => `${n} critical`,
+    episodes: (n) => (n === 1 ? "1 episode" : `${n} episodes`),
+    holding: (episodes, events, over) => `${episodes} holding ${events} events over ${over}`,
+    minutes: (n) => `${n} min`,
+    hours: (n) => `${n} h`,
+  },
+  de: {
+    tone: { danger: "kritisch", warn: "Warnung", neutral: "Routine" },
+    unclassified: "Nicht zugeordnete Aktivität",
+    more: (n) => `und ${n} weitere`,
+    burst: "Ausbruch",
+    steady: "Laufende Aktivität",
+    events: (n) => `${n} Ereignisse`,
+    critical: (n) => `${n} kritisch`,
+    episodes: (n) => (n === 1 ? "1 Abschnitt" : `${n} Abschnitte`),
+    holding: (episodes, events, over) => `${episodes} mit ${events} Ereignissen über ${over}`,
+    minutes: (n) => `${n} Min.`,
+    hours: (n) => `${n} Std.`,
+  },
+};
+
+const formatsOf = (locale: string) => ({
+  words: WORDS[locale] ?? WORDS.en,
+  day: new Intl.DateTimeFormat(locale, { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" }),
+  clock: new Intl.DateTimeFormat(locale, { timeZone: "UTC", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }),
+  count: new Intl.NumberFormat(locale),
+  list: new Intl.ListFormat(locale),
+});
+type Formats = ReturnType<typeof formatsOf>;
+
+const TONE = WORDS.en.tone;
 
 const ACTIVITY = activity(NOW);
 const isCritical = (event: SampleEvent) => event.tone === "danger";
 const RHYTHM = rhythm(NOW);
 
-function duration(ms: number) {
+function duration(ms: number, { words }: Formats) {
   const minutes = Math.max(1, Math.round(ms / 60_000));
-  return minutes < 90 ? `${minutes} min` : `${Math.round(minutes / 60)} h`;
+  return minutes < 90 ? words.minutes(minutes) : words.hours(Math.round(minutes / 60));
 }
 
-function when(episode: TimelineEpisode) {
+function when(episode: TimelineEpisode, { day, clock }: Formats) {
   const end = episode.end - 1;
   const from = `${day.format(episode.start)} ${clock.format(episode.start)}`;
   return day.format(episode.start) === day.format(end)
@@ -57,14 +91,14 @@ function when(episode: TimelineEpisode) {
 }
 
 /** The three busiest lanes, read in the order the lanes run. */
-function whatHappened(episode: TimelineEpisode) {
+function whatHappened(episode: TimelineEpisode, { words, list }: Formats) {
   const busiest = new Set([...episode.lanes].sort((a, b) => b.count - a.count).slice(0, 3));
   const named = episode.lanes.filter((l) => busiest.has(l)).map((l) => l.label);
   if (named.length === 0) {
-    return "Unclassified activity";
+    return words.unclassified;
   }
   const more = episode.lanes.length - named.length;
-  return more > 0 ? `${list.format(named)} and ${more} more` : list.format(named);
+  return more > 0 ? `${list.format(named)} ${words.more(more)}` : list.format(named);
 }
 
 type SampleProps = ComponentProps<typeof TimelineSummary> & {
@@ -92,6 +126,8 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
     return episodesIn(found, foldBars(focused, bounds, bucketMs), foldLanes(sampleLanes, focused, bounds, bucketMs));
   }, [sample, sampleLanes, sampleFocus, bounds]);
   const [active, setActive] = useState<number | null>(null);
+  const formats = useMemo(() => formatsOf(args.locale), [args.locale]);
+  const { words, day, clock, count } = formats;
 
   const rows = [
     ...episodes.flatMap((episode, i) => (episode.total > 0 ? [{ at: episode.start, episode, i }] : [])),
@@ -113,8 +149,11 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
     >
       <TimelineSummaryMeta>
         <span className="di-quiet">
-          {episodeCount(episodes.filter((e) => e.total > 0).length)} holding {count.format(total)} events over{" "}
-          {duration(bounds.end - bounds.start)}
+          {words.holding(
+            words.episodes(episodes.filter((e) => e.total > 0).length),
+            count.format(total),
+            duration(bounds.end - bounds.start, formats),
+          )}
         </span>
       </TimelineSummaryMeta>
       {rows.map((row) =>
@@ -123,14 +162,17 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
             key={`e${row.at}`}
             episode={row.i}
             tone={row.episode.tone}
-            toneLabel={TONE[row.episode.tone]}
-            title={whatHappened(row.episode)}
+            toneLabel={words.tone[row.episode.tone]}
+            title={whatHappened(row.episode, formats)}
           >
-            <TimelineSummaryTime>{when(row.episode)}</TimelineSummaryTime>
+            <TimelineSummaryTime>{when(row.episode, formats)}</TimelineSummaryTime>
             <TimelineSummaryDetail>
-              {row.episode.kind === "burst" ? "Burst" : "Ongoing activity"} · {count.format(row.episode.total)} events ·{" "}
-              {duration(row.episode.end - row.episode.start)}
-              {row.episode.danger ? ` · ${count.format(row.episode.danger)} critical` : ""}
+              {[
+                row.episode.kind === "burst" ? words.burst : words.steady,
+                words.events(count.format(row.episode.total)),
+                duration(row.episode.end - row.episode.start, formats),
+                ...(row.episode.danger ? [words.critical(count.format(row.episode.danger))] : []),
+              ].join(" · ")}
             </TimelineSummaryDetail>
           </TimelineSummaryEpisode>
         ) : (
@@ -145,8 +187,6 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
   );
 }
 
-const episodeCount = (n: number) => (n === 1 ? "1 episode" : `${n} episodes`);
-
 const meta = {
   title: "Timeline/TimelineSummary",
   component: TimelineSummary,
@@ -160,11 +200,18 @@ const meta = {
     toneLabels: TONE,
     markerLabel: "change to the record",
     scaleNote:
-      "A taller block held more events per minute. Each colour shows where events of that tone fell; the pale ground between them was quiet.",
+      "A taller block held more events per minute. Each colour shows where events of that tone fell; where only the base line runs, it was quiet.",
     locale: "en",
     timeZone: "UTC",
     onEpisodePick: fn(),
   },
+  decorators: [
+    (Story) => (
+      <Panel>
+        <Story />
+      </Panel>
+    ),
+  ],
   argTypes: {
     bounds: { control: false },
     episodes: { control: false },
@@ -229,4 +276,55 @@ export const CriticalOnly: Story = {
 /** A health check every minute for twelve hours never goes quiet, so it is one episode. */
 export const Steady: Story = {
   render: (args) => <Sample {...args} sample={RHYTHM} sampleLanes={[{ id: "health", label: "Health checks" }]} />,
+};
+
+const inIntakeOrExport = (event: SampleEvent) => event.lane === "intake" || event.lane === "export";
+
+/**
+ * The same three days narrowed to two stages, Intake and Export: their
+ * episodes differ in tone, so each row carries its own mark, in a column
+ * of one width down the list.
+ */
+export const MixedSeverity: Story = {
+  render: (args) => <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} sampleFocus={inIntakeOrExport} />,
+  play: async ({ canvasElement }) => {
+    const marks = canvasElement.querySelectorAll(".di-tsummary-row .di-sev");
+    await expect(marks.length).toBeGreaterThan(1);
+    const lefts = new Set([...marks].map((mark) => Math.round(mark.getBoundingClientRect().left)));
+    await expect(lefts.size).toBe(1);
+  },
+};
+
+const GERMAN_LANES: TimelineLane[] = [
+  { id: "config", label: "Konfigurationsänderungen" },
+  { id: "intake", label: "Datenannahme" },
+  { id: "checks", label: "Plausibilitätsprüfungen" },
+  { id: "sync", label: "Replikation" },
+  { id: "export", label: "Export an Empfängersysteme" },
+];
+
+/** Long German lane names and meta: the rows wrap between words, the severity stays in its column. */
+export const German: Story = {
+  args: {
+    title: "Was geschah",
+    label: "Aktivitätsabschnitte über den ganzen Datensatz, jeder als Block auf einem Streifen",
+    listLabel: "Abschnitte und Änderungen am Datensatz, älteste zuerst",
+    toneLabels: WORDS.de.tone,
+    markerLabel: "Änderung am Datensatz",
+    scaleNote:
+      "Ein höherer Block enthielt mehr Ereignisse pro Minute. Jede Farbe zeigt, wo Ereignisse dieser Stufe fielen; wo nur die Grundlinie läuft, war es ruhig.",
+    locale: "de",
+  },
+  render: (args) => (
+    <Sample
+      {...args}
+      sample={ACTIVITY}
+      sampleLanes={GERMAN_LANES}
+      sampleMarkers={[
+        { at: start + HOUR, label: "eröffnet" },
+        { at: start + 15.5 * HOUR, label: "in Prüfung" },
+        { at: start + 31 * HOUR, label: "bestätigt" },
+      ]}
+    />
+  ),
 };
