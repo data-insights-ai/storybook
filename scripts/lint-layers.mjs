@@ -240,7 +240,8 @@ for (const st of entry.statements) {
   for (const el of st.exportClause.elements) {
     const c = components.get(el.name.text);
     if (!c) continue;
-    if (!c.deprecated && !shown.has(`${c.module}#${c.name}`)) find("public-story", `${c.name} (${c.module}) has no story`);
+    if (!c.deprecated && !shown.has(`${c.module}#${c.name}`))
+      find("public-story", `${c.name} (${c.module}) has no story`);
     if (!c.doc) find("public-doc", `${c.name} (${c.module}) has no doc comment`);
   }
 }
