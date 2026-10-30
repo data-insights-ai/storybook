@@ -91,8 +91,17 @@ export const Bounded: Story = {
 const cell = (canvasElement: HTMLElement, name: RegExp) =>
   within(canvasElement.ownerDocument.body).getByRole("button", { name });
 
+/** A token's colour as the browser resolves it here. */
+const tokenColour = (from: Element, token: string) => {
+  const probe = from.ownerDocument.body.appendChild(from.ownerDocument.createElement("div"));
+  probe.style.background = `var(${token})`;
+  const colour = getComputedStyle(probe).backgroundColor;
+  probe.remove();
+  return colour;
+};
+
 /**
- * Open, the calendar shows the chosen day in the selection colour (cornflower, not the navy of an action),
+ * Open, the calendar shows the chosen day filled with the primary ink, as a chosen toggle (a value, not a pale tint),
  * today with a quiet ring, and the days before `min` greyed. It rests open.
  */
 export const CalendarOpen: Story = {
@@ -102,7 +111,7 @@ export const CalendarOpen: Story = {
     const chosen = cell(canvasElement, /20 October 2026/);
     await waitFor(() => expect(chosen).toHaveFocus());
     await expect(chosen).toHaveAttribute("data-selected");
-    await expect(getComputedStyle(chosen).boxShadow).not.toBe("none");
+    await expect(getComputedStyle(chosen).backgroundColor).toBe(tokenColour(chosen, "--di-choice-on-bg"));
     await expect(cell(canvasElement, /11 October 2026/)).toBeDisabled();
     const popup = canvasElement.ownerDocument.querySelector(".di-date-field-popover")!.getBoundingClientRect();
     await expect(popup.right).toBeLessThanOrEqual(canvasElement.ownerDocument.documentElement.clientWidth);

@@ -64,11 +64,21 @@ export const Default: Story = {};
 /** A preset moves with the clock: "Last 7 days" is today and the six days before it. */
 export const Preset: Story = { args: { value: { preset: "7d" } } };
 
+/** A token's colour as the browser resolves it here. */
+const tokenColour = (from: Element, token: string) => {
+  const probe = from.ownerDocument.body.appendChild(from.ownerDocument.createElement("div"));
+  probe.style.background = `var(${token})`;
+  const colour = getComputedStyle(probe).backgroundColor;
+  probe.remove();
+  return colour;
+};
+
 /**
  * A fixed range shows its days in the reader's language; the end is exclusive, so the last day shown is 7 October.
- * Open, the chosen period is marked in the list and the days carry the selection colour: both ends ringed, a band
- * between them. It rests open.
+ * Open, the chosen period is marked in the list and the days carry the selection: both ends filled with the primary ink, the
+ * days between on the inset tone. It rests open.
  */
+
 export const CustomRange: Story = {
   args: { value: { from: "2026-09-30T22:00:00.000Z", to: "2026-10-07T22:00:00.000Z" } },
   play: async ({ canvasElement }) => {
@@ -77,7 +87,9 @@ export const CustomRange: Story = {
     await expect(await page.findByRole("option", { name: "Custom range" })).toHaveAttribute("aria-selected", "true");
     const first = page.getAllByRole("button", { name: /1 October 2026/ })[0];
     await expect(first).toHaveAttribute("data-selection-start");
-    await expect(getComputedStyle(first).boxShadow).not.toBe("none");
+    await expect(getComputedStyle(first).backgroundColor).toBe(tokenColour(first, "--di-choice-on-bg"));
+    const between = page.getAllByRole("button", { name: /4 October 2026/ })[0];
+    await expect(getComputedStyle(between).backgroundColor).toBe(tokenColour(between, "--di-choice-range-bg"));
   },
 };
 

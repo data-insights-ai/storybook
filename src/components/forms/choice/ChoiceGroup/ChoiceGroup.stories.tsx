@@ -505,6 +505,12 @@ export const Cards: Story = {
     await userEvent.click(canvas.getByText("File drop"));
     await expect(canvas.getByText(/Upload one export now/)).toBeVisible();
     rest();
+    await Promise.all(document.getAnimations().map((x) => x.finished.catch(() => undefined)));
+    const chosen = getComputedStyle(canvas.getByText("File drop").closest(".di-choice-card")!);
+    const other = getComputedStyle(canvas.getByText("Azure Event Hub").closest(".di-choice-card")!);
+    await expect(chosen.backgroundColor).toBe(other.backgroundColor);
+    await expect(contrast(chosen.borderTopColor, chosen.backgroundColor)).toBeGreaterThanOrEqual(3);
+    await expect(contrast(chosen.color, chosen.backgroundColor)).toBeGreaterThanOrEqual(4.5);
   },
 };
 
