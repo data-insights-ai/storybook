@@ -45,7 +45,7 @@ export function SegmentedControl({
 }
 
 /**
- * @deprecated Use `<ChoiceGroup appearance="segments" multiple name legend options value onChange />`;
+ * @deprecated Use `<ChoiceGroup appearance="toggles" multiple name legend options value onChange />`;
  * the options' `name` stays the accessible name. Removed in 0.12.
  */
 export function ToggleGroup({
@@ -67,7 +67,7 @@ export function ToggleGroup({
 }) {
   return (
     <ChoiceGroup
-      appearance="segments"
+      appearance="toggles"
       multiple
       name={legend}
       legend={legend}

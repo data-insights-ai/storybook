@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { AlertCircle, X } from "lucide-react";
 import { cx } from "../../../../internal/cx";
 
 /**
@@ -31,6 +31,7 @@ export function EntryList({
         const ok = isValid(value);
         return (
           <li key={value} className={cx("di-token", !ok && "is-invalid")}>
+            {ok ? null : <AlertCircle className="di-token-mark" aria-hidden />}
             <span className="di-token-text">{label}</span>
             {ok || invalidLabel === "" ? null : <span className="di-sr">{invalidLabel}</span>}
             <button

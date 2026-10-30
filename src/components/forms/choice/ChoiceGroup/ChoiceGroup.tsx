@@ -31,7 +31,7 @@ export type ChoicePlanned = {
   options: Pick<ChoiceOption, "value" | "label" | "icon">[];
 };
 
-export type ChoiceAppearance = "list" | "segments" | "cards";
+export type ChoiceAppearance = "list" | "segments" | "toggles" | "cards";
 
 type Frame = {
   /** Names the choice, above the options in the field label style. */
@@ -80,7 +80,7 @@ export type ChoiceGroupProps = WithOptions | Composed;
  *
  * **When to use:** a short, fixed set the reader sees all at once: a
  * retention period (`list`), a view or a range in a toolbar (`segments`,
- * two to four, commits at once), the days of a week (`segments multiple`),
+ * two to four, commits at once), the days of a week (`toggles multiple`),
  * the kind to start a create flow from (`cards`).
  * **When not to:** more than about seven options or options from data → `Select`
  * or `ComboBox`; several from a long set → `MultiComboBox`; one setting that
@@ -91,11 +91,15 @@ export type ChoiceGroupProps = WithOptions | Composed;
  * `children` (the detail that follows from the choice), then `planned`.
  *
  * **Variants:** `appearance` `list` (radio or checkbox rows with a
- * description), `segments` (a joined row the height of a field), `cards`
+ * description), `segments` (one track the height of a field, the chosen
+ * one a solid thumb: pick one), `toggles` (a row of separate, equal cells
+ * in the field frame, each chosen one filled: for several of a short set,
+ * such as days; `segments` with `multiple` is drawn as toggles), `cards`
  * (icon, label, one-line description, optional `group` headings and
  * `planned` kinds). `multiple` turns radios into checkboxes in the same
- * markup. A chosen segment or card is drawn one way: the selection tint and
- * a cornflower edge, the text at full strength.
+ * markup. Chosen is cornflower everywhere: a filled thumb or cell for a
+ * segment or toggle (too small for a tint to read), the selection tint and a
+ * cornflower edge for a card.
  *
  * **States:** a disabled option, a disabled group (`disabled` on the
  * fieldset); a chosen option keeps its edge while disabled.
@@ -111,7 +115,7 @@ export type ChoiceGroupProps = WithOptions | Composed;
  */
 export function ChoiceGroup(props: ChoiceGroupProps) {
   const { legend, hideLegend = false, disabled = false, className, children } = props;
-  const appearance = props.options === undefined ? undefined : (props.appearance ?? "list");
+  const appearance = props.options === undefined ? undefined : shown(props);
   return (
     <fieldset
       className={cx("di-choice-group", appearance && `di-choice-group-${appearance}`, className)}
@@ -125,8 +129,15 @@ export function ChoiceGroup(props: ChoiceGroupProps) {
   );
 }
 
+/* Segments are one thumb on one track, a pick-one idiom; several chosen at once are toggles. */
+const shown = (props: WithOptions): ChoiceAppearance => {
+  const appearance = props.appearance ?? "list";
+  return appearance === "segments" && props.multiple ? "toggles" : appearance;
+};
+
 function Options(props: WithOptions) {
-  const { name, options, appearance = "list", planned, disabled = false, children } = props;
+  const { name, options, planned, disabled = false, children } = props;
+  const appearance = shown(props);
   const chosen = (value: string) => (props.multiple ? props.value.includes(value) : props.value === value);
   const pick = (value: string) => {
     if (!props.multiple) return props.onChange(value);
@@ -172,6 +183,22 @@ function Options(props: WithOptions) {
       onChange={() => pick(o.value)}
     />
   );
+
+  if (appearance === "toggles") {
+    return (
+      <>
+        <div className="di-choice-toggles">
+          {options.map((o) => (
+            <label key={o.value} className={cx("di-choice-toggle", chosen(o.value) && "is-chosen")} title={o.more}>
+              {input(o)}
+              <span>{o.label}</span>
+            </label>
+          ))}
+        </div>
+        {children}
+      </>
+    );
+  }
 
   if (appearance === "segments") {
     return (
