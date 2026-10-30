@@ -1,12 +1,16 @@
 @layer components {
-  .di-stepper {
+  .di-steps {
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .di-steps[data-variant="progress"] {
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
     width: 100%;
-    padding: 0;
-    margin: 0;
-    list-style: none;
   }
 
   /* The line between bullets runs from one circle's edge to the next's, under them. */
@@ -117,22 +121,22 @@
 
   /* Inline: the steps start at the content's edge, each name on one line
      beside its bullet, joined by a short line that gives way first. */
-  .di-stepper[data-layout="inline"] {
+  .di-steps[data-layout="inline"] {
     display: flex;
     align-items: center;
     container-type: inline-size;
   }
 
-  .di-stepper[data-layout="inline"] .di-step {
+  .di-steps[data-layout="inline"] .di-step {
     flex: none;
     align-items: center;
   }
 
-  .di-stepper[data-layout="inline"] .di-step:not(:first-child) {
+  .di-steps[data-layout="inline"] .di-step:not(:first-child) {
     flex: 0 1 auto;
   }
 
-  .di-stepper[data-layout="inline"] .di-step:not(:first-child)::before {
+  .di-steps[data-layout="inline"] .di-step:not(:first-child)::before {
     position: static;
     flex: 0 1 auto;
     width: var(--di-space-32);
@@ -140,7 +144,7 @@
     margin: 0 var(--di-gap-8);
   }
 
-  .di-stepper[data-layout="inline"] .di-step-button {
+  .di-steps[data-layout="inline"] .di-step-button {
     flex: none;
     flex-direction: row;
     gap: var(--di-gap-8);
@@ -149,14 +153,14 @@
     text-align: left;
   }
 
-  .di-stepper[data-layout="inline"] .di-step-label {
+  .di-steps[data-layout="inline"] .di-step-label {
     max-width: none;
     white-space: nowrap;
   }
 
   /* Too narrow for every name on one line: the others are their bullets. */
   @container (max-width: 800px) {
-    .di-stepper[data-layout="inline"] .di-step:not([aria-current]) .di-step-label {
+    .di-steps[data-layout="inline"] .di-step:not([aria-current]) .di-step-label {
       position: absolute;
       width: 1px;
       height: 1px;
@@ -174,5 +178,204 @@
       overflow: hidden;
       clip: rect(0 0 0 0);
     }
+
+    /* A spread run sets out like the inline one, so the current name sits beside its bullet with the width of the row, not a quarter of it. */
+    .di-steps[data-layout="spread"] {
+      display: flex;
+      align-items: center;
+    }
+
+    .di-steps[data-layout="spread"] .di-step {
+      flex: none;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .di-steps[data-layout="spread"] .di-step:not(:first-child) {
+      flex: 1 1 auto;
+    }
+
+    .di-steps[data-layout="spread"] .di-step:not(:first-child)::before {
+      position: static;
+      flex: 1 1 auto;
+      min-width: var(--di-space-16);
+      margin: 0 var(--di-gap-8);
+    }
+
+    .di-steps[data-layout="spread"] .di-step-button {
+      flex-direction: row;
+      gap: var(--di-gap-8);
+      padding: 0;
+      text-align: left;
+    }
+
+    .di-steps[data-variant="progress"] .di-step[aria-current],
+    .di-steps[data-variant="progress"] .di-step[aria-current] .di-step-button {
+      flex-shrink: 1;
+      min-width: 0;
+    }
+
+    .di-steps[data-variant="progress"] .di-step[aria-current] .di-step-label {
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: break-word;
+      text-wrap: balance;
+    }
+  }
+
+  /* Cards: each step a surface in a row that wraps on a narrow page. */
+  .di-steps[data-variant="cards"] {
+    display: grid;
+    gap: var(--di-gap-8);
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--di-stage-min-width), 100%), 1fr));
+  }
+
+  .di-step-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+    min-width: 0;
+    min-height: var(--di-stage-min-height);
+    padding: var(--di-inset-group);
+  }
+
+  .di-step-card-head {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-8);
+  }
+
+  .di-step-card-index {
+    margin-left: auto;
+  }
+
+  .di-step-card-title {
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+
+  .di-step-body {
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+    text-wrap: pretty;
+  }
+
+  /* A flex row, so a spinner or a pill sets the footer's height rather than a text strut under it. */
+  .di-step-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-8);
+    margin-top: auto;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  .di-step-icon {
+    display: inline-flex;
+    color: var(--di-text);
+  }
+
+  .di-step-icon svg {
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+  }
+
+  /*
+   * The current card runs on navy, so it re-points its own tokens the way
+   * Toast does: whatever the footer holds (a Spinner, a SealValue, a
+   * StatusPill) then reads on that ground. Inside another surface it stays
+   * navy: it is the step that runs, not a group to sink.
+   */
+  .di-surface.di-step-card.is-current {
+    --di-text: var(--di-inverse-text);
+    --di-text-muted: var(--di-inverse-muted);
+    --di-text-subtle: var(--di-inverse-muted);
+    --di-focus: var(--di-inverse-focus);
+    --di-border: var(--di-inverse-border);
+    --di-border-strong: var(--di-inverse-raised);
+    --di-fill-strong: var(--di-inverse-text);
+    --di-surface-bg: var(--di-inverse-bg);
+    --di-surface-shadow: none;
+
+    color: var(--di-text);
+  }
+
+  .di-step-card.is-current .di-step-icon {
+    color: var(--di-inverse-mark);
+  }
+
+  /* List: the ordinal in its own column beside what the step holds. */
+  .di-steps[data-variant="list"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+  }
+
+  .di-step-row {
+    display: grid;
+    grid-template-columns: var(--di-numbered-col) minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--di-gap-8);
+    min-width: 0;
+    /* 12px is the clearance floor from a ground edge, so it holds in compact too. */
+    padding: var(--di-space-12) var(--di-inset-group);
+    border-radius: var(--di-radius-inset);
+    background: var(--di-bg-subtle);
+  }
+
+  .di-step-row-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-12);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .di-step-row.is-current .di-step-row-index {
+    color: var(--di-text);
+  }
+
+  /* Ruled rows sit inside a surface: a rule between them, no box of their own, and the surface owns the inset. */
+  .di-steps[data-tone="ruled"] {
+    gap: 0;
+  }
+
+  .di-steps[data-tone="ruled"] .di-step-row {
+    padding: var(--di-gap-12) 0;
+    border-radius: 0;
+    background: none;
+  }
+
+  .di-steps[data-tone="ruled"] .di-step-row + .di-step-row {
+    border-top: 1px solid var(--di-table-rule);
+  }
+
+  .di-steps[data-tone="ruled"] .di-step-row:first-child {
+    padding-top: 0;
+  }
+
+  .di-steps[data-tone="ruled"] .di-step-row:last-child {
+    padding-bottom: 0;
+  }
+
+  /* Separate ruled lists in a row read as one run: the rule and the gap carry across. */
+  .di-steps[data-tone="ruled"] + .di-steps[data-tone="ruled"] {
+    border-top: 1px solid var(--di-table-rule);
+  }
+
+  .di-steps[data-tone="ruled"] + .di-steps[data-tone="ruled"] > .di-step-row:first-child {
+    padding-top: var(--di-gap-12);
+  }
+
+  .di-steps[data-tone="ruled"]:has(+ .di-steps[data-tone="ruled"]) > .di-step-row:last-child {
+    padding-bottom: var(--di-gap-12);
   }
 }

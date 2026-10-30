@@ -154,7 +154,6 @@ export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/char
 export type { LevelBands } from "./components/charts/compare/LevelMeter";
 export { Actions } from "./components/layout/arrangement/Actions";
 export { Grid } from "./components/layout/arrangement/Grid";
-export { Numbered } from "./components/layout/arrangement/Numbered";
 export { Stack } from "./components/layout/arrangement/Stack";
 export { Toolbar, ToolbarEnd } from "./components/layout/arrangement/Toolbar";
 export {
@@ -252,11 +251,22 @@ export type { SkeletonPageVariant } from "./components/feedback/waiting/Skeleton
 export { Sparkline } from "./components/charts/time/Sparkline";
 export { Split, SplitAside, SplitMain } from "./components/layout/panes/Split";
 export { Spinner } from "./components/feedback/waiting/Spinner";
-export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/page/Stage";
 export { Stat, StatRow } from "./components/data/figures/Stat";
 export { StatTile, StatTileDelta } from "./components/data/figures/StatTile";
 export { StatusPill } from "./components/marks/status/StatusPill";
-export { Stepper } from "./components/navigation/sequence/Stepper";
+export {
+  Numbered,
+  Stage,
+  StageFooter,
+  StageIcon,
+  StageTrack,
+  Step,
+  StepFooter,
+  StepIcon,
+  Stepper,
+  Steps,
+} from "./components/navigation/sequence/Steps";
+export type { StepState, StepsVariant } from "./components/navigation/sequence/Steps";
 export { Switch } from "./components/forms/choice/Switch";
 export { TabPanel, Tabs } from "./components/navigation/views/Tabs";
 export { TabNav, TabNavLink } from "./components/navigation/views/TabNav";
