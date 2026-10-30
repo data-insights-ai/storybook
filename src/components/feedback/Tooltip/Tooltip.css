@@ -1,16 +1,28 @@
 @layer components {
+  /* Above the page and its sticky heads, below a dialog's scrim (which puts its content in the top layer). */
+  .di-tooltip-positioner {
+    z-index: 30;
+  }
+
   .di-tooltip {
     display: inline-flex;
     align-items: center;
-    height: var(--di-tooltip-h);
+    gap: var(--di-gap-6);
+    min-height: var(--di-tooltip-h);
     padding: 0 var(--di-space-8);
-    border: 1px solid var(--di-inverse-border);
     border-radius: var(--di-radius-micro);
     background: var(--di-inverse-bg);
+    box-shadow: var(--di-shadow-plane);
     color: var(--di-inverse-text);
-    font-family: var(--di-font-code);
+    font-family: var(--di-font-ui);
     font-size: var(--di-font-size-200);
     line-height: 1;
     white-space: nowrap;
+    transition: opacity var(--di-duration) var(--di-ease);
+  }
+
+  .di-tooltip[data-starting-style],
+  .di-tooltip[data-ending-style] {
+    opacity: 0;
   }
 }
