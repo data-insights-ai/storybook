@@ -53,11 +53,8 @@
     }
   }
 
-  /* The row is the shared option (`.di-option`); a chosen one keeps the highlight. */
-  .di-menu-item[aria-checked="true"] {
-    background: var(--di-bg-page);
-  }
-
+  /* The row is the shared option (`.di-option`). A chosen one says so with its check, not a
+   * tint that would read as the highlight. */
   .di-menu-item.is-danger {
     color: var(--di-status-danger-fg);
   }
@@ -78,12 +75,16 @@
     margin-top: calc((1em * var(--di-leading-snug) - var(--di-icon-sm)) / 2);
   }
 
+  /* The caption every popup group wears (CommandBar, Sidebar): the mono label. */
   .di-menu-group-label {
     overflow-wrap: anywhere;
-    padding: var(--di-gap-8);
-    color: var(--di-text-muted);
-    font-size: var(--di-font-size-200);
-    font-weight: var(--di-weight-semibold);
+    padding: var(--di-gap-6) var(--di-gap-8) var(--di-gap-4);
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
   }
 
   .di-menu-divider {
