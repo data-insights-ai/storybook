@@ -3,13 +3,20 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fireEvent, fn, userEvent, waitFor, within } from "storybook/test";
 import { ComboBox } from "./ComboBox";
 import { Button } from "../../../actions/Button";
-import { Modal, ModalContent, ModalTitle } from "../../../overlays/Modal";
+import { Modal, ModalContent, ModalFooter, ModalTitle } from "../../../overlays/Modal";
 
 const suggestions = [
   { value: "NR-01", label: "Northern register" },
   { value: "SR-02", label: "Southern register" },
   { value: "WR-03", label: "Western register" },
 ];
+const formStyle = {
+  display: "flex",
+  flexDirection: "column",
+  gap: "var(--di-rhythm-field)",
+  maxWidth: "400px",
+} as const;
+
 const meta = {
   title: "Forms/Select/ComboBox",
   tags: ["layer:form"],
@@ -39,7 +46,7 @@ const meta = {
     const [value, setValue] = useState(args.value);
     useEffect(() => setValue(args.value), [args.value]);
     return (
-      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+      <form onSubmit={(event) => event.preventDefault()} style={formStyle}>
         <ComboBox
           {...args}
           value={value}
@@ -48,12 +55,9 @@ const meta = {
             setValue(next);
           }}
         />
-        <Button type="button" variant="ghost" onClick={() => setValue("NR-01")}>
-          Restore recorded code
-        </Button>
-        <Button type="button" variant="ghost" onClick={() => setValue("")}>
-          Clear recorded code
-        </Button>
+        <div>
+          <Button type="submit">Save source</Button>
+        </div>
       </form>
     );
   },
@@ -120,6 +124,29 @@ export const CustomValue: Story = {
 /** External changes are authoritative even while the control has a selection. */
 export const ExternalReset: Story = {
   args: { value: "SR-02" },
+  render: function Render(args) {
+    const [value, setValue] = useState(args.value);
+    return (
+      <form onSubmit={(event) => event.preventDefault()} style={formStyle}>
+        <ComboBox
+          {...args}
+          value={value}
+          onValueChange={(next) => {
+            args.onValueChange(next);
+            setValue(next);
+          }}
+        />
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--di-gap-8)" }}>
+          <Button type="button" variant="secondary" onClick={() => setValue("NR-01")}>
+            Restore recorded code
+          </Button>
+          <Button type="button" variant="ghost" onClick={() => setValue("")}>
+            Clear recorded code
+          </Button>
+        </div>
+      </form>
+    );
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement),
       page = within(canvasElement.ownerDocument.body);
@@ -151,17 +178,17 @@ export const LateSuggestions: Story = {
       return () => clearTimeout(timer);
     }, []);
     return (
-      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+      <form onSubmit={(event) => event.preventDefault()} style={formStyle}>
         <ComboBox
           {...args}
           suggestions={loaded}
+          hint={loaded.length === 0 ? "Loading the registers on record." : "3 registers on record."}
           value={value}
           onValueChange={(next) => {
             args.onValueChange(next);
             setValue(next);
           }}
         />
-        <p>{loaded.length === 0 ? "Loading suggestions" : "Suggestions loaded"}</p>
       </form>
     );
   },
@@ -172,7 +199,7 @@ export const LateSuggestions: Story = {
     await userEvent.click(input);
     await userEvent.keyboard("{ArrowDown}");
     await expect(page.queryByRole("listbox")).toBeNull();
-    await canvas.findByText("Suggestions loaded");
+    await canvas.findByText("3 registers on record.");
     await expect(page.queryByRole("listbox")).toBeNull();
     await userEvent.type(input, "r");
     await expect(page.getByRole("option", { name: /Northern register/ })).toBeVisible();
@@ -259,7 +286,7 @@ export const ReadOnlyUpdate: Story = {
     const [value, setValue] = useState(""),
       [readOnly, setReadOnly] = useState(false);
     return (
-      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+      <form onSubmit={(event) => event.preventDefault()} style={formStyle}>
         <ComboBox
           {...args}
           value={value}
@@ -269,25 +296,27 @@ export const ReadOnlyUpdate: Story = {
             setValue(next);
           }}
         />
-        <Button
-          type="button"
-          variant="ghost"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={() => {
-            setValue("NR-01");
-            setReadOnly(true);
-          }}
-        >
-          Lock recorded code
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={() => setReadOnly(false)}
-        >
-          Edit recorded code
-        </Button>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--di-gap-8)" }}>
+          <Button
+            type="button"
+            variant="secondary"
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => {
+              setValue("NR-01");
+              setReadOnly(true);
+            }}
+          >
+            Lock recorded code
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => setReadOnly(false)}
+          >
+            Edit recorded code
+          </Button>
+        </div>
       </form>
     );
   },
@@ -347,10 +376,12 @@ export const InDialog: Story = {
           <ModalContent>
             <ModalTitle id="review-code-title">Review the register code</ModalTitle>
             <ComboBox {...args} value={value} onValueChange={setValue} />
+          </ModalContent>
+          <ModalFooter>
             <Button variant="secondary" onClick={() => setOpen(false)}>
               Cancel review
             </Button>
-          </ModalContent>
+          </ModalFooter>
         </Modal>
       </>
     );
@@ -393,7 +424,7 @@ export const KeyboardWalk: Story = {
     await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
     await expect(input).toHaveFocus();
     await userEvent.tab();
-    await expect(canvas.getByRole("button", { name: "Restore recorded code" })).toHaveFocus();
+    await expect(canvas.getByRole("button", { name: "Save source" })).toHaveFocus();
   },
 };
 

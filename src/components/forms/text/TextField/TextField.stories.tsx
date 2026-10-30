@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { FieldStack } from "../../../layout/arrangement/FieldStack";
 import { Toolbar } from "../../../layout/arrangement/Toolbar";
 import { TextField } from "./TextField";
+import { ConfidenceField } from "./ConfidenceField";
 import { TextLink } from "../../../navigation/TextLink";
 
 const meta = {
@@ -264,5 +265,65 @@ export const German: Story = {
   play: async ({ canvasElement }) => {
     const slot = within(canvasElement).getByRole("button", { name: "Schlüssel erneuern" });
     await expect(slot.getBoundingClientRect().height).toBeLessThan(24);
+  },
+};
+
+/**
+ * A value a model filled in, with its confidence: read-only, a meter under
+ * it and the reading in words with the way to its reasons. The label names
+ * the value, so a screen reader hears "Resolved operator, Nora Feld".
+ */
+export const Confidence: Story = {
+  args: {
+    id: "resolved-operator",
+    label: "Resolved operator",
+    readOnly: true,
+    value: "Nora Feld",
+    confidence: { value: 0.94, label: "0.94 · matched on 3 of 4 inputs", whyLabel: "Why?", onWhy: fn() },
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("textbox", { name: "Resolved operator" })).toHaveValue("Nora Feld");
+    await expect(canvas.getByRole("meter", { name: /0.94/ })).toHaveAttribute("aria-valuenow", "94");
+    const why = canvas.getByRole("button", { name: "Why?" });
+    await userEvent.click(why);
+    await expect(args.confidence?.onWhy).toHaveBeenCalled();
+    why.blur();
+  },
+};
+
+/** Below the caller's threshold: the meter and the words turn to warn, and the words say what to do. */
+export const ConfidenceToReview: Story = {
+  args: {
+    id: "resolved-host",
+    label: "Resolved host",
+    readOnly: true,
+    mono: true,
+    value: "mirror.example.net",
+    confidence: {
+      value: 0.42,
+      label: "0.42 · below the threshold, review before sealing",
+      level: "review",
+      whyLabel: "Why?",
+      onWhy: fn(),
+    },
+  },
+};
+
+/** `ConfidenceField` is deprecated and renders the read-only field with `confidence`. Removed in 0.12. */
+export const DeprecatedConfidenceField: Story = {
+  render: () => (
+    <ConfidenceField
+      id="legacy-confidence"
+      label="Resolved operator"
+      confidence={0.94}
+      confidenceLabel="0.94 · matched on 3 of 4 inputs"
+    >
+      Nora Feld
+    </ConfidenceField>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("textbox", { name: "Resolved operator" })).toHaveValue("Nora Feld");
   },
 };

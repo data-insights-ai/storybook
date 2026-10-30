@@ -18,6 +18,7 @@ import { cx } from "../../../../internal/cx";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { Button } from "../../../actions/Button";
 import { Checkbox } from "../../choice/Checkbox";
+import { FieldLabel } from "../../field/FieldLabel";
 import { MonthCalendar } from "../calendar";
 import { SegmentedInput } from "../segments";
 import { openEndedRange, typedDraft } from "./dateRangeDraft";
@@ -107,14 +108,12 @@ function RangeTime({
 }) {
   return (
     <div className="di-date-range-time">
-      <span id={`${id}-label`} className="di-field-label di-field-label-record">
-        {label}
-      </span>
+      <FieldLabel id={`${id}-label`} label={label} />
       <SegmentedInput
         kind="time"
         group
         id={id}
-        className="di-control di-date-input di-date-range-time-input"
+        className="di-control di-date-control di-date-input di-date-range-time-input"
         locale={locale}
         value={timeText(value)}
         onChange={(text) => onChange(timeOf(text))}

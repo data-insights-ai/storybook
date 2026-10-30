@@ -1,4 +1,5 @@
 import { FieldHint } from "../../field/FieldHint";
+import { FieldLabel } from "../../field/FieldLabel";
 import { SegmentedInput } from "../segments";
 import "../../field/Field/Field.css";
 import "../Calendar.css";
@@ -29,9 +30,7 @@ export function TypedDay({
 }) {
   return (
     <div className="di-field">
-      <span id={`${id}-label`} className="di-field-label di-field-label-record">
-        {label}
-      </span>
+      <FieldLabel id={`${id}-label`} label={label} />
       <SegmentedInput
         kind="date"
         group

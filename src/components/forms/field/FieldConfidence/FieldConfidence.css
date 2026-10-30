@@ -1,0 +1,29 @@
+@layer components {
+  .di-field-confidence-meter {
+    min-width: 0;
+  }
+
+  /* A rule under the control, not a chart: thin, so the value stays the strongest thing in the field. */
+  .di-field-confidence-meter .di-level-track {
+    height: var(--di-space-4);
+  }
+
+  /* An inferred value under its field: the ring, the reading in words, its reasons at the end. */
+  .di-field-hint.is-inferred {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--di-gap-6);
+  }
+
+  .di-field-confidence-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text-muted);
+  }
+
+  .di-field-hint.is-review .di-field-confidence-label {
+    color: var(--di-status-warn-fg);
+  }
+}

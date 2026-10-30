@@ -64,10 +64,24 @@ export const Default: Story = {};
 /** A preset moves with the clock: "Last 7 days" is today and the six days before it. */
 export const Preset: Story = { args: { value: { preset: "7d" } } };
 
-/** A fixed range shows its days in the reader's language; the end is exclusive, so the last day shown is 7 October. */
+/**
+ * A fixed range shows its days in the reader's language; the end is exclusive, so the last day shown is 7 October.
+ * Open, the chosen period is marked in the list and the days carry the selection colour: both ends ringed, a band
+ * between them. It rests open.
+ */
 export const CustomRange: Story = {
   args: { value: { from: "2026-09-30T22:00:00.000Z", to: "2026-10-07T22:00:00.000Z" } },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Period:/ }));
+    const page = within(canvasElement.ownerDocument.body);
+    await expect(await page.findByRole("option", { name: "Custom range" })).toHaveAttribute("aria-selected", "true");
+    const first = page.getAllByRole("button", { name: /1 October 2026/ })[0];
+    await expect(first).toHaveAttribute("data-selection-start");
+    await expect(getComputedStyle(first).boxShadow).not.toBe("none");
+  },
 };
+
+export const Disabled: Story = { args: { disabled: true, value: { preset: "7d" } } };
 
 export const IndependentStart: Story = {
   args: { timeZone: "UTC", value: { from: "2026-10-01T00:00:00.000Z", to: "2026-10-16T00:00:00.000Z" } },
@@ -99,6 +113,7 @@ export const OpenEnded: Story = {
 /** German, the week starting on Monday, the zone from the product's settings. */
 export const German: Story = {
   args: {
+    label: "Zeitraum",
     locale: "de-DE",
     weekStartsOn: 1,
     timeZone: "Europe/Berlin",
@@ -127,6 +142,12 @@ export const German: Story = {
       openEnd: "Bis jetzt",
       reversed: "Der letzte Tag liegt vor dem ersten.",
     },
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Zeitraum:/ }));
+    const page = within(canvasElement.ownerDocument.body);
+    await expect(await page.findByLabelText("Uhrzeiten festlegen")).toBeChecked();
+    await waitFor(() => expect(page.getByRole("button", { name: "Übernehmen" })).toBeVisible());
   },
 };
 

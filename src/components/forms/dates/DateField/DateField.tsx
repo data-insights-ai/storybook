@@ -33,7 +33,8 @@ export const defaultDateFieldLabels = {
  * the same look as `DateRangePicker`. The value is an ISO day (`2026-10-29`)
  * or empty, as a native date input gives it, so it can replace one. In the
  * calendar arrows move by day, Page Up and Page Down by month, Home and End
- * to the month's first and last day, Enter picks, Esc closes.
+ * to the month's first and last day, Enter picks, Esc closes. Read-only, it
+ * is drawn like a read-only text field and offers no calendar.
  */
 export function DateField({
   id,
@@ -120,6 +121,7 @@ export function DateField({
           aria-disabled={disabled || undefined}
           data-disabled={disabled || undefined}
           data-invalid={invalid || undefined}
+          data-readonly={(readOnly && !disabled) || undefined}
         >
           <SegmentedInput
             kind="date"
@@ -136,13 +138,12 @@ export function DateField({
             required={required}
             emptyLabel={emptyLabel}
           />
-          <Popover.Trigger
-            className="di-date-field-toggle"
-            aria-label={labels.calendar}
-            disabled={disabled || readOnly}
-          >
-            <CalendarDays aria-hidden />
-          </Popover.Trigger>
+          {/* Read-only offers no calendar: there is nothing to pick, and the day stays readable in the segments. */}
+          {readOnly && !disabled ? null : (
+            <Popover.Trigger className="di-date-field-toggle" aria-label={labels.calendar} disabled={disabled}>
+              <CalendarDays aria-hidden />
+            </Popover.Trigger>
+          )}
         </div>
         <FieldHint id={`${id}-hint`} tone={hintTone}>
           {hint}
