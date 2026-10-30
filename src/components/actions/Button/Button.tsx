@@ -22,6 +22,12 @@ type Common = {
    * underlined in cornflower, the size of its line) for an action that
    * reads as a word: beside a field, under a form, in a sentence. A link
    * takes no `size`, `iconOnly` or `badge`, and draws no key cap or spinner.
+   *
+   * `danger` is destructive. Where it opens the question (a toolbar, a row,
+   * a `DangerAction`) it reads as a normal control until hovered; in a
+   * `DialogFooter` or `ProposalActions`, where it answers the question, it
+   * is the final commit and filled red. Disabled, it looks like any other
+   * disabled control.
    */
   variant?: Variant;
   /** `sm` in a row or a toolbar of small controls, `md` the standard, `lg` a sign-in or a brand page. */

@@ -100,6 +100,8 @@ Focus is cornflower in both themes (`#2B6CB0` on paper, `#79AEEA` after dark), s
 
 Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first. What follows is a receipt carrying an audit id (`Toast`), never an undo.
 
+A destructive action has one look per step. The button that asks the question (`Button variant="danger"` in a toolbar, a row, a `DangerAction`) stays quiet until hovered; the one that answers it, in a `Dialog`'s footer (`ConfirmDialog`) or a `ProposalPanel`'s actions, is filled red. Blocked, either takes the disabled look, and `DangerAction` says why under the button.
+
 The sign-in page follows the theme: the paper ground `#F3F2EE` with one surface card and the navy button in daylight, the navy ground `#0A1F44` with a navy surface card and the paper-white button after dark, IBM Plex Sans at 400 for its text. The identity provider's hosted login copies exactly that (ground, primary, font), so the two read as one place. No rules in or under the card: depth is a step in tone. Text on it has a solid background; contrast has to be measurable.
 
 A region a story pins to `data-theme="light"` or `"dark"` (a swatch in Foundations, the hero zone) is a designed object of that theme, not a gap in coverage: the dark project measures it in the theme it pins, which is the theme it ships in. Do not add a dark variant of it for the sake of the test.
