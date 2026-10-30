@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Console } from "../../../.storybook/console/Console";
-import { sampleChrome } from "../../../.storybook/console/chrome.sample";
+import { ProductShell } from "../shell/ProductShell";
 import { SettingsScreen } from "./Settings";
 
 const meta = {
@@ -10,9 +9,9 @@ const meta = {
   parameters: { layout: "fullscreen" },
   decorators: [
     (Story) => (
-      <Console title="Settings" crumb={["Operate", "Settings"]} active="settings" chrome={sampleChrome}>
+      <ProductShell area="workspace" active="settings" crumbs={["Example Security GmbH", "Production", "Settings"]}>
         <Story />
-      </Console>
+      </ProductShell>
     ),
   ],
 } satisfies Meta<typeof SettingsScreen>;

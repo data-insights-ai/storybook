@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Console } from "../../../.storybook/console/Console";
-import { sampleChrome } from "../../../.storybook/console/chrome.sample";
+import { ProductShell } from "../shell/ProductShell";
 import { CreateFlowPageScreen } from "./CreateFlowPage";
 
 const meta = {
@@ -11,9 +10,9 @@ const meta = {
   parameters: { layout: "fullscreen" },
   decorators: [
     (Story) => (
-      <Console title="New connection" crumb={["Sign-in", "New connection"]} active="settings" chrome={sampleChrome}>
+      <ProductShell area="organization" active="signin" crumbs={["Example Security GmbH", "Sign-in", "New connection"]}>
         <Story />
-      </Console>
+      </ProductShell>
     ),
   ],
 } satisfies Meta<typeof CreateFlowPageScreen>;

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { Console } from "../../../.storybook/console/Console";
-import { sampleChrome } from "../../../.storybook/console/chrome.sample";
+import { ProductShell } from "../shell/ProductShell";
 import { RegisterScreen } from "./Register";
 
 const meta = {
@@ -11,9 +10,9 @@ const meta = {
   parameters: { layout: "fullscreen" },
   decorators: [
     (Story) => (
-      <Console title="Register" crumb={["WS-01", "Record", "Sources"]} active="sources" chrome={sampleChrome}>
+      <ProductShell area="workspace" active="sources" crumbs={["Example Security GmbH", "Production", "Sources"]}>
         <Story />
-      </Console>
+      </ProductShell>
     ),
   ],
 } satisfies Meta<typeof RegisterScreen>;

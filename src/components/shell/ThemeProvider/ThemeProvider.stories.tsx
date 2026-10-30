@@ -2,7 +2,7 @@ import { useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Gauge, LogOut, UserRound } from "lucide-react";
-import { AppShellContent } from "../AppShell";
+import { AppShellContent } from "../AppShellContent";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Panel } from "../../layout/page/Panel";
 import {
