@@ -144,7 +144,7 @@ export function SettingsScreen({ changed = false }: { changed?: boolean }) {
         <Toolbar label="Unsaved changes" role="region" frame="bar" sticky="bottom">
           <ToolbarStatus>Retention changed and is not saved yet.</ToolbarStatus>
           <ToolbarEnd>
-            <Button variant="secondary" onClick={() => setRules(saved)}>
+            <Button variant="ghost" onClick={() => setRules(saved)}>
               Discard
             </Button>
             <Button onClick={() => setSaved(rules)}>Save changes</Button>

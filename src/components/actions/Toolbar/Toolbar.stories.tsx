@@ -10,6 +10,7 @@ import { TextField } from "../../forms/text/TextField";
 import { Stack } from "../../layout/arrangement/Stack";
 import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
+import { AppShellContent } from "../../shell/AppShellContent";
 import { Toolbar } from "./Toolbar";
 import { ToolbarAction, ToolbarEnd, ToolbarNote, ToolbarSelection, ToolbarStatus } from "./ToolbarParts";
 import { MembersFilter, MembersTable, words, type Words } from "./Toolbar.sample";
@@ -194,13 +195,15 @@ export const SelectionCleared: Story = {
 };
 
 /**
- * Unsaved changes (`role="region" frame="bar" sticky="bottom"`): it stays at
- * the foot of the view while the form scrolls and is rendered only while
- * something is unsaved. A short form ends in `align="end"` instead.
+ * Unsaved changes (`role="region" frame="bar" sticky="bottom"`): a band in the
+ * chrome tone across the foot of the content column while the form scrolls,
+ * rendered only while something is unsaved; `AppShellContent` keeps its
+ * height free at the page's end. A short form ends in `align="end"` instead.
  */
 export const UnsavedChanges: Story = {
+  parameters: { layout: "fullscreen", docs: { story: { inline: false, iframeHeight: 640 } } },
   render: () => (
-    <Stack gap={24}>
+    <AppShellContent>
       <Panel title="Alert template" heading={2}>
         <Stack variant="form">
           <TextField id="tb-subject" label="Subject" defaultValue="{{severity}} on {{host}}: {{rule}}" mono={true} />
@@ -218,16 +221,18 @@ export const UnsavedChanges: Story = {
       <Toolbar label="Unsaved changes" role="region" frame="bar" sticky="bottom">
         <ToolbarStatus>2 unsaved changes in the alert template</ToolbarStatus>
         <ToolbarEnd>
-          <Button variant="secondary">Discard</Button>
+          <Button variant="ghost">Discard</Button>
           <Button>Save changes</Button>
         </ToolbarEnd>
       </Toolbar>
-    </Stack>
+    </AppShellContent>
   ),
   play: async ({ canvasElement }) => {
     const region = within(canvasElement).getByRole("region", { name: "Unsaved changes" });
     await expect(region).toHaveTextContent("2 unsaved changes in the alert template");
     const box = region.getBoundingClientRect();
+    await expect(Math.round(box.bottom)).toBe(innerHeight);
+    await expect(Math.round(box.width)).toBe(canvasElement.ownerDocument.documentElement.clientWidth);
     const save = within(region).getByRole("button", { name: "Save changes" }).getBoundingClientRect();
     const status = region.querySelector(".di-toolbar-status")!.getBoundingClientRect();
     await expect(Math.abs(Math.min(status.top, save.top) - box.top - (box.bottom - save.bottom))).toBeLessThanOrEqual(

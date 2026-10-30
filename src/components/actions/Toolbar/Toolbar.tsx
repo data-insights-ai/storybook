@@ -17,8 +17,8 @@ export type ToolbarProps = {
   role?: ToolbarRole;
   /**
    * `top` stays under the app bar while the list under it scrolls, and tells
-   * the list's sticky head how tall it is; `bottom` stays at the foot of the
-   * view while a long form scrolls.
+   * the list's sticky head how tall it is; `bottom` is the band at the foot of
+   * the content column while a long form scrolls.
    */
   sticky?: "top" | "bottom";
   /** `bar` draws the row on its own plane: a selection's actions, unsaved changes. */
@@ -69,8 +69,11 @@ export type ToolbarProps = {
  *   `ToolbarSelection` and the actions in `ToolbarEnd`; it takes the list
  *   toolbar's place at the same height, so nothing moves;
  * - unsaved changes: `label role="region" frame="bar" sticky="bottom"` with
- *   `ToolbarStatus` and Discard, Save in `ToolbarEnd`; render it only while
- *   there are changes;
+ *   `ToolbarStatus` and Discard (ghost), Save (primary) in `ToolbarEnd`; a
+ *   band in the chrome tone across the foot of the content column (fixed
+ *   beside the sidebar in `AppShellContent`, which keeps its height free at
+ *   the page's end), on a phone the screen's width with the words above the
+ *   two buttons; render it only while there are changes;
  * - form end: `align="end"`; a row's quick actions: `variant="row"`;
  * - one-line form: fields and a button; `fillFirst` lets the first field grow.
  *   Fields and their button share the control row, so a button lines up with
@@ -96,6 +99,7 @@ export function Toolbar({
 }: ToolbarProps) {
   const ref = useRef<HTMLDivElement>(null);
   useListToolbarHeight(ref, sticky === "top");
+  useFootBarHeight(ref, sticky === "bottom");
   const [end, withoutEnd] = takeSlot(children, ToolbarEnd);
   const [note, rest] = takeSlot(withoutEnd, ToolbarNote);
   const selecting = Children.toArray(rest).some((child) => isValidElement(child) && child.type === ToolbarSelection);
@@ -137,6 +141,23 @@ function useListToolbarHeight(ref: RefObject<HTMLDivElement | null>, on: boolean
     return () => {
       observer.disconnect();
       parent.style.removeProperty("--di-list-toolbar-h");
+    };
+  }, [ref, on]);
+}
+
+/* The page keeps room for the band at its foot and scrolls a focused field clear of it, so it needs the band's height. */
+function useFootBarHeight(ref: RefObject<HTMLDivElement | null>, on: boolean) {
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || !on) return;
+    const root = el.ownerDocument.documentElement;
+    const set = () => root.style.setProperty("--di-foot-bar-h", `${el.offsetHeight}px`);
+    set();
+    const observer = new ResizeObserver(set);
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--di-foot-bar-h");
     };
   }, [ref, on]);
 }

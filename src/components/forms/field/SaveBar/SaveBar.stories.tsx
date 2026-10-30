@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 export const Unsaved: Story = {
   render: (args) => (
     <SaveBar {...args}>
-      <Button variant="secondary">Discard</Button>
+      <Button variant="ghost">Discard</Button>
       <Button>Save changes</Button>
     </SaveBar>
   ),
