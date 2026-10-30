@@ -64,6 +64,8 @@ The Storybook sidebar is grouped by the job a component does:
 | The figures of a screen | `FigureRow` (`strip`, or `footer` under a `Hero`) | a row of `StatTile`s |
 | A list beside one record | `ListDetail` | a table with a drawer |
 | A severity | `SeverityMark` | a coloured word |
+| What the one emphasised block asks for | `PanelLead`, its lead line above the proof and the actions | the ask buried in a note |
+| A run of steps inside a surface | `Numbered variant="row"`: ruled rows, no box each | a box per step |
 | A block of a record, or a plain surface | `Panel`, with a `title` and an `index` when it is one of a sequence, `surface="inset"` for a group inside another surface | |
 | One measured value on its own surface | `StatTile`, with an `index`, a `StatTileDelta` or a `Sparkline` when it has them | |
 | A small labelled figure set in a row inside something else | `Figure` in a `FigureRow` | `Stat` and `StatRow`, deprecated, removed in 0.12.0 |
@@ -114,7 +116,7 @@ Rules that make output look native rather than approximate:
 - **Navy is the ink and the action.** No accent acts. One filled navy control per view, so it is never unclear which button commits.
 - **Depth is a step in tone, not a line.** A table sits on a surface without a frame of its own.
 - **Poppy marks a passage on a brand page; cornflower selects.** Poppy is only ever `Highlight`. Cornflower is selection, focus and a compared series (`--di-chart-compare`). Neither is a status, so neither is a `tone`, and neither fills a button.
-- **Gold marks the one thing in a view** — the first attention item, a verdict, the one value of a chart. In daylight it is an edge or a mark, **never text and never a text background**; after dark gold text is allowed (`--di-one-ink`). The seal is the same gold and so a **brand moment only** — sign-in, the brand mark, empty and onboarding states, licence and certificate seals; never in an operational view beside the one thing, and `Button variant="seal"` is never an operational action. Keep the word beside any mark.
+- **Gold marks the one thing in a view** — the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small gold pill with navy words that names the one item (`emphasisLabel`) — **never gold text and never a gold wash under prose**; after dark gold text is allowed (`--di-one-ink`). The seal is the same gold and so a **brand moment only** — sign-in, the brand mark, empty and onboarding states, licence and certificate seals; never in an operational view beside the one thing, and `Button variant="seal"` is never an operational action. Keep the word beside any mark.
 - **Selection and focus are cornflower**, in both themes. Never ring focus in gold. Never remove a focus indicator.
 - **Warn is its own amber**, so it never reads as the gold. Severity after dark runs orange for medium for the same reason.
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.

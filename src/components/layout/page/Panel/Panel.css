@@ -197,6 +197,19 @@
     margin-bottom: var(--di-panel-pad);
   }
 
+  .di-panel-lead {
+    max-width: 70ch;
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-semibold);
+    line-height: var(--di-leading-snug);
+    text-wrap: pretty;
+    color: var(--di-text);
+  }
+
+  .di-panel.is-emphasis .di-panel-lead {
+    color: var(--di-one-ink);
+  }
+
   .di-panel-note {
     margin-top: var(--di-space-8);
     font-size: var(--di-font-size-300);

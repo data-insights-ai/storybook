@@ -50,6 +50,8 @@ export default defineConfig({
           name: "unit",
           include: ["src/**/*.test.ts"],
           environment: "node",
+          // zones.test.ts reads the token sheets as text; unprocessed CSS would arrive empty.
+          css: { include: [/tokens\/.+\.css/] },
         },
       },
       {

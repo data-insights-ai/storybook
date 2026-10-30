@@ -31,6 +31,7 @@ export const cases: CaseRow[] = [
 
 export const caseFour = {
   verdict: "Leaked VPN credentials reached the file server and data is leaving it.",
+  asks: "Isolate srv-fs-02 and reset svc-backup before the next upload leaves.",
   action: "Isolate srv-fs-02 and reset svc-backup.",
   reason:
     "The sign-in came from an address and a device n.feld has never used, the same day the credentials appeared in a combo list. The account owner confirmed it was not them.",

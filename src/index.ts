@@ -172,7 +172,7 @@ export {
 } from "./components/feedback/Notice";
 export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/Pagination";
-export { Panel, PanelFooter, PanelMeta, PanelNote } from "./components/layout/page/Panel";
+export { Panel, PanelFooter, PanelMeta, PanelLead, PanelNote } from "./components/layout/page/Panel";
 export { PrivacyBadge } from "./components/inference/PrivacyBadge";
 export { Progress } from "./components/feedback/waiting/Progress";
 export { RouteProgress } from "./components/feedback/waiting/RouteProgress";

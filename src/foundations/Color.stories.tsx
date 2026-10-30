@@ -182,7 +182,7 @@ function Board() {
         lede="A component binds to the name on the left, never to the hex. The hex is printed so a designer can check a mock against the build, not so it can be typed into one."
       >
         <Rules>
-          <Rule>In an operational view gold marks one object: the first attention item, a verdict, the one value of a chart. In daylight it is an edge or a mark, never text.</Rule>
+          <Rule>In an operational view gold marks one object: the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small pill with navy words that names that object; never gold text.</Rule>
           <Rule>The seal is gold too, and so it is a brand moment only: sign-in, the brand mark, an empty or onboarding state, a licence or certificate seal. It never appears in an operational view beside the one, and the seal button is never an operational action.</Rule>
         </Rules>
         <div className="di-swatches">

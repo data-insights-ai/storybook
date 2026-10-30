@@ -1,13 +1,12 @@
-import { readFileSync } from "node:fs";
 import { describe, expect, test } from "vitest";
+import primitiveCss from "./primitive.css?raw";
+import semanticCss from "./semantic.css?raw";
 
 /*
  * Depth is a step in tone, so each step has to be visible: neighbouring
  * zones differ by at least 3 in CIE L*.
  */
 const MIN_STEP = 3;
-
-const read = (name: string) => readFileSync(new URL(`./${name}`, import.meta.url), "utf8");
 
 function declarations(block: string) {
   return new Map([...block.matchAll(/(--di-[a-z0-9-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]));
@@ -18,8 +17,8 @@ function block(css: string, selector: string) {
   return css.slice(start, css.indexOf("\n  }", start));
 }
 
-const primitives = declarations(read("primitive.css"));
-const semantic = read("semantic.css");
+const primitives = declarations(primitiveCss);
+const semantic = semanticCss;
 const themes = {
   light: declarations(block(semantic, '[data-theme="light"]')),
   dark: declarations(block(semantic, '[data-theme="dark"]')),
