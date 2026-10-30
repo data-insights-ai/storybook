@@ -248,6 +248,7 @@
     --di-level-compare-h: 6px;
     --di-level-compare-swatch: 4px;
     --di-matrix-code-min: 88px;
+    --di-matrix-col-max: 128px;
     --di-matrix-cell-h: 8px;
     --di-sparkline-h: 54px;
     --di-sparkline-min: 120px;
@@ -264,9 +265,7 @@
     --di-period-track-h: 10px;
     --di-tsummary-strip-h: 46px;
     --di-tsummary-swatch: 12px;
-    --di-week-max: 640px;
     --di-week-label: 40px;
-    --di-week-track-h: 12px;
     /* The active block's ring: a 2px gap in the surface, then 1px of ink. */
     --di-tsummary-ring: 3px;
     /* end navigation, charts, timeline */

@@ -1,6 +1,10 @@
-import { cx } from "../../../internal/cx";
-import "./WeekTimeline.css";
+import { PeriodTimeline } from "../PeriodTimeline";
 
+/**
+ * One day of the earlier week view.
+ *
+ * @deprecated Removed in 0.12.0. Use a `PeriodRow` of `PeriodTimeline`, the spans in minutes.
+ */
 export type WeekTimelineRow = {
   /** The day, such as "Mon". */
   label: string;
@@ -11,9 +15,11 @@ export type WeekTimelineRow = {
 const day = 24 * 60;
 
 /**
- * A week at a glance: one row per day, marked where something holds, such
- * as quiet hours. It only shows; `summary` says the same in words for a
- * screen reader.
+ * A week at a glance, one row per day.
+ *
+ * @deprecated Removed in 0.12.0. Use `PeriodTimeline` with `from={0}`,
+ * `to={1440}`, one row per day whose spans are `{ start, end, tone: "ok" }`
+ * in minutes, the hours as `ticks`, and `summary`.
  */
 export function WeekTimeline({
   rows,
@@ -28,29 +34,18 @@ export function WeekTimeline({
   className?: string;
 }) {
   return (
-    <figure className={cx("di-week", className)} role="img" aria-label={summary}>
-      {rows.map((r) => (
-        <div className="di-week-row" key={r.label} aria-hidden>
-          <span className="di-week-label">{r.label}</span>
-          <span className="di-week-track">
-            {r.spans.map((s) => (
-              <span
-                key={`${s.from}-${s.to}`}
-                className="di-week-span"
-                style={{ left: `${(s.from / day) * 100}%`, width: `${((s.to - s.from) / day) * 100}%` }}
-              />
-            ))}
-          </span>
-        </div>
-      ))}
-      <div className="di-week-row" aria-hidden>
-        <span className="di-week-label" />
-        <span className="di-week-ticks">
-          {ticks.map((t) => (
-            <span key={t}>{t}</span>
-          ))}
-        </span>
-      </div>
-    </figure>
+    <PeriodTimeline
+      className={className}
+      label={summary}
+      summary={summary}
+      from={0}
+      to={day}
+      rows={rows.map((row) => ({
+        id: row.label,
+        label: row.label,
+        spans: row.spans.map((s) => ({ start: s.from, end: s.to, tone: "ok" as const })),
+      }))}
+      ticks={ticks.map((label, i) => ({ at: (i / Math.max(ticks.length - 1, 1)) * day, label }))}
+    />
   );
 }

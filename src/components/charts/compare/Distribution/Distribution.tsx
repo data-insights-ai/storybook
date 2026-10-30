@@ -1,9 +1,11 @@
 import { cx } from "../../../../internal/cx";
+import { LevelMeter } from "../LevelMeter";
 import "./Distribution.css";
 
 /**
- * A ranked breakdown: each row states its own value, and the bar is the
- * second channel rather than the only one.
+ * A ranked breakdown: each row states its own value, and its `LevelMeter`
+ * bar is the second channel rather than the only one. Each bar is a meter
+ * on 0 to 100 %, so a screen reader hears the share as well as the count.
  *
  * A row's `tone` puts its bar on the status ramp, for a breakdown whose rows
  * are themselves states: open work by priority, findings by severity. The
@@ -33,12 +35,14 @@ export function Distribution({
             <span className="di-distribution-label">{row.label}</span>
             <span className="di-distribution-value">{row.value}</span>
           </div>
-          <div className="di-distribution-track">
-            <div
-              className={cx("di-distribution-fill", `is-${row.tone ?? "neutral"}`)}
-              style={{ width: `${row.percent}%` }}
-            />
-          </div>
+          <LevelMeter
+            className="di-distribution-meter"
+            label={row.label}
+            value={row.percent}
+            valueText={`${row.value}, ${row.percent}%`}
+            segments="continuous"
+            tone={row.tone ?? "neutral"}
+          />
         </div>
       ))}
       <div className="di-distribution-total">

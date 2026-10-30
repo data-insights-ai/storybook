@@ -84,7 +84,7 @@ export function InferenceScreen() {
         </RecordCard>
         <ProposalPanel label="Proposed action" whyLabel="Why was this proposed?">
           <ProposalQuestion>Resume feed.example.io?</ProposalQuestion>
-          <FactList layout="stacked">
+          <FactList>
             <Fact label="Basis">1,284 entries are queued behind one paused host</Fact>
             <Fact label="Scope">One source in this workspace</Fact>
             <Fact label="Reversible">Yes, the source can be paused again</Fact>

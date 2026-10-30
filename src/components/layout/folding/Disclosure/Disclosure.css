@@ -1,13 +1,14 @@
 @layer components {
   /*
    * A group, so the inset tone: a step below the surface it sits in, no
-   * line around it. One inset all round: the head's top and the body's
-   * bottom are the same distance from the edge, and the body starts on the
-   * title's left edge.
+   * line around it. One inset all round: the head's top, the step from the
+   * head to the body and the body's bottom are the same distance, and the
+   * body starts on the title's left edge, so an open group reads as one
+   * object rather than a head with something hanging under it.
    */
   .di-disclosure {
     --di-disclosure-inset: var(--di-inset-group);
-    --di-disclosure-gap: var(--di-gap-12);
+    --di-disclosure-gap: var(--di-disclosure-inset);
     position: relative;
     isolation: isolate;
     padding: var(--di-disclosure-inset);
@@ -63,13 +64,14 @@
     background: var(--di-row-hover-bg);
   }
 
+  /* The ring goes round the whole group, open or folded: the head is the group's button, not a box of its own. */
   button.di-disclosure-head:focus-visible {
     outline: none;
   }
 
-  button.di-disclosure-head:focus-visible::before {
+  .di-disclosure:has(> .di-disclosure-heading > button.di-disclosure-head:focus-visible) {
     outline: 2px solid var(--di-focus);
-    outline-offset: -2px;
+    outline-offset: 2px;
   }
 
   .di-disclosure-lead {

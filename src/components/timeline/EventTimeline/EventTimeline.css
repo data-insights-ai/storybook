@@ -380,16 +380,11 @@
     min-width: var(--di-timeline-readout-min);
     max-width: min(var(--di-timeline-readout-max), 70vw);
     padding: var(--di-space-8) var(--di-space-12);
-    transform: translateX(var(--di-space-12));
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
     font-size: var(--di-font-size-200);
     pointer-events: none;
-  }
-
-  .di-timeline-readout.is-flipped {
-    transform: translateX(calc(-100% - var(--di-space-12)));
   }
 
   .di-timeline-canvas {

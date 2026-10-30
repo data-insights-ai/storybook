@@ -26,7 +26,7 @@ const meta = {
         component: [
           "**Purpose:** what a model proposes, why, and how sure it is, on one surface; when it asks for a decision, the question and its actions too.",
           "**When to use:** beside the record a proposal concerns: a merge, a resume, a revoke a model suggests. **When not to:** a destructive action the operator started themselves asks in a `ConfirmDialog`; a claim that belongs to one figure on a card is a `RecordCard`'s `RecordInsight`; plain facts of a record are a `FactList`.",
-          '**Anatomy:** the mono label with the inferred ring, the `ProposalQuestion` (a heading, when it asks), the `ProposalAnswer` (one sentence), a confidence `Figure`, the evidence or the decision\'s facts as `FactList layout="stacked"`, `ProposalIgnored` (folded), the `ProposalNote` (the caveat) and `ProposalActions`.',
+          "**Anatomy:** the mono label, the `ProposalQuestion` (a heading, when it asks), the `ProposalAnswer` (one sentence), a confidence `Figure`, the evidence or the decision's facts as a `FactList` in rows (the same fact style as the record beside it), `ProposalIgnored` (folded), the `ProposalNote` (the caveat) and `ProposalActions`.",
           "**Variants:** without `ProposalActions` it explains, everything in view. With them it asks: the facts stay in view and the explanation folds under `whyLabel`, in the same panel.",
           "**States:** the fold starts closed when it asks; an action that is running shows its busy state on the button, and the receipt afterwards is a `Toast`, not a second panel.",
           '**Content rules:** the question is answered by the primary action ("Resume feed.example.io?" → Resume). The answer is one sentence. The facts state scope and whether it can be reversed, never in a tooltip. Tokens (hosts, ranges, ids) take `mono`; sentences never do.',
@@ -47,13 +47,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/**
- * Beside the source it concerns: the question, the facts it rests on, and
- * the asked-for action as the primary button. The reasons fold under
- * "Why was this proposed?" in the same panel.
- */
-export const BesideTheRecord: Story = {
-  render: (args) => (
+function Beside(args: Parameters<typeof ProposalPanel>[0]) {
+  return (
     <Grid min="280px" gap={16}>
       <div>
         <Panel label="Source" title="feed.example.io">
@@ -70,7 +65,7 @@ export const BesideTheRecord: Story = {
       </div>
       <ProposalPanel {...args}>
         <ProposalQuestion>Resume feed.example.io?</ProposalQuestion>
-        <FactList layout="stacked">
+        <FactList>
           <Fact label="Scope">1 source in WS-01</Fact>
           <Fact label="Reversible">Yes, the source can be paused again</Fact>
         </FactList>
@@ -87,12 +82,46 @@ export const BesideTheRecord: Story = {
         </ProposalActions>
       </ProposalPanel>
     </Grid>
-  ),
+  );
+}
+
+/**
+ * Beside the source it concerns: the question, the facts it rests on, and
+ * the asked-for action as the primary button. The reasons fold under
+ * "Why was this proposed?" in the same panel, here opened by a reader who
+ * asked. The facts read in the same rows as the record's, the answer at
+ * body size, and the open fold is one object: its head and its content
+ * share one text edge, one inset apart.
+ */
+export const BesideTheRecord: Story = {
+  args: { defaultWhyOpen: true },
+  render: (args) => <Beside {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const region = canvas.getByRole("region", { name: "Resume feed.example.io?" });
     await expect(within(region).getByRole("heading", { level: 2 })).toHaveTextContent("Resume feed.example.io?");
     await expect(canvas.getByRole("button", { name: "Resume" })).toHaveClass("di-btn-primary");
+    const [record, proposal] = [...canvasElement.querySelectorAll(".di-facts")];
+    await expect(proposal.className).toBe(record.className);
+    const answer = canvas.getByText(/queued behind one paused host/);
+    await expect(parseFloat(getComputedStyle(answer).fontSize)).toBeLessThanOrEqual(14);
+    const fold = canvasElement.querySelector<HTMLElement>(".di-proposal-why")!;
+    const title = fold.querySelector(".di-disclosure-title")!.getBoundingClientRect();
+    const head = fold.querySelector(".di-disclosure-head")!.getBoundingClientRect();
+    const first = answer.getBoundingClientRect();
+    await expect(Math.abs(first.left - title.left)).toBeLessThanOrEqual(1);
+    await expect(Math.abs(first.top - head.bottom - parseFloat(getComputedStyle(fold).paddingTop))).toBeLessThanOrEqual(
+      1,
+    );
+    await expect(canvasElement.querySelector(".di-proposal-label .di-seal-mark, .di-proposal-label svg")).toBeNull();
+  },
+};
+
+/** Asking, the reasons start folded; the head opens them in place. */
+export const FoldedAtFirst: Story = {
+  render: (args) => <Beside {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
     const why = canvas.getByRole("button", { name: "Why was this proposed?" });
     await expect(why).toHaveAttribute("aria-expanded", "false");
     await expect(canvas.queryByText(/queued behind one paused host/)).not.toBeVisible();
@@ -111,7 +140,7 @@ export const Explain: Story = {
         <Figure size="compact" label="Confidence" value="0.88">
           high
         </Figure>
-        <FactList layout="stacked">
+        <FactList>
           <Fact label="Matched on">Host, manifest prefix and queue depth</Fact>
           <Fact label="Window" mono>
             2026-09-22 → 2026-09-23
@@ -148,7 +177,7 @@ export const Complete: Story = {
         <Figure size="compact" label="Confidence" value="0.99">
           very high
         </Figure>
-        <FactList layout="stacked">
+        <FactList>
           <Fact label="Matched on">Manifest hash</Fact>
           <Fact label="Sources">3 of 3</Fact>
         </FactList>
@@ -169,7 +198,7 @@ export const Irreversible: Story = {
     <div style={{ maxWidth: 560 }}>
       <ProposalPanel {...args}>
         <ProposalQuestion>Revoke four stale sources?</ProposalQuestion>
-        <FactList layout="stacked">
+        <FactList>
           <Fact label="Basis">No entry from these hosts since 2026-08-12</Fact>
           <Fact label="Scope">4 sources · 0 sealed entries affected</Fact>
           <Fact label="Reversible">No</Fact>
@@ -193,12 +222,12 @@ export const Irreversible: Story = {
 
 /** Long German labels in a narrow column: labels wrap, the actions stack, nothing runs past the edge. */
 export const LongLabelsNarrow: Story = {
-  args: { label: "Vorgeschlagene Maßnahme", whyLabel: "Warum wurde das vorgeschlagen?" },
+  args: { label: "Vorgeschlagene Maßnahme", whyLabel: "Warum wurde das vorgeschlagen?", defaultWhyOpen: true },
   render: (args) => (
     <div lang="de" style={{ maxWidth: 300 }}>
       <ProposalPanel {...args}>
         <ProposalQuestion>Die Datenquelle feed.example.io wieder aufnehmen?</ProposalQuestion>
-        <FactList layout="stacked">
+        <FactList>
           <Fact label="Entscheidungsgrundlage">1.284 Einträge warten hinter einem pausierten Host</Fact>
           <Fact label="Wirkungsbereich">1 Quelle in WS-01</Fact>
           <Fact label="Rückgängig machbar">Ja, die Quelle kann wieder pausiert werden</Fact>
@@ -222,7 +251,10 @@ export const LongLabelsNarrow: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByRole("button", { name: "Warum wurde das vorgeschlagen?" }));
+    await expect(canvas.getByRole("button", { name: "Warum wurde das vorgeschlagen?" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
     const panel = canvasElement.querySelector(".di-proposal")!;
     await expect(panel.scrollWidth).toBeLessThanOrEqual(panel.clientWidth);
   },

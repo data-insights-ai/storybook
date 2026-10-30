@@ -23,7 +23,9 @@ export function CommandGroup({ label, children }: { label: string; children: Rea
  * One option the bar offers: an option of its listbox, drawn as the shared
  * popup row (`.di-option`). The arrow keys in the field and the pointer move
  * the highlight; Enter or a click calls `onSelect`. `inferred` swaps the icon
- * for the hollow ring: a model proposed this, and it has not been sealed.
+ * for the hollow ring: a model proposed this, and it has not been sealed. An
+ * inferred row is an answer, a sentence: its note goes under it, so it stays
+ * with the words it qualifies when they wrap.
  */
 export function CommandRow({
   label,
@@ -63,8 +65,17 @@ export function CommandRow({
       <span className="di-command-row-icon" aria-hidden>
         {inferred ? <SealMark state="inferred" size={7} /> : children}
       </span>
-      <span className="di-option-label">{label}</span>
-      <span className="di-option-meta">{meta}</span>
+      {inferred ? (
+        <span className="di-command-answer">
+          <span className="di-option-label">{label}</span>
+          <span className="di-option-meta">{meta}</span>
+        </span>
+      ) : (
+        <>
+          <span className="di-option-label">{label}</span>
+          <span className="di-option-meta">{meta}</span>
+        </>
+      )}
     </div>
   );
 }

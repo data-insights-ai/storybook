@@ -1,4 +1,4 @@
-import { Children, createContext, isValidElement, useContext, type ReactNode } from "react";
+import { Children, createContext, isValidElement, useContext, type ReactElement, type ReactNode } from "react";
 import { Check } from "lucide-react";
 import { cx } from "../../../../internal/cx";
 import { takeSlot } from "../../../../internal/slots";
@@ -52,8 +52,8 @@ const Position = createContext(0);
  *
  * **Content:** a title is a verb and its object in two or three words in
  * `progress` ("Connect source"), one instruction in `list`, a noun in
- * `cards`. On a phone `progress` keeps only the current step's title; the
- * others are their bullets.
+ * `cards`. On a narrow page `progress` keeps its bullets on one line and
+ * sets the current step's title under them, from the track's start edge.
  *
  * **Accessibility:** an `ol` named by `label`; the current step carries
  * `aria-current="step"`, and in `progress` each state is read as its word
@@ -93,6 +93,13 @@ export function Steps({
     if (!isValidElement(child)) return child;
     return <Position.Provider value={position++}>{child}</Position.Provider>;
   });
+  const now =
+    variant === "progress"
+      ? Children.toArray(children).find(
+          (child): child is ReactElement<{ state?: StepState; title?: string }> =>
+            isValidElement<{ state?: StepState; title?: string }>(child) && child.props.state === "current",
+        )?.props.title
+      : undefined;
   return (
     <Config.Provider value={{ variant, heading, stateLabels, onStep }}>
       <ol
@@ -103,6 +110,12 @@ export function Steps({
         aria-label={label}
       >
         {steps}
+        {/* The current title again, under the track on a narrow page; the step itself is what a screen reader hears. */}
+        {now ? (
+          <li className="di-steps-now" aria-hidden>
+            {now}
+          </li>
+        ) : null}
       </ol>
     </Config.Provider>
   );

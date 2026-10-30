@@ -15,7 +15,19 @@
     font-size: var(--di-font-size-200);
   }
 
-  .di-chart .recharts-cartesian-grid line,
+  /* Gridlines are solid rules a shade off the surface: a dash would read as a projection or a threshold. */
+  .di-chart .recharts-cartesian-grid line {
+    stroke: var(--di-rule);
+    stroke-dasharray: none;
+  }
+
+  /* A value written at a mark is text: text ink, never the series colour. */
+  .di-chart .di-chart-value {
+    fill: var(--di-text);
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+  }
+
   .di-chart .recharts-cartesian-axis-line,
   .di-chart .recharts-curve.recharts-tooltip-cursor {
     stroke: var(--di-rule);
@@ -119,7 +131,7 @@
   .di-chart-legend {
     flex-wrap: wrap;
     gap: var(--di-gap-8) var(--di-gap-16);
-    padding: var(--di-space-4) var(--di-space-4) 0;
+    padding: var(--di-space-4) 0 0;
     color: var(--di-text-muted);
     font-family: var(--di-font-ui);
     font-size: var(--di-font-size-300);

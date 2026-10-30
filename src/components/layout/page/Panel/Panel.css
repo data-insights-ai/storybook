@@ -72,6 +72,16 @@
     gap: var(--di-gap-8);
   }
 
+  /*
+   * With actions in the head, the title's line, the meta and the buttons
+   * share one band a small control high, so their centres line up rather
+   * than their bottoms.
+   */
+  .di-panel-header:has(> .di-panel-actions) .di-panel-title-row,
+  .di-panel-header:has(> .di-panel-actions) > .di-panel-meta {
+    min-height: var(--di-control-h-sm);
+  }
+
   .di-panel-content {
     flex: 1;
     display: flex;
@@ -227,10 +237,5 @@
     .di-panel.is-hero {
       gap: var(--di-gap-16);
     }
-  }
-
-  /* The danger panel's lead states what its actions cost, in the danger ink. */
-  .di-panel.is-danger .di-panel-lead {
-    color: var(--di-status-danger-fg);
   }
 }

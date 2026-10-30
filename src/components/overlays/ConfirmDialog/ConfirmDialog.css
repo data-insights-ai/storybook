@@ -10,6 +10,31 @@
     color: var(--di-text-muted);
   }
 
+  /*
+   * In a toolbar a destructive button stays quiet until hovered; here it is
+   * the action the question asks for, so it is filled. Disabled until the
+   * name is typed, it keeps a pale danger tint rather than the grey of
+   * every other disabled control.
+   */
+  .di-btn.di-confirm-commit {
+    border-color: var(--di-status-danger-dot);
+    background: var(--di-status-danger-dot);
+    color: var(--di-button-primary-fg);
+  }
+
+  .di-btn.di-confirm-commit:hover:not(:disabled, [aria-disabled="true"]) {
+    border-color: var(--di-status-danger-fg);
+    background: var(--di-status-danger-fg);
+  }
+
+  .di-btn.di-confirm-commit:disabled,
+  .di-btn.di-confirm-commit[aria-disabled="true"] {
+    border-color: var(--di-status-danger-border);
+    background: var(--di-status-danger-bg);
+    color: var(--di-status-danger-fg);
+    opacity: 0.72;
+  }
+
   .di-confirm-error {
     font-size: var(--di-font-size-300);
     color: var(--di-status-danger-fg);

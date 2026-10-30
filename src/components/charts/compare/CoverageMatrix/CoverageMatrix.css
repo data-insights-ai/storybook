@@ -1,8 +1,17 @@
 @layer components {
-  /* The frame scrolls on its own, so a wide set never pushes the page sideways. */
+  /*
+   * The frame scrolls on its own, so a wide set never pushes the page
+   * sideways. It reaches out by the width of a reached column's frame, so
+   * every column's text sits on the content edge of what holds the matrix
+   * and a frame stands in the margin around its column. At the end it's
+   * held in, so what scrolls in never runs to the container's edge.
+   */
   .di-matrix {
+    --di-matrix-bleed: calc(var(--di-gap-6) + 1px);
     overflow-x: auto;
-    padding-bottom: var(--di-space-4);
+    margin: calc(-1 * var(--di-matrix-bleed));
+    margin-inline-end: 0;
+    padding: var(--di-matrix-bleed);
   }
 
   .di-matrix:focus-visible {
@@ -14,32 +23,40 @@
    * Each column hugs its own cells, so a reached column's frame ends where
    * its codes do, not where the longest column does. Names hold two lines
    * either way, so every column's cells start on one line. A column is at
-   * least 88px and grows to its longest code, which never wraps.
+   * least 88px and grows to its longest code, which never wraps, but not
+   * past 128px: a set of two columns keeps its cells square instead of
+   * stretching them across the page.
    */
   .di-matrix-columns {
     display: grid;
-    grid-auto-columns: minmax(min-content, 1fr);
+    grid-auto-columns: minmax(min-content, var(--di-matrix-col-max));
+    justify-content: start;
     grid-auto-flow: column;
     align-items: start;
-    gap: var(--di-gap-8);
+    gap: var(--di-gap-8) var(--di-gap-16);
   }
 
   .di-matrix-column {
+    position: relative;
     min-width: var(--di-matrix-code-min);
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-8);
-    padding: var(--di-space-6);
-    border: 1px solid transparent;
-    border-radius: var(--di-radius-surface);
   }
 
-  .di-matrix-column.is-reached {
-    border-color: var(--di-border-strong);
+  /* Drawn around the column, not inside it, so a reached column's text lines up with every other column's. */
+  .di-matrix-column.is-reached::before {
+    content: "";
+    position: absolute;
+    inset: calc(-1 * var(--di-matrix-bleed));
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-surface);
+    pointer-events: none;
   }
 
   .di-matrix-label {
     min-height: 2lh;
+    overflow-wrap: break-word;
     font-size: var(--di-font-size-200);
     font-weight: var(--di-weight-regular);
     line-height: 1.3;
@@ -102,14 +119,13 @@
     list-style: none;
   }
 
-  /* The code of a mark, on a quiet pill: it names a thing. */
+  /* The code of a mark, on a quiet tonal pill: it names a thing. No line, since the reached column around it is the one frame. */
   .di-matrix-mark {
     display: flex;
     align-items: center;
     gap: var(--di-gap-6);
     height: var(--di-pill-height);
     padding: 0 var(--di-space-8);
-    border: 1px solid var(--di-border);
     border-radius: var(--di-pill-radius);
     background: var(--di-bg-subtle);
     color: var(--di-text-muted);

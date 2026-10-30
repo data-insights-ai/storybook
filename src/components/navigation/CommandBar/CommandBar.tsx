@@ -9,6 +9,15 @@ import "./CommandBar.css";
 export { CommandEmpty, CommandGroup, CommandRow } from "./CommandRow";
 export { CommandChip } from "./CommandChip";
 
+/** One entry of the key legend: the key as it is printed on the cap, and what it does. */
+export type CommandHint = { keys: string; label: string };
+
+function keyAndWord(hint: string | CommandHint): CommandHint {
+  if (typeof hint !== "string") return hint;
+  const space = hint.indexOf(" ");
+  return space < 0 ? { keys: hint, label: "" } : { keys: hint.slice(0, space), label: hint.slice(space + 1) };
+}
+
 /**
  * One field for going somewhere, finding a record and asking a question.
  *
@@ -18,9 +27,12 @@ export { CommandChip } from "./CommandChip";
  *   `Toolbar`), for choosing a value in a form (`ComboBox`), or for a row's
  *   actions (`Menu`).
  *
- * Anatomy: the field (magnifier, query, the `esc` key), the results as
- * `CommandGroup`s of `CommandRow`s, or one `CommandEmpty` when nothing
- * matched, then a foot with the key legend and where the query is processed.
+ * Anatomy: three zones a step apart in tone. The field (magnifier, query,
+ * the `esc` key) on the ground's tone; the results as `CommandGroup`s of
+ * `CommandRow`s, or one `CommandEmpty` when nothing matched, on the
+ * plane's surface; then the foot, a quiet strip a step lower, with the key
+ * legend (each key a `Kbd` and its word) and, at its end, where the query
+ * is processed.
  *
  * Accessibility: the field is a combobox that owns a listbox. Focus stays in
  * the field; Up and Down move the highlighted row (and wrap), Home and End
@@ -45,8 +57,12 @@ export function CommandBar({
   placeholder: string;
   value: string;
   onValueChange: (value: string) => void;
-  /** The key legend along the foot, e.g. ["↑↓ move", "↵ open"]. */
-  hints: string[];
+  /**
+   * The key legend along the foot. A string is the key, a space, then its
+   * word ("↑↓ move", "esc schließen"); an object names both where the key
+   * itself holds a space.
+   */
+  hints: Array<string | CommandHint>;
   /** Where the query is processed. Stated, not implied. */
   privacyNote: string;
   /** `CommandGroup`s of `CommandRow`s, or one `CommandEmpty`. */
@@ -145,8 +161,11 @@ export function CommandBar({
       </div>
       <div className="di-command-foot">
         <span className="di-command-hints">
-          {hints.map((hint) => (
-            <span key={hint}>{hint}</span>
+          {hints.map(keyAndWord).map(({ keys, label: word }) => (
+            <span key={keys + word} className="di-command-hint">
+              <Kbd>{keys}</Kbd>
+              {word}
+            </span>
           ))}
         </span>
         <span className="di-command-privacy">

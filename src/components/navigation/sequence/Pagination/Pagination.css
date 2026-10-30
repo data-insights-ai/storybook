@@ -1,5 +1,6 @@
 @layer components {
   .di-pages {
+    --di-pages-glyph-inset: calc((var(--di-control-h-sm) - var(--di-icon-sm)) / 2);
     display: inline-flex;
     align-items: center;
     gap: var(--di-space-2);
@@ -43,6 +44,60 @@
     color: var(--di-text-on-strong);
   }
 
+  /*
+   * The arrows are quiet until hovered, so what the eye takes as the row's
+   * edge is the chevron. An arrow is as wide as its chevron, so the row's
+   * edges are the chevrons and land on the text edges of the table above;
+   * its hover plate, its focus ring and its target reach out round it.
+   */
+  .di-page-btn.di-page-arrow {
+    position: relative;
+    z-index: 0;
+    min-width: 0;
+    width: var(--di-icon-sm);
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .di-page-arrow:first-child {
+    margin-inline-end: var(--di-pages-glyph-inset);
+  }
+
+  .di-page-arrow:last-child {
+    margin-inline-start: var(--di-pages-glyph-inset);
+  }
+
+  .di-page-arrow::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0 calc(-1 * var(--di-pages-glyph-inset));
+    border: 1px solid transparent;
+    border-radius: var(--di-radius-micro);
+    transition:
+      background-color var(--di-duration) var(--di-ease),
+      border-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-page-btn.di-page-arrow:hover:not(:disabled) {
+    background: transparent;
+  }
+
+  .di-page-arrow:hover:not(:disabled)::before {
+    border-color: var(--di-border);
+    background: var(--di-bg-surface);
+  }
+
+  .di-page-arrow:focus-visible {
+    outline: none;
+  }
+
+  .di-page-arrow:focus-visible::before {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
   .di-page-btn:disabled {
     color: var(--di-text-disabled);
     cursor: not-allowed;
@@ -68,6 +123,7 @@
   /* A finger gets the 40px target whatever the density; seven slots still fit a phone. */
   @media (pointer: coarse) {
     .di-pages {
+      --di-pages-glyph-inset: calc((var(--di-target) - var(--di-icon-sm)) / 2);
       gap: 0;
     }
 

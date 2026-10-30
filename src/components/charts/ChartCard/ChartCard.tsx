@@ -1,20 +1,16 @@
 import { Children, isValidElement, type ReactNode } from "react";
-import { cx } from "../../../internal/cx";
-import { surfaceClass } from "../../../internal/surface";
+import { Figure } from "../../data/figures/Figure";
+import { Grid } from "../../layout/arrangement/Grid";
+import { Panel, PanelActions, PanelFigure, PanelVisual } from "../../layout/page/Panel";
 import "./ChartCard.css";
 
 /**
  * One figure of a dashboard: what it is, the value now, a line that reads
- * it ("lasts about 24 days"), and the chart behind it. A `ChartCardAction`
- * child is the link to the page that changes the figure — every figure on a dashboard leads
- * somewhere. `tone` marks a figure past its threshold; the note says why.
+ * it, and the chart behind it, drawn as a `Panel` with a compact `Figure`.
  *
- * Cards sit in a `Grid`; `wide` spans two columns for a chart that needs
- * the width, such as usage per day.
- *
- * @deprecated Removed in 0.12.0. Use `<Panel title heading={3}>` with the
- * figure and the chart as its content, `wide` for the full row, and the link
- * in `PanelActions`.
+ * @deprecated Removed in 0.12.0. Use `<Panel title heading wide>` with a
+ * `Figure size="compact"` (its label names what is measured) and the chart
+ * as content, and the link in `PanelActions`; cards sit in a `Grid`.
  */
 export function ChartCard({
   title,
@@ -33,7 +29,7 @@ export function ChartCard({
   wide?: boolean;
   /** The title's heading level: one below the section the dashboard sits in. */
   level?: 2 | 3 | 4;
-  /** The chart — a `TrendChart`, a `PeriodTimeline`, a `Distribution`, a list — and one `ChartCardAction`. */
+  /** The chart and one `ChartCardAction`. */
   children?: ReactNode;
 }) {
   const action: ReactNode[] = [];
@@ -42,34 +38,39 @@ export function ChartCard({
     if (isValidElement(child) && child.type === ChartCardAction) action.push(child);
     else body.push(child);
   });
-  const Heading = `h${level}` as const;
   return (
-    <section className={cx(surfaceClass(), "di-chart-card", `di-chart-card-${tone}`, wide && "is-wide")}>
-      <header className="di-chart-card-head">
-        <Heading className="di-chart-card-title">{title}</Heading>
-        {action}
-      </header>
-      {figure ? <p className="di-chart-card-figure">{figure}</p> : null}
-      {note ? <p className="di-chart-card-note">{note}</p> : null}
-      {body.length ? <div className="di-chart-card-body">{body}</div> : null}
-    </section>
+    <Panel title={title} heading={level} wide={wide} className="di-chart-card">
+      {action.length ? <PanelActions>{action}</PanelActions> : null}
+      {figure ? (
+        <PanelFigure>
+          <Figure size="compact" label={title} value={figure} tone={tone}>
+            {note}
+          </Figure>
+        </PanelFigure>
+      ) : null}
+      {figure && body.length ? <PanelVisual>{body}</PanelVisual> : body}
+    </Panel>
   );
 }
 
 /**
  * The link beside the title: a `TextLink` to the page behind the figure.
  *
- * @deprecated Removed in 0.12.0. Use `PanelActions` with the `TextLink` in a `Panel`.
+ * @deprecated Removed in 0.12.0. Put the `TextLink` in `PanelActions`.
  */
 export function ChartCardAction({ children }: { children: ReactNode }) {
-  return <span className="di-chart-card-action">{children}</span>;
+  return <>{children}</>;
 }
 
 /**
  * Dashboard cards in columns: two on a laptop, one on a phone.
  *
- * @deprecated Removed in 0.12.0. Use `Grid` with a `min` and `Panel`s in it.
+ * @deprecated Removed in 0.12.0. Use `Grid` with a `min`.
  */
 export function ChartCardGrid({ children }: { children: ReactNode }) {
-  return <div className="di-chart-card-grid">{children}</div>;
+  return (
+    <Grid min="var(--di-chart-card-min)" gap={16}>
+      {children}
+    </Grid>
+  );
 }

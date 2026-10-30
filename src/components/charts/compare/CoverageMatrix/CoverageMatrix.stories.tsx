@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
+import { Panel } from "../../../layout/page/Panel";
 import { CoverageMatrix, CoverageMatrixLegend, type CoverageMatrixColumn } from "./CoverageMatrix";
 
 // A public reference set — the enterprise ATT&CK tactics and how many
@@ -51,6 +52,11 @@ const meta = {
     label: { control: "text" },
     columns: { control: "object" },
   },
+  render: (args) => (
+    <Panel title="Techniques seen in case C-2041" heading={2}>
+      <CoverageMatrix {...args} />
+    </Panel>
+  ),
 } satisfies Meta<typeof CoverageMatrix>;
 
 export default meta;
@@ -76,21 +82,23 @@ export const Default: Story = {
 /** The legend beneath it names the tones, so the colour is never the only channel. */
 export const WithLegend: Story = {
   render: (args) => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "var(--di-space-16)" }}>
-      <CoverageMatrix {...args} />
-      <CoverageMatrixLegend
-        tones={[
-          { tone: "neutral", label: "low" },
-          { tone: "warn", label: "medium" },
-          { tone: "danger", label: "high" },
-        ]}
-        emptyLabel="not observed"
-      />
-    </div>
+    <Panel title="Techniques seen in case C-2041" heading={2}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--di-gap-16)" }}>
+        <CoverageMatrix {...args} />
+        <CoverageMatrixLegend
+          tones={[
+            { tone: "neutral", label: "observed" },
+            { tone: "warn", label: "suspicious" },
+            { tone: "danger", label: "malicious" },
+          ]}
+          emptyLabel="not observed"
+        />
+      </div>
+    </Panel>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("high")).toBeVisible();
+    await expect(canvas.getByText("malicious")).toBeVisible();
     await expect(canvas.getByText("not observed")).toBeVisible();
   },
 };
@@ -119,7 +127,7 @@ export const UnnamedCode: Story = {
 export const Scrolling: Story = {
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 480 }}>
+      <div style={{ maxWidth: "calc(var(--di-measure-form) * 2 / 3)" }}>
         <Story />
       </div>
     ),
@@ -130,5 +138,40 @@ export const Scrolling: Story = {
     await userEvent.tab();
     await waitFor(() => expect(frame).toHaveFocus());
     await expect(frame.scrollWidth).toBeGreaterThan(frame.clientWidth);
+  },
+};
+
+const GERMAN: Record<string, string> = {
+  TA0043: "Aufklärung",
+  TA0042: "Ressourcenentwicklung",
+  TA0001: "Erstzugriff",
+  TA0002: "Ausführung",
+  TA0003: "Persistenz",
+  TA0004: "Rechteausweitung",
+  TA0005: "Umgehung von Abwehrmaßnahmen",
+  TA0006: "Zugriff auf Anmeldedaten",
+  TA0007: "Erkundung",
+  TA0008: "Seitwärtsbewegung",
+  TA0009: "Sammlung",
+  TA0011: "Steuerung und Kontrolle",
+  TA0010: "Exfiltration",
+  TA0040: "Auswirkung",
+};
+
+/**
+ * German names: a column widens to its longest word instead of breaking
+ * inside it, and every name holds two lines, so the cells of every column
+ * still start on one line.
+ */
+export const German: Story = {
+  args: {
+    label: "Technikmatrix",
+    columns: COLUMNS.map((column) => ({ ...column, label: GERMAN[column.code] ?? column.label })),
+  },
+  play: async ({ canvasElement }) => {
+    const cells = [...canvasElement.querySelectorAll(".di-matrix-cells")].map((el) =>
+      Math.round(el.getBoundingClientRect().top),
+    );
+    await expect(new Set(cells).size).toBe(1);
   },
 };

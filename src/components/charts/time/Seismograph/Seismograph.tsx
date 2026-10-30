@@ -4,6 +4,7 @@ import { cx } from "../../../../internal/cx";
 import { Chart, ChartTooltip, ChartTooltipContent, type ChartConfig } from "../../Chart";
 import {
   bucketMiddle,
+  countTicks,
   peaks,
   pulses,
   stepSelection,
@@ -81,6 +82,8 @@ export function Seismograph({
   const maxAbove = Math.max(1, ...points.map((p) => p.above));
   const maxBelow = Math.max(1, ...points.map((p) => p.below));
   const stride = tickStride(points.length, width);
+  const ticks = countTicks(maxAbove * 1.45, scale);
+  const top = Math.max(maxAbove * 1.45, ticks.at(-1) ?? 0);
   const labelled = peaks(points, width < 600 ? 1 : 3);
   const selected = points.findIndex((p) => p.at === selectedAt);
   const describe = (p: SeismographPoint) =>
@@ -97,12 +100,13 @@ export function Seismograph({
             if (at && onSelect) onSelect(points[at.index].at);
           }}
         >
-          <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+          <CartesianGrid vertical={false} />
           <XAxis dataKey="x" type="number" domain={["dataMin", "dataMax"]} hide />
           <YAxis
             width={48}
             scale={scale === "log" ? "symlog" : scale}
-            domain={[-maxBelow * 1.25, maxAbove * 1.45]}
+            domain={[-maxBelow * 1.25, top]}
+            ticks={ticks}
             tickFormatter={(v: number) => formatValue(Math.abs(v))}
             allowDecimals={false}
             tickLine={false}
@@ -162,7 +166,14 @@ export function Seismograph({
                 r={2}
                 fill="var(--di-text-muted)"
                 stroke="none"
-                label={{ value: formatX(p.at), position: "bottom", dy: 6, className: "di-seismograph-tick" }}
+                label={{
+                  value: formatX(p.at),
+                  position: "bottom",
+                  dy: 6,
+                  // The first day starts at the plot's edge, clear of the count axis beside it.
+                  ...(index === 0 ? { textAnchor: "start", dx: -2 } : {}),
+                  className: "di-seismograph-tick",
+                }}
               />
             ) : null,
           )}

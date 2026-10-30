@@ -49,12 +49,13 @@ The Storybook sidebar is grouped by the job a component does:
 - `Data/`: what a person reads: records (`AttentionList`, `RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`FigureRow`, `HeroFigure`, `Stat`, `StatTile`) and `DataTable`.
 - `Text/`: how text is set: `Eyebrow`, `Highlight`, `Kbd`, `MetaLine`, `CodeBlock`, `PullQuote`, `TickRule`.
 - `Marks/`: what every other component draws with: `Badge`, `SeverityMark`, `StatusPill`, `Chip`, `Tag`, `VersionTag`, `SealValue`, `Icon`, `IconTile`.
+- `Status/`: the state of one thing, inline: `LevelMeter` so far; the status marks join it in the final move.
 - `Feedback/`: `Notice`, `Toast`, `EmptyState`, `DangerZone`, `Tooltip`, and the loaders, progress bars and skeletons.
 - `Overlays/`: what opens over the page: `Modal`, `ConfirmDialog`, `Sheet`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
 - `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Menu`, `CommandBar`, `Pagination`, `Stepper`, `TextLink`.
 - `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `Hero`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `ListDetail`, `Toolbar`, `Actions`, `Accordion`, `Disclosure`.
-- `Charts/`: `Chart`, `ChartCard`, over time (`TrendChart`, `Sparkline`, `Seismograph`) and compared (`Bars`, `Distribution`, `LevelMeter`, `CoverageMatrix`).
-- `Timeline/`, `Inference/`: what happened when, and what the system inferred.
+- `Charts/`: `Chart`, `ChartCard`, over time (`TrendChart`, `Sparkline`, `Seismograph`) and compared (`Bars`, `Distribution`, `CoverageMatrix`).
+- `Timeline/`, `Inference/`: what happened when (`EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`), and what the system inferred.
 - `Shell/`: the frame of the app: `AppShellBar`, `AppShellContent`, `SignIn`, `SkipLink`, `ThemeProvider`, `DensityProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 

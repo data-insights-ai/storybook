@@ -325,32 +325,53 @@ export const SingleRow: Story = {
   ),
 };
 
-/** A filter that matches nothing: the head and the footer stay, one row says why and offers the way back. */
+/**
+ * A filter that matches nothing: the head stays, one row says why and offers
+ * the way back. The message starts on the first data column, past the index
+ * column, and the way out ends on the last column; the footer is dropped,
+ * since "0 of 0" only repeats the message.
+ */
 export const NoRows: Story = {
   args: { caption: "Sources on record" },
   render: (args) => (
     <DataTable {...args}>
-      <TableFooter>
-        <span>0 of 0 sources</span>
-      </TableFooter>
       <TableHead>
         <TableColumn index={true}>Ordinal</TableColumn>
         <TableColumn>Host</TableColumn>
-        <TableColumn align="end">State</TableColumn>
+        <TableColumn>State</TableColumn>
+        <TableColumn align="end">Entries</TableColumn>
       </TableHead>
       <TableBody>
         <TableEmpty message="No source matches the current filter.">
-          <Button variant="ghost" size="sm">
-            Clear filters
-          </Button>
+          <TextLink onClick={() => {}}>Clear filters</TextLink>
         </TableEmpty>
       </TableBody>
+      <TableFooter>
+        <span>0 of 0 sources</span>
+      </TableFooter>
     </DataTable>
   ),
   play: async ({ canvasElement }) => {
     const message = within(canvasElement).getByText("No source matches the current filter.");
-    await expect(message.closest("td")).toHaveAttribute("colspan", "1000");
+    const cell = message.closest("td")!;
+    await expect(cell).toHaveAttribute("colspan", "1000");
     await expect(message.getBoundingClientRect().width).toBeGreaterThan(160);
+    const text = (el: Element) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      return range.getBoundingClientRect();
+    };
+    const heads = canvasElement.querySelectorAll("thead th");
+    const first = heads[1];
+    const last = heads[heads.length - 1];
+    if (getComputedStyle(first).position !== "absolute") {
+      await expect(Math.abs(text(message).left - text(first).left)).toBeLessThanOrEqual(1);
+      // The way out ends on the last column's edge, or, wrapped under a long message, starts on the message's.
+      const out = text(within(canvasElement).getByRole("button", { name: "Clear filters" }));
+      if (out.top >= text(message).bottom) await expect(Math.abs(out.left - text(message).left)).toBeLessThanOrEqual(1);
+      else await expect(Math.abs(out.right - text(last).right)).toBeLessThanOrEqual(1);
+    }
+    await expect(canvasElement.querySelector(".di-table-foot")).toBeNull();
   },
 };
 

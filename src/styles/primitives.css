@@ -41,9 +41,14 @@
     --di-surface-shadow: inset 0 1px 0 var(--di-border), var(--di-shadow-plane);
   }
 
+  /*
+   * What cannot be taken back: the edge itself is the one red object, a
+   * full-strength line in the danger mark's colour, so it reads at a glance
+   * in both themes and behind a scrim. The words inside stay ink.
+   */
   .di-surface-edge-danger {
     box-shadow:
-      inset 0 0 0 1px var(--di-status-danger-border),
+      inset 0 0 0 1px var(--di-status-danger-dot),
       var(--di-surface-shadow);
   }
 
