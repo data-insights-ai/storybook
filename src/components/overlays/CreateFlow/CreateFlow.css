@@ -87,7 +87,7 @@
   }
 
   .di-create-flow[data-width="page"] .di-create-flow-error {
-    padding: 0 var(--di-create-flow-pad) var(--di-gap-12);
+    padding: var(--di-gap-16) var(--di-create-flow-pad) 0;
   }
 
   /* The actions are the panel's last row at its inset, 16 below the step as a panel's rows are; they stay in view on a long step. */

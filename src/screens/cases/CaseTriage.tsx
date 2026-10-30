@@ -166,7 +166,9 @@ function CaseFour({ record }: { record: CaseRow }) {
         padded={false}
       >
         <PanelMeta>
-          <TextLink href="#graph">Attack graph</TextLink>
+          <TextLink href="#graph" trail="arrow">
+            Attack graph
+          </TextLink>
         </PanelMeta>
         <DataTable caption="Phases of case 4" narrow="stack">
           <TableHead>
@@ -196,7 +198,9 @@ function CaseFour({ record }: { record: CaseRow }) {
 
       <Panel label="Evidence" title="Latest signals" heading={3} padded={false}>
         <PanelMeta>
-          <TextLink href="#signals">All 1,064</TextLink>
+          <TextLink href="#signals" trail="arrow">
+            All 1,064
+          </TextLink>
         </PanelMeta>
         <DataTable caption="Latest signals of case 4" indexed={false} narrow="stack">
           <TableHead>

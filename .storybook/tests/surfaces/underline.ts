@@ -33,3 +33,23 @@ export function underlineFindings(root: Element): string[] {
   }
   return findings;
 }
+
+/**
+ * The trailing → or ↗ of an action link (`TextLink trail`) belongs at a
+ * block's edge, never in running text: the link is the only text of the
+ * block that holds it.
+ */
+export function trailFindings(root: Element): string[] {
+  const findings: string[] = [];
+  for (const mark of root.querySelectorAll<HTMLElement>(".di-textlink-trail")) {
+    const link = mark.closest<HTMLElement>("a, button");
+    if (!link || !shown(link)) continue;
+    let block = link.parentElement;
+    while (block && getComputedStyle(block).display.startsWith("inline")) block = block.parentElement;
+    if (!block) continue;
+    const own = (link.textContent ?? "").trim();
+    if ((block.textContent ?? "").trim() !== own)
+      findings.push(`${describe(link)} "${own.slice(0, 40)}" carries a trailing mark inside running text`);
+  }
+  return findings;
+}

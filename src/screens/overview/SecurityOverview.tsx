@@ -71,7 +71,9 @@ export function SecurityOverview() {
           reason="Identity sign-ins lost its read permission and mail audit was never set up, so sign-in detections are blind."
           meta="Last data 7.2 h ago"
         >
-          <TextLink href="#sources">Fix the sources</TextLink>
+          <TextLink href="#sources" trail="arrow">
+            Fix the sources
+          </TextLink>
         </AttentionItem>
         <AttentionItem
           rank="03"
@@ -81,7 +83,9 @@ export function SecurityOverview() {
           reason="The forwarder rejects the token; 3,412 findings wait to be delivered."
           meta="14 failures since 06:10"
         >
-          <TextLink href="#siem">Open SIEM export</TextLink>
+          <TextLink href="#siem" trail="arrow">
+            Open SIEM export
+          </TextLink>
         </AttentionItem>
       </AttentionList>
 
@@ -92,7 +96,9 @@ export function SecurityOverview() {
         title="Three bursts this week, the largest on Friday"
       >
         <PanelActions>
-          <TextLink href="#cases">All cases</TextLink>
+          <TextLink href="#cases" trail="arrow">
+            All cases
+          </TextLink>
         </PanelActions>
         <PanelFigure>
           <Figure size="hero" label="Open cases" value={String(figures.open)}>
@@ -130,7 +136,9 @@ export function SecurityOverview() {
       <Grid min="360px">
         <Panel label="Devices" title="Three of the four devices with cases are critical" heading={2} padded={false}>
           <PanelMeta>
-            <TextLink href="#assets">All assets</TextLink>
+            <TextLink href="#assets" trail="arrow">
+              All assets
+            </TextLink>
           </PanelMeta>
           <DataTable caption="Devices with open cases" indexed={false}>
             <TableHead>
@@ -153,7 +161,9 @@ export function SecurityOverview() {
         </Panel>
         <Panel label="Coverage" title="3 of 12 tables are not arriving" heading={2} padded={false}>
           <PanelMeta>
-            <TextLink href="#sources">Sources</TextLink>
+            <TextLink href="#sources" trail="arrow">
+              Sources
+            </TextLink>
           </PanelMeta>
           <DataTable caption="Tables that are not arriving" indexed={false}>
             <TableHead>

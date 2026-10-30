@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useEffect, useRef, useState } from "react";
 import { expect, waitFor, within } from "storybook/test";
-import { AppShellBar, AppShellBarEnd } from "../../../shell/AppShell";
+import { AppShellBar, AppShellBarEnd } from "../../../shell/AppShellBar";
 import { Button } from "../../../actions/Button";
 import { Stack } from "../../../layout/arrangement/Stack";
 import { RouteProgress } from "./RouteProgress";

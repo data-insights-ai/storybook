@@ -72,7 +72,8 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
     pattern: "Making an AI control look unlike the others",
     verdict: "adapted",
     built: 'SealMark, Button variant="inferred"',
-    reason: "A gold hairline and a hollow ring — unsealed. Not a gradient, not a sparkle.",
+    reason:
+      "A hairline and a hollow ring in the mark colour — unsealed; gold only in a brand context. Not a gradient, not a sparkle.",
   },
   {
     pattern: "Tactile micro-interaction on press",
@@ -84,7 +85,7 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
   {
     pattern: "Act first, offer undo afterwards",
     verdict: "refused",
-    built: "ProposalPanel, Modal, Toast",
+    built: "ProposalPanel, ConfirmDialog, Toast",
     reason:
       "Every action is confirmed beforehand, stating basis, scope and reversibility. The toast is a receipt with an audit id, never a window to escape through.",
   },
@@ -103,9 +104,9 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
   {
     pattern: "A floating dock that reorders itself",
     verdict: "refused",
-    built: "AppShell",
+    built: "Sidebar",
     reason:
-      "Navigation that hides itself cannot be described in an audit. The rail is fixed, in the order the product declares. Nothing reorders it.",
+      "Navigation that hides itself cannot be described in an audit. The sidebar keeps the order the product declares: collapsed it is an icon rail, on a phone a drawer, and nothing reorders it.",
   },
 ];
 

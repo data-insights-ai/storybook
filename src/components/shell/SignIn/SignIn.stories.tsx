@@ -39,7 +39,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Navy sheet, paper card, and the seal where the ordinal would sit. */
+/**
+ * The look the hosted login copies: the paper ground with one surface card
+ * and the navy button in daylight, IBM Plex Sans at 400, the seal before the
+ * eyebrow. Switch the theme for the navy ground and the paper-white button.
+ */
 export const Default: Story = {
   render: (args) => (
     <SignIn {...args}>
@@ -65,6 +69,8 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Sign in" }));
     await expect(args.onSubmit).toHaveBeenCalledOnce();
+    // The scripted click focuses the button as if from a keyboard; a pointer press leaves no ring.
+    (canvasElement.ownerDocument.activeElement as HTMLElement | null)?.blur();
     const sheet = canvasElement.querySelector(".di-login")!;
     await expect(sheet.getBoundingClientRect().height).toBeGreaterThanOrEqual(window.innerHeight);
     await expect(getComputedStyle(document.documentElement).backgroundColor).toBe(
@@ -166,8 +172,8 @@ export const SecondFactor: Story = {
 };
 
 /**
- * The card is the daylight theme on itself, in both themes, so a panel or a
- * table inside it is daylight too: nothing in it has to be pinned by hand.
+ * The card resolves its tokens from the theme around it, so a panel or a
+ * table inside it follows the theme with nothing pinned by hand.
  */
 export const WithPanelAndTable: Story = {
   name: "With a panel and a table",
@@ -204,13 +210,56 @@ export const WithPanelAndTable: Story = {
   ),
   play: async ({ canvasElement }) => {
     const card = canvasElement.querySelector(".di-login-card") as HTMLElement;
-    const daylight = document.createElement("div");
-    daylight.dataset.theme = "light";
-    document.body.append(daylight);
-    const surface = getComputedStyle(daylight).getPropertyValue("--di-bg-surface");
-    const ink = getComputedStyle(daylight).color;
-    daylight.remove();
-    await expect(getComputedStyle(card).getPropertyValue("--di-bg-surface")).toBe(surface);
-    await expect(getComputedStyle(within(card).getByText("Staging")).color).toBe(ink);
+    await expect(getComputedStyle(card).backgroundColor).not.toBe(
+      getComputedStyle(canvasElement.querySelector(".di-login")!).backgroundColor,
+    );
+    await expect(getComputedStyle(card).getPropertyValue("--di-bg-surface")).toBe(
+      getComputedStyle(canvasElement).getPropertyValue("--di-bg-surface"),
+    );
+  },
+};
+
+/**
+ * After dark: the navy ground (#0A1F44), a navy surface card one step up and
+ * the paper-white button, because navy cannot act on navy. This is the dark
+ * look of the hosted login.
+ */
+export const AfterDark: Story = {
+  name: "After dark",
+  globals: { theme: "dark" },
+  render: (args) => Default.render!(args, {} as never),
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByRole("button", { name: "Sign in" });
+    const fill = getComputedStyle(button).backgroundColor;
+    await expect(fill).not.toBe(getComputedStyle(canvasElement.querySelector(".di-login")!).backgroundColor);
+    await expect(getComputedStyle(canvasElement.querySelector(".di-login")!).backgroundColor).toBe("rgb(10, 31, 68)");
+  },
+};
+
+/** German, at a phone's width: the longer words wrap inside the card. */
+export const German: Story = {
+  args: {
+    kicker: "datAInsights",
+    eyebrow: "Versiegelter Arbeitsbereich",
+    title: "Anmelden",
+    lede: "Das Register öffnet sich, sobald Ihr Schlüssel bestätigt ist.",
+    restriction: "Zugang nur für berechtigte Bedienerinnen und Bediener",
+    foot: "SSO und Zwei-Faktor · Ende-zu-Ende-verschlüsselt",
+  },
+  render: (args) => (
+    <SignIn {...args}>
+      <TextField id="login-user-de" label="E-Mail-Adresse oder Benutzername" autoComplete="username" />
+      <TextField id="login-password-de" label="Passwort" type="password" autoComplete="current-password">
+        <TextLink quiet={true}>Passwort vergessen?</TextLink>
+      </TextField>
+      <Button type="submit" size="lg">
+        <LockKeyhole aria-hidden />
+        Anmelden
+      </Button>
+    </SignIn>
+  ),
+  play: async ({ canvasElement }) => {
+    const doc = canvasElement.ownerDocument.documentElement;
+    await expect(doc.scrollWidth).toBeLessThanOrEqual(doc.clientWidth);
   },
 };

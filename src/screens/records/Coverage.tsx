@@ -1,253 +1,149 @@
 import { useState } from "react";
-import { Bug, Download, Globe, MessageSquare, Radar, RefreshCw, Rss, SlidersHorizontal } from "lucide-react";
-import type { ComponentProps, ReactNode } from "react";
+import { Download, RotateCw } from "lucide-react";
 import {
   Button,
-  CellIcon,
-  CellLead,
   CellStack,
-  Tag,
   DataTable,
-  Grid,
+  Figure,
+  FigureNote,
+  FigureRow,
+  Loading,
   Notice,
   NoticeAction,
   NoticeBody,
-  NoticeIcon,
-  NoticeText,
   NoticeTitle,
+  Page,
   PageHeader,
+  PageHeaderMeta,
+  PageHeaderStatus,
   PageHeaderTitle,
-  Pagination,
   Panel,
   SearchField,
-  Stack,
   StatusPill,
   TableBody,
   TableCell,
   TableColumn,
-  TableFooter,
   TableHead,
   TableRow,
+  Tag,
   Toolbar,
   ToolbarEnd,
 } from "../..";
+import { ProductShell } from "../shell/ProductShell";
+import { tables, type Arrival } from "./coverage.sample";
 
-type StatusTone = NonNullable<ComponentProps<typeof StatusPill>["tone"]>;
+const tone = { arriving: "ok", silent: "warn", missing: "danger" } as const;
+export type CoverageState = "ready" | "loading";
 
-type Source = {
-  id: string;
-  name: string;
-  detail: string;
-  icon: ReactNode;
-  type: string;
-  method: string;
-  status: string;
-  tone: StatusTone;
-  checked: string;
-  checkedDetail: string;
-  hits: string;
-};
-
-const sources: Source[] = [
-  {
-    id: "register",
-    icon: <Radar aria-hidden />,
-    name: "Company register",
-    detail: "Register API",
-    type: "Register",
-    method: "Scheduled fetch",
-    status: "Active",
-    tone: "ok",
-    checked: "6 min ago",
-    checkedDetail: "Synced",
-    hits: "12 hits",
-  },
-  {
-    id: "archive",
-    icon: <Bug aria-hidden />,
-    name: "Gazette archive",
-    detail: "Document index",
-    type: "Archive",
-    method: "Automatic sync",
-    status: "Active",
-    tone: "ok",
-    checked: "12 min ago",
-    checkedDetail: "Synced",
-    hits: "84 hits",
-  },
-  {
-    id: "partner",
-    icon: <Rss aria-hidden />,
-    name: "Partner feed",
-    detail: "File import",
-    type: "Import",
-    method: "Daily batch",
-    status: "Paused",
-    tone: "warn",
-    checked: "3 hours ago",
-    checkedDetail: "Scheduled maintenance",
-    hits: "3 hits",
-  },
-  {
-    id: "press",
-    icon: <Globe aria-hidden />,
-    name: "Press index",
-    detail: "Public sources",
-    type: "Index",
-    method: "Scheduled run",
-    status: "Paused",
-    tone: "warn",
-    checked: "5 hours ago",
-    checkedDetail: "Next run at 18:00",
-    hits: "0 hits",
-  },
-  {
-    id: "contracts",
-    icon: <Radar aria-hidden />,
-    name: "Contract archive",
-    detail: "Internal holdings",
-    type: "Archive",
-    method: "Fetched on request",
-    status: "On request",
-    tone: "warn",
-    checked: "Yesterday",
-    checkedDetail: "Manual check",
-    hits: "5 hits",
-  },
-  {
-    id: "messages",
-    icon: <MessageSquare aria-hidden />,
-    name: "Message channel",
-    detail: "Webhook intake",
-    type: "Channel",
-    method: "Incoming events",
-    status: "Active",
-    tone: "ok",
-    checked: "2 min ago",
-    checkedDetail: "Continuous stream",
-    hits: "19 hits",
-  },
-];
-
-const pageSize = 3;
-
-export function CoverageScreen() {
-  const [showAll, setShowAll] = useState(true);
-  const [page, setPage] = useState(1);
-  const pages = Math.max(1, Math.ceil(sources.length / pageSize));
-  const start = (page - 1) * pageSize;
-  const visible = sources.slice(start, start + pageSize);
+/**
+ * Coverage: which of the tables the detections read are arriving, and what
+ * goes blind when one is not. The header orients, the tables that stopped
+ * are the first thing in the list, and the figures say what that costs.
+ */
+export function CoverageScreen({ state = "ready" }: { state?: CoverageState }) {
+  const [query, setQuery] = useState("");
+  const [onlyGaps, setOnlyGaps] = useState(true);
+  const shown = tables.filter(
+    (row) =>
+      (!onlyGaps || row.arrival !== "arriving") &&
+      `${row.table} ${row.source}`.toLowerCase().includes(query.trim().toLowerCase()),
+  );
 
   return (
-    <>
-      <h1 className="di-sr">Coverage</h1>
-      <Stack>
-        <Notice tone="ok">
-          <NoticeIcon>
-            <RefreshCw aria-hidden />
-          </NoticeIcon>
-          <NoticeText>
-            <NoticeTitle>
-              Live monitoring is running <StatusPill tone="ok">Online</StatusPill>
-            </NoticeTitle>
-            <NoticeBody>Configured sources sync in the background. Hits are checked as they arrive.</NoticeBody>
-          </NoticeText>
-          <NoticeAction>
-            <span className="di-quiet">Interval: 15 min</span>
-          </NoticeAction>
-        </Notice>
+    <ProductShell area="workspace" active="coverage" crumbs={["Example Security GmbH", "Production", "Coverage"]}>
+      <Page width="list">
+        <PageHeader>
+          <PageHeaderTitle>Coverage</PageHeaderTitle>
+          <PageHeaderStatus>
+            <StatusPill tone="danger">3 tables not arriving</StatusPill>
+          </PageHeaderStatus>
+          <PageHeaderMeta>{["As of 12 Oct, 10:00", "12 tables", "updates live"]}</PageHeaderMeta>
+        </PageHeader>
 
-        <Toolbar>
-          <SearchField label="Search sources" placeholder="Search sources, platforms, or types…" />
-          {showAll ? (
-            <Tag pressed onRemove={() => setShowAll(false)} removeLabel="Remove the status filter">
-              Status: All (6)
-            </Tag>
-          ) : null}
-          <ToolbarEnd>
-            <Button variant="secondary" size="sm">
-              <SlidersHorizontal aria-hidden />
-              Filter
-            </Button>
-            <Button variant="secondary" size="sm">
-              <Download aria-hidden />
-              Export
-            </Button>
-          </ToolbarEnd>
-        </Toolbar>
+        <FigureRow label="What the detections can see" variant="strip">
+          <Figure label="Tables arriving" value="9 of 12">
+            <FigureNote tone="danger">2 never delivered</FigureNote>
+          </Figure>
+          <Figure label="Detection rules ready" value="214 of 260" tone="warn">
+            <FigureNote tone="warn">46 wait for a missing table</FigureNote>
+          </Figure>
+          <Figure label="Events today" value="18.4 M">
+            <FigureNote>within 4% of last week</FigureNote>
+          </Figure>
+        </FigureRow>
 
-        <DataTable caption="Connected sources">
-          <TableFooter>
-            <span>
-              {start + 1}–{start + visible.length} of {sources.length} sources
-            </span>
-            <Pagination
-              page={page}
-              pages={pages}
-              onPageChange={setPage}
-              label="Source list pages"
-              previousLabel="Previous page"
-              nextLabel="Next page"
-              pageLabel="Page"
-            />
-          </TableFooter>
-          <TableHead>
-            <TableColumn>Source / platform</TableColumn>
-            <TableColumn>Type / method</TableColumn>
-            <TableColumn>Status</TableColumn>
-            <TableColumn>Last check</TableColumn>
-            <TableColumn align="end">Hits found</TableColumn>
-          </TableHead>
-          <TableBody>
-            {visible.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>
-                  <CellLead>
-                    <CellIcon>{row.icon}</CellIcon>
-                    <CellStack primary={row.name} secondary={row.detail} />
-                  </CellLead>
-                </TableCell>
-                <TableCell>
-                  <CellStack primary={row.type} secondary={row.method} />
-                </TableCell>
-                <TableCell>
-                  <StatusPill tone={row.tone}>{row.status}</StatusPill>
-                </TableCell>
-                <TableCell>
-                  <CellStack primary={row.checked} secondary={row.checkedDetail} />
-                </TableCell>
-                <TableCell align="end">{row.hits}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </DataTable>
-
-        <section>
-          <PageHeader level={2} lede="How sources are handled">
-            <PageHeaderTitle>Method and collection</PageHeaderTitle>
-          </PageHeader>
-          <Grid min="220px">
-            <Panel>
-              <PageHeader level={2}>
-                <PageHeaderTitle>Full history</PageHeaderTitle>
-              </PageHeader>
-              <p>Archive data is kept in full, so older entries stay traceable.</p>
-            </Panel>
-            <Panel>
-              <PageHeader level={2}>
-                <PageHeaderTitle>Automatic matching</PageHeaderTitle>
-              </PageHeader>
-              <p>New finds are matched against the watchlist — terms, domains, and identities — and reported.</p>
-            </Panel>
-            <Panel>
-              <PageHeader level={2}>
-                <PageHeaderTitle>Privacy</PageHeaderTitle>
-              </PageHeader>
-              <p>Records are held under the applicable privacy rules. Review uses encrypted logs.</p>
-            </Panel>
-          </Grid>
-        </section>
-      </Stack>
-    </>
+        {state === "loading" ? (
+          <Loading shape="table" label="Loading the tables" rows={6} />
+        ) : (
+          <Panel padded={false}>
+            <DataTable caption="Tables the detections read" indexed={false}>
+              <Toolbar label="Filter the tables" role="search">
+                <SearchField
+                  id="coverage-search"
+                  label="Search tables"
+                  placeholder="Table or source"
+                  size="sm"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                {onlyGaps ? (
+                  <Tag pressed onRemove={() => setOnlyGaps(false)} removeLabel="Show every table">
+                    Not arriving ({tables.filter((row) => row.arrival !== "arriving").length})
+                  </Tag>
+                ) : (
+                  <Tag onClick={() => setOnlyGaps(true)}>Not arriving</Tag>
+                )}
+                <ToolbarEnd>
+                  <Button variant="secondary" size="sm">
+                    <Download aria-hidden />
+                    Export
+                  </Button>
+                </ToolbarEnd>
+              </Toolbar>
+              <TableHead>
+                <TableColumn width="fill">Table</TableColumn>
+                <TableColumn>Arrival</TableColumn>
+                <TableColumn align="end">Last event</TableColumn>
+                <TableColumn align="end">Rules waiting</TableColumn>
+              </TableHead>
+              <TableBody>
+                {shown.map((row) => (
+                  <TableRow key={row.table} tone={row.arrival === "missing" ? "danger" : "neutral"}>
+                    <TableCell>
+                      <CellStack primary={row.table} secondary={row.source} />
+                    </TableCell>
+                    <TableCell>
+                      <StatusPill tone={tone[row.arrival]}>{arrivalWord(row.arrival)}</StatusPill>
+                    </TableCell>
+                    <TableCell align="end" mono>
+                      {row.last}
+                    </TableCell>
+                    <TableCell align="end" mono>
+                      {row.rules}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </DataTable>
+            {shown.length === 0 ? (
+              <Notice variant="empty">
+                <NoticeTitle>No table matches “{query}”.</NoticeTitle>
+                <NoticeBody>Search by the table’s name or by the source that sends it.</NoticeBody>
+                <NoticeAction>
+                  <Button variant="secondary" onClick={() => (setQuery(""), setOnlyGaps(false))}>
+                    <RotateCw aria-hidden />
+                    Show every table
+                  </Button>
+                </NoticeAction>
+              </Notice>
+            ) : null}
+          </Panel>
+        )}
+      </Page>
+    </ProductShell>
   );
+}
+
+function arrivalWord(arrival: Arrival) {
+  return { arriving: "arriving", silent: "silent", missing: "never delivered" }[arrival];
 }

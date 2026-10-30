@@ -52,7 +52,7 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 
 ## Context and repeated views
 
-Place persistent context controls in an `AppShellContext` directly inside `AppShellRail`. It appears below the brand and before navigation in both visual and keyboard order; `AppShellFoot` retains its footer position. The context renders on the rail's own tone and follows the page theme, so composed controls use their ordinary fills. The application owns selection state and authorization.
+Place persistent context controls (an organization or workspace switcher) in the `SidebarHeader`, as a `SidebarMenuButton` that opens a `Menu`. They come before navigation in both visual and keyboard order. The application owns selection state and authorization.
 
 When a page has more than one tab strip, give each `Tabs` and its `TabPanel` the same unique `idPrefix`. Item values are unique within each strip. The prefix scopes their accessible relationship; values are encoded safely for document IDs.
 
@@ -63,7 +63,7 @@ When a page has more than one tab strip, give each `Tabs` and its `TabPanel` the
 
 `MenuItem` remains an action by default. Pass `checked` for a radio choice and put related choices in a labelled `MenuGroup`; the application owns the checked state. `disabled` uses the native button state and keyboard movement skips unavailable choices. `Menu align="start"` anchors to the trigger’s start edge; the existing end alignment remains the default.
 
-A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around the bar and the page. Give `SidebarProvider` a `skipLabel` (or `AppShell` its required one) and the first Tab stop is a skip link to the page.
+A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around the bar and the page. Give `SidebarProvider` a `skipLabel` and the first Tab stop is a skip link to the page.
 
 `Dialog` is a native modal dialog (placement side, center or bottom), except an `md` side dialog inside a `list` or `detail` `Page` wide enough for its side column: it docks there and the page beside it stays usable. Either way focus moves in, Escape closes it and focus returns to the opener.
 

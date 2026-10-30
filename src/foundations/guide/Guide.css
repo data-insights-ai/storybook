@@ -173,8 +173,8 @@
 
 .di-guide-column {
   padding: var(--di-space-16) var(--di-space-16) var(--di-space-8);
-  background: var(--di-bg-surface);
-  border: 1px solid var(--di-rule);
+  border-radius: var(--di-radius-surface);
+  background: var(--di-bg-subtle);
 }
 
 .di-guide-column h3 {
@@ -245,8 +245,8 @@
   flex-direction: column;
   margin: 0;
   overflow: hidden;
-  border: 1px solid var(--di-rule);
-  background: var(--di-bg-surface);
+  border-radius: var(--di-radius-surface);
+  background: var(--di-bg-subtle);
 }
 
 .di-guide-lockups figure > div {
@@ -308,8 +308,8 @@
   gap: var(--di-space-16);
   margin: 0;
   padding: var(--di-space-32) var(--di-space-24) var(--di-space-24);
-  border: 1px solid var(--di-rule);
-  background: var(--di-bg-surface);
+  border-radius: var(--di-radius-surface);
+  background: var(--di-bg-subtle);
 }
 
 .di-clear-stage {
@@ -474,19 +474,20 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* Depth by tone: a specimen is a group on the inset tone, its drawing a step lighter. The docs page is a surface. */
 .di-motifs figure {
   display: flex;
   flex-direction: column;
   margin: 0;
-  border: 1px solid var(--di-rule);
-  background: var(--di-bg-page);
+  border-radius: var(--di-radius-surface);
+  background: var(--di-bg-subtle);
+  overflow: hidden;
 }
 
 .di-motifs svg {
   width: 100%;
   height: 88px;
-  background: var(--di-bg-surface);
-  border-bottom: 1px solid var(--di-rule);
+  background: var(--di-bg-page);
 }
 
 .di-motifs figcaption {
@@ -531,8 +532,9 @@
 .di-surfaces figure,
 .di-cobrand {
   margin: 0;
-  border: 1px solid var(--di-rule);
-  background: var(--di-bg-surface);
+  border-radius: var(--di-radius-surface);
+  background: var(--di-bg-subtle);
+  overflow: hidden;
 }
 
 .di-misuse figure > div {
@@ -705,8 +707,8 @@
 .di-motion-curves svg {
   width: 100%;
   height: auto;
-  background: var(--di-bg-surface);
-  border: 1px solid var(--di-rule);
+  border-radius: var(--di-radius-inset);
+  background: var(--di-bg-subtle);
 }
 
 .di-motion-curves figcaption {
@@ -778,7 +780,7 @@
 
 .di-surface-web strong,
 .di-surface-slide strong {
-  font-family: var(--di-font-ui);
+  font-family: var(--di-font-display);
   font-size: var(--di-font-size-700);
   letter-spacing: var(--di-tracking-tight);
   line-height: 1.05;
@@ -801,6 +803,11 @@
   color: var(--di-night-ink);
 }
 
+/* After dark gold may be text: the slide is a night surface whatever the theme. */
+.di-surface-slide p {
+  color: var(--di-gold-400);
+}
+
 .di-surface-slide img {
   width: 28px;
   height: auto;
@@ -814,7 +821,7 @@
 }
 
 .di-surface-sign strong {
-  font-family: var(--di-font-ui);
+  font-family: var(--di-font-display);
   font-size: var(--di-font-size-600);
   color: var(--di-fill-strong);
 }
@@ -875,6 +882,14 @@
   }
 }
 
+@media (max-width: 480px) {
+  .di-motifs,
+  .di-misuse,
+  .di-surfaces {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 720px) {
   .di-charts,
   .di-guide-rewrite,
@@ -884,4 +899,14 @@
   .di-guide-marks li {
     grid-template-columns: 1fr;
   }
+}
+
+/* A stage fills its card, so a navy slide does not stop short of the card's foot. */
+.di-surfaces figure {
+  display: flex;
+  flex-direction: column;
+}
+
+.di-surfaces figure > div {
+  flex: 1;
 }

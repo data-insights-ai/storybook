@@ -43,6 +43,8 @@
     --di-bg-row-hover: var(--di-paper-inset);
     --di-bg-selected: var(--di-cornflower-100);
     --di-bg-disabled: var(--di-paper-inset);
+    /* A value to read, not change: a well one step below the surface, above the disabled tone. */
+    --di-bg-readonly: var(--di-paper-ground);
     /* The hero zone is navy in both themes; it sets the dark theme on itself. */
     --di-bg-hero: var(--di-night-glow);
 
@@ -236,6 +238,7 @@
     --di-bg-row-hover: rgba(168, 182, 210, 0.08);
     --di-bg-selected: rgba(121, 174, 234, 0.16);
     --di-bg-disabled: var(--di-night-inset);
+    --di-bg-readonly: var(--di-night-ground);
     --di-bg-hero: var(--di-night-glow);
 
     --di-text: var(--di-night-ink);

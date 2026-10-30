@@ -30,10 +30,10 @@
     color: var(--di-text-disabled);
   }
 
-  /* A day or time to read and copy, as a read-only text field: the inset tone, no frame, full ink. */
+  /* A day or time to read and copy, as a read-only text field: the read-only tone, no frame, full ink. */
   .di-control.di-date-control[data-readonly] {
     border-color: transparent;
-    background: var(--di-bg-subtle);
+    background: var(--di-bg-readonly);
   }
 
   .di-date-field-toggle {

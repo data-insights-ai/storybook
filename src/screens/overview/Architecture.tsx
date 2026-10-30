@@ -1,181 +1,183 @@
-import { Database, LockKeyhole, Network, Radar, Share2, ShieldCheck, Workflow } from "lucide-react";
+import { Database, LockKeyhole, Network, Radar, Share2, Workflow, AlertTriangle } from "lucide-react";
 import {
   Button,
-  Grid,
   Fact,
   FactList,
+  Grid,
   Notice,
   NoticeAction,
   NoticeBody,
   NoticeIcon,
   NoticeText,
   NoticeTitle,
-  Numbered,
+  Page,
   PageHeader,
-  PageHeaderAside,
   PageHeaderMeta,
+  PageHeaderStatus,
   PageHeaderTitle,
-  Stack,
-  Stage,
-  StageFooter,
-  StageIcon,
-  StageTrack,
-  StatusPill,
-  Figure,
   Panel,
+  PanelStatus,
+  Stack,
+  StatusPill,
+  Step,
+  StepFooter,
+  StepIcon,
+  Steps,
 } from "../..";
+import { ProductShell } from "../shell/ProductShell";
+
+export type ArchitectureState = "running" | "backlog";
 
 const stages = [
   {
     id: "capture",
-    step: "Stage 1",
     title: "Collection",
     body: "Isolated connections to the connected sources.",
-    foot: "9 source nodes",
+    foot: "9 collectors",
     icon: <Radar aria-hidden />,
-    current: false,
   },
   {
     id: "process",
-    step: "Stage 2",
     title: "Processing",
-    body: "Workers. Normalisation, filtering, and unpacking of raw records.",
-    foot: "Payload Decoder",
+    body: "Normalising, filtering and unpacking raw records.",
+    foot: "4 workers",
     icon: <Workflow aria-hidden />,
-    current: false,
   },
   {
     id: "store",
-    step: "Stage 3",
-    title: "Secure database",
-    body: "PostgreSQL. An append-only primary ledger and a transaction log.",
-    foot: "Audit-proof Storage",
+    title: "Ledger",
+    body: "An append-only ledger with its transaction log.",
+    foot: "PostgreSQL 17",
     icon: <Database aria-hidden />,
-    current: true,
   },
   {
     id: "graph",
-    step: "Stage 4",
-    title: "Correlation graph",
-    body: "Links between records, references, and timelines.",
-    foot: "Graph engine active",
+    title: "Correlation",
+    body: "Links between records, references and timelines.",
+    foot: "Graph engine",
     icon: <Share2 aria-hidden />,
-    current: false,
   },
   {
     id: "workspace",
-    step: "Stage 5",
-    title: "Analyst workspace",
-    body: "Review, search, and editing in the workspace.",
+    title: "Workspace",
+    body: "Review, search and editing by analysts.",
     foot: "Read-only client",
     icon: <LockKeyhole aria-hidden />,
-    current: false,
   },
 ];
 
-export function ArchitectureScreen() {
+/**
+ * Architecture: how a record travels from a source to the analyst, and how
+ * each part of the pipeline is doing. The pipeline is the page's argument;
+ * when one stage falls behind it becomes the current step and the first
+ * block says what it costs.
+ */
+export function ArchitectureScreen({ state = "running" }: { state?: ArchitectureState }) {
+  const backlog = state === "backlog";
   return (
-    <>
-      <PageHeader
-        eyebrow="System overview / infrastructure and pipeline"
-        lede="Intake, processing stages, and storage."
-      >
-        <PageHeaderTitle>System architecture and data flow</PageHeaderTitle>
-        <PageHeaderAside>
-          <StatusPill tone="ok">All services ready</StatusPill>
-        </PageHeaderAside>
-      </PageHeader>
+    <ProductShell area="workspace" active="settings" crumbs={["Example Security GmbH", "Production", "Architecture"]}>
+      <Page width="full">
+        <PageHeader>
+          <PageHeaderTitle>Architecture</PageHeaderTitle>
+          <PageHeaderStatus>
+            {backlog ? (
+              <StatusPill tone="warn">Processing behind</StatusPill>
+            ) : (
+              <StatusPill tone="ok">All services ready</StatusPill>
+            )}
+          </PageHeaderStatus>
+          <PageHeaderMeta>{["Updated 08:37 CEST", "cluster West-1"]}</PageHeaderMeta>
+        </PageHeader>
 
-      <Stack>
-        <Notice>
-          <NoticeIcon>
-            <ShieldCheck aria-hidden />
-          </NoticeIcon>
-          <NoticeText>
-            <NoticeTitle>Administrative access</NoticeTitle>
-            <NoticeBody>
-              Traffic between interfaces is encrypted and signed. It runs through isolated nodes with role-based access.
-            </NoticeBody>
-          </NoticeText>
-        </Notice>
-
-        <Numbered index="01">
-          <PageHeader level={2} lede="End-to-end data flow">
-            <PageHeaderTitle>Five-stage pipeline</PageHeaderTitle>
-            <PageHeaderMeta>Sync active</PageHeaderMeta>
-          </PageHeader>
-          <StageTrack>
-            {stages.map((stage) => (
-              <Stage key={stage.id} step={stage.step} title={stage.title} body={stage.body} current={stage.current}>
-                <StageIcon>{stage.icon}</StageIcon>
-                <StageFooter>{stage.foot}</StageFooter>
-              </Stage>
-            ))}
-          </StageTrack>
-          <Notice>
+        {backlog ? (
+          <Notice tone="warn">
+            <NoticeIcon>
+              <AlertTriangle aria-hidden />
+            </NoticeIcon>
             <NoticeText>
-              <NoticeTitle>Security boundary</NoticeTitle>
+              <NoticeTitle>Processing is 41 minutes behind.</NoticeTitle>
               <NoticeBody>
-                Web clients do not reach collectors or graph stores directly. They talk only to authenticated API
-                gateways, with tight rate limits.
+                12,480 records wait for a worker; detections on them run late until the queue drains.
               </NoticeBody>
             </NoticeText>
-          </Notice>
-        </Numbered>
-
-        <Numbered index="02">
-          <PageHeader level={2} lede="Component monitoring">
-            <PageHeaderTitle>System status and performance</PageHeaderTitle>
-            <PageHeaderMeta>Updated: today, 08:37 CEST</PageHeaderMeta>
-          </PageHeader>
-          <Grid min="220px">
-            <Panel>
-              <Stack gap={16}>
-                <Figure size="compact" label="API and service status" value="Version 4.18" />
-                <FactList layout="pairs">
-                  <Fact label="Runtime">Node 22 LTS</Fact>
-                  <Fact label="Uptime">99.98%</Fact>
-                  <Fact label="Protocol">HTTPS / TLS 1.3</Fact>
-                  <Fact label="Cluster">West-1 · active</Fact>
-                </FactList>
-              </Stack>
-            </Panel>
-            <Panel>
-              <Stack gap={16}>
-                <Figure size="compact" label="Indexing and queue" value="0 waiting" />
-                <FactList layout="pairs">
-                  <Fact label="Backlog">No backlog</Fact>
-                  <Fact label="Events today">19 processed</Fact>
-                  <Fact label="Queue status">Optimal</Fact>
-                  <Fact label="Sync">No errors</Fact>
-                </FactList>
-              </Stack>
-            </Panel>
-            <Panel>
-              <Stack gap={16}>
-                <Figure size="compact" label="Latency and performance" value="Response 2 ms" />
-                <FactList layout="pairs">
-                  <Fact label="Load">Normal (12%)</Fact>
-                  <Fact label="Memory">1.4 GB / 8 GB</Fact>
-                  <Fact label="State">Stable</Fact>
-                  <Fact label="24h average">3 ms</Fact>
-                </FactList>
-              </Stack>
-            </Panel>
-          </Grid>
-          <Notice>
-            <NoticeText>
-              <NoticeBody>Every diagnostic check passed.</NoticeBody>
-            </NoticeText>
             <NoticeAction>
-              <Button size="sm">
-                <Network aria-hidden />
-                Run diagnostics
+              <Button variant="secondary" size="sm">
+                Add a worker
               </Button>
             </NoticeAction>
           </Notice>
-        </Numbered>
-      </Stack>
-    </>
+        ) : null}
+
+        <Stack gap={16}>
+          <PageHeader
+            level={2}
+            lede="A record passes every stage in order; no client reaches a collector or the ledger."
+          >
+            <PageHeaderTitle>Pipeline</PageHeaderTitle>
+          </PageHeader>
+          <Steps variant="cards" label="Pipeline stages">
+            {stages.map((stage) => (
+              <Step
+                key={stage.id}
+                title={stage.title}
+                state={backlog && stage.id === "process" ? "current" : undefined}
+              >
+                <StepIcon>{stage.icon}</StepIcon>
+                {stage.body}
+                <StepFooter>{backlog && stage.id === "process" ? "12,480 waiting" : stage.foot}</StepFooter>
+              </Step>
+            ))}
+          </Steps>
+        </Stack>
+
+        <Stack gap={16}>
+          <PageHeader level={2}>
+            <PageHeaderTitle>Services</PageHeaderTitle>
+          </PageHeader>
+          <Grid min="280px">
+            <Panel title="API" heading={3}>
+              <PanelStatus>
+                <StatusPill tone="ok">ready</StatusPill>
+              </PanelStatus>
+              <FactList layout="pairs">
+                <Fact label="Version">4.18.2</Fact>
+                <Fact label="Uptime, 30 days">99.98%</Fact>
+                <Fact label="Protocol">HTTPS, TLS 1.3</Fact>
+                <Fact label="Response, median">2 ms</Fact>
+              </FactList>
+            </Panel>
+            <Panel title="Queue" heading={3}>
+              <PanelStatus>
+                {backlog ? <StatusPill tone="warn">behind</StatusPill> : <StatusPill tone="ok">ready</StatusPill>}
+              </PanelStatus>
+              <FactList layout="pairs">
+                <Fact label="Waiting">{backlog ? "12,480" : "0"}</Fact>
+                <Fact label="Oldest record">{backlog ? "41 min" : "none"}</Fact>
+                <Fact label="Processed today">1.9 M</Fact>
+                <Fact label="Workers">4 of 4 busy</Fact>
+              </FactList>
+            </Panel>
+            <Panel title="Ledger" heading={3}>
+              <PanelStatus>
+                <StatusPill tone="ok">ready</StatusPill>
+              </PanelStatus>
+              <FactList layout="pairs">
+                <Fact label="Load">12%</Fact>
+                <Fact label="Memory">1.4 of 8 GB</Fact>
+                <Fact label="Last seal">08:36:58</Fact>
+                <Fact label="Replicas">2 in sync</Fact>
+                <Fact label="Diagnostics">passed at 08:30</Fact>
+              </FactList>
+            </Panel>
+          </Grid>
+          <div>
+            <Button variant="secondary">
+              <Network aria-hidden />
+              Run diagnostics
+            </Button>
+          </div>
+        </Stack>
+      </Page>
+    </ProductShell>
   );
 }

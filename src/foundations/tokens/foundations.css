@@ -319,7 +319,7 @@
 
   .di-ramp-bar {
     height: 16px;
-    background: var(--di-seal);
+    background: var(--di-text-muted);
   }
 
   .di-ramp-corner {

@@ -11,7 +11,13 @@ import "../tokens/foundations.css";
 
 const cells = [
   { title: "Primary", body: "Navy on ivory or paper. The default lockup.", src: logo, dark: false, mark: false },
-  { title: "Inverse", body: "Ivory on navy. Sidebar, cover, dark fields.", src: logoInverse, dark: true, mark: false },
+  {
+    title: "Inverse",
+    body: "Ivory on navy: the sidebar after dark, a cover, a slide.",
+    src: logoInverse,
+    dark: true,
+    mark: false,
+  },
   { title: "Mono", body: "One colour, when the pair cannot be printed.", src: logoMono, dark: false, mark: false },
   { title: "Mark", body: "Symbol only, when the name is already in the sentence.", src: mark, dark: false, mark: true },
   {

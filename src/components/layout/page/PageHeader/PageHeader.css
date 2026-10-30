@@ -29,6 +29,8 @@
   }
 
   .di-page-grid:has(> .di-page-aside) {
+    /* The meta line spans the title and the status; the slack goes after the status, so the pill stays beside the name. */
+    grid-template-columns: minmax(0, max-content) minmax(0, 1fr) auto;
     grid-template-areas:
       "crumbs crumbs crumbs"
       "eyebrow eyebrow aside"

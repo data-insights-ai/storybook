@@ -57,7 +57,7 @@ try {
     process.exit(1);
   }
   const js = readFileSync(files[0], "utf8");
-  const forbidden = ["SignIn", "AppShell", "DataTable", "Pagination", "lucide-react", "recharts"];
+  const forbidden = ["SignIn", "AppShellBar", "DataTable", "Pagination", "lucide-react", "recharts"];
   const found = forbidden.filter((name) => js.includes(name));
   if (found.length > 0 || !js.includes("Button") || js.length > 8000) {
     console.error(`tree-shake failed (${js.length} bytes)`, found);

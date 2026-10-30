@@ -6,6 +6,7 @@ import { Toolbar } from "../../../actions/Toolbar";
 import { TextField } from "./TextField";
 import { ConfidenceField } from "./ConfidenceField";
 import { TextLink } from "../../../navigation/TextLink";
+import { Panel } from "../../../layout/page/Panel";
 
 const meta = {
   title: "Forms/Text/TextField",
@@ -123,7 +124,7 @@ export const Required: Story = {
   },
 };
 
-/** A value to read and copy, not to change: the inset tone, no frame, full ink. */
+/** A value to read and copy, not to change: the read-only tone (a step above disabled), no frame, full ink. */
 export const ReadOnly: Story = {
   args: {
     id: "workspace-id",
@@ -133,6 +134,36 @@ export const ReadOnly: Story = {
     mono: true,
     placeholder: "",
     hint: "Assigned when the workspace was created. Quote it to support.",
+  },
+};
+
+/**
+ * Read-only and disabled side by side, as they meet on a settings page: the
+ * read-only value keeps full ink on its own tone without a frame; the
+ * disabled one sinks a step further, keeps its frame and greys its ink.
+ */
+export const ReadOnlyBesideDisabled: Story = {
+  name: "Read-only beside disabled",
+  render: () => (
+    <Panel title="Workspace">
+      <Stack variant="form">
+        <TextField id="ro-id" label="Workspace ID" readOnly defaultValue="ws_7f3a99e2c41b" mono />
+        <TextField
+          id="ro-region"
+          label="Region"
+          disabled
+          defaultValue="eu-central"
+          hint="Set when the workspace was created; it cannot move."
+        />
+      </Stack>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const read = getComputedStyle(canvas.getByLabelText("Workspace ID"));
+    const off = getComputedStyle(canvas.getByLabelText("Region"));
+    await expect(read.backgroundColor).not.toBe(off.backgroundColor);
+    await expect(read.color).not.toBe(off.color);
   },
 };
 

@@ -1,15 +1,6 @@
 export { Accordion, AccordionDetail, AccordionItem, AccordionMeta } from "./components/layout/folding/Accordion";
-export {
-  AppShell,
-  AppShellBar,
-  AppShellBarEnd,
-  AppShellContent,
-  AppShellContext,
-  AppShellFoot,
-  AppShellMain,
-  AppShellRail,
-} from "./components/shell/AppShell";
-export type { NavGroup, NavItem } from "./components/shell/AppShell";
+export { AppShellBar, AppShellBarEnd, AppShellBarKeep } from "./components/shell/AppShellBar";
+export { AppShellContent } from "./components/shell/AppShellContent";
 export { Badge } from "./components/marks/Badge";
 export { Bars } from "./components/charts/compare/Bars";
 export { BulkActionBar } from "./components/actions/BulkActionBar";
