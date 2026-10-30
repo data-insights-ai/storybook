@@ -43,6 +43,7 @@ const preview: Preview = {
       storySort: (a, b) => {
         const sections = [
           "Introduction",
+          "Direction A",
           "Foundations",
           "Actions",
           "Forms",
@@ -93,6 +94,12 @@ const preview: Preview = {
         if (section !== 0) return section;
         if (aSection !== bSection) return aSection.localeCompare(bSection, "en");
 
+        if (aSection === "Direction A") {
+          const order = ["Read me", "Foundations", "Composition", "Components", "Screens"];
+          const curated = rank(order, aName) - rank(order, bName);
+          if (curated !== 0) return curated;
+        }
+
         if (aSection === "Foundations") {
           const curated = rank(foundations, aName) - rank(foundations, bName);
           if (curated !== 0) return curated;
@@ -134,6 +141,10 @@ const preview: Preview = {
     },
   },
   decorators: [
+    (Story, context) => {
+      useDirection(context.parameters.direction);
+      return <Story />;
+    },
     withThemeByDataAttribute({
       themes: { light: "light", dark: "dark" },
       defaultTheme: "light",
@@ -151,6 +162,23 @@ const preview: Preview = {
 };
 
 export default preview;
+
+/**
+ * Direction A is a proposal a story opts into with `parameters.direction`.
+ * It is set on the root while the story renders, the way a product would
+ * set it once, so the comparison stories keep today's register.
+ */
+function useDirection(direction: string | undefined) {
+  const root = document.documentElement;
+  if (direction) root.dataset.direction = direction;
+  else delete root.dataset.direction;
+  useLayoutEffect(() => {
+    if (direction) root.dataset.direction = direction;
+    return () => {
+      delete root.dataset.direction;
+    };
+  }, [direction, root]);
+}
 
 /** One main, and an h1 when the story does not already render one. */
 function StoryCanvas({

@@ -1,0 +1,367 @@
+/*
+ * Direction A, "Briefing". A proposal, opted into with
+ * `data-direction="a"` on the document root, so today's register and the
+ * proposal can be compared in one Storybook.
+ *
+ * What changes, and why (Direction A/Foundations has the long form):
+ * - Depth comes from tone, not lines. Five layers — chrome, ground,
+ *   surface, inset, emphasis — and a plane for what floats. A border
+ *   appears only where two equal tones meet.
+ * - Gold means "the one thing that matters" in a view, and nothing else.
+ *   Warn gets its own amber; the dark primary button turns paper-white;
+ *   selection and focus are cornflower.
+ * - One severity scale, shared by every product and every chart.
+ * - Type with steps you can see: claim, hero figure, section, block title,
+ *   body, mono label, meta. Sansation for display, IBM Plex for reading.
+ * - Navigation is never heavier than the content: in daylight it is a
+ *   paper tone a step below the ground, after dark it is the ground.
+ */
+
+@layer tokens {
+  :root[data-direction="a"] {
+    /* ---- Primitives this direction adds ---------------------------- */
+    --di-a-paper-chrome: #e8e3d5;
+    --di-a-paper-ground: #f1ede3;
+    --di-a-paper-surface: #fdfcf9;
+    --di-a-paper-inset: #f3efe6;
+    --di-a-navy-ground: #0a1f44;
+    --di-a-navy-lift: #133068;
+    --di-a-navy-surface: #0f2a57;
+    --di-a-navy-inset: #0c2350;
+    --di-a-navy-edge: #061631;
+
+    --di-a-amber-800: #8a4500;
+    --di-a-amber-600: #c96a00;
+    --di-a-amber-100: #fbe7cf;
+    --di-a-amber-300: #ffb25e;
+
+    --di-a-sev-critical: #b3161b;
+    --di-a-sev-high: #d9481a;
+    --di-a-sev-medium: #b57400;
+    --di-a-sev-low: #5d7797;
+    --di-a-sev-info: #878d99;
+    --di-a-sev-critical-night: #ff5f5a;
+    --di-a-sev-high-night: #ff8a4c;
+    --di-a-sev-medium-night: #ffbe4d;
+    --di-a-sev-low-night: #94abcb;
+    --di-a-sev-info-night: #7f8fb0;
+
+    --di-font-display: "Sansation", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --di-font-sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --di-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* Body moves from 13 to 14px: a briefing is read, not scanned only. */
+    --di-font-size-400: 0.875rem;
+
+    /* ---- Surface layers (daylight) ---------------------------------- */
+    --di-layer-chrome: var(--di-a-paper-chrome);
+    --di-layer-ground: var(--di-a-paper-ground);
+    --di-layer-surface: var(--di-a-paper-surface);
+    --di-layer-inset: var(--di-a-paper-inset);
+    --di-layer-plane: #ffffff;
+    /* The hero zone stays navy in both themes: the one luminous place. */
+    --di-layer-hero: radial-gradient(120% 140% at 30% 0%, var(--di-a-navy-lift) 0%, var(--di-a-navy-ground) 55%, var(--di-a-navy-edge) 100%);
+    --di-layer-hero-solid: var(--di-a-navy-ground);
+    --di-layer-hairline: rgba(10, 31, 68, 0.1);
+    --di-layer-edge: rgba(10, 31, 68, 0.06);
+
+    /* ---- Text: four levels, each its own value ----------------------- */
+    --di-text: #0a1f44;
+    --di-text-secondary: #3d4a66;
+    --di-text-tertiary: #556076;
+    --di-text-muted: var(--di-text-secondary);
+    --di-text-subtle: var(--di-text-tertiary);
+    --di-text-disabled: #8b877b;
+
+    /* ---- Gold: the one thing that matters ---------------------------- */
+    --di-one: #c9a24a;
+    --di-one-ink: #7a5c0e;
+    --di-one-edge: #a6811f;
+    --di-one-glow: 0 0 0 4px rgba(201, 162, 74, 0.16), 0 12px 32px -12px rgba(122, 92, 14, 0.35);
+
+    /* ---- Action, selection, focus ----------------------------------- */
+    --di-action-bg: #0a1f44;
+    --di-action-bg-hover: #061631;
+    --di-action-fg: #ffffff;
+    --di-select: #2b6cb0;
+    --di-select-bg: #e2ebf7;
+    --di-select-ink: #1f5288;
+
+    /* ---- Status ------------------------------------------------------ */
+    --di-status-ok-fg: #155230;
+    --di-status-ok-bg: #e2ece0;
+    --di-status-ok-border: transparent;
+    --di-status-ok-dot: #1c6b3c;
+    --di-status-warn-fg: var(--di-a-amber-800);
+    --di-status-warn-bg: var(--di-a-amber-100);
+    --di-status-warn-border: transparent;
+    --di-status-warn-dot: var(--di-a-amber-600);
+    --di-status-danger-fg: #8a1b1b;
+    --di-status-danger-bg: #f8e2dd;
+    --di-status-danger-border: transparent;
+    --di-status-danger-dot: #b3161b;
+    --di-status-recorded-fg: #1f5288;
+    --di-status-recorded-bg: #e2ebf7;
+    --di-status-recorded-border: transparent;
+    --di-status-recorded-dot: #2b6cb0;
+    --di-status-neutral-fg: #3d4a66;
+    --di-status-neutral-bg: #e8e3d5;
+    --di-status-neutral-border: transparent;
+    --di-status-neutral-dot: #6b7385;
+
+    /* ---- One severity scale ------------------------------------------ */
+    --di-severity-critical: var(--di-a-sev-critical);
+    --di-severity-high: var(--di-a-sev-high);
+    --di-severity-medium: var(--di-a-sev-medium);
+    --di-severity-low: var(--di-a-sev-low);
+    --di-severity-info: var(--di-a-sev-info);
+    --di-severity-critical-bg: #f8e2dd;
+    --di-severity-critical-fg: #8a1b1b;
+
+    /* ---- Type roles ----------------------------------------------------
+     * Seven steps with visible distance between them. The claim is the
+     * page's headline sentence; the hero figure the one number the page
+     * exists for. A console never sets type outside these. */
+    --di-type-claim-family: var(--di-font-display);
+    --di-type-claim-size: clamp(1.625rem, 1.05rem + 1.3vw, 2.25rem);
+    --di-type-claim-weight: 700;
+    --di-type-claim-leading: 1.12;
+    --di-type-hero-family: var(--di-font-display);
+    --di-type-hero-size: clamp(2.75rem, 2rem + 2vw, 3.75rem);
+    --di-type-hero-weight: 700;
+    --di-type-section-family: var(--di-font-display);
+    --di-type-section-size: 1.375rem;
+    --di-type-section-weight: 700;
+    --di-type-block-family: var(--di-font-sans);
+    --di-type-block-size: 0.9375rem;
+    --di-type-block-weight: 600;
+    --di-type-body-size: 0.875rem;
+    --di-type-label-family: var(--di-font-mono);
+    --di-type-label-size: 0.6875rem;
+    --di-type-label-weight: 500;
+    --di-type-label-tracking: 0.1em;
+    --di-type-meta-family: var(--di-font-mono);
+    --di-type-meta-size: 0.75rem;
+
+    /* ---- Radius and elevation ------------------------------------------ */
+    --di-radius-surface: 12px;
+    --di-radius-inset: 8px;
+    --di-radius-control: 6px;
+    --di-radius-micro: 4px;
+    --di-elevation-surface: 0 1px 0 var(--di-layer-edge), 0 1px 3px rgba(10, 31, 68, 0.04);
+    --di-elevation-plane: 0 2px 6px rgba(10, 31, 68, 0.08), 0 16px 40px -12px rgba(10, 31, 68, 0.22);
+
+    /* ---- Rhythm ---------------------------------------------------------- */
+    --di-rhythm-claim: var(--di-space-32);
+    --di-rhythm-section: var(--di-space-48);
+    --di-surface-pad: var(--di-space-24);
+    --di-content-pad: var(--di-space-32);
+
+    /* ---- Today's roles, re-pointed ---------------------------------------- */
+    --di-bg-page: var(--di-layer-ground);
+    --di-bg-surface: var(--di-layer-surface);
+    --di-bg-grid: var(--di-layer-surface);
+    --di-bg-subtle: var(--di-layer-inset);
+    --di-bg-row-hover: var(--di-layer-inset);
+    --di-canvas: var(--di-layer-chrome);
+    --di-border: var(--di-layer-hairline);
+    --di-border-strong: rgba(10, 31, 68, 0.16);
+    --di-border-input: #8c836d;
+    --di-rule: var(--di-layer-hairline);
+    --di-rule-hairline: var(--di-layer-hairline);
+    --di-fill-strong: var(--di-action-bg);
+    --di-fill-strong-hover: var(--di-action-bg-hover);
+    --di-text-on-strong: var(--di-action-fg);
+    --di-focus: var(--di-select);
+    --di-focus-halo: rgba(43, 108, 176, 0.22);
+    --di-chart-series: var(--di-text);
+    --di-chart-highlight: var(--di-one);
+    --di-chart-warn: var(--di-severity-medium);
+    --di-chart-danger: var(--di-severity-critical);
+    --di-chart-compare: var(--di-select);
+    --di-signal: var(--di-select);
+    --di-signal-ink: var(--di-select-ink);
+
+    --di-sidebar-bg: var(--di-layer-chrome);
+    --di-sidebar-raised: var(--di-layer-ground);
+    --di-sidebar-fg: var(--di-text);
+    --di-sidebar-muted: var(--di-text-tertiary);
+    --di-sidebar-active: var(--di-layer-surface);
+    --di-sidebar-edge: var(--di-layer-hairline);
+    --di-sidebar-focus: var(--di-select);
+
+    --di-panel-border: transparent;
+    --di-panel-radius: var(--di-radius-surface);
+    --di-card-border: transparent;
+    --di-table-bg: var(--di-layer-surface);
+    --di-pill-height: 22px;
+  }
+
+  :root[data-direction="a"][data-theme="dark"],
+  :root[data-direction="a"] [data-theme="dark"] {
+    /* After dark the ground is brand navy, not near-black; surfaces lift
+       from it in tone, and the chrome is the ground itself. */
+    --di-layer-chrome: var(--di-a-navy-ground);
+    --di-layer-ground: var(--di-a-navy-ground);
+    --di-layer-surface: var(--di-a-navy-surface);
+    --di-layer-inset: var(--di-a-navy-inset);
+    --di-layer-plane: var(--di-a-navy-lift);
+    --di-layer-hero: radial-gradient(120% 140% at 30% 0%, #1a3a78 0%, var(--di-a-navy-lift) 40%, var(--di-a-navy-surface) 100%);
+    --di-layer-hero-solid: var(--di-a-navy-lift);
+    --di-layer-hairline: rgba(168, 182, 210, 0.16);
+    --di-layer-edge: rgba(168, 182, 210, 0.1);
+
+    --di-text: #f2f0e6;
+    --di-text-secondary: #c9d2e6;
+    --di-text-tertiary: #a8b6d2;
+    --di-text-disabled: #6f80a3;
+    --di-text-press: #ffffff;
+
+    --di-one: #d9b45e;
+    --di-one-ink: #e6c677;
+    --di-one-edge: rgba(217, 180, 94, 0.75);
+    --di-one-glow: 0 0 60px rgba(217, 180, 94, 0.14), 0 0 0 1px rgba(217, 180, 94, 0.2);
+
+    --di-action-bg: #f2f0e6;
+    --di-action-bg-hover: #ffffff;
+    --di-action-fg: #0a1f44;
+    --di-select: #79aeea;
+    --di-select-bg: rgba(121, 174, 234, 0.16);
+    --di-select-ink: #a9cbf3;
+
+    --di-status-ok-fg: #86dca5;
+    --di-status-ok-bg: rgba(110, 219, 151, 0.12);
+    --di-status-ok-dot: #6edb97;
+    --di-status-warn-fg: var(--di-a-amber-300);
+    --di-status-warn-bg: rgba(255, 163, 61, 0.14);
+    --di-status-warn-dot: var(--di-a-amber-300);
+    --di-status-danger-fg: #ff9a92;
+    --di-status-danger-bg: rgba(255, 95, 90, 0.15);
+    --di-status-danger-dot: var(--di-a-sev-critical-night);
+    --di-status-recorded-fg: #a9cbf3;
+    --di-status-recorded-bg: rgba(121, 174, 234, 0.14);
+    --di-status-recorded-dot: #79aeea;
+    --di-status-neutral-fg: #c9d2e6;
+    --di-status-neutral-bg: rgba(168, 182, 210, 0.12);
+    --di-status-neutral-dot: #a8b6d2;
+
+    --di-severity-critical: var(--di-a-sev-critical-night);
+    --di-severity-high: var(--di-a-sev-high-night);
+    --di-severity-medium: var(--di-a-sev-medium-night);
+    --di-severity-low: var(--di-a-sev-low-night);
+    --di-severity-info: var(--di-a-sev-info-night);
+    --di-severity-critical-bg: rgba(255, 95, 90, 0.15);
+    --di-severity-critical-fg: #ff9a92;
+
+    --di-elevation-surface: 0 0 0 1px var(--di-layer-edge);
+    --di-elevation-plane: 0 2px 6px rgba(0, 0, 0, 0.3), 0 20px 48px -16px rgba(0, 0, 0, 0.55);
+
+    --di-bg-page: var(--di-layer-ground);
+    --di-bg-surface: var(--di-layer-surface);
+    --di-bg-grid: var(--di-layer-surface);
+    --di-bg-subtle: var(--di-layer-inset);
+    --di-bg-row-hover: rgba(168, 182, 210, 0.08);
+    --di-bg-disabled: var(--di-layer-inset);
+    --di-canvas: var(--di-a-navy-edge);
+    --di-border: var(--di-layer-hairline);
+    --di-border-strong: rgba(168, 182, 210, 0.26);
+    --di-border-input: #6f84ab;
+    --di-rule: var(--di-layer-hairline);
+    --di-rule-hairline: var(--di-layer-hairline);
+    --di-fill-strong: var(--di-action-bg);
+    --di-fill-strong-hover: var(--di-action-bg-hover);
+    --di-text-on-strong: var(--di-action-fg);
+    --di-focus: var(--di-select);
+    --di-focus-halo: rgba(121, 174, 234, 0.3);
+    --di-chart-series: var(--di-text);
+    --di-chart-baseline: rgba(168, 182, 210, 0.3);
+    --di-chart-muted: rgba(168, 182, 210, 0.16);
+    --di-chart-band: rgba(242, 240, 230, 0.1);
+    --di-chart-highlight: var(--di-one);
+    --di-chart-warn: var(--di-severity-medium);
+    --di-chart-danger: var(--di-severity-critical);
+    --di-chart-compare: var(--di-select);
+    --di-signal: var(--di-select);
+    --di-signal-ink: var(--di-select-ink);
+    --di-seal-ink: var(--di-one-ink);
+
+    --di-sidebar-bg: var(--di-layer-chrome);
+    --di-sidebar-raised: var(--di-layer-surface);
+    --di-sidebar-fg: var(--di-text);
+    --di-sidebar-muted: var(--di-text-tertiary);
+    --di-sidebar-active: var(--di-layer-surface);
+    --di-sidebar-edge: var(--di-layer-hairline);
+    --di-sidebar-focus: var(--di-select);
+    --di-table-bg: var(--di-layer-surface);
+  }
+}
+
+/*
+ * What today's components need beyond re-pointed roles to read in this
+ * direction. In the rework each rule moves into its component; here they
+ * sit together so the whole delta is one file.
+ */
+@layer overrides {
+  :root[data-direction="a"] .di-sb-button[aria-current="page"] {
+    box-shadow: inset 3px 0 0 var(--di-select), var(--di-elevation-surface);
+  }
+
+  :root[data-direction="a"] .di-sb-group-label,
+  :root[data-direction="a"] .di-stat-tile-label,
+  :root[data-direction="a"] .di-stat-label,
+  :root[data-direction="a"] .di-facts-rows .di-fact-label,
+  :root[data-direction="a"] .di-table thead th {
+    font-family: var(--di-type-label-family);
+    font-size: var(--di-type-label-size);
+    font-weight: var(--di-type-label-weight);
+    letter-spacing: var(--di-type-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-text-secondary);
+  }
+
+  :root[data-direction="a"] .di-panel,
+  :root[data-direction="a"] .di-stat-tile {
+    border-color: transparent;
+    box-shadow: var(--di-elevation-surface);
+  }
+
+  :root[data-direction="a"] .di-panel-title {
+    font-size: var(--di-type-block-size);
+  }
+
+  :root[data-direction="a"] .di-topbar {
+    border-bottom-color: var(--di-layer-hairline);
+    background: var(--di-layer-ground);
+  }
+
+  :root[data-direction="a"] .di-btn-primary:focus-visible,
+  :root[data-direction="a"] :focus-visible {
+    outline-color: var(--di-select);
+  }
+}
+
+/* A table sits on its surface: no frame of its own, its head in the inset tone. */
+@layer overrides {
+  :root[data-direction="a"] .di-table-wrap {
+    border-color: transparent;
+    box-shadow: var(--di-elevation-surface);
+  }
+
+  :root[data-direction="a"] .di-surface .di-table-wrap {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  :root[data-direction="a"] .di-table thead th,
+  :root[data-direction="a"] .di-table-foot,
+  :root[data-direction="a"] .di-table-toolbar {
+    background: var(--di-layer-inset);
+  }
+
+  :root[data-direction="a"] .di-section-heading {
+    font-family: var(--di-type-section-family);
+    font-size: var(--di-type-section-size);
+  }
+}

@@ -1,0 +1,11 @@
+/* The lockup on a paper chrome: the daylight files, not the inverse ones.
+   Story-only: in the rework SidebarBrand gets a daylight variant. */
+@layer overrides {
+  :root[data-direction="a"]:not([data-theme="dark"]) .di-sb-brand-logo {
+    content: url("../../assets/logo.svg");
+  }
+
+  :root[data-direction="a"]:not([data-theme="dark"]) .di-sb-brand-mark {
+    content: url("../../assets/mark.svg");
+  }
+}

@@ -1,0 +1,90 @@
+@layer components {
+  .di-attention {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: var(--di-space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-attention-item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: 1fr auto;
+    gap: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-space-16) var(--di-space-24) var(--di-space-24) var(--di-space-16);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-layer-surface, var(--di-bg-surface));
+    box-shadow: var(--di-elevation-surface, 0 0 0 1px var(--di-border));
+  }
+
+  .di-attention-item.is-emphasis {
+    box-shadow: 0 0 0 1px var(--di-one-edge, var(--di-seal)), var(--di-one-glow, none);
+  }
+
+  .di-attention-rank {
+    grid-row: span 2;
+    font-family: var(--di-type-hero-family, var(--di-font-code));
+    font-size: var(--di-font-size-700);
+    font-weight: var(--di-weight-bold);
+    line-height: 1;
+    color: var(--di-text-tertiary, var(--di-text-subtle));
+  }
+
+  .di-attention-item.is-emphasis .di-attention-rank {
+    color: var(--di-one-ink, var(--di-seal-ink));
+  }
+
+  .di-attention-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-6);
+    min-width: 0;
+  }
+
+  .di-attention-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-12);
+    min-height: var(--di-space-16);
+  }
+
+  .di-attention-one {
+    font-family: var(--di-type-label-family, var(--di-font-code));
+    font-size: var(--di-type-label-size, var(--di-font-size-200));
+    font-weight: var(--di-weight-medium);
+    letter-spacing: var(--di-type-label-tracking, var(--di-tracking-eyebrow));
+    text-transform: uppercase;
+    color: var(--di-one-ink, var(--di-seal-ink));
+  }
+
+  .di-attention-title {
+    font-family: var(--di-type-block-family, var(--di-font-ui));
+    font-size: var(--di-type-block-size, var(--di-font-size-500));
+    font-weight: var(--di-weight-semibold);
+    line-height: var(--di-leading-snug);
+    overflow-wrap: anywhere;
+    color: var(--di-text);
+  }
+
+  .di-attention-reason {
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-secondary, var(--di-text-muted));
+  }
+
+  .di-attention-meta {
+    font-family: var(--di-type-meta-family, var(--di-font-code));
+    font-size: var(--di-type-meta-size, var(--di-font-size-200));
+    color: var(--di-text-tertiary, var(--di-text-subtle));
+  }
+
+  .di-attention-action {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-8);
+  }
+}

@@ -1,0 +1,92 @@
+@layer components {
+  .di-briefing {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+  }
+
+  .di-briefing-crumbs {
+    margin-bottom: var(--di-space-4);
+  }
+
+  .di-briefing-name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8) var(--di-space-12);
+  }
+
+  .di-briefing-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-space-8);
+    font-family: var(--di-type-label-family, var(--di-font-code));
+    font-size: var(--di-type-meta-size, var(--di-font-size-300));
+    font-weight: var(--di-weight-medium);
+    letter-spacing: var(--di-type-label-tracking, var(--di-tracking-eyebrow));
+    text-transform: uppercase;
+    color: var(--di-text);
+  }
+
+  .di-briefing-context {
+    color: var(--di-text-tertiary, var(--di-text-subtle));
+  }
+
+  .di-briefing-context::after {
+    content: "·";
+    margin-left: var(--di-space-8);
+  }
+
+  .di-briefing-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-6);
+  }
+
+  .di-briefing-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--di-space-16);
+    align-items: end;
+  }
+
+  .di-briefing-body:has(> .di-briefing-aside) {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .di-briefing-claim {
+    max-width: 30ch;
+    font-family: var(--di-type-claim-family, var(--di-font-ui));
+    font-size: var(--di-type-claim-size, var(--di-font-size-700));
+    font-weight: var(--di-type-claim-weight, var(--di-weight-bold));
+    line-height: var(--di-type-claim-leading, var(--di-leading-tight));
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--di-text);
+  }
+
+  .di-briefing-mark {
+    font-weight: inherit;
+    color: var(--di-one-ink, var(--di-seal-ink));
+  }
+
+  .di-briefing-aside {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-8);
+  }
+
+  .di-briefing-meta {
+    font-family: var(--di-type-meta-family, var(--di-font-code));
+    font-size: var(--di-type-meta-size, var(--di-font-size-300));
+    color: var(--di-text-tertiary, var(--di-text-subtle));
+  }
+
+  @container (width < 40rem) {
+    .di-briefing-body:has(> .di-briefing-aside) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

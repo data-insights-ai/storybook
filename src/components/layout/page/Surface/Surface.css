@@ -1,0 +1,127 @@
+@layer components {
+  .di-surface {
+    --di-surface-gap: var(--di-surface-pad, var(--di-space-16));
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-16);
+    min-width: 0;
+    padding: var(--di-surface-gap);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-layer-surface, var(--di-bg-surface));
+    box-shadow: var(--di-elevation-surface, 0 0 0 1px var(--di-border));
+    color: var(--di-text);
+  }
+
+  .di-surface.is-flush {
+    padding: 0;
+  }
+
+  .di-surface.is-flush > .di-surface-head {
+    padding: var(--di-surface-gap) var(--di-surface-gap) 0;
+  }
+
+  .di-surface-inset {
+    --di-surface-gap: var(--di-space-16);
+    border-radius: var(--di-radius-inset, var(--di-radius-surface));
+    background: var(--di-layer-inset, var(--di-bg-subtle));
+    box-shadow: none;
+  }
+
+  .di-surface-hero {
+    overflow: hidden;
+    background: var(--di-layer-hero, var(--di-inverse-bg));
+    box-shadow: var(--di-elevation-plane, var(--di-shadow-plane));
+  }
+
+  .di-surface-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: linear-gradient(var(--di-layer-hairline) 1px, transparent 1px),
+      linear-gradient(90deg, var(--di-layer-hairline) 1px, transparent 1px);
+    background-size: var(--di-space-48) var(--di-space-48);
+    opacity: 0.35;
+    mask-image: radial-gradient(120% 100% at 30% 0%, black, transparent 80%);
+  }
+
+  .di-surface-hero > * {
+    position: relative;
+  }
+
+  .di-surface.is-emphasis {
+    box-shadow: 0 0 0 1px var(--di-one-edge, var(--di-seal)), var(--di-one-glow, none);
+  }
+
+  .di-surface-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--di-space-8) var(--di-space-16);
+  }
+
+  .di-surface-titles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    min-width: 0;
+  }
+
+  .di-surface-label {
+    font-family: var(--di-type-label-family, var(--di-font-code));
+    font-size: var(--di-type-label-size, var(--di-font-size-200));
+    font-weight: var(--di-type-label-weight, var(--di-weight-medium));
+    letter-spacing: var(--di-type-label-tracking, var(--di-tracking-eyebrow));
+    text-transform: uppercase;
+    color: var(--di-text-secondary, var(--di-text-muted));
+  }
+
+  .di-surface.is-emphasis .di-surface-label {
+    color: var(--di-one-ink, var(--di-seal-ink));
+  }
+
+  .di-surface-title {
+    font-family: var(--di-type-block-family, var(--di-font-ui));
+    font-size: var(--di-type-block-size, var(--di-font-size-500));
+    font-weight: var(--di-type-block-weight, var(--di-weight-semibold));
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-surface-aside {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-space-8);
+    font-size: var(--di-font-size-300);
+  }
+
+  .di-surface-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-16);
+    min-width: 0;
+  }
+
+  .di-surface-takeaway {
+    padding-top: var(--di-space-12);
+    border-top: 1px solid var(--di-rule);
+    font-family: var(--di-type-section-family, var(--di-font-ui));
+    font-size: var(--di-font-size-550);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-surface.is-flush > .di-surface-takeaway {
+    margin: 0 var(--di-surface-gap) var(--di-surface-gap);
+  }
+
+  @media (max-width: 600px) {
+    .di-surface {
+      --di-surface-gap: var(--di-space-16);
+    }
+  }
+}

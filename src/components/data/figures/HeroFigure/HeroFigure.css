@@ -1,0 +1,49 @@
+@layer components {
+  .di-hero-fig {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-8);
+    min-width: 0;
+  }
+
+  .di-hero-fig-label {
+    font-family: var(--di-type-label-family, var(--di-font-code));
+    font-size: var(--di-type-label-size, var(--di-font-size-200));
+    font-weight: var(--di-type-label-weight, var(--di-weight-medium));
+    letter-spacing: var(--di-type-label-tracking, var(--di-tracking-eyebrow));
+    text-transform: uppercase;
+    color: var(--di-text-secondary, var(--di-text-muted));
+  }
+
+  .di-hero-fig-value {
+    font-family: var(--di-type-hero-family, var(--di-font-ui));
+    font-size: var(--di-type-hero-size, var(--di-font-size-900));
+    font-weight: var(--di-type-hero-weight, var(--di-weight-bold));
+    font-variant-numeric: tabular-nums;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--di-text);
+  }
+
+  .di-hero-fig.is-one .di-hero-fig-value {
+    color: var(--di-one-ink, var(--di-seal-ink));
+  }
+
+  .di-hero-fig.is-danger .di-hero-fig-value {
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-hero-fig-unit {
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-550);
+    font-weight: var(--di-weight-medium);
+    letter-spacing: normal;
+    color: var(--di-text-secondary, var(--di-text-muted));
+  }
+
+  .di-hero-fig-note {
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-secondary, var(--di-text-muted));
+  }
+}

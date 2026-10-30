@@ -260,3 +260,18 @@ export { TokenField } from "./components/forms/text/TokenField";
 export { Tooltip } from "./components/feedback/Tooltip";
 export { TooltipTarget } from "./components/feedback/TooltipTarget";
 export { VersionTag } from "./components/marks/VersionTag";
+export { SeverityMark } from "./components/marks/SeverityMark";
+export type { Severity } from "./components/marks/SeverityMark";
+export { HeroFigure } from "./components/data/figures/HeroFigure";
+export { Figure, FigureRow } from "./components/data/figures/FigureRow";
+export { Briefing, BriefingAside, BriefingCrumbs, BriefingMark, BriefingMeta, BriefingStatus } from "./components/layout/page/Briefing";
+export { Surface, SurfaceAside, SurfaceTakeaway } from "./components/layout/page/Surface";
+export { AttentionItem, AttentionList } from "./components/data/records/AttentionList";
+export {
+  ListDetail,
+  ListDetailBack,
+  ListDetailHead,
+  ListDetailItem,
+  ListDetailList,
+  ListDetailPane,
+} from "./components/layout/arrangement/ListDetail";

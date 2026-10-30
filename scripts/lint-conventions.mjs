@@ -10,7 +10,7 @@ const text = readFileSync(".design-sync/conventions.md", "utf8");
 const exported = new Set(JSON.parse(readFileSync("scripts/public-api.json", "utf8")).exports);
 const preview = readFileSync(".storybook/preview.tsx", "utf8");
 const sections = [...preview.match(/const sections = \[([^\]]*)\]/)[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-const unlisted = new Set(["Introduction", "Screens"]);
+const unlisted = new Set(["Introduction", "Direction A", "Screens"]);
 
 const storyFiles = (dir) =>
   readdirSync(dir).flatMap((name) => {

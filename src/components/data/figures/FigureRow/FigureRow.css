@@ -1,0 +1,51 @@
+@layer components {
+  .di-figure-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+    gap: var(--di-space-16) var(--di-space-24);
+    margin: 0;
+  }
+
+  .di-figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    min-width: 0;
+    padding-left: var(--di-space-12);
+    border-left: 1px solid var(--di-rule);
+  }
+
+  .di-figure-label {
+    font-family: var(--di-type-label-family, var(--di-font-code));
+    font-size: var(--di-type-label-size, var(--di-font-size-200));
+    font-weight: var(--di-type-label-weight, var(--di-weight-medium));
+    letter-spacing: var(--di-type-label-tracking, var(--di-tracking-eyebrow));
+    text-transform: uppercase;
+    color: var(--di-text-secondary, var(--di-text-muted));
+  }
+
+  .di-figure-value {
+    margin: 0;
+    font-family: var(--di-type-section-family, var(--di-font-ui));
+    font-size: var(--di-font-size-700);
+    font-weight: var(--di-weight-bold);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--di-leading-tight);
+    color: var(--di-text);
+  }
+
+  .di-figure.is-warn .di-figure-value {
+    color: var(--di-status-warn-fg);
+  }
+
+  .di-figure.is-danger .di-figure-value {
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-figure-note {
+    margin: 0;
+    font-family: var(--di-type-meta-family, var(--di-font-code));
+    font-size: var(--di-type-meta-size, var(--di-font-size-200));
+    color: var(--di-text-tertiary, var(--di-text-subtle));
+  }
+}
