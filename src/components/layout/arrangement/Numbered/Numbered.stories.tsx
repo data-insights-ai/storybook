@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Panel } from "../../page/Panel";
+import { TextField } from "../../../forms/text/TextField";
 import { Numbered } from "./Numbered";
 import { Stack } from "../Stack";
 
@@ -23,7 +24,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: (args) => (
     <Numbered {...args}>
-      <Panel>A numbered block, carrying the register's ordinal.</Panel>
+      <span>Create an app registration in the tenant that holds the logs.</span>
     </Numbered>
   ),
   play: async ({ canvasElement }) => {
@@ -32,19 +33,23 @@ export const Default: Story = {
   },
 };
 
-/** A run of them, which is how a screen is actually built. */
+/**
+ * A run of them, which is how a set-up guide is built: each step on its
+ * own tonal ground, its words and what it needs inside, never a box in it.
+ */
 export const Run: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <Stack>
       <Numbered index="01">
-        <Panel>The session, and what it is allowed to do.</Panel>
+        <span>Create an app registration in the tenant that holds the logs.</span>
       </Numbered>
       <Numbered index="02">
-        <Panel>The channels it reports through.</Panel>
+        <span>Grant it read access to the event hub namespace.</span>
+        <TextField id="numbered-namespace" label="Event hub namespace" mono placeholder="logs-prod.servicebus.windows.net" />
       </Numbered>
       <Numbered index="03">
-        <Panel>What it measured while doing so.</Panel>
+        <span>Paste its client secret here; it is stored encrypted and never shown again.</span>
       </Numbered>
     </Stack>
   ),

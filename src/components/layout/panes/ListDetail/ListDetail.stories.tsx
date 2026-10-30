@@ -3,6 +3,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { SeverityMark, type Severity } from "../../../marks/status/SeverityMark";
 import { StatusPill } from "../../../marks/status/StatusPill";
+import { Fact, FactList } from "../../../data/records/FactList";
+import { Panel } from "../../page/Panel";
+import { SectionTitle, SectionTitleHeading } from "../../page/SectionTitle";
 import {
   ListDetail,
   ListDetailBack,
@@ -49,8 +52,17 @@ function Split({ initial = "list" }: { initial?: "list" | "detail" }) {
       </ListDetailList>
       <ListDetailPane label={`Case ${record.n}`}>
         <ListDetailBack label="All cases" onBack={() => setShowing("list")} />
-        <h2>{`Case ${record.n} · ${record.title}`}</h2>
-        <p>The record opens here, beside the list, and keeps its place while the list scrolls.</p>
+        <SectionTitle eyebrow={`Case ${record.n}`} lede={record.owner === "unassigned" ? "Not assigned yet" : `Assigned to ${record.owner}`}>
+          <SectionTitleHeading>{record.title}</SectionTitleHeading>
+        </SectionTitle>
+        <Panel title="What happened">
+          <FactList layout="columns">
+            <Fact label="Severity">
+              <SeverityMark level={record.severity} label={record.word} />
+            </Fact>
+            <Fact label="Status">{record.status}</Fact>
+          </FactList>
+        </Panel>
       </ListDetailPane>
     </ListDetail>
   );
@@ -85,7 +97,7 @@ export const Default: Story = {
     await userEvent.keyboard("{End}");
     await expect(canvas.getByRole("button", { name: /Macro document/ })).toHaveFocus();
     await userEvent.keyboard("{Enter}");
-    await expect(canvas.getByRole("heading", { level: 2 })).toHaveTextContent("Case 2");
+    await expect(canvas.getByRole("heading", { level: 2 })).toHaveTextContent("Macro document opened on a workstation");
   },
 };
 

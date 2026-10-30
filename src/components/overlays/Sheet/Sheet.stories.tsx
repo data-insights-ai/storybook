@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StrictMode, useEffect, useRef, useState } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
+import { TextField } from "../../forms/text/TextField";
 import { Fact, FactList } from "../../data/records/FactList";
 import { Sheet, SheetFooter } from "./Sheet";
 
@@ -38,10 +39,11 @@ function Opener(args: { title: string; lede?: string; index?: string; eyebrow?: 
         <FactList layout="columns">
           <Fact label="Role">Administrator</Fact>
           <Fact label="Joined">3 Mar 2026</Fact>
+          <Fact label="Last sign-in">Today, 08:47</Fact>
         </FactList>
         <SheetFooter>
           <Button variant="secondary" onClick={() => setOpen(false)}>
-            Close
+            Change role
           </Button>
         </SheetFooter>
       </Sheet>
@@ -79,13 +81,8 @@ export const FromARow: Story = {
 
 // Content that takes focus as it mounts, before the sheet's own effects run.
 function FocusOnMount() {
-  const field = useRef<HTMLInputElement>(null);
-  useEffect(() => field.current?.focus(), []);
-  return (
-    <label>
-      Name <input ref={field} />
-    </label>
-  );
+  useEffect(() => document.getElementById("watchlist-name")?.focus(), []);
+  return <TextField id="watchlist-name" label="Name" defaultValue="Finance laptops" />;
 }
 
 function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: string; shortcut?: string }) {
@@ -103,6 +100,7 @@ function MountedWhileOpen(args: { title: string; lede?: string; closeLabel: stri
             <Button variant="secondary" onClick={() => setOpen(false)}>
               Cancel
             </Button>
+            <Button onClick={() => setOpen(false)}>Save</Button>
           </SheetFooter>
         </Sheet>
       ) : null}

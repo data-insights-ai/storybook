@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
+import { Actions } from "../../arrangement/Actions";
 import { Panel, PanelFooter, PanelLead, PanelMeta, PanelNote } from "./Panel";
 import { SealValue } from "../../../marks/status/SealValue";
 import { StatusPill } from "../../../marks/status/StatusPill";
@@ -16,9 +17,9 @@ const meta = {
     indexRule: true,
     surface: "sheet",
     emphasis: false,
-    title: "Source register",
+    title: "Graz office",
     padded: true,
-    children: "A panel holds one thing the register knows about.",
+    children: "Fourteen sources report here; the last event arrived two minutes ago.",
   },
   argTypes: {
     index: { control: "text" },
@@ -57,7 +58,7 @@ export const WithMeta: Story = {
       <PanelMeta>
         <SealValue stateLabel="Sealed">09:12:04Z</SealValue>
       </PanelMeta>
-      A panel holds one thing the register knows about.
+      Fourteen sources report here; the last event arrived two minutes ago.
     </Panel>
   ),
   play: async ({ canvasElement }) => {
@@ -95,7 +96,13 @@ export const Inset: Story = {
  * reads. The label is a kind or a source; the title says what the block shows.
  */
 export const Labelled: Story = {
-  args: { index: undefined, label: "Coverage · last 24 h", title: "Two of nine tables are not arriving", heading: 2 },
+  args: {
+    index: undefined,
+    label: "Coverage · last 24 h",
+    title: "Two of nine tables are not arriving",
+    heading: 2,
+    children: "Sign-in logs and audit events stopped at 06:10; the other seven tables are current.",
+  },
 };
 
 /**
@@ -114,10 +121,10 @@ export const Emphasis: Story = {
   render: (args) => (
     <Panel {...args}>
       <PanelLead>Isolate the server before the next sync window.</PanelLead>
-      <span style={{ display: "flex", gap: "var(--di-space-8)", marginTop: "var(--di-space-16)" }}>
+      <Actions align="start">
         <Button>Isolate the server</Button>
         <Button variant="secondary">Reset the account</Button>
-      </span>
+      </Actions>
     </Panel>
   ),
   play: async ({ canvasElement }) => {
@@ -149,10 +156,10 @@ export const Failed: Story = {
 
 /** No index at all, for a panel that is not part of a register. */
 export const WithoutIndex: Story = {
-  args: { index: undefined, title: "Notes" },
+  args: { index: undefined, title: "Notes", children: "Rotate the collector key before the audit in March." },
 };
 
-/** Header and footer, with the body drawn to the panel's own edge. */
+/** The footer strip under the body: the state and the one action it asks for. */
 export const WithFooter: Story = {
   args: {
     index: "02",
@@ -161,6 +168,7 @@ export const WithFooter: Story = {
   },
   render: (args) => (
     <Panel {...args}>
+      <p>{args.children}</p>
       <PanelFooter>
         <StatusPill tone="warn">expiring</StatusPill>
         <span style={{ marginLeft: "auto" }}>
@@ -210,14 +218,14 @@ export const SlotsWrittenReversed: Story = {
         <Button size="dense">Retry</Button>
       </PanelFooter>
       <PanelNote>Retries stop after three attempts.</PanelNote>
-      <p>The body.</p>
+      <p>The Sentinel export has failed since 08:40; the other two deliver.</p>
       <PanelLead>Three exports, one failing.</PanelLead>
       <PanelMeta>live</PanelMeta>
     </Panel>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const order = ["Three exports, one failing.", "The body.", "Retries stop after three attempts.", "Retry"].map(
+    const order = ["Three exports, one failing.", "The Sentinel export has failed since 08:40; the other two deliver.", "Retries stop after three attempts.", "Retry"].map(
       (text) => canvas.getByText(text).getBoundingClientRect().top,
     );
     await expect([...order].sort((a, b) => a - b)).toEqual(order);

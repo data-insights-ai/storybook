@@ -17,8 +17,13 @@
       "titles titles aside"
       "lead visual visual"
       "footer footer footer";
-    gap: var(--di-space-24) var(--di-space-32);
+    /* Rows are spaced by margins, so a slot left out leaves no empty gap. */
+    gap: 0 var(--di-space-32);
     align-items: start;
+  }
+
+  .di-hero-grid > :is(.di-hero-lead, .di-hero-visual, .di-hero-footer) {
+    margin-top: var(--di-space-24);
   }
 
   .di-hero-grid:not(:has(> .di-hero-lead)) {
@@ -89,7 +94,10 @@
         "lead"
         "visual"
         "footer";
-      gap: var(--di-space-16);
+    }
+
+    .di-hero-grid > :is(.di-hero-aside, .di-hero-lead, .di-hero-visual, .di-hero-footer) {
+      margin-top: var(--di-space-16);
     }
 
     .di-hero-aside {

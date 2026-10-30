@@ -3,6 +3,7 @@ import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { SearchField } from "../../forms/text/SearchField";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
+import { TextLink } from "../../navigation/TextLink";
 import { ShortcutHelp } from "./ShortcutHelp";
 
 const meta = {
@@ -44,7 +45,7 @@ export const OnAPage: Story = {
         <TableBody>
           <TableRow>
             <TableCell>
-              <a href="#nvd">NVD</a>
+              <TextLink href="#nvd">NVD</TextLink>
             </TableCell>
           </TableRow>
         </TableBody>

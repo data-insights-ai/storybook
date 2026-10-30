@@ -35,8 +35,8 @@
 
     .di-split:not(.is-preview) > .di-split-aside {
       position: sticky;
-      top: calc(var(--di-sticky-top, 64px) + var(--di-space-16));
-      max-height: calc(100dvh - var(--di-sticky-top, 64px) - var(--di-space-32));
+      top: calc(var(--di-sticky-top) + var(--di-space-16));
+      max-height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
       overflow-y: auto;
     }
   }
@@ -53,8 +53,8 @@
 
     .di-split.is-preview > .di-split-aside {
       position: sticky;
-      top: calc(var(--di-sticky-top, 64px) + var(--di-space-16));
-      max-height: calc(100dvh - var(--di-sticky-top, 64px) - var(--di-space-32));
+      top: calc(var(--di-sticky-top) + var(--di-space-16));
+      max-height: calc(100dvh - var(--di-sticky-top) - var(--di-space-32));
       overflow-y: auto;
     }
   }

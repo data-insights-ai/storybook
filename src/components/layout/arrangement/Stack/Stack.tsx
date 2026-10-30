@@ -7,9 +7,11 @@ import "./Stack.css";
  * in the diff rather than behind a word like "loose".
  *
  * The union is the ramp from 8 up, which is every step a stack has a use
- * for — 12 for a column of fields, 16 for blocks inside a panel, 24
- * between panels, 32 between the sections of a screen, and 48, 64 and 96
- * for a brand page, where the distance between two sections is the layout.
+ * for — 8 for a line and its detail, 12 for a short run of related lines,
+ * 16 for blocks inside a panel (a form's fields are a `FieldStack`, at the
+ * same 16), 24 between panels, 32 between the sections of a screen, and
+ * 48, 64 and 96 for a brand page, where the distance between two sections
+ * is the layout.
  */
 export function Stack({ gap = 16, children }: { gap?: StackGap; children: ReactNode }) {
   return (

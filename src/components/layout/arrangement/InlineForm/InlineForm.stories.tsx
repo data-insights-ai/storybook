@@ -8,7 +8,7 @@ import { TextField } from "../../../forms/text/TextField";
 const meta = {
   title: "Layout/Arrangement/InlineForm",
   component: InlineForm,
-  tags: ["layer:pattern", "autodocs"],
+  tags: ["layer:pattern", "status:deprecated"],
   args: { children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof InlineForm>;
@@ -16,7 +16,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** One line: the first field grows, the select fits, the button sits on the control row. */
+/** Deprecated: the same row is `<Toolbar fillFirst>`; this name renders it until 0.12. */
 export const Inline: Story = {
   render: () => (
     <form>

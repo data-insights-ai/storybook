@@ -12,10 +12,11 @@
     gap: var(--di-space-8);
     min-height: 168px;
     min-width: 0;
-    padding: var(--di-space-12);
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-page);
+    padding: var(--di-space-16);
+    border: 1px solid var(--di-panel-border);
+    border-radius: var(--di-panel-radius);
+    background: var(--di-panel-bg);
+    box-shadow: var(--di-elevation-surface);
   }
 
   .di-stage-head {
@@ -29,11 +30,9 @@
   }
 
   .di-stage h3 {
-    font-family: var(--di-font-ui);
-    font-size: var(--di-font-size-500);
-    font-weight: var(--di-weight-bold);
-    letter-spacing: var(--di-tracking-tight);
-    line-height: 1.2;
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-semibold);
+    line-height: var(--di-leading-snug);
   }
 
   .di-stage p,
@@ -71,6 +70,7 @@
 
     background: var(--di-inverse-bg);
     border-color: var(--di-inverse-bg);
+    box-shadow: none;
     color: var(--di-text);
   }
 

@@ -111,9 +111,13 @@
        record, a list's open row. It keeps its width on every screen: what
        grows is the content beside it. */
     --di-rail-width: 320px;
+  }
 
-    /* Where a sticky toolbar or table head stops: under the app bar. */
-    --di-sticky-top: 59px;
+  /* Where a sticky toolbar or table head stops: the window's top, and
+     under the app bar inside the shell (AppShell sets it). Declared at the
+     root only, so a themed region inside the shell keeps the shell's value. */
+  :root {
+    --di-sticky-top: 0px;
   }
 
   /*

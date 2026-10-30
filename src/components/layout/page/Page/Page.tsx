@@ -19,6 +19,9 @@ import "./Page.css";
  *
  * Header to content is `--di-rhythm-header`, section to section
  * `--di-rhythm-section`. The blocks inside carry no margin of their own.
+ *
+ * Inside `AppShellContent` the shell frames the page. Rendered on its own
+ * (an error route outside the shell) it keeps the same frame itself.
  */
 export function Page({
   width = "list",
@@ -78,7 +81,8 @@ function useWideFrame(page: HTMLElement | null) {
   useLayoutEffect(() => {
     if (!page) return;
     const measure = (width: number) => setWide(width >= SIDE_COLUMN_FROM);
-    measure(page.getBoundingClientRect().width);
+    const style = getComputedStyle(page);
+    measure(page.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight));
     const observer = new ResizeObserver(([entry]) => measure(entry.contentRect.width));
     observer.observe(page);
     return () => observer.disconnect();
