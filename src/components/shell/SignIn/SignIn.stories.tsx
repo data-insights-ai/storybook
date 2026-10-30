@@ -247,7 +247,7 @@ export const AfterDark: Story = {
   },
 };
 
-/** German, at a phone's width: the longer words wrap inside the card. */
+/** German, at a phone's width: the longer words wrap inside the card, and the version stays beside the mark. */
 export const German: Story = {
   args: {
     kicker: "datAInsights",
@@ -259,6 +259,9 @@ export const German: Story = {
   },
   render: (args) => (
     <SignIn {...args}>
+      <SignInVersion>
+        <Tag mono>v4.18.2</Tag>
+      </SignInVersion>
       <TextField id="login-user-de" label="E-Mail-Adresse oder Benutzername" autoComplete="username" />
       <TextField id="login-password-de" label="Passwort" type="password" autoComplete="current-password">
         <TextLink quiet={true}>Passwort vergessen?</TextLink>
@@ -272,5 +275,6 @@ export const German: Story = {
   play: async ({ canvasElement }) => {
     const doc = canvasElement.ownerDocument.documentElement;
     await expect(doc.scrollWidth).toBeLessThanOrEqual(doc.clientWidth);
+    await expect(within(canvasElement).getByText("v4.18.2")).toBeVisible();
   },
 };

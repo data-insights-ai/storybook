@@ -2,13 +2,7 @@ import type { StorybookConfig } from "@storybook/react-vite";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.@(ts|tsx)"],
-  addons: [
-    "@storybook/addon-vitest",
-    "@storybook/addon-docs",
-    "@storybook/addon-a11y",
-    "@storybook/addon-themes",
-    "@storybook/addon-mcp",
-  ],
+  addons: ["@storybook/addon-vitest", "@storybook/addon-docs", "@storybook/addon-a11y", "@storybook/addon-mcp"],
   staticDirs: [
     "./public",
     // The manager is a separate page; it gets the same font files the library bundles, served from node_modules.

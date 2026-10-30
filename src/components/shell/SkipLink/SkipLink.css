@@ -11,21 +11,23 @@
     border: 0;
   }
 
+  /* Focused, it takes the bar's whole row, so no fragment of a link it covers shows beside it. */
   .di-skip:focus {
-    left: var(--di-space-16);
-    top: var(--di-space-16);
+    inset: 0 0 auto;
     z-index: 30;
+    display: flex;
+    align-items: center;
     width: auto;
     height: auto;
+    min-height: var(--di-shell-bar-height);
     margin: 0;
-    padding: var(--di-space-8) var(--di-space-12);
+    padding: var(--di-space-8) var(--di-content-pad);
     overflow: visible;
     clip-path: none;
     white-space: normal;
-    border: 1px solid var(--di-border-strong);
-    border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
     box-shadow: var(--di-shadow-plane);
     color: var(--di-text);
+    outline-offset: calc(-1 * var(--di-focus-ring-width) - var(--di-space-4));
   }
 }
