@@ -9,9 +9,11 @@
 
   /*
    * On any other surface (a sign-in card, a disclosure, a dialog, a flyout,
-   * a record card, a panel) the table drops its frame and reaches out by its own
-   * edge, so its text keeps the line of the content above it while a row's
-   * hover still has room around it. A flush panel has already placed it.
+   * a record card, a panel) the table drops its frame and keeps to the
+   * surface's content edge like every box beside it: its head band, rules
+   * and row fills start and end where a button or a field does, and its text
+   * sits inside them at the cell inset. Only a flush panel runs it to the
+   * surface's own edges, all the way.
    */
   :is(
       .di-login-card,
@@ -26,7 +28,7 @@
     .di-table-wrap:not(.di-panel-content-flush .di-table-wrap) {
     --di-table-bg: transparent;
     --di-table-shadow: none;
-    margin-inline: calc(-1 * var(--di-table-edge));
+    --di-table-radius: 0;
   }
 
   /* The frame around a Toolbar: its controls start on the line of the first column. */

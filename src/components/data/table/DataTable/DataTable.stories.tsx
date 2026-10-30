@@ -19,6 +19,7 @@ import {
   TableIndex,
   TableRow,
 } from "./DataTable";
+import { Panel, PanelActions, PanelFooter, PanelLead } from "../../../layout/page/Panel";
 import { LevelMeter } from "../../../charts/compare/LevelMeter";
 import { Pagination } from "../../../navigation/sequence/Pagination";
 import { SearchField } from "../../../forms/text/SearchField";
@@ -154,6 +155,64 @@ export const ActiveRow: Story = {
       <SourceRows active="03" />
     </DataTable>
   ),
+};
+
+/**
+ * On a padded surface, beside a lead and a footer: the table keeps to the
+ * panel's content edge like everything else in it. Its head band and rules
+ * start where the lead's text does and end where the button does; its text
+ * sits inside them at the cell inset. Use `Panel padded={false}` when the
+ * table is the panel's whole content and runs to its edges instead.
+ */
+export const OnAPanel: Story = {
+  name: "On a panel",
+  args: { indexed: false, caption: "Retention per class" },
+  render: (args) => (
+    <div style={{ maxWidth: 560 }}>
+      <Panel title="Retention" heading={2}>
+        <PanelLead>How long each class of entry is kept.</PanelLead>
+        <DataTable {...args}>
+          <TableHead>
+            <TableColumn>Class</TableColumn>
+            <TableColumn align="end">Kept</TableColumn>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>Signals</TableCell>
+              <TableCell align="end" mono={true}>
+                30 days
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Cases</TableCell>
+              <TableCell align="end" mono={true}>
+                2 years
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Audit log</TableCell>
+              <TableCell align="end" mono={true}>
+                7 years
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </DataTable>
+        <PanelFooter>Changed 12 Oct by Nora Feld</PanelFooter>
+        <PanelActions>
+          <Button variant="secondary" size="sm">
+            Change retention
+          </Button>
+        </PanelActions>
+      </Panel>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const box = (selector: string) => canvasElement.querySelector(selector)!.getBoundingClientRect();
+    const start = box(".di-panel-lead").left;
+    await expect(Math.abs(box(".di-table-wrap").left - start)).toBeLessThan(1);
+    await expect(Math.abs(box("thead tr").left - start)).toBeLessThan(1);
+    await expect(Math.abs(box(".di-table-wrap").right - box(".di-panel-foot .di-btn").right)).toBeLessThan(1);
+  },
 };
 
 /** Without the ordinal column, for a table that is not a register extract. */

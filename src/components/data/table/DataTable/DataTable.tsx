@@ -52,6 +52,14 @@ import "./DataTable.css";
  * each column in mono capitals. Ordinals run down the index column on the
  * left.
  *
+ * On another surface (a `Panel`, a `Dialog`, a `RecordCard`, a
+ * `Disclosure`, the `SignIn` card) the table drops its own ground and keeps
+ * to that surface's content edge, like a button or a field beside it: the
+ * head band, rules and row fills start and end there, and the text sits
+ * inside them at the cell inset. To run it to the surface's edges instead,
+ * all the way, place it in `Panel padded={false}`.
+ * A table never reaches part of the way past the content edge.
+ *
  * In a narrow frame the grid scrolls sideways, and a `pinned` column — the
  * row's name — stays at the left edge while the others pass under it.
  * `narrow="stack"` lays each row out as a card instead: unlabelled cells run
