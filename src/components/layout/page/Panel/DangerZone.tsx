@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Panel, PanelLead } from "../../layout/page/Panel";
+import { Panel, PanelLead } from "./Panel";
 
 /**
  * The end of a detail page: what cannot be taken back.
