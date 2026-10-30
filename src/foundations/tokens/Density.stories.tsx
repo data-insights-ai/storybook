@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "../../components/data/table/DataTable";
 import { Toolbar } from "../../components/layout/arrangement/Toolbar";
-import { Panel } from "../../components/layout/page/Panel";
+import { Panel, PanelNote } from "../../components/layout/page/Panel";
 import { StatusPill } from "../../components/marks/status/StatusPill";
 import { CodeBlock } from "../../components/text/CodeBlock";
 import { Page, Rule, Rules, Section } from "../guide/Guide";
@@ -66,6 +66,7 @@ function Matrix({ density }: { density: "comfortable" | "compact" }) {
           </Button>
           <StatusPill tone="ok">running</StatusPill>
         </Toolbar>
+        <PanelNote>The field and the medium button share a height.</PanelNote>
       </Panel>
     </div>
   );
