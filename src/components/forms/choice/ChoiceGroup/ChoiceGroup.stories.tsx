@@ -255,6 +255,13 @@ export const InAToolbar: Story = {
     const track = canvasElement.querySelector(".di-choice-segments")!.getBoundingClientRect();
     const button = canvas.getByRole("button", { name: "Export" }).getBoundingClientRect();
     await expect(Math.round(track.height)).toBe(Math.round(button.height));
+    const thumb = getComputedStyle(canvas.getByText("7d").closest(".di-choice-segment")!);
+    const probe = canvasElement.appendChild(document.createElement("div"));
+    probe.style.background = "var(--di-choice-on-bg)";
+    const cornflower = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    await expect(thumb.backgroundColor).not.toBe(cornflower);
+    await expect(thumb.fontWeight).toBe("600");
   },
 };
 

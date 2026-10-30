@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
+import { toolbarRows } from "../../components/actions/Toolbar/Toolbar.sample";
 import { CaseTriage } from "./CaseTriage";
 
 const meta = {
@@ -22,6 +23,13 @@ export const Default: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { current: true })).toHaveTextContent("Leaked VPN credentials");
     await expect(canvasElement.querySelectorAll(".is-emphasis")).toHaveLength(1);
+    const track = canvasElement.querySelector(".di-split-list-head .di-choice-segments")!.getBoundingClientRect();
+    const item = canvasElement.querySelector(".di-split-item")!.getBoundingClientRect();
+    await expect(Math.abs(track.left - item.left)).toBeLessThanOrEqual(1);
+    const thumb = getComputedStyle(canvasElement.querySelector(".di-choice-segment.is-chosen")!);
+    const row = getComputedStyle(canvas.getByRole("button", { current: true }));
+    await expect(thumb.backgroundColor).not.toBe(row.backgroundColor);
+    await expect(thumb.color).toBe(getComputedStyle(canvas.getByRole("heading", { level: 1 })).color);
     if (window.innerWidth >= 900) {
       await expect(
         canvas.getByRole("heading", { level: 3, name: /Leaked VPN credentials reached the file server/ }),
@@ -50,5 +58,8 @@ export const CaseOpen: Story = {
     await expect(
       canvas.getByRole("heading", { level: 3, name: /Leaked VPN credentials reached the file server/ }),
     ).toBeVisible();
+    const decision = canvas.getByRole("button", { name: "Isolate srv-fs-02" }).closest(".di-toolbar")!;
+    const rows = toolbarRows(decision).map((row) => row.length);
+    await expect(rows).toEqual(window.innerWidth <= 600 ? [1, 2] : [3]);
   },
 };
