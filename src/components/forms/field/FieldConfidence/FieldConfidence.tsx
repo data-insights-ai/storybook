@@ -20,11 +20,6 @@ export type FieldConfidenceReading = {
   onWhy?: () => void;
 };
 
-const SEGMENTS = 30;
-
-/* A high reading stays in the series colour; one to review turns the whole run to warn. */
-const bands = { high: { warn: 101, danger: 101 }, review: { warn: 0, danger: 101 } };
-
 /**
  * The meter and the line under a field a model filled in: the hollow ring
  * of an inferred value, the reading in words, and the way to its reasons.
@@ -38,8 +33,8 @@ export function FieldConfidence({ id, reading }: { id: string; reading: FieldCon
         className="di-field-confidence-meter"
         label={label}
         value={Math.round(value * 100)}
-        segments={SEGMENTS}
-        bands={bands[level]}
+        segments="continuous"
+        tone={level === "review" ? "warn" : "neutral"}
       />
       <div className={`di-field-hint is-inferred is-${level}`} id={id}>
         <SealMark state="inferred" />
