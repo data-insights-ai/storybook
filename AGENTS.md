@@ -127,7 +127,8 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Introduction`, then `Foundations/` — the brand, the tokens and the reasoning behind them (Essence, Register, Color, Type, Scale, Logo, Pages, Decisions and the rest). No package component lives here.
 - `Actions/` — what a person presses: Button, CountButton, CopyValue, RowActions, BulkActionBar.
 - `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
-- `Data/` — what a person reads: `Records/` (AttentionList, the cards, FactList, KeyValues, Channel, Session), `Figures/` (FigureRow, HeroFigure, StatTile; Stat is deprecated), `Text/` (Eyebrow, Highlight, Kbd, MetaLine, CodeBlock, PullQuote) and `Table/`.
+- `Data/` — what a person reads: `Records/` (AttentionList, the cards, FactList, KeyValues, Channel, Session), `Figures/` (FigureRow, HeroFigure, StatTile; Stat is deprecated) and `Table/`.
+- `Text/` — how text is set: Eyebrow, Highlight, Kbd, MetaLine, CodeBlock, PullQuote, TickRule. It imports only marks, so a button, a dialog or an empty state can set a key or an eyebrow with it.
 - `Marks/` — what every other component draws with: Badge, Chip, Tag, VersionTag, Icon, IconTile; `Status/` (StatusPill, SeverityMark, SealValue). A mark imports no other component, so it sits below them all.
 - `Feedback/` — Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `Waiting/` the loaders, progress and skeletons.
 - `Overlays/`, `Navigation/` — what opens over the page, and how a person moves through it.
