@@ -113,7 +113,7 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
     >
       <TimelineSummaryMeta>
         <span className="di-quiet">
-          {episodes.filter((e) => e.total > 0).length} episodes holding {count.format(total)} events over{" "}
+          {episodeCount(episodes.filter((e) => e.total > 0).length)} holding {count.format(total)} events over{" "}
           {duration(bounds.end - bounds.start)}
         </span>
       </TimelineSummaryMeta>
@@ -144,6 +144,8 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
     </TimelineSummary>
   );
 }
+
+const episodeCount = (n: number) => (n === 1 ? "1 episode" : `${n} episodes`);
 
 const meta = {
   title: "Timeline/TimelineSummary",
