@@ -104,6 +104,7 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey, 
     <SidebarProvider defaultExpanded={defaultExpanded} storageKey={storageKey} skipLabel="Skip to content">
       <Sidebar label={label} closeLabel={closeLabel}>
         <SidebarHeader>
+          <SidebarBrand />
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton label={words.workspace} href="#/workspace">
@@ -157,7 +158,6 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey, 
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
-          <SidebarBrand />
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
@@ -202,6 +202,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** The mark inside the lockup file: 133.2 of its 180 units tall, from unit 26.9. */
+function markIn(logo: HTMLElement) {
+  const box = logo.getBoundingClientRect();
+  const height = (box.height * 133.2) / 180;
+  return { height, middle: box.top + (box.height * 26.9) / 180 + height / 2 };
+}
+
+const settled = (el: Element) =>
+  Promise.all(el.getAnimations({ subtree: true }).map((animation) => animation.finished.catch(() => undefined)));
+
 export const Default: Story = {
   globals: { viewport: { value: "desk", isRotated: false } },
   render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} />,
@@ -216,10 +226,18 @@ export const Default: Story = {
     await userEvent.keyboard("{Enter}");
     await expect(canvas.getByRole("main")).toHaveFocus();
 
-    await expect(canvas.getByRole("img", { name: "datAInsights" })).toHaveClass("di-sb-brand-logo");
+    const logo = canvas.getByRole("img", { name: "datAInsights" });
+    await expect(logo).toHaveClass("di-sb-brand-logo");
+    const open = markIn(logo);
     await userEvent.click(canvas.getByRole("button", { name: "Toggle navigation" }));
     await expect(nav).toHaveAttribute("data-state", "collapsed");
-    await expect(canvas.getByRole("img", { name: "datAInsights" })).toHaveClass("di-sb-brand-mark");
+    await settled(nav);
+    const mark = canvas.getByRole("img", { name: "datAInsights" });
+    await expect(mark).toHaveClass("di-sb-brand-mark");
+    // Collapsing hides the wordmark: the mark keeps its size and its row.
+    const rail = mark.getBoundingClientRect();
+    await expect(Math.abs(rail.height - open.height)).toBeLessThan(0.5);
+    await expect(Math.abs(rail.top + rail.height / 2 - open.middle)).toBeLessThan(1);
     await expect(canvas.getByRole("button", { name: "Toggle navigation" })).toHaveAttribute("aria-expanded", "false");
 
     await userEvent.keyboard("{Control>}b{/Control}");

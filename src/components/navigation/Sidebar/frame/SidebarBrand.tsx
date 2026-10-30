@@ -6,7 +6,8 @@ import { useSidebarRail } from "../state/SidebarContext";
 import "./SidebarBrand.css";
 
 /**
- * The lockup at the sidebar's foot: the logo while the sidebar is open,
+ * The lockup at the head of the sidebar, first in `SidebarHeader`, on the
+ * shell bar's row: the logo while the sidebar is open,
  * the mark alone once it collapses to icons. In daylight the sidebar is
  * paper and takes the daylight files; after dark it is navy and takes the
  * inverse ones. All four are the fixed brand files, never rebuilt from the

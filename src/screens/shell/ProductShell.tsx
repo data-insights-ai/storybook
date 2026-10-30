@@ -103,6 +103,7 @@ export function ProductShell({
       <SidebarProvider skipLabel={words.skip}>
         <Sidebar label={words.sections} closeLabel={words.close}>
           <SidebarHeader>
+            <SidebarBrand />
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton label={words.organization} href="#organization">
@@ -150,7 +151,6 @@ export function ProductShell({
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
-            <SidebarBrand />
           </SidebarFooter>
         </Sidebar>
         <SidebarInset>
