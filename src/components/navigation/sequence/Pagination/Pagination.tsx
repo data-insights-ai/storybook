@@ -18,6 +18,13 @@ import "./Pagination.css";
  * slots. `numbered={false}` leaves only the arrows and the current page,
  * for a footer with no room.
  *
+ * Placement: under a table it sits at the end of the footer row, with the
+ * count of what the page shows ("118–120 of 120") at its start: in a
+ * `TableFooter` after the count, in a `Panel` as its `PanelActions` beside a
+ * `PanelFooter` count. The arrows are as wide as their chevrons (the hover
+ * plate and the target reach round them), so the chevrons, not quiet
+ * buttons, land on the table's text edges.
+ *
  * Controlled: the caller owns `page` because it also owns which rows are
  * visible; every control calls `onPageChange` with the page it wants. The
  * numbers are buttons, not links: they change what this view shows rather
@@ -54,7 +61,7 @@ export function Pagination({
     <nav className="di-pages" aria-label={label}>
       <button
         type="button"
-        className="di-page-btn"
+        className="di-page-btn di-page-arrow"
         disabled={page <= 1}
         aria-label={previousLabel}
         onClick={() => onPageChange(page - 1)}
@@ -87,7 +94,7 @@ export function Pagination({
       )}
       <button
         type="button"
-        className="di-page-btn"
+        className="di-page-btn di-page-arrow"
         disabled={page >= pages}
         aria-label={nextLabel}
         onClick={() => onPageChange(page + 1)}
