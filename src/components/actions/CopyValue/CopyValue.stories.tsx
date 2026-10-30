@@ -35,3 +35,44 @@ export const InFacts: Story = {
     </FactList>
   ),
 };
+
+/**
+ * A long webhook URL. It wraps only at its boundaries — after "//", before
+ * "/", "." and "-" — so no word of the address is split on a phone, and the
+ * whole value stays readable and checkable.
+ */
+export const LongAddress: Story = {
+  args: {
+    value: "https://hooks.data-insights.ai/workspaces/northwind-survey/events/signal-forwarding?format=json",
+    copyLabel: "Copy webhook URL",
+  },
+  render: (args) => (
+    <FactList layout="columns">
+      <Fact label="Endpoint">
+        <CopyValue {...args} />
+      </Fact>
+      <Fact label="Format">JSON</Fact>
+    </FactList>
+  ),
+  play: async ({ canvasElement }) => {
+    const value = canvasElement.querySelector(".di-copy-value")!;
+    await expect(value.querySelectorAll("wbr").length).toBeGreaterThan(5);
+  },
+};
+
+/** German labels: the button's name is long, the value wraps the same way. */
+export const LongAddressGerman: Story = {
+  args: {
+    value: "https://hooks.data-insights.ai/arbeitsbereiche/nordwind-umfrage/ereignisse/signalweiterleitung",
+    copyLabel: "Webhook-Adresse in die Zwischenablage kopieren",
+    copiedLabel: "Kopiert",
+  },
+  render: (args) => (
+    <FactList layout="columns">
+      <Fact label="Empfangsadresse">
+        <CopyValue {...args} />
+      </Fact>
+      <Fact label="Signaturverfahren">HMAC-SHA256</Fact>
+    </FactList>
+  ),
+};

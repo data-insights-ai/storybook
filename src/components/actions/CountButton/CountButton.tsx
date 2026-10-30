@@ -1,12 +1,13 @@
 import type { ReactNode } from "react";
-import { Badge } from "../../marks/Badge";
 import { Button } from "../Button";
-import "./CountButton.css";
 
 /**
  * An icon-only control that carries a count, such as unread notifications
- * in the topbar. The count is drawn on the icon and also part of `label`,
- * so a screen reader hears it once, in words.
+ * in the app bar.
+ *
+ * @deprecated Removed in 0.12: use `<Button variant="ghost" iconOnly
+ * aria-label="Notifications" badge={count} badgeLabel="3 unread">`. The
+ * count now follows the icon instead of covering it.
  */
 export function CountButton({
   label,
@@ -34,18 +35,13 @@ export function CountButton({
     <Button
       variant="ghost"
       iconOnly
-      className="di-count-btn"
       aria-label={label}
       aria-expanded={expanded}
       aria-controls={controls}
+      badge={count > 0 ? countLabel : undefined}
       onClick={onClick}
     >
       {children}
-      {count > 0 ? (
-        <span className="di-count-btn-count" aria-hidden>
-          <Badge tone="neutral">{countLabel}</Badge>
-        </span>
-      ) : null}
     </Button>
   );
 }

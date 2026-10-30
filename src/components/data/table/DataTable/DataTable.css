@@ -29,15 +29,18 @@
     margin-inline: calc(-1 * var(--di-table-edge));
   }
 
-  /* The toolbar's controls start on the line of the first column and wrap on a narrow frame. */
+  /* The frame around a Toolbar: its controls start on the line of the first column. */
   .di-table-toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--di-gap-8);
     padding: var(--di-space-12) var(--di-table-edge);
     border-bottom: 1px solid var(--di-table-rule);
     background: var(--di-table-head-bg);
+  }
+
+  /* Inside the frame a search toolbar takes the frame's inset and ground, not a list toolbar's own. */
+  .di-table-toolbar > .di-toolbar.is-list:not(.di-toolbar-bar) {
+    min-height: 0;
+    padding-block: 0;
+    background: none;
   }
 
   /*

@@ -38,8 +38,8 @@
   }
 
   /* A list page: the toolbar belongs to the list under it. */
-  .di-page > .di-list-toolbar + *,
-  .di-page-body > .di-list-toolbar + * {
+  .di-page > .di-toolbar.is-list + *,
+  .di-page-body > .di-toolbar.is-list + * {
     margin-top: calc(var(--di-rhythm-toolbar) - var(--di-rhythm-section));
   }
 

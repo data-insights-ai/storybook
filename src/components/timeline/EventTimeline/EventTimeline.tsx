@@ -44,13 +44,13 @@ import "./EventTimeline.css";
 const WAVE_H = 136;
 const GAP = 8;
 const PICK_PX = 10;
-const FLIP_PX = 260;
+const READOUT_GAP = 12;
 const TONES: TimelineTone[] = ["danger", "warn", "neutral"];
 const NO_BARS: TimelineBar[] = [];
 const NO_LANES: TimelineLane[] = [];
 const NO_MARKERS: TimelineMarker[] = [];
 
-const ReadoutPlace = createContext<{ x: number; flipped: boolean } | null>(null);
+const ReadoutPlace = createContext<{ x: number; plot: number } | null>(null);
 
 /**
  * Many events on one clock, from weeks down to the millisecond: bars that
@@ -301,9 +301,7 @@ export function EventTimeline({
                 </svg>
               </div>
               {target && hoverPx !== null ? (
-                <ReadoutPlace.Provider value={{ x: hoverPx, flipped: hoverPx > plotPx - FLIP_PX }}>
-                  {readout}
-                </ReadoutPlace.Provider>
+                <ReadoutPlace.Provider value={{ x: hoverPx, plot: plotPx }}>{readout}</ReadoutPlace.Provider>
               ) : null}
               {loading ? (
                 <div className="di-timeline-loading">
@@ -388,19 +386,36 @@ export function EventTimelineMeta({ children }: { children: ReactNode }) {
   );
 }
 
-/** What is under the pointer. Placed beside it, and turned to the left near the right edge. */
+/**
+ * What is under the pointer. Placed beside it, turned to the left where the
+ * right has no room, and held inside the plot where neither side has, as
+ * on a phone.
+ */
 export function EventTimelineReadout({ children }: { children: ReactNode }) {
   const place = useContext(ReadoutPlace);
+  const box = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  useLayoutEffect(() => {
+    if (box.current) setWidth(box.current.offsetWidth);
+  }, [children, place?.plot]);
   if (!place || !children) {
     return null;
   }
   return (
     <div
-      className={place.flipped ? "di-timeline-readout is-flipped" : "di-timeline-readout"}
-      style={{ left: place.x }}
+      className="di-timeline-readout"
+      ref={box}
+      style={{ left: readoutLeft(place.x, width, place.plot) }}
       aria-hidden
     >
       {children}
     </div>
   );
+}
+
+/** The readout's left edge: right of the pointer, else left of it, else as far in as the plot allows. */
+export function readoutLeft(x: number, width: number, plot: number): number {
+  if (x + READOUT_GAP + width <= plot) return x + READOUT_GAP;
+  if (x - READOUT_GAP - width >= 0) return x - READOUT_GAP - width;
+  return Math.max(0, Math.min(x - width / 2, plot - width));
 }

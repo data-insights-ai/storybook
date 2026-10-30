@@ -2,15 +2,26 @@ import { cx } from "../../../internal/cx";
 import "./MetaLine.css";
 
 /**
- * A line of facts in the mono track — "As of 12 Oct, 10:00 · 14 sources ·
- * updates live" — that breaks only between its items. An item stays whole
- * unless it is longer than the line, and the separator belongs to the gap,
- * so no line starts or ends on a lone "·". A string is split at " · ".
+ * A line of facts in the mono track: "As of 12 Oct, 10:00 · 14 sources ·
+ * updates live".
  *
- * `align="end"` sets the items against the right edge, as a page header's
- * meta does on a wide page. `separator="arrow"` reads the items as a path
- * — a host, the next host, where the data went — with the same rule: no
- * line starts on an arrow.
+ * **When to use:** the as-of, source and count facts under or beside a
+ * title (`PageHeaderMeta` and `RecordDetail` render it from a string), and
+ * a path of hosts. **When not to:** labelled facts (`FactList`); a sentence
+ * (body text); a state (`StatusPill`).
+ *
+ * **Anatomy:** items with a drawn separator in the gap before each one.
+ *
+ * **Variants:** `align="end"` sets the items against the right edge, as a
+ * page header's meta does on a wide page. `separator="arrow"` reads the
+ * items as a path: a host, the next host, where the data went.
+ *
+ * **Content:** short facts, each a figure or a name with its unit; a string
+ * is split at " · ". The line breaks only between items, so no line starts
+ * or ends on a lone separator; an item longer than the line wraps inside.
+ *
+ * **Accessibility:** a list, so a screen reader hears the items apart
+ * without the drawn separators.
  */
 export function MetaLine({
   items,

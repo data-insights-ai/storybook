@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, waitFor, within } from "storybook/test";
-import { Area, Bar, CartesianGrid, Cell, ComposedChart, Line, XAxis, YAxis } from "recharts";
+import { Area, Bar, CartesianGrid, Cell, ComposedChart, LabelList, Line, XAxis, YAxis } from "recharts";
+import { Panel } from "../../layout/page/Panel";
 import { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent, type ChartConfig } from "./Chart";
 
 /*
@@ -76,9 +77,11 @@ const meta = {
     children: { control: false },
   },
   decorators: [
-    (Story) => (
+    (Story, { args }) => (
       <div style={{ width: "min(100%, 560px)" }}>
-        <Story />
+        <Panel title={args.label} heading={2}>
+          <Story />
+        </Panel>
       </div>
     ),
   ],
@@ -99,7 +102,7 @@ export const Series: Story = {
   render: (args) => (
     <Chart {...args}>
       <ComposedChart data={series} margin={{ top: 16, right: 12, bottom: 0, left: 0 }}>
-        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+        <CartesianGrid vertical={false} />
         <XAxis dataKey="period" tickLine={false} axisLine={false} interval={0} />
         <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
         <ChartTooltip />
@@ -138,13 +141,14 @@ export const Series: Story = {
 /**
  * A comparison. Everything is warm neutral except the one bar the eye is
  * meant to land on, which takes `--di-chart-highlight`. Per-bar colour is a
- * `Cell`, so the highlight is data, not a second series.
+ * `Cell`, so the highlight is data, not a second series. With no axis, each
+ * bar states its value at its end, in text ink.
  */
 export const Compare: Story = {
   args: { label: "Share of entries by source kind", config: barConfig },
   render: (args) => (
     <Chart {...args}>
-      <ComposedChart data={bars} layout="vertical" margin={{ top: 8, right: 16, bottom: 8, left: 0 }}>
+      <ComposedChart data={bars} layout="vertical" margin={{ top: 8, right: 40, bottom: 8, left: 0 }}>
         <XAxis type="number" domain={[0, 100]} hide />
         <YAxis type="category" dataKey="name" tickLine={false} axisLine={false} width={64} interval={0} />
         <ChartTooltip />
@@ -152,6 +156,7 @@ export const Compare: Story = {
           {bars.map((entry) => (
             <Cell key={entry.name} fill={entry.fill} />
           ))}
+          <LabelList dataKey="value" position="right" formatter={(v) => `${String(v)} %`} className="di-chart-value" />
         </Bar>
       </ComposedChart>
     </Chart>
@@ -170,7 +175,7 @@ export const AgainstComparison: Story = {
   render: (args) => (
     <Chart {...args}>
       <ComposedChart data={coverage} margin={{ top: 16, right: 12, bottom: 0, left: 0 }} barGap={2}>
-        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+        <CartesianGrid vertical={false} />
         <XAxis dataKey="period" tickLine={false} axisLine={false} interval={0} />
         <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
         <ChartTooltip />
@@ -241,7 +246,7 @@ export const Legend: Story = {
   render: (args) => (
     <Chart {...args}>
       <ComposedChart data={series} margin={{ top: 16, right: 12, bottom: 0, left: 0 }}>
-        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+        <CartesianGrid vertical={false} />
         <XAxis dataKey="period" tickLine={false} axisLine={false} interval={0} />
         <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
         <ChartTooltip />
@@ -282,7 +287,7 @@ export const LegendAbove: Story = {
   render: (args) => (
     <Chart {...args}>
       <ComposedChart data={series} margin={{ top: 0, right: 12, bottom: 0, left: 0 }}>
-        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+        <CartesianGrid vertical={false} />
         <XAxis dataKey="period" tickLine={false} axisLine={false} interval={0} />
         <YAxis domain={[0, 100]} ticks={[0, 50, 100]} tickLine={false} axisLine={false} width={32} />
         <ChartLegend verticalAlign="top" content={<ChartLegendContent />} />
@@ -313,14 +318,15 @@ export const LegendAbove: Story = {
 };
 
 const runs = [
-  { day: "Mon", low: 4, high: 1, total: 5, note: "" },
-  { day: "Tue", low: 2, high: 6, total: 8, note: "Rotated keys · 14:20" },
-  { day: "Wed", low: 3, high: 0, total: 3, note: "" },
+  { day: "Mon", scheduled: 4, manual: 1, total: 5, note: "" },
+  { day: "Tue", scheduled: 2, manual: 6, total: 8, note: "Rotated keys · 14:20" },
+  { day: "Wed", scheduled: 3, manual: 0, total: 3, note: "" },
 ];
 
+/* Two kinds of run, not two states: the categorical pair, never a status colour. */
 const runConfig = {
-  low: { label: "Low", color: "var(--di-chart-series)" },
-  high: { label: "High", color: "var(--di-chart-danger)" },
+  scheduled: { label: "Scheduled", color: "var(--di-chart-series)" },
+  manual: { label: "Manual", color: "var(--di-chart-compare)" },
 } satisfies ChartConfig;
 
 /**
@@ -333,7 +339,7 @@ export const TooltipDetails: Story = {
   render: (args) => (
     <Chart {...args}>
       <ComposedChart data={runs} margin={{ top: 16, right: 12, bottom: 0, left: 0 }}>
-        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+        <CartesianGrid vertical={false} />
         <XAxis dataKey="day" tickLine={false} axisLine={false} interval={0} />
         <YAxis tickLine={false} axisLine={false} width={32} />
         <ChartTooltip
@@ -349,16 +355,16 @@ export const TooltipDetails: Story = {
         />
         <Bar
           isAnimationActive={false}
-          dataKey="low"
+          dataKey="scheduled"
           stackId="runs"
-          fill="var(--color-low)"
+          fill="var(--color-scheduled)"
           stroke="var(--di-bg-surface)"
         />
         <Bar
           isAnimationActive={false}
-          dataKey="high"
+          dataKey="manual"
           stackId="runs"
-          fill="var(--color-high)"
+          fill="var(--color-manual)"
           stroke="var(--di-bg-surface)"
         />
       </ComposedChart>

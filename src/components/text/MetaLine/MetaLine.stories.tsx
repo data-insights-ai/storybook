@@ -32,7 +32,7 @@ export const Default: Story = {
 export const Narrow: Story = {
   args: { items: ["Opened 7 h ago", "1,064 signals", "39 hosts", "updates live"] },
   render: (args) => (
-    <div style={{ width: 180 }}>
+    <div style={{ width: "11rem" }}>
       <MetaLine {...args} />
     </div>
   ),
@@ -65,7 +65,7 @@ export const LongItem: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: 200 }}>
+      <div style={{ width: "12.5rem" }}>
         <Story />
       </div>
     ),
@@ -77,5 +77,22 @@ export const LongItem: Story = {
     for (const item of canvasElement.querySelectorAll(".di-meta-line-item")) {
       await expect(item.getBoundingClientRect().right).toBeLessThanOrEqual(line.right + 1);
     }
+  },
+};
+
+/** German items run longer; each still moves to the next line whole. */
+export const German: Story = {
+  args: { items: ["Stand 12. Okt., 10:00", "14 Datenquellen", "aktualisiert sich laufend"] },
+  decorators: [
+    (Story) => (
+      <div lang="de" style={{ maxWidth: "16rem" }}>
+        <Story />
+      </div>
+    ),
+  ],
+  play: async ({ canvasElement }) => {
+    const items = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-meta-line-item"));
+    const heights = new Set(items.map((item) => Math.round(item.getBoundingClientRect().height)));
+    await expect(heights.size).toBe(1);
   },
 };

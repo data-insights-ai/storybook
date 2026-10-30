@@ -9,16 +9,8 @@ import { describe } from "./paint";
  * is a tone. Focus rings are exempt: they are outlines and they pass. A
  * table cell bounds what it holds: a pill in a cell is measured against the
  * cell, which has no frame, not against the table around it.
- *
- * The allow-list holds only what other batches still own, each until its fix
- * lands: the Kbd on a primary Button (Actions) and the coverage matrix marks
- * (Charts).
  */
 const NEAR = 8;
-const OWNED_ELSEWHERE: [inner: string, outer: string][] = [
-  [".di-kbd-on-control", ".di-btn"],
-  [".di-matrix-mark", ".di-matrix-column"],
-];
 
 const clear = (color: string) => color === "transparent" || /rgba\(.*,\s*0\)$/.test(color);
 
@@ -43,8 +35,6 @@ export function outlineFindings(root: Element): string[] {
     let outer = el.parentElement;
     while (outer && outer !== root && !outer.matches("td, th") && !framed(outer)) outer = outer.parentElement;
     if (!outer || outer === root || outer.matches("td, th")) continue;
-    const around = outer;
-    if (OWNED_ELSEWHERE.some(([inner, owner]) => el.matches(inner) && around.matches(owner))) continue;
     const frame = outer.getBoundingClientRect();
     const gap = Math.min(
       box.left - frame.left,

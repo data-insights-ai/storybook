@@ -40,6 +40,15 @@
     touch-action: none;
   }
 
+  /* On a touch screen the scrubber takes a full target around its rule, not only its 16px strip. */
+  @media (pointer: coarse) {
+    .di-seismograph-scrubber::before {
+      content: "";
+      position: absolute;
+      inset: calc((var(--di-target) - var(--di-space-16)) / -2) 0;
+    }
+  }
+
   .di-seismograph-scrubber:focus-visible {
     outline: 2px solid var(--di-focus);
     outline-offset: 2px;
@@ -53,7 +62,7 @@
     border-radius: 50%;
     background: var(--di-chart-highlight);
     transform: translateX(-50%);
-    transition: left 120ms ease-out;
+    transition: left var(--di-duration) ease-out;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -67,5 +76,16 @@
     margin: 0;
     color: var(--di-text-muted);
     font-size: var(--di-font-size-300);
+  }
+
+  /* No periods: the chart's place stays, a sunk tone with the sentence in its middle, so the block keeps its shape. */
+  .di-seismograph-empty {
+    display: grid;
+    place-items: center;
+    min-height: var(--di-chart-h-md);
+    padding: var(--di-space-16);
+    border-radius: var(--di-radius-surface);
+    background: var(--di-bg-subtle);
+    text-align: center;
   }
 }

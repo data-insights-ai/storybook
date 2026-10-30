@@ -5,10 +5,13 @@ import {
   CellIcon,
   CellLead,
   CellStack,
-  Tag,
   DataTable,
+  Dialog,
+  DialogFooter,
   Fact,
   FactList,
+  Figure,
+  FigureNote,
   Grid,
   Menu,
   MenuDivider,
@@ -24,13 +27,9 @@ import {
   PageHeaderAside,
   PageHeaderTitle,
   Pagination,
+  Panel,
   SealValue,
   SearchField,
-  Dialog,
-  DialogFooter,
-  Figure,
-  FigureNote,
-  Panel,
   StatusPill,
   TableBody,
   TableCell,
@@ -39,7 +38,9 @@ import {
   TableHead,
   TableIndex,
   TableRow,
-  TableToolbar,
+  Tag,
+  Toolbar,
+  ToolbarEnd,
 } from "../..";
 
 type Source = {
@@ -191,15 +192,13 @@ export function RegisterScreen() {
       </Grid>
 
       <DataTable caption="Sources on record">
-        <TableToolbar>
-          <div style={{ flex: "1 1 15rem", minWidth: 0, maxWidth: "20rem" }}>
-            <SearchField
-              id="register-search"
-              label="Search the register"
-              placeholder="host, hash or operator"
-              size="sm"
-            />
-          </div>
+        <Toolbar label="Filter the register" role="search">
+          <SearchField
+            id="register-search"
+            label="Search the register"
+            placeholder="host, hash or operator"
+            size="sm"
+          />
           <Tag mono pressed onRemove={() => undefined} removeLabel="Remove the workspace filter">
             workspace: WS-01
           </Tag>
@@ -207,7 +206,7 @@ export function RegisterScreen() {
             <Plus aria-hidden />
             state
           </Tag>
-          <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
+          <ToolbarEnd>
             <Button variant="secondary" size="sm">
               <Download aria-hidden />
               Export
@@ -229,8 +228,8 @@ export function RegisterScreen() {
                 Revoke stale sources
               </MenuItem>
             </Menu>
-          </span>
-        </TableToolbar>
+          </ToolbarEnd>
+        </Toolbar>
         <TableFooter>
           <span>1–6 of 24 sources</span>
           <Pagination

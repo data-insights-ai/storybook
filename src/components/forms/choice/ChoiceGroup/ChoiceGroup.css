@@ -1,8 +1,9 @@
 @layer components {
   .di-choice-group {
+    --di-choice-group-gap: var(--di-gap-8);
     display: flex;
     flex-direction: column;
-    gap: var(--di-gap-8);
+    gap: var(--di-choice-group-gap);
     min-width: 0;
     padding: 0;
     margin: 0;
@@ -154,7 +155,12 @@
   }
 
   .di-choice-group-cards {
-    gap: var(--di-gap-16);
+    --di-choice-group-gap: var(--di-gap-16);
+  }
+
+  /* The line under the options sits as close as a field hint sits under its control. */
+  .di-choice-group > .di-field-hint {
+    margin-top: calc(var(--di-gap-6) - var(--di-choice-group-gap));
   }
 
   .di-choice-cards-group-label {
@@ -165,10 +171,27 @@
     color: var(--di-label-color);
   }
 
-  /* The grid fills the measure; a row's cards share its height. */
+  /*
+   * The grid fills the measure; a row's cards share its height. At most as
+   * many columns as the largest group has cards (three at most), so a wide
+   * page shows no empty tracks and every group keeps one column width.
+   */
   .di-choice-cards {
+    --di-choice-cards-cols: 3;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--di-choicecards-min)), 1fr));
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(
+        min(
+          100%,
+          max(
+            var(--di-choicecards-min),
+            calc((100% - (var(--di-choice-cards-cols) - 1) * var(--di-gap-12)) / var(--di-choice-cards-cols))
+          )
+        ),
+        1fr
+      )
+    );
     gap: var(--di-gap-12);
     align-items: stretch;
   }

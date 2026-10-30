@@ -307,7 +307,7 @@ export const MobileDrawer: Story = {
     await userEvent.click(trigger);
     const reopened = await body.findByRole("dialog", { name: "Sections" });
     await userEvent.tab({ shift: true });
-    await expect(reopened.contains(canvasElement.ownerDocument.activeElement)).toBe(true);
+    await waitFor(() => expect(reopened.contains(canvasElement.ownerDocument.activeElement)).toBe(true));
     await userEvent.click(within(reopened).getByRole("link", { name: "Sources" }));
     await waitFor(() => expect(body.queryByRole("dialog")).toBeNull());
   },

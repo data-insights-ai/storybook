@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { Actions } from "../../arrangement/Actions";
+import { Toolbar } from "../../../actions/Toolbar";
 import { Grid } from "../../arrangement/Grid";
 import { TrendChart } from "../../../charts/time/TrendChart";
 import { FigureRow } from "../../../data/figures/FigureRow";
@@ -160,10 +160,10 @@ export const Emphasis: Story = {
   render: (args) => (
     <Panel {...args}>
       <PanelLead>Isolate the server before the next sync window.</PanelLead>
-      <Actions align="start">
+      <Toolbar align="start">
         <Button>Isolate the server</Button>
         <Button variant="secondary">Reset the account</Button>
-      </Actions>
+      </Toolbar>
     </Panel>
   ),
   play: async ({ canvasElement }) => {

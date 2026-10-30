@@ -1,5 +1,6 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { cx } from "../../../internal/cx";
+import { spaceOut, textWidth, TICK_FONT } from "../scale";
 import "./ChainTimeline.css";
 
 export type ChainTimelineLane = {
@@ -27,9 +28,6 @@ export type ChainTimelineTick = {
   /** "+3 min": the tick's distance from the start. */
   label: string;
 };
-
-const laneHeight = 40;
-const markerWidth = 24;
 
 /**
  * A chain of events over several lanes: one row per device or account,
@@ -75,7 +73,7 @@ export function ChainTimeline({
   const rows = new Map(lanes.map((lane, i) => [lane.id, i]));
   const y = (e: ChainTimelineEvent) => (rows.get(e.lane) ?? 0) + 0.5;
   const plot = useRef<HTMLDivElement>(null);
-  const width = usePlotWidth(plot);
+  const { width, marker } = usePlot(plot);
   const path = events
     .map((e, i) => {
       const x = clamp(e.at);
@@ -84,21 +82,27 @@ export function ChainTimeline({
       return prev.lane === e.lane ? `L ${x} ${y(e)}` : `L ${clamp(prev.at)} ${y(e)} L ${x} ${y(e)}`;
     })
     .join(" ");
-  const markers = cluster(events, width);
+  const markers = cluster(events, width, marker);
+  const shown = new Set(
+    spaceOut(
+      ticks.map((tick) => ({ tick, x: (clamp(tick.at) / 100) * width })),
+      tickRoom(ticks),
+    ).map((t) => t.tick),
+  );
 
   return (
     <div className={cx("di-chain", className)} role="group" aria-label={label}>
       <div className="di-chain-lanes">
         {lanes.map((lane) => (
-          <div key={lane.id} className="di-chain-lane" style={{ height: laneHeight }}>
+          <div key={lane.id} className="di-chain-lane">
             <span className="di-chain-lane-label">{lane.label}</span>
             {lane.detail ? <span className="di-chain-lane-detail">{lane.detail}</span> : null}
           </div>
         ))}
       </div>
-      <div className="di-chain-track" style={{ height: lanes.length * laneHeight }}>
+      <div className="di-chain-track" style={{ "--di-chain-lanes": lanes.length } as CSSProperties}>
         {lanes.map((lane) => (
-          <div key={lane.id} className="di-chain-rule" style={{ height: laneHeight }} />
+          <div key={lane.id} className="di-chain-rule" />
         ))}
         <div className="di-chain-plot" ref={plot}>
           {ticks.map((tick) => (
@@ -128,10 +132,7 @@ export function ChainTimeline({
                   active && "is-selected",
                   lit && "is-hovered",
                 )}
-                style={{
-                  left: `${m.at}%`,
-                  top: (rows.get(m.events[0].lane) ?? 0) * laneHeight + laneHeight / 2,
-                }}
+                style={{ left: `${m.at}%`, "--di-chain-row": rows.get(m.events[0].lane) ?? 0 } as CSSProperties}
                 aria-label={m.events.map((e) => e.label).join("; ")}
                 aria-pressed={onSelect ? active : undefined}
                 title={m.events.map((e) => e.label).join("\n")}
@@ -151,7 +152,11 @@ export function ChainTimeline({
         <span className="di-chain-axis-end">{startLabel}</span>
         <span className="di-chain-axis-ticks">
           {ticks.map((tick) => (
-            <span key={tick.at} className="di-chain-axis-tick" style={{ left: `${clamp(tick.at)}%` }}>
+            <span
+              key={tick.at}
+              className={cx("di-chain-axis-tick", width > 0 && !shown.has(tick) && "is-hidden")}
+              style={{ left: `${clamp(tick.at)}%` }}
+            >
               {tick.label}
             </span>
           ))}
@@ -162,10 +167,14 @@ export function ChainTimeline({
   );
 }
 
+/* A tick label needs its own width and a gap; on a narrow plot every other one gives way. */
+const tickRoom = (ticks: ChainTimelineTick[]) =>
+  Math.max(0, ...ticks.map((tick) => textWidth(tick.label, TICK_FONT))) + TICK_FONT * 2;
+
 type Marker = { at: number; ordinal: string; events: ChainTimelineEvent[] };
 
 /* Events on one lane whose markers would overlap become one marker named by their range. */
-function cluster(events: ChainTimelineEvent[], width: number): Marker[] {
+function cluster(events: ChainTimelineEvent[], width: number, markerWidth: number): Marker[] {
   const out: Marker[] = [];
   const minGap = width > 0 ? (markerWidth / width) * 100 : 0;
   events.forEach((e, i) => {
@@ -182,19 +191,24 @@ function cluster(events: ChainTimelineEvent[], width: number): Marker[] {
   return out;
 }
 
-function usePlotWidth(plot: { current: HTMLDivElement | null }) {
-  const [width, setWidth] = useState(0);
+/* The plot's width and a marker's drawn width, which follows the density. */
+function usePlot(plot: { current: HTMLDivElement | null }) {
+  const [size, setSize] = useState({ width: 0, marker: 0 });
   useLayoutEffect(() => {
     const el = plot.current;
     if (!el) return;
-    const measure = () => setWidth(el.clientWidth);
+    const measure = () =>
+      setSize({
+        width: el.clientWidth,
+        marker: parseFloat(getComputedStyle(el).getPropertyValue("--di-chain-count")) || 0,
+      });
     measure();
     if (typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(measure);
     observer.observe(el);
     return () => observer.disconnect();
   }, [plot]);
-  return width;
+  return size;
 }
 
 function clamp(n: number) {
