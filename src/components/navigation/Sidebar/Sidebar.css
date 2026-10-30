@@ -6,29 +6,53 @@
     background: var(--di-bg-page);
   }
 
+  /* Where the content column starts, for what is fixed to it (the unsaved-changes band). */
+  .di-sb-layout:has(> .di-sb) {
+    --di-shell-start: var(--di-sb-width);
+  }
+
+  .di-sb-layout:has(> .di-sb[data-state="collapsed"]) {
+    --di-shell-start: var(--di-sb-rail);
+  }
+
+  /*
+   * The column runs the page's full height, however long the page; its frame
+   * stays in view and scrolls on its own when the navigation is taller than
+   * the window.
+   */
   .di-sb {
-    position: sticky;
-    top: 0;
     flex: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--di-gap-16);
     width: var(--di-sb-width);
-    height: 100dvh;
-    padding: var(--di-space-16) var(--di-space-12);
     box-sizing: border-box;
-    overflow: hidden auto;
     overflow-wrap: anywhere;
     background: var(--di-sidebar-bg);
     color: var(--di-sidebar-fg);
     border-inline-end: 1px solid var(--di-sidebar-edge);
-    transition:
-      width var(--di-duration-slow) var(--di-ease),
-      padding var(--di-duration-slow) var(--di-ease);
+    transition: width var(--di-duration-slow) var(--di-ease);
+  }
+
+  .di-sb-frame,
+  .di-sb-drawer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-16);
+    padding: var(--di-space-16) var(--di-space-12);
+    box-sizing: border-box;
+    overflow: hidden auto;
+  }
+
+  .di-sb-frame {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    transition: padding var(--di-duration-slow) var(--di-ease);
   }
 
   .di-sb[data-state="collapsed"] {
     width: var(--di-sb-rail);
+  }
+
+  .di-sb[data-state="collapsed"] .di-sb-frame {
     padding-inline: var(--di-space-8);
   }
 
