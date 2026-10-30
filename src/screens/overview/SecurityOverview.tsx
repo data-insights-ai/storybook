@@ -174,11 +174,9 @@ export function SecurityOverview() {
         </Panel>
       </Grid>
 
-      <FigureRow label="Delivery" variant="strip">
+      <FigureRow label="Delivery" variant="strip" size="compact">
         {delivery.map((figure) => (
-          <Figure key={figure.label} label={figure.label} value={figure.value} tone={figure.tone}>
-            {figure.note}
-          </Figure>
+          <Figure key={figure.label} label={figure.label} value={figure.value} tone={figure.tone} />
         ))}
       </FigureRow>
     </ProductShell>
