@@ -1,7 +1,7 @@
 @layer components {
   .di-chain {
     display: grid;
-    grid-template-columns: minmax(var(--di-chain-label-min), var(--di-chain-label-max)) minmax(0, 1fr);
+    grid-template-columns: clamp(var(--di-chain-label-narrow), 28%, var(--di-chain-label-max)) minmax(0, 1fr);
     grid-template-rows: auto auto;
     column-gap: var(--di-gap-12);
     min-width: 0;
@@ -14,6 +14,7 @@
   }
 
   .di-chain-lane {
+    height: var(--di-row-h);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -44,6 +45,7 @@
 
   .di-chain-track {
     position: relative;
+    height: calc(var(--di-chain-lanes) * var(--di-row-h));
     min-width: 0;
     padding: 0 var(--di-space-12);
   }
@@ -56,6 +58,7 @@
   }
 
   .di-chain-rule {
+    height: var(--di-row-h);
     border-bottom: 1px solid var(--di-rule-hairline);
   }
 
@@ -90,6 +93,7 @@
     min-width: var(--di-chain-count);
     height: var(--di-chain-count);
     padding: 0 var(--di-gap-6);
+    top: calc((var(--di-chain-row) + 0.5) * var(--di-row-h));
     translate: -50% -50%;
     border: 1px solid var(--di-chart-series);
     border-radius: var(--di-radius-pill);
@@ -99,10 +103,24 @@
     font-size: var(--di-font-size-100);
     font-variant-numeric: tabular-nums;
     line-height: 1;
+    white-space: nowrap;
     cursor: default;
     transition:
       background var(--di-duration) var(--di-ease),
       color var(--di-duration) var(--di-ease);
+  }
+
+  /* A finger needs more than the drawn pill: the hit area grows, the mark keeps its size. */
+  @media (pointer: coarse) {
+    .di-chain-marker::before {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      min-width: 100%;
+      width: var(--di-target);
+      height: var(--di-target);
+      translate: -50% -50%;
+    }
   }
 
   .di-chain-marker[aria-pressed] {
@@ -157,6 +175,10 @@
     pointer-events: none;
   }
 
+  .di-chain-axis-tick.is-hidden {
+    visibility: hidden;
+  }
+
   .di-chain-axis-tick {
     position: absolute;
     top: 0;
@@ -167,13 +189,6 @@
   .di-chain-axis-end {
     position: relative;
     z-index: 1;
-    padding-top: var(--di-space-16);
-    background: var(--di-bg-surface);
-  }
-
-  @container (max-width: 480px) {
-    .di-chain {
-      grid-template-columns: var(--di-chain-label-narrow) minmax(0, 1fr);
-    }
+    padding-top: 1lh;
   }
 }

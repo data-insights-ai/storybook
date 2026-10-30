@@ -36,6 +36,21 @@ const markerInk = {
   danger: "var(--di-status-danger-fg)",
 };
 
+/*
+ * The width of an axis label as the chart sets it, so the plot leaves room
+ * for half of the last one, which is centred on the plot's right edge.
+ */
+let measure: CanvasRenderingContext2D | null | undefined;
+function labelWidth(text: string): number {
+  if (typeof document === "undefined") return text.length * 7;
+  measure ??= document.createElement("canvas").getContext("2d");
+  const root = getComputedStyle(document.documentElement);
+  const size = parseFloat(root.getPropertyValue("--di-font-size-200")) * parseFloat(root.fontSize) || 11;
+  if (!measure) return text.length * size * 0.6;
+  measure.font = `${size}px ${root.getPropertyValue("--di-font-code") || "monospace"}`;
+  return measure.measureText(text).width;
+}
+
 /**
  * Values over time, from one datum per period: `{ at: "2026-10-01", seats: 4 }`.
  * The product owns the numbers and their words; the chart owns the marks,
@@ -75,11 +90,16 @@ export function TrendChart({
     series.map((s) => [s.key, { label: s.label, color: toneColor[s.tone ?? "series"], dashed: s.dashed }]),
   );
   const tick = (v: unknown) => formatX(String(v));
+  const last = data.at(-1)?.[xKey];
+  const right = Math.max(8, Math.ceil(labelWidth(last == null ? "" : tick(last)) / 2) + 4);
+  const position = (at: string) => {
+    const index = data.findIndex((d) => d[xKey] === at);
+    return index >= 0 && index < data.length / 2 ? "insideTopLeft" : "insideTopRight";
+  };
   return (
     <Chart label={label} config={config} className={`di-trend di-trend-${height}`}>
-      {/* The right margin holds half of the last tick's label, which is centred on the plot's edge. */}
-      <ComposedChart data={data} margin={{ top: 16, right: 24, bottom: 0, left: 0 }}>
-        <CartesianGrid vertical={false} stroke="var(--di-rule)" strokeDasharray="2 3" />
+      <ComposedChart data={data} margin={{ top: 16, right, bottom: 0, left: 0 }}>
+        <CartesianGrid vertical={false} />
         <XAxis dataKey={xKey} tickLine={false} axisLine={false} tickFormatter={tick} minTickGap={24} />
         <YAxis
           tickLine={false}
@@ -143,7 +163,12 @@ export function TrendChart({
             x={m.at}
             stroke={markerColor[m.tone ?? "neutral"]}
             strokeDasharray="3 3"
-            label={{ value: m.label, position: "insideTopRight", fill: markerInk[m.tone ?? "neutral"], fontSize: 11 }}
+            label={{
+              value: m.label,
+              position: position(m.at),
+              fill: markerInk[m.tone ?? "neutral"],
+              className: "di-trend-marker",
+            }}
           />
         ))}
       </ComposedChart>

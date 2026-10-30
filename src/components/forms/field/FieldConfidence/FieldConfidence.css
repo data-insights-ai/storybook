@@ -4,7 +4,7 @@
   }
 
   /* A rule under the control, not a chart: thin, so the value stays the strongest thing in the field. */
-  .di-field-confidence-meter .di-level-track {
+  .di-level.di-field-confidence-meter > .di-level-track {
     height: var(--di-space-4);
   }
 

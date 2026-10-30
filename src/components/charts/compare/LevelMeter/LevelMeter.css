@@ -46,6 +46,34 @@
     background: var(--di-chart-compare);
   }
 
+  /* Continuous: one thin bar on the same track tone, the length its only mark. */
+  .is-continuous > .di-level-track {
+    display: block;
+    height: var(--di-level-compare-h);
+    border-radius: var(--di-radius-micro);
+    background: var(--di-bg-subtle);
+  }
+
+  .di-level-fill {
+    display: block;
+    width: var(--di-level-share);
+    height: 100%;
+    border-radius: inherit;
+    background: var(--di-chart-series);
+  }
+
+  .di-level-fill.is-warn {
+    background: var(--di-chart-warn);
+  }
+
+  .di-level-fill.is-danger {
+    background: var(--di-chart-danger);
+  }
+
+  .is-compare > .di-level-fill {
+    background: var(--di-chart-compare);
+  }
+
   /* The scale: each figure stands at its own point, the ends flush with the track. */
   .di-level-scale {
     display: block;

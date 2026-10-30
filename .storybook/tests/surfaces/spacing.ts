@@ -17,7 +17,6 @@ const ALLOWED: [selector: string, reason: string][] = [
     ".di-logo-cell, .di-swatch-col, .di-accent-use",
     "a Foundations specimen: the drawing is sized to show the asset, not to hold text at an inset",
   ],
-  [".di-chart-card", "ChartCard becomes a Panel with a Grid (the accepted Charts consolidation); measured there"],
   [
     ".di-shell, .di-login",
     "a page frame: its bar or canvas runs to the edge, and the page ends where its content ends",

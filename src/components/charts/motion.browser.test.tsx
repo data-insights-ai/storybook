@@ -7,8 +7,9 @@ import "../../styles/styles.css";
 
 /*
  * The chart motion rule: no series is drawn in, solid or dashed. After
- * mount the only animation allowed is the plot's opacity fade, and every
- * mark has its final shape from the first frame.
+ * mount the only animation allowed is the plot's opacity fade (120ms), and
+ * every mark has its final shape from the first frame: a dashed reference
+ * line (a marker, a selection) is there with the data, never after it.
  */
 const modules = import.meta.glob<Parameters<typeof composeStories>[0]>(
   [
@@ -26,14 +27,17 @@ afterEach(() => {
 });
 
 function shapes() {
-  return Array.from(document.querySelectorAll("svg path, svg rect, .di-sparkline-bar, [class*='-bar']")).map((el) =>
-    [
-      el.getAttribute("d"),
-      el.getAttribute("width"),
-      el.getAttribute("height"),
-      el.getAttribute("stroke-dasharray"),
-      (el as HTMLElement).style?.height,
-    ].join("|"),
+  return Array.from(document.querySelectorAll("svg path, svg rect, svg line, .di-sparkline-bar, [class*='-bar']")).map(
+    (el) =>
+      [
+        el.getAttribute("d"),
+        el.getAttribute("width"),
+        el.getAttribute("height"),
+        el.getAttribute("x1"),
+        el.getAttribute("x2"),
+        el.getAttribute("stroke-dasharray"),
+        (el as HTMLElement).style?.height,
+      ].join("|"),
   );
 }
 
@@ -66,7 +70,12 @@ test.each(cases)("%s draws no series in", async (_, Story, density) => {
     .map((a) =>
       a instanceof CSSAnimation ? a.animationName : a instanceof CSSTransition ? a.transitionProperty : "script",
     );
+  const fades = document
+    .getAnimations()
+    .filter((a) => a instanceof CSSAnimation && a.animationName === "di-chart-in")
+    .map((a) => a.effect?.getTiming().duration);
   await new Promise((r) => setTimeout(r, 400));
+  expect(fades.every((duration) => duration === 120)).toBe(true);
   expect(moving).toEqual([]);
   expect(shapes()).toEqual(first);
 });

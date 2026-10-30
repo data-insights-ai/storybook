@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Seismograph } from "./Seismograph";
+import { Panel } from "../../../layout/page/Panel";
 import type { SeismographPoint } from "./seismographPulses";
 
 const points: SeismographPoint[] = [
@@ -36,18 +37,20 @@ const meta = {
   render: function Render(args) {
     const [selectedAt, setSelectedAt] = useState(args.selectedAt);
     return (
-      <Seismograph
-        {...args}
-        selectedAt={selectedAt}
-        onSelect={
-          args.onSelect
-            ? (at) => {
-                setSelectedAt(at);
-                args.onSelect?.(at);
-              }
-            : undefined
-        }
-      />
+      <Panel title="Records per day" heading={2}>
+        <Seismograph
+          {...args}
+          selectedAt={selectedAt}
+          onSelect={
+            args.onSelect
+              ? (at) => {
+                  setSelectedAt(at);
+                  args.onSelect?.(at);
+                }
+              : undefined
+          }
+        />
+      </Panel>
     );
   },
 } satisfies Meta<typeof Seismograph>;
