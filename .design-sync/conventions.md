@@ -80,7 +80,7 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | Need | Tokens |
 | --- | --- |
 | Surfaces | `--di-bg-page` (warm paper, the page), `--di-bg-surface` (a panel/field/card), `--di-bg-grid` (white — tables only), `--di-bg-subtle` |
-| Ink | `--di-text`, `--di-text-muted`, `--di-text-subtle`, `--di-text-disabled`, `--di-text-on-strong` |
+| Ink | `--di-text`, `--di-text-muted`, `--di-text-subtle`, `--di-text-disabled`, `--di-text-on-strong`, `--di-text-on-seal` (ink on the filled seal) |
 | Lines | `--di-rule`, `--di-rule-hairline`, `--di-border`, `--di-border-strong` |
 | Space | `--di-space-2 4 6 8 12 16 24 32 48 64 96` — named by value, so `--di-space-12` is 12px |
 | Radius | `--di-radius-micro` (4), `--di-radius-control` (6), `--di-radius-surface` (8), `--di-radius-container` (12), `--di-radius-pill` |

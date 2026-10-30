@@ -35,7 +35,7 @@
     "typecheck": "tsc --noEmit",
     "lint:tokens": "node scripts/lint-tokens.mjs",
     "check": "pnpm typecheck && pnpm test && pnpm build",
-    "test": "vitest run --project=unit --project=layout --project=storybook",
+    "test": "vitest run --project=unit --project=layout --project=storybook --project=storybook-dark",
     "prepublishOnly": "pnpm build",
     "lint:structure": "depcruise src --config .dependency-cruiser.cjs --output-type err && node scripts/lint-layers.mjs && node scripts/lint-conventions.mjs"
   },
