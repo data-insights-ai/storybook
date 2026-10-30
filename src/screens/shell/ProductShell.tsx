@@ -97,9 +97,7 @@ export function ProductShell({
 }) {
   const words = chromeWords[lang];
   const entries =
-    area === "workspace"
-      ? workspaceNav[lang]
-      : organizationNav[lang].filter((e) => !e.roles || e.roles.includes(role));
+    area === "workspace" ? workspaceNav[lang] : organizationNav[lang].filter((e) => !e.roles || e.roles.includes(role));
   return (
     <div lang={lang} style={{ display: "contents" }}>
       <SidebarProvider skipLabel={words.skip}>
