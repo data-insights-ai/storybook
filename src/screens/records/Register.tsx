@@ -26,10 +26,11 @@ import {
   Pagination,
   SealValue,
   SearchField,
-  Sheet,
-  SheetFooter,
-  StatTile,
-  StatTileDelta,
+  Dialog,
+  DialogFooter,
+  Figure,
+  FigureNote,
+  Panel,
   StatusPill,
   TableBody,
   TableCell,
@@ -167,18 +168,26 @@ export function RegisterScreen() {
       </Notice>
 
       <Grid>
-        <StatTile label="Entries sealed" value="4,182" ruled={true}>
-          <StatTileDelta>+112 since 09:00Z</StatTileDelta>
-        </StatTile>
-        <StatTile label="Coverage" value="86.4%" ruled={true}>
-          <StatTileDelta tone="warn">down 2.1 points</StatTileDelta>
-        </StatTile>
-        <StatTile label="Unsealed" value="1,284" tone="danger" ruled={true}>
-          <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
-        </StatTile>
-        <StatTile label="Sources" value="24" ruled={true}>
-          <StatTileDelta tone="warn">4 paused, 1 failed</StatTileDelta>
-        </StatTile>
+        <Panel>
+          <Figure label="Entries sealed" value="4,182">
+            <FigureNote>+112 since 09:00Z</FigureNote>
+          </Figure>
+        </Panel>
+        <Panel>
+          <Figure label="Coverage" value="86.4%">
+            <FigureNote tone="warn">down 2.1 points</FigureNote>
+          </Figure>
+        </Panel>
+        <Panel>
+          <Figure label="Unsealed" value="1,284" tone="danger">
+            <FigureNote tone="danger">up 940 since 08:00Z</FigureNote>
+          </Figure>
+        </Panel>
+        <Panel>
+          <Figure label="Sources" value="24">
+            <FigureNote tone="warn">4 paused, 1 failed</FigureNote>
+          </Figure>
+        </Panel>
       </Grid>
 
       <DataTable caption="Sources on record">
@@ -278,7 +287,7 @@ export function RegisterScreen() {
           ))}
         </TableBody>
       </DataTable>
-      <Sheet
+      <Dialog
         open={selected !== null}
         onClose={() => setOpen(null)}
         eyebrow="Source · WS-01"
@@ -286,11 +295,11 @@ export function RegisterScreen() {
         closeLabel={`Close the detail for ${selected?.host ?? "the source"}`}
       >
         {selected ? <SourceFacts source={selected} /> : null}
-        <SheetFooter>
+        <DialogFooter>
           <Button variant="secondary">Open log</Button>
           <Button variant="primary">{selected?.state === "ok" ? "Seal now" : "Resume"}</Button>
-        </SheetFooter>
-      </Sheet>
+        </DialogFooter>
+      </Dialog>
     </Page>
   );
 }

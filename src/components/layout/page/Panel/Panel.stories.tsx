@@ -2,7 +2,24 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Actions } from "../../arrangement/Actions";
-import { Panel, PanelActions, PanelFooter, PanelLead, PanelMeta, PanelNote, PanelStatus } from "./Panel";
+import { Grid } from "../../arrangement/Grid";
+import { TrendChart } from "../../../charts/time/TrendChart";
+import { FigureRow } from "../../../data/figures/FigureRow";
+import { Figure } from "../../../data/figures/Figure";
+import { SeverityMark } from "../../../marks/status/SeverityMark";
+import { TextLink } from "../../../navigation/TextLink";
+import { DangerAction } from "./DangerAction";
+import {
+  Panel,
+  PanelActions,
+  PanelFigure,
+  PanelFooter,
+  PanelLead,
+  PanelMeta,
+  PanelNote,
+  PanelStatus,
+  PanelVisual,
+} from "./Panel";
 import { SealValue } from "../../../marks/status/SealValue";
 import { StatusPill } from "../../../marks/status/StatusPill";
 
@@ -18,17 +35,19 @@ const meta = {
     children: "Fourteen sources report here; the last event arrived two minutes ago.",
   },
   argTypes: {
-    surface: { control: "radio", options: ["sheet", "inset"] },
+    surface: { control: "radio", options: ["sheet", "inset", "hero"] },
+    tone: { control: "radio", options: ["neutral", "danger"] },
+    wide: { control: "boolean" },
     emphasis: { control: "boolean" },
     label: { control: "text" },
-    heading: { control: "radio", options: [2, 3] },
+    heading: { control: "radio", options: [2, 3, 4] },
     title: { control: "text" },
     padded: { control: "boolean" },
     children: { control: "text" },
   },
   decorators: [
-    (Story) => (
-      <div style={{ maxWidth: 560 }}>
+    (Story, { parameters }) => (
+      <div style={{ maxWidth: parameters.wide ? undefined : 560 }}>
         <Story />
       </div>
     ),
@@ -37,6 +56,13 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const days = Array.from({ length: 30 }, (_, i) => new Date(Date.UTC(2026, 9, 1 + i)).toISOString().slice(0, 10));
+const balance = days.map((at, i) => ({ at, balance: 300 - i * 4 }));
+const seats = days.map((at, i) => ({ at, used: Math.min(5, 2 + Math.floor(i / 8)) }));
+const short = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+const usage = days.map((at, i) => ({ at, soc: 20 + ((i * 7) % 13), reports: 4 + ((i * 3) % 5) }));
 
 /* The inset of the surface, measured: the same above the first line as below the last. */
 async function sameInset(canvasElement: HTMLElement) {
@@ -148,6 +174,178 @@ export const Emphasis: Story = {
     await expect(Number(getComputedStyle(canvas.getByRole("heading", { level: 2 })).fontWeight)).toBeGreaterThanOrEqual(
       600,
     );
+  },
+};
+
+const counts = [10, 4, 2, 1, 4, 16, 0, 1, 4, 10, 3, 0, 12, 20, 8, 2, 7, 9, 1, 0, 8, 7, 4, 2, 9, 15, 4, 1];
+const weekDays = ["6 Oct", "7 Oct", "8 Oct", "9 Oct", "10 Oct", "11 Oct", "12 Oct"];
+const activity = counts.map((detections, i) => ({
+  at: `${weekDays[Math.floor(i / 4)]} ${String((i % 4) * 6).padStart(2, "0")}h`,
+  detections,
+}));
+
+/**
+ * `surface="hero"`: the navy zone behind the page's signature visual, one
+ * per page. The one figure stands beside the chart (`PanelFigure`,
+ * `PanelVisual`), the link to the full list stays in the head, and the
+ * supporting figures close it under the fine rule (`PanelFooter`).
+ */
+export const Hero: Story = {
+  parameters: { wide: true },
+  args: {
+    surface: "hero",
+    label: "Detections · last 7 days",
+    title: "Three bursts this week, the largest on 9 October",
+    heading: 2,
+    children: null,
+  },
+  render: (args) => (
+    <Panel {...args}>
+      <PanelActions>
+        <TextLink href="#cases">All cases</TextLink>
+      </PanelActions>
+      <PanelFigure>
+        <Figure size="hero" label="Open cases" value="3">
+          <SeverityMark level="critical" label="1 critical" />
+          <SeverityMark level="high" label="1 high" />
+          <SeverityMark level="medium" label="1 medium" />
+        </Figure>
+      </PanelFigure>
+      <PanelVisual>
+        <TrendChart
+          label="Detections per 6 hours, last 7 days"
+          height="lg"
+          data={activity}
+          series={[{ key: "detections", label: "Detections", kind: "bar" }]}
+        />
+      </PanelVisual>
+      <PanelFooter>
+        <FigureRow label="Supporting figures" variant="footer">
+          <Figure label="New in 24 h" value="1">
+            1 escalated
+          </Figure>
+          <Figure label="Unassigned" value="2" tone="warn">
+            of 3 open
+          </Figure>
+          <Figure label="Time to acknowledge" value="2.9 h">
+            median · 7 days
+          </Figure>
+        </FigureRow>
+      </PanelFooter>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const hero = canvas.getByRole("region", { name: "Three bursts this week, the largest on 9 October" });
+    await expect(hero).toHaveAttribute("data-theme", "dark");
+    const link = canvas.getByRole("link", { name: "All cases" }).getBoundingClientRect();
+    const figure = canvas.getByText("Open cases").getBoundingClientRect();
+    await expect(link.bottom).toBeLessThanOrEqual(figure.top);
+  },
+};
+
+/**
+ * `tone="danger"`: the end of a record, what cannot be taken back. The
+ * danger edge, no band; each `DangerAction` names the action, states its
+ * cost and carries one destructive button that opens a `ConfirmDialog`.
+ */
+export const Danger: Story = {
+  parameters: { wide: true },
+  args: { tone: "danger", title: "Danger zone", heading: 2, children: null },
+  render: (args) => (
+    <Panel {...args}>
+      <PanelLead>These actions remove access and cannot be undone.</PanelLead>
+      <DangerAction
+        title="Leave organization"
+        body="You lose access to Northwind Survey and its products at once."
+        note="You are the last owner. Make someone else an owner first."
+      >
+        <Button variant="danger" disabled>
+          Leave
+        </Button>
+      </DangerAction>
+      <DangerAction
+        title="Delete organization"
+        body="Members, invitations, connections and seats are removed. This cannot be undone."
+      >
+        <Button variant="danger">Delete organization</Button>
+      </DangerAction>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    await sameInset(canvasElement);
+    const canvas = within(canvasElement);
+    const title = canvas.getByRole("heading", { level: 2, name: "Danger zone" });
+    await expect(getComputedStyle(title).fontFamily).toContain("Space Grotesk");
+    const action = canvas.getByText("Delete organization", { selector: "p" });
+    await expect(Number(getComputedStyle(action).fontWeight)).toBeLessThan(600);
+  },
+};
+
+/**
+ * Dashboard figures: a panel each in a `Grid`, the figure said in words as
+ * the lead, the chart it rests on, and the link to the page that changes
+ * it at the head's end. `wide` gives a chart that needs it the whole row.
+ */
+export const Dashboard: Story = {
+  parameters: { wide: true, controls: { disable: true } },
+  render: () => (
+    <>
+      {/* The dashboard sits under the page's section heading; the story supplies it so the heading order holds. */}
+      <h2 className="di-sr">Organization at a glance</h2>
+      <Grid min="480px" gap={24}>
+        <Panel title="Credit" heading={3}>
+          <PanelActions>
+            <TextLink href="#credits">Credits</TextLink>
+          </PanelActions>
+          <PanelLead>186 credits, about 31 days at 6 credits a day.</PanelLead>
+          <TrendChart
+            label="Credit balance by day"
+            data={balance}
+            series={[{ key: "balance", label: "Balance", kind: "area" }]}
+            formatX={short}
+            height="sm"
+          />
+        </Panel>
+        <Panel title="Seats" heading={3}>
+          <PanelStatus>
+            <StatusPill tone="warn">full</StatusPill>
+          </PanelStatus>
+          <PanelActions>
+            <TextLink href="#seats">Manage seats</TextLink>
+          </PanelActions>
+          <PanelLead>5 of 5 in use, 1 person waiting.</PanelLead>
+          <TrendChart
+            label="Seats in use by day"
+            data={seats}
+            series={[{ key: "used", label: "In use", kind: "area" }]}
+            formatX={short}
+            height="sm"
+          />
+        </Panel>
+        <Panel title="Usage per product" heading={3} wide>
+          <PanelActions>
+            <TextLink href="#usage">Usage</TextLink>
+          </PanelActions>
+          <PanelLead>812 GB ingested in the last 30 days.</PanelLead>
+          <TrendChart
+            label="Usage per product by day"
+            data={usage}
+            series={[
+              { key: "soc", label: "AI SOC", kind: "bar", stack: "u" },
+              { key: "reports", label: "Reports", kind: "bar", stack: "u", tone: "compare" },
+            ]}
+            formatX={short}
+            formatValue={(v) => `${v} GB`}
+          />
+        </Panel>
+      </Grid>
+    </>
+  ),
+  play: async ({ canvasElement }) => {
+    const panels = [...canvasElement.querySelectorAll(".di-panel")].map((el) => el.getBoundingClientRect());
+    const grid = canvasElement.querySelector(".di-panel")!.parentElement!.getBoundingClientRect();
+    await expect(Math.round(panels[2]!.width)).toBe(Math.round(grid.width));
   },
 };
 

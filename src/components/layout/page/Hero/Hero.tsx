@@ -1,20 +1,12 @@
-import { useId, type ReactNode } from "react";
-import { surfaceClass } from "../../../../internal/surface";
-import { cx } from "../../../../internal/cx";
-import { Eyebrow } from "../../../text/Eyebrow";
-import "./Hero.css";
+import type { ReactNode } from "react";
+import { Panel, PanelActions, PanelFigure, PanelFooter, PanelVisual } from "../Panel";
 
 /**
- * The one luminous zone a page may have: navy in both themes, behind the
- * page's signature visual — a chart the page exists to show. A page
- * without such a visual has no hero; its figures sit on a `FigureRow`
- * strip instead.
+ * The navy zone behind a page's signature visual.
  *
- * The hero sets the dark theme on itself, so what it holds reads on navy
- * without knowing it is there. Its slots are placed by grid area and may be
- * written in any order: `HeroAside` beside the title (a link to the full
- * list), `HeroLead` the column for the `HeroFigure`, `HeroVisual` the
- * chart, and `HeroFooter` the `FigureRow variant="footer"` that closes it.
+ * @deprecated Removed in 0.12.0. Use `<Panel surface="hero" label title heading>`:
+ * `HeroAside` is `PanelActions`, `HeroLead` is `PanelFigure`, `HeroVisual` is
+ * `PanelVisual` and `HeroFooter` is `PanelFooter`.
  */
 export function Hero({
   label,
@@ -22,49 +14,26 @@ export function Hero({
   heading = 2,
   children,
 }: {
-  /** A mono capital line above the title: what is shown and over which period. */
   label: string;
-  /** What the visual says, as a sentence. */
   title: string;
   heading?: 2 | 3;
-  /** `HeroVisual`, and optionally `HeroAside`, `HeroLead` and `HeroFooter`. */
   children: ReactNode;
 }) {
-  const id = useId();
-  const Heading = heading === 2 ? "h2" : "h3";
   return (
-    <section className={cx(surfaceClass({ plane: "hero" }), "di-hero")} data-theme="dark" aria-labelledby={id}>
-      <div className="di-hero-grid">
-        <div className="di-hero-titles">
-          <Eyebrow variant="plain" tone="quiet">
-            {label}
-          </Eyebrow>
-          <Heading id={id} className="di-hero-title">
-            {title}
-          </Heading>
-        </div>
-        {children}
-      </div>
-    </section>
+    <Panel surface="hero" label={label} title={title} heading={heading}>
+      {children}
+    </Panel>
   );
 }
 
-/** Beside the title: a link to the full list, one action at most. */
-export function HeroAside({ children }: { children: ReactNode }) {
-  return <div className="di-hero-aside">{children}</div>;
-}
+/** @deprecated Removed in 0.12.0. Use `PanelActions` in a `Panel surface="hero"`. */
+export const HeroAside: ({ children }: { children: ReactNode }) => ReactNode = PanelActions;
 
-/** The column before the visual: the one `HeroFigure`. */
-export function HeroLead({ children }: { children: ReactNode }) {
-  return <div className="di-hero-lead">{children}</div>;
-}
+/** @deprecated Removed in 0.12.0. Use `PanelFigure` in a `Panel surface="hero"`. */
+export const HeroLead: ({ children }: { children: ReactNode }) => ReactNode = PanelFigure;
 
-/** The signature visual: a chart, a timeline. */
-export function HeroVisual({ children }: { children: ReactNode }) {
-  return <div className="di-hero-visual">{children}</div>;
-}
+/** @deprecated Removed in 0.12.0. Use `PanelVisual` in a `Panel surface="hero"`. */
+export const HeroVisual: ({ children }: { children: ReactNode }) => ReactNode = PanelVisual;
 
-/** The foot under a fine rule: the `FigureRow variant="footer"` that supports the visual. */
-export function HeroFooter({ children }: { children: ReactNode }) {
-  return <div className="di-hero-footer">{children}</div>;
-}
+/** @deprecated Removed in 0.12.0. Use `PanelFooter` in a `Panel surface="hero"`. */
+export const HeroFooter: ({ children }: { children: ReactNode }) => ReactNode = PanelFooter;

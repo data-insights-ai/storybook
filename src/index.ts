@@ -15,7 +15,6 @@ export { Bars } from "./components/charts/compare/Bars";
 export { BulkActionBar } from "./components/actions/BulkActionBar";
 export { Breadcrumb } from "./components/navigation/Breadcrumb";
 export { Button } from "./components/actions/Button";
-export { Channel, ChannelSpecs, ChannelStatus, ChannelValue } from "./components/data/records/Channel";
 export { ChainTimeline } from "./components/timeline/ChainTimeline";
 export type { ChainTimelineEvent, ChainTimelineLane } from "./components/timeline/ChainTimeline";
 export { CodeBlock } from "./components/text/CodeBlock";
@@ -68,9 +67,9 @@ export { ConfirmDialog } from "./components/overlays/ConfirmDialog";
 export { CountButton } from "./components/actions/CountButton";
 export { CopyValue } from "./components/actions/CopyValue";
 export { CreateFlow } from "./components/overlays/CreateFlow";
-export { ConfirmActions, ConfirmPanel } from "./components/inference/ConfirmPanel";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/compare/CoverageMatrix";
-export { DangerAction, DangerZone } from "./components/feedback/DangerZone";
+export { DangerZone } from "./components/feedback/DangerZone";
+export { Dialog, DialogFooter, type DialogProps } from "./components/overlays/Dialog";
 export type {
   CoverageMatrixColumn,
   CoverageMatrixMark,
@@ -88,11 +87,17 @@ export {
   TableHead,
   TableIndex,
   TableRow,
-  TableSpacer,
+  TableEmpty,
   TableToolbar,
 } from "./components/data/table/DataTable";
 export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/page/DetailSection";
-export { Disclosure, DisclosureLead } from "./components/layout/folding/Disclosure";
+export {
+  Disclosure,
+  DisclosureDetail,
+  DisclosureGroup,
+  DisclosureLead,
+  DisclosureMeta,
+} from "./components/layout/folding/Disclosure";
 export { Distribution } from "./components/charts/compare/Distribution";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
 export { EventTimeline, EventTimelineMeta, EventTimelineReadout } from "./components/timeline/EventTimeline";
@@ -125,9 +130,22 @@ export type {
   TimelineTarget,
   TimelineTone,
 } from "./components/timeline/types";
-export { ExplainFooter, ExplainIgnored, ExplainPanel, ExplainRow } from "./components/inference/ExplainPanel";
-export { Fact, FactList } from "./components/data/records/FactList";
-export { Flyout, FlyoutFooter, FlyoutTrigger } from "./components/overlays/Flyout";
+export {
+  ConfirmActions,
+  ConfirmPanel,
+  ExplainFooter,
+  ExplainIgnored,
+  ExplainPanel,
+  ExplainRow,
+  ProposalActions,
+  ProposalAnswer,
+  ProposalIgnored,
+  ProposalNote,
+  ProposalPanel,
+  ProposalQuestion,
+} from "./components/data/records/ProposalPanel";
+export { Fact, FactList, KeyValue, KeyValues } from "./components/data/records/FactList";
+export { Flyout, FlyoutFooter, FlyoutItem, FlyoutItems, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/field/Field";
 export { FieldHint } from "./components/forms/field/FieldHint";
 export { FieldLabel } from "./components/forms/field/FieldLabel";
@@ -147,9 +165,8 @@ export {
 export { Highlight } from "./components/text/Highlight";
 export { Icon } from "./components/marks/Icon";
 export { IconTile } from "./components/marks/IconTile";
-export { InfiniteTable, heldCount } from "./components/data/table/InfiniteTable";
+export { InfiniteTable } from "./components/data/table/InfiniteTable";
 export type { InfiniteRowPlace } from "./components/data/table/InfiniteTable";
-export { KeyValue, KeyValues } from "./components/data/records/KeyValues";
 export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/charts/compare/LevelMeter";
 export type { LevelBands } from "./components/charts/compare/LevelMeter";
 export { Actions } from "./components/layout/arrangement/Actions";
@@ -157,13 +174,6 @@ export { Grid } from "./components/layout/arrangement/Grid";
 export { Numbered } from "./components/layout/arrangement/Numbered";
 export { Stack } from "./components/layout/arrangement/Stack";
 export { Toolbar, ToolbarEnd } from "./components/layout/arrangement/Toolbar";
-export {
-  LivingActions,
-  LivingBasis,
-  LivingBody,
-  LivingCard,
-  LivingInsight,
-} from "./components/data/records/LivingCard";
 export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/data/table/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/navigation/Menu";
 export {
@@ -175,18 +185,21 @@ export {
   ModalIcon,
   ModalTitle,
 } from "./components/overlays/Modal";
-export { NewEntries } from "./components/data/records/NewEntries";
+export { NewEntries } from "./components/data/table/NewEntries";
 export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./components/feedback/Notice";
 export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/sequence/Pagination";
 export {
+  DangerAction,
   Panel,
   PanelActions,
+  PanelFigure,
   PanelFooter,
   PanelLead,
   PanelMeta,
   PanelNote,
   PanelStatus,
+  PanelVisual,
 } from "./components/layout/page/Panel";
 export { PrivacyBadge } from "./components/inference/PrivacyBadge";
 export { Progress } from "./components/feedback/waiting/Progress";
@@ -197,13 +210,33 @@ export { PullQuote } from "./components/text/PullQuote";
 export { QuantityField } from "./components/forms/text/QuantityField";
 export { RowActions } from "./components/actions/RowActions";
 export {
+  Channel,
+  ChannelSpecs,
+  ChannelStatus,
+  ChannelValue,
+  LivingActions,
+  LivingBasis,
+  LivingBody,
+  LivingCard,
+  LivingInsight,
+  RecordActions,
+  RecordBasis,
+  RecordBody,
   RecordCard,
   RecordCount,
+  RecordDetail,
   RecordFooter,
+  RecordInsight,
   RecordLine,
   RecordLines,
   RecordMark,
   RecordStatus,
+  RecordValue,
+  Session,
+  SessionAction,
+  SessionDetail,
+  SessionMark,
+  SessionTag,
 } from "./components/data/records/RecordCard";
 export { Eyebrow } from "./components/text/Eyebrow";
 export { Kbd } from "./components/text/Kbd";
@@ -217,7 +250,6 @@ export type { SeismographPoint } from "./components/charts/time/Seismograph";
 export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/layout/page/SectionTitle";
 export { Select } from "./components/forms/select/Select";
 export { Sheet, SheetFooter } from "./components/overlays/Sheet";
-export { Session, SessionAction, SessionDetail, SessionMark, SessionTag } from "./components/data/records/Session";
 export {
   Sidebar,
   SidebarBrand,
@@ -249,8 +281,17 @@ export { SignIn, SignInVersion } from "./components/shell/SignIn";
 export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
 export { SkeletonPage } from "./components/feedback/waiting/SkeletonPage";
 export type { SkeletonPageVariant } from "./components/feedback/waiting/SkeletonPage";
-export { Sparkline } from "./components/charts/time/Sparkline";
-export { Split, SplitAside, SplitMain } from "./components/layout/panes/Split";
+export { Sparkline } from "./components/data/figures/Sparkline";
+export {
+  Split,
+  SplitAside,
+  SplitBack,
+  SplitList,
+  SplitListHead,
+  SplitListItem,
+  SplitListItems,
+  SplitMain,
+} from "./components/layout/panes/Split";
 export { Spinner } from "./components/feedback/waiting/Spinner";
 export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/page/Stage";
 export { Stat, StatRow } from "./components/data/figures/Stat";
@@ -272,7 +313,8 @@ export { Tooltip } from "./components/feedback/Tooltip";
 export { TooltipTarget } from "./components/feedback/TooltipTarget";
 export { VersionTag } from "./components/marks/VersionTag";
 export { AttentionClear, AttentionItem, AttentionList } from "./components/data/records/AttentionList";
-export { Figure, FigureRow } from "./components/data/figures/FigureRow";
+export { Figure, FigureNote } from "./components/data/figures/Figure";
+export { FigureRow } from "./components/data/figures/FigureRow";
 export { Hero, HeroAside, HeroFooter, HeroLead, HeroVisual } from "./components/layout/page/Hero";
 export { HeroFigure } from "./components/data/figures/HeroFigure";
 export {

@@ -43,7 +43,7 @@ export function CountButton({
       {children}
       {count > 0 ? (
         <span className="di-count-btn-count" aria-hidden>
-          <Badge tone="alert">{countLabel}</Badge>
+          <Badge tone="neutral">{countLabel}</Badge>
         </span>
       ) : null}
     </Button>

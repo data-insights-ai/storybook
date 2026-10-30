@@ -6,8 +6,8 @@ import {
   Figure,
   FigureRow,
   Grid,
-  KeyValue,
-  KeyValues,
+  Fact,
+  FactList,
   PageHeader,
   PageHeaderMeta,
   PageHeaderStatus,
@@ -132,15 +132,13 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
                   <TextLink href="#members">Members</TextLink>
                 </PanelMeta>
               ) : null}
-              <KeyValues>
+              <FactList layout="pairs">
                 {team.map((member) => (
-                  <KeyValue
-                    key={member.name}
-                    term={member.name === user ? `${member.name} (you)` : member.name}
-                    value={member.role}
-                  />
+                  <Fact key={member.name} label={member.name === user ? `${member.name} (you)` : member.name}>
+                    {member.role}
+                  </Fact>
                 ))}
-              </KeyValues>
+              </FactList>
               {can.manageTeam(role) ? <PanelNote>1 invitation is open.</PanelNote> : null}
             </Panel>
           ) : null}
@@ -149,11 +147,13 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
               <PanelMeta>
                 <TextLink href="#audit">Audit log</TextLink>
               </PanelMeta>
-              <KeyValues>
+              <FactList layout="pairs">
                 {audit.map((change) => (
-                  <KeyValue key={change.when} term={change.when} value={change.what} />
+                  <Fact key={change.when} label={change.when}>
+                    {change.what}
+                  </Fact>
                 ))}
-              </KeyValues>
+              </FactList>
             </Panel>
           ) : null}
         </Grid>

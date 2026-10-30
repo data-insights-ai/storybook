@@ -6,8 +6,9 @@ import { focusFirstField } from "../../../internal/shortcutKeys";
  * to what opened it when it closes or is removed outright: browsers restore
  * focus on `close()`, but not when the product unmounts the dialog.
  *
- * On open, focus goes to the first field; with no field, to the element
- * `fallback` selects (a sheet's title), rather than to the close button.
+ * On open, focus goes to the element marked `data-autofocus` (the Cancel of
+ * a question), else to the first field; with neither, to the element
+ * `fallback` selects (a dialog's title), rather than to the close button.
  */
 export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open: boolean, fallback?: string) {
   const opener = useRef<HTMLElement | null>(null);
@@ -29,7 +30,9 @@ export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open: b
     if (!dialog) return;
     if (open && !dialog.open) {
       dialog.showModal();
-      if (!focusFirstField(dialog) && fallback)
+      const marked = dialog.querySelector<HTMLElement>("[data-autofocus]");
+      if (marked) marked.focus({ preventScroll: true });
+      else if (!focusFirstField(dialog) && fallback)
         dialog.querySelector<HTMLElement>(fallback)?.focus({ preventScroll: true });
     }
     if (!open && dialog.open) {

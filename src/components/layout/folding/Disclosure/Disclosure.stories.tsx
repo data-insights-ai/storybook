@@ -1,59 +1,237 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Checkbox } from "../../../forms/choice/Checkbox";
-import { Disclosure, DisclosureLead } from "./Disclosure";
+import { Fact, FactList } from "../../../data/records/FactList";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
+import { SeverityMark, type Severity } from "../../../marks/status/SeverityMark";
+import { Panel } from "../../page/Panel";
 import { Stack } from "../../arrangement/Stack";
+import { Disclosure, DisclosureDetail, DisclosureGroup, DisclosureLead, DisclosureMeta } from "./Disclosure";
 
+/**
+ * A group that folds away: a button with `aria-expanded` controlling the
+ * region under it.
+ *
+ * - **Use it** for groups a reader opens on demand: signals by attack phase,
+ *   a filter group chosen as a whole, the detail behind a summary row.
+ * - **Not** for views of one record (`Tabs`), for a record beside its list
+ *   (`Split variant="list"`), or for one hidden explanation in running text
+ *   (a `TextLink` to it).
+ *
+ * Anatomy: the head (the `title` or a `DisclosureLead`, a `DisclosureDetail`
+ * under it, a `DisclosureMeta` at its end, the chevron), then the body.
+ * `toggle="head"` makes the whole head the button; `toggle="chevron"` keeps
+ * the chevron as the only button, so the lead can hold a checkbox.
+ * Several go in a `DisclosureGroup`; with `single` one is open at a time.
+ *
+ * Content: the title names the group in a few words; the detail is a code
+ * or a range; the meta is a count and the worst state, a `SeverityMark` for
+ * severity. Keyboard: Tab reaches the toggle, Enter and Space fold it; a
+ * screen reader hears the name and "expanded" or "collapsed", and the open
+ * body is a region named by the title.
+ */
 const meta = {
   title: "Layout/Folding/Disclosure",
   component: Disclosure,
   tags: ["layer:block", "autodocs"],
+  args: { toggle: "head", title: "Lateral Movement" },
+  argTypes: {
+    toggle: { control: "radio", options: ["head", "chevron"] },
+    children: { control: false },
+  },
 } satisfies Meta<typeof Disclosure>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-function Group() {
-  const [open, setOpen] = useState(false);
-  const [chosen, setChosen] = useState(["granted"]);
-  const all = ["granted", "revoked", "role"];
-  const toggle = (k: string) => setChosen((c) => (c.includes(k) ? c.filter((x) => x !== k) : [...c, k]));
+const phases: Array<{
+  id: string;
+  title: string;
+  range: string;
+  severity: Severity;
+  word: string;
+  count: string;
+  facts: string[][];
+  rows: string[][];
+}> = [
+  {
+    id: "TA0001",
+    title: "Initial Access",
+    range: "Oct 24, 10:30 → 10:42",
+    severity: "medium",
+    word: "Medium",
+    count: "4 signals",
+    facts: [
+      ["Techniques", "T1078"],
+      ["Devices", "ws-ops-07"],
+      ["Accounts", "lena.weiss"],
+    ],
+    rows: [
+      ["2026-10-24 10:42:10", "Sign-in from a new country for lena.weiss."],
+      ["2026-10-24 10:30:02", "Sign-in after five failed attempts."],
+    ],
+  },
+  {
+    id: "TA0008",
+    title: "Lateral Movement",
+    range: "Oct 26, 01:30 → 02:00",
+    severity: "critical",
+    word: "Critical",
+    count: "423 signals",
+    facts: [
+      ["Techniques", "T1021.002, T1550.002"],
+      ["Devices", "ws-ops-07, srv-files-02"],
+      ["Accounts", "svc-sync"],
+    ],
+    rows: [
+      ["2026-10-26 01:59:41", "Remote service created on srv-files-02 from ws-ops-07."],
+      ["2026-10-26 01:31:12", "Pass-the-hash logon as svc-sync."],
+    ],
+  },
+  {
+    id: "TA0010",
+    title: "Exfiltration",
+    range: "Oct 27, 03:30 → 04:00",
+    severity: "critical",
+    word: "Critical",
+    count: "180 signals",
+    facts: [
+      ["Techniques", "T1567.002"],
+      ["Devices", "srv-files-02"],
+      ["Accounts", "svc-sync"],
+    ],
+    rows: [["2026-10-27 03:58:20", "Large upload from srv-files-02 to cloud storage."]],
+  },
+];
+
+function Phases({ open = "TA0008", titles }: { open?: string; titles?: Record<string, string> }) {
   return (
-    <Disclosure
-      id="access"
-      open={open}
-      onOpenChange={setOpen}
-      toggleLabel="Show access events"
-      meta={`${chosen.length} of ${all.length}`}
-    >
-      <DisclosureLead>
-        <Checkbox
-          id="access-all"
-          label="Access"
-          checked={chosen.length === all.length}
-          indeterminate={chosen.length > 0 && chosen.length < all.length}
-          onChange={() => setChosen(chosen.length === all.length ? [] : all)}
-        />
-      </DisclosureLead>
-      <Stack gap={8}>
-        {all.map((k) => (
-          <Checkbox key={k} id={k} label={k} checked={chosen.includes(k)} onChange={() => toggle(k)} />
+    <Panel title="Signals by attack phase" heading={2}>
+      <DisclosureGroup label="Signals by attack phase" single>
+        {phases.map((p) => (
+          <Disclosure key={p.id} id={p.id} toggle="head" title={titles?.[p.id] ?? p.title} defaultOpen={p.id === open}>
+            <DisclosureDetail>
+              {p.id} · {p.range}
+            </DisclosureDetail>
+            <DisclosureMeta>
+              <SeverityMark level={p.severity} label={p.word} />
+              {p.count}
+            </DisclosureMeta>
+            <FactList layout="columns">
+              {p.facts.map(([term, value]) => (
+                <Fact key={term} label={term} mono>
+                  {value}
+                </Fact>
+              ))}
+            </FactList>
+            <DataTable caption={`Signals in ${p.title}`} indexed={false} narrow="stack">
+              <TableHead>
+                <TableColumn>Time</TableColumn>
+                <TableColumn>What happened</TableColumn>
+              </TableHead>
+              <TableBody>
+                {p.rows.map(([at, text]) => (
+                  <TableRow key={at}>
+                    <TableCell mono>{at}</TableCell>
+                    <TableCell>{text}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </DataTable>
+          </Disclosure>
         ))}
-      </Stack>
-    </Disclosure>
+      </DisclosureGroup>
+    </Panel>
   );
 }
 
-export const GroupOfChoices: StoryObj = {
-  render: () => <Group />,
+/** Signals grouped by attack phase: the whole head is the toggle, one phase open at a time. */
+export const AttackPhases: Story = {
+  render: () => <Phases />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const lateral = canvas.getByRole("button", { name: /Lateral Movement/ });
+    const exfil = canvas.getByRole("button", { name: /Exfiltration/ });
+    await expect(lateral).toHaveAttribute("aria-expanded", "true");
+    await expect(canvas.getByRole("region", { name: "Lateral Movement" })).toBeVisible();
+    await userEvent.click(exfil);
+    await expect(exfil).toHaveAttribute("aria-expanded", "true");
+    await expect(lateral).toHaveAttribute("aria-expanded", "false");
+    await waitFor(() => expect(canvas.queryByRole("region", { name: "Lateral Movement" })).toBeNull());
+  },
+};
+
+function Choices() {
+  const [open, setOpen] = useState(true);
+  const [chosen, setChosen] = useState(["Granted"]);
+  const all = ["Granted", "Revoked", "Role changed"];
+  const toggle = (k: string) => setChosen((c) => (c.includes(k) ? c.filter((x) => x !== k) : [...c, k]));
+  return (
+    <Panel title="Events to show">
+      <Disclosure id="access" open={open} onOpenChange={setOpen} toggleLabel="Show access events">
+        <DisclosureLead>
+          <Checkbox
+            id="access-all"
+            label="Access"
+            checked={chosen.length === all.length}
+            indeterminate={chosen.length > 0 && chosen.length < all.length}
+            onChange={() => setChosen(chosen.length === all.length ? [] : all)}
+          />
+        </DisclosureLead>
+        <DisclosureMeta>
+          {chosen.length} of {all.length}
+        </DisclosureMeta>
+        <Stack gap={8}>
+          {all.map((k) => (
+            <Checkbox key={k} id={k} label={k} checked={chosen.includes(k)} onChange={() => toggle(k)} />
+          ))}
+        </Stack>
+      </Disclosure>
+    </Panel>
+  );
+}
+
+/** A filter group chosen as a whole: the checkbox heads it, so the chevron is the only toggle. */
+export const GroupOfChoices: Story = {
+  render: () => <Choices />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const toggle = canvas.getByRole("button", { name: "Show access events" });
-    await expect(toggle).toHaveAttribute("aria-expanded", "false");
-    await userEvent.click(toggle);
     await expect(toggle).toHaveAttribute("aria-expanded", "true");
-    await expect(canvas.getByText("revoked")).toBeVisible();
     await userEvent.click(canvas.getByLabelText("Access"));
     await expect(canvas.getByText("3 of 3")).toBeVisible();
+    await userEvent.click(toggle);
+    await expect(toggle).toHaveAttribute("aria-expanded", "false");
+    await waitFor(() => expect(canvas.getByText("Revoked")).not.toBeVisible());
+    await userEvent.click(toggle);
+    await expect(canvas.getByText("Revoked")).toBeVisible();
   },
+};
+
+/** Folded, the body is out of reach: Tab goes from one head to the next. */
+export const Closed: Story = {
+  render: () => <Phases open="" />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const first = canvas.getByRole("button", { name: /Initial Access/ });
+    first.focus();
+    await userEvent.tab();
+    await expect(canvas.getByRole("button", { name: /Lateral Movement/ })).toHaveFocus();
+    await userEvent.keyboard("{Enter}");
+    await expect(canvas.getByRole("button", { name: /Lateral Movement/ })).toHaveAttribute("aria-expanded", "true");
+  },
+};
+
+/** Long German titles wrap inside the head; on a phone the meta moves under them. */
+export const LongTitles: Story = {
+  render: () => (
+    <Phases
+      titles={{
+        TA0001: "Erstzugriff über kompromittierte Zugangsdaten",
+        TA0008: "Seitliche Ausbreitung im Netzwerk der Finanzabteilung",
+        TA0010: "Datenabfluss in einen Cloud-Speicher",
+      }}
+    />
+  ),
 };

@@ -33,3 +33,30 @@
     gap: var(--di-space-96);
   }
 }
+
+@layer components {
+  /* The form column for blocks that cannot import a pattern (CreateFlow, DetailSection's form): the same rules as `variant="form"`. */
+  .di-field-stack {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .di-stack-form,
+  .di-field-stack {
+    gap: var(--di-rhythm-field);
+    width: 100%;
+    max-width: var(--di-measure-form);
+  }
+
+  /* A select is as wide as its options, a number as wide as a number. */
+  :is(.di-stack-form, .di-field-stack) > .di-field:has(select) {
+    width: fit-content;
+    min-width: min(14rem, 100%);
+    max-width: 100%;
+  }
+
+  :is(.di-stack-form, .di-field-stack) > .di-field:has(input[type="number"]) {
+    width: min(10rem, 100%);
+  }
+}

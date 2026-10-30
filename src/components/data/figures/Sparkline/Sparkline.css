@@ -1,0 +1,57 @@
+@layer components {
+  .di-sparkline {
+    min-width: 0;
+  }
+
+  .di-sparkline-fixed {
+    min-width: var(--di-sparkline-min);
+  }
+
+  .di-sparkline-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--di-space-2);
+    height: var(--di-sparkline-h);
+  }
+
+  .di-sparkline-md .di-sparkline-bars {
+    height: var(--di-bars-h);
+  }
+
+  .di-sparkline-fill .di-sparkline-bars {
+    gap: var(--di-gap-4);
+  }
+
+  /* The bars stand on the period's baseline, so only their tops are rounded. */
+  .di-sparkline-bar {
+    flex: none;
+    width: var(--di-sparkline-bar);
+    border-radius: var(--di-radius-micro) var(--di-radius-micro) 0 0;
+    background: var(--di-chart-muted);
+  }
+
+  .di-sparkline-fill .di-sparkline-bar {
+    flex: 1;
+    width: auto;
+  }
+
+  .di-sparkline-bar.is-series {
+    background: var(--di-chart-series);
+  }
+
+  .di-sparkline-bar.is-danger {
+    background: var(--di-status-danger-dot);
+  }
+
+  .di-sparkline-captions {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--di-gap-8);
+    margin-top: var(--di-gap-6);
+    font-family: var(--di-meta-family);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+}

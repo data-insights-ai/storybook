@@ -7,6 +7,7 @@ import { Chip } from "../../../marks/Chip";
 import { SearchField } from "../../../forms/text/SearchField";
 import { Select } from "../../../forms/select/Select";
 import { TextField } from "../../../forms/text/TextField";
+import { Panel } from "../../page/Panel";
 
 const meta = {
   title: "Layout/Arrangement/Toolbar",
@@ -147,5 +148,33 @@ export const EndWrittenFirst: Story = {
     const end = canvasElement.querySelector(".di-toolbar-end")!.getBoundingClientRect();
     await expect(Math.abs(end.right - bar.right)).toBeLessThanOrEqual(1);
     await expect(canvasElement.querySelector(".di-toolbar")!.lastElementChild).toHaveClass("di-toolbar-end");
+  },
+};
+
+/**
+ * A one-line form that closes a panel. Without a hint the toolbar ends on its
+ * controls, so the panel's inset under them equals the inset above its title.
+ */
+export const EndOfAPanel: Story = {
+  render: () => (
+    <Panel title="Retention">
+      <form onSubmit={(event) => event.preventDefault()}>
+        <Toolbar>
+          <Select id="tb-keep" label="Keep events for" mono={false} defaultValue="90">
+            <option value="30">30 days</option>
+            <option value="90">90 days</option>
+          </Select>
+          <Button type="submit">Apply</Button>
+        </Toolbar>
+      </form>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const panel = canvasElement.querySelector(".di-panel")!.getBoundingClientRect();
+    const title = canvasElement.querySelector(".di-panel-title")!.getBoundingClientRect();
+    const button = within(canvasElement).getByRole("button", { name: "Apply" }).getBoundingClientRect();
+    const toolbar = canvasElement.querySelector(".di-toolbar")!.getBoundingClientRect();
+    await expect(Math.abs(toolbar.bottom - button.bottom)).toBeLessThanOrEqual(1);
+    await expect(Math.abs(panel.bottom - toolbar.bottom - (title.top - panel.top))).toBeLessThanOrEqual(4);
   },
 };

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { FieldStack } from "../../../layout/arrangement/FieldStack";
+import { Stack } from "../../../layout/arrangement/Stack";
 import { Toolbar } from "../../../layout/arrangement/Toolbar";
 import { TextField } from "./TextField";
 import { ConfidenceField } from "./ConfidenceField";
@@ -148,7 +148,7 @@ export const Disabled: Story = {
 export const AllStates: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <FieldStack>
+    <Stack variant="form">
       <TextField id="s1" label="Default" placeholder="registry.example.org" />
       <TextField id="s1r" label="Required" required={true} placeholder="registry.example.org" />
       <TextField id="s2" label="With hint" hint="A host name, without a scheme." />
@@ -169,7 +169,7 @@ export const AllStates: Story = {
       />
       <TextField id="s5r" label="Read-only" readOnly={true} mono={true} defaultValue="ws_7f3a99e2c41b" />
       <TextField id="s5" label="Disabled" disabled={true} defaultValue="registry.example.org" />
-    </FieldStack>
+    </Stack>
   ),
 };
 
@@ -180,13 +180,13 @@ export const AllStates: Story = {
  * a 13px label still uppercase and still letterspaced is not a heavier
  * console label, it is a broken one.
  *
- * The distance between two such fields is `FieldStack`'s, not the field's.
+ * The distance between two such fields is the form `Stack`'s, not the field's.
  */
 export const ProseLabel: Story = {
   name: "Prose label",
   parameters: { controls: { disable: true } },
   render: () => (
-    <FieldStack>
+    <Stack variant="form">
       <TextField id="account-name" label="Full name" labelTrack="prose" placeholder="Nora Feld" />
       <TextField
         id="account-email"
@@ -195,7 +195,7 @@ export const ProseLabel: Story = {
         hint="We only use this to send the receipt for a sealed run."
         placeholder="nora.feld@data-insights.ai"
       />
-    </FieldStack>
+    </Stack>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -227,7 +227,7 @@ export const German: Story = {
   name: "German, long labels",
   parameters: { controls: { disable: true } },
   render: () => (
-    <FieldStack>
+    <Stack variant="form">
       <TextField
         id="de-endpoint"
         label="Adresse des Ereignis-Hubs für die Weiterleitung an das Sicherheitsinformationssystem"
@@ -260,7 +260,7 @@ export const German: Story = {
         defaultValue="30 Tage"
         hint="Von der Richtlinie des Arbeitsbereichs festgelegt."
       />
-    </FieldStack>
+    </Stack>
   ),
   play: async ({ canvasElement }) => {
     const slot = within(canvasElement).getByRole("button", { name: "Schlüssel erneuern" });

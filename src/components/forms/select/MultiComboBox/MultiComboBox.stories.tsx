@@ -4,7 +4,7 @@ import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { MultiComboBox } from "./MultiComboBox";
 import { TokenField } from "./TokenField";
 import { Button } from "../../../actions/Button";
-import { Modal, ModalContent, ModalTitle } from "../../../overlays/Modal";
+import { Dialog } from "../../../overlays/Dialog";
 
 const people = [
   { value: "u-nora", label: "Nora Feld" },
@@ -154,12 +154,9 @@ export const InAModal: Story = {
     return (
       <>
         <Button onClick={() => setOpen(true)}>Choose members</Button>
-        <Modal open={open} labelledBy="notify-members-title" onClose={() => setOpen(false)}>
-          <ModalContent>
-            <ModalTitle id="notify-members-title">Notify members</ModalTitle>
-            <MultiComboBox {...args} values={values} onChange={setValues} />
-          </ModalContent>
-        </Modal>
+        <Dialog placement="center" open={open} title="Notify members" closeLabel="Close" onClose={() => setOpen(false)}>
+          <MultiComboBox {...args} values={values} onChange={setValues} />
+        </Dialog>
       </>
     );
   },

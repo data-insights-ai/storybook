@@ -3,12 +3,13 @@ import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { ConfirmDialog } from "../../overlays/ConfirmDialog";
-import { DangerAction, DangerZone } from "./DangerZone";
+import { DangerAction } from "../../layout/page/Panel";
+import { DangerZone } from "./DangerZone";
 
 const meta = {
   title: "Feedback/DangerZone",
   component: DangerZone,
-  tags: ["layer:block", "autodocs"],
+  tags: ["layer:block", "autodocs", "status:deprecated"],
   args: { title: "Danger zone", lede: "These actions remove access and cannot be undone.", children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof DangerZone>;
@@ -55,7 +56,10 @@ function Zone(args: { title: string; lede?: string }) {
   );
 }
 
-/** At the end of a detail page: each action, its consequence, one destructive button. */
+/**
+ * Deprecated: removed in 0.12.0. Write `<Panel tone="danger">` with `DangerAction` rows
+ * (`Layout/Page/Panel` → Danger); this wrapper renders exactly that.
+ */
 export const Organization: Story = {
   render: (args) => <Zone {...args} />,
   play: async ({ canvasElement }) => {

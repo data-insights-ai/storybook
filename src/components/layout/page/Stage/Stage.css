@@ -25,9 +25,11 @@
     color: var(--di-text-muted);
   }
 
+  /* A stage names a step: a heading, so the display face. */
   .di-stage h3 {
+    font-family: var(--di-heading-family);
     font-size: var(--di-block-title-size);
-    font-weight: var(--di-weight-semibold);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
   }
 

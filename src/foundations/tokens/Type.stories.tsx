@@ -31,7 +31,7 @@ const display: Row[] = [
   },
   {
     token: "--di-font-size-700 · 28 · 700",
-    note: "PageHeader: the page's name. Figure, StatTile value",
+    note: "PageHeader: the page's name. Figure value",
     sample: "Production",
     style: {
       fontFamily: DISPLAY,
@@ -43,7 +43,7 @@ const display: Row[] = [
   },
   {
     token: "--di-font-size-600 · 20 · 700",
-    note: "SectionTitle, AttentionList heading, Hero title",
+    note: "PageHeader level 2, AttentionList heading, hero Panel title",
     sample: "3 things need you",
     style: { fontFamily: DISPLAY, fontWeight: 700, fontSize: "var(--di-font-size-600)", lineHeight: 1.2 },
   },

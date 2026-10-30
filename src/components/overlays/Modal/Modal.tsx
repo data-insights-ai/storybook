@@ -10,6 +10,8 @@ import "./Modal.css";
  *
  * Built on the native `<dialog>`, so focus is trapped, the page behind
  * goes inert and Escape closes without a keyboard trap of our own.
+ *
+ * @deprecated Removed in 0.12: use `Dialog placement="center"`, which takes the title, eyebrow and lede as props and `DialogFooter` for the actions; the icon column goes.
  */
 export function Modal({
   open,
@@ -44,6 +46,8 @@ export function Modal({
 /**
  * Icon column, then the content: the modal keeps the register's shape.
  * A leading `ModalIcon` fills the column; everything else is the body.
+ *
+ * @deprecated Removed in 0.12: use `Dialog placement="center"`, which takes the title, eyebrow and lede as props and `DialogFooter` for the actions; the icon column goes.
  */
 export function ModalFrame({ children }: { children: ReactNode }) {
   const icon: ReactNode[] = [];
@@ -60,7 +64,7 @@ export function ModalFrame({ children }: { children: ReactNode }) {
   );
 }
 
-/** The mark in the modal's index column. */
+/** @deprecated Removed in 0.12 with `Modal`: `Dialog` has no icon column. */
 export function ModalIcon({ children }: { children: ReactNode }) {
   return <div className="di-modal-icon">{children}</div>;
 }
@@ -69,6 +73,8 @@ export function ModalIcon({ children }: { children: ReactNode }) {
  * The title, the body and, last, the `ModalFooter`. The footer is lifted out
  * of the padded content wherever it is placed, so it always spans the
  * modal's width with the same padding and a step of space above it.
+ *
+ * @deprecated Removed in 0.12: use `Dialog placement="center"`, which takes the title, eyebrow and lede as props and `DialogFooter` for the actions; the icon column goes.
  */
 export function ModalContent({ children }: { children: ReactNode }) {
   const footer: ReactNode[] = [];
@@ -87,13 +93,26 @@ export function ModalContent({ children }: { children: ReactNode }) {
 
 /**
  * The modal's heading. Its `id` is what `ModalFrame` names the dialog by, so
- * the two must match; `eyebrow` is an optional line above it.
+ * the two must match; `eyebrow` is an optional line above it, in the danger
+ * ink only when `eyebrowTone="danger"`: an export is not a warning.
+ *
+ * @deprecated Removed in 0.12: use `Dialog placement="center"`, which takes the title, eyebrow and lede as props and `DialogFooter` for the actions; the icon column goes.
  */
-export function ModalTitle({ id, eyebrow, children }: { id: string; eyebrow?: string; children: ReactNode }) {
+export function ModalTitle({
+  id,
+  eyebrow,
+  eyebrowTone = "quiet",
+  children,
+}: {
+  id: string;
+  eyebrow?: string;
+  eyebrowTone?: "quiet" | "danger";
+  children: ReactNode;
+}) {
   return (
     <>
       {eyebrow === undefined ? null : (
-        <Eyebrow variant="plain" tone="danger">
+        <Eyebrow variant="plain" tone={eyebrowTone}>
           {eyebrow}
         </Eyebrow>
       )}
@@ -107,6 +126,8 @@ export function ModalTitle({ id, eyebrow, children }: { id: string; eyebrow?: st
 /**
  * The explanation under the title: a sentence, or paragraphs and a field.
  * A block, so paragraphs and controls inside it stay valid HTML.
+ *
+ * @deprecated Removed in 0.12: use `Dialog placement="center"`, which takes the title, eyebrow and lede as props and `DialogFooter` for the actions; the icon column goes.
  */
 export function ModalBody({ children }: { children: ReactNode }) {
   return <div className="di-modal-text">{children}</div>;
@@ -114,6 +135,8 @@ export function ModalBody({ children }: { children: ReactNode }) {
 /**
  * The modal's closing row of actions, set at its end. The primary action comes
  * last.
+ *
+ * @deprecated Removed in 0.12: use `Dialog placement="center"`, which takes the title, eyebrow and lede as props and `DialogFooter` for the actions; the icon column goes.
  */
 export function ModalFooter({ children }: { children: ReactNode }) {
   return <div className="di-modal-footer">{children}</div>;

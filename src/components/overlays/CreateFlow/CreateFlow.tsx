@@ -20,7 +20,7 @@ import "./CreateFlow.css";
  * view: Back and Cancel at the left, the one action that moves on at the
  * right.
  *
- * It sits in a `Sheet` (`width="form"`) or on a page (`width="page"`).
+ * It sits in a side `Dialog` (`width="form"`) or on a page (`width="page"`).
  * On a page the steps run in one line from the left edge, and the step is
  * a panel, like a section of a record: its title and
  * lede, its body, the actions as its footer. A single field, a switch and

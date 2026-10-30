@@ -26,10 +26,11 @@
     min-width: 0;
   }
 
+  /* The step's name is a heading: the display face, the one bold line of the step. */
   .di-create-flow-title {
-    font-size: var(--di-font-size-500);
-    font-weight: var(--di-weight-semibold);
-    letter-spacing: var(--di-tracking-tight);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
     color: var(--di-text);
   }
@@ -51,7 +52,7 @@
     color: var(--di-status-danger-fg);
   }
 
-  /* The footer keeps to the bottom of the viewport while a long step scrolls. */
+  /* The footer keeps to the bottom of the viewport while a long step scrolls: the ground, not a rule, sets it off. */
   .di-create-flow-actions {
     position: sticky;
     bottom: 0;
@@ -61,8 +62,13 @@
     align-items: center;
     gap: var(--di-gap-8);
     padding: var(--di-gap-12) 0;
-    border-top: 1px solid var(--di-rule-hairline);
     background: var(--di-bg-page);
+  }
+
+  /* In a dialog the footer stands on the dialog's plane. */
+  :is(.di-dialog, .di-dialog-docked) .di-create-flow-actions {
+    padding-bottom: 0;
+    background: var(--di-surface-bg, var(--di-bg-surface));
   }
 
   .di-create-flow-spacer {
@@ -84,10 +90,9 @@
     padding: 0 var(--di-create-flow-pad) var(--di-gap-12);
   }
 
-  /* The actions are the panel's last row at its inset, no rule over them; they stay in view on a long step. */
+  /* The actions are the panel's last row at its inset, 16 below the step as a panel's rows are; they stay in view on a long step. */
   .di-create-flow[data-width="page"] .di-create-flow-actions {
-    padding: var(--di-create-flow-pad);
-    border-top: 0;
+    padding: var(--di-gap-16) var(--di-create-flow-pad) var(--di-create-flow-pad);
     border-radius: 0 0 var(--di-panel-radius) var(--di-panel-radius);
     background: var(--di-surface-bg);
   }

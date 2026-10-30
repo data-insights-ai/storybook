@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { FieldStack } from "../../../layout/arrangement/FieldStack";
 import { Stack } from "../../../layout/arrangement/Stack";
 import { Panel } from "../../../layout/page/Panel";
 import { TextArea } from "../../text/TextArea";
@@ -27,7 +26,7 @@ export const Unsaved: Story = {
   render: (args) => (
     <Stack gap={24}>
       <Panel title="Alert template" heading={2}>
-        <FieldStack>
+        <Stack variant="form">
           <TextField id="subject" label="Subject" defaultValue="{{severity}} on {{host}}: {{rule}}" mono={true} />
           <TextArea
             id="body"
@@ -38,7 +37,7 @@ export const Unsaved: Story = {
               "Case {{case.id}} was opened at {{case.opened}}.\n\nRule: {{rule}}\nHost: {{host}}\nOperator: {{operator}}\n\nOpen the case: {{case.url}}"
             }
           />
-        </FieldStack>
+        </Stack>
       </Panel>
       <SaveBar {...args}>
         <Button variant="secondary">Discard</Button>

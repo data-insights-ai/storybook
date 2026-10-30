@@ -2,8 +2,8 @@ import { Database, LockKeyhole, Network, Radar, Share2, ShieldCheck, Workflow } 
 import {
   Button,
   Grid,
-  KeyValue,
-  KeyValues,
+  Fact,
+  FactList,
   Notice,
   NoticeAction,
   NoticeBody,
@@ -13,17 +13,16 @@ import {
   Numbered,
   PageHeader,
   PageHeaderAside,
+  PageHeaderMeta,
   PageHeaderTitle,
-  SectionTitle,
-  SectionTitleHeading,
-  SectionTitleMeta,
   Stack,
   Stage,
   StageFooter,
   StageIcon,
   StageTrack,
   StatusPill,
-  StatTile,
+  Figure,
+  Panel,
 } from "../..";
 
 const stages = [
@@ -101,10 +100,10 @@ export function ArchitectureScreen() {
         </Notice>
 
         <Numbered index="01">
-          <SectionTitle lede="End-to-end data flow">
-            <SectionTitleHeading>Five-stage pipeline</SectionTitleHeading>
-            <SectionTitleMeta>Sync active</SectionTitleMeta>
-          </SectionTitle>
+          <PageHeader level={2} lede="End-to-end data flow">
+            <PageHeaderTitle>Five-stage pipeline</PageHeaderTitle>
+            <PageHeaderMeta>Sync active</PageHeaderMeta>
+          </PageHeader>
           <StageTrack>
             {stages.map((stage) => (
               <Stage key={stage.id} step={stage.step} title={stage.title} body={stage.body} current={stage.current}>
@@ -125,35 +124,44 @@ export function ArchitectureScreen() {
         </Numbered>
 
         <Numbered index="02">
-          <SectionTitle lede="Component monitoring">
-            <SectionTitleHeading>System status and performance</SectionTitleHeading>
-            <SectionTitleMeta>Updated: today, 08:37 CEST</SectionTitleMeta>
-          </SectionTitle>
+          <PageHeader level={2} lede="Component monitoring">
+            <PageHeaderTitle>System status and performance</PageHeaderTitle>
+            <PageHeaderMeta>Updated: today, 08:37 CEST</PageHeaderMeta>
+          </PageHeader>
           <Grid min="220px">
-            <StatTile label="API and service status" value="Version 4.18">
-              <KeyValues>
-                <KeyValue term="Runtime" value="Node 22 LTS" />
-                <KeyValue term="Uptime" value="99.98%" />
-                <KeyValue term="Protocol" value="HTTPS / TLS 1.3" />
-                <KeyValue term="Cluster" value="West-1 · active" />
-              </KeyValues>
-            </StatTile>
-            <StatTile label="Indexing and queue" value="0 waiting">
-              <KeyValues>
-                <KeyValue term="Backlog" value="No backlog" />
-                <KeyValue term="Events today" value="19 processed" />
-                <KeyValue term="Queue status" value="Optimal" />
-                <KeyValue term="Sync" value="No errors" />
-              </KeyValues>
-            </StatTile>
-            <StatTile label="Latency and performance" value="Response 2 ms">
-              <KeyValues>
-                <KeyValue term="Load" value="Normal (12%)" />
-                <KeyValue term="Memory" value="1.4 GB / 8 GB" />
-                <KeyValue term="State" value="Stable" />
-                <KeyValue term="24h average" value="3 ms" />
-              </KeyValues>
-            </StatTile>
+            <Panel>
+              <Stack gap={16}>
+                <Figure size="compact" label="API and service status" value="Version 4.18" />
+                <FactList layout="pairs">
+                  <Fact label="Runtime">Node 22 LTS</Fact>
+                  <Fact label="Uptime">99.98%</Fact>
+                  <Fact label="Protocol">HTTPS / TLS 1.3</Fact>
+                  <Fact label="Cluster">West-1 · active</Fact>
+                </FactList>
+              </Stack>
+            </Panel>
+            <Panel>
+              <Stack gap={16}>
+                <Figure size="compact" label="Indexing and queue" value="0 waiting" />
+                <FactList layout="pairs">
+                  <Fact label="Backlog">No backlog</Fact>
+                  <Fact label="Events today">19 processed</Fact>
+                  <Fact label="Queue status">Optimal</Fact>
+                  <Fact label="Sync">No errors</Fact>
+                </FactList>
+              </Stack>
+            </Panel>
+            <Panel>
+              <Stack gap={16}>
+                <Figure size="compact" label="Latency and performance" value="Response 2 ms" />
+                <FactList layout="pairs">
+                  <Fact label="Load">Normal (12%)</Fact>
+                  <Fact label="Memory">1.4 GB / 8 GB</Fact>
+                  <Fact label="State">Stable</Fact>
+                  <Fact label="24h average">3 ms</Fact>
+                </FactList>
+              </Stack>
+            </Panel>
           </Grid>
           <Notice>
             <NoticeText>
