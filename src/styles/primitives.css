@@ -152,6 +152,18 @@
     color: var(--di-meta-color);
   }
 
+  /* Inside the popup, where the plane would clip a ring drawn outside the row. */
+  .di-option:focus-visible {
+    outline-offset: -2px;
+  }
+
+  /* A finger needs a 40px row, in either density. */
+  @media (pointer: coarse) {
+    .di-option {
+      min-height: var(--di-target);
+    }
+  }
+
   .di-option:is(:disabled, [aria-disabled="true"], [data-disabled]) {
     color: var(--di-text-disabled);
     cursor: not-allowed;
