@@ -24,7 +24,7 @@ export type NavItem = {
 export type NavGroup = { label: string; items: NavItem[] };
 
 /**
- * The navy rail: the mark, the workspace, the sections. Its children sit
+ * The rail: the mark, the workspace, the sections, on the chrome tone. Its children sit
  * below the brand in `AppShellContext`, or at the foot in `AppShellFoot`.
  */
 export function AppShellRail({

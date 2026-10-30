@@ -59,9 +59,17 @@ export function Panel({
    * placed by writing it in source order.
    */
   const meta: ReactNode[] = [];
+  const lead: ReactNode[] = [];
+  const note: ReactNode[] = [];
+  const footer: ReactNode[] = [];
   const body: ReactNode[] = [];
+  /* Each slot goes where its docs say, whatever order the caller wrote. */
   Children.forEach(children, (child) => {
-    if (isValidElement(child) && child.type === PanelMeta) meta.push(child);
+    if (!isValidElement(child)) body.push(child);
+    else if (child.type === PanelMeta) meta.push(child);
+    else if (child.type === PanelLead) lead.push(child);
+    else if (child.type === PanelNote) note.push(child);
+    else if (child.type === PanelFooter) footer.push(child);
     else body.push(child);
   });
 
@@ -86,7 +94,12 @@ export function Panel({
             {meta}
           </div>
         )}
-        <div className={cx("di-panel-content", !padded && "di-panel-content-flush")}>{body}</div>
+        <div className={cx("di-panel-content", !padded && "di-panel-content-flush")}>
+          {lead}
+          {body}
+          {note}
+          {footer}
+        </div>
       </div>
     </section>
   );
@@ -115,8 +128,8 @@ export function PanelFooter({ children }: { children: ReactNode }) {
 
 /**
  * What the block asks of the reader, as its lead line: "Isolate srv-fs-02
- * before the next upload." Written first in the content, above the proof
- * and the actions. In the `emphasis` block it is set in the one ink —
+ * before the next upload." Placed first in the content, above the proof
+ * and the actions, wherever it is written. In the `emphasis` block it is set in the one ink —
  * navy by day, gold after dark.
  */
 export function PanelLead({ children }: { children: string }) {

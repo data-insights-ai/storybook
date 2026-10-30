@@ -55,10 +55,13 @@
     color: var(--di-text-subtle);
   }
 
-  /* The gold bar under the rank is part of the one object, not a second mark. */
+  /*
+   * A short gold bar at the rank's left is part of the one object, not a
+   * second mark, and not an underline: underline means clickable.
+   */
   .di-attention-item.is-emphasis .di-attention-rank {
-    padding-bottom: var(--di-space-4);
-    box-shadow: inset 0 -3px 0 var(--di-one);
+    padding-left: var(--di-space-8);
+    box-shadow: inset 3px 0 0 var(--di-one);
     color: var(--di-one-ink);
   }
 
@@ -94,6 +97,7 @@
   }
 
   .di-attention-title {
+    margin: 0;
     font-size: var(--di-block-title-size);
     font-weight: var(--di-weight-semibold);
     line-height: var(--di-leading-snug);

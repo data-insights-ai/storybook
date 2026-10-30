@@ -79,3 +79,21 @@ export const WithNote: Story = {
     await expect(canvas.getByText("People with a seat in this workspace, and the invitations still open.")).toBeVisible();
   },
 };
+
+/** `ListToolbarEnd` sits at the end even when it is written first. */
+export const EndWrittenFirst: Story = {
+  render: () => (
+    <ListToolbar label="Filter members" sticky={false}>
+      <ListToolbarEnd>
+        <Button variant="secondary">Export</Button>
+      </ListToolbarEnd>
+      <SearchField id="list-first-search" label="Search members" />
+    </ListToolbar>
+  ),
+  play: async ({ canvasElement }) => {
+    const bar = canvasElement.querySelector(".di-list-toolbar")!;
+    await expect(bar.lastElementChild).toHaveClass("di-list-toolbar-end");
+    const end = bar.lastElementChild!.getBoundingClientRect();
+    await expect(Math.abs(end.right - bar.getBoundingClientRect().right)).toBeLessThanOrEqual(1);
+  },
+};

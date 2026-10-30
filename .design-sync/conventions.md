@@ -104,7 +104,7 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | Type | `--di-font-display`, `--di-font-ui`, `--di-font-code`, `--di-font-size-100` … `-1000`, `--di-weight-regular/medium/semibold/bold` |
 | Status | `--di-status-{ok,warn,danger,recorded,neutral}-{bg,fg,border,dot}` |
 | The one thing | `--di-one`, `--di-one-edge`, `--di-one-ink` (navy in daylight, gold after dark) |
-| Selection | `--di-select`, `--di-select-ink`, `--di-bg-selected`, `--di-focus` (cornflower) |
+| Selection | `--di-select`, `--di-bg-selected`, `--di-focus` (cornflower) |
 | Severity | `--di-severity-{critical,high,medium,low,info}` |
 | Record marks | `--di-mark`, `--di-mark-ring`, `--di-mark-surface`, `--di-mark-ink` (neutral; gold inside `data-brand`); `--di-seal` only in a brand moment |
 | Accents | `--di-highlight` (poppy), `--di-highlight-ink`, `--di-highlight-tint`; `--di-signal` (cornflower), `--di-signal-ink`, `--di-signal-tint` — see the rules below before using either |

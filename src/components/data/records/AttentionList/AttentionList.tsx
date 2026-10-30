@@ -31,7 +31,8 @@ export function AttentionList({
 }) {
   const id = useId();
   const list = (
-    <ol className="di-attention" aria-label={title ? undefined : label} aria-labelledby={title ? id : undefined}>
+    // role="list": Safari drops the list role from an <ol> whose markers are styled away.
+    <ol className="di-attention" role="list" aria-label={title ? undefined : label} aria-labelledby={title ? id : undefined}>
       {children}
     </ol>
   );
@@ -60,6 +61,7 @@ export function AttentionItem({
   meta = "",
   emphasis = false,
   emphasisLabel = "",
+  heading = 3,
   children,
 }: {
   /** "01", "02": the order is the ranking. */
@@ -76,9 +78,12 @@ export function AttentionItem({
   emphasis?: boolean;
   /** Said beside the gold edge, so the mark is never the only channel: "Start here", "Due 23 Oct". */
   emphasisLabel?: string;
+  /** The title's heading level: 3 under the list's h2, 2 or 4 where the page outline asks. */
+  heading?: 2 | 3 | 4;
   /** The one action. */
   children?: ReactNode;
 }) {
+  const Title = `h${heading}` as "h2" | "h3" | "h4";
   const marked = emphasis && emphasisLabel !== "";
   const rated = severity !== undefined && severityLabel !== "";
   return (
@@ -93,7 +98,7 @@ export function AttentionItem({
             {rated ? <SeverityMark level={severity} label={severityLabel} /> : null}
           </div>
         ) : null}
-        <p className="di-attention-title">{title}</p>
+        <Title className="di-attention-title">{title}</Title>
         <p className="di-attention-reason">{reason}</p>
         {meta ? <MetaLine items={meta} /> : null}
       </div>

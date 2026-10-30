@@ -130,7 +130,7 @@ function shareLabel(props: {
 
 export function CompareChart() {
   return (
-    <Chart label="Comparison. One poppy bar, the rest grey" config={barConfig}>
+    <Chart label="Comparison. One gold bar, the rest grey" config={barConfig}>
       <ComposedChart data={bars} layout="vertical" margin={{ top: 8, right: 36, bottom: 8, left: 0 }}>
         <XAxis type="number" domain={[0, 100]} hide />
         <YAxis type="category" dataKey="name" tickLine={false} axisLine={false} width={52} interval={0} />

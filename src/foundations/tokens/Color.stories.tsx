@@ -32,7 +32,7 @@ const families = [
     swatches: [
       ["--di-bg-chrome", "#E9E8E3", "#0a1f44", "The sidebar, one step below the ground. Also --di-bg-strip."],
       ["--di-bg-page", "#F3F2EE", "#0a1f44", "The ground. One token, so a warmer ground is one line."],
-      ["--di-bg-subtle", "#EFEEE9", "#0a1f44", "Inset: a table head, a group inside a surface."],
+      ["--di-bg-subtle", "#EAE9E4", "#0a1f44", "Inset: a table head, a group inside a surface."],
       ["--di-bg-surface", "#FDFDFB", "#0a1f44", "A panel, a table, a list pane. Also --di-bg-pane."],
       ["--di-bg-plane", "#FFFFFF", "#0a1f44", "What floats or is lifted: a menu, the selected row."],
     ],
@@ -51,7 +51,7 @@ const severities = [
   ["High", "--di-severity-high", "#D9481A", "#FF7A3D"],
   ["Medium", "--di-severity-medium", "#B57400", "#FF9D2E"],
   ["Low", "--di-severity-low", "#5D7797", "#94ABCB"],
-  ["Info", "--di-severity-info", "#878D99", "#7F8FB0"],
+  ["Info", "--di-severity-info", "#737885", "#7F8FB0"],
 ];
 
 /*
@@ -63,7 +63,7 @@ const severities = [
 const night = [
   ["--di-bg-chrome", "--di-text", "#071733", "The sidebar, one step deeper than the ground."],
   ["--di-bg-page", "--di-text", "#0A1F44", "The ground is brand navy, not near-black."],
-  ["--di-bg-subtle", "--di-text", "#0C2350", "Inset and strip."],
+  ["--di-bg-subtle", "--di-text", "#081838", "Inset and strip, a step below the ground."],
   ["--di-bg-surface", "--di-text", "#0F2A57", "A surface lifts from the ground."],
   ["--di-bg-plane", "--di-text", "#133068", "The plane: a menu, a lifted row."],
   ["--di-bg-hero", "--di-text", "#1A3A78", "The hero zone, a clear step above a surface (ΔL* ≥ 3, checked in zones.test.ts)."],

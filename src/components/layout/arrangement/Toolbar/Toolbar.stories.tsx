@@ -84,3 +84,21 @@ export const InlineForm: Story = {
     await expect(gap).toBeLessThanOrEqual(2);
   },
 };
+
+/** `ToolbarEnd` sits at the far end even when it is written first. */
+export const EndWrittenFirst: Story = {
+  render: () => (
+    <Toolbar>
+      <ToolbarEnd>
+        <Button variant="secondary">Export</Button>
+      </ToolbarEnd>
+      <SearchField id="toolbar-first-search" label="Search sources" dense={true} />
+    </Toolbar>
+  ),
+  play: async ({ canvasElement }) => {
+    const bar = canvasElement.querySelector(".di-toolbar")!.getBoundingClientRect();
+    const end = canvasElement.querySelector(".di-toolbar-end")!.getBoundingClientRect();
+    await expect(Math.abs(end.right - bar.right)).toBeLessThanOrEqual(1);
+    await expect(canvasElement.querySelector(".di-toolbar")!.lastElementChild).toHaveClass("di-toolbar-end");
+  },
+};

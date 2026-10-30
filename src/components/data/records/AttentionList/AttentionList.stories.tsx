@@ -64,9 +64,15 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("heading", { level: 2, name: "3 things need you" })).toBeVisible();
-    await expect(canvas.getAllByRole("listitem")).toHaveLength(3);
+    const list = canvasElement.querySelector(".di-attention")!;
+    await expect(list).toHaveAttribute("role", "list");
+    await expect(list.children).toHaveLength(3);
+    await expect(canvas.getAllByRole("heading", { level: 3 })).toHaveLength(3);
     await expect(canvas.getAllByRole("link", { name: "Open case 4" })).toHaveLength(1);
-    const [first, second] = canvas.getAllByRole("listitem");
+    const [first, second] = Array.from(list.children);
+    const rank = first.querySelector(".di-attention-rank")!;
+    await expect(getComputedStyle(rank).textDecorationLine).toBe("none");
+    await expect(getComputedStyle(rank).boxShadow).toMatch(/inset 3px 0px 0px/);
     await expect(first.getBoundingClientRect().width).toBeGreaterThanOrEqual(second.getBoundingClientRect().width);
     if (window.innerWidth > 900) await expect(first.getBoundingClientRect().width).toBeGreaterThan(second.getBoundingClientRect().width);
   },
@@ -97,6 +103,6 @@ export const Clear: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Everything is running")).toBeVisible();
-    await expect(canvas.queryByRole("list")).toBeNull();
+    await expect(canvasElement.querySelector(".di-attention")).toBeNull();
   },
 };

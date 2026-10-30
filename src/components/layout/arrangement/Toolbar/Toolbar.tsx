@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { takeSlot } from "../../../../internal/slots";
 import "./Toolbar.css";
 
 /**
@@ -8,7 +9,13 @@ import "./Toolbar.css";
  * row stacks.
  */
 export function Toolbar({ children }: { children: ReactNode }) {
-  return <div className="di-toolbar">{children}</div>;
+  const [end, rest] = takeSlot(children, ToolbarEnd);
+  return (
+    <div className="di-toolbar">
+      {rest}
+      {end}
+    </div>
+  );
 }
 
 /** The controls a `Toolbar` pushes to its far end. */

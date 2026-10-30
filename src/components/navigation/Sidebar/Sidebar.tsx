@@ -1,4 +1,6 @@
 import { lazy, Suspense, type ReactNode } from "react";
+import { takeSlot } from "../../../internal/slots";
+import { SidebarFooter } from "./menu/SidebarSections";
 import { useSidebar } from "./state/SidebarContext";
 import "./Sidebar.css";
 
@@ -15,6 +17,14 @@ const SidebarDrawer = lazy(() => import("./frame/SidebarDrawer"));
  */
 export function Sidebar({ label, closeLabel, children }: { label: string; closeLabel: string; children: ReactNode }) {
   const { expanded, mobile, sidebarId } = useSidebar();
+  /* The footer is pinned to the end, wherever it was written. */
+  const [footer, rest] = takeSlot(children, SidebarFooter);
+  children = (
+    <>
+      {rest}
+      {footer}
+    </>
+  );
 
   if (!mobile) {
     return (

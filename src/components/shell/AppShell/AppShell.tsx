@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { takeSlot } from "../../../internal/slots";
 import { cx } from "../../../internal/cx";
 import { SkipLink } from "../SkipLink";
 import "./AppShell.css";
@@ -6,7 +7,7 @@ import "./AppShell.css";
 /**
  * Rail, topbar, workpane, full-bleed: the shell a product renders.
  *
- * The navy rail is the one place the brand colour fills a surface, and it
+ * The rail sits on paper a step below the ground (navy after dark), and it
  * is fixed on desktop. A caller can opt into compact mobile navigation
  * through `AppShellRail.mobileNavigation`, supplying its translated labels.
  *
@@ -30,7 +31,13 @@ export function AppShellMain({ children }: { children: ReactNode }) {
 
 /** The topbar: where you are on the left, an `AppShellBarEnd` on the right. */
 export function AppShellBar({ children }: { children: ReactNode }) {
-  return <header className="di-topbar">{children}</header>;
+  const [end, rest] = takeSlot(children, AppShellBarEnd);
+  return (
+    <header className="di-topbar">
+      {rest}
+      {end}
+    </header>
+  );
 }
 
 /** The bar's controls, pushed to its right end. */
