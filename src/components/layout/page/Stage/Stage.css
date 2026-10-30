@@ -65,9 +65,9 @@
    * against it.
    */
   .di-stage.is-current {
-    --di-text: var(--di-ivory);
-    --di-text-muted: var(--di-night-300);
-    --di-focus: var(--di-gold-400);
+    --di-text: var(--di-inverse-text);
+    --di-text-muted: var(--di-inverse-muted);
+    --di-focus: var(--di-inverse-focus);
 
     background: var(--di-inverse-bg);
     border-color: var(--di-inverse-bg);

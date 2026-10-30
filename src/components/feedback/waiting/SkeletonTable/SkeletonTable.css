@@ -3,7 +3,7 @@
     overflow: hidden;
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-surface);
-    background: var(--di-bg-grid);
+    background: var(--di-table-bg);
   }
 
   .di-skeleton-row {

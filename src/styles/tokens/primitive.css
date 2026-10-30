@@ -1,154 +1,152 @@
 /*
  * Primitive tokens. Raw values, no job.
  *
- * These are the Register palette: warm paper as the ground, navy as ink
- * and as action, gold reserved for the seal. Components do not name
- * these. They bind to semantic roles, so a theme can remap intent
- * without a hunt through component files.
+ * Components do not name these. They bind to semantic roles, so a theme
+ * can remap intent without a hunt through component files.
  *
- * The status hues are not brand colours. They exist only to name an
- * operational state, and they stay off the gold.
+ * Daylight is a cool paper ramp; after dark the same steps are navy. Depth
+ * is a step in tone, so each ramp runs chrome, ground, surface, inset and
+ * plane rather than one paper and a rule.
  */
 
 @layer tokens {
   :root {
     /*
-     * Paper. The warm ground is the system's first tell: a record, not
-     * a dashboard. Sheet is a panel, grid is the one cold surface, kept
-     * for dense fields of mono values.
+     * Paper, from the chrome a step below the ground to the plane that
+     * floats. Barely warm: the cream of the first register read as old
+     * paper beside navy. The ground is one value on purpose, so a warmer
+     * ground is a one-line change here.
      */
-    --di-paper: #f4f1e8;
-    --di-sheet: #fcfbf7;
-    --di-grid: #ffffff;
-    --di-sunken: #eae5d7;
-    --di-wash: #fbf9f2;
-    --di-ivory: #f7f4ec;
+    --di-paper-chrome: #e9e8e3;
+    --di-paper-ground: #f3f2ee;
+    --di-paper-surface: #fdfdfb;
+    --di-paper-inset: #efeee9;
+    --di-paper-plane: #ffffff;
 
-    /* Rules. Four weights, from hairline to the tick scale. */
-    --di-rule-100: #efebe0;
-    --di-rule-300: #dcd5c3;
-    --di-rule-400: #c3b9a2;
-    --di-rule-500: #bfb49b;
-
-    /*
-     * Navy is the ink and the only filled control on paper. There is no
-     * invented accent: what writes is what acts.
-     */
+    /* Navy is the ink and the action in daylight, and the ground after dark. */
     --di-navy-950: #061631;
     --di-navy-900: #0a1f44;
     --di-navy-800: #122e5e;
     --di-navy-700: #1d4280;
-    --di-navy-600: #4a5570;
-    --di-navy-500: #5b6478;
+    --di-navy-600: #3d4a66;
+    --di-navy-500: #556076;
     --di-navy-200: #c1c8d8;
     --di-navy-100: #e6e9f0;
-    --di-navy-50: #f2f5fa;
-    --di-ink: #0a1f44;
 
     /*
-     * Gold means sealed. Gold 500 is the mark, Gold 600 the hollow ring
-     * a model's claim gets, Gold 700 the only gold that may be read as
-     * text on paper. Gold never fills a surface in daylight.
+     * The night ramp: the steps of a navy ground. The chrome sits one step
+     * deeper than the ground, the surfaces lift from it, the plane floats
+     * highest; the glow is the light at the top of the hero zone.
+     */
+    --di-night-chrome: #071733;
+    --di-night-ground: #0a1f44;
+    --di-night-surface: #0f2a57;
+    --di-night-inset: #0c2350;
+    --di-night-plane: #133068;
+    --di-night-glow: #1a3a78;
+    --di-night-ink: #f2f0e6;
+    --di-night-muted: #c9d2e6;
+    --di-night-subtle: #a8b6d2;
+
+    /* Cool neutrals for what is not ink: an input's edge, a disabled word. */
+    --di-slate-500: #7a8291;
+    --di-slate-400: #626774;
+    --di-slate-night-500: #6f84ab;
+    --di-slate-night-400: #8696b7;
+
+    /*
+     * Gold is the one thing that matters in a view. Gold 500 is the mark,
+     * Gold 600 its edge and the hollow ring, Gold 700 the only gold that
+     * may be read as small text on paper. After dark, Gold 400 and 300 are
+     * text on navy.
      */
     --di-gold-700: #7a5c0e;
     --di-gold-600: #a6811f;
     --di-gold-500: #c9a24a;
     --di-gold-400: #d9b45e;
+    --di-gold-300: #e6c677;
     --di-gold-200: #e3d0a2;
     --di-gold-100: #f7edd5;
     --di-gold-50: #fbf6e8;
 
     /*
-     * The two accents. Clear primaries that carry at a distance, in print
-     * and at a trade fair. They stand beside navy and gold, never in their
-     * place, and name no state: poppy (Mohnrot) marks the passage a page
-     * is about, cornflower (Kornblau) signals a comparison or something
-     * new. Poppy 700 sits close to danger 700 by hue; the word beside it,
-     * not the red, is what says nothing failed.
+     * The two accents. Poppy (Mohnrot) marks a passage on a brand page;
+     * cornflower (Kornblau) is selection, focus and a compared series.
+     * Neither names a state.
      */
     --di-poppy-700: #a42a1f;
     --di-poppy-600: #d23c2e;
+    --di-poppy-300: #ff7f6e;
     --di-poppy-100: #fadfda;
+    --di-poppy-900: #3a1c1a;
     --di-cornflower-800: #1f5288;
     --di-cornflower-600: #2b6cb0;
-    --di-cornflower-100: #dfe9f5;
+    --di-cornflower-300: #79aeea;
+    --di-cornflower-200: #a9cbf3;
+    --di-cornflower-100: #e2ebf7;
 
     /*
-     * Status. Each word clears 5:1 on its own wash and on paper. Keep
-     * this set: a second yellow, or a generic traffic-light green or
-     * red, breaks the register.
+     * Status. Each word clears 5:1 on its own wash and on the ground.
+     * Warn is its own amber rather than a gold, so it never reads as the
+     * one thing.
      */
     --di-ok-800: #155230;
     --di-ok-700: #1c6b3c;
-    --di-ok-200: #c2d6be;
-    --di-ok-100: #e7efe5;
-    --di-warn-800: #6e4708;
-    --di-warn-700: #8a5a0a;
-    --di-warn-200: #e3d0a2;
-    --di-warn-100: #f7edd5;
+    --di-ok-100: #e2ece0;
+    --di-ok-300: #6edb97;
+    --di-ok-200: #86dca5;
+    --di-amber-800: #8a4500;
+    --di-amber-600: #c96a00;
+    --di-amber-300: #ffb25e;
+    --di-amber-100: #fbe7cf;
     --di-danger-800: #8a1b1b;
     --di-danger-700: #9e2020;
-    --di-danger-200: #e5c2b9;
-    --di-danger-100: #f8e6e2;
+    --di-danger-200: #ff9a92;
+    --di-danger-100: #f8e2dd;
 
     /*
-     * The night sheet. Navy can no longer act as the accent on a navy
-     * ground, so gold fills the committing control. That is the single
-     * exception to the gold rule, and it exists only after dark.
+     * One severity scale for every product and every chart. After dark,
+     * medium runs orange rather than yellow so it never reads as gold.
      */
-    --di-night-950: #071229;
-    --di-night-900: #0c1b37;
-    --di-night-800: #1b2f56;
-    --di-night-700: #2a4373;
-    --di-night-600: #3a5185;
-    --di-night-300: #a8b6d2;
-    --di-night-100: #f2f5fb;
-    --di-night-paper: #f2f0e6;
-    --di-night-gold-ink: #241a02;
-    --di-night-ok-900: #0e2a1a;
-    --di-night-ok-700: #235939;
-    --di-night-ok-300: #6edb97;
-    --di-night-danger-900: #2e1414;
-    --di-night-danger-700: #5e2323;
-    --di-night-danger-300: #ff9b9b;
-    --di-night-danger-500: #d9534f;
-    /* The accents after dark. The two tints are not in the brandbook yet;
-       each holds the night text above 13:1 and its own accent above 6:1. */
-    --di-night-poppy-300: #ff7f6e;
-    --di-night-poppy-900: #3a1c1a;
-    --di-night-cornflower-300: #79aeea;
-    --di-night-cornflower-900: #16294a;
+    --di-severity-critical-day: #b3161b;
+    --di-severity-high-day: #d9481a;
+    --di-severity-medium-day: #b57400;
+    --di-severity-low-day: #5d7797;
+    --di-severity-info-day: #878d99;
+    --di-severity-critical-night: #ff5f5a;
+    --di-severity-high-night: #ff7a3d;
+    --di-severity-medium-night: #ff9d2e;
+    --di-severity-low-night: #94abcb;
+    --di-severity-info-night: #7f8fb0;
 
-    /* Two families. --di-font-display was a third name for this one. */
-    --di-font-sans: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    --di-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    /*
+     * Three families. Sansation is the display face: a page's name, a
+     * figure, a section head. IBM Plex Sans is what a person reads; IBM
+     * Plex Mono what a machine wrote, and the labels above a value.
+     */
+    --di-font-sansation: "Sansation", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --di-font-sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --di-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     /* The sans with its box cut to cap height and descenders, for a tint
        that must not reach the line above. styles/band-face.css. */
-    --di-font-sans-band: "Space Grotesk Band", var(--di-font-sans);
+    --di-font-sans-band: "IBM Plex Sans Band", var(--di-font-sans);
 
-    /* A console scale: 13px is the body, the mono track runs beneath it. */
+    /* A console scale: 14px is the body, the mono track runs beneath it. */
     --di-font-size-100: 0.625rem;
     --di-font-size-200: 0.6875rem;
     --di-font-size-300: 0.75rem;
-    --di-font-size-400: 0.8125rem;
+    --di-font-size-400: 0.875rem;
     --di-font-size-500: 1rem;
     /*
      * The ladder's one interpolated step, and the only one: 16 to 20 is
-     * where prose hierarchy lives on a brand page, and with nothing
-     * between them a lede, a body paragraph and a card heading all
-     * collapsed onto 16 — the tier below had to borrow -600 to read as a
-     * heading at all. 18px is that band's middle. A console screen never
+     * where prose hierarchy lives on a brand page. A console screen never
      * reaches it; the console body is -400.
      */
     --di-font-size-550: 1.125rem;
     --di-font-size-600: 1.25rem;
     --di-font-size-700: 1.75rem;
     --di-font-size-800: 2.125rem;
-    /*
-     * The display tier. The console never goes here; the brand pages do,
-     * and they were setting 40-64px by hand. A tier the system owns beats
-     * a clamp invented in a stylesheet nothing else can see.
-     */
+    /* The display tier: a brand page, and the one hero figure of a view. */
     --di-font-size-900: 2.75rem;
     --di-font-size-1000: 3.5rem;
 
@@ -164,9 +162,10 @@
     --di-tracking-tight: -0.015em;
     --di-tracking-ui: 0.01em;
     --di-tracking-mono: 0.04em;
+    --di-tracking-label: 0.1em;
     --di-tracking-eyebrow: 0.12em;
 
-    /* Moderate, not round: 4px micro, 6px control, 8px panel. */
+    /* Moderate, not round: 4px micro, 6px control, 8px inset, 12px surface. */
     --di-radius-s: 4px;
     --di-radius-m: 6px;
     --di-radius-l: 8px;
@@ -174,21 +173,10 @@
 
     /*
      * Space. Named by value, so `--di-space-12` is 12px and a wrong number
-     * is visible in the diff rather than behind an index.
-     *
-     * Fine at the bottom, coarse at the top, because that is where the
-     * density is: a 28px control cannot be padded on a 4px grid, and the
-     * radius ramp already steps 4/6/8 for the same reason. Above 16 the
-     * steps widen, because nothing between two sections needs that
-     * precision. Anything not on this ramp is drift — `pnpm lint:tokens`
-     * fails on it.
-     *
-     * The ramp used to stop at 48, which is the gap between the parts of a
-     * brand page. A brand page also has to separate the parts from each
-     * other, and 48 is not enough air for that: it was being written as
-     * `calc(var(--di-space-48) * 2)` in a stylesheet nothing else can see.
-     * 64 and 96 are the two steps above, and they belong to the brand tier
-     * the way --di-font-size-900 and -1000 do. A console screen stops at 48.
+     * is visible in the diff rather than behind an index. Fine at the
+     * bottom, coarse at the top; 64 and 96 belong to the brand tier, and a
+     * console screen stops at 48. `pnpm lint:tokens` fails on anything off
+     * this ramp.
      */
     --di-space-2: 2px;
     --di-space-4: 4px;
