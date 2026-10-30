@@ -169,9 +169,12 @@ export function ComboBox({
               arrowOpened.current = suggestions.length > 0 || emptyLabel ? event.key : null;
             }}
           />
-          <button {...toggle} className="di-combobox-toggle" aria-label={toggleLabel} disabled={locked}>
-            <ChevronDown aria-hidden />
-          </button>
+          {/* Read only, there is no list to open, so no button promises one. */}
+          {readOnly ? null : (
+            <button {...toggle} className="di-combobox-toggle" aria-label={toggleLabel} disabled={disabled}>
+              <ChevronDown aria-hidden />
+            </button>
+          )}
         </Autocomplete.InputGroup>
         {reading ? (
           <FieldConfidence id={`${id}-hint`} reading={reading} />

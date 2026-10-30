@@ -10,6 +10,14 @@ const suggestions = [
   { value: "SR-02", label: "Southern register" },
   { value: "WR-03", label: "Western register" },
 ];
+const formStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  gap: "var(--di-rhythm-field)",
+  maxWidth: "400px",
+} as const;
+
 const meta = {
   title: "Forms/Select/ComboBox",
   tags: ["layer:form"],
@@ -39,7 +47,7 @@ const meta = {
     const [value, setValue] = useState(args.value);
     useEffect(() => setValue(args.value), [args.value]);
     return (
-      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+      <form onSubmit={(event) => event.preventDefault()} style={formStyle}>
         <ComboBox
           {...args}
           value={value}
@@ -48,12 +56,7 @@ const meta = {
             setValue(next);
           }}
         />
-        <Button type="button" variant="ghost" onClick={() => setValue("NR-01")}>
-          Restore recorded code
-        </Button>
-        <Button type="button" variant="ghost" onClick={() => setValue("")}>
-          Clear recorded code
-        </Button>
+        <Button type="submit">Save source</Button>
       </form>
     );
   },
@@ -120,6 +123,29 @@ export const CustomValue: Story = {
 /** External changes are authoritative even while the control has a selection. */
 export const ExternalReset: Story = {
   args: { value: "SR-02" },
+  render: function Render(args) {
+    const [value, setValue] = useState(args.value);
+    return (
+      <form onSubmit={(event) => event.preventDefault()} style={formStyle}>
+        <ComboBox
+          {...args}
+          value={value}
+          onValueChange={(next) => {
+            args.onValueChange(next);
+            setValue(next);
+          }}
+        />
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--di-gap-8)" }}>
+          <Button type="button" variant="secondary" onClick={() => setValue("NR-01")}>
+            Restore recorded code
+          </Button>
+          <Button type="button" variant="ghost" onClick={() => setValue("")}>
+            Clear recorded code
+          </Button>
+        </div>
+      </form>
+    );
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement),
       page = within(canvasElement.ownerDocument.body);
@@ -151,17 +177,17 @@ export const LateSuggestions: Story = {
       return () => clearTimeout(timer);
     }, []);
     return (
-      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+      <form onSubmit={(event) => event.preventDefault()} style={formStyle}>
         <ComboBox
           {...args}
           suggestions={loaded}
+          hint={loaded.length === 0 ? "Loading the registers on record." : "3 registers on record."}
           value={value}
           onValueChange={(next) => {
             args.onValueChange(next);
             setValue(next);
           }}
         />
-        <p>{loaded.length === 0 ? "Loading suggestions" : "Suggestions loaded"}</p>
       </form>
     );
   },
@@ -172,7 +198,7 @@ export const LateSuggestions: Story = {
     await userEvent.click(input);
     await userEvent.keyboard("{ArrowDown}");
     await expect(page.queryByRole("listbox")).toBeNull();
-    await canvas.findByText("Suggestions loaded");
+    await canvas.findByText("3 registers on record.");
     await expect(page.queryByRole("listbox")).toBeNull();
     await userEvent.type(input, "r");
     await expect(page.getByRole("option", { name: /Northern register/ })).toBeVisible();
@@ -259,7 +285,7 @@ export const ReadOnlyUpdate: Story = {
     const [value, setValue] = useState(""),
       [readOnly, setReadOnly] = useState(false);
     return (
-      <form onSubmit={(event) => event.preventDefault()} style={{ maxWidth: "480px" }}>
+      <form onSubmit={(event) => event.preventDefault()} style={formStyle}>
         <ComboBox
           {...args}
           value={value}
@@ -393,7 +419,7 @@ export const KeyboardWalk: Story = {
     await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
     await expect(input).toHaveFocus();
     await userEvent.tab();
-    await expect(canvas.getByRole("button", { name: "Restore recorded code" })).toHaveFocus();
+    await expect(canvas.getByRole("button", { name: "Save source" })).toHaveFocus();
   },
 };
 

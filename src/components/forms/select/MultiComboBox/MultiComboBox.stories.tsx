@@ -320,10 +320,11 @@ export const FreeEntryWithSuggestions: Story = {
     await userEvent.click(input);
     await userEvent.type(input, "lea");
     await userEvent.click(page.getByRole("option", { name: /lea.hofmann/ }));
-    await expect(canvas.getByRole("button", { name: "Remove lea.hofmann@data-insights.ai" })).toBeVisible();
     await userEvent.type(input, "auditor@extern.example{Enter}");
-    await expect(canvas.getByText("auditor@extern.example")).toBeVisible();
     await expect(input).toHaveValue("");
+    await userEvent.keyboard("{Escape}");
+    await expect(canvas.getByRole("button", { name: "Remove lea.hofmann@data-insights.ai" })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Remove auditor@extern.example" })).toBeVisible();
   },
 };
 
