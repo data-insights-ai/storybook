@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertTriangle, Download, Globe, MoreVertical, Plus, RotateCw, Server, Stamp } from "lucide-react";
+import { AlertTriangle, Globe, MoreVertical, Plus, RotateCw, Server, Stamp } from "lucide-react";
 import {
   Button,
   CellIcon,
@@ -206,10 +206,6 @@ function Ready({
               {words.addState}
             </Tag>
             <ToolbarEnd>
-              <Button variant="secondary" size="sm">
-                <Download aria-hidden />
-                {words.export}
-              </Button>
               <Menu
                 open={menu}
                 onOpenChange={setMenu}
@@ -220,6 +216,7 @@ function Ready({
                   </Button>
                 )}
               >
+                <MenuItem onSelect={() => setMenu(false)}>{words.export}</MenuItem>
                 <MenuItem onSelect={() => setMenu(false)}>{words.sealNow}</MenuItem>
                 <MenuItem onSelect={() => setMenu(false)}>{words.verify}</MenuItem>
                 <MenuDivider />

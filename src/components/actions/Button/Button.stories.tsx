@@ -125,8 +125,8 @@ export const WithBadge: Story = {
           <AppShellBarEnd moreLabel="More">
             <AppShellBarKeep>
               <Button variant="ghost" iconOnly aria-label="Notifications" badge={count} badgeLabel={words}>
-              <Bell aria-hidden />
-            </Button>
+                <Bell aria-hidden />
+              </Button>
             </AppShellBarKeep>
           </AppShellBarEnd>
         </AppShellBar>
@@ -158,8 +158,8 @@ export const WithBadgeGerman: Story = {
       <AppShellBarEnd moreLabel="Weitere">
         <AppShellBarKeep>
           <Button variant="ghost" iconOnly aria-label="Benachrichtigungen" badge={12} badgeLabel="12 ungelesen">
-          <Bell aria-hidden />
-        </Button>
+            <Bell aria-hidden />
+          </Button>
         </AppShellBarKeep>
       </AppShellBarEnd>
     </AppShellBar>

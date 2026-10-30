@@ -7,9 +7,9 @@ import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } fro
 import { SearchField } from "../../forms/text/SearchField";
 import { StatusPill } from "../../marks/status/StatusPill";
 import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
-import { Panel } from "../../layout/page/Panel";
+import { Panel, PanelActions } from "../../layout/page/Panel";
 import { Stack } from "../../layout/arrangement/Stack";
-import { Toolbar, ToolbarEnd } from "../../actions/Toolbar";
+import { Toolbar } from "../../actions/Toolbar";
 import { DensityProvider, densityChoices, useDensity, type Density } from "./DensityProvider";
 
 const labels: Record<Density, string> = { comfortable: "Comfortable", compact: "Compact" };
@@ -46,15 +46,15 @@ function Sample({ initial }: { initial: Density }) {
           <DensitySetting />
         </Panel>
         <Panel title="Sources" heading={2} padded={false}>
+          <PanelActions>
+            <Button size="sm">
+              <Plus aria-hidden />
+              Connect a source
+            </Button>
+          </PanelActions>
           <DataTable caption="Connected sources" indexed={false}>
             <Toolbar label="Filter the sources" role="search">
               <SearchField id="density-search" label="Search the sources" placeholder="host or kind" size="sm" />
-              <ToolbarEnd>
-                <Button size="sm">
-                  <Plus aria-hidden />
-                  Connect a source
-                </Button>
-              </ToolbarEnd>
             </Toolbar>
             <TableHead>
               <TableColumn>Host</TableColumn>

@@ -4,7 +4,7 @@ The system is a **Register**: the surface is a record, not a dashboard. Everythi
 
 ### Setup — styles first, then two providers
 
-Components read CSS custom properties from `:root`, so they are styled the moment `styles.css` is loaded; nothing has to wrap the tree for them to render. Two providers carry state an app owns. **`ThemeProvider`** themes the document root from the person's choice (`light`, `dark` or `auto`, which follows the device) before the first paint, and `useTheme` reads it back. **`SidebarProvider`** holds whether the `Sidebar` is expanded, for the sidebar family and its trigger. Other contexts (inside `AppShell`, `Page`, `Sidebar`) are internal to their components; a product does not mount them.
+Components read CSS custom properties from `:root`, so they are styled the moment `styles.css` is loaded; nothing has to wrap the tree for them to render. Two providers carry state an app owns. **`ThemeProvider`** themes the document root from the person's choice (`light`, `dark` or `auto`, which follows the device) before the first paint, and `useTheme` reads it back. **`SidebarProvider`** holds whether the `Sidebar` is expanded, for the sidebar family and its trigger. Other contexts (inside `Page`, `Sidebar`) are internal to their components; a product does not mount them.
 
 The interactive components (menus, dialogs, selects, comboboxes, date pickers, tabs) take their focus handling, keyboard movement and accessible names from Base UI's headless primitives; the date calendars' month grid comes from `react-day-picker`, and the typed date and time segments are spinbuttons of the package's own. That behaviour comes with the component: never rebuild one of them from raw markup to change how it looks.
 
@@ -26,7 +26,7 @@ This exists so a page can show both themes at once — `Foundations/Color` puts 
 
 Build from the components in this system. **If something you need is missing, say so — do not approximate it with raw markup.** A missing control is a code change in the library (a new component, with its own story and an export), not something a design invents. A hand-rolled substitute looks right in the design and cannot ship: it has no tokens, no dark theme, no focus handling and no accessible name.
 
-`Patterns/*` are **not** in this bundle. The security overview, case triage, organization home and the older example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `PageHeader`, `AttentionList`, `Panel`, `DataTable` and the rest.
+`Patterns/*` are **not** in this bundle. The security overview, case triage, organization home and the other example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `Sidebar`, `AppShellBar`, `AppShellContent`, `PageHeader`, `AttentionList`, `Panel`, `DataTable` and the rest.
 
 ### How a screen is composed
 
