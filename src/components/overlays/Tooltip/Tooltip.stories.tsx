@@ -252,7 +252,8 @@ const rail = [
  * With a count: the collapsed navigation rail, where an item shows only its
  * icon and a dot for what waits behind it. Hovered or focused, the tooltip
  * names the item and repeats the count, as a light pill on the bubble (the
- * alert one bright red) so it reads in both themes.
+ * alert one bright red) so it reads in both themes. It rests with the tooltip
+ * of Cases open.
  */
 export const WithACount: Story = {
   args: { label: "Cases", side: "right" },
@@ -292,12 +293,12 @@ export const WithACount: Story = {
     const canvas = within(canvasElement);
     const nav = canvas.getByRole("navigation", { name: "Sections" });
     await expect(nav).toHaveAttribute("data-state", "collapsed");
-    for (const item of rail.slice(1)) {
-      const link = () => within(nav).getByRole("link", { name: new RegExp(item.label) });
-      // The rail loads its tooltips on demand and swaps the item when they are there; find it and hover again.
-      const tip = await waitFor(
+    const link = (item: (typeof rail)[number]) => within(nav).getByRole("link", { name: new RegExp(item.label) });
+    // The rail loads its tooltips on demand and swaps the item when they are there; find it and hover again.
+    const open = (item: (typeof rail)[number]) =>
+      waitFor(
         async () => {
-          await userEvent.hover(link());
+          await userEvent.hover(link(item));
           const found = await waitFor(
             () => {
               const tip = canvasElement.ownerDocument.querySelector<HTMLElement>(".di-tooltip");
@@ -311,6 +312,8 @@ export const WithACount: Story = {
         },
         { timeout: 10000 },
       );
+    for (const item of rail.slice(1)) {
+      const tip = await open(item);
       await waitFor(() => expect(tip.getAnimations().length).toBe(0));
       const badge = tip.querySelector(".di-badge")!;
       await expect(badge).toHaveTextContent(item.badge);
@@ -318,7 +321,11 @@ export const WithACount: Story = {
       const pill = getComputedStyle(badge);
       await expect(contrast(pill.backgroundColor, bubble)).toBeGreaterThanOrEqual(3);
       await expect(contrast(pill.color, pill.backgroundColor)).toBeGreaterThanOrEqual(4.5);
-      await userEvent.unhover(link());
+      await userEvent.unhover(link(item));
     }
+    const cases = await open(rail[1]);
+    await waitFor(() => expect(cases.getAnimations().length).toBe(0));
+    await expect(cases).toBeVisible();
+    await expect(cases.querySelector(".di-badge")).toHaveTextContent("3");
   },
 };

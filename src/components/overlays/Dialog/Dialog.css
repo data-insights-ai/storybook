@@ -101,6 +101,14 @@
     translate: 0 100%;
   }
 
+  /* Above a phone it keeps a form's width, centred on the bottom edge, rather than a strip across the screen. */
+  @media (min-width: 601px) {
+    .di-dialog[data-placement="bottom"] {
+      width: min(100vw, var(--di-measure-form));
+      margin-inline: auto;
+    }
+  }
+
   .di-dialog[open] {
     opacity: 1;
     translate: 0 0;
