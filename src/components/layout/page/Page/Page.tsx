@@ -10,10 +10,10 @@ import "./Page.css";
  *   one frame. Where the page is 1280px or wider it keeps a side column at
  *   the triage rail's width (`--di-rail-width`) on the right and the content
  *   takes the rest, so a table never runs across the whole window. The
- *   column holds the record's `PageAside` and every `Sheet` the page opens
+ *   column holds the record's `PageAside` and every side `Dialog` the page opens
  *   (a row's detail, a create or edit form); otherwise it stays empty. It
  *   starts level with the content, below the header and the page's tabs.
- *   Narrower, the content takes the whole width and a sheet covers it.
+ *   Narrower, the content takes the whole width and the dialog covers it.
  * - `full` is an overview or dashboard: the whole frame, no side column.
  * - `form` is a create flow read down one column (`--di-measure-form`).
  *

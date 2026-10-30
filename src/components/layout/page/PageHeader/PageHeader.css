@@ -237,4 +237,18 @@
     font-size: var(--di-font-size-550);
     line-height: 1.55;
   }
+
+  /*
+   * Level 2: the heading over a section. The console section head is 20px
+   * over a 13px lede; the brand one is the display band measured to 22ch.
+   */
+  .di-page-head-section.di-page-head-console .di-lede {
+    font-size: var(--di-font-size-300);
+  }
+
+  .di-page-head-brand h2.di-page-title {
+    max-width: 22ch;
+    font-size: clamp(var(--di-font-size-700), 3vw, var(--di-font-size-800));
+    line-height: 1.02;
+  }
 }

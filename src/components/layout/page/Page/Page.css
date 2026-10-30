@@ -87,7 +87,7 @@
   }
 
   /* A docked sheet fits the column instead: its body scrolls, its head and actions stay in view. */
-  .di-page[data-frame="side"] > .di-page-side > .di-sheet-docked {
+  .di-page[data-frame="side"] > .di-page-side > .di-dialog-docked {
     flex: 0 1 auto;
   }
 

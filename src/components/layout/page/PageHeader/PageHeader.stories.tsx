@@ -26,6 +26,7 @@ const meta = {
     children: null,
   },
   argTypes: {
+    level: { control: "radio", options: [1, 2] },
     eyebrow: { control: "text" },
     lede: { control: "text" },
     tier: { control: "radio", options: ["console", "brand"] },
@@ -40,13 +41,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const TitleOnly: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByRole("heading", { level: 1, name: "Watched identities" })).toBeVisible();
-  },
-};
 
 /**
  * An overview's header only orients: the name, its state beside it, and as
@@ -238,5 +232,62 @@ export const Detail: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("heading", { level: 1, name: "Head office" })).toBeVisible();
     await expect(canvas.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+  },
+};
+
+/**
+ * `level={2}` heads a section of a screen: an h2 at 20px over a 13px lede,
+ * with what the section reports at the right — a state and a count go in
+ * as they are, not as a string.
+ */
+export const Section: Story = {
+  args: { level: 2, eyebrow: undefined, lede: "Where alerts go when a source stops or a rule fires." },
+  render: (args) => (
+    <PageHeader {...args}>
+      <PageHeaderTitle>Notification channels</PageHeaderTitle>
+      <PageHeaderStatus>
+        <StatusPill tone="ok">synced</StatusPill>
+      </PageHeaderStatus>
+      <PageHeaderMeta>4 channels · 1 paused</PageHeaderMeta>
+    </PageHeader>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("heading", { level: 2, name: "Notification channels" })).toBeVisible();
+    await expect(canvas.queryByRole("banner")).toBeNull();
+  },
+};
+
+/**
+ * A brand page's section head: the display band measured to 22ch, the
+ * plain eyebrow that repeats down the page, and at most one marked passage
+ * per page.
+ */
+export const SectionOnABrandPage: Story = {
+  args: {
+    level: 2,
+    tier: "brand",
+    eyebrow: "Colour",
+    lede: "No accent colour acts. Body text is navy; the one filled control on a sheet is navy.",
+  },
+  render: (args) => (
+    <PageHeader {...args}>
+      <PageHeaderTitle>
+        Navy is the ink <Highlight>and the action</Highlight>.
+      </PageHeaderTitle>
+    </PageHeader>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const heading = canvas.getByRole("heading", { level: 2, name: "Navy is the ink and the action." });
+    await expect(within(heading).getByText("and the action").tagName).toBe("MARK");
+  },
+};
+
+/** The smallest header: the page name alone, with the eyebrow and lede the meta sets. */
+export const TitleOnly: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("heading", { level: 1, name: "Watched identities" })).toBeVisible();
   },
 };
