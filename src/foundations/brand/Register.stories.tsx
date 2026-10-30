@@ -106,7 +106,7 @@ function RegisterPage() {
           padded={false}
           note="The table drops its frame on the surface. The filter is a tonal tag in an unframed toolbar, so there is one outline: the field's."
         >
-          <DataTable caption="Collectors" indexed={false}>
+          <DataTable caption="Collectors and their state" indexed={false}>
             <Toolbar role="search" label="Filter collectors">
               <SearchField id="register-filter" label="Search collectors" placeholder="Search collectors" size="sm" />
               <Tag mono pressed onRemove={() => undefined} removeLabel="Remove the filter state: running">

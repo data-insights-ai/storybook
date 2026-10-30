@@ -116,14 +116,14 @@ function ScalePage() {
             <TableBody>
               {perDensity.map(([token, comfortable, compact]) => (
                 <TableRow key={token}>
-                  <TableCell mono label="Token">
-                    {token}
+                  <TableCell label="Token">
+                    <span className="di-tokens-mono">{token}</span>
                   </TableCell>
-                  <TableCell mono align="end" label="Comfortable">
-                    {comfortable}
+                  <TableCell align="end" label="Comfortable">
+                    <span className="di-tokens-mono">{comfortable}</span>
                   </TableCell>
-                  <TableCell mono align="end" label="Compact">
-                    {compact}
+                  <TableCell align="end" label="Compact">
+                    <span className="di-tokens-mono">{compact}</span>
                   </TableCell>
                 </TableRow>
               ))}

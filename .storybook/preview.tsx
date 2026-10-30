@@ -61,26 +61,8 @@ const preview: Preview = {
           "Shell",
           "Patterns",
         ];
-        // Read top to bottom: what the system is, then what it is made of,
-        // then how it is applied, and last the reasoning behind all of it.
-        // "Decisions" argues about other products rather than specifying
-        // this one, so it no longer sits third, ahead of colour and type.
-        const foundations = [
-          "Essence",
-          "Register",
-          "Voice",
-          "Color",
-          "Type",
-          "Scale",
-          "Density",
-          "Logo",
-          "Mark",
-          "Practice",
-          "Surfaces",
-          "Pages",
-          "Groups",
-          "Decisions",
-        ];
+        // Read top to bottom: the rules, the voice, the tokens, the logo, then how pages and groups are built.
+        const foundations = ["Register", "Voice", "Color", "Type", "Scale", "Logo", "Pages", "Groups"];
         // Listed items sort in list order; anything unlisted falls to the end.
         const rank = (list, value) => {
           const index = list.indexOf(value);

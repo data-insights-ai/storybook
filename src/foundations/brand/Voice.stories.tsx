@@ -65,7 +65,7 @@ function VoicePage() {
           <li>No hype words (revolutionary, seamless, unlock, leverage), no emoji.</li>
         </Rules>
         <Example title="Rewrites" padded={false}>
-          <DataTable caption="Rewrites" indexed={false} narrow="stack">
+          <DataTable caption="Wording to replace" indexed={false} narrow="stack">
             <TableHead>
               <TableColumn>Instead of</TableColumn>
               <TableColumn>Write</TableColumn>
