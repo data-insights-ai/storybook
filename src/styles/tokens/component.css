@@ -76,7 +76,14 @@
     --di-choice-selected-bg: var(--di-bg-selected);
     --di-choice-selected-edge: var(--di-select);
     --di-choice-selected-fg: var(--di-text);
-    /* A chosen segment or toggle is a solid cornflower fill: small, so a tint alone would not read. */
+    /*
+     * A chosen segment switches a view: a quiet thumb, the surface tone
+     * lifted off the track, in ink. A chosen toggle is a value: a solid
+     * cornflower fill, small, so a tint alone would not read.
+     */
+    --di-choice-thumb-bg: var(--di-bg-surface);
+    --di-choice-thumb-fg: var(--di-text);
+    --di-choice-thumb-shadow: var(--di-shadow-thumb);
     --di-choice-on-bg: var(--di-select);
     --di-choice-on-fg: var(--di-text-on-strong);
     /* One cell of a row of toggles: square at the field height, a little wider so two letters breathe. */
