@@ -36,7 +36,7 @@ export const InProse: Story = {
   name: "In prose",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 620 }}>
+    <div style={{ display: "grid", gap: "var(--di-space-24)", maxWidth: "var(--di-measure-prose)" }}>
       <p>
         A cool grey canvas with a blue accent is what every tool in this field looks like. Warm paper reads as a record
         before a single word is parsed.
@@ -48,4 +48,18 @@ export const InProse: Story = {
       </p>
     </div>
   ),
+};
+
+/** German compounds are long: at phone width the sentence hyphenates instead of running past the edge. */
+export const German: Story = {
+  args: { children: "Nachvollziehbarkeit ist keine Zusatzfunktion." },
+  render: (args) => (
+    <div lang="de">
+      <PullQuote {...args} />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const quote = canvasElement.querySelector("blockquote")!;
+    await expect(quote.scrollWidth).toBeLessThanOrEqual(quote.clientWidth + 1);
+  },
 };

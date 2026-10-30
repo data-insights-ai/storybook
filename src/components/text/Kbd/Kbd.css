@@ -11,11 +11,14 @@
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     line-height: 1;
+    white-space: nowrap;
+    vertical-align: middle;
   }
 
+  /* On a button the key is a tone of the button's own ink, not a second frame inside the button's frame. */
   .di-kbd-on-control {
-    border-color: currentColor;
-    background: transparent;
+    border-color: transparent;
+    background: color-mix(in srgb, currentColor 16%, transparent);
     color: inherit;
   }
 
