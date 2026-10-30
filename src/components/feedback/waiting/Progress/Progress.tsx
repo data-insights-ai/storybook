@@ -2,8 +2,12 @@ import { cx } from "../../../../internal/cx";
 import "./Progress.css";
 
 /**
- * Waiting is always counted. An indeterminate bar with no end tells an
- * operator nothing they can act on, so this one states where it is.
+ * A wait that can be counted: an import, a sync, files on their way. The
+ * label says what is running, the count says how far it is, and the bar
+ * shows the same share at a glance. Waiting is always counted here; an
+ * indeterminate bar tells an operator nothing they can act on, so a wait
+ * without a count is `Loading`. A share of a quota ("1 of 10 seats used")
+ * is a measurement, not a wait: `LevelMeter`.
  */
 export function Progress({
   id,
@@ -15,12 +19,16 @@ export function Progress({
   className,
 }: {
   id: string;
+  /** What is running, e.g. "Importing sources". */
   label: string;
-  /** The count in words, e.g. "1,284 of 4,000". */
+  /** The count in figures, e.g. "1,284 of 4,000". */
   count: string;
   value: number;
   max?: number;
-  /** `prose` sets a count stated in words, "1 of 10 seats used", in the reading font. */
+  /**
+   * @deprecated Removed in 0.12: a count in words, "1 of 10 seats used", is
+   * a quota; show it with `LevelMeter`.
+   */
   countTrack?: "record" | "prose";
   className?: string;
 }) {

@@ -4,7 +4,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { SignIn, SignInVersion } from "./SignIn";
 import { TextField } from "../../forms/text/TextField";
-import { VersionTag } from "../../marks/VersionTag";
+import { Tag } from "../../marks/Tag";
 import { TextLink } from "../../navigation/TextLink";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
 import { Panel } from "../../layout/page/Panel";
@@ -44,7 +44,7 @@ export const Default: Story = {
   render: (args) => (
     <SignIn {...args}>
       <SignInVersion>
-        <VersionTag>v4.18.2</VersionTag>
+        <Tag mono>v4.18.2</Tag>
       </SignInVersion>
       <TextField
         id="login-user"
@@ -78,7 +78,7 @@ export const Rejected: Story = {
   render: (args) => (
     <SignIn {...args}>
       <SignInVersion>
-        <VersionTag>v4.18.2</VersionTag>
+        <Tag mono>v4.18.2</Tag>
       </SignInVersion>
       <TextField
         id="login-user-2"
@@ -113,7 +113,7 @@ export const Verifying: Story = {
   render: (args) => (
     <SignIn {...args}>
       <SignInVersion>
-        <VersionTag>v4.18.2</VersionTag>
+        <Tag mono>v4.18.2</Tag>
       </SignInVersion>
       <TextField
         id="login-user-3"
@@ -146,7 +146,7 @@ export const SecondFactor: Story = {
   render: (args) => (
     <SignIn {...args}>
       <SignInVersion>
-        <VersionTag>v4.18.2</VersionTag>
+        <Tag mono>v4.18.2</Tag>
       </SignInVersion>
       <TextField
         id="login-otp"

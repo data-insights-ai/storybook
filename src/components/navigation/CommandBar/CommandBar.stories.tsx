@@ -2,7 +2,8 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowRight, FileSearch, Radar, Settings2 } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
-import { CommandBar, CommandChip, CommandEmpty, CommandGroup, CommandRow } from "./CommandBar";
+import { Tag, TagList } from "../../marks/Tag";
+import { CommandBar, CommandEmpty, CommandGroup, CommandRow } from "./CommandBar";
 
 /**
  * One field for going somewhere, finding a record and asking a question:
@@ -239,14 +240,16 @@ export const LongGermanLabels: Story = {
 export const Scopes: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-      <CommandChip state="active">workspace: WS-01</CommandChip>
-      <CommandChip state="available" onSelect={fn()}>
+    <TagList>
+      <Tag mono pressed onRemove={fn()} removeLabel="Remove the workspace scope">
+        workspace: WS-01
+      </Tag>
+      <Tag mono onClick={fn()}>
         state: paused
-      </CommandChip>
-      <CommandChip state="suggested" onSelect={fn()}>
+      </Tag>
+      <Tag mono inferred onClick={fn()}>
         sealed before 2026-09-01
-      </CommandChip>
-    </div>
+      </Tag>
+    </TagList>
   ),
 };

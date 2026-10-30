@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
+import { Globe, ShieldCheck, Timer } from "lucide-react";
 import { StatusPill } from "./StatusPill";
 
 const meta = {
@@ -15,7 +16,7 @@ const meta = {
   argTypes: {
     tone: {
       control: "radio",
-      options: ["ok", "warn", "danger", "recorded", "neutral", "ai"],
+      options: ["ok", "warn", "danger", "recorded", "neutral", "inferred"],
     },
     dot: { control: "boolean" },
     track: { control: "radio", options: ["record", "prose"] },
@@ -26,39 +27,46 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Running: Story = {
+/** Beside the names it qualifies, in a list a person scans: the word carries the state, the dot confirms it. */
+export const InAList: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <ul style={{ display: "grid", gap: "var(--di-gap-8)", maxWidth: 420, margin: 0, padding: 0, listStyle: "none" }}>
+      {[
+        ["Firewall feed, Vienna", "ok", "running"],
+        ["Mail gateway", "warn", "paused"],
+        ["Domain controller export", "danger", "failed"],
+        ["Endpoint sensor fleet", "neutral", "queued"],
+      ].map(([name, tone, word]) => (
+        <li key={name} style={{ display: "flex", justifyContent: "space-between", gap: "var(--di-gap-12)" }}>
+          <span>{name}</span>
+          <StatusPill tone={tone as "ok" | "warn" | "danger" | "neutral"}>{word}</StatusPill>
+        </li>
+      ))}
+    </ul>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("running")).toBeVisible();
   },
 };
 
-/** Paused runs on the gold ramp, never on a second yellow. */
-export const Paused: Story = {
-  args: { tone: "warn", children: "paused" },
-};
-
-export const Failed: Story = {
-  args: { tone: "danger", children: "failed" },
-};
-
-/** A fact the register holds, rather than a state a machine is in. */
-export const Recorded: Story = {
-  args: { tone: "recorded", children: "sealed" },
-};
-
-export const Neutral: Story = {
-  args: { tone: "neutral", children: "queued" },
-};
-
-/** A model's claim: the hollow ring, never a filled dot. */
-export const Inferred: Story = {
-  args: { tone: "inferred", children: "ai insight" },
-};
-
-/** Without the dot, where a column of pills already reads as one channel. */
-export const WithoutDot: Story = {
-  args: { dot: false, children: "running" },
+/** Where a query is processed and how long it is kept: an icon in place of the dot. Both, or neither. */
+export const Privacy: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <StatusPill tone="ok" track="record" icon={<ShieldCheck />}>
+        local processing
+      </StatusPill>
+      <StatusPill tone="warn" track="record" icon={<Globe />}>
+        model · eu-central
+      </StatusPill>
+      <StatusPill tone="neutral" track="record" icon={<Timer />}>
+        retained 30 days
+      </StatusPill>
+    </div>
+  ),
 };
 
 /** The whole set. Every word clears 5:1 on its own wash. */
@@ -101,7 +109,14 @@ export const NightSheet: Story = {
   ),
 };
 
-/** In the reading font, among prose: the state of a licence on a page a person reads. */
+/** In the reading font, among prose, in German: the state of a licence on a page a person reads. */
 export const Prose: Story = {
-  args: { track: "prose", children: "Valid" },
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <p style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--di-gap-8)", maxWidth: 420 }}>
+      Lizenz für den Arbeitsbereich Produktion
+      <StatusPill tone="ok">Gültig bis 31. Dezember</StatusPill>
+      <StatusPill tone="inferred">Verlängerung vorgeschlagen</StatusPill>
+    </p>
+  ),
 };

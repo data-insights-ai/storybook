@@ -16,22 +16,34 @@ export type StatusTone = "ok" | "warn" | "danger" | "recorded" | "neutral" | "in
  * pill.
  *
  * `track="record"` sets it lowercase in the mono track, for a state a
- * machine reported among machine values (a run in a log).
+ * machine reported among machine values (a run in a log). `icon` takes the
+ * dot's place for a pill that states a scope rather than a run: where a
+ * query is processed (`ok` local, `warn` external), how long it is kept
+ * (`neutral`).
  */
 export function StatusPill({
   tone = "neutral",
   children,
   dot = true,
+  icon,
   track = "prose",
 }: {
   tone?: StatusTone;
   children: ReactNode;
   dot?: boolean;
+  /** A lucide icon in place of the dot. */
+  icon?: ReactNode;
   track?: "record" | "prose";
 }) {
   return (
     <Badge tone={tone === "neutral" ? "quiet" : tone} track={track}>
-      {dot ? <span className={cx("di-pill-dot", `di-pill-dot-${tone}`)} aria-hidden /> : null}
+      {icon ? (
+        <span className="di-pill-icon" aria-hidden>
+          {icon}
+        </span>
+      ) : dot ? (
+        <span className={cx("di-pill-dot", `di-pill-dot-${tone}`)} aria-hidden />
+      ) : null}
       {children}
     </Badge>
   );

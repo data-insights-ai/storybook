@@ -13,7 +13,7 @@ import {
 } from "react";
 import { DataTable, TableBody, TableFooter, TableSpacer, TableToolbar } from "../DataTable";
 import { NewEntries } from "../NewEntries";
-import { Spinner } from "../../../feedback/waiting/Spinner";
+import { Loading } from "../../../feedback/waiting/Loading";
 import "./InfiniteTable.css";
 
 /** What a row needs to be measured and placed: spread it onto its `TableRow`. */
@@ -33,7 +33,7 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * or says the next page is loading; `NewEntries` floats under the app
  * bar while rows are held back.
  *
- * **States:** loading more (the footer's `Spinner`), all loaded
+ * **States:** loading more (the footer's inline `Loading`), all loaded
  * (`footerLabel` with `hasMore` false), entries held back
  * (`order="newest-first"`).
  *
@@ -156,7 +156,9 @@ export function InfiniteTable({
           <TableSpacer height={after} />
         </TableBody>
         <TableFooter>
-          <span ref={end}>{loadingMore ? <Spinner label={loadingLabel} /> : footerLabel(shown, hasMore)}</span>
+          <span ref={end}>
+            {loadingMore ? <Loading shape="inline" label={loadingLabel} delay={0} /> : footerLabel(shown, hasMore)}
+          </span>
         </TableFooter>
       </DataTable>
     </div>

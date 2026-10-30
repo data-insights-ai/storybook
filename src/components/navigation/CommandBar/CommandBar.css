@@ -156,33 +156,4 @@
     width: var(--di-icon-xs);
     height: var(--di-icon-xs);
   }
-
-  .di-command-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--di-gap-4);
-    height: var(--di-pill-height);
-    padding: 0 var(--di-gap-8);
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-pill);
-    background: var(--di-bg-surface);
-    color: var(--di-text-muted);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  .di-command-chip.is-active {
-    border-color: var(--di-text);
-    background: var(--di-bg-page);
-    color: var(--di-text);
-  }
-
-  /* Proposed, not chosen: the ring's edge rather than the register's. */
-  .di-command-chip.is-suggested {
-    border-color: var(--di-mark-ring);
-    background: var(--di-mark-surface);
-    color: var(--di-mark-ink);
-  }
 }

@@ -187,7 +187,6 @@
     /* Records. */
     --di-attention-item-min: 280px;
     --di-attention-rank-bar: 3px;
-    --di-attention-clear-dot: 8px;
     --di-fact-label-min: 96px;
     --di-fact-label-max: 200px;
     --di-facts-grid-min: 360px;
@@ -204,6 +203,7 @@
     /* Feedback: a toast's width, the tooltip, the waiting marks and the skeleton's bars. */
     --di-toast-min: 320px;
     --di-toast-max: 480px;
+    --di-notice-dot: 8px;
     --di-tooltip-h: 22px;
     --di-app-loader-mark: 64px;
     --di-progress-h: 5px;

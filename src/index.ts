@@ -186,6 +186,7 @@ export {
 } from "./components/overlays/Modal";
 export { NewEntries } from "./components/data/table/NewEntries";
 export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./components/feedback/Notice";
+export type { NoticeTone, NoticeVariant } from "./components/feedback/Notice";
 export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/sequence/Pagination";
 export {
@@ -205,6 +206,8 @@ export { Progress } from "./components/feedback/waiting/Progress";
 export { RouteProgress } from "./components/feedback/waiting/RouteProgress";
 export { AppLoader } from "./components/feedback/waiting/AppLoader";
 export { Delayed } from "./components/feedback/Delayed";
+export { Loading } from "./components/feedback/waiting/Loading";
+export type { LoadingShape } from "./components/feedback/waiting/Loading";
 export { PullQuote } from "./components/text/PullQuote";
 export { QuantityField } from "./components/forms/text/QuantityField";
 export { RowActions } from "./components/actions/RowActions";

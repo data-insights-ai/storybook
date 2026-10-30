@@ -1,0 +1,43 @@
+@layer components {
+  /* The DataTable frame: its surface, head ground, row height and rules. */
+  .di-loading-table {
+    overflow: hidden;
+    border-radius: var(--di-table-radius);
+    background: var(--di-table-bg);
+    box-shadow: var(--di-table-shadow);
+  }
+
+  .di-loading-table-row {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-12);
+    height: var(--di-table-row-height);
+    padding-inline: var(--di-table-edge);
+    border-bottom: 1px solid var(--di-table-rule);
+  }
+
+  .di-loading-table-row.is-head {
+    height: var(--di-control-h-md);
+    border-bottom-color: var(--di-border);
+    background: var(--di-table-head-bg);
+  }
+
+  .di-loading-table-row:last-child {
+    border-bottom: 0;
+  }
+
+  .di-loading-table.is-indexed .di-loading-table-row {
+    padding-left: 0;
+  }
+
+  /* The index column keeps its width and nothing else: the table draws no rule or ground there. */
+  .di-loading-table-index {
+    width: var(--di-index-col);
+    flex: none;
+  }
+
+  .di-loading-bar.is-trailing {
+    width: var(--di-skeleton-trailing-w);
+    margin-left: auto;
+  }
+}

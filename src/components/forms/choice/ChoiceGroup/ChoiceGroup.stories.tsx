@@ -216,6 +216,8 @@ const ground = (element: Element | null): string => {
 /** Equal cells, one outline each; chosen and not chosen apart by at least 3:1 at the edge and 4.5:1 in the text. */
 const measureDays = async (canvasElement: HTMLElement) => {
   const cells = [...canvasElement.querySelectorAll<HTMLElement>(".di-choice-toggle")];
+  // A colour read mid-transition (a click or the theme just applied) measures a blend, not the state.
+  await Promise.all(cells.flatMap((cell) => cell.getAnimations().map((animation) => animation.finished)));
   const widths = new Set(cells.map((c) => Math.round(c.getBoundingClientRect().width)));
   await expect([...widths]).toHaveLength(1);
   const behind = ground(cells[0].parentElement);

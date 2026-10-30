@@ -1,28 +1,21 @@
-import type { ReactNode } from "react";
-import { Badge } from "../../marks/Badge";
-import "./PrivacyBadge.css";
+import { Children, isValidElement, type ReactNode } from "react";
+import { StatusPill } from "../../marks/status/StatusPill";
 
-const tones = { local: "ok", external: "warn", retention: "quiet" } as const;
+const tones = { local: "ok", external: "warn", retention: "neutral" } as const;
 
 /**
- * Where a query goes and how long it is kept. Both, or neither. Drawn on
- * `Badge`, the one pill: local is the safe tone, external the warning,
- * retention a quiet fact.
+ * Where a query goes and how long it is kept.
+ *
+ * @deprecated Removed in 0.12: use `StatusPill track="record" icon={…}` with
+ * `tone="ok"` (local), `"warn"` (external) or `"neutral"` (retention).
  */
-export function PrivacyBadge({
-  scope,
-  children,
-}: {
-  /** Which privacy fact this states. */
-  scope: "local" | "external" | "retention";
-  /** The icon first, then the words — the same order `Button` takes. */
-  children: ReactNode;
-}) {
+export function PrivacyBadge({ scope, children }: { scope: "local" | "external" | "retention"; children: ReactNode }) {
+  const parts = Children.toArray(children);
+  const icon = parts.find((part) => isValidElement(part));
+  const words = parts.filter((part) => part !== icon);
   return (
-    <span className="di-privacy">
-      <Badge tone={tones[scope]} track="record">
-        {children}
-      </Badge>
-    </span>
+    <StatusPill tone={tones[scope]} track="record" icon={icon}>
+      {words}
+    </StatusPill>
   );
 }

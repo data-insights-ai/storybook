@@ -1,7 +1,7 @@
 @layer components {
   /*
    * Drawn over the bar's bottom rule, in the action colour: navy on paper,
-   * gold after dark. Absolute, so the bar's flex row never sees it.
+   * ivory after dark. Absolute, so the bar's flex row never sees it.
    */
   .di-route-progress {
     position: absolute;

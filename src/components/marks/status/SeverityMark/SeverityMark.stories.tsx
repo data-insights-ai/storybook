@@ -7,6 +7,20 @@ const meta = {
   component: SeverityMark,
   tags: ["layer:primitive", "autodocs"],
   args: { level: "high", label: "High", variant: "mark" },
+  parameters: {
+    docs: {
+      description: {
+        component: [
+          "**Purpose:** how severe something is, on the one five-step scale every product and chart shares.",
+          "**When to use:** a case, a finding, an alert, a signal: beside its name, in a list or a column headed “Severity”. **When not to:** a run state (running, failed) is a `StatusPill`; a measured level against bands is a `LevelMeter`.",
+          "**Anatomy:** four steps that fill as the level rises (info fills none; its first step is outlined), then the word in text colour.",
+          "**Variants:** `mark` (default); `chip` lays a tint under a critical item that has to stop the eye, once per view; `bare` keeps the word for screen readers only, under a “Severity” column header.",
+          "**Content rules:** the word is the level in the reader’s language (Kritisch, Hoch, Mittel, Niedrig, Info). The word is regular weight: in a card or a hero the title is the one bold line.",
+          "**Accessibility:** the steps are hidden; the word is read. Colour is never the only channel: the step count and the word carry the level.",
+        ].join("\n\n"),
+      },
+    },
+  },
   argTypes: {
     level: { control: "radio", options: ["critical", "high", "medium", "low", "info"] },
     label: { control: "text" },
@@ -34,11 +48,41 @@ const scale: Array<[Severity, string]> = [
   ["info", "Info"],
 ];
 
+/** A case list, the usual place: the mark and the word lead each row, the name stays the strongest text. */
+export const InAList: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <ul style={{ display: "grid", gap: "var(--di-gap-12)", maxWidth: 480, margin: 0, padding: 0, listStyle: "none" }}>
+      {(
+        [
+          ["critical", "Kritisch", "Anmeldung mit gestohlenem Dienstkonto"],
+          ["high", "Hoch", "Ungewöhnlicher Datenabfluss aus dem Dateiserver"],
+          ["medium", "Mittel", "Veraltete Agentenversion auf zwölf Endgeräten"],
+          ["low", "Niedrig", "Fehlgeschlagene Anmeldungen außerhalb der Arbeitszeit"],
+        ] as Array<[Severity, string, string]>
+      ).map(([level, word, title]) => (
+        <li
+          key={level}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "6.5rem 1fr",
+            gap: "var(--di-gap-12)",
+            alignItems: "baseline",
+          }}
+        >
+          <SeverityMark level={level} label={word} />
+          <span>{title}</span>
+        </li>
+      ))}
+    </ul>
+  ),
+};
+
 /** The one scale, in order. Every product and every chart uses these five. */
 export const Scale: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--di-gap-24)" }}>
       {scale.map(([level, label]) => (
         <SeverityMark key={level} level={level} label={label} />
       ))}

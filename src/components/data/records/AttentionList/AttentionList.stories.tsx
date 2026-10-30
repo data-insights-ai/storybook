@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { TextLink } from "../../../navigation/TextLink";
-import { AttentionClear, AttentionItem, AttentionList } from "./AttentionList";
+import { MetaLine } from "../../../text/MetaLine";
+import { Notice, NoticeBody, NoticeTitle } from "../../../feedback/Notice";
+import { AttentionItem, AttentionList } from "./AttentionList";
 
 const meta = {
   title: "Data/Records/AttentionList",
@@ -14,9 +16,9 @@ const meta = {
         component: [
           "**Purpose:** what needs the reader, ranked, each with the one action that answers it; the point an overview opens with.",
           "**When to use:** the first block of an overview or home page, at most three items. **When not to:** a list of records to scan is a `DataTable`; one message about the system is a `Notice`; a single proposal with its reasons is a `ProposalPanel`.",
-          "**Anatomy:** an optional h2 `title`, then `AttentionItem`s: the rank (a real order), the emphasis label and `SeverityMark`, the title (a heading), the reason, a `MetaLine`, and the one action. `AttentionClear` replaces the list when nothing is due.",
+          '**Anatomy:** an optional h2 `title`, then `AttentionItem`s: the rank (a real order), the emphasis label and `SeverityMark`, the title (a heading), the reason, a `MetaLine`, and the one action. `Notice variant="line"` replaces the list when nothing is due.',
           "**Variants:** the first item takes `emphasis` (full row, the page's one `Button`, the gold edge and an `emphasisLabel`); the others carry a `TextLink`.",
-          "**States:** nothing due → `AttentionClear` (one ruled line with an ok dot), never an empty list.",
+          '**States:** nothing due → `Notice variant="line" tone="ok"` (one ruled line with an ok dot), never an empty list.',
           '**Content rules:** the title counts ("3 things need you"); each reason is one sentence saying why it needs the reader; the meta line holds facts with " · " between them.',
           "**Accessibility:** an ordered list named by the title; the rank is hidden from screen readers because the list order already says it; severity is a mark plus a word.",
         ].join("\n\n"),
@@ -116,7 +118,12 @@ export const OneDecision: Story = {
 /** Nothing is due: no empty list, one quiet line and what it rests on. */
 export const Clear: Story = {
   render: () => (
-    <AttentionClear title="Everything is running" note="14 sources delivering · nothing to decide before 30 Apr" />
+    <Notice variant="line" tone="ok">
+      <NoticeTitle>Everything is running</NoticeTitle>
+      <NoticeBody>
+        <MetaLine items="14 sources delivering · nothing to decide before 30 Apr" />
+      </NoticeBody>
+    </Notice>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

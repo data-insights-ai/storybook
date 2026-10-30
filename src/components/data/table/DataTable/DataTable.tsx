@@ -32,7 +32,7 @@ import "./DataTable.css";
  *
  * **States:** empty (`TableEmpty` keeps the head and the footer), the
  * row an open pane shows (`TableRow active`), a failed row
- * (`tone="danger"` tints its ordinal), loading (`SkeletonTable` in its
+ * (`tone="danger"` tints its ordinal), loading (`Loading shape="table"` in its
  * place).
  *
  * **Content:** a column head is one or two words; identifiers, times and
@@ -457,7 +457,7 @@ export function TableIndex({ children }: { children: ReactNode }) {
  * why it is empty (`message`) and, as `children`, the one way out — a
  * `Button variant="ghost"` that clears the filters. The head and the
  * footer stay, so the reader sees which list is empty. Where the list has
- * never held anything, show an `EmptyState` instead of the table.
+ * never held anything, show a `Notice variant="empty"` instead of the table.
  */
 export function TableEmpty({ message, children }: { message: string; children?: ReactNode }) {
   return (

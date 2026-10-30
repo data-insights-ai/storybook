@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Globe, Plus, Server } from "lucide-react";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { Chip } from "../../../marks/Chip";
+import { Tag } from "../../../marks/Tag";
 import {
   CellIcon,
   CellLead,
@@ -112,13 +112,13 @@ export const WithToolbar: Story = {
         <div style={{ width: 240, maxWidth: "100%" }}>
           <SearchField id="table-search" label="Search sources" placeholder="host or hash" dense={true} />
         </div>
-        <Chip active={true} removeLabel="Remove the state filter">
+        <Tag mono pressed onRemove={() => undefined} removeLabel="Remove the state filter">
           state: running
-        </Chip>
-        <Chip active={false} removeLabel="Add a kind filter">
+        </Tag>
+        <Tag mono onClick={() => undefined}>
           <Plus aria-hidden />
           kind
-        </Chip>
+        </Tag>
       </TableToolbar>
       <SourceRows />
     </DataTable>

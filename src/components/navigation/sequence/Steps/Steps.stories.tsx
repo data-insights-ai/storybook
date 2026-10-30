@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { FileCheck2, Link2, Radio, Stamp } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
-import { Spinner } from "../../../feedback/waiting/Spinner";
+import { Loading } from "../../../feedback/waiting/Loading";
 import { TextField } from "../../../forms/text/TextField";
 import { Panel } from "../../../layout/page/Panel";
 import { Stack } from "../../../layout/arrangement/Stack";
@@ -193,7 +193,7 @@ export const Pipeline: Story = {
             <Stamp aria-hidden />
           </StepIcon>
           <StepFooter>
-            <Spinner label="sealing" />
+            <Loading shape="inline" label="Sealing" delay={0} />
           </StepFooter>
         </Step>
         <Step state="upcoming" title="Publish">

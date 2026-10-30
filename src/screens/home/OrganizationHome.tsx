@@ -1,5 +1,4 @@
 import {
-  AttentionClear,
   AttentionItem,
   AttentionList,
   Button,
@@ -15,6 +14,10 @@ import {
   Panel,
   PanelMeta,
   PanelNote,
+  MetaLine,
+  Notice,
+  NoticeBody,
+  NoticeTitle,
   StatusPill,
   TextLink,
   TrendChart,
@@ -80,7 +83,12 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
           </AttentionItem>
         </AttentionList>
       ) : (
-        <AttentionClear title="Everything is running" note={calm(role, state)} />
+        <Notice variant="line" tone="ok">
+          <NoticeTitle>Everything is running</NoticeTitle>
+          <NoticeBody>
+            <MetaLine items={calm(role, state)} />
+          </NoticeBody>
+        </Notice>
       )}
 
       <Panel label="Your products" title="Open a product" heading={2}>

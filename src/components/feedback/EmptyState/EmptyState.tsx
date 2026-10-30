@@ -1,20 +1,18 @@
-import { Children, isValidElement, type ReactNode } from "react";
-import { cx } from "../../../internal/cx";
-import { surfaceClass } from "../../../internal/surface";
-import { Eyebrow } from "../../text/Eyebrow";
-import "./EmptyState.css";
+import type { ReactNode } from "react";
+import { takeSlot } from "../../../internal/slots";
+import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeTitle } from "../Notice";
 
 /**
- * Zero results and zero configuration are different facts, and they
- * never share a screen. Each state names the cause, states the boundary
- * it ran into, and offers exactly one action.
+ * Zero results, zero configuration or a failure to load, in place of the
+ * content.
  *
- * The eyebrow is optional: inside a page that already names the place, repeating
- * it over the empty state is noise. `EmptyStateIcon` sets one line icon
- * above the title, for a first-use state that invites the first entry.
+ * @deprecated Removed in 0.12: use `Notice variant="empty"`. `eyebrow` and
+ * `title` become `<NoticeTitle eyebrow>`, `body` and `mono` become
+ * `<NoticeBody mono>`, `EmptyStateIcon` is `NoticeIcon` and
+ * `EmptyStateAction` is `NoticeAction`; `tone` is the same.
  */
 export function EmptyState({
-  eyebrow,
+  eyebrow = "",
   title,
   body,
   mono = false,
@@ -25,54 +23,28 @@ export function EmptyState({
   eyebrow?: string;
   title: string;
   body: string;
-  /** The body is a query or a path rather than a sentence. */
   mono?: boolean;
-  /** `danger` is a failure, not an absence: a boundary the system hit. */
   tone?: "neutral" | "danger";
   className?: string;
-  /** One `EmptyStateAction` (an absence offers exactly one way out), and optionally `EmptyStateIcon`. */
   children?: ReactNode;
 }) {
-  const icon: ReactNode[] = [];
-  const rest: ReactNode[] = [];
-  Children.forEach(children, (child) => {
-    if (isValidElement(child) && child.type === EmptyStateIcon) icon.push(child);
-    else rest.push(child);
-  });
+  const [icon, rest] = takeSlot(children, EmptyStateIcon);
   return (
-    <div
-      className={cx(
-        surfaceClass({ edge: tone === "danger" ? "danger" : "none", padded: false }),
-        "di-empty",
-        tone === "danger" && "is-danger",
-        className,
-      )}
-    >
-      <div className="di-empty-body">
-        {icon}
-        {eyebrow ? (
-          <Eyebrow variant="plain" tone={tone === "danger" ? "danger" : "quiet"}>
-            {eyebrow}
-          </Eyebrow>
-        ) : null}
-        <p className="di-empty-title">{title}</p>
-        <p className={cx("di-empty-text", mono && "di-mono")}>{body}</p>
-        {rest}
-      </div>
-    </div>
+    <Notice variant="empty" tone={tone} className={className}>
+      {icon}
+      <NoticeTitle eyebrow={eyebrow}>{title}</NoticeTitle>
+      <NoticeBody mono={mono}>{body}</NoticeBody>
+      {rest}
+    </Notice>
   );
 }
 
-/** The one way out of an empty state. Never two. */
+/** @deprecated Removed in 0.12: use `NoticeAction` in a `Notice variant="empty"`. */
 export function EmptyStateAction({ children }: { children: ReactNode }) {
-  return <div className="di-empty-action">{children}</div>;
+  return <NoticeAction>{children}</NoticeAction>;
 }
 
-/** One line icon above the title, from `lucide-react`. Decoration: the title carries the meaning. */
+/** @deprecated Removed in 0.12: use `NoticeIcon` in a `Notice variant="empty"`. */
 export function EmptyStateIcon({ children }: { children: ReactNode }) {
-  return (
-    <div className="di-empty-icon" aria-hidden>
-      {children}
-    </div>
-  );
+  return <NoticeIcon>{children}</NoticeIcon>;
 }

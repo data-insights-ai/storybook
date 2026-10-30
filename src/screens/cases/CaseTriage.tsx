@@ -5,10 +5,12 @@ import {
   CellStack,
   ChoiceGroup,
   DataTable,
-  EmptyState,
   Figure,
   FigureRow,
   MetaLine,
+  Notice,
+  NoticeBody,
+  NoticeTitle,
   Numbered,
   PageHeader,
   PageHeaderMeta,
@@ -235,10 +237,10 @@ function CaseWithoutVerdict({ record }: { record: CaseRow }) {
   return (
     <>
       <CaseHeader record={record} />
-      <EmptyState
-        title="No verdict yet"
-        body="The analysis has not concluded on this case. Open its signals to triage it by hand."
-      />
+      <Notice variant="empty">
+        <NoticeTitle>No verdict yet</NoticeTitle>
+        <NoticeBody>The analysis has not concluded on this case. Open its signals to triage it by hand.</NoticeBody>
+      </Notice>
     </>
   );
 }

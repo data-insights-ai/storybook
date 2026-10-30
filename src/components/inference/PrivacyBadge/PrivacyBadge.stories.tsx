@@ -1,39 +1,19 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Globe, ShieldCheck, Timer } from "lucide-react";
-import { expect, within } from "storybook/test";
 import { PrivacyBadge } from "./PrivacyBadge";
 
 const meta = {
   title: "Inference/PrivacyBadge",
   component: PrivacyBadge,
-  tags: ["layer:block", "autodocs"],
+  tags: ["layer:block", "status:deprecated"],
   args: { scope: "local", children: null },
-  argTypes: {
-    scope: { control: "radio", options: ["local", "external", "retention"] },
-    children: { control: false },
-  },
 } satisfies Meta<typeof PrivacyBadge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The icon leads, then the words — the order `Button` takes. */
-export const Local: Story = {
-  render: (args) => (
-    <PrivacyBadge {...args}>
-      <ShieldCheck aria-hidden />
-      local processing
-    </PrivacyBadge>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByText("local processing")).toBeVisible();
-  },
-};
-
-/** Where a query goes and how long it is kept. Both, or neither. */
+/** Deprecated: renders `StatusPill track="record" icon`, local `ok`, external `warn`, retention `neutral`. */
 export const Every: Story = {
-  parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
       <PrivacyBadge scope="local">

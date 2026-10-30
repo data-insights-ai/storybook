@@ -6,6 +6,7 @@
   }
 
   .di-tag {
+    position: relative;
     display: inline-flex;
     align-items: baseline;
     gap: var(--di-gap-4);
@@ -16,9 +17,80 @@
     background: var(--di-bg-surface);
     font-family: var(--di-font-ui);
     font-size: var(--di-font-size-300);
+    font-weight: var(--di-weight-regular);
     line-height: var(--di-leading-snug);
     color: var(--di-text);
     white-space: nowrap;
+  }
+
+  .di-tag.is-mono {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    letter-spacing: var(--di-tracking-mono);
+  }
+
+  /* A tag that acts lines up with a small button beside it. */
+  .di-tag.is-control {
+    align-items: center;
+    min-height: var(--di-control-h-sm);
+    padding-block: 0;
+  }
+
+  .di-tag-name {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-gap-4);
+  }
+
+  .di-tag-name > svg {
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
+    flex: none;
+    align-self: center;
+    color: var(--di-text-muted);
+  }
+
+  .di-tag .di-seal-mark {
+    align-self: center;
+    margin-inline-end: var(--di-gap-2);
+  }
+
+  button.di-tag {
+    cursor: pointer;
+  }
+
+  .di-tag-press {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .di-tag-press {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--di-gap-4);
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+
+  button.di-tag:hover:not(.is-pressed) {
+    border-color: var(--di-border-strong);
+    background: var(--di-row-hover-bg);
+  }
+
+  /* Set: the one selection look, a tint with the cornflower edge, never a second outline. */
+  .di-tag.is-pressed {
+    border-color: var(--di-choice-selected-edge);
+    background: var(--di-choice-selected-bg);
+    color: var(--di-choice-selected-fg);
+  }
+
+  .di-tag.is-inferred {
+    border-color: var(--di-mark-border);
+    background: var(--di-mark-surface);
+    color: var(--di-mark-ink);
   }
 
   /*
@@ -42,6 +114,45 @@
     content: "· ";
   }
 
+  .di-tag-remove {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+    padding: 0;
+    margin-inline-end: calc(-1 * var(--di-gap-2));
+    border: 0;
+    border-radius: var(--di-radius-micro);
+    background: transparent;
+    color: var(--di-text-muted);
+    cursor: pointer;
+  }
+
+  .di-tag-remove:hover {
+    background: var(--di-row-hover-bg);
+    color: var(--di-text);
+  }
+
+  .di-tag-remove > svg {
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
+  }
+
+  @media (pointer: coarse) {
+    .di-tag-remove::after,
+    button.di-tag::after {
+      content: "";
+      position: absolute;
+      inset: calc((100% - var(--di-target)) / 2) 0;
+    }
+
+    .di-tag-remove::after {
+      inset: calc((100% - var(--di-target)) / 2);
+    }
+  }
+
   /* Compact: one line; a tag that does not fit is cut, never wrapped. */
   .di-tag-list.is-compact {
     flex-wrap: nowrap;
@@ -55,6 +166,10 @@
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .di-tag-list.is-compact .di-tag-name {
+    flex: none;
   }
 
   .di-tag-list.is-compact .di-tag-detail {
@@ -73,14 +188,6 @@
   }
 
   button.di-tag-more {
-    font: inherit;
-    font-family: var(--di-font-ui);
-    font-size: var(--di-font-size-300);
     cursor: pointer;
-  }
-
-  button.di-tag-more:hover {
-    color: var(--di-text);
-    border-color: var(--di-border-strong);
   }
 }

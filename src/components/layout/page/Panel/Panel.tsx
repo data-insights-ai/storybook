@@ -186,7 +186,7 @@ export function PanelStatus({ children }: { children: ReactNode }) {
 /**
  * The trailing line in a panel's header: a count, a timestamp, a version.
  * A slot rather than a string, because each of those is a value the
- * library already has a component for — `SealValue`, `VersionTag` — and a
+ * library already has a component for — `SealValue`, `Tag mono` — and a
  * bare string cannot carry the mono track or the mark.
  */
 export function PanelMeta({ children }: { children: ReactNode }) {

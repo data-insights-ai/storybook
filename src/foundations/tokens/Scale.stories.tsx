@@ -41,7 +41,7 @@ const radius = [
 ];
 
 const heights = [
-  { token: "--di-control-h-sm", px: 28, use: 'Button size="sm", Chip, a small SearchField. 24 in compact.' },
+  { token: "--di-control-h-sm", px: 28, use: 'Button size="sm", a pressable Tag, a small SearchField. 24 in compact.' },
   { token: "--di-control-h-md", px: 32, use: "The standard. Every form control unless told otherwise. 28 in compact." },
   { token: "--di-control-h-lg", px: 36, use: 'Button size="lg", the command bar input, the tab strip. 32 in compact.' },
   { token: "--di-row-h", px: 40, use: "A table or list row, via --di-table-row-height. 32 in compact." },
@@ -132,7 +132,7 @@ export const Dimensions: StoryObj = {
       <Section
         eyebrow="The index column"
         title="A number only where the order is information."
-        lede="`--di-index-col`, 38px, holds the ordinal of a row in a `DataTable` and a `SkeletonTable`, and the icon of a `Notice` and a `Modal`. Numbers count where order means something: the rows of a register, the steps of a process (`Steps`), the rank in an `AttentionList`, the phases of a story."
+        lede="`--di-index-col`, 38px, holds the ordinal of a row in a `DataTable` and a table-shaped `Loading` with `index`, and the icon of a `Notice` and a `Modal`. Numbers count where order means something: the rows of a register, the steps of a process (`Steps`), the rank in an `AttentionList`, the phases of a story."
       >
         <Rules>
           <Rule>

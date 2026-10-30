@@ -7,8 +7,6 @@ import {
   DetailSection,
   DetailSectionForm,
   Dialog,
-  EmptyState,
-  EmptyStateAction,
   Fact,
   FactList,
   InfiniteTable,
@@ -16,6 +14,10 @@ import {
   ListToolbarEnd,
   Menu,
   MenuItem,
+  Notice,
+  NoticeAction,
+  NoticeBody,
+  NoticeTitle,
   Page,
   PageHeader,
   PageHeaderAside,
@@ -154,13 +156,15 @@ export function ListPageScreen() {
           </ListToolbarEnd>
         </ListToolbar>
         {shown.length === 0 ? (
-          <EmptyState title="No member matches." body="Try another name, or show all roles.">
-            <EmptyStateAction>
+          <Notice variant="empty">
+            <NoticeTitle>No member matches.</NoticeTitle>
+            <NoticeBody>Try another name, or show all roles.</NoticeBody>
+            <NoticeAction>
               <Button variant="secondary" onClick={() => (setQ(""), setRole(""))}>
                 Clear filters
               </Button>
-            </EmptyStateAction>
-          </EmptyState>
+            </NoticeAction>
+          </Notice>
         ) : (
           <InfiniteTable
             caption="Members"

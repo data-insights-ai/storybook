@@ -1,125 +1,27 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { UserPlus } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../actions/Button";
-import { UserPlus } from "lucide-react";
 import { EmptyState, EmptyStateAction, EmptyStateIcon } from "./EmptyState";
 
 const meta = {
   title: "Feedback/EmptyState",
   component: EmptyState,
-  tags: ["layer:block", "autodocs"],
+  tags: ["layer:block", "status:deprecated"],
   args: {
-    eyebrow: "No results",
-    title: "No source matches this filter.",
-    body: "The register holds 24 sources. None of them is paused in the last 24 hours.",
-    mono: false,
-    tone: "neutral",
+    eyebrow: "",
+    title: "No invitations yet.",
+    body: "Invite colleagues by email. They join with the role you choose.",
     children: null,
   },
-  argTypes: {
-    eyebrow: { control: "text" },
-    title: { control: "text" },
-    body: { control: "text" },
-    mono: { control: "boolean" },
-    tone: { control: "radio", options: ["neutral", "danger"] },
-    children: { control: false },
-  },
+  argTypes: { children: { control: false } },
 } satisfies Meta<typeof EmptyState>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Zero results: the register has entries, this filter found none. */
-export const NoResults: Story = {
-  render: (args) => (
-    <EmptyState {...args}>
-      <EmptyStateAction>
-        <Button variant="secondary" size="sm">
-          Clear filters
-        </Button>
-      </EmptyStateAction>
-    </EmptyState>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByText("No source matches this filter.")).toBeVisible();
-  },
-};
-
-/** Zero configuration: a different fact, and never on the same screen. */
-export const NotConfigured: Story = {
-  args: {
-    eyebrow: "Nothing configured",
-    title: "This workspace has no sources yet.",
-    body: "Connect a source to start a register. Nothing is sealed until the first entry lands.",
-  },
-  render: (args) => (
-    <EmptyState {...args}>
-      <EmptyStateAction>
-        <Button variant="primary" size="sm">
-          Connect a source
-        </Button>
-      </EmptyStateAction>
-    </EmptyState>
-  ),
-};
-
-/** The query itself, in the mono track. */
-export const MonoBody: Story = {
-  args: {
-    mono: true,
-    body: "host:*.example.io AND state:paused AND seen>2026-09-22T09:00:00Z",
-  },
-  render: (args) => (
-    <EmptyState {...args}>
-      <EmptyStateAction>
-        <Button variant="secondary" size="sm">
-          Edit query
-        </Button>
-      </EmptyStateAction>
-    </EmptyState>
-  ),
-};
-
-/** A boundary the system hit, not an absence it found. */
-export const Failure: Story = {
-  args: {
-    tone: "danger",
-    eyebrow: "Boundary",
-    title: "The register could not be read.",
-    body: "The seal store did not answer within 30 seconds. Nothing was written and nothing was lost.",
-  },
-  render: (args) => (
-    <EmptyState {...args}>
-      <EmptyStateAction>
-        <Button variant="primary" size="sm">
-          Retry
-        </Button>
-      </EmptyStateAction>
-    </EmptyState>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByText("The register could not be read.")).toBeVisible();
-  },
-};
-
-/** No action, where the operator has nothing to do about it. */
-export const WithoutAction: Story = {
-  args: {
-    eyebrow: "Out of scope",
-    title: "This view is limited to sealed entries.",
-    body: "Unsealed entries exist, but an auditor key cannot read them.",
-  },
-};
-
-/** First use inside a page that already names the place: no eyebrow, an icon, the one action. */
+/** Deprecated: `EmptyState` is `Notice variant="empty"` and draws exactly as it does. Use `Notice`. */
 export const FirstUse: Story = {
-  args: {
-    eyebrow: "",
-    title: "No invitations yet.",
-    body: "Invite colleagues by email. They join with the role you choose.",
-  },
   render: (args) => (
     <EmptyState {...args}>
       <EmptyStateIcon>
@@ -131,6 +33,8 @@ export const FirstUse: Story = {
     </EmptyState>
   ),
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByRole("button", { name: "Invite people" })).toBeVisible();
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("status")).toHaveTextContent("No invitations yet.");
+    await expect(canvas.getByRole("button", { name: "Invite people" })).toBeVisible();
   },
 };
