@@ -95,13 +95,11 @@
     outline-offset: var(--di-focus-ring-inset);
   }
 
-  /* The current row is lifted a step, with the cornflower edge as its one mark: no tint. */
+  /* The current row: the selection tint, its leading cornflower edge carrying the contrast. */
   .di-row-current,
   .di-row-current:hover {
     background: var(--di-row-current-bg);
-    box-shadow:
-      inset var(--di-select-edge) 0 0 var(--di-select),
-      var(--di-row-current-shadow);
+    box-shadow: inset var(--di-select-edge) 0 0 var(--di-select);
   }
 
   tr.di-row-current,

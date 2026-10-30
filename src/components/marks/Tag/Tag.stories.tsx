@@ -18,7 +18,7 @@ const meta = {
           "**Purpose:** a name in a small frame: a role someone holds, a version, a filter narrowing a list.",
           "**When to use:** roles and groups in a table cell or a record; a version or a hash (`mono`); the filters set on a list, each removable, and the ones on offer (`onClick`). **When not to:** a state a machine reports is a `StatusPill`; a count on a tab or a button is a `Badge`; a severity is a `SeverityMark`; choosing one of a few views is a `ChoiceGroup`.",
           "**Anatomy:** an optional leading icon or the inferred ring, the name, an optional muted `detail`, an optional remove button. `TagList` sets tags side by side and, with `max`, folds the rest into one “+N more”.",
-          "**Variants:** `mono` for what a machine named (`v4.18.2`, `severity: high`); `pressed` for a set filter (a 2px cornflower line); `inferred` for a tag a model proposed (the hollow ring).",
+          "**Variants:** `mono` for what a machine named (`v4.18.2`, `severity: high`); `pressed` for a set filter (the selection tint inside a cornflower edge); `inferred` for a tag a model proposed (the hollow ring).",
           "**States:** static, pressable (`onClick`, with `pressed` it announces a toggle), removable (`onRemove`). A pressable or removable tag is as tall as a small button.",
           "**Content rules:** one or two words; a filter reads `key: value`; `detail` is the scope, not a sentence. `removeLabel` names what is dropped (“Remove the severity filter”).",
           "**Accessibility:** a static tag is text. `onClick` makes it a button (`aria-pressed` with `pressed`); the remove button is its own button named by `removeLabel`. On touch both have a 40px hit area.",
@@ -44,7 +44,7 @@ export const Grants: Story = {
   ),
 };
 
-/** The filters on a list, in its toolbar: set ones carry a cornflower line and a way out, offered ones a plus. */
+/** The filters on a list, in its toolbar: set ones carry the selection tint and a way out, offered ones a plus. */
 export const Filters: Story = {
   args: { onRemove: fn(), onClick: fn() },
   render: (args) => <FilterRow onRemove={args.onRemove} onClick={args.onClick} />,

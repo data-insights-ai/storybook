@@ -362,6 +362,40 @@ export const FillColumnProse: Story = {
 };
 
 /**
+ * Stacked on a phone beside a filling column: the other prose and the
+ * identifiers wrap inside the card instead of running out of it.
+ */
+export const FillColumnStacked: Story = {
+  name: "Fill column stacked",
+  args: { caption: "Findings", indexed: false, narrow: "stack" },
+  render: (args) => (
+    <div style={{ maxWidth: 360 }}>
+      <DataTable {...args}>
+        <TableHead>
+          <TableColumn>Finding</TableColumn>
+          <TableColumn width="fill">What happened</TableColumn>
+          <TableColumn>Next step</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell mono>sha256:9f2c4e1b7a03d58e6c21f4b09a7d3e15c8b62f40</TableCell>
+            <TableCell>A service account signed in from a host it had never used.</TableCell>
+            <TableCell>Reset the account's password and review what it read on the payroll share.</TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const frame = canvasElement.querySelector(".di-table-wrap")!.getBoundingClientRect();
+    for (const cell of canvasElement.querySelectorAll<HTMLElement>("tbody td")) {
+      await expect(cell.scrollWidth).toBeLessThanOrEqual(cell.clientWidth + 1);
+      await expect(cell.getBoundingClientRect().right).toBeLessThanOrEqual(frame.right + 1);
+    }
+  },
+};
+
+/**
  * `onSelect`: the whole row is the pointer target for the pane it opens.
  * The identifier stays a control, because a keyboard cannot reach a row.
  */

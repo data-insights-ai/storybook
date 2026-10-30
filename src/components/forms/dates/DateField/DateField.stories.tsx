@@ -101,7 +101,7 @@ const tokenColour = (from: Element, token: string) => {
 };
 
 /**
- * Open, the calendar shows the chosen day filled with the primary ink, as a chosen toggle (a value, not a pale tint),
+ * Open, the calendar shows the chosen day filled with the primary ink, as a chosen toggle (a value, never a solid cornflower cell),
  * today with a quiet ring, and the days before `min` greyed. It rests open.
  */
 export const CalendarOpen: Story = {
@@ -112,6 +112,7 @@ export const CalendarOpen: Story = {
     await waitFor(() => expect(chosen).toHaveFocus());
     await expect(chosen).toHaveAttribute("data-selected");
     await expect(getComputedStyle(chosen).backgroundColor).toBe(tokenColour(chosen, "--di-choice-on-bg"));
+    await expect(getComputedStyle(chosen).backgroundColor).not.toBe(tokenColour(chosen, "--di-select"));
     await expect(cell(canvasElement, /11 October 2026/)).toBeDisabled();
     const popup = canvasElement.ownerDocument.querySelector(".di-date-field-popover")!.getBoundingClientRect();
     await expect(popup.right).toBeLessThanOrEqual(canvasElement.ownerDocument.documentElement.clientWidth);

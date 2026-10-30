@@ -256,7 +256,7 @@ export const InAToolbar: Story = {
     await expect(Math.round(track.height)).toBe(Math.round(button.height));
     const thumb = getComputedStyle(canvas.getByText("7d").closest(".di-choice-segment")!);
     const probe = canvasElement.appendChild(document.createElement("div"));
-    probe.style.background = "var(--di-choice-on-bg)";
+    probe.style.background = "var(--di-select)";
     const cornflower = getComputedStyle(probe).backgroundColor;
     probe.remove();
     await expect(thumb.backgroundColor).not.toBe(cornflower);
@@ -328,6 +328,12 @@ const luminance = (colour: string) => {
 const contrast = (a: string, b: string) => {
   const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
+};
+/** A translucent fill as it shows on the ground below it. */
+const over = (fill: string, below: string) => {
+  const [r, g, b, a = 1] = fill.match(/[\d.]+/g)!.map(Number);
+  const [R, G, B] = below.match(/[\d.]+/g)!.map(Number);
+  return `rgb(${r * a + R * (1 - a)}, ${g * a + G * (1 - a)}, ${b * a + B * (1 - a)})`;
 };
 const ground = (element: Element | null): string => {
   for (let at = element; at; at = at.parentElement) {
@@ -505,11 +511,19 @@ export const Cards: Story = {
     await expect(canvas.getByText(/Upload one export now/)).toBeVisible();
     rest();
     await Promise.all(document.getAnimations().map((x) => x.finished.catch(() => undefined)));
-    const chosen = getComputedStyle(canvas.getByText("File drop").closest(".di-choice-card")!);
+    const drop = canvas.getByText("File drop").closest(".di-choice-card")!;
+    const chosen = getComputedStyle(drop);
     const other = getComputedStyle(canvas.getByText("Azure Event Hub").closest(".di-choice-card")!);
-    await expect(chosen.backgroundColor).toBe(other.backgroundColor);
-    await expect(contrast(chosen.borderTopColor, chosen.backgroundColor)).toBeGreaterThanOrEqual(3);
-    await expect(contrast(chosen.color, chosen.backgroundColor)).toBeGreaterThanOrEqual(4.5);
+    const probe = drop.appendChild(document.createElement("i"));
+    probe.style.background = "var(--di-bg-selected)";
+    const tint = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    await expect(chosen.backgroundColor).toBe(tint);
+    await expect(chosen.backgroundColor).not.toBe(other.backgroundColor);
+    const filled = over(chosen.backgroundColor, ground(drop.parentElement));
+    await expect(contrast(chosen.borderTopColor, other.backgroundColor)).toBeGreaterThanOrEqual(3);
+    await expect(contrast(chosen.borderTopColor, filled)).toBeGreaterThanOrEqual(3);
+    await expect(contrast(chosen.color, filled)).toBeGreaterThanOrEqual(4.5);
   },
 };
 

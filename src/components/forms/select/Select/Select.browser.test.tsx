@@ -42,7 +42,7 @@ function windowSelect() {
 }
 
 describe("select list under a pointer", () => {
-  test("opens below the field, drawn like a ComboBox's, the choice in the row hover tone", async () => {
+  test("opens below the field, drawn like a ComboBox's, the choice in the selection tint", async () => {
     const select = windowSelect();
     await userEvent.click(select);
     expect(select.matches(":open")).toBe(true);
@@ -51,7 +51,7 @@ describe("select list under a pointer", () => {
     const first = options[0].getBoundingClientRect();
     expect(first.top).toBeGreaterThanOrEqual(field.bottom);
     expect(first.height).toBeGreaterThanOrEqual(field.height);
-    expect(getComputedStyle(options[1]).backgroundColor).toBe(background("--di-row-hover-bg"));
+    expect(getComputedStyle(options[1]).backgroundColor).toBe(background("--di-bg-selected"));
     expect(getComputedStyle(options[2]).color).not.toBe(getComputedStyle(select.querySelector("optgroup")!).color);
   });
 

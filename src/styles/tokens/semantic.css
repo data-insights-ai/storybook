@@ -36,10 +36,8 @@
     /* What floats or is lifted one more step: a menu, a modal, a selected row. */
     --di-bg-plane: var(--di-paper-plane);
     --di-bg-row-hover: var(--di-paper-inset);
-    /* A selected row or option: the plane a step above its list, never a tint. Cornflower marks it as a line. */
-    --di-bg-selected: var(--di-paper-plane);
-    /* Text selected with the pointer: the one place a pale cornflower fill stays. */
-    --di-text-highlight: var(--di-cornflower-100);
+    /* What is selected: a row, an option, a chosen card, a set filter, selected text. The cornflower edge carries the contrast. */
+    --di-bg-selected: var(--di-cornflower-100);
     --di-bg-disabled: var(--di-paper-inset);
     /* A value to read, not change: a well one step below the surface, above the disabled tone. */
     --di-bg-readonly: var(--di-paper-ground);
@@ -247,8 +245,7 @@
     --di-bg-pane: var(--di-night-surface);
     --di-bg-plane: var(--di-night-plane);
     --di-bg-row-hover: rgba(168, 182, 210, 0.08);
-    --di-bg-selected: var(--di-night-plane);
-    --di-text-highlight: rgba(121, 174, 234, 0.32);
+    --di-bg-selected: rgba(121, 174, 234, 0.16);
     --di-bg-disabled: var(--di-night-inset);
     --di-bg-readonly: var(--di-night-ground);
     --di-bg-hero: var(--di-night-glow);
