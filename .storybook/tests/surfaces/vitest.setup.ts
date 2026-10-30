@@ -13,5 +13,7 @@ afterEach(() => {
   expect(clearanceFindings(document.body), "text or a control closer than 12px to its surface's edge").toEqual([]);
   expect(tableEdgeFindings(document.body), "a table on a surface: inside its content edge or full bleed").toEqual([]);
   expect(widthFindings(), "a story canvas wider than the viewport").toEqual([]);
-  expect(scrollerFindings(document.body), "a grid cut at its frame: the name pinned, the hidden side shaded").toEqual([]);
+  expect(scrollerFindings(document.body), "a grid cut at its frame: the name pinned, the hidden side shaded").toEqual(
+    [],
+  );
 });

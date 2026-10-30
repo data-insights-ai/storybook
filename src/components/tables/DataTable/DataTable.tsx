@@ -158,8 +158,8 @@ export function DataTable({
         then: a frame that fits would be a stop that does nothing. A framed
         register always scrolls, so it is always a stop.
       */}
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the frame takes the arrow keys for the rows inside it */}
       <div className="di-table-view">
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the frame takes the arrow keys for the rows inside it */}
         <div
           ref={scroll}
           className="di-table-scroll"
