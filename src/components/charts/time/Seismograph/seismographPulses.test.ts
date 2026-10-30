@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { bucketEnd, peaks, pulses, stepSelection, tickStride, type SeismographPoint } from "./seismographPulses";
+import {
+  bucketEnd,
+  countTicks,
+  peaks,
+  pulses,
+  stepSelection,
+  tickStride,
+  type SeismographPoint,
+} from "./seismographPulses";
 
 const day = (d: number, above: number, below = 0): SeismographPoint => ({
   at: `2026-10-0${d}T00:00:00Z`,
@@ -49,5 +57,16 @@ describe("seismograph", () => {
     expect(stepSelection(2, 5, "End")).toBe(4);
     expect(stepSelection(2, 5, "Enter")).toBeNull();
     expect(stepSelection(-1, 0, "ArrowRight")).toBeNull();
+  });
+});
+
+describe("count ticks", () => {
+  it("steps by a round number up past the top", () => {
+    expect(countTicks(174, "linear")).toEqual([0, 100, 200]);
+    expect(countTicks(120, "linear")).toEqual([0, 50, 100, 150]);
+    expect(countTicks(7, "sqrt")).toEqual([0, 5, 10]);
+  });
+  it("takes powers of ten on a logarithmic scale", () => {
+    expect(countTicks(174, "log")).toEqual([0, 1, 10, 100]);
   });
 });

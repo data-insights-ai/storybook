@@ -90,3 +90,23 @@ export function stepSelection(index: number, count: number, key: string): number
   }
   return null;
 }
+
+/*
+ * The count ticks above the line at round steps (1, 2 or 5 times a power of
+ * ten), about three of them, from 0 to the first step past `top`. A
+ * logarithmic scale takes powers of ten instead.
+ */
+export function countTicks(top: number, scale: "linear" | "sqrt" | "log"): number[] {
+  if (top <= 0) return [0];
+  if (scale === "log") {
+    const ticks = [0];
+    for (let t = 1; t <= top; t *= 10) ticks.push(t);
+    return ticks;
+  }
+  const rough = top / 3;
+  const power = 10 ** Math.floor(Math.log10(rough));
+  const step = [1, 2, 5, 10].map((m) => m * power).find((s) => s >= rough) ?? 10 * power;
+  const ticks = [];
+  for (let t = 0; t < top + step; t += step) ticks.push(t);
+  return ticks;
+}
