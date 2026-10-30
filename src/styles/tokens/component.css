@@ -69,23 +69,26 @@
     /* A row: its hover tint, the selected row's tint and edge, and an option's highlight in a popup. */
     --di-row-hover-bg: var(--di-bg-row-hover);
     --di-row-current-bg: var(--di-bg-selected);
+    --di-row-current-shadow: var(--di-shadow-thumb);
     --di-select-edge: 3px;
     --di-option-hover-bg: var(--di-row-hover-bg);
 
-    /* A chosen segment, toggle or card: the selection tint and edge of a row, the text at full strength. */
-    --di-choice-selected-bg: var(--di-bg-selected);
+    /* A chosen card, tag or option: its own neutral surface, a cornflower line as the one mark, the text at full strength. */
+    --di-choice-selected-bg: var(--di-bg-surface);
     --di-choice-selected-edge: var(--di-select);
     --di-choice-selected-fg: var(--di-text);
     /*
      * A chosen segment switches a view: a quiet thumb, the surface tone
-     * lifted off the track, in ink. A chosen toggle is a value: a solid
-     * cornflower fill, small, so a tint alone would not read.
+     * lifted off the track, in ink. A chosen toggle or calendar day is a
+     * value: the primary ink fill, as on a primary button. The days between
+     * the ends of a range sit on the inset tone.
      */
     --di-choice-thumb-bg: var(--di-bg-surface);
     --di-choice-thumb-fg: var(--di-text);
     --di-choice-thumb-shadow: var(--di-shadow-thumb);
-    --di-choice-on-bg: var(--di-select);
+    --di-choice-on-bg: var(--di-fill-strong);
     --di-choice-on-fg: var(--di-text-on-strong);
+    --di-choice-range-bg: var(--di-bg-subtle);
     /* One cell of a row of toggles: square at the field height, a little wider so two letters breathe. */
     --di-choice-toggle-w: calc(var(--di-field-height) + 2 * var(--di-gap-4));
 

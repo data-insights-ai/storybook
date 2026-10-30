@@ -109,8 +109,9 @@ export type ChoiceGroupProps = WithOptions | Composed;
  * markup. Segments switch a view, toggles pick values: a chosen segment is
  * the surface tone lifted off the track, in ink and semibold, so a view
  * switch above a list never outshouts the selected record in it; a chosen
- * toggle is a solid cornflower cell (each one is a value, too small for a
- * tint to read); a chosen card has the selection tint and a cornflower edge.
+ * toggle is filled with the primary ink, as a primary button (each one is a
+ * value); a chosen card keeps its own surface inside a 2px cornflower line.
+ * Cornflower marks selection as a line, never as a pale fill.
  *
  * **States:** a disabled option, a disabled group (`disabled` on the
  * fieldset); a chosen option keeps its edge while disabled. An error is the

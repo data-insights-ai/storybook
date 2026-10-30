@@ -220,7 +220,7 @@
     cursor: pointer;
   }
 
-  /* The row an open pane shows is the selected row (`.di-row-current`): the cornflower tint and its edge. */
+  /* The row an open pane shows is the selected row (`.di-row-current`): lifted a step, with the cornflower edge. */
 
   /*
    * The row's name stays at the left edge while the grid scrolls sideways.

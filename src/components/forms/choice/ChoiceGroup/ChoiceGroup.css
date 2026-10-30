@@ -82,8 +82,7 @@
   /*
    * Segments switch a view: one quiet thumb on the track, the surface tone
    * lifted by a short shadow, ink in semibold, no edge of its own, so the
-   * track is the only outline. Cornflower stays for what is chosen as a
-   * value (toggles) and for the selected record.
+   * track is the only outline.
    */
   .di-choice-segment.is-chosen {
     background: var(--di-choice-thumb-bg);
@@ -105,7 +104,7 @@
     font-weight: var(--di-weight-semibold);
   }
 
-  /* Toggles pick values: each chosen cell is a solid cornflower fill. */
+  /* Toggles pick values: each chosen cell is filled with the primary ink. */
   .di-choice-toggle.is-chosen {
     background: var(--di-choice-on-bg);
     color: var(--di-choice-on-fg);
