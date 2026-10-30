@@ -130,7 +130,7 @@ export function DetailPageScreen({
           <Toolbar label="Unsaved changes" role="region" frame="bar" sticky="bottom">
             <ToolbarStatus>The security rules changed and are not saved yet.</ToolbarStatus>
             <ToolbarEnd>
-              <Button variant="secondary" onClick={() => (setMfa(saved.mfa), setSessions(saved.sessions))}>
+              <Button variant="ghost" onClick={() => (setMfa(saved.mfa), setSessions(saved.sessions))}>
                 Discard
               </Button>
               <Button onClick={() => setSaved({ mfa, sessions })}>Save changes</Button>

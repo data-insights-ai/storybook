@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, waitFor, within } from "storybook/test";
 import { ProductShell } from "../shell/ProductShell";
 import { DetailPageScreen } from "./DetailPage";
+import { expectEndClearOfFootBand } from "./footBand.sample";
 
 const meta = {
   title: "Patterns/Detail page",
@@ -46,7 +47,7 @@ export const Editing: Story = {
   },
 };
 
-/** A rule switched: Save and Discard wait at the foot of the window until the change is kept or dropped. */
+/** A rule switched: Discard and Save wait in the band at the foot of the column until the change is kept or dropped. */
 export const UnsavedChanges: Story = {
   name: "Unsaved changes",
   args: { changed: true },
@@ -55,6 +56,7 @@ export const UnsavedChanges: Story = {
     const bar = canvas.getByRole("region", { name: "Unsaved changes" });
     await expect(bar).toBeVisible();
     await expect(within(bar).getByRole("button", { name: "Save changes" })).toHaveClass("di-btn-primary");
+    await expectEndClearOfFootBand(bar);
   },
 };
 

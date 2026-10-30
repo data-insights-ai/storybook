@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { ProductShell } from "../shell/ProductShell";
+import { expectEndClearOfFootBand } from "./footBand.sample";
 import { SettingsScreen } from "./Settings";
 
 const meta = {
@@ -31,7 +32,11 @@ export const Workspace: Story = {
   },
 };
 
-/** Retention changed: the bar at the foot holds Save and Discard until the change is kept or dropped. */
+/**
+ * Retention changed: the band at the foot of the content column holds Discard and Save until the change is kept
+ * or dropped. Scrolled to the end, the last section ends above the band, and the sidebar's column runs the page's
+ * full height.
+ */
 export const UnsavedChanges: Story = {
   name: "Unsaved changes",
   args: { changed: true },
@@ -41,5 +46,7 @@ export const UnsavedChanges: Story = {
     await expect(bar).toBeVisible();
     await expect(within(bar).getByRole("button", { name: "Save changes" })).toHaveClass("di-btn-primary");
     await expect(within(bar).getByRole("button", { name: "Discard" })).toBeVisible();
+
+    await expectEndClearOfFootBand(bar);
   },
 };

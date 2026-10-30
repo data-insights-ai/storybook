@@ -29,7 +29,7 @@ export function Sidebar({ label, closeLabel, children }: { label: string; closeL
   if (!mobile) {
     return (
       <nav id={sidebarId} className="di-sb" aria-label={label} data-state={expanded ? "expanded" : "collapsed"}>
-        {children}
+        <div className="di-sb-frame">{children}</div>
       </nav>
     );
   }
