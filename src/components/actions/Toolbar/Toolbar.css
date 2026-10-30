@@ -71,21 +71,51 @@
   }
 
   /*
-   * Over a long form the bar floats: a plane's shadow sets it off the fields scrolling under it, and the ground
-   * fills the strip below it, so nothing shows between the bar and the window's foot.
+   * Unsaved changes are the page's state, not one more panel: a band in the chrome tone across the foot of the
+   * content column, a line and a cast shadow over what scrolls under it, no corners. Outside the app frame it sticks
+   * to the foot of its container.
    */
   .di-toolbar[data-sticky="bottom"] {
+    --di-surface-radius: 0;
+    --di-surface-bg: var(--di-bg-chrome);
+    --di-surface-shadow: var(--di-shadow-foot);
     position: sticky;
-    bottom: var(--di-space-16);
-    z-index: 2;
-    --di-surface-shadow: var(--di-shadow-plane), 0 var(--di-space-16) 0 var(--di-bg-page);
+    bottom: 0;
+    z-index: 3;
+    border-top: 1px solid var(--di-border);
   }
 
-  /* Tab scrolls a field clear of the floating bar, its ring included. */
+  /* In the app frame it spans the column beside the sidebar, its words on the page's text edge. */
+  .di-content .di-toolbar[data-sticky="bottom"] {
+    position: fixed;
+    inset-inline: var(--di-shell-start, 0px) 0;
+    bottom: 0;
+    padding-inline: var(--di-content-pad);
+    transition: inset-inline-start var(--di-duration-slow) var(--di-ease);
+  }
+
+  /* The page keeps the band's height free at its end, so its last block always scrolls clear of it. */
+  .di-content:has(.di-toolbar[data-sticky="bottom"]) {
+    padding-bottom: calc(var(--di-foot-bar-h, var(--di-foot-bar-min)) + var(--di-space-32));
+  }
+
+  /* Tab scrolls a field clear of the band, its ring included. */
   html:has(.di-toolbar[data-sticky="bottom"]) {
+    --di-foot-bar-min: calc(var(--di-field-height) + 2 * var(--di-inset-group) + 1px);
     scroll-padding-bottom: calc(
-      var(--di-space-16) + var(--di-field-height) + 2 * var(--di-gap-8) + var(--di-focus-ring-reach)
+      var(--di-foot-bar-h, var(--di-foot-bar-min)) + var(--di-gap-8) + var(--di-focus-ring-reach)
     );
+  }
+
+  /* On a phone the band is the screen's width: the words on one row, Discard and Save sharing the next. */
+  @media (max-width: 600px) {
+    .di-content .di-toolbar[data-sticky="bottom"] {
+      padding-inline: var(--di-space-16);
+    }
+
+    .di-toolbar[data-sticky="bottom"] > .di-toolbar-end > * {
+      flex: 1 1 0;
+    }
   }
 
   /* The same inset above and below; in the list's place it keeps the filter row's height on a wide screen. */
