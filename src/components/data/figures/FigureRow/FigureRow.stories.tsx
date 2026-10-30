@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Figure, FigureRow } from "./FigureRow";
+import { Figure, FigureNote } from "../Figure";
+import { FigureRow } from "./FigureRow";
 
 const meta = {
   title: "Data/Figures/FigureRow",
@@ -19,14 +20,12 @@ const meta = {
         12 rules
       </Figure>
       <Figure label="Hosts" value="39" tone="danger">
-        36 in finance
+        <FigureNote tone="danger">36 in finance</FigureNote>
       </Figure>
       <Figure label="Accounts" value="4">
         svc-backup most active
       </Figure>
-      <Figure label="Score" value="98">
-        of 100
-      </Figure>
+      <Figure label="Score" value="98" unit="of 100" />
     </FigureRow>
   ),
 } satisfies Meta<typeof FigureRow>;
@@ -34,11 +33,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Figures without a hero sit on a strip a step below the ground. */
+/** Figures without a hero sit on a strip a step below the ground; one description list for the row. */
 export const Strip: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("1,064")).toBeVisible();
+    await expect(canvasElement.querySelectorAll("dl")).toHaveLength(1);
     const first = canvasElement.querySelector(".di-figure") as HTMLElement;
     const list = canvasElement.querySelector(".di-figure-list") as HTMLElement;
     await expect(first.getBoundingClientRect().left).toBeLessThan(list.getBoundingClientRect().left);

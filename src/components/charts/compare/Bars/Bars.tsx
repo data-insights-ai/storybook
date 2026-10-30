@@ -1,11 +1,11 @@
-import "./Bars.css";
+import { Sparkline } from "../../../data/figures/Sparkline";
 
 /**
- * A row of small bars, each `values` entry a percentage of the column's
- * height, with the `highlight` one marked (today, say) and three labels
- * beneath: where the row starts, its middle and its end. The bars are hidden
- * from assistive technology, so the figure they show belongs in the text
- * beside them. For a chart with axes and a tooltip, use `Chart`.
+ * A row of small bars with three captions.
+ *
+ * @deprecated Removed in 0.12.0. Use `Sparkline` with `width="fill"`,
+ * `height="md"` and `captions={[start, mid, end]}`; `values` and
+ * `highlight` stay, and `label` says the shape in words.
  */
 export function Bars({
   values,
@@ -21,17 +21,13 @@ export function Bars({
   endLabel: string;
 }) {
   return (
-    <div className="di-bars-block">
-      <div className="di-bars" aria-hidden>
-        {values.map((height, index) => (
-          <span key={index} className={index === highlight ? "is-today" : undefined} style={{ height: `${height}%` }} />
-        ))}
-      </div>
-      <div className="di-bar-caption">
-        <span>{startLabel}</span>
-        <span>{midLabel}</span>
-        <span>{endLabel}</span>
-      </div>
-    </div>
+    <Sparkline
+      values={values}
+      highlight={highlight}
+      label={`${startLabel} to ${endLabel}`}
+      width="fill"
+      height="md"
+      captions={[startLabel, midLabel, endLabel]}
+    />
   );
 }
