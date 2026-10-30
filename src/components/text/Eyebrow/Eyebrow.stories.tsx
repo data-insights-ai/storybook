@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Panel } from "../../layout/page/Panel";
-import { Stack } from "../../layout/arrangement/Stack";
+import { Stack } from "../../layout/arrange/Stack";
 import { Eyebrow } from "./Eyebrow";
 
 const meta = {

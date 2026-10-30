@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { X } from "lucide-react";
 import { cx } from "../../../internal/cx";
-import { SealMark } from "../../marks/status/SealValue";
+import { SealMark } from "../../status/SealValue";
 import "./Toast.css";
 
 /**

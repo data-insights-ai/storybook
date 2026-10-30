@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowRight, FileSearch, Radar, Settings2 } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
-import { Tag, TagList } from "../../marks/Tag";
+import { Tag, TagList } from "../../status/Tag";
 import { CommandBar, CommandEmpty, CommandGroup, CommandRow } from "./CommandBar";
 
 /**

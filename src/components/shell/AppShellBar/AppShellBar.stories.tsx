@@ -3,7 +3,7 @@ import { Bell, Boxes, Building2, Gauge, RefreshCw, Settings, ShieldAlert } from 
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
-import { StatusPill } from "../../marks/status/StatusPill";
+import { StatusPill } from "../../status/StatusPill";
 import { Breadcrumb } from "../../navigation/Breadcrumb";
 import {
   Sidebar,

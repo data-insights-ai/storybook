@@ -94,7 +94,7 @@ function GroupsPage() {
   return (
     <Doc
       title="Groups"
-      lede="The sidebar is regrouped by the question a developer asks when looking for a component: fourteen groups, one folder each. This page is the target of that move; until the move step runs, the sidebar still shows today's folders."
+      lede="The sidebar is grouped by the question a developer asks when looking for a component: fourteen groups, one folder each."
     >
       <DocSection title="The rule">
         <Rules>
@@ -102,7 +102,11 @@ function GroupsPage() {
           <li>
             A component goes where a developer looks first. Where it fits two groups, its docs name the other one.
           </li>
-          <li>The move is one commit after the last batch. Export names do not change, so imports stay the same.</li>
+          <li>
+            A folder holds at most eight entries. A larger group gets sub-folders, and each is a subgroup in the
+            sidebar: Forms (Field, Text, Choice, Select, Dates), Text (Blocks), Layout (Page, Arrange).
+          </li>
+          <li>The group is not part of the import: export names stay the same wherever a component sits.</li>
           <li>Foundations and Patterns stay sections of their own, outside src/components.</li>
         </Rules>
       </DocSection>

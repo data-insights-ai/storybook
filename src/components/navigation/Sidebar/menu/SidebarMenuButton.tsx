@@ -3,7 +3,7 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { ChevronsUpDown } from "lucide-react";
 import { cx } from "../../../../internal/cx";
-import { Badge } from "../../../marks/Badge";
+import { Badge } from "../../../status/Badge";
 import { useSidebar, useSidebarRail } from "../state/SidebarContext";
 import type { BadgeTone } from "./badgeTone";
 import "./SidebarMenu.css";

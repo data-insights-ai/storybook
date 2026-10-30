@@ -8,7 +8,8 @@ import ts from "typescript";
  * folder and its meta component share one name, and its title mirrors its folder; a
  * module is one sidebar entry (its slots stay with it); every public component is
  * rendered in a story (as JSX or as its meta component) and has a doc comment; every
- * title's group is one storySort lists; no two concept folders import each other.
+ * title's group is one storySort lists; no two component folders import each other; no group
+ * or folder in it holds more than eight entries.
  */
 const layers = ["foundation", "primitive", "form", "block", "pattern", "screen"];
 const isStory = (f) => f.endsWith(".stories.tsx");
@@ -135,8 +136,6 @@ const layerOfModule = new Map();
 const storied = new Set();
 const metaComponents = new Map();
 const shown = new Set();
-// Titled for their final group already; their folders move in the one final move step.
-const MOVING = new Set(["src/components/charts/compare/LevelMeter/LevelMeter.stories.tsx"]);
 const titles = [];
 for (const file of all.filter(isStory)) {
   const meta = metaOf(parsed.get(file));
@@ -165,8 +164,7 @@ for (const file of all.filter(isStory)) {
       .split("/")
       .map((s) => s.toLowerCase().replaceAll(" ", ""))
       .join("/");
-    if (got !== wanted && !MOVING.has(file.split(path.sep).join("/")))
-      find("title-path", `${file} is titled ${meta.title}, its folder says ${wanted}`);
+    if (got !== wanted) find("title-path", `${file} is titled ${meta.title}, its folder says ${wanted}`);
   }
   const source = importsOf(parsed.get(file)).find((i) => i.names.includes(meta.component));
   if (!source) continue;
@@ -195,6 +193,16 @@ for (const [file, title] of titles) {
 }
 
 // Layer direction, one component per module, folder cycles.
+/** The component or shared module a file belongs to: the outermost folder under its group with an index.ts. */
+function unitOf(file) {
+  const rel = path.relative(path.join("src", "components"), file).split(path.sep);
+  if (rel[0].startsWith("..") || rel.length < 3) return undefined;
+  for (let depth = 2; depth < rel.length; depth++) {
+    const dir = rel.slice(0, depth).join("/");
+    if (existsSync(path.join("src", "components", dir, "index.ts"))) return dir;
+  }
+  return rel.slice(0, -1).join("/");
+}
 const folderEdges = new Map();
 for (const file of modules) {
   const sf = parsed.get(file);
@@ -203,8 +211,8 @@ for (const file of modules) {
     const to = layerOfModule.get(target);
     if (from !== undefined && to !== undefined && to > from)
       find("layer-direction", `${file} (${layers[from]}) imports ${target} (${layers[to]})`);
-    const [fa, fb] = [file, target].map((f) => path.relative(path.join("src", "components"), f).split(path.sep)[0]);
-    if (!fa.startsWith("..") && !fb.startsWith("..") && fa !== fb && !fa.includes(".") && !fb.includes(".")) {
+    const [fa, fb] = [file, target].map(unitOf);
+    if (fa && fb && fa !== fb) {
       if (!folderEdges.has(fa)) folderEdges.set(fa, new Set());
       folderEdges.get(fa).add(fb);
     }
@@ -214,6 +222,17 @@ for (const file of modules) {
 }
 const reach = (a, b, seen = new Set()) =>
   [...(folderEdges.get(a) ?? [])].some((n) => n === b || (!seen.has(n) && seen.add(n) && reach(n, b, seen)));
+// One folder per Storybook group; below that, a folder that grows past eight entries gets a sub-folder.
+const tooFull = (dir) =>
+  readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && e.name !== "__screenshots__")
+    .flatMap((e) => {
+      const sub = path.join(dir, e.name);
+      const count = readdirSync(sub).filter((n) => n !== "__screenshots__").length;
+      return [...(count > 8 ? [[sub, count]] : []), ...tooFull(sub)];
+    });
+for (const [dir, count] of tooFull(path.join("src", "components")))
+  find("folder-size", `${dir} holds ${count} entries`);
 for (const [a, targets] of folderEdges) {
   for (const b of targets)
     if (a < b && reach(b, a)) find("folder-cycle", `components/${a} and components/${b} import each other`);

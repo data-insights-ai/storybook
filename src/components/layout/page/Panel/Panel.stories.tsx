@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Toolbar } from "../../../actions/Toolbar";
-import { Grid } from "../../arrangement/Grid";
-import { TrendChart } from "../../../charts/time/TrendChart";
-import { FigureRow } from "../../../data/figures/FigureRow";
-import { Figure } from "../../../data/figures/Figure";
-import { SeverityMark } from "../../../marks/status/SeverityMark";
-import { TextLink } from "../../../navigation/TextLink";
+import { Grid } from "../../arrange/Grid";
+import { TrendChart } from "../../../charts/TrendChart";
+import { FigureRow } from "../../../figures/FigureRow";
+import { Figure } from "../../../figures/Figure";
+import { SeverityMark } from "../../../status/SeverityMark";
+import { TextLink } from "../../../text/TextLink";
 import { DangerAction } from "./DangerAction";
 import {
   Panel,
@@ -20,8 +20,8 @@ import {
   PanelStatus,
   PanelVisual,
 } from "./Panel";
-import { SealValue } from "../../../marks/status/SealValue";
-import { StatusPill } from "../../../marks/status/StatusPill";
+import { SealValue } from "../../../status/SealValue";
+import { StatusPill } from "../../../status/StatusPill";
 
 const meta = {
   title: "Layout/Page/Panel",

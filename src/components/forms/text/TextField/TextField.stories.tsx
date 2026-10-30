@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { Stack } from "../../../layout/arrangement/Stack";
+import { Stack } from "../../../layout/arrange/Stack";
 import { Toolbar } from "../../../actions/Toolbar";
 import { TextField } from "./TextField";
-import { TextLink } from "../../../navigation/TextLink";
+import { TextLink } from "../../../text/TextLink";
 import { Panel } from "../../../layout/page/Panel";
 
 const meta = {

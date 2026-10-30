@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../internal/cx";
-import { SealMark } from "../../marks/status/SealValue";
+import { SealMark } from "../../status/SealValue";
 import "./Eyebrow.css";
 
 /**

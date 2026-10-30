@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { SearchField } from "../../forms/text/SearchField";
-import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
-import { TextLink } from "../../navigation/TextLink";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
+import { TextLink } from "../../text/TextLink";
 import { ShortcutHelp } from "./ShortcutHelp";
 
 const meta = {

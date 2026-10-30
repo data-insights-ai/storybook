@@ -5,10 +5,10 @@ import { Archive, Bell, Building2, FileSearch, Gauge, RefreshCw, Settings, Shiel
 import { AppShellBar, AppShellBarEnd } from "../../shell/AppShellBar";
 import { AppShellContent } from "../../shell/AppShellContent";
 import { Button } from "../../actions/Button";
-import { StatusPill } from "../../marks/status/StatusPill";
+import { StatusPill } from "../../status/StatusPill";
 import { Breadcrumb } from "../Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
-import { Menu, MenuGroup, MenuItem } from "../Menu";
+import { Menu, MenuGroup, MenuItem } from "../../actions/Menu";
 import { Sidebar } from "./Sidebar";
 import { SidebarBrand } from "./frame/SidebarBrand";
 import { SidebarInset } from "./frame/SidebarInset";

@@ -4,15 +4,7 @@ import { Button } from "../Button";
 import { Checkbox } from "../../forms/choice/Checkbox";
 import { SearchField } from "../../forms/text/SearchField";
 import { Select } from "../../forms/select/Select";
-import {
-  CellStack,
-  DataTable,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHead,
-  TableRow,
-} from "../../data/table/DataTable";
+import { CellStack, DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 import { useShortcut } from "../../../internal/useShortcut";
 import { Toolbar, type ToolbarProps } from "./Toolbar";
 import { ToolbarAction, ToolbarEnd } from "./ToolbarParts";

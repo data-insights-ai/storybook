@@ -3,7 +3,7 @@ import { useState } from "react";
 import { expect, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Delayed } from "./Delayed";
-import { Loading } from "../waiting/Loading";
+import { Loading } from "../Loading";
 
 const meta = {
   title: "Feedback/Delayed",

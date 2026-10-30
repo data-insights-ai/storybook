@@ -927,6 +927,29 @@ The frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` holding `
 
 Files to change: none.
 
+## Storybook groups
+
+The sidebar has fourteen groups, one folder each in `src/components`: Actions, Forms, Tables, Records, Figures, Text, Status, Feedback, Charts, Timelines, Layout, Navigation, Overlays, Shell. Imports from the package do not change. Story titles and ids do, so a link to a story changes where its group did (the id is the title in lower case with `-` for `/`, then `--` and the story):
+
+| Old title | New title |
+| --- | --- |
+| `Data/Table/*` | `Tables/*` |
+| `Data/Records/*`, `Marks/IconTile` | `Records/*` |
+| `Data/Figures/*` | `Figures/*` |
+| `Marks/Badge`, `Marks/Tag`, `Marks/Status/*` | `Status/*` |
+| `Marks/Icon`, `Navigation/TextLink` | `Text/Icon`, `Text/TextLink` |
+| `Text/CodeBlock`, `Text/PullQuote`, `Text/TickRule` | `Text/Blocks/*` |
+| `Feedback/Waiting/*` | `Feedback/*` |
+| `Feedback/Tooltip`, `Feedback/TooltipTarget` | `Overlays/*` |
+| `Navigation/Menu` | `Actions/Menu` |
+| `Overlays/CreateFlow` | `Forms/CreateFlow` |
+| `Navigation/Views/*`, `Navigation/Sequence/*` | `Navigation/*` |
+| `Layout/Arrangement/*`, `Layout/Panes/Split`, `Layout/Folding/Disclosure` | `Layout/Arrange/*` |
+| `Charts/Time/*`, `Charts/Compare/*` | `Charts/*` |
+| `Timeline/*` | `Timelines/*` |
+
+Files to change: none.
+
 ## Product notes
 
 ### Mail layouts set IBM Plex Sans

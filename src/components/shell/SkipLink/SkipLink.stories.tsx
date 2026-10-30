@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
-import { TextLink } from "../../navigation/TextLink";
+import { TextLink } from "../../text/TextLink";
 import { AppShellContent } from "../AppShellContent";
 import { SkipLink } from "./SkipLink";
 

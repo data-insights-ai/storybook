@@ -3,7 +3,7 @@ import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { DetailSection, DetailSectionActions, DetailSectionForm } from "./DetailSection";
-import { Fact, FactList } from "../../../data/records/FactList";
+import { Fact, FactList } from "../../../records/FactList";
 import { Select } from "../../../forms/select/Select";
 import { TextField } from "../../../forms/text/TextField";
 

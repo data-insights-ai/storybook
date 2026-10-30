@@ -70,7 +70,7 @@ if (!layerOrder) {
   console.error("src/styles/styles.css no longer opens with an @layer order statement");
   process.exit(1);
 }
-/* A component drawn from several modules keeps its sheet in its own folder (`timeline/`). */
+/* A component drawn from several modules keeps its sheet in its own folder (`timelines/EventTimeline/`). */
 for (const file of readdirSync("src/components", { recursive: true })) {
   if (!file.endsWith(".css")) continue;
   const sheet = readFileSync(join("src/components", file), "utf8");

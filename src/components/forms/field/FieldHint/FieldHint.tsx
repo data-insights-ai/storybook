@@ -1,6 +1,6 @@
 import { AlertCircle } from "lucide-react";
 import { cx } from "../../../../internal/cx";
-import { SealMark } from "../../../marks/status/SealValue";
+import { SealMark } from "../../../status/SealValue";
 import "../Field/Field.css";
 
 /**

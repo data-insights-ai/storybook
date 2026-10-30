@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Moon, Sun, SunMoon } from "lucide-react";
-import { Menu, MenuGroup, MenuItem } from "../../Menu";
+import { Menu, MenuGroup, MenuItem } from "../../../actions/Menu";
 import { SidebarMenuButton } from "../menu/SidebarMenuButton";
 import { themeChoices, type ThemeChoice } from "../../../shell/ThemeProvider";
 

@@ -50,7 +50,7 @@ Sample people use invented names. Their email addresses are `name@data-insights.
 | --- | --- |
 | Colour, type, radius | `src/styles/tokens` |
 | A control’s look | that component’s CSS, using semantic `--di-*` tokens |
-| A new reusable control | its concept folder in `src/components`, a story beside it, an export from `src/index.ts` |
+| A new reusable control | its group folder in `src/components`, a story beside it, an export from `src/index.ts` |
 | A chart | `Chart` wraps one Recharts chart. `ChartConfig` names each series and sets its colour; `Chart` exposes that colour as `--color-<key>`. `ChartTooltip` and `ChartLegend` read the same config. Colours are `--di-chart-series`, `--di-chart-highlight` (the one value, gold), `--di-chart-compare` (the series the recorded one is measured against, cornflower — also `LevelMeter`'s comparison track), `--di-chart-muted`, and `--di-chart-band`; an ordered status scale (low → warn → danger, a stacked severity, a meter's zones) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Do not draw a one-off SVG chart. The one drawn chart is `EventTimeline`, because Recharts zooms by index rather than time and cannot pan or pinch at the rate a gesture asks for; a chart that needs that is a change to `EventTimeline`, not a second drawing. `TimelineSummary` tells the same bars as a few episodes on one strip, for the reader who does not need to zoom; it folds them with `timelineEpisodes` rather than drawing them again. Both are drawn for the card surface (`Panel`): routine is the series ink mixed into the surface (`color-mix`, not an opacity), so it keeps 3:1 there and on a track. |
 | An icon | `Icon`, with one Lucide icon as its child. Import that icon by name from `lucide-react` (`import { Search } from "lucide-react"`). `Icon` does not import the set, so the app keeps only the icons it renders. Do not import `lucide-react`’s `icons` namespace, and do not add a `name` prop that maps to every icon. |
 | A console example | `src/screens`, composed from components |
@@ -106,42 +106,47 @@ A region a story pins to `data-theme="light"` or `"dark"` (a swatch in Foundatio
 
 ## Stories and components
 
-Every component lives in `src/components`, under the folder of its concept, in a folder of its own named after it: `forms/text/TextField/` holds `TextField.tsx`, `TextField.css`, `TextField.stories.tsx`, its tests and an `index.ts`. Another folder imports the component through that `index.ts`, never a file inside it. A module several components share (the field frame, the choice frame, the date range arithmetic) gets a folder and an `index.ts` the same way; a shared stylesheet (`forms/dates/Calendar.css`) sits beside the components that import it, and a helper that draws nothing sits in `src/internal`. Patterns import what a product imports, the package root (`../index`). The concepts:
+Every component lives in `src/components`, under the folder of its Storybook group, in a folder of its own named after it: `forms/text/TextField/` holds `TextField.tsx`, `TextField.css`, `TextField.stories.tsx`, its tests and an `index.ts`. Another folder imports the component through that `index.ts`, never a file inside it. A group is a purpose, not a layer, so one group may import another in either direction; the direction is the layer tag below, and no two component folders (or shared modules) import each other. A module several components share (the field frame, the choice frame, the date range arithmetic) gets a folder and an `index.ts` the same way; a shared stylesheet (`forms/dates/Calendar.css`) sits beside the components that import it, and a helper that draws nothing sits in `src/internal`. Patterns import what a product imports, the package root (`../index`). The concepts:
 
 | Folder | Holds |
 | --- | --- |
-| `actions/` | Button (primary, secondary, ghost, link, danger, seal, inferred; `badge`), Toolbar (list toolbar, selection bar, unsaved changes, form end, row actions, one-line form), CopyValue |
-| `navigation/` | Breadcrumb, CommandBar, Menu, TextLink; `views/` Tabs, TabNav; `sequence/` Pagination, Steps (`variant` progress, list, cards); `Sidebar/` the sidebar and its parts behind one index, in `menu/`, `frame/` and `state/` |
-| `forms/` | `field/` Field (the frame), FieldLabel, FieldHint, FieldConfidence (a field’s `confidence`); `text/` TextField, TextArea, SearchField, QuantityField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup (`appearance` list, segments, toggles, cards), Switch; `select/` Select, ComboBox, MultiComboBox (`freeEntry` for typed entries); `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker |
-| `data/` | `records/` AttentionList, RecordCard (`layout` card or row), FactList, ProposalPanel; `figures/` Figure, FigureRow, Sparkline; `table/` DataTable, InfiniteTable, NewEntries |
-| `text/` | Eyebrow, Highlight, Kbd, MetaLine, TickRule, CodeBlock, PullQuote |
-| `marks/` | Badge, Tag (`mono`, `pressed`, `onRemove`, `inferred`), Icon (with the `IconSet` gallery the docs show), IconTile; `status/` StatusPill, SeverityMark, SealValue |
-| `feedback/` | Delayed, Notice (`variant` banner, empty, line), Toast, Tooltip, TooltipTarget; `waiting/` Loading (`shape` inline, app, list, detail, form, table), Progress, RouteProgress |
-| `overlays/` | Dialog (placement side, center, bottom), ConfirmDialog and ShortcutHelp built on it, CreateFlow, Flyout; `useModalDialog/` the native dialog behaviour |
-| `layout/` | `arrangement/` Stack (`variant="form"` for a form's column), Grid; `panes/` Split (`variant="list"` for a list beside its record); `page/` Page, PageHeader, Panel (`surface="hero"`, `tone="danger"` with `DangerAction`), DetailSection, pageSide (the side column a side Dialog docks in); `folding/` Disclosure (and `DisclosureGroup`) |
-| `charts/` | Chart; `time/` TrendChart, Seismograph; `compare/` Distribution (its rows are `LevelMeter`s), CoverageMatrix, LevelMeter (Storybook `Status/`; the one track and fill for a meter, a quota, a breakdown row and a field's confidence; moves to the Status folder in the final move) |
-| `timeline/` | ChainTimeline, EventTimeline (with its `marks/` and `navigation/`), PeriodTimeline (rows of spans on a date or number axis: licences, quiet hours), TimelineSummary; `scale/` and `types/`, shared by EventTimeline and TimelineSummary |
+| `actions/` | Button (primary, secondary, ghost, link, danger, seal, inferred; `badge`), Toolbar (list toolbar, selection bar, unsaved changes, form end, row actions, one-line form), Menu, CopyValue |
+| `forms/` | `field/` Field (the frame), FieldLabel, FieldHint, FieldConfidence (a field’s `confidence`); `text/` TextField, TextArea, SearchField, QuantityField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup (`appearance` list, segments, toggles, cards), Switch; `select/` Select, ComboBox, MultiComboBox (`freeEntry` for typed entries); `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker; CreateFlow |
+| `tables/` | DataTable, InfiniteTable, NewEntries |
+| `records/` | RecordCard (`layout` card or row), FactList, ProposalPanel, AttentionList, IconTile |
+| `figures/` | Figure, FigureRow, Sparkline |
+| `text/` | Eyebrow, MetaLine, TextLink, Kbd, Highlight, Icon (with the `IconSet` gallery the docs show); `blocks/` CodeBlock, PullQuote, TickRule |
+| `status/` | StatusPill, SeverityMark, SealValue, Badge, Tag (`mono`, `pressed`, `onRemove`, `inferred`), LevelMeter (the one track and fill for a meter, a quota, a breakdown row and a field's confidence) |
+| `feedback/` | Notice (`variant` banner, empty, line), Toast, Loading (`shape` inline, app, list, detail, form, table), Progress, RouteProgress, Delayed |
+| `charts/` | Chart, TrendChart, Seismograph, Distribution (its rows are `LevelMeter`s), CoverageMatrix |
+| `timelines/` | ChainTimeline, EventTimeline (with its `marks/` and `navigation/`), PeriodTimeline (rows of spans on a date or number axis: licences, quiet hours), TimelineSummary; `scale/` and `types/`, shared by EventTimeline and TimelineSummary |
+| `layout/` | `page/` Page, PageHeader, Panel (`surface="hero"`, `tone="danger"` with `DangerAction`), DetailSection, pageSide (the side column a side Dialog docks in); `arrange/` Stack (`variant="form"` for a form's column), Grid, Split (`variant="list"` for a list beside its record), Disclosure (and `DisclosureGroup`) |
+| `navigation/` | Sidebar (the sidebar and its parts behind one index, in `menu/`, `frame/` and `state/`), Breadcrumb, Tabs, TabNav, tabStrip (their shared strip), Pagination, Steps (`variant` progress, list, cards), CommandBar |
+| `overlays/` | Dialog (placement side, center, bottom), ConfirmDialog and ShortcutHelp built on it, Flyout, Tooltip, TooltipTarget; `useModalDialog/` the native dialog behaviour |
 | `shell/` | AppShellBar (with `AppShellBarEnd` and `AppShellBarKeep`), AppShellContent, SignIn, SkipLink, ThemeProvider, DensityProvider |
 
-A folder names what a component is about, and the story `title` follows it; what can go inside a component is its layer tag. Sample data that only a story or a pattern reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
+A folder names what a component is about, and the story `title` follows it; what can go inside a component is its layer tag. Sample data that only a story or a pattern reads sits beside it as `*.sample.ts` (`timelines/timeline.sample.ts`, `actions/Toolbar/rows.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
 
-The story `title` decides where a component lands in the sidebar, and it is grouped by purpose: where a person would look for the component's job. The title is `<Group>/<Subgroup>/<Component>`, ends in the meta component's name, and mirrors the component's folder. `.storybook/preview.tsx` sorts the groups in this order:
+The story `title` decides where a component lands in the sidebar, and it is grouped by purpose: the question a developer asks when looking for the component (`Foundations/Groups` has the table). Each group is one folder in `src/components`, and each folder is one group. The title is `<Group>/<Component>`, or `<Group>/<Subgroup>/<Component>` where the group has a sub-folder; it ends in the meta component's name and mirrors the component's folder. `.storybook/preview.tsx` sorts the groups in this order:
 
 - `Introduction`, then `Foundations/` — the brand, the tokens and the reasoning behind them (Register, Voice, Color, Type, Scale, Logo, Pages, Groups). No package component lives here.
-- `Actions/` — what a person presses: Button, Toolbar, CopyValue.
-- `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
-- `Data/` — what a person reads: `Records/` (AttentionList, RecordCard, FactList, ProposalPanel), `Figures/` (Figure, FigureRow, Sparkline) and `Table/`.
-- `Text/` — how text is set: Eyebrow, Highlight, Kbd, MetaLine, CodeBlock, PullQuote, TickRule. It imports only marks, so a button, a dialog or an empty state can set a key or an eyebrow with it.
-- `Marks/` — what every other component draws with: Badge, Tag, Icon, IconTile; `Status/` (StatusPill, SeverityMark, SealValue). A mark imports no other component, so it sits below them all.
-- `Feedback/` — Notice (banner, empty, line), Toast, Delayed, Tooltip; `Waiting/` Loading, Progress, RouteProgress.
-- `Overlays/`, `Navigation/` — what opens over the page, and how a person moves through it.
-- `Layout/` — `Arrangement/` (Stack, Grid), `Panes/` (Split), `Page/` (Page, PageHeader, Panel, DetailSection), `Folding/` (Disclosure).
-- `Navigation/` holds `Views/` (Tabs, TabNav) and `Sequence/` (Pagination, Steps) beside the rest; `Charts/` holds `Time/` and `Compare/` beside Chart; LevelMeter already shows under `Status/`.
-- `Charts/`, `Timeline/` — what a screen measures, and what happened when.
+- `Actions/` — let someone do something: Button, Toolbar, Menu, CopyValue.
+- `Forms/` — let someone enter or choose: labelled controls in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`, and CreateFlow.
+- `Tables/` — many rows to scan, sort and filter: DataTable, InfiniteTable, NewEntries.
+- `Records/` — one record or a short list of them: RecordCard, FactList, ProposalPanel, AttentionList, IconTile.
+- `Figures/` — a number: Figure, FigureRow, Sparkline.
+- `Text/` — how text is set: Eyebrow, MetaLine, TextLink, Kbd, Highlight, Icon; `Blocks/` CodeBlock, PullQuote, TickRule.
+- `Status/` — the state of a thing, inline: StatusPill, SeverityMark, SealValue, Badge, Tag, LevelMeter.
+- `Feedback/` — what happened or is happening: Notice (banner, empty, line), Toast, Loading, Progress, RouteProgress, Delayed.
+- `Charts/` — data plotted on a scale: Chart, TrendChart, Seismograph, Distribution, CoverageMatrix.
+- `Timelines/` — events and periods over time: EventTimeline, TimelineSummary, ChainTimeline, PeriodTimeline.
+- `Layout/` — arranging a page: `Page/` (Page, PageHeader, Panel, DetailSection) and `Arrange/` (Stack, Grid, Split, Disclosure).
+- `Navigation/` — moving between places: Sidebar, Breadcrumb, Tabs, TabNav, Pagination, Steps, CommandBar.
+- `Overlays/` — above the page: Dialog, ConfirmDialog, ShortcutHelp, Flyout, Tooltip, TooltipTarget.
 - `Shell/` — AppShellBar, AppShellContent, SignIn, SkipLink, ThemeProvider, DensityProvider. A product's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` holding `AppShellBar` and `AppShellContent`; the patterns share that frame in `src/screens/shell/ProductShell.tsx`.
 - `Patterns/` — whole screens composed only from public components: Security overview, Case triage, Organization home (one story per role), and the older console examples. `src/screens` keeps one folder per kind (`overview/`, `cases/`, `home/`, `pages/`, `records/`, `shell/`). A pattern is an example, never a package export.
 
-A group gets subgroups only where a natural one exists, and a flat group runs to about eight or ten entries before it needs one (Navigation holds ten). Inside a group, entries sort alphabetically by title.
+A folder below `src/components` holds at most eight entries (`pnpm lint:structure` counts them); a group gets a sub-folder, and with it a subgroup, only when it would hold more, and the sub-folder is a natural family (`forms/dates/`, `layout/arrange/`, `text/blocks/`). Inside a group, entries sort alphabetically by title.
 
 What a component may hold is a second axis, and it is a tag on its story meta, not a place in the sidebar: `layer:primitive`, `layer:form`, `layer:block` or `layer:pattern` (and `layer:foundation`, `layer:screen`). A component never imports one from a higher layer.
 
@@ -154,9 +159,9 @@ There are no deprecated exports. A rename, a merge or a removal takes the old na
 
 The test is one question: **can another component go inside it?** `Sparkline` takes numbers and a label — nothing else fits, so it is a primitive. `Figure` looks just as small, but its `children` holds a `FigureNote` or a `Sparkline`, so it is a block. `Pagination` and `Loading` are bulky and still primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
 
-One sidebar entry is one component, and **one module is one component**. An independent component does not share a file with another one: `pnpm build` emits a module per file, so `Breadcrumb` living in `Tabs.tsx` means a product importing a breadcrumb also ships `Tabs` and `Steps`. Where several are one family they get a subgroup rather than one merged entry (`Feedback/Waiting/Progress`, `/Loading`, `/RouteProgress`; `Layout/Arrangement/Stack`, `/Grid`).
+One sidebar entry is one component, and **one module is one component**. An independent component does not share a file with another one: `pnpm build` emits a module per file, so `Breadcrumb` living in `Tabs.tsx` means a product importing a breadcrumb also ships `Tabs` and `Steps`. Where several are one family they get a subgroup rather than one merged entry (`Forms/Dates/DateField`, `/TimeField`, `/DateRangePicker`; `Layout/Arrange/Stack`, `/Grid`).
 
-A component whose drawing takes more than one module keeps the parts in a folder of its own, and only the component and its slots are exported: `timeline/` holds `EventTimeline` and the scale, marks and navigation it is drawn from (beside the other timelines), and `timeline/summary/` holds `TimelineSummary` and the episodes it is told in.
+A component whose drawing takes more than one module keeps the parts in a folder of its own, and only the component and its slots are exported: `timelines/EventTimeline/` holds `EventTimeline` and the marks and navigation it is drawn from, `timelines/TimelineSummary/` holds `TimelineSummary` and the episodes it is told in, and the scale and types both use sit beside them in `timelines/scale/` and `timelines/types/`.
 
 A sub-component that only exists inside its parent — `TableCell`, `NoticeTitle`, `PanelFooter`, `DialogFooter` — stays in the parent's file and the parent's entry. The test is whether anything else imports it: `FactList` once sat in the modal's file until the Register screen used it inside a drawer, which is the moment it stopped being the modal's.
 
@@ -168,7 +173,7 @@ A Dialog is `layer:block` because it contains Buttons and StatusPills; a Button 
 
 `.storybook/preview.tsx` sorts the entries of a group alphabetically **by title, not by file name**. Stories inside one file keep the order the file declares. Storybook reads that comparator out of the file and evaluates it on its own, so it has to be plain JavaScript with no type annotations and no references to anything outside it.
 
-Anything with a transition gets a story that runs it: `Feedback/Toast` → Arriving, `Overlays/Dialog` → Transition, `Feedback/Waiting/Loading` → Table, `Feedback/Waiting/Progress` → Counting, `Feedback/Waiting/RouteProgress` → Navigating, `Feedback/Delayed` → Appearing. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
+Anything with a transition gets a story that runs it: `Feedback/Toast` → Arriving, `Overlays/Dialog` → Transition, `Feedback/Loading` → Table, `Feedback/Progress` → Counting, `Feedback/RouteProgress` → Navigating, `Feedback/Delayed` → Appearing. A play function that asserts on an element mid-animation has to use `waitFor`, because the element starts at `opacity: 0`.
 
 ### The one API rule
 
@@ -256,7 +261,7 @@ Every story meta carries one layer tag, `layer:foundation`, `layer:primitive`, `
 
 - `.dependency-cruiser.cjs`: no import cycles; no component imports a screen, a Foundations page or the Storybook chrome; `src/internal` imports nothing that is drawn; another folder reaches a component or a shared module only through its `index.ts`, while a component's own subfolders reach each other directly; screens import from the package root. Sample data (`*.sample.ts`) is not package code and is exempt.
 - `scripts/lint-conventions.mjs`: every component `.design-sync/conventions.md` names is exported, every group and story title it names exists, and it lists every sidebar group.
-- `scripts/lint-layers.mjs`: the layer tags and their direction; a story file, its folder and its meta component share one name and the title mirrors the folder; a module is one sidebar entry; every public component is rendered in a story (as JSX or as its meta component) and has a doc comment; every title's group is one `storySort` lists; no two concept folders import each other.
+- `scripts/lint-layers.mjs`: the layer tags and their direction; a story file, its folder and its meta component share one name and the title mirrors the folder; a module is one sidebar entry; every public component is rendered in a story (as JSX or as its meta component) and has a doc comment; every title's group is one `storySort` lists; no two component folders import each other; no folder below `src/components` holds more than eight entries.
 
 All three fail on any finding; there is no list of tolerated ones. A change that cannot pass them changes the structure, or the rule with a reason, never the check's input.
 

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
-import { Figure } from "../../data/figures/Figure";
-import { FigureRow } from "../../data/figures/FigureRow";
+import { Figure } from "../../figures/Figure";
+import { FigureRow } from "../../figures/FigureRow";
 import { AppShellContent } from "./AppShellContent";
 
 const meta = {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Flyout, FlyoutFooter, FlyoutItem, FlyoutItems, FlyoutTrigger } from "./Flyout";
-import { TextLink } from "../../navigation/TextLink";
+import { TextLink } from "../../text/TextLink";
 
 const meta = {
   title: "Overlays/Flyout",

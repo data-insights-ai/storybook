@@ -5,7 +5,7 @@ import { Button } from "../../../actions/Button";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
 import { FieldLabel } from "../../field/FieldLabel";
-import { Icon } from "../../../marks/Icon";
+import { Icon } from "../../../text/Icon";
 import "../../field/Field/Field.css";
 import "./FileField.css";
 
