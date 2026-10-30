@@ -1,7 +1,7 @@
 @layer components {
   .di-new-entries {
     position: fixed;
-    top: calc(var(--di-space-64) + var(--di-space-8));
+    top: calc(var(--di-sticky-top) + var(--di-gap-8));
     left: 50%;
     z-index: 3;
     translate: -50% 0;
@@ -16,7 +16,7 @@
   @keyframes di-new-entries-in {
     from {
       opacity: 0;
-      translate: -50% calc(-1 * var(--di-space-4));
+      translate: -50% calc(-1 * var(--di-gap-4));
     }
   }
 }

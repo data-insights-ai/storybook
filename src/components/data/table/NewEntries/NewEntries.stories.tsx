@@ -3,7 +3,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { NewEntries } from "./NewEntries";
 
 const meta = {
-  title: "Data/Records/NewEntries",
+  title: "Data/Table/NewEntries",
   component: NewEntries,
   tags: ["layer:primitive", "autodocs"],
   args: { label: "4 new entries", onShow: fn() },

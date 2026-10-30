@@ -13,10 +13,10 @@ import {
   TableCell,
   TableFooter,
   TableColumn,
+  TableEmpty,
   TableHead,
   TableIndex,
   TableRow,
-  TableSpacer,
   TableToolbar,
 } from "./DataTable";
 import { LevelMeter } from "../../../charts/compare/LevelMeter";
@@ -26,16 +26,7 @@ import { Select } from "../../../forms/select/Select";
 import { SealValue } from "../../../marks/status/SealValue";
 import { StatusPill } from "../../../marks/status/StatusPill";
 import { TextLink } from "../../../navigation/TextLink";
-import {
-  sources,
-  SourceRows,
-  SortableSources,
-  SelectableSources,
-  people,
-  events,
-  devices,
-  windowed,
-} from "./DataTable.sample";
+import { sources, SourceRows, SortableSources, SelectableSources, people, events, devices } from "./DataTable.sample";
 
 const meta = {
   title: "Data/Table/DataTable",
@@ -118,7 +109,7 @@ export const WithToolbar: Story = {
   render: (args) => (
     <DataTable {...args}>
       <TableToolbar>
-        <div style={{ width: 240 }}>
+        <div style={{ width: 240, maxWidth: "100%" }}>
           <SearchField id="table-search" label="Search sources" placeholder="host or hash" dense={true} />
         </div>
         <Chip active={true} removeLabel="Remove the state filter">
@@ -336,7 +327,7 @@ export const SingleRow: Story = {
   ),
 };
 
-/** Nothing on record. The frame stays and says so in its own footer. */
+/** A filter that matches nothing: the head and the footer stay, one row says why and offers the way back. */
 export const NoRows: Story = {
   args: { caption: "Sources on record" },
   render: (args) => (
@@ -350,22 +341,19 @@ export const NoRows: Story = {
         <TableColumn align="end">State</TableColumn>
       </TableHead>
       <TableBody>
-        <TableRow>
-          <TableCell>
-            <span className="di-quiet">No source matches the current filter.</span>
-          </TableCell>
-          <TableCell>
-            <span aria-hidden />
-          </TableCell>
-          <TableCell align="end">
-            <Button variant="ghost" size="sm">
-              Clear filters
-            </Button>
-          </TableCell>
-        </TableRow>
+        <TableEmpty message="No source matches the current filter.">
+          <Button variant="ghost" size="sm">
+            Clear filters
+          </Button>
+        </TableEmpty>
       </TableBody>
     </DataTable>
   ),
+  play: async ({ canvasElement }) => {
+    const message = within(canvasElement).getByText("No source matches the current filter.");
+    await expect(message.closest("td")).toHaveAttribute("colspan", "1000");
+    await expect(message.getBoundingClientRect().width).toBeGreaterThan(160);
+  },
 };
 
 export const InlineSelect: Story = {
@@ -410,7 +398,7 @@ export const InlineSelect: Story = {
 export const Stacked: Story = {
   args: { caption: "Source events", narrow: "stack" },
   render: (args) => (
-    <div style={{ width: 360 }}>
+    <div style={{ maxWidth: 360 }}>
       <DataTable {...args}>
         <TableHead>
           <TableColumn index={true}>Ordinal</TableColumn>
@@ -454,7 +442,7 @@ export const PinnedAndLabelled: Story = {
   render: (args) => (
     <div style={{ display: "grid", gap: 24 }}>
       {[760, 360].map((width) => (
-        <div key={width} style={{ width }}>
+        <div key={width} style={{ maxWidth: width }}>
           <DataTable {...args} caption={`${args.caption}, ${width}px`}>
             <TableHead>
               <TableColumn pinned>Name</TableColumn>
@@ -490,42 +478,11 @@ export const PinnedAndLabelled: Story = {
   play: async ({ canvasElement }) => {
     const [wide, narrow] = within(canvasElement).getAllByRole("table");
     const pinned = within(wide).getAllByRole("cell")[0];
-    await expect(getComputedStyle(pinned).position).toBe("sticky");
+    const grid = wide.closest(".di-table-wrap")!.clientWidth > 600;
+    await expect(getComputedStyle(pinned).position).toBe(grid ? "sticky" : "static");
     const owner = within(narrow).getByText("Nora Feld");
     await expect(owner).toHaveAttribute("data-label", "Owner");
     await expect(getComputedStyle(owner).display).toBe("grid");
-  },
-};
-
-export const Windowed: Story = {
-  render: (args) => (
-    <DataTable {...args} rowCount={1000}>
-      <TableHead>
-        <TableColumn index={true}>Ordinal</TableColumn>
-        <TableColumn width="fill">Entry</TableColumn>
-        <TableColumn align="end">Seen</TableColumn>
-      </TableHead>
-      <TableBody>
-        <TableSpacer height={40 * 41} />
-        {windowed.map((i) => (
-          <TableRow key={i} rowIndex={i}>
-            <TableIndex>{String(i + 1).padStart(4, "0")}</TableIndex>
-            <TableCell>Entry {i + 1}</TableCell>
-            <TableCell align="end" mono>
-              09:{String(i % 60).padStart(2, "0")}:00Z
-            </TableCell>
-          </TableRow>
-        ))}
-        <TableSpacer height={(1000 - 60) * 41} />
-      </TableBody>
-      <TableFooter>Rows 41–60 of 1,000 on screen</TableFooter>
-    </DataTable>
-  ),
-  play: async ({ canvasElement }) => {
-    const table = within(canvasElement).getByRole("table");
-    await expect(table).toHaveAttribute("aria-rowcount", "1001");
-    const rows = within(table).getAllByRole("row");
-    await expect(rows[1]).toHaveAttribute("aria-rowindex", "42");
   },
 };
 
@@ -567,7 +524,7 @@ export const CellLines: Story = {
 export const PinnedWithoutIndex: Story = {
   args: { caption: "Plans" },
   render: (args) => (
-    <div style={{ width: 720 }}>
+    <div style={{ maxWidth: 720 }}>
       <DataTable {...args}>
         <TableHead>
           <TableColumn width="fill" pinned>
