@@ -4,7 +4,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { WatchlistScreen } from "./Watchlist";
 
 const meta = {
-  title: "Screens/Watchlist",
+  title: "Patterns/Watchlist",
   tags: ["layer:screen"],
   component: WatchlistScreen,
   parameters: { layout: "fullscreen" },

@@ -5,7 +5,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { ListPageScreen } from "./ListPage";
 
 const meta = {
-  title: "Screens/List page",
+  title: "Patterns/List page",
   tags: ["layer:screen"],
   component: ListPageScreen,
   parameters: { layout: "fullscreen" },

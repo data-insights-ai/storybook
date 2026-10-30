@@ -5,7 +5,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { CreateFlowPageScreen } from "./CreateFlowPage";
 
 const meta = {
-  title: "Screens/Create flow",
+  title: "Patterns/Create flow",
   tags: ["layer:screen"],
   component: CreateFlowPageScreen,
   parameters: { layout: "fullscreen" },

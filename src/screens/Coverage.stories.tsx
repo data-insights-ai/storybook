@@ -4,7 +4,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { CoverageScreen } from "./Coverage";
 
 const meta = {
-  title: "Screens/Coverage",
+  title: "Patterns/Coverage",
   tags: ["layer:screen"],
   component: CoverageScreen,
   parameters: { layout: "fullscreen" },

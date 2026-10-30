@@ -5,7 +5,7 @@ import { sampleChrome } from "../../.storybook/chrome.sample";
 import { RegisterScreen } from "./Register";
 
 const meta = {
-  title: "Screens/Register",
+  title: "Patterns/Register",
   tags: ["layer:screen"],
   component: RegisterScreen,
   parameters: { layout: "fullscreen" },
