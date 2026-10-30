@@ -76,7 +76,7 @@ const tokenColour = (from: Element, token: string) => {
 /**
  * A fixed range shows its days in the reader's language; the end is exclusive, so the last day shown is 7 October.
  * Open, the chosen period is marked in the list and the days carry the selection: both ends filled with the primary ink, the
- * days between on the inset tone. It rests open.
+ * days between in the selection tint. It rests open.
  */
 
 export const CustomRange: Story = {
@@ -89,7 +89,7 @@ export const CustomRange: Story = {
     await expect(first).toHaveAttribute("data-selection-start");
     await expect(getComputedStyle(first).backgroundColor).toBe(tokenColour(first, "--di-choice-on-bg"));
     const between = page.getAllByRole("button", { name: /4 October 2026/ })[0];
-    await expect(getComputedStyle(between).backgroundColor).toBe(tokenColour(between, "--di-choice-range-bg"));
+    await expect(getComputedStyle(between).backgroundColor).toBe(tokenColour(between, "--di-bg-selected"));
   },
 };
 

@@ -235,7 +235,7 @@ function RegisterPage() {
 
       <DocSection
         title="Focus and selection"
-        lede="Focus shows where the keyboard is; selection shows what is chosen. Both are cornflower lines, never a pale fill. Foundations/Color shows the selected looks."
+        lede="Focus shows where the keyboard is; selection shows what is chosen. Focus is a cornflower ring; selection is the pale tint with a cornflower edge, never a solid cornflower background. Foundations/Color shows the selected looks."
       >
         <FocusExample />
         <Rules>

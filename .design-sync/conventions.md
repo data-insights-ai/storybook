@@ -33,7 +33,7 @@ Build from the components in this system. **If something you need is missing, sa
 - **The header only orients.** `PageHeader` holds the page's name, a `StatusPill` beside it and the meta (`PageHeaderMeta`: as of when, from where) — right of the name on a desktop, under it on a phone. No eyebrow, no claim, no rule, no button in a console header.
 - **The first block is what needs the person**: `AttentionList` with at most three `AttentionItem`s; item 01 runs full width with the one primary button and the gold edge. When nothing is due, `AttentionClear` says "Everything is running".
 - **A navy `Hero` only with a signature visual** — the chart that is the screen's argument — closed by `FigureRow variant="footer"`. Figures without a hero sit on `FigureRow variant="strip"`. Rules separate figures and nothing else.
-- **A list beside its record is `ListDetail`**: the list pane a step above the ground, the selected row a step higher with a cornflower edge; on a phone the two are separate views with `ListDetailBack`.
+- **A list beside its record is `ListDetail`**: the list pane a step above the ground, the selected row in the selection tint with a cornflower edge; on a phone the two are separate views with `ListDetailBack`.
 - **Severity is `SeverityMark`**: one scale, a filled mark plus the word.
 - Meta lines (`MetaLine`) break between items; `Actions` stack full width on a phone.
 

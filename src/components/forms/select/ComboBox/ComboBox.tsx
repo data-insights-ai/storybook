@@ -198,7 +198,12 @@ export function ComboBox({
                 {shown.length === 0 && emptyLabel ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
                 <Autocomplete.List className="di-combobox-list" aria-labelledby={`${id}-label`}>
                   {(item: ComboBoxSuggestion) => (
-                    <Autocomplete.Item key={item.value} value={item} className="di-option di-combobox-option">
+                    <Autocomplete.Item
+                      key={item.value}
+                      value={item}
+                      className="di-option di-combobox-option"
+                      data-selected={item.value === value || undefined}
+                    >
                       <span className="di-option-label">{item.label}</span>
                       {item.value === item.label ? null : <span className="di-option-meta">{item.value}</span>}
                     </Autocomplete.Item>

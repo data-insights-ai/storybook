@@ -54,10 +54,12 @@ const one = [
 ];
 
 const lines = [
-  { token: "--di-bg-selected", use: "A selected row or option: the plane a step above its list, never a tint." },
+  {
+    token: "--di-bg-selected",
+    use: "The pale selection tint: a selected row or option, a chosen card, a set filter, a range's middle days, selected text.",
+  },
   { token: "--di-select", use: "Selection: the selected row's edge, a chosen card's border, a link's underline." },
   { token: "--di-focus", use: "The keyboard focus ring." },
-  { token: "--di-text-highlight", use: "Text selected with the pointer: the one pale cornflower fill left." },
   { token: "--di-border", use: "Where two equal tones meet." },
   { token: "--di-border-input", use: "The frame of a field." },
   { token: "--di-rule", use: "Between the rows of a table and the figures of a row, nowhere else." },
@@ -87,7 +89,7 @@ function Selection() {
     <>
       <Example
         title="A view and a row"
-        note="The chosen segment is a raised thumb in ink. The selected row is lifted to the plane with a cornflower edge on its leading side."
+        note="The chosen segment is a raised thumb in ink. The selected row takes the pale tint with a cornflower edge on its leading side."
         padded={false}
       >
         <DataTable caption="Collectors" indexed={false}>
@@ -124,7 +126,7 @@ function Selection() {
       </Example>
       <Example
         title="A value"
-        note="A chosen card keeps its neutral surface and gets a 2px cornflower line. A chosen toggle is a value, so it takes the primary ink fill."
+        note="A chosen card takes the pale tint inside a 2px cornflower edge. A chosen toggle is a value, so it takes the primary ink fill."
       >
         <Stack gap={16}>
           <ChoiceGroup
@@ -165,7 +167,7 @@ function ColorPage() {
   return (
     <Doc
       title="Color"
-      lede="Paper is the ground and depth is a step in tone. Navy is the ink and the one filled control. Gold marks one object per view. Cornflower is a line: selection and focus. Every value below is read from the token where it is painted, so the dark theme shows its own."
+      lede="Paper is the ground and depth is a step in tone. Navy is the ink and the one filled control. Gold marks one object per view. Cornflower is selection and focus: a pale tint with its edge, and the ring. Every value below is read from the token where it is painted, so the dark theme shows its own."
     >
       <DocSection
         title="Ground and depth"
@@ -231,16 +233,16 @@ function ColorPage() {
 
       <DocSection
         title="Selection and focus"
-        lede="Cornflower is a line, never a pale fill: the selected row's leading edge, a chosen card's border, a link's underline, the focus ring. The selected thing itself takes a neutral raised tone."
+        lede="Selection is the pale tint with the cornflower edge: the tint shows what is chosen, the edge carries the contrast. No option ever gets a solid cornflower background; toggles and chosen days take the primary ink."
       >
         <Selection />
         <Rules>
-          <li>A chosen card, tag or option: its neutral surface and a 2px cornflower line.</li>
+          <li>A selected row or popup option: the pale tint, with a cornflower edge on its leading side.</li>
+          <li>A chosen card or a set filter tag: the pale tint inside a 2px cornflower edge.</li>
           <li>
-            Segments: a raised neutral thumb. Toggles and the selected calendar day: the primary ink fill; the days
-            inside a range sit on the inset tone.
+            Segments: a raised neutral thumb. Toggles and the chosen calendar day or range ends: the primary ink fill;
+            the days between a range&apos;s ends take the pale tint.
           </li>
-          <li>A selected row: lifted to the plane, with a cornflower edge on its leading side.</li>
           <li>
             Native checkboxes, radios and ranges follow the token through <code>accent-color</code>.
           </li>

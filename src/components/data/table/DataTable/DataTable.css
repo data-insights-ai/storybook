@@ -220,7 +220,7 @@
     cursor: pointer;
   }
 
-  /* The row an open pane shows is the selected row (`.di-row-current`): lifted a step, with the cornflower edge. */
+  /* The row an open pane shows is the selected row (`.di-row-current`): the selection tint with the cornflower edge. */
 
   /*
    * The row's name stays at the left edge while the grid scrolls sideways.
@@ -441,9 +441,17 @@
       padding-inline: 0;
     }
 
-    /* Beside a filling column every cell keeps its line; stacked, prose wraps again. */
-    .di-table-wrap.is-stackable td:not(.di-mono) {
+    /*
+     * Beside a filling column every cell keeps its line; stacked, every cell
+     * wraps again (as specific as that rule, so it wins), and an identifier
+     * longer than the card breaks rather than being cut.
+     */
+    .di-table-wrap.is-stackable .di-table tbody td {
       white-space: normal;
+    }
+
+    .di-table-wrap.is-stackable td.di-mono {
+      overflow-wrap: anywhere;
     }
 
     .di-table-wrap.is-stackable td:empty {

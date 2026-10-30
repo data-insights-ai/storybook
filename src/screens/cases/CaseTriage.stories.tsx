@@ -15,7 +15,8 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * List and case side by side. The list is its own pane a step above the
- * ground, the open case is lifted with the cornflower edge, and the case
+ * ground, the open case carries the selection tint and the cornflower edge, the
+ * Open | All switch a quiet thumb (no solid cornflower), and the case
  * opens on its verdict: the one gold object, with the action it asks for.
  */
 export const Default: Story = {
@@ -29,7 +30,15 @@ export const Default: Story = {
     await Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined)));
     const thumb = getComputedStyle(canvasElement.querySelector(".di-choice-segment.is-chosen")!);
     const row = getComputedStyle(canvas.getByRole("button", { current: true }));
+    const probe = canvasElement.appendChild(document.createElement("i"));
+    probe.style.background = "var(--di-bg-selected)";
+    const tint = getComputedStyle(probe).backgroundColor;
+    probe.style.background = "var(--di-select)";
+    const cornflower = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    await expect(row.backgroundColor).toBe(tint);
     await expect(thumb.backgroundColor).not.toBe(row.backgroundColor);
+    await expect(thumb.backgroundColor).not.toBe(cornflower);
     await expect(thumb.color).toBe(getComputedStyle(canvas.getByRole("heading", { level: 1 })).color);
     if (window.innerWidth >= 900) {
       await expect(

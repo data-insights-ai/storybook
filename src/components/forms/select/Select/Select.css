@@ -81,13 +81,22 @@
         display: none;
       }
 
-      .di-select-control option:checked,
       .di-select-control option:hover {
         background: var(--di-option-hover-bg);
       }
 
-      .di-select-control option:focus-visible {
+      /* The chosen option, as in every popup list: the selection tint and its edge. */
+      .di-select-control option:checked {
+        background: var(--di-choice-selected-bg);
+        box-shadow: inset var(--di-select-edge) 0 0 var(--di-choice-selected-edge);
+        color: var(--di-choice-selected-fg);
+      }
+
+      .di-select-control option:focus-visible:not(:checked) {
         background: var(--di-option-hover-bg);
+      }
+
+      .di-select-control option:focus-visible {
         outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
         outline-offset: var(--di-focus-ring-inset);
       }

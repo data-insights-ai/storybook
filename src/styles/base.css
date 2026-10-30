@@ -109,7 +109,7 @@
   }
 
   ::selection {
-    background: var(--di-text-highlight);
+    background: var(--di-bg-selected);
     color: var(--di-text);
   }
 

@@ -91,7 +91,7 @@
     outline: none;
   }
 
-  /* Set: the one selection look, its own surface inside a 2px cornflower line, never a tint. */
+  /* Set: the one selection look, the tint inside a 2px cornflower edge, never a second outline. */
   .di-tag.is-pressed {
     border-color: var(--di-choice-selected-edge);
     background: var(--di-choice-selected-bg);
