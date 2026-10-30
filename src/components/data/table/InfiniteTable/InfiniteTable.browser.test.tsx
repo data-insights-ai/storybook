@@ -2,7 +2,7 @@ import { afterEach, expect, test } from "vitest";
 import { page } from "vitest/browser";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
-import "../../../../styles.css";
+import "../../../../styles/styles.css";
 import { TableCell, TableColumn, TableHead, TableRow } from "../DataTable";
 import { InfiniteTable } from "./InfiniteTable";
 

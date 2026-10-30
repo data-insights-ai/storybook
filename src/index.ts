@@ -11,7 +11,7 @@ export {
 } from "./components/shell/AppShell";
 export type { NavGroup, NavItem } from "./components/shell/AppShell";
 export { Badge } from "./components/marks/Badge";
-export { Bars } from "./components/charts/Bars";
+export { Bars } from "./components/charts/compare/Bars";
 export { BulkActionBar } from "./components/actions/BulkActionBar";
 export { Breadcrumb } from "./components/navigation/Breadcrumb";
 export { Button } from "./components/actions/Button";
@@ -24,8 +24,8 @@ export type { ChartConfig, ChartTooltipDetail } from "./components/charts/Chart"
 export { ChartCard, ChartCardAction, ChartCardGrid } from "./components/charts/ChartCard";
 export { PeriodTimeline } from "./components/timeline/PeriodTimeline";
 export type { Period } from "./components/timeline/PeriodTimeline";
-export { TrendChart } from "./components/charts/TrendChart";
-export type { TrendMarker, TrendSeries, TrendTone } from "./components/charts/TrendChart";
+export { TrendChart } from "./components/charts/time/TrendChart";
+export type { TrendMarker, TrendSeries, TrendTone } from "./components/charts/time/TrendChart";
 export { Checkbox } from "./components/forms/choice/Checkbox";
 export { ChoiceGroup } from "./components/forms/choice/ChoiceGroup";
 export { Radio } from "./components/forms/choice/Radio";
@@ -62,9 +62,9 @@ export { CountButton } from "./components/actions/CountButton";
 export { CopyValue } from "./components/actions/CopyValue";
 export { CreateFlow } from "./components/overlays/CreateFlow";
 export { ConfirmActions, ConfirmPanel } from "./components/inference/ConfirmPanel";
-export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/CoverageMatrix";
+export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/compare/CoverageMatrix";
 export { DangerAction, DangerZone } from "./components/feedback/DangerZone";
-export type { CoverageMatrixColumn, CoverageMatrixMark, CoverageMatrixTone } from "./components/charts/CoverageMatrix";
+export type { CoverageMatrixColumn, CoverageMatrixMark, CoverageMatrixTone } from "./components/charts/compare/CoverageMatrix";
 export {
   CellIcon,
   CellLead,
@@ -82,7 +82,7 @@ export {
 } from "./components/data/table/DataTable";
 export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/page/DetailSection";
 export { Disclosure, DisclosureLead } from "./components/layout/folding/Disclosure";
-export { Distribution } from "./components/charts/Distribution";
+export { Distribution } from "./components/charts/compare/Distribution";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
 export {
   EventTimeline,
@@ -142,8 +142,8 @@ export { IconTile } from "./components/marks/IconTile";
 export { InfiniteTable, heldCount } from "./components/data/table/InfiniteTable";
 export type { InfiniteRowPlace } from "./components/data/table/InfiniteTable";
 export { KeyValue, KeyValues } from "./components/data/records/KeyValues";
-export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/charts/LevelMeter";
-export type { LevelBands } from "./components/charts/LevelMeter";
+export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/charts/compare/LevelMeter";
+export type { LevelBands } from "./components/charts/compare/LevelMeter";
 export { Actions } from "./components/layout/arrangement/Actions";
 export { Grid } from "./components/layout/arrangement/Grid";
 export { Numbered } from "./components/layout/arrangement/Numbered";
@@ -171,7 +171,7 @@ export {
   NoticeTitle,
 } from "./components/feedback/Notice";
 export { Page, PageAside } from "./components/layout/page/Page";
-export { Pagination } from "./components/navigation/Pagination";
+export { Pagination } from "./components/navigation/sequence/Pagination";
 export { Panel, PanelFooter, PanelMeta, PanelLead, PanelNote } from "./components/layout/page/Panel";
 export { PrivacyBadge } from "./components/inference/PrivacyBadge";
 export { Progress } from "./components/feedback/waiting/Progress";
@@ -197,8 +197,8 @@ export { TickRule } from "./components/data/text/TickRule";
 export type { SealState } from "./components/marks/status/SealValue";
 export { SaveBar } from "./components/forms/field/SaveBar";
 export { SearchField } from "./components/forms/text/SearchField";
-export { Seismograph } from "./components/charts/Seismograph";
-export type { SeismographPoint } from "./components/charts/Seismograph";
+export { Seismograph } from "./components/charts/time/Seismograph";
+export type { SeismographPoint } from "./components/charts/time/Seismograph";
 export { SectionTitle, SectionTitleHeading, SectionTitleMeta } from "./components/layout/page/SectionTitle";
 export { SegmentedControl } from "./components/forms/choice/SegmentedControl";
 export { Select } from "./components/forms/select/Select";
@@ -233,18 +233,18 @@ export { SignIn, SignInVersion } from "./components/shell/SignIn";
 export { SkeletonTable } from "./components/feedback/waiting/SkeletonTable";
 export { SkeletonPage } from "./components/feedback/waiting/SkeletonPage";
 export type { SkeletonPageVariant } from "./components/feedback/waiting/SkeletonPage";
-export { Sparkline } from "./components/charts/Sparkline";
+export { Sparkline } from "./components/charts/time/Sparkline";
 export { Split, SplitAside, SplitMain } from "./components/layout/panes/Split";
 export { Spinner } from "./components/feedback/waiting/Spinner";
 export { Stage, StageFooter, StageIcon, StageTrack } from "./components/layout/page/Stage";
 export { Stat, StatRow } from "./components/data/figures/Stat";
 export { StatTile, StatTileDelta } from "./components/data/figures/StatTile";
 export { StatusPill } from "./components/marks/status/StatusPill";
-export { Stepper } from "./components/navigation/Stepper";
+export { Stepper } from "./components/navigation/sequence/Stepper";
 export { Switch } from "./components/forms/choice/Switch";
-export { TabPanel, Tabs } from "./components/navigation/Tabs";
-export { TabNav, TabNavLink } from "./components/navigation/TabNav";
-export type { TabNavLinkProps } from "./components/navigation/TabNav";
+export { TabPanel, Tabs } from "./components/navigation/views/Tabs";
+export { TabNav, TabNavLink } from "./components/navigation/views/TabNav";
+export type { TabNavLinkProps } from "./components/navigation/views/TabNav";
 export { TextArea } from "./components/forms/text/TextArea";
 export { TextField } from "./components/forms/text/TextField";
 export { TextLink } from "./components/navigation/TextLink";

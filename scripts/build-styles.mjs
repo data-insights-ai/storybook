@@ -46,7 +46,7 @@ function inline(file) {
   });
 }
 
-const css = inline("src/styles.css").trim() + "\n";
+const css = inline("src/styles/styles.css").trim() + "\n";
 if (css.includes("data:font") || css.includes(".woff)")) {
   console.error("built styles.css still carries woff or inlined font data");
   process.exit(1);
@@ -68,9 +68,9 @@ let sheets = 0;
  * an existing layer never reorders it. This also keeps a tree-shaken product
  * that ships one component correct, since it never loads styles.css.
  */
-const layerOrder = readFileSync("src/styles.css", "utf8").match(/^@layer[^;]*;/m)?.[0];
+const layerOrder = readFileSync("src/styles/styles.css", "utf8").match(/^@layer[^;]*;/m)?.[0];
 if (!layerOrder) {
-  console.error("src/styles.css no longer opens with an @layer order statement");
+  console.error("src/styles/styles.css no longer opens with an @layer order statement");
   process.exit(1);
 }
 /* A component drawn from several modules keeps its sheet in its own folder (`timeline/`). */

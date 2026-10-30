@@ -1,10 +1,10 @@
 import { lazy, Suspense, type ReactNode } from "react";
-import { useSidebar } from "./SidebarContext";
+import { useSidebar } from "./state/SidebarContext";
 import "./Sidebar.css";
 
 /* The drawer only serves narrow screens; its own module keeps the drawer and
  * swipe code out of a desktop page's first load. */
-const SidebarDrawer = lazy(() => import("./SidebarDrawer"));
+const SidebarDrawer = lazy(() => import("./frame/SidebarDrawer"));
 
 /**
  * The app's collapsible navigation, inside a `SidebarProvider`. Wide, it is a

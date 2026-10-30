@@ -22,7 +22,7 @@ installing the package, not just to the converter.
 - **`scripts/build-styles.mjs` prepends `@layer tokens, base, components,
   overrides;` to every `dist/lib/components/*.css`.** Layer order is fixed by the
   **first** `@layer` statement a document sees. Each component sheet opens with
-  `@layer components {`, so if the order statement only lives in `src/styles.css`,
+  `@layer components {`, so if the order statement only lives in `src/styles/styles.css`,
   a document that loads component CSS first registers `components` first and
   appends `tokens`/`base`/`overrides` *after* it — inverting the cascade.
   `base.css` has `button { color: inherit }`, which then beats
@@ -31,8 +31,8 @@ installing the package, not just to the converter.
   specificity, so nothing in the component sheet can win.
   This hits **production**, not only the sync: `sideEffects` means a product
   importing only `Button` never loads `styles.css`. Storybook hides it because
-  `preview.tsx` imports `src/styles.css` first. The build fails if the statement
-  disappears from `src/styles.css`, so the two cannot drift.
+  `preview.tsx` imports `src/styles/styles.css` first. The build fails if the statement
+  disappears from `src/styles/styles.css`, so the two cannot drift.
   Do not try to fix this from `cfg.cssEntry` — the converter always *appends*
   it after the bundled CSS, so it can never reach the front from there.
 - **`FieldHint.tsx` does `import "./Field.css"`.** `.di-field-hint` is defined in
@@ -81,7 +81,7 @@ values.
   slot-based `AppShell` a product renders (meta `component: AppShell`), and
   `Console` is now the Storybook-window variant no product renders and no story
   owns. The card is `AppShell`. Since 0.10.0 `Console` and `ConsoleFrame` live in
-  `.storybook/Console.tsx`, outside the bundle.
+  `.storybook/console/Console.tsx`, outside the bundle.
   `null` excludes: `Foundations/*` (Color, Type, Logo, Scale, Decisions — doc
   pages with no component) and every `Patterns/*` story (Architecture, Case
   triage, Coverage, Create flow, Detail page, Inference, List page, Login,
@@ -91,7 +91,7 @@ values.
   as a component. The converter's source is not in this repo; the check is
   that every `Foundations/*` and `Patterns/*` story title's last segment is a
   key here.
-- **`guidelinesGlob: ["src/foundations/*.mdx"]`** — the converter's defaults
+- **`guidelinesGlob: ["src/foundations/**/*.mdx"]`** — the converter's defaults
   (`docs/*.md`, `docs/guides/**`, `guides/**`) match nothing here, which is why
   `guidelines/` came out empty and silent on the first upload. The six MDX brand
   documents (Essence, Register, Voice, Mark, Surfaces, Practice) are **docs**-type
@@ -119,7 +119,7 @@ component they import — the recharts trap again. Think carefully first.
 ### Preview decorators are not bundled — and that is fine here
 
 `! preview decorator bundle failed: No loader is configured for ".woff2"`.
-`.storybook/preview.tsx` imports `src/styles.css` → fontsource CSS → `.woff2`,
+`.storybook/preview.tsx` imports `src/styles/styles.css` → fontsource CSS → `.woff2`,
 and the decorator bundler hardcodes `loader: {'.js':'jsx','.json':'json'}`
 without reading `cfg.storyImports.loaders`. No config knob reaches it.
 

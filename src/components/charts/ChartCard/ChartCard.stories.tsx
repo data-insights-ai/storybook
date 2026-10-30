@@ -3,7 +3,7 @@ import { expect, within } from "storybook/test";
 import { ChartCard, ChartCardAction, ChartCardGrid } from "./ChartCard";
 import { PeriodTimeline } from "../../timeline/PeriodTimeline";
 import { TextLink } from "../../navigation/TextLink";
-import { TrendChart } from "../TrendChart";
+import { TrendChart } from "../time/TrendChart";
 
 const days = Array.from({ length: 30 }, (_, i) => {
   const d = new Date(Date.UTC(2026, 9, 1 + i));

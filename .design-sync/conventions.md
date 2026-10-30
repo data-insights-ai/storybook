@@ -52,7 +52,8 @@ The Storybook sidebar is grouped by the job a component does:
 - `Overlays/`: what opens over the page: `Modal`, `ConfirmDialog`, `Sheet`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
 - `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Menu`, `CommandBar`, `Pagination`, `Stepper`, `TextLink`.
 - `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `Hero`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `ListDetail`, `Toolbar`, `Actions`, `Accordion`, `Disclosure`.
-- `Charts/`, `Timeline/`, `Inference/`: what a screen measures, what happened when, and what the system inferred.
+- `Charts/`: `Chart`, `ChartCard`, over time (`TrendChart`, `Sparkline`, `Seismograph`) and compared (`Bars`, `Distribution`, `LevelMeter`, `CoverageMatrix`).
+- `Timeline/`, `Inference/`: what happened when, and what the system inferred.
 - `Shell/`: the frame of the app: `AppShell`, `SignIn`, `ThemeProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 

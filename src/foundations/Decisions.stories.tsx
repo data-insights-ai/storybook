@@ -10,7 +10,7 @@ import {
 } from "../components/data/table/DataTable";
 import { StatusPill } from "../components/marks/status/StatusPill";
 import { Page, Section } from "./guide/Guide";
-import "./foundations.css";
+import "./tokens/foundations.css";
 
 /*
  * This page was called "Adoption", its story was called "Ledger" and its

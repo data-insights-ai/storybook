@@ -1,0 +1,66 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { Fact, FactList } from "../components/data/records/FactList";
+import { Page, Rule, Rules, Section } from "./guide/Guide";
+
+<Meta title="Introduction" />
+
+<Page
+  eyebrow="Workbench"
+  title="The surface is a register, not a dashboard."
+  lede="This is the component library for the datAInsights brand, and the place a designer reviews it. It is not a product: nothing here names one, and the screens are examples a product could be assembled from rather than screens that ship. Everything a product installs is what `src/index.ts` exports — a control that never became a component cannot be designed with."
+>
+  <FactList layout="grid">
+    <Fact label="What it is">A library, its stories, and the brand reference they are built from.</Fact>
+    <Fact label="What it is not">A product, a prototype, or a second brand book.</Fact>
+    <Fact label="Read first">Foundations, top to bottom. It holds the reasoning.</Fact>
+    <Fact label="Before handing back">`pnpm check` — typecheck, token lint, story tests.</Fact>
+  </FactList>
+
+  <Section
+    eyebrow="The sidebar"
+    title="Grouped by what a component is for."
+    lede="Look for a component where you would look for its job. What it may hold is a tag on every story, not a place in the sidebar."
+  >
+    <Rules>
+      <Rule>**Foundations** — colour, type, scale, the mark, voice, motion, the Register rules, brand pages, and the decision record behind them.</Rule>
+      <Rule>**Actions, Forms, Data, Marks, Feedback, Overlays, Navigation** — what a person presses, fills in, reads, sees marked, is told, opens and moves through.</Rule>
+      <Rule>**Layout, Charts, Timeline, Inference, Shell** — how a screen is arranged, what it measures, what happened when, what the system inferred, and the frame around it all.</Rule>
+      <Rule>**Screens** — a console example, composed from all of the above.</Rule>
+      <Rule>The tag `layer:primitive`, `layer:form`, `layer:block` or `layer:pattern` answers one question: can another component go inside it? A component never imports one from a higher layer.</Rule>
+    </Rules>
+  </Section>
+
+  <Section
+    eyebrow="The one API rule"
+    title="Only ever text is a prop. Anything that can hold a component is a slot."
+    lede="A slot is a named sub-component written as a child — `PanelMeta`, `StageFooter`, `ToastAction`. No prop is typed `ReactNode`; that type is the sign the decision was never made."
+  >
+    <Rules>
+      <Rule>A line that reports a measured value is a slot. A count, a timestamp, a version or a delta arrives sealed or in the mono track, and a string can carry neither.</Rule>
+      <Rule>A variant is one union prop, never a family of booleans. `tone` means status on the shared ramp and nothing else; what is not a status gets its own name.</Rule>
+      <Rule>Every visible string is a prop, in English. A product passes its own language in from outside.</Rule>
+      <Rule>Buttons, fields and tables stay native elements. A headless library is worth adding when a control needs more than that, and not before.</Rule>
+    </Rules>
+  </Section>
+
+  <Section
+    eyebrow="How it stays consistent"
+    title="Three token layers, four ramps, and a check that fails."
+    lede="Primitive values have no job. Semantic roles say what a thing is for and carry the dark remap. Component slots let one control be restyled without touching the others. A component binds to the second or third layer, never the first."
+  >
+    <Rules>
+      <Rule>Space, radius, type and control height are ramps, not opinions. `Foundations/Scale` draws all of them.</Rule>
+      <Rule>`pnpm lint:tokens` fails on a raw pixel, a hex literal in a component, or a component naming a primitive. `pnpm build` runs it first, so drift cannot reach the package.</Rule>
+      <Rule>An exception states its reason in a comment the lint reads. A silent exemption is drift; a written one is a decision.</Rule>
+      <Rule>Visible text meets AA. Status is a word plus a mark, never colour alone. `pnpm test` fails on an axe violation.</Rule>
+    </Rules>
+  </Section>
+
+  <Section eyebrow="Sample content" title="Everything in these stories is invented.">
+    <p>
+      Sample people are placeholders and their addresses are `@data-insights.ai`. Hosts, hashes and
+      timestamps are made up. The repository is public, so nothing here names a real person, a
+      customer, or an unreleased project.
+    </p>
+  </Section>
+</Page>

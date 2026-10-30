@@ -7,13 +7,13 @@ import { Breadcrumb } from "../Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Menu, MenuGroup, MenuItem } from "../Menu";
 import { Sidebar } from "./Sidebar";
-import { SidebarBrand } from "./SidebarBrand";
-import { SidebarInset } from "./SidebarInset";
-import { SidebarMenu, SidebarMenuItem } from "./SidebarMenu";
-import { SidebarMenuButton } from "./SidebarMenuButton";
-import { SidebarProvider } from "./SidebarProvider";
-import { SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader } from "./SidebarSections";
-import { SidebarTrigger } from "./SidebarTrigger";
+import { SidebarBrand } from "./frame/SidebarBrand";
+import { SidebarInset } from "./frame/SidebarInset";
+import { SidebarMenu, SidebarMenuItem } from "./menu/SidebarMenu";
+import { SidebarMenuButton } from "./menu/SidebarMenuButton";
+import { SidebarProvider } from "./state/SidebarProvider";
+import { SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader } from "./menu/SidebarSections";
+import { SidebarTrigger } from "./frame/SidebarTrigger";
 
 type SampleProps = {
   label: string;

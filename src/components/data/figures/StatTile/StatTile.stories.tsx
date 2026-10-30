@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
-import { Sparkline } from "../../../charts/Sparkline";
+import { Sparkline } from "../../../charts/time/Sparkline";
 import { StatTile, StatTileDelta } from "./StatTile";
 
 const meta = {

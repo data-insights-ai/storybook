@@ -2,7 +2,7 @@ import { afterEach, expect, test } from "vitest";
 import { userEvent } from "vitest/browser";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
-import "../../../../styles.css";
+import "../../../../styles/styles.css";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "./DataTable";
 
 let root: Root | undefined;
