@@ -1,19 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ConsoleFrame } from "../../../.storybook/console/Console";
 import { LoginScreen } from "./Login";
 
+/* The sign-in page is the whole window: no product frame around it. */
 const meta = {
   title: "Patterns/Login",
   tags: ["layer:screen"],
   component: LoginScreen,
   parameters: { layout: "fullscreen" },
-  decorators: [
-    (Story) => (
-      <ConsoleFrame title="Sign in" lang="en">
-        <Story />
-      </ConsoleFrame>
-    ),
-  ],
 } satisfies Meta<typeof LoginScreen>;
 
 export default meta;

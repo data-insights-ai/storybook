@@ -63,31 +63,16 @@
     color: var(--di-text);
   }
 
-  .di-login-index {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: var(--di-index-col);
-    flex: none;
-    padding: var(--di-space-24) 0 var(--di-space-16);
-    border-right: 1px solid var(--di-border);
-    background: var(--di-bg-subtle);
-  }
-
-  .di-login-index-rule {
-    width: 1px;
-    flex: 1;
-    margin-top: var(--di-space-8);
-    background: var(--di-rule);
-  }
-
   .di-login-body {
     flex: 1;
     min-width: 0;
-    padding: var(--di-space-24) var(--di-space-24) var(--di-space-16);
+    padding: var(--di-space-32);
   }
 
   .di-login-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-8);
     font-family: var(--di-mono-label-family);
     font-size: var(--di-mono-label-size);
     font-weight: var(--di-mono-label-weight);
@@ -99,9 +84,9 @@
   .di-login-title {
     margin-top: var(--di-space-8);
     font-family: var(--di-heading-family);
-    font-size: var(--di-font-size-600);
+    font-size: var(--di-font-size-700);
     font-weight: var(--di-weight-bold);
-    line-height: var(--di-leading-snug);
+    line-height: var(--di-leading-tight);
     color: var(--di-text);
   }
 
@@ -123,14 +108,14 @@
   }
 
   .di-login-restrict {
-    margin-top: var(--di-space-12);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
+    margin-top: var(--di-space-16);
+    padding-top: var(--di-space-16);
+    border-top: 1px solid var(--di-rule-hairline);
+    font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
   }
 
-  /* Its own solid ground: text on the navy sheet has to be measurable. */
   .di-login-foot {
     display: flex;
     align-items: center;
@@ -145,5 +130,22 @@
 
   .di-login-foot-sep {
     color: var(--di-one);
+  }
+}
+
+@layer components {
+  @media (max-width: 600px) {
+    .di-login-body {
+      padding: var(--di-space-24);
+    }
+
+    .di-login-foot {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .di-login-foot-sep {
+      display: none;
+    }
   }
 }

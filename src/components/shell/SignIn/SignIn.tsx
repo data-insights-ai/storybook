@@ -1,13 +1,12 @@
 import { Children, isValidElement, type FormEvent, type ReactNode } from "react";
 import logoInverse from "../../../assets/logo-inverse.svg";
 import { SealMark } from "../../marks/status/SealValue";
-import { TickRule } from "../../data/text/TickRule";
 import "./SignIn.css";
 
 /**
- * Navy sheet, paper card, gold seal. The card carries the index column,
- * with the seal where the ordinal would sit: this is the boundary of the
- * record, and it is sealed.
+ * Navy sheet, paper card, gold seal: the one brand moment of a product.
+ * The seal stands before the eyebrow — this is the boundary of the
+ * record, and it is sealed. One surface, no bands.
  *
  * The access boundary is stated in plain words under the button, never
  * in a tooltip. The sheet is the dark theme and the card the daylight one
@@ -62,16 +61,14 @@ export function SignIn({
         </p>
 
         <form className="di-login-card" data-theme="light" aria-label={title} onSubmit={handleSubmit}>
-          <div className="di-login-index">
-            <SealMark state="sealed" />
-            <span className="di-login-index-rule" aria-hidden />
-          </div>
           <div className="di-login-body">
-            <p className="di-login-eyebrow">{eyebrow}</p>
+            <p className="di-login-eyebrow">
+              <SealMark state="sealed" />
+              {eyebrow}
+            </p>
             <h1 className="di-login-title">{title}</h1>
             <p className="di-login-lede">{lede}</p>
             <div className="di-login-form">{fields}</div>
-            <TickRule />
             <p className="di-login-restrict">{restriction}</p>
           </div>
         </form>
