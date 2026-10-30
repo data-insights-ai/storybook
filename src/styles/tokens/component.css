@@ -199,6 +199,7 @@
     /* Feedback: a toast's width, the tooltip, the waiting marks and the skeleton's bars. */
     --di-toast-min: 320px;
     --di-toast-max: 480px;
+    --di-notice-dot: 8px;
     --di-tooltip-h: 22px;
     --di-app-loader-mark: 64px;
     --di-progress-h: 5px;

@@ -1,29 +1,20 @@
 @layer components {
-  /*
-   * Three columns: the icon, the copy, the action. The plane is the one
-   * surface; the toned icon column carries the state, no frame does.
-   * An action may sit inside `NoticeText` or beside it; either way it stays
-   * inside the padding, in line with the copy, and goes under the copy on a
-   * narrow notice. The inset stays 12px in compact: the least text may sit
-   * from an edge.
-   */
-  .di-notice {
-    container: di-notice / inline-size;
-    display: grid;
-    grid-template-columns: max-content minmax(0, 1fr) max-content;
-    overflow: hidden;
+  .di-notice-title {
+    font-family: var(--di-heading-family);
+    font-weight: var(--di-weight-bold);
+    letter-spacing: var(--di-tracking-tight);
+    line-height: var(--di-leading-snug);
+    text-wrap: balance;
+    color: var(--di-text);
   }
 
-  /* The icon column carries the tone: the state is a mark plus a word. */
-  .di-notice-icon {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-    display: flex;
-    justify-content: center;
-    width: var(--di-index-col);
-    flex: none;
-    padding-top: var(--di-space-12);
-    background: var(--di-bg-page);
+  .di-notice-body {
+    text-wrap: pretty;
+    color: var(--di-text-muted);
+  }
+
+  .di-notice-heading {
+    --di-eyebrow-gap: var(--di-gap-8);
   }
 
   .di-notice-icon > svg {
@@ -31,7 +22,37 @@
     height: var(--di-icon-md);
   }
 
-  .di-notice-copy {
+  .di-notice-action {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-12);
+  }
+
+  /*
+   * Banner: the icon, the copy, the action. The toned icon column carries
+   * the state, no frame does. An action may sit inside `NoticeText` or
+   * beside it; either way it stays inside the padding, in line with the
+   * copy, and goes under the copy on a narrow notice. The inset stays 12px
+   * in compact: the least text may sit from an edge.
+   */
+  .di-notice-banner {
+    container: di-notice / inline-size;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) max-content;
+    overflow: hidden;
+  }
+
+  .di-notice-banner .di-notice-icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    display: flex;
+    justify-content: center;
+    width: var(--di-index-col);
+    padding-top: var(--di-space-12);
+    background: var(--di-bg-page);
+  }
+
+  .di-notice-banner .di-notice-copy {
     grid-column: 2;
     min-width: 0;
     display: grid;
@@ -41,41 +62,33 @@
     padding: var(--di-space-12);
   }
 
-  .di-notice-copy > * {
+  .di-notice-banner .di-notice-copy > * {
     grid-column: 1;
   }
 
-  .di-notice-copy > .di-notice-action {
+  .di-notice-banner .di-notice-copy > .di-notice-action {
     grid-column: 2;
     grid-row: 1 / span 4;
   }
 
-  .di-notice > .di-notice-action {
+  .di-notice-banner > .di-notice-action {
     grid-column: 3;
     grid-row: 1;
     padding: var(--di-space-12) var(--di-space-12) var(--di-space-12) 0;
   }
 
-  .di-notice-title {
-    font-size: var(--di-font-size-400);
-    font-weight: var(--di-weight-semibold);
-    letter-spacing: var(--di-tracking-tight);
-    line-height: var(--di-leading-snug);
-    color: var(--di-text);
+  .di-notice-banner .di-notice-action {
+    align-self: center;
   }
 
-  .di-notice-body {
+  .di-notice-banner .di-notice-title {
+    font-size: var(--di-font-size-400);
+  }
+
+  .di-notice-banner .di-notice-body {
     margin-top: var(--di-space-2);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
-    color: var(--di-text-muted);
-  }
-
-  .di-notice-action {
-    align-self: center;
-    display: flex;
-    align-items: center;
-    gap: var(--di-gap-12);
   }
 
   .di-notice-neutral .di-notice-icon {
@@ -83,37 +96,156 @@
   }
 
   .di-notice-ok .di-notice-icon {
-    background: var(--di-status-ok-bg);
     color: var(--di-status-ok-fg);
   }
 
   .di-notice-warn .di-notice-icon {
-    background: var(--di-status-warn-bg);
     color: var(--di-status-warn-fg);
   }
 
   .di-notice-danger .di-notice-icon {
-    background: var(--di-status-danger-bg);
     color: var(--di-status-danger-fg);
+  }
+
+  .di-notice-banner.di-notice-ok .di-notice-icon {
+    background: var(--di-status-ok-bg);
+  }
+
+  .di-notice-banner.di-notice-warn .di-notice-icon {
+    background: var(--di-status-warn-bg);
+  }
+
+  .di-notice-banner.di-notice-danger .di-notice-icon {
+    background: var(--di-status-danger-bg);
   }
 
   /* On a phone the action goes under the copy instead of squeezing it. */
   @container di-notice (max-width: 480px) {
-    .di-notice-copy > .di-notice-action {
+    .di-notice-banner .di-notice-copy > .di-notice-action {
       grid-column: 1;
       grid-row: auto;
       margin-top: var(--di-gap-12);
     }
 
-    .di-notice > .di-notice-action {
+    .di-notice-banner > .di-notice-action {
       grid-column: 2;
       grid-row: 2;
       padding: 0 var(--di-space-12) var(--di-space-12);
     }
 
-    .di-notice-action {
+    .di-notice-banner .di-notice-action {
       align-self: start;
       flex-wrap: wrap;
     }
+  }
+
+  /*
+   * Empty: in place of the content that is missing, centred, at a
+   * readable measure. The icon stands on the surface itself: a tile would
+   * vanish on the inset tone a nested notice takes.
+   */
+  .di-notice-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--di-gap-32) var(--di-surface-inner);
+    text-align: center;
+  }
+
+  .di-notice-empty .di-notice-copy {
+    display: contents;
+  }
+
+  .di-notice-empty .di-notice-icon {
+    display: flex;
+    margin-bottom: var(--di-gap-12);
+  }
+
+  .di-notice-empty .di-notice-icon > svg {
+    width: var(--di-icon-lg);
+    height: var(--di-icon-lg);
+  }
+
+  .di-notice-empty .di-notice-heading .di-eyebrow {
+    justify-content: center;
+  }
+
+  .di-notice-empty .di-notice-title {
+    font-size: var(--di-block-title-size);
+  }
+
+  .di-notice-empty .di-notice-body {
+    margin-top: var(--di-gap-6);
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-body);
+  }
+
+  .di-notice-empty .di-notice-body.di-mono {
+    font-size: var(--di-font-size-300);
+    overflow-wrap: anywhere;
+  }
+
+  .di-notice-empty .di-notice-title,
+  .di-notice-empty .di-notice-body {
+    max-width: var(--di-measure-prose);
+  }
+
+  .di-notice-empty .di-notice-action {
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--di-gap-16);
+  }
+
+  /*
+   * Line: nothing needs the reader. One ruled line, the tone's dot before
+   * the title, and what the calm rests on beside it.
+   */
+  .di-notice-line {
+    --di-notice-dot-colour: var(--di-status-neutral-dot);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-gap-4) var(--di-gap-16);
+    padding: var(--di-gap-16) 0;
+    border-block: 1px solid var(--di-rule);
+  }
+
+  .di-notice-line.di-notice-ok {
+    --di-notice-dot-colour: var(--di-status-ok-dot);
+  }
+
+  .di-notice-line.di-notice-warn {
+    --di-notice-dot-colour: var(--di-status-warn-dot);
+  }
+
+  .di-notice-line.di-notice-danger {
+    --di-notice-dot-colour: var(--di-status-danger-dot);
+  }
+
+  .di-notice-line .di-notice-copy {
+    display: contents;
+  }
+
+  .di-notice-line .di-notice-icon {
+    display: none;
+  }
+
+  .di-notice-line .di-notice-title {
+    font-size: var(--di-font-size-550);
+  }
+
+  .di-notice-line .di-notice-title::before {
+    content: "";
+    display: inline-block;
+    width: var(--di-notice-dot);
+    height: var(--di-notice-dot);
+    margin-right: var(--di-gap-12);
+    border-radius: var(--di-radius-pill);
+    background: var(--di-notice-dot-colour);
+    vertical-align: 0.1em;
+  }
+
+  .di-notice-line .di-notice-action {
+    margin-left: auto;
   }
 }

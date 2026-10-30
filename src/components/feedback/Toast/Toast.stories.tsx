@@ -153,3 +153,28 @@ export const Arriving: Story = {
     );
   },
 };
+
+/** Long German wording with an action: the body wraps beside the action, the close stays on the title's line. */
+export const German: Story = {
+  args: {
+    title: "Vier Datenquellen wurden widerrufen.",
+    body: "Sie wurden um 09:14:22Z aus dem Verzeichnis entfernt; bereits versiegelte Einträge bleiben nachprüfbar.",
+    auditId: "audit 7f3a99e0",
+    dismissLabel: "Diese Bestätigung schließen",
+  },
+  render: (args) => (
+    <Toast {...args}>
+      <ToastAction>
+        <Button variant="secondary" size="sm">
+          Eintrag öffnen
+        </Button>
+      </ToastAction>
+    </Toast>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const title = canvas.getByText("Vier Datenquellen wurden widerrufen.").getBoundingClientRect();
+    const close = canvas.getByRole("button", { name: "Diese Bestätigung schließen" }).getBoundingClientRect();
+    await expect(close.top).toBeLessThan(title.bottom);
+  },
+};

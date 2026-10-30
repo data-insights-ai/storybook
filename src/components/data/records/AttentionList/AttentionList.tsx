@@ -3,6 +3,7 @@ import { cx } from "../../../../internal/cx";
 import { surfaceClass } from "../../../../internal/surface";
 import { SeverityMark, type Severity } from "../../../marks/status/SeverityMark";
 import { MetaLine } from "../../../text/MetaLine";
+import { Notice, NoticeBody, NoticeTitle } from "../../../feedback/Notice";
 import "./AttentionList.css";
 
 /**
@@ -15,8 +16,8 @@ import "./AttentionList.css";
  *
  * The first item carries `emphasis`: it spans the row, it holds the page's
  * one button, and its gold edge marks the one thing that matters. When
- * nothing is due the list is not drawn empty; `AttentionClear` says so in
- * one quiet line.
+ * nothing is due the list is not drawn empty; `Notice variant="line"` says
+ * so in one quiet line.
  */
 export function AttentionList({
   label,
@@ -122,6 +123,9 @@ export function AttentionItem({
 /**
  * The first block of an overview when nothing needs the reader: one quiet
  * line, "Everything is running", and what it rests on.
+ *
+ * @deprecated Removed in 0.12: use `Notice variant="line" tone="ok"` with a
+ * `NoticeTitle` and a `NoticeBody` holding a `MetaLine` of the note.
  */
 export function AttentionClear({
   title,
@@ -132,9 +136,13 @@ export function AttentionClear({
   note?: string;
 }) {
   return (
-    <p className="di-attention-clear">
-      <span className="di-attention-clear-title">{title}</span>
-      {note ? <MetaLine items={note} /> : null}
-    </p>
+    <Notice variant="line" tone="ok">
+      <NoticeTitle>{title}</NoticeTitle>
+      {note ? (
+        <NoticeBody>
+          <MetaLine items={note} />
+        </NoticeBody>
+      ) : null}
+    </Notice>
   );
 }

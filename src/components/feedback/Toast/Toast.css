@@ -59,17 +59,19 @@
   }
 
   .di-toast-title {
+    font-family: var(--di-heading-family);
     font-size: var(--di-font-size-400);
-    font-weight: var(--di-weight-semibold);
+    font-weight: var(--di-weight-bold);
     line-height: var(--di-leading-snug);
     color: var(--di-inverse-text);
   }
 
+  /* What happened is a sentence, so it is set in the reading face; only the audit id is mono. */
   .di-toast-body {
     margin-top: var(--di-space-2);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
+    font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
+    text-wrap: pretty;
     color: var(--di-inverse-muted);
   }
 
@@ -84,7 +86,10 @@
     flex: none;
   }
 
+  /* The close sits on the title's line, as the seal does, however far the body wraps. */
   .di-toast-close {
+    position: relative;
+    align-self: flex-start;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,6 +111,32 @@
   .di-toast-close > svg {
     width: var(--di-icon-md);
     height: var(--di-icon-md);
+  }
+
+  /* On a phone the action goes under the copy, at the end, instead of squeezing the body. */
+  @media (max-width: 480px) {
+    .di-toast {
+      flex-wrap: wrap;
+    }
+
+    .di-toast-action {
+      order: 1;
+      display: flex;
+      flex-basis: 100%;
+      justify-content: flex-end;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .di-toast-close::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: var(--di-target);
+      height: var(--di-target);
+      translate: -50% -50%;
+    }
   }
 }
 

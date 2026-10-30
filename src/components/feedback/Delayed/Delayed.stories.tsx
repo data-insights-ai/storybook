@@ -3,7 +3,7 @@ import { useState } from "react";
 import { expect, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Delayed } from "./Delayed";
-import { Spinner } from "../waiting/Spinner";
+import { Loading } from "../waiting/Loading";
 
 const meta = {
   title: "Feedback/Delayed",
@@ -24,14 +24,14 @@ export const Appearing: Story = {
   render: function Render(args) {
     const [run, setRun] = useState(0);
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--di-gap-12)" }}>
         <div>
           <Button variant="secondary" size="sm" onClick={() => setRun((n) => n + 1)}>
             Wait again
           </Button>
         </div>
         <Delayed key={run} delay={args.delay}>
-          <Spinner label="resolving hosts" />
+          <Loading label="Resolving hosts" delay={0} />
         </Delayed>
         <p>This line stays where it is.</p>
       </div>
@@ -39,6 +39,6 @@ export const Appearing: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await waitFor(() => expect(canvas.getByText("resolving hosts")).toBeVisible());
+    await waitFor(() => expect(canvas.getByText("Resolving hosts")).toBeVisible());
   },
 };
