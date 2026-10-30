@@ -88,7 +88,7 @@
     --di-focus: var(--di-cornflower-600);
     --di-focus-halo: rgba(43, 108, 176, 0.22);
     /*
-     * The focus ring, one model (Foundations, Practice): outside the control
+     * The focus ring, one model (Foundations/Register): outside the control
      * at the offset when it stands free, drawn inside it (the inset) where a
      * neighbour or a clipping frame sits next to it. On a selected item the
      * ring is drawn over the selection edge, so it is one indicator. The
