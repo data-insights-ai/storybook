@@ -1,4 +1,4 @@
-import { over, parse, ratio, type Rgba } from "../contrast/visibleContrast";
+import { hex, over, parse, ratio, type Rgba } from "../contrast/visibleContrast";
 import { describe } from "../surfaces/paint";
 import { boxOf, type Box, type Ring } from "./ring";
 
@@ -18,7 +18,6 @@ function paintOf(el: Element | null): Rgba {
 }
 
 const round = (value: number) => Math.round(value * 100) / 100;
-const hex = ({ r, g, b }: Rgba) => "#" + [r, g, b].map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
 
 /**
  * (c) The ring against what it replaces, at least 3:1: the ground outside
