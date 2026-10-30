@@ -283,6 +283,9 @@
     --di-period-track-h: 10px;
     --di-tsummary-strip-h: 46px;
     --di-tsummary-swatch: 12px;
+    /* The line an episode stands on: where it is quiet, only this shows. */
+    --di-tsummary-base: 3px;
+    --di-tsummary-severity: 7rem;
     --di-week-label: 40px;
     /* The active block's ring: a 2px gap in the surface, then 1px of ink. */
     --di-tsummary-ring: 3px;

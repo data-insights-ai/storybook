@@ -1,6 +1,7 @@
 import { useMemo, useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+import { Panel } from "../../layout/page/Panel";
 import { EventTimeline, EventTimelineMeta, EventTimelineReadout } from "./EventTimeline";
 import { useTimelineView, type TimelineNavigation } from "./navigation/useTimelineView";
 import { eventsReadable } from "../scale";
@@ -19,31 +20,59 @@ import {
 const NOW = Date.UTC(2026, 9, 12, 10, 0, 0);
 const HOUR = 3_600_000;
 
-const clock = new Intl.DateTimeFormat("en", {
-  timeZone: "UTC",
-  day: "numeric",
-  month: "short",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  hourCycle: "h23",
+const WORDS = {
+  en: {
+    lines: "Each line is one event; its length is its magnitude.",
+    bars: (s: number) =>
+      `Each bar holds the events of ${s} s. Its height grows with the square root of the count, so a single event stays visible next to hundreds.`,
+    events: (n: string) => `${n} events`,
+    tones: (critical: string, warning: string, routine: string) =>
+      `${critical} critical · ${warning} warning · ${routine} routine`,
+    score: "Severity score",
+    ago: "24 h ago",
+    markers: ["opened", "under review", "confirmed"],
+  },
+  de: {
+    lines: "Jede Linie ist ein Ereignis; ihre Länge ist seine Stärke.",
+    bars: (s: number) =>
+      `Jeder Balken fasst die Ereignisse von ${s} s zusammen. Seine Höhe wächst mit der Quadratwurzel der Anzahl, so bleibt ein einzelnes Ereignis neben Hunderten sichtbar.`,
+    events: (n: string) => `${n} Ereignisse`,
+    tones: (critical: string, warning: string, routine: string) =>
+      `${critical} kritisch · ${warning} Warnung · ${routine} Routine`,
+    score: "Schweregrad",
+    ago: "vor 24 Std.",
+    markers: ["eröffnet", "in Prüfung", "bestätigt"],
+  },
+};
+
+const formatsOf = (locale: string) => ({
+  words: locale === "de" ? WORDS.de : WORDS.en,
+  clock: new Intl.DateTimeFormat(locale, {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }),
+  instant: new Intl.DateTimeFormat(locale, {
+    timeZone: "UTC",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    fractionalSecondDigits: 3,
+    hourCycle: "h23",
+  }),
+  count: new Intl.NumberFormat(locale),
 });
-const instant = new Intl.DateTimeFormat("en", {
-  timeZone: "UTC",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  fractionalSecondDigits: 3,
-  hourCycle: "h23",
-});
-const count = new Intl.NumberFormat("en");
 
 const ACTIVITY = activity(NOW);
 const RHYTHM = rhythm(NOW);
 const SPARSE = sparse(NOW);
 
 /** A score that climbs with the critical events, recorded once an hour. */
-function scoreOf(events: SampleEvent[], bounds: TimelineSpan): TimelineScore {
+function scoreOf(events: SampleEvent[], bounds: TimelineSpan, words: (typeof WORDS)["en"]): TimelineScore {
   const points: TimelineScore["points"] = [];
   let i = 0;
   let weight = 0;
@@ -57,12 +86,12 @@ function scoreOf(events: SampleEvent[], bounds: TimelineSpan): TimelineScore {
   const then = bounds.end - 24 * HOUR;
   const value = [...points].reverse().find((p) => p.at <= then)?.value ?? 0;
   return {
-    label: "Severity score",
+    label: words.score,
     points,
     max: 100,
     warn: 40,
     danger: 60,
-    compare: { at: then, value, label: "24 h ago" },
+    compare: { at: then, value, label: words.ago },
   };
 }
 
@@ -80,6 +109,7 @@ type SampleProps = ComponentProps<typeof EventTimeline> & {
  */
 function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: SampleProps) {
   const bounds = useMemo(() => boundsOf(sample), [sample]);
+  const { words, clock, instant, count } = useMemo(() => formatsOf(args.locale), [args.locale]);
   const [selected, setSelected] = useState<TimelineSpan | null>(null);
   const [hovered, setHovered] = useState<TimelineTarget | null>(null);
   const navigation = useTimelineView({ bounds, selected, onSettle: setSelected });
@@ -94,17 +124,16 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
   const inView = sample.filter((e) => e.at >= view.start && e.at < view.end).length;
   const start = sample[0]?.at ?? NOW;
   const overviewBars = useMemo(() => foldBars(sample, bounds, overviewBucketMs), [sample, bounds, overviewBucketMs]);
-  const score = useMemo(() => (withScore ? scoreOf(sample, bounds) : undefined), [withScore, sample, bounds]);
+  const score = useMemo(
+    () => (withScore ? scoreOf(sample, bounds, words) : undefined),
+    [withScore, sample, bounds, words],
+  );
 
   return (
     <EventTimeline
       {...args}
       navigation={navigation}
-      scaleNote={
-        readable
-          ? "Each line is one event; its length is its magnitude."
-          : `Each bar holds the events of ${bucketMs / 1000} s. Its height grows with the square root of the count, so a single event stays visible next to hundreds.`
-      }
+      scaleNote={readable ? words.lines : words.bars(bucketMs / 1000)}
       bars={bars}
       overviewBars={overviewBars}
       events={events}
@@ -113,9 +142,9 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
       markers={
         withMarkers
           ? [
-              { at: start + HOUR, label: "opened" },
-              { at: start + 15.5 * HOUR, label: "under review" },
-              { at: start + 31 * HOUR, label: "confirmed" },
+              { at: start + HOUR, label: words.markers[0] },
+              { at: start + 15.5 * HOUR, label: words.markers[1] },
+              { at: start + 31 * HOUR, label: words.markers[2] },
             ]
           : []
       }
@@ -125,7 +154,7 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
         <span className="di-mono">
           {clock.format(view.start)} → {clock.format(view.end)}
         </span>
-        <span>{count.format(inView)} events</span>
+        <span>{words.events(count.format(inView))}</span>
       </EventTimelineMeta>
       <EventTimelineReadout>
         {hovered?.kind === "event" ? (
@@ -137,8 +166,11 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
           <>
             <div className="di-mono">{clock.format(hovered.bar.start)}</div>
             <div>
-              {count.format(hovered.bar.danger)} critical · {count.format(hovered.bar.warn)} warning ·{" "}
-              {count.format(hovered.bar.neutral)} routine
+              {words.tones(
+                count.format(hovered.bar.danger),
+                count.format(hovered.bar.warn),
+                count.format(hovered.bar.neutral),
+              )}
             </div>
           </>
         ) : null}
@@ -156,12 +188,14 @@ const meta = {
     title: "Sequence",
     label: "Event sequence",
     instructions: [
-      { keys: ["Drag"], label: "zoom into a span" },
-      { keys: ["Click"], label: "look closer, or open an event" },
-      { keys: ["⌘/Ctrl + scroll", "Pinch", "+", "−"], label: "zoom" },
-      { keys: ["Shift + scroll", "←", "→"], label: "move, or drag the frame above" },
-      { keys: ["Double-click"], label: "zoom out" },
-      { keys: ["0"], label: "show everything" },
+      { keys: ["Drag"], label: "zoom into a span", pointer: "fine" },
+      { keys: ["Click"], label: "look closer", pointer: "fine" },
+      { keys: ["⌘/Ctrl + scroll", "+", "−"], label: "zoom", pointer: "fine" },
+      { keys: ["Shift + scroll", "←", "→"], label: "move", pointer: "fine" },
+      { keys: ["0"], label: "show everything", pointer: "fine" },
+      { keys: ["Tap"], label: "look closer", pointer: "coarse" },
+      { keys: ["Pinch"], label: "zoom", pointer: "coarse" },
+      { keys: ["Swipe"], label: "move", pointer: "coarse" },
     ],
     loadingLabel: "Loading",
     zoomInLabel: "Zoom in",
@@ -177,6 +211,13 @@ const meta = {
     onHoverChange: fn(),
     onEventPick: fn(),
   },
+  decorators: [
+    (Story) => (
+      <Panel>
+        <Story />
+      </Panel>
+    ),
+  ],
   argTypes: {
     navigation: { control: false },
     bars: { control: false },
@@ -255,6 +296,47 @@ export const FewEvents: Story = {
     ]);
     await expect(args.onEventPick).toHaveBeenCalledOnce();
   },
+};
+
+/** Long German words in the head, the lanes, the legend and the help: everything wraps between words, nothing over the plot. */
+export const German: Story = {
+  args: {
+    title: "Ablauf",
+    label: "Ereignisablauf",
+    instructions: [
+      { keys: ["Ziehen"], label: "Zeitraum vergrößern", pointer: "fine" },
+      { keys: ["Klicken"], label: "genauer ansehen", pointer: "fine" },
+      { keys: ["⌘/Strg + Mausrad", "+", "−"], label: "zoomen", pointer: "fine" },
+      { keys: ["Umschalt + Mausrad", "←", "→"], label: "verschieben", pointer: "fine" },
+      { keys: ["0"], label: "alles zeigen", pointer: "fine" },
+      { keys: ["Tippen"], label: "genauer ansehen", pointer: "coarse" },
+      { keys: ["Zwei Finger"], label: "zoomen", pointer: "coarse" },
+      { keys: ["Wischen"], label: "verschieben", pointer: "coarse" },
+    ],
+    loadingLabel: "Wird geladen",
+    zoomInLabel: "Vergrößern",
+    zoomOutLabel: "Verkleinern",
+    backLabel: "Zurück zur vorigen Ansicht",
+    wholeLabel: "Alles zeigen",
+    lanesLabel: "Phasen der Verarbeitung",
+    toneLabels: { danger: "kritisch", warn: "Warnung", neutral: "Routine" },
+    locale: "de",
+  },
+  render: (args) => (
+    <Sample
+      {...args}
+      sample={ACTIVITY}
+      sampleLanes={[
+        { id: "config", label: "Konfigurationsänderungen" },
+        { id: "intake", label: "Datenannahme" },
+        { id: "checks", label: "Plausibilitätsprüfungen" },
+        { id: "sync", label: "Replikation" },
+        { id: "export", label: "Export an Empfängersysteme" },
+      ]}
+      withScore
+      withMarkers
+    />
+  ),
 };
 
 /** Waiting for the first bars: the frame and its controls stand, the plot says it is loading. */

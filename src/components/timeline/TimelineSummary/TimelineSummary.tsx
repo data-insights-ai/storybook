@@ -1,6 +1,6 @@
 import { Children, createContext, isValidElement, useContext, useId, useMemo, useState, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
-import { StatusPill } from "../../marks/status/StatusPill";
+import { SeverityMark, type Severity } from "../../marks/status/SeverityMark";
 import type { TimelineMarker, TimelineSpan, TimelineTone } from "../types";
 import { useWidth } from "../../../internal/useWidth";
 import type { TimelineEpisode } from "./episodes";
@@ -12,10 +12,13 @@ const LOW_PX = 10;
 const HIGH_PX = 28;
 const MINUTE = 60_000;
 const TONES: TimelineTone[] = ["danger", "warn", "neutral"];
+const SEVERITY: Record<TimelineTone, Severity> = { danger: "critical", warn: "medium", neutral: "info" };
 
 const ordinal = (i: number) => String(i + 1).padStart(2, "0");
 
 type Place = {
+  /** Set when every episode has the same tone: the head says it once and the rows leave it out. */
+  uniform: TimelineTone | null;
   active: number | null;
   hovered: number | null;
   hover: (episode: number | null) => void;
@@ -36,8 +39,9 @@ const SummaryPlace = createContext<Place | null>(null);
  * in it keeps its ordinal and is not drawn. A block's height grows with the
  * square root of its rate, so a burst stands tall and the steady activity
  * between bursts lies low. It is filled in each tone only where events of
- * that tone fell and stays faint where it was quiet, so a long stretch
- * with one severe hour does not read as a severe day. The legend under the strip says this in the caller's words.
+ * that tone fell; where it was quiet only its base line shows, so a long
+ * stretch with one severe hour does not read as a severe day. The legend
+ * under the strip says this in the caller's words.
  * The strip is a picture for the pointer, read as `label`; the rows are
  * the way through it for the keyboard and a screen reader.
  *
@@ -101,7 +105,9 @@ export function TimelineSummary({
   );
 
   const pick = onEpisodePick ? (episode: number) => onEpisodePick(episode === active ? null : episode) : undefined;
-  const place: Place = { active, hovered, hover, pick };
+  const tones = new Set(episodes.filter((e) => e.total > 0).map((e) => e.tone));
+  const uniform = tones.size === 1 ? [...tones][0] : null;
+  const place: Place = { uniform, active, hovered, hover, pick };
 
   const blocks = useMemo(() => {
     const spanMs = Math.max(1, bounds.end - bounds.start);
@@ -148,6 +154,7 @@ export function TimelineSummary({
         <span id={`${id}-title`} className="di-tsummary-title">
           {title}
         </span>
+        {uniform ? <SeverityMark level={SEVERITY[uniform]} label={toneLabels[uniform]} /> : null}
         {meta}
       </div>
 
@@ -239,9 +246,11 @@ export function TimelineSummaryMeta({ children }: { children: ReactNode }) {
 }
 
 /**
- * One episode as a row: its ordinal, its severest tone as a word, what it
- * was in a line of prose, and the slots `TimelineSummaryTime` and
- * `TimelineSummaryDetail`. A button when the summary takes a pick.
+ * One episode as a row: its ordinal, what it was in a line of prose, its
+ * severest tone as a `SeverityMark` in a column of its own, and the slots
+ * `TimelineSummaryTime` and `TimelineSummaryDetail`. When every episode
+ * has the same tone the summary's head says it once and the rows leave it
+ * out. A button when the summary takes a pick.
  */
 export function TimelineSummaryEpisode({
   episode,
@@ -269,9 +278,11 @@ export function TimelineSummaryEpisode({
   const body = (
     <>
       <span className="di-ordinal di-tsummary-index">{ordinal(episode)}</span>
-      <span className="di-tsummary-tone">
-        <StatusPill tone={tone}>{toneLabel}</StatusPill>
-      </span>
+      {place?.uniform ? null : (
+        <span className="di-tsummary-tone">
+          <SeverityMark level={SEVERITY[tone]} label={toneLabel} />
+        </span>
+      )}
       <span className="di-tsummary-row-title">{title}</span>
       {children}
     </>
