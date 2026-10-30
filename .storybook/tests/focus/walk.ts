@@ -28,24 +28,17 @@ const scope = () =>
     .find((el) => el.getClientRects().length > 0) ??
   document.body;
 
-const TABBABLE =
-  "a[href], button, input, select, textarea, summary, iframe, [contenteditable=''], [contenteditable='true'], audio[controls], video[controls], [tabindex]";
-
 /*
- * Whether Tab has anywhere to land in the scope: a tabbable control, or a scroller Chrome makes focusable. With
- * nowhere, Tab leaves the story's frame for the runner's page, which can detach the frame mid-step.
+ * The last stop in the page, kept after everything (a popup portalled later too). Tab past the story's last control
+ * lands here instead of leaving the frame: out of the frame, the keys went to whichever frame the runner had focused
+ * next, which could be one it was removing ("Frame was detached").
  */
-const hasTabStop = (root: Element) =>
-  [...root.querySelectorAll<HTMLElement>(TABBABLE)].some(
-    (el) => el.tabIndex >= 0 && !el.matches(":disabled") && el.getClientRects().length > 0,
-  ) ||
-  [...root.querySelectorAll<HTMLElement>("*")].some((el) => {
-    const { overflowX, overflowY } = getComputedStyle(el);
-    return (
-      (/auto|scroll/.test(overflowY) && el.scrollHeight > el.clientHeight) ||
-      (/auto|scroll/.test(overflowX) && el.scrollWidth > el.clientWidth)
-    );
-  });
+const lastStop = () => {
+  const stop = document.createElement("span");
+  stop.tabIndex = 0;
+  stop.setAttribute("aria-hidden", "true");
+  return stop;
+};
 
 /**
  * Tab through the story with the real keyboard, as a person would, and step
@@ -56,11 +49,16 @@ export async function walkFocus(): Promise<RingFinding[]> {
   const seen = new Set<string>();
   const composites = new Set<Element>();
   const found = new Map<string, RingFinding>();
+  const stop = lastStop();
+  const press = async (key: string) => {
+    if (stop !== document.activeElement) document.body.append(stop);
+    await userEvent.keyboard(key);
+  };
 
   const visit = async (): Promise<"new" | "seen" | "left"> => {
     await settled();
     const focused = document.activeElement;
-    if (!focused || focused === document.body || !document.hasFocus()) return "left";
+    if (!focused || focused === document.body || focused === stop || !document.hasFocus()) return "left";
     const pointed = focused.getAttribute("aria-activedescendant");
     const target = pointed ? document.getElementById(pointed) : null;
     const key = `${elementKey(focused)}|${target ? elementKey(target) : ""}`;
@@ -83,14 +81,14 @@ export async function walkFocus(): Promise<RingFinding[]> {
         ? "{ArrowRight}"
         : "{ArrowDown}";
     for (let i = 0; i < MAX_ARROWS; i++) {
-      await userEvent.keyboard(key);
+      await press(key);
       if ((await visit()) !== "new") break;
     }
   };
 
   const tabs = async () => {
     for (let i = 0; i < MAX_TABS; i++) {
-      await userEvent.keyboard("{Tab}");
+      await press("{Tab}");
       if ((await visit()) !== "new") return;
       await arrows();
     }
@@ -101,18 +99,18 @@ export async function walkFocus(): Promise<RingFinding[]> {
     await arrows();
     await tabs();
   }
-  if (!hasTabStop(scope())) return [...found.values()];
   const start = document.createElement("span");
   start.tabIndex = -1;
   scope().prepend(start);
   window.focus();
   start.focus();
-  await userEvent.keyboard("{Tab}");
+  await press("{Tab}");
   start.remove();
   if ((await visit()) === "new") {
     await arrows();
     await tabs();
   }
+  stop.remove();
   return [...found.values()];
 }
 
