@@ -1,0 +1,24 @@
+@layer components {
+  /* The page follows the window: a list or table uses every column, a
+     dashboard's Grid adds columns, and a record or form keeps its measure
+     (Page). `contained` stops at 1440px for a product that wants it. The
+     page is a vertical flow: its blocks are spaced by the container, so a
+     screen gets the console rhythm without wrapping everything in a Stack. */
+  .di-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-24);
+    width: 100%;
+    min-width: 0;
+    padding: var(--di-space-24) var(--di-content-pad) var(--di-space-32);
+  }
+
+  .di-content.is-contained {
+    max-width: var(--di-content-max);
+  }
+
+  .di-content:focus {
+    outline: none;
+  }
+}

@@ -28,7 +28,12 @@ const families = [
         "#0a1f44",
         "The seal: a brand moment — sign-in, onboarding, a licence or certificate. Never beside the one.",
       ],
-      ["--di-ai-ring", "#A6811F", "#061631", "The hollow ring beside an inferred value."],
+      [
+        "--di-ai-ring",
+        "#A6811F",
+        "#061631",
+        "The inferred ring inside a brand region; elsewhere --di-mark-ring draws it in ink.",
+      ],
     ],
   },
   {
@@ -37,7 +42,13 @@ const families = [
     swatches: [
       ["--di-bg-chrome", "#E9E8E3", "#0a1f44", "The sidebar, one step below the ground. Also --di-bg-strip."],
       ["--di-bg-page", "#F3F2EE", "#0a1f44", "The ground. One token, so a warmer ground is one line."],
-      ["--di-bg-subtle", "#EAE9E4", "#0a1f44", "Inset: a table head, a group inside a surface."],
+      ["--di-bg-subtle", "#EAE9E4", "#0a1f44", "Inset: a table head, a group inside a surface. Also --di-bg-disabled."],
+      [
+        "--di-bg-readonly",
+        "#F3F2EE",
+        "#0a1f44",
+        "A read-only field: a well one step below the surface, above disabled.",
+      ],
       ["--di-bg-surface", "#FDFDFB", "#0a1f44", "A panel, a table, a list pane. Also --di-bg-pane."],
       ["--di-bg-plane", "#FFFFFF", "#0a1f44", "What floats or is lifted: a menu, the selected row."],
     ],
@@ -68,7 +79,8 @@ const severities = [
 const night = [
   ["--di-bg-chrome", "--di-text", "#071733", "The sidebar, one step deeper than the ground."],
   ["--di-bg-page", "--di-text", "#0A1F44", "The ground is brand navy, not near-black."],
-  ["--di-bg-subtle", "--di-text", "#081838", "Inset and strip, a step below the ground."],
+  ["--di-bg-subtle", "--di-text", "#081838", "Inset, strip and disabled, a step below the ground."],
+  ["--di-bg-readonly", "--di-text", "#0A1F44", "A read-only field: a step below the surface, above disabled."],
   ["--di-bg-surface", "--di-text", "#0F2A57", "A surface lifts from the ground."],
   ["--di-bg-plane", "--di-text", "#133068", "The plane: a menu, a lifted row."],
   [
@@ -175,7 +187,7 @@ function Board() {
     <Page
       eyebrow="Colour"
       title="Paper, navy, one gold."
-      lede="A cool paper is the ground and depth is a step in tone, not a line. Navy is the ink and, in daylight, the only thing that acts. Gold marks the one thing that matters in a view — an object, never a word in daylight. Cornflower is selection and focus. Severity is one scale for everything."
+      lede="A barely warm paper is the ground and depth is a step in tone, not a line. Navy is the ink and, in daylight, the only thing that acts. Gold marks the one thing that matters in a view — an object, never a word in daylight. Cornflower is selection and focus. Severity is one scale for everything."
     >
       <div className="di-ratio" aria-hidden>
         <div style={{ flex: 72, background: "#f3f2ee", color: "#0a1f44" }}>

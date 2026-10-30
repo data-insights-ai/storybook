@@ -70,7 +70,7 @@
     --di-row-hover-bg: var(--di-bg-row-hover);
     --di-row-current-bg: var(--di-bg-selected);
     --di-select-edge: 3px;
-    --di-option-hover-bg: var(--di-bg-page);
+    --di-option-hover-bg: var(--di-row-hover-bg);
 
     /* A chosen segment, toggle or card: the selection tint and edge of a row, the text at full strength. */
     --di-choice-selected-bg: var(--di-bg-selected);
@@ -272,7 +272,7 @@
   }
 
   /* Where a sticky toolbar or table head stops: the window's top, and
-     under the app bar inside the shell (AppShell sets it). Declared at the
+     under the app bar inside the shell (AppShellBar sets it). Declared at the
      root only, so a themed region inside the shell keeps the shell's value. */
   :root {
     --di-sticky-top: 0px;

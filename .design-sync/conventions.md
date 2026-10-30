@@ -4,7 +4,7 @@ The system is a **Register**: the surface is a record, not a dashboard. Everythi
 
 ### Setup — styles first, then two providers
 
-Components read CSS custom properties from `:root`, so they are styled the moment `styles.css` is loaded; nothing has to wrap the tree for them to render. Two providers carry state an app owns. **`ThemeProvider`** themes the document root from the person's choice (`light`, `dark` or `auto`, which follows the device) before the first paint, and `useTheme` reads it back. **`SidebarProvider`** holds whether the `Sidebar` is expanded, for the sidebar family and its trigger. Other contexts (inside `AppShell`, `Page`, `Sidebar`) are internal to their components; a product does not mount them.
+Components read CSS custom properties from `:root`, so they are styled the moment `styles.css` is loaded; nothing has to wrap the tree for them to render. Two providers carry state an app owns. **`ThemeProvider`** themes the document root from the person's choice (`light`, `dark` or `auto`, which follows the device) before the first paint, and `useTheme` reads it back. **`SidebarProvider`** holds whether the `Sidebar` is expanded, for the sidebar family and its trigger. Other contexts (inside `Page`, `Sidebar`) are internal to their components; a product does not mount them.
 
 The interactive components (menus, dialogs, selects, comboboxes, date pickers, tabs) take their focus handling, keyboard movement and accessible names from Base UI's headless primitives; the date calendars' month grid comes from `react-day-picker`, and the typed date and time segments are spinbuttons of the package's own. That behaviour comes with the component: never rebuild one of them from raw markup to change how it looks.
 
@@ -26,7 +26,7 @@ This exists so a page can show both themes at once — `Foundations/Color` puts 
 
 Build from the components in this system. **If something you need is missing, say so — do not approximate it with raw markup.** A missing control is a code change in the library (a new component, with its own story and an export), not something a design invents. A hand-rolled substitute looks right in the design and cannot ship: it has no tokens, no dark theme, no focus handling and no accessible name.
 
-`Patterns/*` are **not** in this bundle. The security overview, case triage, organization home and the older example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `AppShell`, `PageHeader`, `AttentionList`, `Panel`, `DataTable` and the rest.
+`Patterns/*` are **not** in this bundle. The security overview, case triage, organization home and the other example screens exist in the repo but are not package exports, so they are not available here. Compose screens from `Sidebar`, `AppShellBar`, `AppShellContent`, `PageHeader`, `AttentionList`, `Panel`, `DataTable` and the rest.
 
 ### How a screen is composed
 
@@ -37,7 +37,7 @@ Build from the components in this system. **If something you need is missing, sa
 - **Severity is `SeverityMark`**: one scale, a filled mark plus the word.
 - Meta lines (`MetaLine`) break between items; `Actions` stack full width on a phone.
 
-A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav.
+A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` holding **`AppShellBar`** (the `SidebarTrigger`, a `Breadcrumb`, then `AppShellBarEnd` with app-wide status, which folds into one overflow button on a narrow bar, and `AppShellBarKeep` for the notification bell, which never folds) and **`AppShellContent`**. Below 900px the `Sidebar` is a drawer from the inline start; do not build a second mobile nav.
 
 ### Where a component sits
 
@@ -56,7 +56,7 @@ The Storybook sidebar is grouped by the job a component does:
 - `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `Hero`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `ListDetail`, `Toolbar`, `Actions`, `Accordion`, `Disclosure`.
 - `Charts/`: `Chart`, `ChartCard`, over time (`TrendChart`, `Sparkline`, `Seismograph`) and compared (`Bars`, `Distribution`, `CoverageMatrix`).
 - `Timeline/`, `Inference/`: what happened when (`EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`), and what the system inferred.
-- `Shell/`: the frame of the app: `AppShell`, `SignIn`, `ThemeProvider`, `DensityProvider`.
+- `Shell/`: the frame of the app: `AppShellBar`, `AppShellContent`, `SignIn`, `SkipLink`, `ThemeProvider`, `DensityProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 
 ### Which component for which job

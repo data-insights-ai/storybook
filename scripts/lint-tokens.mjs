@@ -197,8 +197,8 @@ for (const file of files) {
      *    decision was never made.
      *
      *    Scoped to src/components, which is the library. A screen's local
-     *    data shape is not an API — `NavItem.icon` is a field on the data a
-     *    product hands the shell, and `Menu.trigger` is a render prop,
+     *    data shape is not an API — an option's `icon` is a field on the data a
+     *    caller hands a choice or a pill, and `Menu.trigger` is a render prop,
      *    because the menu puts its own aria-expanded on a caller's button. */
     if (isComponent && !isStory) {
       const node = code.match(/^\s*(\w+)\??:\s*ReactNode;/);
@@ -208,7 +208,7 @@ for (const file of files) {
           file,
           line,
           "api",
-          `\`${name}: ReactNode\` — only \`children\`, \`NavItem.icon\` and \`Menu.trigger\` may be ReactNode. Make it a string prop, or a named slot the caller writes as a child.`,
+          `\`${name}: ReactNode\` — only \`children\`, an option's \`icon\` and \`Menu.trigger\` may be ReactNode. Make it a string prop, or a named slot the caller writes as a child.`,
         );
       }
     }

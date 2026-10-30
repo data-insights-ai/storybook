@@ -123,7 +123,7 @@ export const Required: Story = { args: { required: true, hint: "The day the expo
 export const Disabled: Story = { args: { value: "2026-10-29", disabled: true } };
 
 /**
- * A day to read, not to change: the inset tone without a frame and in full ink, as a read-only text field, and
+ * A day to read, not to change: the read-only tone without a frame and in full ink, as a read-only text field, and
  * no calendar button. Disabled, by contrast, greys the text. The segments stay focusable, so the day can be read
  * out and copied.
  */

@@ -1,5 +1,5 @@
 import { Meta } from "@storybook/addon-docs/blocks";
-import { Column, Columns, Lines, Page, Rewrite, Rewrites, Section, Verdict, Verdicts } from "../guide/Guide";
+import { Column, Columns, Lines, Page, Rewrite, Rewrites, Rule, Rules, Section, Verdict, Verdicts } from "../guide/Guide";
 
 <Meta title="Foundations/Voice" />
 
@@ -66,5 +66,16 @@ import { Column, Columns, Lines, Page, Rewrite, Rewrites, Section, Verdict, Verd
         after="Analysts replay any answer back to the rows that produced it."
       />
     </Rewrites>
+  </Section>
+
+  <Section eyebrow="In the product" title="The interface says what it does.">
+    <Rules>
+      <Rule>A button names its action as a verb and an object: "Rotate key", "Delete organization". The requested action is the primary one.</Rule>
+      <Rule>A state is a word beside its mark: "running", "paused", "failed". Never colour alone, never a word that only means "look here".</Rule>
+      <Rule>An empty list says why it is empty and offers one way out. A failure says what failed and what still works.</Rule>
+      <Rule>A confirmation states the basis, the scope and whether it can be reversed, before the action. The receipt after it carries the audit id.</Rule>
+      <Rule>Sentence case for titles, labels and buttons. Mono capitals only for the label above a value.</Rule>
+      <Rule>German addresses the reader formally ("Sie"), and Spanish too ("usted"). German words run long: a label that fits in English must still fit, or wrap between words, in German.</Rule>
+    </Rules>
   </Section>
 </Page>

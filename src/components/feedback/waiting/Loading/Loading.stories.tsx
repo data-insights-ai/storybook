@@ -5,7 +5,7 @@ import { Button } from "../../../actions/Button";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
 import { Stack } from "../../../layout/arrangement/Stack";
 import { Panel } from "../../../layout/page/Panel";
-import { AppShellBar, AppShellBarEnd } from "../../../shell/AppShell";
+import { AppShellBar, AppShellBarEnd } from "../../../shell/AppShellBar";
 import { StatusPill } from "../../../marks/status/StatusPill";
 import { RouteProgress } from "../RouteProgress";
 import { Loading } from "./Loading";

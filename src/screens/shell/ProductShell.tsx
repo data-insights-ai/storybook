@@ -19,12 +19,17 @@ import {
   Swords,
   UserRound,
   Users,
+  RefreshCw,
+  Activity,
   Wallet,
 } from "lucide-react";
 import {
   AppShellBar,
+  AppShellBarEnd,
+  AppShellBarKeep,
   AppShellContent,
   Breadcrumb,
+  Button,
   Sidebar,
   SidebarBrand,
   SidebarContent,
@@ -38,8 +43,9 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
+  StatusPill,
 } from "../../index";
-import { organizationNav, workspaceNav, type Role } from "./shell.sample";
+import { chromeWords, organizationNav, workspaceNav, type Lang, type Role } from "./shell.sample";
 
 const icons: Record<string, ReactNode> = {
   overview: <Gauge />,
@@ -48,6 +54,7 @@ const icons: Record<string, ReactNode> = {
   assets: <Boxes />,
   reports: <ScrollText />,
   sources: <Radar />,
+  coverage: <Activity />,
   notifications: <Bell />,
   siem: <Send />,
   access: <ShieldCheck />,
@@ -65,7 +72,9 @@ const icons: Record<string, ReactNode> = {
  * The frame the pattern screens sit in: the sidebar a product composes
  * from the `Sidebar` family, the bar with its breadcrumb, and the content.
  * A workspace shows its sections; an organization's home shows what the
- * viewer's role opens.
+ * viewer's role opens. The bar's end carries the app-wide status, which
+ * folds into "More" on a phone, and the notification bell, which stays,
+ * because its count is its point.
  */
 export function ProductShell({
   area,
@@ -73,6 +82,8 @@ export function ProductShell({
   crumbs,
   role = "owner",
   user = "Nora Feld",
+  lang = "en",
+  unread = 3,
   children,
 }: {
   area: "workspace" | "organization";
@@ -80,74 +91,99 @@ export function ProductShell({
   crumbs: string[];
   role?: Role;
   user?: string;
+  lang?: Lang;
+  unread?: number;
   children: ReactNode;
 }) {
+  const words = chromeWords[lang];
   const entries =
-    area === "workspace" ? workspaceNav : organizationNav.filter((e) => !e.roles || e.roles.includes(role));
+    area === "workspace" ? workspaceNav[lang] : organizationNav[lang].filter((e) => !e.roles || e.roles.includes(role));
   return (
-    <SidebarProvider skipLabel="Skip to content">
-      <Sidebar label="Sections" closeLabel="Close navigation">
-        <SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton label="Example Security GmbH" href="#organization">
-                <Building2 />
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            {area === "workspace" ? (
+    <div lang={lang} style={{ display: "contents" }}>
+      <SidebarProvider skipLabel={words.skip}>
+        <Sidebar label={words.sections} closeLabel={words.close}>
+          <SidebarHeader>
+            <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton label="Back to the organization" href="#organization">
-                  <ArrowLeft />
+                <SidebarMenuButton label={words.organization} href="#organization">
+                  <Building2 />
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            ) : null}
-          </SidebarMenu>
-        </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>{area === "workspace" ? "Production" : "Organization"}</SidebarGroupLabel>
-            <SidebarMenu>
-              {entries.map((entry) => (
-                <SidebarMenuItem key={`${entry.id}-${entry.label}`}>
-                  <SidebarMenuButton
-                    label={entry.label}
-                    badge={entry.badge}
-                    href={`#${entry.id}`}
-                    active={entry.id === active}
-                  >
-                    {icons[entry.id]}
+              {area === "workspace" ? (
+                <SidebarMenuItem>
+                  <SidebarMenuButton label={words.back} href="#organization">
+                    <ArrowLeft />
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
+              ) : null}
             </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
-        <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton label={user} href="#me">
-                <UserRound />
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton label="Sign out" href="#signout">
-                <LogOut />
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-          <SidebarBrand />
-        </SidebarFooter>
-      </Sidebar>
-      <SidebarInset>
-        <AppShellBar>
-          <SidebarTrigger label="Toggle navigation" />
-          <Breadcrumb
-            label="Breadcrumb"
-            items={crumbs.map((label, i) => (i < crumbs.length - 1 ? { label, href: "#" } : { label }))}
-          />
-        </AppShellBar>
-        <AppShellContent>{children}</AppShellContent>
-      </SidebarInset>
-    </SidebarProvider>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>{area === "workspace" ? words.workspace : words.organizationGroup}</SidebarGroupLabel>
+              <SidebarMenu>
+                {entries.map((entry) => (
+                  <SidebarMenuItem key={`${entry.id}-${entry.label}`}>
+                    <SidebarMenuButton
+                      label={entry.label}
+                      badge={entry.badge}
+                      href={`#${entry.id}`}
+                      active={entry.id === active}
+                    >
+                      {icons[entry.id]}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton label={user} href="#me">
+                  <UserRound />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton label={words.signOut} href="#signout">
+                  <LogOut />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+            <SidebarBrand />
+          </SidebarFooter>
+        </Sidebar>
+        <SidebarInset>
+          <AppShellBar>
+            <SidebarTrigger label={words.toggle} />
+            <Breadcrumb
+              label={words.breadcrumb}
+              items={crumbs.map((label, i) => (i < crumbs.length - 1 ? { label, href: "#" } : { label }))}
+            />
+            <AppShellBarEnd moreLabel={words.more}>
+              <StatusPill tone="neutral">{words.demo}</StatusPill>
+              <StatusPill tone="recorded">{words.sealed}</StatusPill>
+              <Button variant="ghost" size="sm">
+                <RefreshCw aria-hidden />
+                {words.refresh}
+              </Button>
+              <AppShellBarKeep>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  iconOnly
+                  aria-label={words.notifications}
+                  badge={unread}
+                  badgeLabel={words.unread(unread)}
+                >
+                  <Bell aria-hidden />
+                </Button>
+              </AppShellBarKeep>
+            </AppShellBarEnd>
+          </AppShellBar>
+          <AppShellContent>{children}</AppShellContent>
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
   );
 }

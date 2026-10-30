@@ -1,8 +1,7 @@
 @layer components {
   /*
-   * A solid navy sheet that fills the viewport whatever the page around it
-   * sets as height. No gradient, no blur: contrast has to be measurable.
-   * The sheet is the dark theme on itself, so its ground is the night ground.
+   * The ground of the theme, solid, filling the viewport whatever the page
+   * around it sets as height. No gradient, no blur: contrast has to be measurable.
    */
   .di-login {
     display: flex;
@@ -16,14 +15,10 @@
     background: var(--di-bg-page);
   }
 
-  /*
-   * di-lint-allow layer: the document behind the sheet is outside both
-   * theme regions, and it must be the sheet's navy in either theme so
-   * overscroll shows no paper.
-   */
+  /* The document behind the page takes the same ground, so overscroll shows no other tone. */
   html:has(.di-login),
   html:has(.di-login) body {
-    background: var(--di-navy-900);
+    background: var(--di-bg-page);
   }
 
   .di-login-stack {
@@ -46,14 +41,26 @@
     height: auto;
   }
 
+  .di-login-logo-night {
+    display: none;
+  }
+
+  [data-theme="dark"] .di-login-logo-day {
+    display: none;
+  }
+
+  [data-theme="dark"] .di-login-logo-night {
+    display: block;
+  }
+
   .di-login-version {
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     letter-spacing: var(--di-tracking-mono);
-    color: var(--di-seal-ink);
+    color: var(--di-text-subtle);
   }
 
-  /* The daylight card in both themes, resolved from its own theme. */
+  /* One surface on the ground: a step of tone and the plane's shadow. */
   .di-login-card {
     display: flex;
     overflow: hidden;
@@ -98,8 +105,6 @@
 
   .di-login-restrict {
     margin-top: var(--di-gap-16);
-    padding-top: var(--di-gap-16);
-    border-top: 1px solid var(--di-rule-hairline);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
@@ -110,15 +115,13 @@
     align-items: center;
     gap: var(--di-gap-6);
     flex-wrap: wrap;
-    padding-top: var(--di-gap-12);
-    border-top: 1px solid var(--di-rule-hairline);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-subtle);
   }
 
   .di-login-foot-sep {
-    color: var(--di-one);
+    color: var(--di-text-subtle);
   }
 }
 

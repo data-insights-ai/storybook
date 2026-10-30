@@ -88,7 +88,7 @@
   }
 
   .di-btn-ghost:hover:not(:disabled, [aria-disabled="true"]) {
-    background: var(--di-bg-row-hover);
+    background: var(--di-row-hover-bg);
   }
 
   .di-btn-ghost:active:not(:disabled, [aria-disabled="true"]),
@@ -175,6 +175,13 @@
   .di-btn-danger:is(:disabled, [aria-disabled="true"]) {
     border-color: var(--di-status-danger-border);
     color: color-mix(in srgb, var(--di-status-danger-fg) 60%, var(--di-text-disabled));
+  }
+
+  /* After dark the danger border and the disabled ground both sink into the panel: the edge comes from the
+     danger ink and the ground stays the panel's, so a blocked danger action still reads as one. */
+  [data-theme="dark"] .di-btn-danger:is(:disabled, [aria-disabled="true"]) {
+    border-color: color-mix(in srgb, var(--di-status-danger-fg) 50%, transparent);
+    background: transparent;
   }
 
   .di-btn-loading {

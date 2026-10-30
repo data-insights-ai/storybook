@@ -55,6 +55,14 @@
     white-space: nowrap;
   }
 
+  .di-top-fold,
+  .di-top-keep {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--di-space-6);
+  }
+
   .di-topbar-more-positioner {
     z-index: 30;
   }

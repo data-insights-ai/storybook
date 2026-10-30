@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Bell, Check, Plus, Trash2 } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
-import { AppShellBar, AppShellBarEnd } from "../../shell/AppShell";
+import { AppShellBar, AppShellBarEnd, AppShellBarKeep } from "../../shell/AppShellBar";
 import { TextField } from "../../forms/text/TextField";
 import { Button } from "./Button";
 
@@ -123,9 +123,11 @@ export const WithBadge: Story = {
         <AppShellBar key={count}>
           <span>Signals</span>
           <AppShellBarEnd moreLabel="More">
-            <Button variant="ghost" iconOnly aria-label="Notifications" badge={count} badgeLabel={words}>
-              <Bell aria-hidden />
-            </Button>
+            <AppShellBarKeep>
+              <Button variant="ghost" iconOnly aria-label="Notifications" badge={count} badgeLabel={words}>
+                <Bell aria-hidden />
+              </Button>
+            </AppShellBarKeep>
           </AppShellBarEnd>
         </AppShellBar>
       ))}
@@ -154,9 +156,11 @@ export const WithBadgeGerman: Story = {
     <AppShellBar>
       <span>Benachrichtigungseinstellungen</span>
       <AppShellBarEnd moreLabel="Weitere">
-        <Button variant="ghost" iconOnly aria-label="Benachrichtigungen" badge={12} badgeLabel="12 ungelesen">
-          <Bell aria-hidden />
-        </Button>
+        <AppShellBarKeep>
+          <Button variant="ghost" iconOnly aria-label="Benachrichtigungen" badge={12} badgeLabel="12 ungelesen">
+            <Bell aria-hidden />
+          </Button>
+        </AppShellBarKeep>
       </AppShellBarEnd>
     </AppShellBar>
   ),

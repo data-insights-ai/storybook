@@ -35,7 +35,7 @@
 
   /* A tone, not a frame: the value often sits in a framed field or card already. */
   .di-copy-button:hover {
-    background: var(--di-bg-row-hover);
+    background: var(--di-row-hover-bg);
     color: var(--di-text);
   }
 

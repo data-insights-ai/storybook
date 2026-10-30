@@ -70,7 +70,7 @@ export const WithError: Story = {
 
 export const Disabled: Story = { args: { disabled: true } };
 
-/** A time to read, not to change: the inset tone without a frame, in full ink; disabled greys it instead. */
+/** A time to read, not to change: the read-only tone without a frame, in full ink; disabled sinks a step further and greys it. */
 export const ReadOnly: Story = {
   render: function Render(args) {
     return (

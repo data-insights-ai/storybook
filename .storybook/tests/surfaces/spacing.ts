@@ -21,7 +21,6 @@ const ALLOWED: [selector: string, reason: string][] = [
     ".di-shell, .di-login",
     "a page frame: its bar or canvas runs to the edge, and the page ends where its content ends",
   ],
-  [".sb-window", "the Storybook window around the older patterns: its title bar is its top edge"],
   [".di-command", "the palette's input is its head, edge to edge, as the clearance check allows"],
 ];
 const ALLOW = ALLOWED.map(([selector]) => selector).join(", ");
