@@ -76,6 +76,11 @@
     --di-choice-selected-bg: var(--di-bg-selected);
     --di-choice-selected-edge: var(--di-select);
     --di-choice-selected-fg: var(--di-text);
+    /* A chosen segment or toggle is a solid cornflower fill: small, so a tint alone would not read. */
+    --di-choice-on-bg: var(--di-select);
+    --di-choice-on-fg: var(--di-text-on-strong);
+    /* One cell of a row of toggles: square at the field height, a little wider so two letters breathe. */
+    --di-choice-toggle-w: calc(var(--di-field-height) + 2 * var(--di-gap-4));
 
     --di-table-bg: var(--di-bg-surface);
     --di-table-shadow: var(--di-elevation-surface);
