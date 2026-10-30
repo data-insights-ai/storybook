@@ -173,7 +173,8 @@ export const TwoActions: Story = {
     const button = canvas.getByRole("button", { name: "Appoint me" }).getBoundingClientRect();
     const link = canvas.getByRole("link", { name: "Choose someone" }).getBoundingClientRect();
     const frame = canvas.getByRole("note").getBoundingClientRect();
-    await expect(link.left - button.right).toBeGreaterThanOrEqual(12);
+    const apart = document.documentElement.dataset.density === "compact" ? 8 : 12;
+    await expect(link.left - button.right).toBeGreaterThanOrEqual(apart);
     await expect(frame.right - link.right).toBeGreaterThanOrEqual(12);
   },
 };

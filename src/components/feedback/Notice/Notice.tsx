@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../internal/cx";
+import { surfaceClass } from "../../../internal/surface";
 import "./Notice.css";
 
 /**
@@ -19,7 +20,10 @@ export function Notice({
   children?: ReactNode;
 }) {
   return (
-    <div className={cx("di-notice", `di-notice-${tone}`)} role={tone === "danger" ? "alert" : "note"}>
+    <div
+      className={cx(surfaceClass({ padded: false }), "di-notice", `di-notice-${tone}`)}
+      role={tone === "danger" ? "alert" : "note"}
+    >
       {children}
     </div>
   );

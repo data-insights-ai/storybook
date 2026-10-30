@@ -14,9 +14,6 @@
     align-items: center;
     min-width: 0;
     padding: var(--di-space-12);
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-page);
   }
 
   .di-channel-head {
@@ -57,8 +54,8 @@
   }
 
   .di-channel-value svg {
-    width: 15px;
-    height: 15px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     flex: none;
     color: var(--di-text-muted);
   }

@@ -17,6 +17,10 @@
     overflow-wrap: anywhere;
   }
 
+  .di-eyebrow.is-quiet .di-eyebrow-label {
+    color: var(--di-mono-label-color);
+  }
+
   .di-eyebrow.is-danger .di-eyebrow-label {
     color: var(--di-status-danger-fg);
   }

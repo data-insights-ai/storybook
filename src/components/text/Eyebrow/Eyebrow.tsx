@@ -19,8 +19,9 @@ import "./Eyebrow.css";
  *
  * It is the one caption above a title: a dialog, a sheet, an empty state
  * and the sign-in card render it rather than setting mono capitals of
- * their own. `tone="danger"` names a failure, as an empty state after an
- * error does.
+ * their own. `tone="quiet"` sets it in the label ink, for a caption that
+ * must not compete with the value under it; `tone="danger"` names a
+ * failure, as an empty state after an error does.
  */
 export function Eyebrow({
   children,
@@ -31,12 +32,12 @@ export function Eyebrow({
   children: ReactNode;
   /** `sealed` takes the dot and the rule — one per view. `plain` repeats. */
   variant?: "sealed" | "plain";
-  tone?: "default" | "danger";
+  tone?: "default" | "quiet" | "danger";
   className?: string;
 }) {
   const sealed = variant === "sealed";
   return (
-    <div className={cx("di-eyebrow", `di-eyebrow-${variant}`, tone === "danger" && "is-danger", className)}>
+    <div className={cx("di-eyebrow", `di-eyebrow-${variant}`, tone !== "default" && `is-${tone}`, className)}>
       {sealed ? <SealMark state="sealed" /> : null}
       <span className="di-eyebrow-label">{children}</span>
       {sealed ? <span className="di-eyebrow-rule" aria-hidden /> : null}

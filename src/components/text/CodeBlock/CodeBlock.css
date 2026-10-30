@@ -1,6 +1,6 @@
 @layer components {
   .di-codeblock {
-    max-height: 480px;
+    max-height: var(--di-codeblock-max-h);
     margin: 0;
     padding: var(--di-space-12);
     overflow: auto;

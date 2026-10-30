@@ -1,5 +1,6 @@
 import { useId, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
 import { SeverityMark, type Severity } from "../../../marks/status/SeverityMark";
 import { MetaLine } from "../../../text/MetaLine";
 import "./AttentionList.css";
@@ -92,8 +93,14 @@ export function AttentionItem({
   const marked = emphasis && emphasisLabel !== "";
   const rated = severity !== undefined && severityLabel !== "";
   return (
-    <li className={cx("di-attention-item", emphasis && "is-emphasis")}>
-      <span className="di-attention-rank" aria-hidden>
+    <li
+      className={cx(
+        surfaceClass({ edge: emphasis ? "one" : "none", padded: false }),
+        "di-attention-item",
+        emphasis && "is-emphasis",
+      )}
+    >
+      <span className="di-attention-rank di-ordinal" aria-hidden>
         {rank}
       </span>
       <div className="di-attention-body">

@@ -19,7 +19,7 @@
 
   .di-session-copy {
     grid-area: copy;
-    min-width: 160px;
+    min-width: var(--di-session-copy-min);
   }
 
   .di-session-tag {

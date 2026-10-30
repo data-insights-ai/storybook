@@ -3,7 +3,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--di-gap-16);
-    padding: var(--di-space-16) var(--di-space-24);
+    /* The figure sets at line-height 1, so its glyphs stand past the line: 16px above and below in either density. */
+    padding: var(--di-space-16) var(--di-inset);
     border-radius: var(--di-radius-inset);
     background: var(--di-bg-strip);
   }

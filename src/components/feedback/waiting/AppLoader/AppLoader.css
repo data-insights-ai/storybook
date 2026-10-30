@@ -11,7 +11,7 @@
   }
 
   .di-app-loader-mark {
-    width: 64px;
+    width: var(--di-app-loader-mark);
     height: auto;
     overflow: visible;
   }

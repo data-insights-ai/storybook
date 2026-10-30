@@ -14,13 +14,13 @@
   }
 
   .di-icon-24 {
-    width: 24px;
-    height: 24px;
+    width: var(--di-icon-xl);
+    height: var(--di-icon-xl);
   }
 
   .di-icon-16 {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-icon svg {
@@ -35,7 +35,7 @@
 
   .di-icon-catalog {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--di-icon-catalog-min), 1fr));
     gap: var(--di-gap-12);
     margin: 0;
     padding: 0;

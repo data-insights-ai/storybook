@@ -380,7 +380,11 @@ export function TableRow({
       role={role}
       data-index={rowIndex}
       aria-rowindex={rowIndex === undefined ? undefined : rowIndex + 2}
-      className={cx(active && "is-active", tone === "danger" && "is-danger", onSelect && "is-selectable")}
+      className={cx(
+        active && "is-active di-row-current",
+        tone === "danger" && "is-danger",
+        onSelect && "is-selectable",
+      )}
       onClick={
         onSelect
           ? (event) => {
@@ -415,7 +419,7 @@ export function TableSpacer({ height, ref }: { height: number; ref?: Ref<HTMLTab
 /** The ordinal cell. Mono, quiet, and the row's handle in conversation. */
 export function TableIndex({ children }: { children: ReactNode }) {
   return (
-    <td role={useRole("cell")} className="di-table-index">
+    <td role={useRole("cell")} className="di-table-index di-ordinal">
       {children}
     </td>
   );

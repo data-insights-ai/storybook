@@ -33,7 +33,7 @@
     appearance: none;
     display: block;
     width: 100%;
-    height: 5px;
+    height: var(--di-progress-h);
     border: 0;
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-subtle);

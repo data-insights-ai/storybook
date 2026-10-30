@@ -5,10 +5,7 @@
     flex-direction: column;
     gap: var(--di-gap-16);
     overflow: hidden;
-    padding: var(--di-space-16);
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
+    padding: var(--di-inset-group);
   }
 
   /* No rule under the head: the title and the figure belong to one block. */
@@ -45,7 +42,7 @@
   }
 
   .di-living-body > :last-child:not(:first-child) {
-    flex: 1 1 160px;
+    flex: 1 1 var(--di-living-trend-min);
     justify-content: flex-end;
   }
 
@@ -54,8 +51,8 @@
    * rule: one surface, two levels, quieter than the measurement.
    */
   .di-living-insight {
-    margin-inline: calc(-1 * var(--di-space-16));
-    padding: var(--di-space-16) var(--di-space-16) 0;
+    margin-inline: calc(-1 * var(--di-inset-group));
+    padding: var(--di-inset-group) var(--di-inset-group) 0;
     box-shadow: inset 0 1px 0 var(--di-mark-ring);
   }
 
@@ -89,6 +86,6 @@
     align-items: center;
     gap: var(--di-gap-6);
     margin-top: var(--di-gap-12);
-    padding-left: var(--di-space-16);
+    padding-left: var(--di-gap-16);
   }
 }

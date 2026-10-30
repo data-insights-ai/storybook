@@ -2,7 +2,7 @@
   .di-tooltip {
     display: inline-flex;
     align-items: center;
-    height: 22px;
+    height: var(--di-tooltip-h);
     padding: 0 var(--di-space-8);
     border: 1px solid var(--di-inverse-border);
     border-radius: var(--di-radius-micro);

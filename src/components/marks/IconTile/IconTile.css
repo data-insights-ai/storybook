@@ -3,15 +3,15 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: var(--di-control-h-md);
+    height: var(--di-control-h-md);
     border-radius: var(--di-radius-surface);
     flex: none;
   }
 
   .di-tile svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-tile-neutral {

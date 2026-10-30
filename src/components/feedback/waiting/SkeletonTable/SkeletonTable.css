@@ -1,9 +1,9 @@
 @layer components {
   .di-skeleton {
     overflow: hidden;
-    border: 1px solid var(--di-border-strong);
-    border-radius: var(--di-radius-surface);
+    border-radius: var(--di-table-radius);
     background: var(--di-table-bg);
+    box-shadow: var(--di-table-shadow);
   }
 
   .di-skeleton-row {
@@ -15,7 +15,7 @@
   }
 
   .di-skeleton-row.is-header {
-    height: 32px;
+    height: var(--di-control-h-md);
     border-bottom-color: var(--di-border);
     background: var(--di-bg-page);
   }
@@ -44,7 +44,7 @@
    * rest at full opacity, which is the state they are drawn in.
    */
   .di-skeleton-bar {
-    height: 9px;
+    height: var(--di-skeleton-bar-h);
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-subtle);
     animation: di-skeleton-breathe var(--di-skeleton-breath) ease-in-out infinite;
@@ -58,12 +58,12 @@
   }
 
   .di-skeleton-bar.is-header {
-    height: 7px;
+    height: var(--di-skeleton-label-h);
     background: var(--di-border);
   }
 
   .di-skeleton-bar.is-trailing {
-    width: 54px;
+    width: var(--di-skeleton-trailing-w);
     margin-left: auto;
     margin-right: var(--di-gap-12);
   }

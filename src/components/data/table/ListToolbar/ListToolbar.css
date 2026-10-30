@@ -6,8 +6,8 @@
     gap: var(--di-gap-8);
     min-width: 0;
     /* Every tab's toolbar is one control high, with or without filters, so switching tabs never moves the page. */
-    min-height: calc(var(--di-control-h, 32px) + 2 * var(--di-space-8));
-    padding: var(--di-space-8) 0;
+    min-height: calc(var(--di-control-h-md) + 2 * var(--di-gap-8));
+    padding: var(--di-gap-8) 0;
     background: var(--di-bg-page);
   }
 

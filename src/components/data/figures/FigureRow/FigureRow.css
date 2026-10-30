@@ -1,6 +1,6 @@
 @layer components {
   .di-figure-row-strip {
-    padding: var(--di-space-16) var(--di-space-24);
+    padding: var(--di-inset-group) var(--di-inset);
     border-radius: var(--di-radius-inset);
     background: var(--di-bg-strip);
   }
@@ -9,12 +9,12 @@
      before the first figure of a line falls outside the list and is
      clipped, so a rule only ever separates two figures, however it wraps. */
   .di-figure-list {
-    --di-figure-gap: var(--di-space-32);
+    --di-figure-gap: var(--di-gap-32);
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--di-figure-min)), 1fr));
     gap: var(--di-gap-16) var(--di-figure-gap);
     margin: 0;
-    clip-path: inset(-8px -8px -8px 0);
+    clip-path: inset(calc(-1 * var(--di-space-8)) calc(-1 * var(--di-space-8)) calc(-1 * var(--di-space-8)) 0);
   }
 
   .di-figure {
@@ -61,12 +61,12 @@
   }
 
   .di-figure-row.is-compact.di-figure-row-strip {
-    padding: var(--di-space-12) var(--di-space-24);
+    padding: var(--di-space-12) var(--di-inset);
   }
 
   .di-figure-row.is-compact .di-figure-list {
-    --di-figure-gap: var(--di-space-24);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    --di-figure-gap: var(--di-gap-24);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--di-figure-min-quiet)), 1fr));
     gap: var(--di-gap-8) var(--di-figure-gap);
   }
 
@@ -79,12 +79,12 @@
 
   @media (max-width: 600px) {
     .di-figure-row-strip {
-      padding: var(--di-space-16);
+      padding: var(--di-inset-group);
     }
 
     .di-figure-list {
-      --di-figure-gap: var(--di-space-24);
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr));
+      --di-figure-gap: var(--di-gap-24);
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--di-figure-min-phone)), 1fr));
     }
   }
 }

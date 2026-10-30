@@ -1,18 +1,11 @@
 @layer components {
+  /* The column spaces the label, so the eyebrow brings no gap of its own. */
   .di-hero-fig {
+    --di-eyebrow-gap: 0;
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-8);
     min-width: 0;
-  }
-
-  .di-hero-fig-label {
-    font-family: var(--di-mono-label-family);
-    font-size: var(--di-mono-label-size);
-    font-weight: var(--di-mono-label-weight);
-    letter-spacing: var(--di-mono-label-tracking);
-    text-transform: uppercase;
-    color: var(--di-mono-label-color);
   }
 
   .di-hero-fig-value {

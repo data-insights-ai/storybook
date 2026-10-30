@@ -1,4 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
+import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
 import "./RecordCard.css";
 
 /**
@@ -25,7 +27,7 @@ export function RecordCard({
     else body.push(child);
   });
   return (
-    <article className="di-record">
+    <article className={cx(surfaceClass({ padded: false }), "di-record")}>
       <div className="di-record-heading">
         <h2>{title}</h2>
         {count}

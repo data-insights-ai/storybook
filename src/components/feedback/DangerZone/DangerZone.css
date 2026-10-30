@@ -1,14 +1,11 @@
 @layer components {
   .di-danger-zone {
     min-width: 0;
-    border: 1px solid var(--di-status-danger-border);
-    border-radius: var(--di-panel-radius);
-    background: var(--di-panel-bg);
     overflow: hidden;
   }
 
   .di-danger-zone-head {
-    padding: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-space-12) var(--di-inset-group);
     border-bottom: 1px solid var(--di-status-danger-border);
     background: var(--di-status-danger-bg);
   }
@@ -34,7 +31,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--di-gap-12) var(--di-gap-24);
-    padding: var(--di-space-16);
+    padding: var(--di-inset-group);
   }
 
   .di-danger-action + .di-danger-action {

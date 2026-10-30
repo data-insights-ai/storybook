@@ -1,33 +1,14 @@
 @layer components {
   .di-empty {
+    --di-eyebrow-gap: var(--di-gap-8);
     display: flex;
     overflow: hidden;
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
-  }
-
-  .di-empty.is-danger {
-    border-color: var(--di-status-danger-border);
   }
 
   .di-empty-body {
     flex: 1;
     min-width: 0;
-    padding: var(--di-space-24);
-  }
-
-  .di-empty-eyebrow {
-    margin-bottom: var(--di-gap-8);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--di-text-subtle);
-  }
-
-  .di-empty.is-danger .di-empty-eyebrow {
-    color: var(--di-status-danger-fg);
+    padding: var(--di-inset);
   }
 
   .di-empty-title {
@@ -57,8 +38,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: calc(2 * var(--di-icon-lg));
+    height: calc(2 * var(--di-icon-lg));
     margin-bottom: var(--di-gap-12);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
@@ -67,8 +48,8 @@
   }
 
   .di-empty-icon > svg {
-    width: 20px;
-    height: 20px;
+    width: var(--di-icon-lg);
+    height: var(--di-icon-lg);
   }
 
   /* Text keeps a readable measure in a wide frame. */

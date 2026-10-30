@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
 import "./Channel.css";
 
 /**
@@ -11,7 +13,7 @@ import "./Channel.css";
  */
 export function Channel({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <article className="di-channel">
+    <article className={cx(surfaceClass({ padded: false }), "di-channel")}>
       <header className="di-channel-head">
         <span className="di-channel-title">{title}</span>
       </header>

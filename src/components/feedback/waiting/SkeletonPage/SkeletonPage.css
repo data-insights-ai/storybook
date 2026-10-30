@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-12);
-    padding-block: var(--di-space-4);
+    padding-block: var(--di-gap-4);
   }
 
   /*
@@ -22,7 +22,7 @@
   .di-skp-bar {
     display: block;
     max-width: 100%;
-    height: 9px;
+    height: var(--di-skeleton-bar-h);
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-subtle);
     animation: di-skp-breathe var(--di-skeleton-breath) ease-in-out infinite;
@@ -36,22 +36,22 @@
   }
 
   .di-skp-bar.is-title {
-    width: 260px;
-    height: 22px;
+    width: var(--di-skeleton-title-w);
+    height: var(--di-skeleton-title-h);
   }
 
   .di-skp-bar.is-lede {
-    width: 420px;
+    width: var(--di-skeleton-lede-w);
   }
 
   .di-skp-bar.is-heading {
-    width: 140px;
-    height: 12px;
+    width: var(--di-skeleton-heading-w);
+    height: var(--di-skeleton-heading-h);
   }
 
   .di-skp-bar.is-label {
-    width: 96px;
-    height: 7px;
+    width: var(--di-skeleton-label-w);
+    height: var(--di-skeleton-label-h);
     background: var(--di-border);
   }
 
@@ -71,12 +71,12 @@
   }
 
   .di-skp-control.is-search {
-    flex: 0 1 280px;
+    flex: 0 1 var(--di-skeleton-search-w);
     min-width: 0;
   }
 
   .di-skp-control.is-button {
-    width: 96px;
+    width: var(--di-skeleton-button-w);
     flex: none;
     border-color: transparent;
     background: var(--di-bg-subtle);
@@ -86,15 +86,15 @@
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-16);
-    padding: var(--di-space-16);
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
+    padding: var(--di-inset);
+    border-radius: var(--di-panel-radius);
+    background: var(--di-panel-bg);
+    box-shadow: var(--di-elevation-surface);
   }
 
   .di-skp-facts {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--di-skeleton-fact-min), 1fr));
     gap: var(--di-gap-16) var(--di-gap-24);
   }
 
