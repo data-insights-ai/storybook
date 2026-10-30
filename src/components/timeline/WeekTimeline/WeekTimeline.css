@@ -3,12 +3,12 @@
     display: grid;
     gap: var(--di-gap-4);
     margin: 0;
-    max-width: 640px;
+    max-width: var(--di-week-max);
   }
 
   .di-week-row {
     display: grid;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: var(--di-week-label) 1fr;
     align-items: center;
     gap: var(--di-gap-8);
   }
@@ -21,7 +21,7 @@
 
   .di-week-track {
     position: relative;
-    height: 12px;
+    height: var(--di-week-track-h);
     border-radius: var(--di-radius-control);
     background: var(--di-bg-subtle);
     overflow: hidden;

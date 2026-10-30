@@ -7,7 +7,7 @@
     display: flex;
     align-items: flex-end;
     gap: var(--di-gap-4);
-    height: 72px;
+    height: var(--di-bars-h);
   }
 
   .di-bars span {

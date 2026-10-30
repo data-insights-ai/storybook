@@ -25,7 +25,7 @@
   }
 
   .di-matrix-column {
-    min-width: 88px;
+    min-width: var(--di-matrix-code-min);
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-8);
@@ -73,7 +73,7 @@
   }
 
   .di-matrix-cell {
-    height: 8px;
+    height: var(--di-matrix-cell-h);
     border-radius: 0;
     background: var(--di-bg-subtle);
   }
@@ -123,8 +123,8 @@
 
   .di-matrix-swatch {
     flex: none;
-    width: 8px;
-    height: 8px;
+    width: var(--di-chart-swatch);
+    height: var(--di-chart-swatch);
     border-radius: 0;
   }
 

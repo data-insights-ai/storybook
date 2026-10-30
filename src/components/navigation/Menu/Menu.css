@@ -14,9 +14,9 @@
     color: var(--di-text);
     z-index: 20;
     width: max-content;
-    min-width: min(188px, calc(100vw - var(--di-space-32)));
-    max-width: min(360px, var(--di-menu-room, calc(100vw - var(--di-space-32))));
-    padding: var(--di-space-4);
+    min-width: min(var(--di-menu-min), calc(100vw - var(--di-space-32)));
+    max-width: min(var(--di-menu-max), var(--di-menu-room, calc(100vw - var(--di-space-32))));
+    padding: var(--di-gap-4);
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
@@ -35,43 +35,25 @@
   @keyframes di-menu-in {
     from {
       opacity: 0;
-      translate: 0 -4px;
+      translate: 0 calc(-1 * var(--di-space-4));
     }
   }
 
   @keyframes di-menu-in-up {
     from {
       opacity: 0;
-      translate: 0 4px;
+      translate: 0 var(--di-space-4);
     }
   }
 
   @keyframes di-menu-in-side {
     from {
       opacity: 0;
-      translate: -4px 0;
+      translate: calc(-1 * var(--di-space-4)) 0;
     }
   }
 
-  .di-menu-item {
-    display: flex;
-    align-items: center;
-    gap: var(--di-gap-8);
-    width: 100%;
-    min-height: var(--di-control-h-sm);
-    padding: var(--di-space-4) var(--di-space-8);
-    border: 0;
-    border-radius: var(--di-radius-micro);
-    background: transparent;
-    color: var(--di-text);
-    font-size: var(--di-font-size-400);
-    text-align: left;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    line-height: var(--di-leading-snug);
-  }
-
-  .di-menu-item:hover:not(:disabled),
+  /* The row is the shared option (`.di-option`); a chosen one keeps the highlight. */
   .di-menu-item[aria-checked="true"] {
     background: var(--di-bg-page);
   }
@@ -84,26 +66,21 @@
     background: var(--di-status-danger-bg);
   }
 
-  .di-menu-item:disabled {
-    color: var(--di-text-disabled);
-    cursor: not-allowed;
-  }
-
   .di-menu-choice-mark,
   .di-menu-choice-mark > svg {
-    width: 14px;
-    height: 14px;
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
     flex: none;
   }
 
   .di-menu-choice-mark {
     align-self: flex-start;
-    margin-top: calc((1em * var(--di-leading-snug) - 14px) / 2);
+    margin-top: calc((1em * var(--di-leading-snug) - var(--di-icon-sm)) / 2);
   }
 
   .di-menu-group-label {
     overflow-wrap: anywhere;
-    padding: var(--di-space-8);
+    padding: var(--di-gap-8);
     color: var(--di-text-muted);
     font-size: var(--di-font-size-200);
     font-weight: var(--di-weight-semibold);

@@ -23,7 +23,7 @@
     gap: var(--di-gap-6);
     height: var(--di-control-h-lg);
     flex: none;
-    padding: 0 var(--di-space-12);
+    padding: 0 var(--di-gap-12);
     border: 0;
     border-bottom: 2px solid transparent;
     background: transparent;
@@ -55,7 +55,7 @@
   }
 
   .di-tabpanel {
-    padding-top: var(--di-space-16);
+    padding-top: var(--di-gap-16);
   }
 }
 

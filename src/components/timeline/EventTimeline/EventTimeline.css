@@ -306,12 +306,12 @@
     outline-offset: 2px;
   }
 
-  /* Centred on the legend swatch below it (10px), so the chevron and the swatches share one edge. */
+  /* Centred on the legend swatch below it, so the chevron and the swatches share one edge. */
   .di-timeline-lanes-chevron {
     flex: none;
-    width: 16px;
-    height: 16px;
-    margin-left: calc((10px - 16px) / 2);
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+    margin-left: calc((var(--di-timeline-swatch) - var(--di-icon-md)) / 2);
     color: var(--di-text-muted);
     transition: transform var(--di-duration) var(--di-ease);
   }
@@ -377,8 +377,8 @@
     position: absolute;
     top: var(--di-space-8);
     z-index: 2;
-    min-width: 180px;
-    max-width: min(280px, 70vw);
+    min-width: var(--di-timeline-readout-min);
+    max-width: min(var(--di-timeline-readout-max), 70vw);
     padding: var(--di-space-8) var(--di-space-12);
     transform: translateX(var(--di-space-12));
     border: 1px solid var(--di-border-strong);
@@ -421,8 +421,8 @@
 
   .di-timeline-swatch {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: var(--di-timeline-swatch);
+    height: var(--di-timeline-swatch);
     border-radius: var(--di-radius-micro);
   }
 

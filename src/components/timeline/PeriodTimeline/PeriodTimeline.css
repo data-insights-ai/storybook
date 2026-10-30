@@ -4,8 +4,6 @@
    * today rule can run through every row at the same x.
    */
   .di-periods {
-    --di-periods-label: minmax(96px, 22%);
-    --di-periods-caption: minmax(120px, 26%);
     position: relative;
     display: grid;
     gap: var(--di-gap-8);
@@ -41,7 +39,7 @@
 
   .di-period-track {
     position: relative;
-    height: 10px;
+    height: var(--di-period-track-h);
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-subtle);
   }
@@ -64,6 +62,7 @@
   .di-period-grace {
     left: var(--di-period-end);
     right: calc(100% - var(--di-period-grace));
+    /* di-lint-allow size: the hatch's stripe and gap are a pattern drawn at the pixel, not a size the density moves. */
     background: repeating-linear-gradient(135deg, var(--di-period-color) 0 2px, transparent 2px 5px);
     opacity: 0.7;
   }
@@ -112,8 +111,8 @@
   /* Today, at the same x in every row. */
   .di-period-now {
     position: absolute;
-    top: -4px;
-    bottom: -4px;
+    top: calc(-1 * var(--di-space-4));
+    bottom: calc(-1 * var(--di-space-4));
     left: var(--di-period-today);
     border-left: 1px dashed var(--di-chart-highlight);
   }

@@ -249,7 +249,7 @@ export function MenuItem({
       aria-checked={checked}
       disabled={disabled}
       tabIndex={-1}
-      className={cx("di-menu-item", tone === "danger" && "is-danger")}
+      className={cx("di-option", "di-menu-item", tone === "danger" && "is-danger")}
       onClick={onSelect}
     >
       {checked === undefined ? null : (

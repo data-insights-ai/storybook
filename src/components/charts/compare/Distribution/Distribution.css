@@ -26,7 +26,7 @@
   }
 
   .di-distribution-track {
-    height: 6px;
+    height: var(--di-level-compare-h);
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-subtle);
   }

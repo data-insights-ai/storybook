@@ -11,12 +11,12 @@
   }
 
   .di-sb-brand-logo {
-    height: 24px;
+    height: var(--di-sb-brand-h);
     width: auto;
   }
 
   .di-sb-brand-mark {
-    height: 24px;
+    height: var(--di-sb-brand-h);
     width: auto;
     margin-inline: auto;
   }
