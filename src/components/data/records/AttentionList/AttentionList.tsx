@@ -3,7 +3,6 @@ import { cx } from "../../../../internal/cx";
 import { surfaceClass } from "../../../../internal/surface";
 import { SeverityMark, type Severity } from "../../../marks/status/SeverityMark";
 import { MetaLine } from "../../../text/MetaLine";
-import { Notice, NoticeBody, NoticeTitle } from "../../../feedback/Notice";
 import "./AttentionList.css";
 
 /**
@@ -117,32 +116,5 @@ export function AttentionItem({
       </div>
       {children ? <div className="di-attention-action">{children}</div> : null}
     </li>
-  );
-}
-
-/**
- * The first block of an overview when nothing needs the reader: one quiet
- * line, "Everything is running", and what it rests on.
- *
- * @deprecated Removed in 0.12: use `Notice variant="line" tone="ok"` with a
- * `NoticeTitle` and a `NoticeBody` holding a `MetaLine` of the note.
- */
-export function AttentionClear({
-  title,
-  note = "",
-}: {
-  title: string;
-  /** What the calm rests on: facts with " · " between them. */
-  note?: string;
-}) {
-  return (
-    <Notice variant="line" tone="ok">
-      <NoticeTitle>{title}</NoticeTitle>
-      {note ? (
-        <NoticeBody>
-          <MetaLine items={note} />
-        </NoticeBody>
-      ) : null}
-    </Notice>
   );
 }

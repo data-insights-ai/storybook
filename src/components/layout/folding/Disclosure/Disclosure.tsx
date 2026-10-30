@@ -40,7 +40,6 @@ export function Disclosure({
   toggle = "chevron",
   title,
   headingLevel = 3,
-  meta = "",
   open,
   defaultOpen = false,
   onOpenChange,
@@ -56,8 +55,6 @@ export function Disclosure({
   title?: string;
   /** The level the title takes in the page's outline. */
   headingLevel?: Level;
-  /** @deprecated Write a `DisclosureMeta` child instead. Removed in 0.12. */
-  meta?: string;
   /** Open, when the caller holds the state. */
   open?: boolean;
   /** Open at first, when the group holds its own state. */
@@ -100,7 +97,6 @@ export function Disclosure({
   });
   const bodyId = `${stem}-body`;
   const titleId = `${stem}-title`;
-  const metas = meta === "" ? metaSlot : [<DisclosureMeta key="meta">{meta}</DisclosureMeta>, ...metaSlot];
   const Heading = `h${headingLevel}` as const;
   const named = title !== undefined && (toggle === "head" || lead.length === 0);
   const chevron = <ChevronDown className="di-disclosure-chevron" aria-hidden />;
@@ -128,7 +124,7 @@ export function Disclosure({
             onClick={() => set(!isOpen)}
           >
             {titles}
-            {metas}
+            {metaSlot}
             {chevron}
           </button>
         </Heading>
@@ -141,7 +137,7 @@ export function Disclosure({
           ) : (
             <Heading className="di-disclosure-heading">{titles}</Heading>
           )}
-          {metas}
+          {metaSlot}
           <button
             type="button"
             className="di-disclosure-toggle"

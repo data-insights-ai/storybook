@@ -123,7 +123,7 @@ export function DetailSectionForm({
   onCancel: () => void;
   saving?: boolean;
   error?: string;
-  /** The fields, as for a `FieldStack`. */
+  /** The fields, as for a `Stack variant="form"`. */
   children: ReactNode;
 }) {
   const submit = (event: FormEvent) => {

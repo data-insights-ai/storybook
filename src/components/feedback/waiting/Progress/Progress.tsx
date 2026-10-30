@@ -15,7 +15,6 @@ export function Progress({
   count,
   value,
   max = 100,
-  countTrack = "record",
   className,
 }: {
   id: string;
@@ -25,11 +24,6 @@ export function Progress({
   count: string;
   value: number;
   max?: number;
-  /**
-   * @deprecated Removed in 0.12: a count in words, "1 of 10 seats used", is
-   * a quota; show it with `LevelMeter`.
-   */
-  countTrack?: "record" | "prose";
   className?: string;
 }) {
   return (
@@ -38,7 +32,7 @@ export function Progress({
         <label className="di-progress-label" htmlFor={id}>
           {label}
         </label>
-        <span className={cx("di-progress-count", countTrack === "prose" && "di-progress-count-prose")}>{count}</span>
+        <span className="di-progress-count">{count}</span>
       </div>
       <progress id={id} className="di-progress-bar" value={value} max={max} />
     </div>

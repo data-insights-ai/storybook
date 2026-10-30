@@ -4,7 +4,6 @@ import { Button } from "../../../actions/Button";
 import { Stack } from "../../../layout/arrangement/Stack";
 import { Toolbar } from "../../../actions/Toolbar";
 import { TextField } from "./TextField";
-import { ConfidenceField } from "./ConfidenceField";
 import { TextLink } from "../../../navigation/TextLink";
 import { Panel } from "../../../layout/page/Panel";
 
@@ -338,23 +337,5 @@ export const ConfidenceToReview: Story = {
       whyLabel: "Why?",
       onWhy: fn(),
     },
-  },
-};
-
-/** `ConfidenceField` is deprecated and renders the read-only field with `confidence`. Removed in 0.12. */
-export const DeprecatedConfidenceField: Story = {
-  render: () => (
-    <ConfidenceField
-      id="legacy-confidence"
-      label="Resolved operator"
-      confidence={0.94}
-      confidenceLabel="0.94 · matched on 3 of 4 inputs"
-    >
-      Nora Feld
-    </ConfidenceField>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByRole("textbox", { name: "Resolved operator" })).toHaveValue("Nora Feld");
   },
 };

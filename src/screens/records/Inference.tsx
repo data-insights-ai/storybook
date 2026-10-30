@@ -166,7 +166,7 @@ export function InferenceScreen() {
           privacyNote="local processing"
         >
           <CommandGroup label="Records">
-            <CommandRow label="feed.example.io" meta="03 · paused" active={true} onSelect={() => undefined}>
+            <CommandRow label="feed.example.io" meta="03 · paused" onSelect={() => undefined}>
               <Radar aria-hidden />
             </CommandRow>
             <CommandRow label="beta.example.dev" meta="11 · paused" onSelect={() => undefined}>

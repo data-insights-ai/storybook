@@ -211,7 +211,7 @@ export function StepIcon({ children }: { children: ReactNode }) {
 
 /**
  * A card's closing line: what the step costs or what it waits on. It is a
- * slot, so it holds a `SealValue`, a `StatusPill` or a `Spinner` as readily
+ * slot, so it holds a `SealValue`, a `StatusPill` or a `Loading` as readily
  * as a word.
  */
 export function StepFooter({ children }: { children: ReactNode }) {

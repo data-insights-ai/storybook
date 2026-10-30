@@ -185,10 +185,11 @@ function Cases({ initial = "list" }: { initial?: "list" | "detail" }) {
       <SplitMain label={`Case ${record.n}`}>
         <SplitBack label="All cases" onBack={() => setShowing("list")} />
         <PageHeader
+          level={2}
           eyebrow={`Case ${record.n}`}
           lede={record.owner === "unassigned" ? "Not assigned yet" : `Assigned to ${record.owner}`}
         >
-          <PageHeaderTitle level={2}>{record.title}</PageHeaderTitle>
+          <PageHeaderTitle>{record.title}</PageHeaderTitle>
         </PageHeader>
         <Panel title="What happened">
           <FactList layout="columns">

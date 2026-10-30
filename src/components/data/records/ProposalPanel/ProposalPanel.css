@@ -121,11 +121,6 @@
     gap: var(--di-gap-8);
   }
 
-  /* The deprecated ConfirmPanel keeps its why link, at the start of the action row. */
-  .di-proposal-why-link {
-    margin-inline-end: auto;
-  }
-
   @media (max-width: 600px) {
     .di-proposal-actions {
       flex-direction: column-reverse;

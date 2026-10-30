@@ -36,7 +36,7 @@ installing the package, not just to the converter.
   Do not try to fix this from `cfg.cssEntry` — the converter always *appends*
   it after the bundled CSS, so it can never reach the front from there.
 - **`FieldHint.tsx` does `import "./Field.css"`.** `.di-field-hint` is defined in
-  `Field.css`, which only TextField / Select / SearchField / ConfidenceField
+  `Field.css`, which only TextField / Select / SearchField
   import, so a product tree-shaking `FieldHint` shipped it unstyled.
   Audited once: it was the only one. A naive scan also flags DataTable, Notice
   (`di-mono`) and Seal (`di-tick-rule`) — false positives, those classes live in
@@ -73,10 +73,9 @@ values.
   directly needs this, or the duplicate instance breaks anything inspecting
   child component types.
 - **`titleMap` keys are title SEGMENTS, not full titles**, and the card group is
-  the segment *before* the matched one — `Inference/ConfirmPanel` → export
-  `ConfirmPanel`, group `inference`. Since 2026-10-29 every title ends in its
-  meta component's name, so the six renames (Confidence, Confirm, Explain,
-  Privacy, Seal, Skeleton) were removed.
+  the segment *before* the matched one — `Overlays/Dialog` → export
+  `Dialog`, group `overlays`. Since 2026-10-29 every title ends in its
+  meta component's name, so the six title renames were removed.
   `AppShell→Console` was **removed 2026-10-16**: `Patterns/AppShell` became the
   slot-based `AppShell` a product renders (meta `component: AppShell`), and
   `Console` is now the Storybook-window variant no product renders and no story
@@ -95,8 +94,7 @@ values.
   guidelines a design agent reads are `conventions.md` (`readmeHeader`).
 - **`dtsPropsFor.Button`** — see the union note under Tool limitations.
 - **`readmeHeader: ".design-sync/conventions.md"`** — the design agent's header.
-- **`overrides`** — reasons under Tool limitations: `Modal` single
-  card + `primaryStory: Confirm`; `Session` / `Tabs` / `Chart` / `AppShell`
+- **`overrides`** — reasons under Tool limitations: `Tabs` / `Chart` / `AppShell`
   column cards (`AppShell` added 2026-10-16 for `[GRID_OVERFLOW] wide`);
   `FieldHint/Empty` skipped; `AppShell/MobileNavigationNight` and
   `ComboBox/Night` skipped because they set `globals: { theme: "dark" }` — see
@@ -146,7 +144,7 @@ near-white-on-near-white.
 **What changed.** Three selectors: `semantic.css`'s two theme blocks dropped the
 `:root` prefix, and `component.css` became `:root, [data-theme]`. Fourteen of the
 29 slots read a role the night sheet remaps, and those fourteen are read by seven
-stylesheets — Button, Card, DataTable, Field, SearchField, Panel, SkeletonTable.
+stylesheets — Button, Card, DataTable, Field, SearchField, Panel and the table skeleton (now `Loading`).
 Everything else binds to semantic roles directly and already inherited correctly.
 
 A fourth change was needed and is the same bug one layer up: `base.css` sets
@@ -167,7 +165,7 @@ left to the author, so a region can sit on page, surface or nothing.
   instead of prose asserting it.
 
 **A region is not the way to put a dark surface on a light page.** That is
-`--di-inverse-*` (AppShell, SignIn, Stage, Toast, Tooltip) and `--di-sidebar-*`
+`--di-inverse-*` (AppShell, SignIn, the current `Steps` card, Toast, Tooltip) and `--di-sidebar-*`
 for the rail, and they mean something different: "a plane sitting on navy, in
 either theme" versus "the register after dark". `--di-inverse-bg` is navy in
 daylight and night-800 after dark; the night sheet's surface is neither. The
@@ -194,56 +192,39 @@ removes the story from `<Name>.prompt.md` too.
 
 ### A top-layer `<dialog>` cannot be photographed on either side
 
-`Modal` is a native `<dialog>` opened with `showModal()`, so its content is in
-the browser's top layer. The harness screenshots the story **root**, and a
-top-layer dialog leaves that root **0px** tall — measured: the dialog renders at
-296.6px with all its copy while the root reports height 0. Identical in
-storybook and in the preview, so compare reports `sb-error` on both. A capture
-limitation, not a fidelity defect, and not a reason to change the component.
+`Dialog` (and `ConfirmDialog` on it) is a native `<dialog>` opened with
+`showModal()`, so its content is in the browser's top layer. The harness
+screenshots the story **root**, and a top-layer dialog leaves that root **0px**
+tall — measured on the earlier modal: the dialog rendered at 296.6px with all its
+copy while the root reported height 0. Identical in storybook and in the preview,
+so compare reports `sb-error` on both. A capture limitation, not a fidelity
+defect, and not a reason to change the component. Verify an open dialog with
+`package-validate.mjs`'s render check, which reads geometry and text rather
+than a root screenshot (`.render-check.json`).
 
-`cardMode: "single"` is separate and *intended*: a top-layer dialog would paint
-over every sibling cell, so the card shows one representative modal.
-
-The Modal card is verified instead by `package-validate.mjs`'s render check,
-which reads geometry and text rather than a root screenshot and sees the full
-297px modal. **If Modal's card regresses, the compare loop will NOT catch it —
-check `.render-check.json`.**
+The earlier modal used `cardMode: "single"` and an owned preview; both went with
+it in 0.11.0. If `Dialog`'s open stories photograph empty on the next sync, give
+it the same: a single card, and an owned preview for any story the oracle has to
+skip.
 
 ### `skip` removes a story from the DESIGN SYSTEM, not just the oracle
 
-Found by the designer, who noticed the Modal card showed one state while
-storybook has five. A story in `overrides.<Name>.skip` is dropped from the
-generated wrapper entirely: absent from `_preview/<Name>.js`, unreachable with
-`?story=`, and — the part that matters — **it gets no section in
-`<Name>.prompt.md`, the design agent's usage reference.** `Modal` was shipping
-without `Plain` (no icon column) and `TypeToConfirm` (type the name back to arm
-the commit): two distinct patterns the agent had no example of.
-
-The fix is `.design-sync/previews/Modal.tsx`, which re-exports the three skipped
-stories. The skip still applies to the oracle; the module, `?story=` and the
-generated prompt.md get them back.
+A story in `overrides.<Name>.skip` is dropped from the generated wrapper
+entirely: absent from `_preview/<Name>.js`, unreachable with `?story=`, and —
+the part that matters — **it gets no section in `<Name>.prompt.md`, the design
+agent's usage reference.** The fix is an owned preview,
+`.design-sync/previews/<Name>.tsx`, which re-exports the skipped stories: the
+skip still applies to the oracle; the module, `?story=` and the generated
+prompt.md get them back.
 
 **Audit whenever skips change.** Evaluate `_preview/*.js` and read the
 PascalCase keys off `__dsPreview` — that is what the card's own script does.
 Note it is a top-level `var`, so in a Node `vm` it lands on the context object,
 not on `ctx.window`. Compare against `sb-reference/index.json`, **not**
 `.stories-map.json`, which already excludes skips and hides the very gap you are
-looking for.
-
-Audited 2026-09-25: of 273 storybook stories belonging to synced components, 5
-were not renderable and all 5 were deliberate — the two NightSheet stories,
-`FieldHint/Empty` (renders nothing by design, and it landed as `roots[0]`,
-tripping the validator's `rootEmpty` check), and Modal's two, restored by the
-owned preview. **Since 2026-09-30 the two NightSheet stories render, so the count
-is 1**: `FieldHint/Empty`. **Since 2026-10-16 it is 3**: plus
+looking for. Today's skips: `FieldHint/Empty` (renders nothing by design),
 `AppShell/MobileNavigationNight` and `ComboBox/Night` (themed through a global,
 above). Re-run the audit on the next sync.
-
-Known cosmetic limitation: `<Name>.prompt.md`'s one-line
-`Variants (see <Name>.html): …` header is generated from the non-skipped roster,
-so Modal's still reads "Closed, Transition" even though the file carries
-`### Plain` and `### TypeToConfirm` sections below it. Content is complete;
-fixing the header would need a lib fork.
 
 ### Play-function stories are systematically `close`, and that is correct
 
@@ -253,8 +234,8 @@ storybook post-interaction and by the preview at rest.
 
 Signature, so later waves do not chase it as a styling defect: identical element
 geometry on both sides plus a navy `#0A1F44` ring-shaped pixel surplus on the
-storybook side only. Measured on `Chip/Active` (392 navy px vs 282, same 132×28
-bbox) and `Chip/Available` (45 px of outset ring the preview lacks).
+storybook side only. Measured on a pressed and an offered mono `Tag` (392 navy px
+vs 282, same 132×28 bbox; 45 px of outset ring the preview lacks).
 
 Grade `close` with the cause named. Do **not** hard-code the interaction result
 into an owned preview — the resting render is what a design agent actually gets,
@@ -345,9 +326,6 @@ Each has already gone stale at least once. Re-validate all three on any sync.
 2. **`cfg.dtsPropsFor.Button`** — a hand-written props body. If `Button`'s props
    change it goes stale silently, and the silence is the whole problem: nothing
    in the pipeline compares it to the real `.d.ts`.
-3. **`.design-sync/previews/Modal.tsx`** — the only owned preview. Everything
-   else uses generated previews. It re-exports the three skipped stories and
-   must gain any story `Modal` adds.
 
 ## Open, outside the sync
 
@@ -406,9 +384,9 @@ for the four rendered specimen pages.
 
 **2026-09-25 — after a large API and token refactor.** Space scale renamed to
 value-named `--di-space-2 4 6 8 12 16 24 32 48` (156 values across 51 files).
-Nine string props became slots (`PanelMeta`, `StageFooter`, `ExplainFooter`,
-`MetricNote`, `RecordCount`, `SessionDetail`, `StatTileDelta`, `LivingBasis`,
-`SignInVersion`), all verified `match`. `tone` narrowed to status only;
+Nine string props became slots (`PanelMeta`, `RecordCount`, `SignInVersion` and
+six on components since merged into `Steps`, `ProposalPanel`, `RecordCard` and
+`Figure`), all verified `match`. `tone` narrowed to status only;
 `ai`→`inferred`, `gold`→`seal`, `info`/`default`→`neutral`, Sparkline
 `ink`→`series`. `--di-accent`, `--di-font-display`, `--di-font-body` deleted as
 duplicate names; `--di-inverse-*` roles added for surfaces on navy.
@@ -425,7 +403,7 @@ nudge, `6bdcc11` Button `href`), package `0.1.8`. The union-flattening bug and
 the default-cap-of-6 bug were both found here and are documented above.
 `Button/Primary` became `close` (its play function clicks). Verified the new base
 `text-decoration: none` does not kill `Ghost`'s gold underline. Canary picked
-Chart, Radio, Icon, Menu, ConfidenceField; all five confirmed. `reference_drift`
+Chart, Radio, Icon, Menu and TextField's confidence; all five confirmed. `reference_drift`
 explained: 355 → 357 entries from the two new stories.
 The `/design-sync` skill was not installed; the staged `.ds-sync/` scripts ran
 §7 end to end and `scriptsSha` still matched the anchor (`c0730d65e41fa758`), so
@@ -440,7 +418,7 @@ syncs (see Open). Both NightSheet stories now render their own region and droppe
 `globals: { theme: "dark" }`, so they no longer depend on a decorator the preview
 harness cannot bundle. **Re-capture `Button`, `StatusPill`, `IconTile` and the
 seven slot-reading components** — Card, DataTable, Field, SearchField, Panel,
-SkeletonTable, Button — on the next sync; `Icon.css` changed, which is a CSS-only
+the table skeleton, Button — on the next sync; `Icon.css` changed, which is a CSS-only
 change and therefore will NOT mark them `changed` (see above), so force it.
 
 **2026-10-16 — accents, slot headings, AppShell, v0.3.1.** First upload since
@@ -449,8 +427,8 @@ change and therefore will NOT mark them `changed` (see above), so force it.
 `Highlight`, `LevelMeter`, `PullQuote`, `TooltipTarget`), 1 removed (`Console`,
 replaced by the `AppShell` card — see titleMap). `--max-stories 18` (AppShell
 has 18). Every `close` is a play-function story; none is a styling delta.
-Spot-check canary (Session, Spinner, Channel, LivingCard, Numbered) all
-confirmed against their recorded grades.
+Spot-check canary (five record, loading and step stories) all confirmed
+against their recorded grades.
 New this run: `AppShell` needed `cardMode: "column"`, and the two
 global-themed Night stories were skipped (above). `conventions.md` was stale
 for the accent release — it still said "there is no accent colour" and pointed
@@ -464,12 +442,13 @@ that neither side applies in capture, so both photograph at 900px. They grade
 `pnpm test`, not by this sync.
 The 09-30 entry's re-capture list is done: Button, StatusPill, DataTable, Panel
 and TextField were recaptured as `changed`; IconTile, Card, SearchField and
-SkeletonTable were carried forward by the diff (CSS-only change) and were
+the table skeleton were carried forward by the diff (CSS-only change) and were
 spot-checked by hand with `compare.mjs --components … --spot-check-components …`.
 All confirmed — `IconTile/Inverse` now draws an ivory glyph on navy on both sides.
-`Numbered` was the driver's canary on every run this session (`render_churn`,
-sources unchanged) and confirmed each time; if it keeps churning on the next
-sync, look for a nondeterministic input in its preview rather than re-grading.
+The numbered-step story was the driver's canary on every run this session
+(`render_churn`, sources unchanged) and confirmed each time; if `Steps` keeps
+churning on the next sync, look for a nondeterministic input in its preview
+rather than re-grading.
 
 ## Appendix: pnpm 12.5.1 native binary
 

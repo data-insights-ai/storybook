@@ -38,11 +38,6 @@ export function CommandRow({
   label: string;
   /** The trailing note: a shortcut, a count, a source. */
   meta: string;
-  /**
-   * @deprecated The bar highlights its rows itself (the first one, then the
-   * arrow keys and the pointer). Ignored; removed in 0.12.
-   */
-  active?: boolean;
   inferred?: boolean;
   onSelect: () => void;
   /** The leading icon, as `Button` takes it. Ignored when `inferred`. */

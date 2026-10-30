@@ -12,7 +12,6 @@ import { TextLink } from "../../../navigation/TextLink";
 import { Figure, FigureNote } from "../../figures/Figure";
 import { Sparkline } from "../../figures/Sparkline";
 import { Fact, FactList } from "../FactList";
-import { Channel, ChannelStatus, ChannelValue, Session, SessionDetail, SessionTag } from "./deprecated";
 import {
   RecordActions,
   RecordBasis,
@@ -354,28 +353,5 @@ export const LongLabels: Story = {
   play: async ({ canvasElement }) => {
     const card = canvasElement.querySelector(".di-record")!;
     await expect(card.scrollWidth).toBeLessThanOrEqual(card.clientWidth + 1);
-  },
-};
-
-/** The names before 0.11 (`Session`, `Channel`, `LivingCard`) render a `RecordCard`; they go in 0.12. */
-export const OlderNames: Story = {
-  render: () => (
-    <div style={{ maxWidth: 420, display: "grid", gap: 16 }}>
-      <Session name="MacBook Pro · Vienna">
-        <SessionDetail>Last seen 09:12:04Z · 10.4.2.18</SessionDetail>
-        <SessionTag>
-          <StatusPill tone="ok">this device</StatusPill>
-        </SessionTag>
-      </Session>
-      <Channel title="registry.example.org">
-        <ChannelStatus>
-          <StatusPill tone="ok">running</StatusPill>
-        </ChannelStatus>
-        <ChannelValue>1,842</ChannelValue>
-      </Channel>
-    </div>
-  ),
-  play: async ({ canvasElement }) => {
-    await expect(canvasElement.querySelectorAll(".di-record")).toHaveLength(2);
   },
 };

@@ -10,7 +10,7 @@ import "./FigureRow.css";
  * `Panel`s with a `Figure` each), nor for the facts of one record
  * (`FactList`).
  *
- * `footer` is the row's place under a `Hero`, closing it (`HeroFooter`).
+ * `footer` is the row's place under a hero `Panel` (`surface="hero"`), closing it in its `PanelFooter`.
  * Where a page has no hero, `strip` sets the row on a tonal band of its
  * own, a step below the ground, so it does not dissolve into the page.
  * `size="compact"` sets the values in the body size: a quiet health line
