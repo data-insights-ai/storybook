@@ -15,8 +15,8 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
   >
     <Rules>
       <Rule>The primary action of the page — `New …`, `Invite people`, `Open product` — sits in `PageHeaderAside`, top right.</Rule>
-      <Rule>Actions on the whole list — export, a view switch — sit at the end of the `ListToolbar`, and apply the current search and filters.</Rule>
-      <Rule>Actions on one row sit in the row: frequent safe ones as `RowActions` on hover, all of them in the row's `Menu`. Opening the row is the row itself.</Rule>
+      <Rule>Actions on the whole list — export, a view switch — sit in the list toolbar's `ToolbarEnd` (`Toolbar role="search"`), and apply the current search and filters.</Rule>
+      <Rule>Actions on one row sit in the row: frequent safe ones in a `Toolbar variant="row"` shown on hover, all of them in the row's `Menu`. Opening the row is the row itself.</Rule>
       <Rule>Changing a part of a record is the `Edit` of its `DetailSection`. Destroying it is the `DangerZone`, last on the page, through a `ConfirmDialog`.</Rule>
       <Rule>Frequent actions get a key: `/` search, `n` new, `e` edit or export (`useShortcut`), shown beside the control.</Rule>
     </Rules>
@@ -40,7 +40,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
   <Section
     eyebrow="List page"
     title="Find, filter, open."
-    lede="`Page width='list'`: `PageHeader` with the primary action, a sticky `ListToolbar`, then an `InfiniteTable` — or a `Notice variant='empty'` in its place."
+    lede="`Page width='list'`: `PageHeader` with the primary action, a sticky `Toolbar role='search'`, then an `InfiniteTable` — or a `Notice variant='empty'` in its place."
   >
     <Rules>
       <Rule>Search and filters run on the server and live in the URL, so a link, reload and back show the same list.</Rule>
@@ -63,7 +63,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
   >
     <Rules>
       <Rule>A section reads by default — a `FactList layout="columns"`, ids as `CopyValue`. Its `Edit` switches only that section into its form with Save and Cancel; focus moves in and back.</Rule>
-      <Rule>A change of several independent settings in one section (switches) collects in a sticky `SaveBar` instead of saving each.</Rule>
+      <Rule>A change of several independent settings in one section (switches) collects in a `Toolbar sticky="bottom"` (unsaved changes) instead of saving each.</Rule>
       <Rule>A change too large for a section opens a side `Dialog`. A record opened from a list row may live in a side `Dialog` too, with the same sections inside.</Rule>
       <Rule>Each `DangerAction` states the consequence and has one danger button. When it is unavailable, `note` says why — "You are the only owner" — and the button is disabled, not hidden.</Rule>
       <Rule>An irreversible action asks for the record's name in the `ConfirmDialog` (`confirmText`). A reversible removal confirms with a toast that offers Undo.</Rule>

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { FileField } from "./FileField";
-import { Toolbar } from "../../../layout/arrangement/Toolbar";
+import { Toolbar } from "../../../actions/Toolbar";
 
 const meta = {
   title: "Forms/Text/FileField",

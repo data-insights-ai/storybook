@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Toolbar } from "../Toolbar";
+import { Toolbar } from "../../../actions/Toolbar";
 
 /**
  * A one-line form: add an entry, apply a value.

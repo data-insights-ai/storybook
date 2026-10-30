@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Globe, Plus, Server } from "lucide-react";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
+import { Toolbar } from "../../../actions/Toolbar";
 import { Tag } from "../../../marks/Tag";
 import {
   CellIcon,
@@ -17,7 +18,6 @@ import {
   TableHead,
   TableIndex,
   TableRow,
-  TableToolbar,
 } from "./DataTable";
 import { LevelMeter } from "../../../charts/compare/LevelMeter";
 import { Pagination } from "../../../navigation/sequence/Pagination";
@@ -108,10 +108,8 @@ export const Default: Story = {
 export const WithToolbar: Story = {
   render: (args) => (
     <DataTable {...args}>
-      <TableToolbar>
-        <div style={{ width: 240, maxWidth: "100%" }}>
-          <SearchField id="table-search" label="Search sources" placeholder="host or hash" dense={true} />
-        </div>
+      <Toolbar label="Filter sources" role="search">
+        <SearchField id="table-search" label="Search sources" placeholder="host or hash" size="sm" />
         <Tag mono pressed onRemove={() => undefined} removeLabel="Remove the state filter">
           state: running
         </Tag>
@@ -119,7 +117,7 @@ export const WithToolbar: Story = {
           <Plus aria-hidden />
           kind
         </Tag>
-      </TableToolbar>
+      </Toolbar>
       <SourceRows />
     </DataTable>
   ),

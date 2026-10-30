@@ -10,7 +10,7 @@ import {
   TableHead,
   TableRow,
 } from "../../components/data/table/DataTable";
-import { Toolbar } from "../../components/layout/arrangement/Toolbar";
+import { Toolbar } from "../../components/actions/Toolbar";
 import { Panel, PanelNote } from "../../components/layout/page/Panel";
 import { StatusPill } from "../../components/marks/status/StatusPill";
 import { CodeBlock } from "../../components/text/CodeBlock";

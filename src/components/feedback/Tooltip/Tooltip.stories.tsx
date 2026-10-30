@@ -3,7 +3,7 @@ import { Download, RefreshCw, Settings } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Panel } from "../../layout/page/Panel";
-import { Toolbar, ToolbarEnd } from "../../layout/arrangement/Toolbar";
+import { Toolbar, ToolbarEnd } from "../../actions/Toolbar";
 import { Tooltip } from "./Tooltip";
 
 /**
