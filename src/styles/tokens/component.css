@@ -76,7 +76,14 @@
     --di-choice-selected-bg: var(--di-bg-selected);
     --di-choice-selected-edge: var(--di-select);
     --di-choice-selected-fg: var(--di-text);
-    /* A chosen segment or toggle is a solid cornflower fill: small, so a tint alone would not read. */
+    /*
+     * A chosen segment switches a view: a quiet thumb, the surface tone
+     * lifted off the track, in ink. A chosen toggle is a value: a solid
+     * cornflower fill, small, so a tint alone would not read.
+     */
+    --di-choice-thumb-bg: var(--di-bg-surface);
+    --di-choice-thumb-fg: var(--di-text);
+    --di-choice-thumb-shadow: var(--di-shadow-thumb);
     --di-choice-on-bg: var(--di-select);
     --di-choice-on-fg: var(--di-text-on-strong);
     /* One cell of a row of toggles: square at the field height, a little wider so two letters breathe. */
@@ -145,6 +152,8 @@
     --di-choicecards-planned-min: 140px;
     --di-date-range-handle-w: 36px;
     --di-listbox-max-h: 320px;
+    /* A filter above a list on a phone shares its row down to this width before it wraps. */
+    --di-toolbar-filter-min: 96px;
     /* An entry in a token field sits inside the field's frame, so it follows the field's height. */
     --di-token-h: calc(var(--di-field-height) - 2 * var(--di-space-4) - 2px);
     --di-token-remove: calc(var(--di-token-h) - var(--di-space-4));
@@ -205,6 +214,12 @@
     --di-toast-max: 480px;
     --di-notice-dot: 8px;
     --di-tooltip-h: 22px;
+    --di-tooltip-arrow: 8px;
+    /* A count in a tooltip: light pills on the inverse bubble in both themes, dark digits. */
+    --di-tooltip-badge-bg: var(--di-night-ink);
+    --di-tooltip-badge-fg: var(--di-navy-900);
+    --di-tooltip-badge-alert-bg: var(--di-danger-200);
+    --di-tooltip-badge-seal-bg: var(--di-gold-300);
     --di-app-loader-mark: 64px;
     --di-progress-h: 5px;
     --di-route-progress-h: 2px;
@@ -265,6 +280,9 @@
     --di-period-track-h: 10px;
     --di-tsummary-strip-h: 46px;
     --di-tsummary-swatch: 12px;
+    /* The line an episode stands on: where it is quiet, only this shows. */
+    --di-tsummary-base: 3px;
+    --di-tsummary-severity: 7rem;
     --di-week-label: 40px;
     /* The active block's ring: a 2px gap in the surface, then 1px of ink. */
     --di-tsummary-ring: 3px;

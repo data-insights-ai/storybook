@@ -29,6 +29,28 @@ const usage = days.map((at, i) => ({ at, soc: 20 + ((i * 7) % 13), reports: 4 + 
 const seats = days.map((at, i) => ({ at, used: Math.min(5, 2 + Math.floor(i / 8)), capacity: 5 }));
 
 /* Every tick and marker label lies inside the chart's own box: none is cut at either edge. */
+/** A marker label sits above the plot inside the chart: it covers no bar, line or area, and nothing cuts it off. */
+async function markersClear(canvasElement: HTMLElement) {
+  for (const label of canvasElement.querySelectorAll(".di-trend-marker")) {
+    const svg = label.closest("svg")!;
+    const box = label.getBoundingClientRect();
+    const frame = svg.getBoundingClientRect();
+    await expect([box.left >= frame.left - 0.5, box.right <= frame.right + 0.5, box.top >= frame.top]).toEqual([
+      true,
+      true,
+      true,
+    ]);
+    const plot = svg.querySelector(".recharts-cartesian-grid")!.getBoundingClientRect();
+    await expect(box.bottom).toBeLessThanOrEqual(plot.top);
+    const marks = svg.querySelectorAll(".recharts-bar-rectangle path, .recharts-line-curve, .recharts-area-area");
+    const covered = [...marks].filter((mark) => {
+      const r = mark.getBoundingClientRect();
+      return r.width > 0 && box.left < r.right && box.right > r.left && box.top < r.bottom && box.bottom > r.top;
+    });
+    await expect(covered).toHaveLength(0);
+  }
+}
+
 async function ticksInside(canvasElement: HTMLElement) {
   for (const chart of canvasElement.querySelectorAll(".di-chart")) {
     const box = chart.getBoundingClientRect();
@@ -64,7 +86,7 @@ const meta = {
         component: [
           "**Purpose:** a value over time — a balance, a count per day, seats in use — with the days that matter marked on the axis.",
           "**When to use:** one to three series on one time axis, in a `Panel` beside the `Figure` it explains. **When not to:** a single number with no axis is a `Figure` (with a `Sparkline` beside it); counts above and below a line per period are a `Seismograph`; periods such as licenses are a `PeriodTimeline`; many events on one clock are an `EventTimeline`.",
-          "**Anatomy:** the plot (a hairline grid, the x axis in the mono track, the y axis), the series, dashed `markers` with their label at the top, and a legend under the plot when there is more than one series.",
+          "**Anatomy:** the plot (a hairline grid, the x axis in the mono track, the y axis), the series, dashed `markers` with their label in a band above the plot (centred on the rule, moved inward at the edges, never over the data), and a legend under the plot when there is more than one series.",
           "**Variants:** a series' `kind` is `line` for a level, `area` for an amount, `bar` for a count per period; `dashed` is a projection of the same series; `tone` is `series`, `compare` (what it is measured against), `highlight`, `muted`, or `warn`/`danger` only for a state. `height` is `sm` on a dashboard, `md`, `lg`.",
           "**States:** a `null` value is a gap, not zero. The plot fades in once (120 ms); no series draws itself in, and a marker appears with the data.",
           "**Content:** the product formats the values and the days (`formatX`, `formatValue`); the panel states the key figure in words.",
@@ -204,6 +226,7 @@ export const Dashboard: Story = {
     const grid = canvasElement.querySelector(".di-grid")!.getBoundingClientRect();
     await expect(Math.round(panels[2]!.width)).toBe(Math.round(grid.width));
     await ticksInside(canvasElement);
+    await markersClear(canvasElement);
   },
 };
 
@@ -230,6 +253,7 @@ export const Markers: Story = {
     const canvas = within(canvasElement);
     for (const label of ["Renewal", "Expires", "Cut-off"]) await expect(canvas.getByText(label)).toBeInTheDocument();
     await ticksInside(canvasElement);
+    await markersClear(canvasElement);
   },
 };
 
@@ -256,6 +280,7 @@ export const Forecast: Story = {
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByText("Forecast")).toBeVisible();
     await ticksInside(canvasElement);
+    await markersClear(canvasElement);
   },
 };
 
@@ -270,6 +295,7 @@ export const Phone: Story = {
   ),
   play: async ({ canvasElement }) => {
     await ticksInside(canvasElement);
+    await markersClear(canvasElement);
   },
 };
 
@@ -304,5 +330,6 @@ export const German: Story = {
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByText("Berichte und Auswertungen")).toBeVisible();
     await ticksInside(canvasElement);
+    await markersClear(canvasElement);
   },
 };

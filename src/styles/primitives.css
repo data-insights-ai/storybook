@@ -183,8 +183,4 @@
     letter-spacing: var(--di-tracking-mono);
     color: var(--di-text-subtle);
   }
-
-  .di-ordinal.is-danger {
-    color: var(--di-status-danger-fg);
-  }
 }

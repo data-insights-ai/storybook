@@ -92,6 +92,14 @@
     color: var(--di-text-muted);
   }
 
+  /* The seal centres on the first line, like the error icon, so a wrapped hint still hangs off it. */
+  .di-field-hint-mark {
+    display: flex;
+    flex: none;
+    align-items: center;
+    height: calc(1em * var(--di-leading-snug));
+  }
+
   .di-control {
     width: 100%;
     height: var(--di-field-height);

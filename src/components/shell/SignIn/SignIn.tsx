@@ -37,7 +37,8 @@ export function SignIn({
   title: string;
   lede: string;
   restriction: string;
-  foot: string;
+  /** What protects the sign-in, after the kicker: a list, or one string whose items are separated by " · ". A line breaks only between items. */
+  foot: string | readonly string[];
   onSubmit?: (event: FormEvent<HTMLFormElement>) => void;
   /** The fields, and one `SignInVersion` beside the mark. */
   children: ReactNode;
@@ -77,16 +78,23 @@ export function SignIn({
           </div>
         </form>
 
-        <p className="di-login-foot">
-          <span>{kicker}</span>
-          <span className="di-login-foot-sep" aria-hidden>
-            ·
-          </span>
-          <span>{foot}</span>
-        </p>
+        <ul className="di-login-foot">
+          {[kicker, ...footItems(foot)].map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
       </div>
     </main>
   );
+}
+
+function footItems(foot: string | readonly string[]): readonly string[] {
+  return typeof foot === "string"
+    ? foot
+        .split("·")
+        .map((item) => item.trim())
+        .filter(Boolean)
+    : foot;
 }
 
 /**

@@ -248,7 +248,7 @@ export const PhoneWidth: Story = {
 export const ActionBesideText: Story = {
   args: { tone: "warn" },
   render: (args) => (
-    <div style={{ display: "grid", gap: 16 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 16 }}>
       <div style={{ width: 720, maxWidth: "100%" }} data-testid="wide">
         <Notice {...args}>
           <NoticeIcon />
@@ -263,7 +263,7 @@ export const ActionBesideText: Story = {
           </NoticeAction>
         </Notice>
       </div>
-      <div style={{ width: 360 }} data-testid="phone">
+      <div style={{ width: 360, maxWidth: "100%" }} data-testid="phone">
         <Notice {...args}>
           <NoticeIcon />
           <NoticeText>

@@ -17,7 +17,7 @@ const chromium = () => ({
 /**
  * Every story runs once per theme, again at phone width (390px) in both, and in compact density (light, desk and
  * phone), so the axe check (`a11y: { test: "error" }`) sees the dark remap as well, and
- * `.storybook/tests/contrast` measures every visible text where it is painted.
+ * `.storybook/tests/contrast` measures every visible text, and every chart mark it lists, where it is painted.
  * `initialGlobals` pins the toolbar global for the whole project; a story's own `globals` still win.
  * https://storybook.js.org/docs/writing-tests/integrations/vitest-addon
  */

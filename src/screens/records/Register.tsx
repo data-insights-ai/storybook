@@ -248,12 +248,7 @@ function Ready({
           </TableHead>
           <TableBody>
             {sources.map((source) => (
-              <TableRow
-                key={source.ordinal}
-                onSelect={() => setOpen(source.ordinal)}
-                active={source.ordinal === open}
-                tone={source.state === "danger" ? "danger" : "neutral"}
-              >
+              <TableRow key={source.ordinal} onSelect={() => setOpen(source.ordinal)} active={source.ordinal === open}>
                 <TableIndex>{source.ordinal}</TableIndex>
                 <TableCell>
                   <CellLead>
