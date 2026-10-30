@@ -39,13 +39,7 @@ export function weakContrast(ring: Ring): string[] {
   return found;
 }
 
-const SELECTION_TOKENS = [
-  "--di-select",
-  "--di-focus",
-  "--di-choice-selected-edge",
-  "--di-choice-on-bg",
-  "--di-sidebar-focus",
-];
+const SELECTION_TOKENS = ["--di-select", "--di-focus", "--di-choice-selected-edge", "--di-sidebar-focus"];
 
 function selectionColours(host: Element): Rgba[] {
   const probe = document.createElement("span");
@@ -58,7 +52,7 @@ function selectionColours(host: Element): Rgba[] {
   return colours;
 }
 
-const near = (a: Rgba, b: Rgba) => Math.abs(a.r - b.r) + Math.abs(a.g - b.g) + Math.abs(a.b - b.b) < 24;
+const near = (a: Rgba, b: Rgba) => b.a >= 0.5 && Math.abs(a.r - b.r) + Math.abs(a.g - b.g) + Math.abs(a.b - b.b) < 24;
 
 /** A frame drawn in the selection colour on all four sides: a border or an inset spread. */
 function selectionFrame(el: Element, colours: Rgba[]): { box: Box; width: number } | null {

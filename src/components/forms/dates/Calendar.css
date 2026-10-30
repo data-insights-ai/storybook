@@ -96,6 +96,7 @@
 
   /* A chosen day is a value: the primary ink fill, as a chosen toggle. */
   .di-calendar-cell[data-selected] {
+    --di-focus-ring-color: var(--di-focus-ring-on-strong);
     background: var(--di-choice-on-bg);
     color: var(--di-choice-on-fg);
   }
