@@ -13,6 +13,11 @@
 
 @layer tokens {
   /*
+   * Deprecated, bound by no component, removed in 0.12.0: --di-focus-halo,
+   * --di-seal-bg, --di-status-ok-on-navy, --di-signal, --di-signal-ink,
+   * --di-signal-tint, and the primitives --di-danger-700 and --di-navy-200.
+   */
+  /*
    * Not `:root[data-theme=…]`. A theme is a token boundary, not a document
    * property: an element carrying `data-theme` re-declares these roles, and
    * `component.css` re-declares its slots on the same selector, so a region
@@ -75,7 +80,6 @@
 
     /* Selection and focus are cornflower, in both themes. */
     --di-select: var(--di-cornflower-600);
-    --di-select-ink: var(--di-cornflower-800);
     --di-focus: var(--di-cornflower-600);
     --di-focus-halo: rgba(43, 108, 176, 0.22);
 
@@ -190,7 +194,8 @@
      * the sans for what a person reads, the mono for what a machine wrote
      * and for the labels above a value.
      */
-    --di-font-display: var(--di-font-sansation);
+    --di-font-display: var(--di-font-grotesk);
+    --di-font-display-band: var(--di-font-grotesk-band);
     --di-font-ui: var(--di-font-sans);
     --di-font-code: var(--di-font-mono);
 
@@ -258,7 +263,6 @@
     --di-one-glow: 0 0 60px rgba(217, 180, 94, 0.14), 0 0 0 1px rgba(217, 180, 94, 0.2);
 
     --di-select: var(--di-cornflower-300);
-    --di-select-ink: var(--di-cornflower-200);
     --di-focus: var(--di-cornflower-300);
     --di-focus-halo: rgba(121, 174, 234, 0.3);
 
@@ -351,7 +355,7 @@
 
     --di-tile-bg: var(--di-night-plane);
     --di-tile-fg: var(--di-night-ink);
-    --di-tile-inverse-bg: var(--di-gold-500);
+    --di-tile-inverse-bg: var(--di-night-ink);
     --di-tile-inverse-fg: var(--di-navy-900);
 
     --di-badge-neutral-bg: var(--di-navy-700);
@@ -366,9 +370,11 @@
    * A brand moment — sign-in, onboarding, a licence or certificate seal —
    * maps the record mark back to the seal's gold. Repeated on a themed
    * region inside it, which would otherwise redeclare the neutral mark.
+   * `data-brand="false"` opts a region out. A portal (a tooltip, a menu, a
+   * popover) renders outside the region and so draws the neutral mark.
    */
-  [data-brand],
-  [data-brand] [data-theme] {
+  [data-brand]:not([data-brand="false"]),
+  [data-brand]:not([data-brand="false"]) [data-theme] {
     --di-mark: var(--di-seal);
     --di-mark-ring: var(--di-ai-ring);
     --di-mark-surface: var(--di-ai-surface);

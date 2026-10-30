@@ -15,24 +15,11 @@
     box-shadow: 0 0 0 1px var(--di-status-danger-border);
   }
 
-  .di-stat-tile-index {
-    display: flex;
-    justify-content: center;
-    width: var(--di-index-col-sm);
-    flex: none;
-    padding-top: var(--di-space-12);
-    border-right: 1px solid var(--di-border);
-    background: var(--di-bg-subtle);
-  }
-
-  .di-stat-tile.is-danger .di-stat-tile-index {
-    border-right-color: var(--di-status-danger-border);
-    background: var(--di-status-danger-bg);
-  }
-
+  /* The index reads as the label's first word, not a band of its own. */
   .di-stat-tile-ordinal {
+    margin-right: var(--di-space-8);
     font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
+    font-size: inherit;
     font-variant-numeric: tabular-nums;
     color: var(--di-text-subtle);
   }
@@ -46,7 +33,7 @@
     flex-direction: column;
     flex: 1;
     min-width: 0;
-    padding: var(--di-space-12) var(--di-space-12) var(--di-space-12);
+    padding: var(--di-space-16);
   }
 
   .di-stat-tile-label {

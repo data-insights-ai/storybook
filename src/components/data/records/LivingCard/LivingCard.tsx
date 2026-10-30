@@ -22,21 +22,29 @@ export function LivingCard({
   /** The pill naming what the banner is, e.g. "ai insight". */
   insightLabel: string;
   className?: string;
-  /** `LivingActions`, then `LivingBody` and `LivingInsight`. */
+  /** `LivingActions` (placed in the head, in any order), `LivingBody` and `LivingInsight`. */
   children: ReactNode;
 }) {
+  /* `LivingActions` belongs in the head, so it is picked out of `children` by type. */
+  const actions: ReactNode[] = [];
+  const body: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === LivingActions) actions.push(child);
+    else body.push(child);
+  });
   return (
     <div className={cx("di-living", className)}>
       <div className="di-living-head">
         <span className="di-living-title">{title}</span>
         <StatusPill tone="inferred">{insightLabel}</StatusPill>
+        {actions}
       </div>
-      {children}
+      {body}
     </div>
   );
 }
 
-/** The card's own controls, at the top right. */
+/** The card's own controls, in the head at the top right, after the insight pill. */
 export function LivingActions({ children }: { children: ReactNode }) {
   return <div className="di-living-actions">{children}</div>;
 }

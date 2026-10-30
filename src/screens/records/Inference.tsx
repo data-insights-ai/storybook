@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Globe, MoreVertical, Radar, Search, Settings2, ShieldCheck, Timer } from "lucide-react";
+import {
+  Globe,
+  MoreVertical,
+  Radar,
+  Search,
+  Settings2,
+  ShieldCheck,
+  Timer,
+} from "lucide-react";
 import {
   Button,
   CommandBar,
@@ -9,9 +17,11 @@ import {
   ConfirmActions,
   ConfirmPanel,
   ExplainFooter,
+  ExplainIgnored,
   ExplainPanel,
   ExplainRow,
-  Grid,
+  Figure,
+  FigureRow,
   LivingActions,
   LivingBasis,
   LivingBody,
@@ -20,18 +30,16 @@ import {
   PageHeader,
   PageHeaderTitle,
   Panel,
-  PanelMeta,
   PrivacyBadge,
   SectionTitle,
   SectionTitleHeading,
-  SectionTitleMeta,
   Sparkline,
-  Stack,
-  StatTile,
-  StatTileDelta,
   Toast,
   ToastAction,
-} from "../.."; 
+  ToastRegion,
+} from "../..";
+import { ProductShell } from "../shell/ProductShell";
+import "./Inference.css";
 
 const bars = [
   { percent: 38 },
@@ -45,193 +53,211 @@ const bars = [
 ];
 
 /**
- * Everything a model touches, on one screen: the bar it is asked through,
- * the claim it makes in place, the confirmation before anything runs, and
- * the receipt afterwards. The ring appears on all four.
+ * Everything a model touches, on one screen: the claim in place, the
+ * question before anything runs and the reason behind it, the bar it is
+ * asked through, the fields that state their confidence, and the receipt.
+ * One two-column grid; every row shares its edges.
  */
 export function InferenceScreen() {
   const [query, setQuery] = useState("paused sources");
   const [receipt, setReceipt] = useState(true);
 
   return (
-    <>
-      <Stack>
-        <PageHeader
-          eyebrow="12 — Inference"
-          lede="An output is a claim until something seals it. Every surface here marks the difference with the same hollow ring, and nothing runs before an operator agrees to it."
+    <ProductShell
+      area="workspace"
+      active="sources"
+      crumbs={["Example Security GmbH", "Production", "Sources"]}
+    >
+      <PageHeader>
+        <PageHeaderTitle>Sources</PageHeaderTitle>
+      </PageHeader>
+
+      <SectionTitle>
+        <SectionTitleHeading>
+          The claim, and the question before it runs
+        </SectionTitleHeading>
+      </SectionTitle>
+      <div className="inference-grid">
+        <LivingCard title="Unsealed entries" insightLabel="ai insight">
+          <LivingActions>
+            <Button
+              variant="ghost"
+              size="dense"
+              iconOnly={true}
+              aria-label="Card actions"
+            >
+              <MoreVertical aria-hidden />
+            </Button>
+          </LivingActions>
+          <LivingBody>
+            <FigureRow label="Unsealed entries" variant="footer">
+              <Figure label="Unsealed" value="1,284" tone="danger">
+                up 940 since 08:00
+              </Figure>
+            </FigureRow>
+            <Sparkline
+              bars={bars}
+              label="Unsealed entries over the last eight hours, rising sharply in the last two."
+            />
+          </LivingBody>
+          <LivingInsight body="The rise follows the pause on feed.example.io at 08:47. Resuming it clears the backlog.">
+            <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
+            <Button variant="inferred" size="dense">
+              Review the proposal
+            </Button>
+            <Button variant="ghost" size="dense">
+              Dismiss
+            </Button>
+          </LivingInsight>
+        </LivingCard>
+        <ConfirmPanel
+          label="Proposed action"
+          question="Resume feed.example.io?"
+          whyLabel="Why was this proposed?"
+          onWhy={() => undefined}
         >
-          <PageHeaderTitle>What a model may say, and how it says it</PageHeaderTitle>
-        </PageHeader>
-
-        <SectionTitle lede="Inside the card it concerns, never floating over it">
-          <SectionTitleHeading>The claim, in place</SectionTitleHeading>
-          <SectionTitleMeta>
-            <PrivacyBadge scope="local">
-              <ShieldCheck aria-hidden />
-              local processing
-            </PrivacyBadge>
-          </SectionTitleMeta>
-        </SectionTitle>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 16, alignItems: "start" }}>
-          <LivingCard title="Unsealed entries" insightLabel="ai insight">
-            <LivingActions>
-              <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
-                <MoreVertical aria-hidden />
-              </Button>
-            </LivingActions>
-            <LivingBody>
-              <StatTile index="03" label="Unsealed" value="1,284" compact={true}>
-                <StatTileDelta tone="danger">up 940 since 08:00Z</StatTileDelta>
-                <Sparkline
-                  bars={bars}
-                  label="Unsealed entries over the last eight hours, rising sharply in the last two."
-                />
-              </StatTile>
-            </LivingBody>
-            <LivingInsight
-              body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
-              <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
-              <Button variant="inferred" size="dense">
-                Review the proposal
-              </Button>
-              <Button variant="secondary" size="dense">
-                Open the source
-              </Button>
-              <Button variant="ghost" size="dense">
-                Dismiss
-              </Button>
-            </LivingInsight>
-          </LivingCard>
-
-          <ConfirmPanel
-            eyebrow="Proposed action"
-            question="Resume feed.example.io?"
-            whyLabel="why was this proposed?"
-            onWhy={() => undefined}
-          >
-            <ExplainRow label="Basis">1,284 entries queued behind one paused host</ExplainRow>
-            <ExplainRow label="Scope">1 source · WS-01</ExplainRow>
-            <ExplainRow label="Reversible">Yes, the source can be paused again</ExplainRow>
-            <ConfirmActions>
-              <Button variant="secondary" size="dense">
-                Cancel
-              </Button>
-              <Button variant="inferred" size="dense">
-                Resume
-              </Button>
-            </ConfirmActions>
-          </ConfirmPanel>
+          <ExplainRow label="Basis">
+            1,284 entries are queued behind one paused host
+          </ExplainRow>
+          <ExplainRow label="Scope">One source in this workspace</ExplainRow>
+          <ExplainRow label="Reversible">
+            Yes, the source can be paused again
+          </ExplainRow>
+          <ConfirmActions>
+            <Button variant="secondary" size="dense">
+              Cancel
+            </Button>
+            <Button size="dense">Resume</Button>
+          </ConfirmActions>
+        </ConfirmPanel>
+        <ExplainPanel
+          label="Why this was proposed"
+          answer="Proposed because 1,284 entries are queued behind one paused host."
+          confidenceLabel="Confidence"
+          confidence="0.88"
+          confidenceWord="high"
+        >
+          <ExplainRow label="Matched on">
+            Host, manifest prefix and queue depth
+          </ExplainRow>
+          <ExplainRow label="Window" mono>
+            2026-09-22 → 2026-09-23
+          </ExplainRow>
+          <ExplainIgnored
+            summary="Not considered (2)"
+            items={["Entries sealed before 2026-09-01", "Unsealed drafts"]}
+          />
+          <ExplainFooter>
+            This does not account for sources added in the last hour.
+          </ExplainFooter>
+        </ExplainPanel>
+        <div className="inference-column">
+          <Panel title="Where a query goes">
+            <div className="inference-badges">
+              <PrivacyBadge scope="local">
+                <ShieldCheck aria-hidden />
+                local processing
+              </PrivacyBadge>
+              <PrivacyBadge scope="external">
+                <Globe aria-hidden />
+                model · eu-central
+              </PrivacyBadge>
+              <PrivacyBadge scope="retention">
+                <Timer aria-hidden />
+                retained 30 days
+              </PrivacyBadge>
+            </div>
+          </Panel>
+          <Panel title="Resolved by a model">
+            <div className="inference-fields">
+              <ConfidenceField
+                id="screen-c-high"
+                label="Resolved operator"
+                confidence={0.94}
+                confidenceLabel="0.94 · matched on 3 of 4 inputs"
+                whyLabel="Why?"
+                onWhy={() => undefined}
+              >
+                Nora Feld
+              </ConfidenceField>
+              <ConfidenceField
+                id="screen-c-review"
+                label="Resolved host"
+                level="review"
+                confidence={0.42}
+                confidenceLabel="0.42 · below the threshold, review before sealing"
+                whyLabel="Why?"
+                onWhy={() => undefined}
+              >
+                mirror.example.net
+              </ConfidenceField>
+            </div>
+          </Panel>
         </div>
+      </div>
 
-        <SectionTitle lede="One field for navigating, searching and asking">
-          <SectionTitleHeading>Asking, and being answered</SectionTitleHeading>
-        </SectionTitle>
+      <SectionTitle>
+        <SectionTitleHeading>Asking</SectionTitleHeading>
+      </SectionTitle>
+      <div className="inference-grid">
+        <CommandBar
+          id="screen-command"
+          label="Navigate, search or ask"
+          placeholder="go to, search, or ask a question"
+          value={query}
+          onValueChange={setQuery}
+          hints={["/ commands", "↑↓ select", "↵ open"]}
+          privacyNote="local processing"
+        >
+          <CommandGroup label="Records">
+            <CommandRow
+              label="feed.example.io"
+              meta="03 · paused"
+              active={true}
+              onSelect={() => undefined}
+            >
+              <Radar aria-hidden />
+            </CommandRow>
+            <CommandRow
+              label="beta.example.dev"
+              meta="11 · paused"
+              onSelect={() => undefined}
+            >
+              <Radar aria-hidden />
+            </CommandRow>
+          </CommandGroup>
+          <CommandGroup label="Answer">
+            <CommandRow
+              inferred={true}
+              label="Two of 24 sources are paused, both on rate limits."
+              meta="inferred"
+              onSelect={() => undefined}
+            />
+          </CommandGroup>
+          <CommandGroup label="Go to">
+            <CommandRow
+              label="Coverage"
+              meta="G then C"
+              onSelect={() => undefined}
+            >
+              <Search aria-hidden />
+            </CommandRow>
+            <CommandRow
+              label="Settings"
+              meta="G then S"
+              onSelect={() => undefined}
+            >
+              <Settings2 aria-hidden />
+            </CommandRow>
+          </CommandGroup>
+        </CommandBar>
+      </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 16, alignItems: "start" }}>
-          <CommandBar
-            id="screen-command"
-            label="Navigate, search or ask"
-            placeholder="go to, search, or ask a question"
-            value={query}
-            onValueChange={setQuery}
-            hints={["/ commands", "↑↓ select", "↵ open"]}
-            privacyNote="local processing"
-          >
-            <CommandGroup label="Records">
-              <CommandRow label="feed.example.io" meta="03 · paused" active={true} onSelect={() => undefined}>
-                <Radar aria-hidden />
-              </CommandRow>
-              <CommandRow label="beta.example.dev" meta="11 · paused" onSelect={() => undefined}>
-                <Radar aria-hidden />
-              </CommandRow>
-            </CommandGroup>
-            <CommandGroup label="Answer">
-              <CommandRow
-                inferred={true}
-                label="Two of 24 sources are paused, both on rate limits."
-                meta="inferred"
-                onSelect={() => undefined}
-              />
-            </CommandGroup>
-            <CommandGroup label="Go to">
-              <CommandRow label="Coverage" meta="G then C" onSelect={() => undefined}>
-                <Search aria-hidden />
-              </CommandRow>
-              <CommandRow label="Settings" meta="G then S" onSelect={() => undefined}>
-                <Settings2 aria-hidden />
-              </CommandRow>
-            </CommandGroup>
-          </CommandBar>
-
-          <Stack>
-            <ExplainPanel heading="Why this was proposed">
-              <ExplainRow label="Matched on">host, manifest prefix, queue depth</ExplainRow>
-              <ExplainRow label="Window">2026-09-22 → 2026-09-23</ExplainRow>
-              <ExplainRow label="Confidence">0.88</ExplainRow>
-              <ExplainRow label="Ignored" ignored={true}>
-                entries sealed before 2026-09-01
-              </ExplainRow>
-              <ExplainRow label="Ignored" ignored={true}>
-                unsealed drafts
-              </ExplainRow>
-              <ExplainFooter>
-                This does not account for sources added in the last hour.
-              </ExplainFooter>
-            </ExplainPanel>
-
-            <Panel index="04" title="Where a query goes">
-              <PanelMeta>12.4</PanelMeta>
-              <Grid>
-                <PrivacyBadge scope="local">
-                  <ShieldCheck aria-hidden />
-                  local processing
-                </PrivacyBadge>
-                <PrivacyBadge scope="external">
-                  <Globe aria-hidden />
-                  model · eu-central
-                </PrivacyBadge>
-                <PrivacyBadge scope="retention">
-                  <Timer aria-hidden />
-                  retained 30 days
-                </PrivacyBadge>
-              </Grid>
-            </Panel>
-          </Stack>
-        </div>
-
-        <SectionTitle lede="A rule, and the number in words">
-          <SectionTitleHeading>Fields that state their own confidence</SectionTitleHeading>
-        </SectionTitle>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 22 }}>
-          <ConfidenceField
-            id="screen-c-high"
-            label="Resolved operator"
-            confidence={0.94}
-            confidenceLabel="0.94 · matched on 3 of 4 inputs"
-            whyLabel="why?"
-            onWhy={() => undefined}
-          >
-            Nora Feld
-          </ConfidenceField>
-          <ConfidenceField
-            id="screen-c-review"
-            label="Resolved host"
-            level="review"
-            confidence={0.42}
-            confidenceLabel="0.42 · below the threshold, review before sealing"
-            whyLabel="why?"
-            onWhy={() => undefined}
-          >
-            mirror.example.net
-          </ConfidenceField>
-        </div>
-
+      <ToastRegion>
         {receipt ? (
           <Toast
             title="feed.example.io resumed."
-            body="The queue drained at 09:16:40Z. 1,284 entries are now sealed."
+            body="The queue drained at 09:16. 1,284 entries are now sealed."
             auditId="audit c18b70d4"
             onDismiss={() => setReceipt(false)}
             dismissLabel="Dismiss this receipt"
@@ -243,7 +269,7 @@ export function InferenceScreen() {
             </ToastAction>
           </Toast>
         ) : null}
-      </Stack>
-    </>
+      </ToastRegion>
+    </ProductShell>
   );
 }

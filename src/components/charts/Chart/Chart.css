@@ -143,3 +143,26 @@
     height: 12px;
   }
 }
+
+@layer components {
+  /*
+   * Motion: the data arrives pushed, so a chart never draws itself in. The
+   * whole plot fades in once on mount; updates and every series, solid or
+   * dashed, appear at once. No motion at all for reduced motion.
+   */
+  .di-chart .recharts-surface {
+    animation: di-chart-in var(--di-duration) ease-out;
+  }
+
+  @keyframes di-chart-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .di-chart .recharts-surface {
+      animation: none;
+    }
+  }
+}

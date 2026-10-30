@@ -14,14 +14,16 @@
     border: 1px solid var(--di-mark-ring);
     border-radius: var(--di-field-radius);
     background: var(--di-bg-surface);
-    font-family: var(--di-font-code);
     font-size: var(--di-font-size-400);
     color: var(--di-text);
   }
 
+  /* The track spans the field's full width, so the fill reads as a share of it. */
   .di-confidence-track {
-    height: 2px;
-    background: var(--di-bg-subtle);
+    height: 3px;
+    border-radius: var(--di-radius-micro);
+    background: var(--di-rule);
+    overflow: hidden;
   }
 
   .di-confidence-fill {
@@ -33,17 +35,13 @@
     background: var(--di-status-warn-dot);
   }
 
+  /* No band: the meta line starts where the value's text starts (padding plus the border). */
   .di-confidence-foot {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--di-space-6);
-    padding: var(--di-space-6) var(--di-space-8);
-    border-radius: var(--di-radius-micro);
-    background: var(--di-bg-page);
-  }
-
-  .di-confidence.is-review .di-confidence-foot {
-    background: var(--di-status-warn-bg);
+    padding-inline: calc(var(--di-space-8) + 1px);
   }
 
   .di-confidence-label {

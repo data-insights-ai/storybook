@@ -30,6 +30,7 @@
     position: relative;
     min-width: 0;
     margin-left: var(--di-meta-gap);
+    overflow-wrap: anywhere;
   }
 
   .di-meta-line-item::before {

@@ -24,6 +24,7 @@
   }
 
   .di-section-heading {
+    --di-highlight-font: var(--di-font-display-band);
     grid-area: heading;
     font-family: var(--di-heading-family);
     font-weight: var(--di-weight-bold);

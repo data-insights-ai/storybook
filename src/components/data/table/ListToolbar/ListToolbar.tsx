@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, type ReactNode } from "react";
+import { takeSlot } from "../../../../internal/slots";
 import "./ListToolbar.css";
 
 /**
@@ -43,9 +44,11 @@ export function ListToolbar({
     };
   }, [sticky]);
 
+  const [end, rest] = takeSlot(children, ListToolbarEnd);
   return (
     <div ref={ref} className="di-list-toolbar" data-sticky={sticky} role="search" aria-label={label}>
-      {children}
+      {rest}
+      {end}
     </div>
   );
 }

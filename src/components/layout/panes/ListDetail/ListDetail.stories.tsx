@@ -101,3 +101,42 @@ export const PhoneRecord: Story = {
     await expect(canvas.getByRole("region", { name: "Cases" })).toBeVisible();
   },
 };
+
+/** On a phone focus follows the swap: into the record, and back to the item it came from. */
+export const PhoneFocus: Story = {
+  name: "Phone, focus follows",
+  globals: { viewport: { value: "phone" } },
+  render: () => <Split />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: /Unusual sign-ins/ }));
+    await expect(document.activeElement).toBe(canvas.getByRole("region", { name: "Case 7" }));
+    await userEvent.click(canvas.getByRole("button", { name: "All cases" }));
+    await expect(document.activeElement).toBe(canvas.getByRole("button", { name: /Unusual sign-ins/ }));
+  },
+};
+
+/** `ListDetailHead` sits above the items even when it is written after them. */
+export const HeadWrittenLast: Story = {
+  globals: { viewport: { value: "wide" } },
+  render: () => (
+    <ListDetail>
+      <ListDetailList label="Cases">
+        <ListDetailItems>
+          <ListDetailItem title="Port scan from a workstation" meta="Case 3" selected onSelect={() => {}} />
+        </ListDetailItems>
+        <ListDetailHead>
+          <span>1 open case</span>
+        </ListDetailHead>
+      </ListDetailList>
+      <ListDetailPane label="Case 3">
+        <h2>Case 3</h2>
+      </ListDetailPane>
+    </ListDetail>
+  ),
+  play: async ({ canvasElement }) => {
+    const head = canvasElement.querySelector(".di-ld-head")!.getBoundingClientRect();
+    const items = canvasElement.querySelector(".di-ld-items")!.getBoundingClientRect();
+    await expect(head.bottom).toBeLessThanOrEqual(items.top + 1);
+  },
+};

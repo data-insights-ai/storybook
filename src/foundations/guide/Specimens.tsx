@@ -35,7 +35,7 @@ export function Motifs() {
     <div className="di-motifs">
       <figure>
         <svg viewBox="0 0 120 80" aria-hidden>
-          <text x="60" y="58" textAnchor="middle" fontFamily="Sansation, sans-serif" fontWeight="400" fontSize="56" fill="var(--di-text)">
+          <text x="60" y="58" textAnchor="middle" fontFamily="Space Grotesk, sans-serif" fontWeight="400" fontSize="56" fill="var(--di-text)">
             [ ]
           </text>
         </svg>

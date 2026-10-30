@@ -1,6 +1,7 @@
-import { useRef, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, type KeyboardEvent, type ReactNode } from "react";
 import { ArrowLeft } from "lucide-react";
 import { cx } from "../../../../internal/cx";
+import { takeSlot } from "../../../../internal/slots";
 import "./ListDetail.css";
 
 /**
@@ -11,6 +12,9 @@ import "./ListDetail.css";
  *
  * Narrower than about 900px the two take turns: `showing` says which one
  * is on screen, and the record carries a `ListDetailBack` to the list.
+ * When they swap, focus follows: to the record when it opens, back to the
+ * selected item when the list returns. Browser history (a back gesture, a
+ * URL per record) is the product's job, not this component's.
  */
 export function ListDetail({
   showing = "list",
@@ -21,8 +25,21 @@ export function ListDetail({
   /** `ListDetailList`, then `ListDetailPane`. */
   children: ReactNode;
 }) {
+  const root = useRef<HTMLDivElement>(null);
+  const shown = useRef(showing);
+  useEffect(() => {
+    if (shown.current === showing) return;
+    shown.current = showing;
+    const el = root.current;
+    const list = el?.querySelector<HTMLElement>(".di-ld-list");
+    const pane = el?.querySelector<HTMLElement>(".di-ld-pane");
+    /* Only when the halves take turns: side by side, focus stays where the reader put it. */
+    if (!list || !pane || (list.offsetParent !== null && pane.offsetParent !== null)) return;
+    if (showing === "detail") pane.focus();
+    else list.querySelector<HTMLElement>('[aria-current="true"]')?.focus();
+  }, [showing]);
   return (
-    <div className="di-list-detail" data-showing={showing}>
+    <div ref={root} className="di-list-detail" data-showing={showing}>
       <div className="di-ld-grid">{children}</div>
     </div>
   );
@@ -30,9 +47,11 @@ export function ListDetail({
 
 /** The list half, a step above the ground: an optional `ListDetailHead`, then `ListDetailItems`. */
 export function ListDetailList({ label, children }: { label: string; children: ReactNode }) {
+  const [head, rest] = takeSlot(children, ListDetailHead);
   return (
     <section className="di-ld-list" aria-label={label}>
-      {children}
+      {head}
+      {rest}
     </section>
   );
 }
@@ -100,7 +119,7 @@ export function ListDetailItem({
 /** The open record. It keeps its place while the list scrolls. */
 export function ListDetailPane({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <section className="di-ld-pane" aria-label={label}>
+    <section className="di-ld-pane" aria-label={label} tabIndex={-1}>
       {children}
     </section>
   );

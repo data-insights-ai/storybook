@@ -39,14 +39,29 @@ function lightness(hex: string) {
   return 116 * f - 16;
 }
 
-const ladders = {
-  light: ["--di-bg-chrome", "--di-bg-page", "--di-bg-surface"],
-  dark: ["--di-bg-chrome", "--di-bg-page", "--di-bg-surface", "--di-bg-hero"],
+/* Each pair is one zone drawn on the other. */
+const pairs = {
+  light: [
+    ["--di-bg-chrome", "--di-bg-page"],
+    ["--di-bg-page", "--di-bg-surface"],
+    ["--di-bg-strip", "--di-bg-page"],
+    ["--di-bg-subtle", "--di-bg-page"],
+    ["--di-bg-subtle", "--di-bg-surface"],
+  ],
+  dark: [
+    ["--di-bg-chrome", "--di-bg-page"],
+    ["--di-bg-page", "--di-bg-surface"],
+    ["--di-bg-strip", "--di-bg-page"],
+    ["--di-bg-subtle", "--di-bg-page"],
+    ["--di-bg-subtle", "--di-bg-surface"],
+    ["--di-bg-surface", "--di-bg-hero"],
+    ["--di-bg-page", "--di-bg-hero"],
+  ],
 } as const;
 
-describe.each(Object.entries(ladders))("%s zones", (name, ladder) => {
+describe.each(Object.entries(pairs))("%s zones", (name, list) => {
   const theme = themes[name as keyof typeof themes];
-  test.each(ladder.slice(1).map((upper, i) => [ladder[i], upper]))("%s to %s", (lower, upper) => {
+  test.each(list.map(([a, b]) => [a, b]))("%s against %s", (lower, upper) => {
     const step = Math.abs(lightness(resolve(theme, upper)) - lightness(resolve(theme, lower)));
     expect(step).toBeGreaterThanOrEqual(MIN_STEP);
   });

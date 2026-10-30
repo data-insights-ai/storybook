@@ -20,7 +20,7 @@
     --di-paper-chrome: #e9e8e3;
     --di-paper-ground: #f3f2ee;
     --di-paper-surface: #fdfdfb;
-    --di-paper-inset: #efeee9;
+    --di-paper-inset: #eae9e4;
     --di-paper-plane: #ffffff;
 
     /* Navy is the ink and the action in daylight, and the ground after dark. */
@@ -41,7 +41,7 @@
     --di-night-chrome: #071733;
     --di-night-ground: #0a1f44;
     --di-night-surface: #0f2a57;
-    --di-night-inset: #0c2350;
+    --di-night-inset: #081838;
     --di-night-plane: #133068;
     --di-night-glow: #1a3a78;
     --di-night-ink: #f2f0e6;
@@ -112,7 +112,7 @@
     --di-severity-high-day: #d9481a;
     --di-severity-medium-day: #b57400;
     --di-severity-low-day: #5d7797;
-    --di-severity-info-day: #878d99;
+    --di-severity-info-day: #737885;
     --di-severity-critical-night: #ff5f5a;
     --di-severity-high-night: #ff7a3d;
     --di-severity-medium-night: #ff9d2e;
@@ -120,16 +120,18 @@
     --di-severity-info-night: #7f8fb0;
 
     /*
-     * Three families. Sansation is the display face: a page's name, a
-     * figure, a section head. IBM Plex Sans is what a person reads; IBM
-     * Plex Mono what a machine wrote, and the labels above a value.
+     * Three families. Space Grotesk, the wordmark's face, is the display:
+     * a page's name, a figure, a section head. IBM Plex Sans is what a
+     * person reads; IBM Plex Mono what a machine wrote, and the labels above
+     * a value. Each is one token, so a family is a one-line change.
      */
-    --di-font-sansation: "Sansation", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --di-font-grotesk: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --di-font-sans: "IBM Plex Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     --di-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     /* The sans with its box cut to cap height and descenders, for a tint
        that must not reach the line above. styles/band-face.css. */
     --di-font-sans-band: "IBM Plex Sans Band", var(--di-font-sans);
+    --di-font-grotesk-band: "Space Grotesk Band", var(--di-font-grotesk);
 
     /* A console scale: 14px is the body, the mono track runs beneath it. */
     --di-font-size-100: 0.625rem;

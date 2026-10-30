@@ -56,10 +56,12 @@
 
   .di-command-group-label {
     padding: var(--di-space-4) var(--di-space-8);
-    font-family: var(--di-label-family);
-    font-size: var(--di-label-size);
-    font-weight: var(--di-label-weight);
-    color: var(--di-label-color);
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
   }
 
   .di-command-row {
@@ -115,7 +117,7 @@
     display: flex;
     align-items: center;
     gap: var(--di-space-12);
-    padding: var(--di-space-8) var(--di-space-12);
+    padding: var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
     font-family: var(--di-font-code);

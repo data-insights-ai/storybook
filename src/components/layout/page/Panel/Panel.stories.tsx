@@ -200,3 +200,29 @@ export const WithNote: Story = {
     </Panel>
   ),
 };
+
+/** The slots written in reverse: the panel still places lead first, then the body, the note, and the footer last. */
+export const SlotsWrittenReversed: Story = {
+  args: { title: "Delivery" },
+  render: (args) => (
+    <Panel {...args}>
+      <PanelFooter>
+        <Button size="dense">Retry</Button>
+      </PanelFooter>
+      <PanelNote>Retries stop after three attempts.</PanelNote>
+      <p>The body.</p>
+      <PanelLead>Three exports, one failing.</PanelLead>
+      <PanelMeta>live</PanelMeta>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const order = ["Three exports, one failing.", "The body.", "Retries stop after three attempts.", "Retry"].map(
+      (text) => canvas.getByText(text).getBoundingClientRect().top,
+    );
+    await expect([...order].sort((a, b) => a - b)).toEqual(order);
+    const meta = canvas.getByText("live").getBoundingClientRect();
+    const title = canvas.getByText("Delivery").getBoundingClientRect();
+    await expect(Math.abs(meta.top + meta.height / 2 - (title.top + title.height / 2))).toBeLessThanOrEqual(4);
+  },
+};

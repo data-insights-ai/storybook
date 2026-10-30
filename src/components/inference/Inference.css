@@ -1,82 +1,129 @@
-/* The frame and the row list that ExplainPanel and ConfirmPanel share. */
+/* The surface, label, rows and note that ExplainPanel and ConfirmPanel share: one family. */
 @layer components {
   .di-explain,
   .di-confirm {
-    width: min(360px, 100%);
-    overflow: hidden;
-    /* The ring's edge, so a claim never wears the register's own border. */
-    border: 1px solid var(--di-mark-ring);
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-16);
+    min-width: 0;
+    padding: var(--di-panel-pad);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
+    box-shadow: var(--di-elevation-surface);
   }
 
-  .di-explain-head,
-  .di-confirm-head {
+  .di-inference-label {
     display: flex;
     align-items: center;
     gap: var(--di-space-8);
-    padding: var(--di-space-8) var(--di-space-12);
-    border-bottom: 1px solid var(--di-rule-hairline);
-    background: var(--di-mark-surface);
-  }
-
-  .di-explain-title {
-    font-family: var(--di-label-family);
-    font-size: var(--di-label-size);
-    font-weight: var(--di-label-weight);
-    color: var(--di-mark-ink);
-  }
-
-  .di-explain-rows {
     margin: 0;
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
   }
 
-  .di-explain .di-explain-rows {
-    padding: var(--di-space-4) var(--di-space-12) var(--di-space-8);
-  }
-
-  .di-explain-row {
-    display: flex;
-    align-items: baseline;
-    gap: var(--di-space-12);
-    padding: var(--di-space-6) 0;
-    border-bottom: 1px solid var(--di-rule-hairline);
-  }
-
-  .di-explain-row:last-child {
-    border-bottom: 0;
-  }
-
-  /* An ignored input is struck, not dropped: it is part of the answer. */
-  .di-explain-row.is-ignored .di-explain-value {
-    color: var(--di-text-subtle);
-    text-decoration: line-through;
-  }
-
-  .di-explain-label {
-    width: 104px;
-    flex: none;
-    font-family: var(--di-label-family);
-    font-size: var(--di-label-size);
-    font-weight: var(--di-label-weight);
-    color: var(--di-label-color);
-  }
-
-  .di-explain-value {
-    flex: 1;
-    min-width: 0;
+  .di-explain-answer {
     margin: 0;
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-300);
+    max-width: 60ch;
+    font-size: var(--di-font-size-500);
+    line-height: var(--di-leading-snug);
+    text-wrap: pretty;
     color: var(--di-text);
   }
 
-  .di-explain-foot {
-    padding: var(--di-space-8) var(--di-space-12);
-    border-top: 1px solid var(--di-rule-hairline);
-    background: var(--di-bg-page);
+  .di-explain-figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+  }
+
+  .di-explain-figure-value {
+    display: flex;
+    align-items: baseline;
+    gap: var(--di-space-8);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-section-title-size);
+    font-weight: var(--di-weight-bold);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--di-leading-tight);
+    color: var(--di-text);
+  }
+
+  .di-explain-figure-word {
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-400);
+    font-weight: var(--di-weight-regular);
+    color: var(--di-text-muted);
+  }
+
+  .di-inference-rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-12);
+    margin: 0;
+  }
+
+  .di-inference-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-2);
+    min-width: 0;
+  }
+
+  .di-inference-term {
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+    color: var(--di-mono-label-color);
+  }
+
+  .di-inference-value {
+    margin: 0;
+    min-width: 0;
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  /* A token keeps its parts together: a range breaks at its arrow, not inside a date. */
+  .di-inference-value.is-mono {
+    font-family: var(--di-font-code);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  .di-explain-ignored summary {
+    cursor: pointer;
+    width: fit-content;
+    color: var(--di-text-muted);
+    text-decoration: underline;
+    text-decoration-color: var(--di-select);
+    text-underline-offset: 3px;
+  }
+
+  .di-explain-ignored summary:hover {
+    color: var(--di-text);
+  }
+
+  .di-explain-ignored ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-space-4);
+    margin: var(--di-space-8) 0 0;
+    padding-left: var(--di-space-16);
+    color: var(--di-text-muted);
+  }
+
+  .di-inference-note {
+    margin: 0;
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
-    color: var(--di-text-muted);
+    color: var(--di-text-subtle);
   }
 }

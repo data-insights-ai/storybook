@@ -52,7 +52,7 @@ if (css.includes("data:font") || css.includes(".woff)")) {
   process.exit(1);
 }
 writeFileSync(join(outDir, "styles.css"), css);
-copyFileSync(require.resolve("@fontsource/sansation/LICENSE"), join(fontDir, "OFL-Sansation.txt"));
+copyFileSync(require.resolve("@fontsource/space-grotesk/LICENSE"), join(fontDir, "OFL-Space-Grotesk.txt"));
 copyFileSync(require.resolve("@fontsource/ibm-plex-sans/LICENSE"), join(fontDir, "OFL-IBM-Plex.txt"));
 const componentDir = join(outDir, "components");
 mkdirSync(componentDir, { recursive: true });

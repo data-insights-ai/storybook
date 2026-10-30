@@ -1,59 +1,62 @@
-import { Children, isValidElement, type ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
+import { takeSlot } from "../../../internal/slots";
 import { SealMark } from "../../marks/status/SealValue";
 import "../Inference.css";
 import "./ConfirmPanel.css";
 
 /**
  * Ask, then act, then record. Nothing runs before an operator agrees to
- * it, and the question states the basis, the scope and whether it can be
- * reversed. The receipt afterwards is a `Toast`, not a way back.
+ * it: the question, then its basis, scope and whether it can be reversed
+ * as `ExplainRow`s, then the actions — the one asked for is the primary
+ * button. One surface, no bands, the same family as `ExplainPanel`. The
+ * receipt afterwards is a `Toast`, not a way back.
  */
 export function ConfirmPanel({
-  eyebrow,
+  label,
   question,
   whyLabel,
   onWhy,
+  heading = 3,
   className,
   children,
 }: {
-  eyebrow: string;
+  /** The panel's name, a mono label: "Proposed action". */
+  label: string;
   question: string;
   /** Opens the explanation. An operator may always ask why first. */
   whyLabel: string;
   onWhy: () => void;
+  /** The question's heading level, to fit the page outline. */
+  heading?: 2 | 3 | 4;
   className?: string;
-  /** The `ExplainRow`s stating the basis, and one `ConfirmActions`. */
+  /** The `ExplainRow`s stating the basis, and one `ConfirmActions`, in any order. */
   children: ReactNode;
 }) {
-  const rows: ReactNode[] = [];
-  const actions: ReactNode[] = [];
-  Children.forEach(children, (child) => {
-    if (isValidElement(child) && child.type === ConfirmActions) actions.push(child);
-    else rows.push(child);
-  });
-
+  const id = useId();
+  const [actions, rows] = takeSlot(children, ConfirmActions);
+  const Question = `h${heading}` as "h2" | "h3" | "h4";
   return (
-    <div className={cx("di-confirm", className)}>
-      <div className="di-confirm-head">
+    <section className={cx("di-confirm", className)} aria-labelledby={id}>
+      <p className="di-inference-label">
         <SealMark state="inferred" size={7} />
-        <span className="di-explain-title">{eyebrow}</span>
-      </div>
-      <div className="di-confirm-body">
-        <p className="di-confirm-question">{question}</p>
-        <dl className="di-explain-rows">{rows}</dl>
-      </div>
+        {label}
+      </p>
+      <Question className="di-confirm-question" id={id}>
+        {question}
+      </Question>
+      <dl className="di-inference-rows">{rows}</dl>
       <div className="di-confirm-foot">
         <button type="button" className="di-confirm-why" onClick={onWhy}>
           {whyLabel}
         </button>
         {actions}
       </div>
-    </div>
+    </section>
   );
 }
 
-/** The controls that commit or refuse the proposal. */
+/** The controls that commit or refuse the proposal: the asked-for action as `primary`, Cancel beside it. */
 export function ConfirmActions({ children }: { children: ReactNode }) {
   return <div className="di-confirm-actions">{children}</div>;
 }

@@ -57,3 +57,17 @@ export const Path: Story = {
     await expect(canvasElement.querySelector(".di-meta-line")).toHaveClass("is-path");
   },
 };
+
+/** A screen reader hears the items as a list; an item longer than the line wraps inside instead of being clipped. */
+export const LongItem: Story = {
+  args: { items: ["vpn-gw-01", "a-very-long-host-name-that-is-wider-than-the-column.finance.example.org", "srv-fs-02"] },
+  decorators: [(Story) => <div style={{ width: 200 }}><Story /></div>],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getAllByRole("listitem")).toHaveLength(3);
+    const line = canvasElement.querySelector(".di-meta-line")!.getBoundingClientRect();
+    for (const item of canvasElement.querySelectorAll(".di-meta-line-item")) {
+      await expect(item.getBoundingClientRect().right).toBeLessThanOrEqual(line.right + 1);
+    }
+  },
+};

@@ -14,7 +14,8 @@
     color: var(--di-text);
     box-shadow: var(--di-shadow-plane);
     translate: 100% 0;
-    transition: translate var(--di-duration-slow) var(--di-ease),
+    transition:
+      translate var(--di-duration-slow) var(--di-ease),
       overlay var(--di-duration-slow) allow-discrete,
       display var(--di-duration-slow) allow-discrete;
   }
@@ -40,7 +41,8 @@
   .di-sheet::backdrop {
     background: var(--di-scrim);
     opacity: 0;
-    transition: opacity var(--di-duration-slow) var(--di-ease),
+    transition:
+      opacity var(--di-duration-slow) var(--di-ease),
       overlay var(--di-duration-slow) allow-discrete,
       display var(--di-duration-slow) allow-discrete;
   }
@@ -110,7 +112,8 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--di-space-12);
-    padding: var(--di-space-16) var(--di-space-16) var(--di-space-12) var(--di-space-24);
+    padding: var(--di-space-16) var(--di-space-16) var(--di-space-16)
+      var(--di-space-24);
     border-bottom: 1px solid var(--di-border);
   }
 
@@ -182,9 +185,8 @@
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: var(--di-space-8);
-    padding: var(--di-space-12) var(--di-space-24);
+    padding: var(--di-space-16) var(--di-space-24);
     border-top: 1px solid var(--di-border);
-    background: var(--di-bg-page);
   }
 
   @media (max-width: 600px) {
@@ -229,7 +231,8 @@
   }
 
   .di-sheet-docked .di-sheet-head {
-    padding: var(--di-space-12) var(--di-space-8) var(--di-space-12) var(--di-space-16);
+    padding: var(--di-space-12) var(--di-space-8) var(--di-space-12)
+      var(--di-space-16);
   }
 
   .di-sheet-docked .di-sheet-title {

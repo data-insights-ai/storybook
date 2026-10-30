@@ -20,7 +20,7 @@ pnpm build
 pnpm build-storybook
 ```
 
-`pnpm test` runs every story in a browser, once in the light theme and once in the dark, and fails on an accessibility violation in either, and measures the contrast of all visible text itself, at several points on each line, where axe cannot decide (chart labels, text over a pseudo-element). `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
+`pnpm test` runs every story in a browser four times — light and dark, at desktop width and at 390px — and fails on an accessibility violation in either, and measures the contrast of all visible text itself, at several points on each line, where axe cannot decide (chart labels, text over a pseudo-element). `pnpm build` writes the installable package to `dist/lib`. The static Storybook build is written to `dist/storybook`.
 
 ## Use a released version
 
@@ -50,7 +50,7 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 
 ## Context and repeated views
 
-Place persistent context controls in an `AppShellContext` directly inside `AppShellRail`. It appears below the brand and before navigation in both visual and keyboard order; `AppShellFoot` retains its footer position. The context is a dark token boundary, matching the rail even when the page is light, so composed controls resolve their own readable fills. The application owns selection state and authorization.
+Place persistent context controls in an `AppShellContext` directly inside `AppShellRail`. It appears below the brand and before navigation in both visual and keyboard order; `AppShellFoot` retains its footer position. The context renders on the rail's own tone and follows the page theme, so composed controls use their ordinary fills. The application owns selection state and authorization.
 
 When a page has more than one tab strip, give each `Tabs` and its `TabPanel` the same unique `idPrefix`. Item values are unique within each strip. The prefix scopes their accessible relationship; values are encoded safely for document IDs.
 
@@ -85,7 +85,7 @@ Tokens are three layers in `src/styles/tokens`:
 
 Depth is a step in tone, not a line. Gold marks the one thing that matters in a view and, in daylight, is never text. Selection and focus are cornflower. Severity is one scale (`SeverityMark`), a filled mark plus the word.
 
-Sansation is the page's name, figures and section heads. IBM Plex Sans is the interface, with a 14px body. IBM Plex Mono is identifiers, timestamps and the labels above values.
+Space Grotesk is the page's name, figures and section heads. IBM Plex Sans is the interface, with a 14px body. IBM Plex Mono is identifiers, timestamps and the labels above values.
 
 Buttons, fields, and tables are native elements. Where a control needs roving focus or a popup beyond that, the headless library is Base UI (`@base-ui/react`), the only one. The date calendars draw their month grid with `react-day-picker`; the typed day and time segments are the package's own.
 

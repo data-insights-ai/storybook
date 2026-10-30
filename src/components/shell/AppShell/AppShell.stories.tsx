@@ -400,3 +400,26 @@ export const MobileNavigationNight: Story = { ...MobileNavigation, globals: { ..
  * selections controlled outside the rail. Omitting mobileNavigation preserves
  * the existing stacked layout for callers that have not opted in. */
 export const ResponsiveNavigation: Story = { render: () => <MobileNavigationExample /> };
+
+/** `AppShellBarEnd` sits at the bar's right end even when it is written first. */
+export const BarEndWrittenFirst: Story = {
+  render: () => (
+    <AppShellMain>
+      <AppShellBar>
+        <AppShellBarEnd>
+          <Button variant="secondary">Export</Button>
+        </AppShellBarEnd>
+        <Breadcrumb label="Breadcrumb" items={[{ label: "Workspace", href: "#/workspace" }, { label: "Overview" }]} />
+      </AppShellBar>
+      <AppShellContent>
+        <h1>Overview</h1>
+      </AppShellContent>
+    </AppShellMain>
+  ),
+  play: async ({ canvasElement }) => {
+    const bar = canvasElement.querySelector(".di-topbar")!;
+    await expect(bar.lastElementChild).toHaveClass("di-top-actions");
+    const crumbs = bar.firstElementChild!.getBoundingClientRect();
+    await expect(bar.lastElementChild!.getBoundingClientRect().left).toBeGreaterThan(crumbs.left);
+  },
+};

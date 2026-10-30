@@ -23,6 +23,21 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
   </Section>
 
   <Section
+    eyebrow="Affordance and space"
+    title="Underline means clickable."
+    lede="A reader should never have to try whether something opens. What can be clicked looks clickable in one way, and nothing else does."
+  >
+    <Rules>
+      <Rule>Only a link, a button or a disclosure is underlined. No decorative underline, no underlined name that opens nothing, no dotted definition underline: a term with a definition shows it on hover and focus with the help cursor.</Rule>
+      <Rule>A link is the text colour with a cornflower underline (`TextLink`), in prose and at a block's edge alike. It darkens on hover and carries the focus ring.</Rule>
+      <Rule>A name that opens a record is a link, or the whole row is the target, with a hover tint and the pointer. Never an underlined name in a row that does not open.</Rule>
+      <Rule>Never a surface on the same surface. A panel or tile inside a panel takes the inset tone and drops its edge; a table on a surface drops its frame.</Rule>
+      <Rule>Text and controls keep at least 12px from the inner edge of the surface that holds them. Table rows, menu rows and media run to the edge on purpose.</Rule>
+      <Rule>The story tests enforce all three, in both themes and at both widths (`.storybook/tests/surfaces`).</Rule>
+    </Rules>
+  </Section>
+
+  <Section
     eyebrow="List page"
     title="Find, filter, open."
     lede="`Page width='list'`: `PageHeader` with the primary action, a sticky `ListToolbar`, then an `InfiniteTable` — or an `EmptyState` in its place."

@@ -301,3 +301,40 @@ export const ContextSwitcher: Story = {
     await expect(canvas.getByRole("button", { name: "Harbor Labs" })).toBeVisible();
   },
 };
+
+/** `SidebarFooter` is pinned to the end even when it is written first. */
+export const FooterWrittenFirst: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  render: (args) => (
+    <SidebarProvider>
+      <Sidebar label={args.label} closeLabel={args.closeLabel}>
+        <SidebarFooter>
+          <span>Nora Feld</span>
+        </SidebarFooter>
+        <SidebarContent>
+          <SidebarGroup>
+            <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton label="Overview" href="#/overview">
+                  <Gauge />
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+      <SidebarInset>
+        <AppShellContent>
+          <h1>Overview</h1>
+        </AppShellContent>
+      </SidebarInset>
+    </SidebarProvider>
+  ),
+  play: async ({ canvasElement }) => {
+    const footer = canvasElement.querySelector(".di-sb-footer")!;
+    const content = canvasElement.querySelector(".di-sb-content")!;
+    await expect(footer.getBoundingClientRect().top).toBeGreaterThan(content.getBoundingClientRect().top);
+    await expect(content.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  },
+};

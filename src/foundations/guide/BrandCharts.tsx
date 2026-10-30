@@ -9,7 +9,7 @@ const series = [
   { period: "Next", value: null, estimate: 88 },
 ];
 
-const draw = { animationDuration: 180, animationEasing: "ease-out" as const };
+const draw = { isAnimationActive: false };
 
 const seriesConfig = {
   value: { label: "Recorded", color: "var(--di-chart-series)" },
@@ -130,7 +130,7 @@ function shareLabel(props: {
 
 export function CompareChart() {
   return (
-    <Chart label="Comparison. One poppy bar, the rest grey" config={barConfig}>
+    <Chart label="Comparison. One gold bar, the rest grey" config={barConfig}>
       <ComposedChart data={bars} layout="vertical" margin={{ top: 8, right: 36, bottom: 8, left: 0 }}>
         <XAxis type="number" domain={[0, 100]} hide />
         <YAxis type="category" dataKey="name" tickLine={false} axisLine={false} width={52} interval={0} />

@@ -27,9 +27,10 @@ export function MetaLine({
   const list = typeof items === "string" ? items.split(" · ") : items;
   return (
     <span className={cx("di-meta-line", align === "end" && "is-end", separator === "arrow" && "is-path", className)}>
-      <span className="di-meta-line-items">
+      {/* A list, so a screen reader hears the items apart without the drawn separators. */}
+      <span className="di-meta-line-items" role="list">
         {list.map((item, i) => (
-          <span key={i} className="di-meta-line-item">
+          <span key={i} className="di-meta-line-item" role="listitem">
             {item}
           </span>
         ))}

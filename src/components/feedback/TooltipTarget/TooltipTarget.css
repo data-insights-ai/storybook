@@ -1,10 +1,17 @@
 @layer components {
-  /* Dotted, the way an abbreviation marks that it says more than it shows. */
+  /*
+   * Not underlined: underline means clickable, and a term with a definition
+   * opens nothing. It shows its definition on hover and focus, with the
+   * help cursor and a tint while it does.
+   */
   .di-tooltip-target {
-    text-decoration: underline dotted;
-    text-decoration-color: var(--di-text-muted);
-    text-underline-offset: 3px;
+    border-radius: var(--di-radius-micro);
     cursor: help;
+  }
+
+  .di-tooltip-target:hover,
+  .di-tooltip-target:focus-visible {
+    background: var(--di-bg-subtle);
   }
 
   /* The top layer's defaults centre a popover on a bordered box; this one

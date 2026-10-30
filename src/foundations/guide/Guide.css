@@ -15,7 +15,7 @@
 
 /*
  * The prose between the sections. A brand page reads at 16px over a 18px
- * lede over the console's 13px, which is the hierarchy the band between
+ * lede over the console's 14px, which is the hierarchy the band between
  * 16 and 20 exists for. Inline code keeps the docs page's own styling: it
  * carries an emotion class rather than a descendant selector, so it
  * survives the opt-out above.

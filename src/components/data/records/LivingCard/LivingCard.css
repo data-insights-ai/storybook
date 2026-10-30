@@ -10,7 +10,8 @@
     display: flex;
     align-items: center;
     gap: var(--di-space-8);
-    padding: var(--di-space-8) var(--di-space-12);
+    padding: var(--di-space-12) var(--di-space-12) var(--di-space-12)
+      var(--di-space-16);
     border-bottom: 1px solid var(--di-rule-hairline);
   }
 
@@ -30,22 +31,27 @@
     flex: none;
   }
 
+  /* The figure on the left, its trend taking the rest of the line. */
   .di-living-body {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--di-space-16);
-    padding: var(--di-space-12);
+    gap: var(--di-space-16) var(--di-space-24);
+    padding: var(--di-space-16);
+  }
+
+  .di-living-body > :last-child:not(:first-child) {
+    flex: 1 1 160px;
+    justify-content: flex-end;
   }
 
   /*
-   * The insight sits on the page ground, a step below the sheet: it is
-   * quieter than the measurement it is commenting on.
+   * The insight shares the card's surface, set off by the mark's ring as a
+   * rule: one surface, two levels, quieter than the measurement.
    */
   .di-living-insight {
-    padding: var(--di-space-12) var(--di-space-12);
+    padding: var(--di-space-16);
     border-top: 1px solid var(--di-mark-ring);
-    background: var(--di-mark-surface);
   }
 
   .di-living-insight-row {
