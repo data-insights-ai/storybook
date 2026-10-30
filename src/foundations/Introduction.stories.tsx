@@ -54,7 +54,7 @@ function IntroductionPage() {
 
       <DocSection title="Sample content">
         <Rules>
-          <li>Everything in these stories is invented. Sample people use @data-insights.ai addresses.</li>
+          <li>Everything in these stories is invented. Sample people use <code>@data-insights.ai</code> addresses.</li>
           <li>The repository is public: nothing here names a real person, a customer or an unreleased project.</li>
         </Rules>
       </DocSection>

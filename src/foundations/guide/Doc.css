@@ -45,7 +45,7 @@
   padding: 0 var(--di-space-4);
   border-radius: var(--di-radius-micro);
   background: var(--di-bg-subtle);
-  overflow-wrap: anywhere;
+  white-space: nowrap;
 }
 
 .di-doc .di-codeblock code,
