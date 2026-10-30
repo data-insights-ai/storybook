@@ -72,6 +72,11 @@
     --di-select-edge: 3px;
     --di-option-hover-bg: var(--di-bg-page);
 
+    /* A chosen segment, toggle or card: the selection tint and edge of a row, the text at full strength. */
+    --di-choice-selected-bg: var(--di-bg-selected);
+    --di-choice-selected-edge: var(--di-select);
+    --di-choice-selected-fg: var(--di-text);
+
     --di-table-bg: var(--di-bg-surface);
     --di-table-shadow: var(--di-elevation-surface);
     --di-table-radius: var(--di-radius-surface);
