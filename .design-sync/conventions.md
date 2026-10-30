@@ -66,7 +66,7 @@ The Storybook sidebar is grouped by the job a component does:
 | A severity | `SeverityMark` | a coloured word |
 | A block of a record, or a plain surface | `Panel`, with a `title` and an `index` when it is one of a sequence, `surface="inset"` for a group inside another surface | |
 | One measured value on its own surface | `StatTile`, with an `index`, a `StatTileDelta` or a `Sparkline` when it has them | |
-| A small labelled figure set in a row inside something else | `Stat` in a `StatRow` | |
+| A small labelled figure set in a row inside something else | `Figure` in a `FigureRow` | `Stat` and `StatRow`, deprecated, removed in 0.12.0 |
 | The detail of one row | `Sheet` with the row's `index` and an `eyebrow` naming the kind of record | |
 | Work that needs more room than an inline form: a multi-field create or invite | `Sheet` | |
 | The first step of a create flow: one of a handful of kinds | `ChoiceCards`, with `planned` for the kinds that cannot be chosen yet | disabled cards |

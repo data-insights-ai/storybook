@@ -5,7 +5,7 @@ import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {
   title: "Data/Figures/Stat",
-  tags: ["layer:block"],
+  tags: ["layer:block", "status:deprecated"],
   component: Stat,
   args: { label: "Active entries", value: "08", suffix: " / 08" },
 } satisfies Meta<typeof Stat>;

@@ -105,7 +105,7 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | `actions/` | Button, CountButton, CopyValue, RowActions, BulkActionBar |
 | `navigation/` | Breadcrumb, CommandBar, Menu, Pagination, Stepper, Tabs, TabNav, TextLink; `Sidebar/` the sidebar and its parts behind one index |
 | `forms/` | `field/` Field (the frame), FieldHint, SaveBar; `text/` TextField, TextArea, SearchField, QuantityField, TokenField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup, Switch, ChoiceCards, SegmentedControl, ToggleGroup; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker |
-| `data/` | `records/` AttentionList, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` FigureRow, HeroFigure, Stat, StatTile; `text/` Eyebrow, Highlight, Kbd, MetaLine, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
+| `data/` | `records/` AttentionList, RecordCard, LivingCard, Channel, Session, FactList, KeyValues, NewEntries; `figures/` FigureRow, HeroFigure, StatTile, Stat (deprecated, removed in 0.12.0); `text/` Eyebrow, Highlight, Kbd, MetaLine, TickRule, CodeBlock, PullQuote; `table/` DataTable, InfiniteTable, ListToolbar |
 | `marks/` | Badge, Chip, Tag, VersionTag, Icon (with the `IconSet` gallery the docs show), IconTile; `status/` StatusPill, SeverityMark, SealValue |
 | `feedback/` | DangerZone, Delayed, EmptyState, Notice, Toast, Tooltip, TooltipTarget; `waiting/` AppLoader, Progress, RouteProgress, SkeletonPage, SkeletonTable, Spinner |
 | `overlays/` | ConfirmDialog, CreateFlow, Flyout, Modal, Sheet, ShortcutHelp; `useModalDialog/` the dialog behaviour Modal and Sheet share |
@@ -122,7 +122,7 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Introduction`, then `Foundations/` — the brand, the tokens and the reasoning behind them (Essence, Register, Color, Type, Scale, Logo, Pages, Decisions and the rest). No package component lives here.
 - `Actions/` — what a person presses: Button, CountButton, CopyValue, RowActions, BulkActionBar.
 - `Forms/` — labelled controls, in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`.
-- `Data/` — what a person reads: `Records/` (AttentionList, the cards, FactList, KeyValues, Channel, Session), `Figures/` (FigureRow, HeroFigure, Stat, StatTile), `Text/` (Eyebrow, Highlight, Kbd, MetaLine, CodeBlock, PullQuote) and `Table/`.
+- `Data/` — what a person reads: `Records/` (AttentionList, the cards, FactList, KeyValues, Channel, Session), `Figures/` (FigureRow, HeroFigure, StatTile; Stat is deprecated), `Text/` (Eyebrow, Highlight, Kbd, MetaLine, CodeBlock, PullQuote) and `Table/`.
 - `Marks/` — what every other component draws with: Badge, Chip, Tag, VersionTag, Icon, IconTile; `Status/` (StatusPill, SeverityMark, SealValue). A mark imports no other component, so it sits below them all.
 - `Feedback/` — Notice, Toast, EmptyState, DangerZone, Delayed, Tooltip; `Waiting/` the loaders, progress and skeletons.
 - `Overlays/`, `Navigation/` — what opens over the page, and how a person moves through it.

@@ -13,7 +13,8 @@ import {
   NoticeText,
   NoticeTitle,
   PageHeader,
-  PageHeaderAside,
+  PageHeaderMeta,
+  PageHeaderStatus,
   PageHeaderTitle,
   RecordCard,
   RecordCount,
@@ -26,8 +27,6 @@ import {
   SectionTitleHeading,
   SectionTitleMeta,
   Stack,
-  Stat,
-  StatRow,
   StatusPill,
   TableBody,
   TableCell,
@@ -65,16 +64,12 @@ export function WatchlistScreen() {
         lede="Manage the people, companies, domains, and email addresses under automatic watch."
       >
         <PageHeaderTitle>Watched identities</PageHeaderTitle>
-        <PageHeaderAside>
-          <StatRow>
-            <Stat label="Active entries" value="08" suffix=" / 08" />
-            <Stat label="System status">
-              <StatusPill tone="ok" dot>
-                Monitoring active
-              </StatusPill>
-            </Stat>
-          </StatRow>
-        </PageHeaderAside>
+        <PageHeaderStatus>
+          <StatusPill tone="ok" dot>
+            Monitoring active
+          </StatusPill>
+        </PageHeaderStatus>
+        <PageHeaderMeta>{["8 of 8 entries active", "updates live"]}</PageHeaderMeta>
       </PageHeader>
 
       <Stack>
