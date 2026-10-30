@@ -53,8 +53,8 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
   {
     pattern: "Confidence shown on the field it applies to",
     verdict: "adopted",
-    built: "ConfidenceField",
-    reason: "A rule under the field, plus the number. Colour alone never carries the meaning.",
+    built: "TextField confidence",
+    reason: "A meter under the field, plus the reading in words. Colour alone never carries the meaning.",
   },
   {
     pattern: "Privacy stated in context, not in a policy page",

@@ -4,6 +4,7 @@ import { Autocomplete } from "@base-ui/react/autocomplete";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
 import { FieldLabel } from "../../field/FieldLabel";
+import { FieldConfidence, type FieldConfidenceReading } from "../../field/FieldConfidence";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { useListToggle } from "../../../../internal/useListToggle";
@@ -32,6 +33,7 @@ export function ComboBox({
   emptyLabel,
   hint = "",
   hintTone = "neutral",
+  confidence,
   labelTrack = "record",
   hideLabel = false,
   mono = false,
@@ -58,6 +60,11 @@ export function ComboBox({
   emptyLabel?: string;
   hint?: string;
   hintTone?: HintTone;
+  /**
+   * A value a model filled in: a meter and the reading in words take the
+   * place of the hint. An error hint still replaces them.
+   */
+  confidence?: FieldConfidenceReading;
   labelTrack?: LabelTrack;
   /** Keeps the label for assistive technology only, e.g. a filter in a list toolbar. */
   hideLabel?: boolean;
@@ -75,6 +82,8 @@ export function ComboBox({
   const [typed, setTyped] = useState(false);
   const locked = readOnly || disabled;
   const invalid = hint !== "" && hintTone === "error";
+  const reading = invalid ? undefined : confidence;
+  const describedBy = hint === "" && !reading ? undefined : `${id}-hint`;
   const matches = (item: ComboBoxSuggestion) =>
     contains(item.value, value.trim()) || contains(item.label, value.trim());
   const show = (filtered: boolean) => {
@@ -149,7 +158,7 @@ export function ComboBox({
             autoComplete={autoComplete ?? "off"}
             aria-labelledby={`${id}-label`}
             aria-invalid={invalid || undefined}
-            aria-describedby={hint === "" ? undefined : `${id}-hint`}
+            aria-describedby={describedBy}
             onBlur={() => {
               if (visible) arrowOpened.current = null;
               else close();
@@ -164,9 +173,13 @@ export function ComboBox({
             <ChevronDown aria-hidden />
           </button>
         </Autocomplete.InputGroup>
-        <FieldHint id={`${id}-hint`} tone={hintTone}>
-          {hint}
-        </FieldHint>
+        {reading ? (
+          <FieldConfidence id={`${id}-hint`} reading={reading} />
+        ) : (
+          <FieldHint id={`${id}-hint`} tone={hintTone}>
+            {hint}
+          </FieldHint>
+        )}
         {/* Unmounted in the render that closes it, so the page behind is readable again at once. */}
         {visible ? (
           <Autocomplete.Portal container={overlay.container}>
