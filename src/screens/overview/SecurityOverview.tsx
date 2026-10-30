@@ -6,7 +6,6 @@ import {
   Figure,
   FigureRow,
   Grid,
-  HeroFigure,
   PageHeader,
   PageHeaderMeta,
   PageHeaderStatus,
@@ -96,11 +95,11 @@ export function SecurityOverview() {
           <TextLink href="#cases">All cases</TextLink>
         </PanelActions>
         <PanelFigure>
-          <HeroFigure label="Open cases" value={String(figures.open)}>
+          <Figure size="hero" label="Open cases" value={String(figures.open)}>
             <SeverityMark level="critical" label="1 critical" />
             <SeverityMark level="high" label="1 high" />
             <SeverityMark level="medium" label="1 medium" />
-          </HeroFigure>
+          </Figure>
         </PanelFigure>
         <PanelVisual>
           <TrendChart

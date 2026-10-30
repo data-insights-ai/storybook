@@ -15,6 +15,33 @@ import { cx } from "../../../../internal/cx";
 import "./DataTable.css";
 
 /**
+ * Many records of one kind, in rows to scan, sort and compare column by
+ * column.
+ *
+ * **When to use:** a register (sources, members, events) of a few to a few
+ * hundred rows on one page. **Not** for one record's facts (`FactList`),
+ * for a few records read as cards (`RecordCard`), for a list that grows
+ * as the reader scrolls (`InfiniteTable`), or for a list beside the record
+ * it opens (`ListDetail`).
+ *
+ * **Anatomy:** `TableToolbar` (optional) · `TableHead` with one
+ * `TableColumn` per column · `TableBody` with `TableRow`s of
+ * `TableIndex` and `TableCell`s (`CellLead`, `CellIcon`, `CellStack`
+ * inside), or `TableEmpty` when nothing matches · `TableFooter`
+ * (count, pages).
+ *
+ * **States:** empty (`TableEmpty` keeps the head and the footer), the
+ * row an open pane shows (`TableRow active`), a failed row
+ * (`tone="danger"` tints its ordinal), loading (`SkeletonTable` in its
+ * place).
+ *
+ * **Content:** a column head is one or two words; identifiers, times and
+ * measured values are `mono`; one link per row, on its name.
+ *
+ * **Accessibility:** a native `table` with a visually hidden `caption`;
+ * sortable heads are buttons with `aria-sort`; Up and Down move between
+ * the rows' links.
+ *
  * The table is a frame. Header, rows and cells are children, so the
  * caller owns the copy and anything that sits in a cell. There is no
  * `rows` prop: the data belongs to the product, not to the table.
@@ -57,8 +84,8 @@ export function DataTable({
    */
   layout?: "auto" | "measured";
   /**
-   * How many rows the whole list has, when only some of them are rendered
-   * (a virtualized register). A screen reader then hears the full size, and
+   * How many rows the whole list has, when only some of them are rendered.
+   * `InfiniteTable` sets it; a screen reader then hears the full size, and
    * each `TableRow` states its place with `rowIndex`.
    */
   rowCount?: number;
@@ -422,6 +449,26 @@ export function TableIndex({ children }: { children: ReactNode }) {
     <td role={useRole("cell")} className="di-table-index di-ordinal">
       {children}
     </td>
+  );
+}
+
+/**
+ * The body of a table with no rows: one row across every column that says
+ * why it is empty (`message`) and, as `children`, the one way out — a
+ * `Button variant="ghost"` that clears the filters. The head and the
+ * footer stay, so the reader sees which list is empty. Where the list has
+ * never held anything, show an `EmptyState` instead of the table.
+ */
+export function TableEmpty({ message, children }: { message: string; children?: ReactNode }) {
+  return (
+    <tr role={useRole("row")} className="di-table-empty">
+      <td role={useRole("cell")} colSpan={1000}>
+        <span className="di-table-empty-body">
+          <span className="di-table-empty-message">{message}</span>
+          {children}
+        </span>
+      </td>
+    </tr>
   );
 }
 

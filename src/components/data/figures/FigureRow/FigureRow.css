@@ -17,47 +17,10 @@
     clip-path: inset(calc(-1 * var(--di-space-8)) calc(-1 * var(--di-space-8)) calc(-1 * var(--di-space-8)) 0);
   }
 
-  .di-figure {
-    display: flex;
-    flex-direction: column;
-    gap: var(--di-gap-4);
-    min-width: 0;
+  .di-figure-list > .di-figure {
     margin-inline-start: calc(-0.5 * var(--di-figure-gap));
     padding-inline-start: calc(0.5 * var(--di-figure-gap));
     border-inline-start: 1px solid var(--di-rule);
-  }
-
-  .di-figure-label {
-    font-family: var(--di-mono-label-family);
-    font-size: var(--di-mono-label-size);
-    font-weight: var(--di-mono-label-weight);
-    letter-spacing: var(--di-mono-label-tracking);
-    text-transform: uppercase;
-    color: var(--di-mono-label-color);
-  }
-
-  .di-figure-value {
-    margin: 0;
-    font-family: var(--di-heading-family);
-    font-size: var(--di-figure-size);
-    font-weight: var(--di-weight-bold);
-    font-variant-numeric: tabular-nums;
-    line-height: var(--di-leading-tight);
-    color: var(--di-text);
-  }
-
-  .di-figure.is-warn .di-figure-value {
-    color: var(--di-status-warn-fg);
-  }
-
-  .di-figure.is-danger .di-figure-value {
-    color: var(--di-status-danger-fg);
-  }
-
-  .di-figure-note {
-    margin: 0;
-    font-size: var(--di-font-size-300);
-    color: var(--di-text-subtle);
   }
 
   .di-figure-row.is-compact.di-figure-row-strip {
@@ -74,6 +37,7 @@
     font-family: var(--di-font-ui);
     font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-medium);
+    letter-spacing: normal;
     line-height: var(--di-leading-snug);
   }
 

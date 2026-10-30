@@ -47,7 +47,7 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
   {
     pattern: "An explanation of why a model proposed something",
     verdict: "adopted",
-    built: "ExplainPanel",
+    built: "ProposalPanel",
     reason: "Already the product thesis. Parameters and ignored inputs, not a prose apology.",
   },
   {
@@ -65,7 +65,7 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
   {
     pattern: "A card that updates itself and says a model did it",
     verdict: "adopted",
-    built: "LivingCard",
+    built: "RecordCard",
     reason: "The claim sits below the measurement and above the records it derives from.",
   },
   {
@@ -84,7 +84,7 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
   {
     pattern: "Act first, offer undo afterwards",
     verdict: "refused",
-    built: "ConfirmPanel, Modal, Toast",
+    built: "ProposalPanel, Modal, Toast",
     reason:
       "Every action is confirmed beforehand, stating basis, scope and reversibility. The toast is a receipt with an audit id, never a window to escape through.",
   },

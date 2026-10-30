@@ -7,20 +7,36 @@
     box-shadow: var(--di-table-shadow);
   }
 
-  /* On any other surface (a sign-in card, an accordion, a sheet, a dialog, a flyout) the table drops its frame, as in a Panel. */
-  :is(.di-login-card, .di-dialog, .di-dialog-docked, .di-modal, .di-flyout, .di-living) .di-table-wrap {
+  /*
+   * On any other surface (a sign-in card, a disclosure, a dialog, a flyout,
+   * a record card, a panel) the table drops its frame and reaches out by its own
+   * edge, so its text keeps the line of the content above it while a row's
+   * hover still has room around it. A flush panel has already placed it.
+   */
+  :is(
+      .di-login-card,
+      .di-disclosure,
+      .di-dialog,
+      .di-dialog-docked,
+      .di-modal,
+      .di-flyout,
+      .di-record,
+      .di-panel-content
+    )
+    .di-table-wrap:not(.di-panel-content-flush .di-table-wrap) {
     --di-table-bg: transparent;
     --di-table-shadow: none;
+    margin-inline: calc(-1 * var(--di-table-edge));
   }
 
-  /* Filters wrap onto a second line on a phone rather than running past the frame. */
+  /* The toolbar's controls start on the line of the first column and wrap on a narrow frame. */
   .di-table-toolbar {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--di-gap-8);
-    padding: var(--di-space-12);
-    border-bottom: 1px solid var(--di-border);
+    padding: var(--di-space-12) var(--di-table-edge);
+    border-bottom: 1px solid var(--di-table-rule);
     background: var(--di-table-head-bg);
   }
 
@@ -164,6 +180,28 @@
     border-bottom: 0;
   }
 
+  /* A body with no rows: why, and the one way out at the end of the same line. */
+  .di-table tbody tr.di-table-empty td {
+    padding: var(--di-space-24) var(--di-table-edge);
+    white-space: normal;
+  }
+
+  .di-table tbody tr.di-table-empty:hover td {
+    background: none;
+  }
+
+  .di-table-empty-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-gap-8) var(--di-gap-16);
+  }
+
+  .di-table-empty-message {
+    color: var(--di-text-muted);
+  }
+
   .di-table tbody tr.is-selectable {
     cursor: pointer;
   }
@@ -250,10 +288,11 @@
   .di-table-foot {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: var(--di-gap-12);
-    padding: var(--di-space-12);
-    border-top: 1px solid var(--di-border);
+    gap: var(--di-gap-8) var(--di-gap-12);
+    padding: var(--di-space-12) var(--di-table-edge);
+    border-top: 1px solid var(--di-table-rule);
     background: var(--di-table-head-bg);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
@@ -419,7 +458,8 @@
       background: var(--di-bg-row-hover);
     }
 
-    .di-table-wrap.is-stackable tbody tr.di-table-spacer:hover {
+    .di-table-wrap.is-stackable tbody tr:is(.di-table-spacer, .di-table-empty):hover,
+    .di-table-wrap.is-stackable tbody tr.di-table-empty:hover td {
       background: none;
     }
 

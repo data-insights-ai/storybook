@@ -1,32 +1,38 @@
 @layer components {
-  /*
-   * Mark and state on one row, then the heading, the lines, and the
-   * footer. The slots are placed by grid, so the caller writes them in
-   * whatever order reads best.
-   */
+  /* One inset all round; the head, the body and the foot are rows of one surface, one gap apart. */
   .di-record {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      "mark status"
-      "heading heading"
-      "lines lines"
-      "footer footer";
-    /* The lines take the slack, so the footer stays on the bottom rule. */
-    grid-template-rows: auto auto 1fr auto;
-    gap: var(--di-gap-12) var(--di-gap-8);
-    height: 100%;
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-16);
     min-width: 0;
+  }
+
+  .di-record-card {
+    height: 100%;
     padding: var(--di-inset-group);
   }
 
-  /* Without a footer there is no row for it, so no gap is left under the lines. */
-  .di-record:not(:has(> .di-record-footer)) {
-    grid-template-areas:
-      "mark status"
-      "heading heading"
-      "lines lines";
-    grid-template-rows: auto auto 1fr;
+  /* Rows in a list keep the list's gap between them, and none outside the first and the last. */
+  .di-record-row:not(:first-child) {
+    padding-top: var(--di-gap-8);
+  }
+
+  .di-record-row:not(:last-child) {
+    padding-bottom: var(--di-gap-8);
+  }
+
+  .di-record-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "mark name end";
+    align-items: center;
+    column-gap: var(--di-gap-12);
+  }
+
+  .di-record-head:not(:has(> .di-record-mark)) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "name end";
   }
 
   .di-record-mark {
@@ -35,60 +41,193 @@
     align-items: center;
   }
 
-  .di-record-status {
-    grid-area: status;
-    justify-self: end;
-    align-self: center;
+  .di-record-name {
+    grid-area: name;
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-2);
+    min-width: 0;
   }
 
-  .di-record-heading {
-    grid-area: heading;
-  }
-
-  .di-record-list {
-    grid-area: lines;
-  }
-
-  .di-record-footer {
-    grid-area: footer;
+  .di-record-end {
+    grid-area: end;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: var(--di-gap-8);
   }
 
-  .di-record h2 {
+  .di-record-status,
+  .di-record-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-4);
+  }
+
+  /* The record's name is a heading in the display face, its one bold line. */
+  .di-record-title {
     font-family: var(--di-heading-family);
-    font-size: var(--di-font-size-600);
+    font-size: var(--di-block-title-size);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
-    line-height: 1.15;
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+    overflow-wrap: anywhere;
   }
 
   .di-record-count,
-  .di-record-list span,
-  .di-record-footer {
+  .di-record-detail,
+  .di-record-footer,
+  .di-record-line-detail {
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  .di-record-value {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-8);
+    min-width: 0;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-400);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text);
+    overflow-wrap: anywhere;
+  }
+
+  .di-record-value svg {
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+    flex: none;
+    color: var(--di-text-muted);
+  }
+
+  /* The figure on the left, what it is read against taking the rest of the line. */
+  .di-record-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--di-gap-16) var(--di-gap-24);
+  }
+
+  .di-record-body > :last-child:not(:first-child) {
+    margin-inline-start: auto;
+  }
+
+  /* The latest bar ends on the card's edge, under the head's last control. */
+  .di-record-body > .di-sparkline .di-sparkline-bars {
+    justify-content: flex-end;
+  }
+
+  .di-record-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-gap-4) var(--di-gap-16);
     font-size: var(--di-font-size-300);
     color: var(--di-text-muted);
   }
 
-  .di-record-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .di-record-lines {
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .di-record-list li {
+  .di-record-lines li {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-2);
+    gap: var(--di-gap-2);
+    min-width: 0;
   }
 
-  .di-record-list strong {
-    font-weight: var(--di-weight-medium);
+  .di-record-line-primary {
     font-size: var(--di-font-size-400);
+    color: var(--di-text);
+    overflow-wrap: anywhere;
+  }
+
+  /* The inset surface, a step of tone inside the card and never a line: its edge on the title's edge. */
+  .di-record-insight {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-4);
+  }
+
+  .di-record-insight-body {
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-record-basis {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    line-height: var(--di-leading-snug);
+    color: var(--di-mark-ink);
+  }
+
+  .di-record-insight-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-8);
+    margin-top: var(--di-gap-8);
+  }
+
+  .di-record-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-gap-8);
+    margin-top: auto;
+  }
+
+  /* Narrow: the state and the actions move under the name, on its edge, so the name keeps its line. */
+  @container (max-width: 288px) {
+    .di-record-head {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        "mark name"
+        ". end";
+      row-gap: var(--di-gap-8);
+    }
+
+    .di-record-head:not(:has(> .di-record-mark)) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "name"
+        "end";
+    }
+
+    .di-record-end {
+      justify-content: flex-start;
+    }
+  }
+
+  /* A row with a control at its end needs more room before the control goes under the name. */
+  @container (max-width: 400px) {
+    .di-record-row > .di-record-head {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        "mark name"
+        ". end";
+      row-gap: var(--di-gap-8);
+    }
+
+    .di-record-row > .di-record-head:not(:has(> .di-record-mark)) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "name"
+        "end";
+    }
+
+    .di-record-row .di-record-end {
+      justify-content: flex-start;
+    }
   }
 }
