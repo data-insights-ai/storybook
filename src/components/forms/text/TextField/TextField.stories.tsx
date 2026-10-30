@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Stack } from "../../../layout/arrangement/Stack";
-import { Toolbar } from "../../../layout/arrangement/Toolbar";
+import { Toolbar } from "../../../actions/Toolbar";
 import { TextField } from "./TextField";
 import { ConfidenceField } from "./ConfidenceField";
 import { TextLink } from "../../../navigation/TextLink";

@@ -10,8 +10,6 @@ import {
   Fact,
   FactList,
   InfiniteTable,
-  ListToolbar,
-  ListToolbarEnd,
   Menu,
   MenuItem,
   Notice,
@@ -23,7 +21,6 @@ import {
   PageHeaderAside,
   PageHeaderTitle,
   Panel,
-  RowActions,
   SearchField,
   Select,
   StatusPill,
@@ -32,6 +29,8 @@ import {
   TableHead,
   TableRow,
   TextLink,
+  Toolbar,
+  ToolbarEnd,
   useShortcut,
 } from "../..";
 import type { InfiniteRowPlace } from "../..";
@@ -78,7 +77,7 @@ function MemberRow({
         <StatusPill tone={member.seat ? "ok" : "neutral"}>{member.seat ? "Seat" : "No seat"}</StatusPill>
       </TableCell>
       <TableCell align="end">
-        <RowActions>
+        <Toolbar variant="row" label={`Actions for ${member.name}`}>
           <Menu
             open={menu}
             onOpenChange={setMenu}
@@ -92,7 +91,7 @@ function MemberRow({
             <MenuItem onSelect={onOpen}>Open</MenuItem>
             <MenuItem onSelect={onOpen}>Change role</MenuItem>
           </Menu>
-        </RowActions>
+        </Toolbar>
       </TableCell>
     </TableRow>
   );
@@ -125,7 +124,7 @@ export function ListPageScreen() {
             </Button>
           </PageHeaderAside>
         </PageHeader>
-        <ListToolbar label="Filter members">
+        <Toolbar label="Filter members" role="search" sticky="top">
           <SearchField
             ref={search}
             id="screen-members-search"
@@ -148,13 +147,13 @@ export function ListPageScreen() {
             <option value="Administrator">Administrators</option>
             <option value="Member">Members</option>
           </Select>
-          <ListToolbarEnd>
+          <ToolbarEnd>
             <Button variant="secondary">
               <Download aria-hidden />
               Export CSV
             </Button>
-          </ListToolbarEnd>
-        </ListToolbar>
+          </ToolbarEnd>
+        </Toolbar>
         {shown.length === 0 ? (
           <Notice variant="empty">
             <NoticeTitle>No member matches.</NoticeTitle>

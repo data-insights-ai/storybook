@@ -1,4 +1,5 @@
 import { Children, isValidElement, type ReactNode } from "react";
+import { withAddressBreaks } from "../../../../internal/addressBreaks";
 import { cx } from "../../../../internal/cx";
 import { surfaceClass } from "../../../../internal/surface";
 import { MetaLine } from "../../../text/MetaLine";
@@ -96,9 +97,12 @@ export function RecordDetail({ children }: { children: ReactNode }) {
   return <p className="di-record-detail">{typeof children === "string" ? <MetaLine items={children} /> : children}</p>;
 }
 
-/** What the record resolves to, under the head: an address, a hash, a count. */
+/**
+ * What the record resolves to, under the head: an address, a hash, a count.
+ * A long address wraps only at its boundaries ("/", ".", "-"), never inside a word.
+ */
 export function RecordValue({ children }: { children: ReactNode }) {
-  return <div className="di-record-value">{children}</div>;
+  return <div className="di-record-value">{withAddressBreaks(children)}</div>;
 }
 
 /** The measurement: a `Figure` and, beside it, what it is read against (a `Sparkline`). */

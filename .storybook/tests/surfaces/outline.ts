@@ -11,14 +11,10 @@ import { describe } from "./paint";
  * cell, which has no frame, not against the table around it.
  *
  * The allow-list holds only what other batches still own, each until its fix
- * lands: the Kbd on a primary Button (Actions) and the coverage matrix marks
- * (Charts).
+ * lands: the coverage matrix marks (Charts).
  */
 const NEAR = 8;
-const OWNED_ELSEWHERE: [inner: string, outer: string][] = [
-  [".di-kbd-on-control", ".di-btn"],
-  [".di-matrix-mark", ".di-matrix-column"],
-];
+const OWNED_ELSEWHERE: [inner: string, outer: string][] = [[".di-matrix-mark", ".di-matrix-column"]];
 
 const clear = (color: string) => color === "transparent" || /rgba\(.*,\s*0\)$/.test(color);
 

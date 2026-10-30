@@ -4,24 +4,33 @@ import { SealMark } from "../../marks/status/SealValue";
 import "./Eyebrow.css";
 
 /**
- * The line above a title, in the mono track. One union prop, because the
- * gold dot is a claim and the rule is what carries it — `dot` as a
- * boolean left the rule drawn with nothing to anchor it.
+ * The caption a step above a title: what kind of thing the title names, or
+ * where the reader is ("Coverage", "Last 7 days", "Delivery failed").
  *
- * `sealed` is the section label beside the seal, with a rule to the edge: this
- * is the section on record, and there is one of those per view. `plain`
- * is the label on its own, which is what sits above every section of a
- * brand page — repeatable, because it says where you are rather than
- * what has been vouched for.
+ * **When to use:** above a page or section title, a dialog title, an empty
+ * state, the sign-in card. Most of these render it from an `eyebrow` or
+ * `label` prop: `PageHeader` (both levels), `Panel label`, `Dialog`,
+ * `Notice`, `SignIn`. **When not to:** as a heading on its own (a caption
+ * with no title under it is `PageHeader level={2}` or a `Panel` title); a
+ * label above a value (`Figure`, `FactList`); a line of facts (`MetaLine`).
  *
- * The gap beneath it is `--di-eyebrow-gap`, so a head can retune the
- * distance without the eyebrow knowing which head it is in.
+ * **Anatomy:** for `sealed`, the seal, the label and a rule to the edge;
+ * for `plain`, the label alone. The gap beneath it is `--di-eyebrow-gap`,
+ * so a head can retune the distance without the eyebrow knowing which head
+ * it is in.
  *
- * It is the one caption above a title: a dialog, a sheet, an empty state
- * and the sign-in card render it rather than setting mono capitals of
- * their own. `tone="quiet"` sets it in the label ink, for a caption that
- * must not compete with the value under it; `tone="danger"` names a
- * failure, as an empty state after an error does.
+ * **Variants:** `sealed` is the one section on record in a view; `plain`
+ * repeats over every section. One union prop, because the seal is a claim
+ * and the rule is what carries it. `tone="quiet"` sets it in the label ink,
+ * for a caption that must not compete with the value under it;
+ * `tone="danger"` names a failure.
+ *
+ * **Content:** one to four words, sentence case in the source (it is set in
+ * capitals); no numbering, a section number that is not a real sequence is
+ * decoration.
+ *
+ * **Accessibility:** plain text read before the title; the seal and the
+ * rule are hidden from screen readers.
  */
 export function Eyebrow({
   children,

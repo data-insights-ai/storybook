@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Actions,
   Button,
   CellStack,
   ChoiceGroup,
@@ -37,6 +36,7 @@ import {
   TableIndex,
   TableRow,
   TextLink,
+  Toolbar,
 } from "../../index";
 import { ProductShell } from "../shell/ProductShell";
 import { caseFour, cases, severityWords, type CaseRow } from "./cases.sample";
@@ -135,11 +135,11 @@ function CaseFour({ record }: { record: CaseRow }) {
         <Stack gap={16}>
           <PanelLead>{caseFour.asks}</PanelLead>
           <MetaLine items={caseFour.path} separator="arrow" />
-          <Actions align="start">
+          <Toolbar align="start">
             <Button>Isolate srv-fs-02</Button>
             <Button variant="secondary">Reset svc-backup</Button>
             <Button variant="ghost">Set a verdict</Button>
-          </Actions>
+          </Toolbar>
         </Stack>
         <PanelNote>{caseFour.reason}</PanelNote>
       </Panel>

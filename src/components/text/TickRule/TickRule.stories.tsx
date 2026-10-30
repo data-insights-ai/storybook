@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
+import { Figure } from "../../data/figures/Figure";
 import { TickRule } from "./TickRule";
 
 const meta = {
@@ -11,23 +12,25 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/**
- * The one ornament in the system: an 8px tick scale. It closes a block
- * that reports a measurement, and nothing else.
- */
-export const Default: Story = {
+/** The one ornament: it closes a block that reports a measurement, here a figure on a report cover. */
+export const UnderAFigure: Story = {
   render: () => (
-    <div style={{ maxWidth: 320 }}>
-      <p className="di-mono" style={{ fontSize: 28, letterSpacing: "-0.015em" }}>
-        4,182
-      </p>
+    <div style={{ display: "grid", gap: "var(--di-gap-8)", maxWidth: "20rem" }}>
+      <Figure label="Entries on record" value="4,182" size="hero" />
       <TickRule />
-      <p className="di-mono" style={{ fontSize: 11, marginTop: 8, opacity: 0.75 }}>
-        entries on record
-      </p>
     </div>
   ),
   play: async ({ canvasElement }) => {
     await expect(canvasElement.querySelector(".di-tick-rule")).toHaveAttribute("aria-hidden", "true");
   },
+};
+
+/** `thin` under a compact figure. */
+export const Thin: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: "var(--di-gap-8)", maxWidth: "12rem" }}>
+      <Figure label="Sources" value="14" size="compact" />
+      <TickRule thin />
+    </div>
+  ),
 };

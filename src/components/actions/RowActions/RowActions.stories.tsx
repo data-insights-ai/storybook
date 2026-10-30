@@ -8,7 +8,7 @@ import { RowActions } from "./RowActions";
 const meta = {
   title: "Actions/RowActions",
   component: RowActions,
-  tags: ["layer:block", "autodocs"],
+  tags: ["layer:block", "status:deprecated"],
   args: { children: null },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof RowActions>;
@@ -16,7 +16,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Quick actions show on hover or focus; the row menu stays visible. */
+/** Deprecated: renders `Toolbar variant="row"`; give the new one a `label`. */
 export const InARow: Story = {
   render: () => (
     <DataTable caption="Invitations" indexed={false}>
@@ -26,13 +26,13 @@ export const InARow: Story = {
       </TableHead>
       <TableBody>
         <TableRow>
-          <TableCell mono>mira.kern@data-insights.ai</TableCell>
+          <TableCell mono>mira.kern@northwind.example</TableCell>
           <TableCell align="end">
             <RowActions>
-              <Button variant="ghost" size="sm" iconOnly aria-label="Resend to mira.kern@data-insights.ai">
+              <Button variant="ghost" size="sm" iconOnly aria-label="Resend to mira.kern@northwind.example">
                 <RotateCw aria-hidden />
               </Button>
-              <Button variant="ghost" size="sm" iconOnly aria-label="Actions for mira.kern@data-insights.ai">
+              <Button variant="ghost" size="sm" iconOnly aria-label="Actions for mira.kern@northwind.example">
                 <MoreHorizontal aria-hidden />
               </Button>
             </RowActions>

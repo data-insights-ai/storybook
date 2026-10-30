@@ -12,6 +12,7 @@ import {
   type Ref,
 } from "react";
 import { cx } from "../../../../internal/cx";
+import { Toolbar } from "../../../actions/Toolbar";
 import "./DataTable.css";
 
 /**
@@ -24,7 +25,7 @@ import "./DataTable.css";
  * as the reader scrolls (`InfiniteTable`), or for a list beside the record
  * it opens (`ListDetail`).
  *
- * **Anatomy:** `TableToolbar` (optional) · `TableHead` with one
+ * **Anatomy:** `Toolbar` (optional) · `TableHead` with one
  * `TableColumn` per column · `TableBody` with `TableRow`s of
  * `TableIndex` and `TableCell`s (`CellLead`, `CellIcon`, `CellStack`
  * inside), or `TableEmpty` when nothing matches · `TableFooter`
@@ -90,7 +91,7 @@ export function DataTable({
    */
   rowCount?: number;
   className?: string;
-  /** `TableToolbar`, the grid's `TableHead` and `TableBody`, and `TableFooter`. */
+  /** A `Toolbar`, the grid's `TableHead` and `TableBody`, and `TableFooter`. */
   children: ReactNode;
 }) {
   /*
@@ -103,7 +104,7 @@ export function DataTable({
   const foot: ReactNode[] = [];
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) return void grid.push(child);
-    if (child.type === TableToolbar) return void toolbar.push(child);
+    if (child.type === TableToolbar || child.type === Toolbar) return void toolbar.push(child);
     if (child.type === TableFooter) return void foot.push(child);
     grid.push(child);
   });
@@ -115,7 +116,7 @@ export function DataTable({
   const widths = useMeasuredColumns(scroll, layout === "measured");
   return (
     <div className={cx("di-table-wrap", stack && "is-stackable", overflowing && "is-overflowing", className)}>
-      {toolbar}
+      {toolbar.length > 0 ? <div className="di-table-toolbar">{toolbar}</div> : null}
       {/*
         The frame scrolls, not the page. A region that scrolls has to be
         reachable from the keyboard, so it takes a tab stop then, and only
@@ -265,9 +266,14 @@ function useRole(role: string) {
   return useContext(StackContext) ? role : undefined;
 }
 
-/** A filter row above the grid, inside the same frame. */
+/**
+ * A filter row above the grid, inside the same frame.
+ *
+ * @deprecated Removed in 0.12: put a `Toolbar` in the `DataTable`; the
+ * table draws its frame (inset, rule, head tone) around it.
+ */
 export function TableToolbar({ children }: { children: ReactNode }) {
-  return <div className="di-table-toolbar">{children}</div>;
+  return <Toolbar>{children}</Toolbar>;
 }
 
 /** Under the grid: a count, a pagination control. */

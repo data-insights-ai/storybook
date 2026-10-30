@@ -6,7 +6,7 @@ import { Button } from "../../actions/Button";
 import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
 import { Panel } from "../../layout/page/Panel";
 import { Stack } from "../../layout/arrangement/Stack";
-import { Toolbar } from "../../layout/arrangement/Toolbar";
+import { Toolbar } from "../../actions/Toolbar";
 import { DensityProvider, densityChoices, useDensity, type Density } from "./DensityProvider";
 
 const labels: Record<Density, string> = { comfortable: "Comfortable", compact: "Compact" };

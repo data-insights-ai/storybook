@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fireEvent, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateRangePicker, defaultDateRangeLabels } from "./DateRangePicker";
 import { type DateRangeValue, parseDateRange, resolveDateRange, serializeDateRange } from "../dateRange";
-import { ListToolbar } from "../../../data/table/ListToolbar";
+import { Toolbar } from "../../../actions/Toolbar";
 import { SearchField } from "../../text/SearchField";
 import { Select } from "../../select/Select";
 
@@ -156,7 +156,7 @@ export const InToolbar: Story = {
   render: function Render(args) {
     const [value, setValue] = useState<DateRangeValue>({ preset: "30d" });
     return (
-      <ListToolbar label="Filter the entries">
+      <Toolbar label="Filter the entries" role="search">
         <SearchField id="entries-search" label="Search entries" size="sm" />
         <Select id="entries-status" label="Status" hideLabel mono={false} defaultValue="">
           <option value="">Status: all</option>
@@ -164,7 +164,7 @@ export const InToolbar: Story = {
           <option value="failed">Failed</option>
         </Select>
         <DateRangePicker {...args} value={value} onChange={setValue} />
-      </ListToolbar>
+      </Toolbar>
     );
   },
 };

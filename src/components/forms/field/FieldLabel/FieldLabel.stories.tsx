@@ -296,6 +296,7 @@ export const FramesBesideAButton: Story = {
     );
   },
   play: async ({ canvasElement }) => {
+    await Promise.all(document.getAnimations().map((a) => a.finished));
     const button = canvasElement.querySelector<HTMLElement>(".di-btn")!;
     const b = getComputedStyle(button);
     const height = Math.round(button.getBoundingClientRect().height);

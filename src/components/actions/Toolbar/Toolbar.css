@@ -1,0 +1,227 @@
+@layer components {
+  .di-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--di-gap-8);
+    min-width: 0;
+  }
+
+  .di-toolbar > .di-search {
+    flex: 1 1 16rem;
+    max-width: 28rem;
+  }
+
+  .di-toolbar-end {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-8);
+    margin-inline-start: auto;
+  }
+
+  .di-toolbar-status {
+    font-weight: var(--di-weight-medium);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text);
+  }
+
+  /* The note takes a line of its own under the controls. */
+  .di-toolbar-note {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  /*
+   * Above a list, and the selection bar in its place: one control high
+   * with or without filters, so switching tabs or selecting a row never
+   * moves the list.
+   */
+  .di-toolbar.is-list {
+    min-height: calc(var(--di-control-h-md) + 2 * var(--di-gap-8));
+  }
+
+  .di-toolbar.is-list:not(.di-toolbar-bar) {
+    padding-block: var(--di-gap-8);
+    background: var(--di-bg-page);
+  }
+
+  /* A filter names itself in its first option ("All roles"); its label is read, not shown. */
+  :is(.di-toolbar[role="search"], .di-toolbar[role="search"] > .di-toolbar-end) > .di-field > .di-field-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .di-toolbar[role="search"] > .di-field {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .di-toolbar[data-sticky="top"] {
+    position: sticky;
+    top: var(--di-sticky-top);
+    z-index: 2;
+  }
+
+  /* Over a long form the bar floats: a plane's shadow sets it off the fields scrolling under it. */
+  .di-toolbar[data-sticky="bottom"] {
+    position: sticky;
+    bottom: var(--di-space-16);
+    z-index: 2;
+    --di-surface-shadow: var(--di-shadow-plane);
+  }
+
+  /* The same inset above and below; in the list's place it keeps the filter row's height on a wide screen. */
+  .di-toolbar-bar {
+    padding: var(--di-inset-group);
+  }
+
+  /* The bar's actions keep to its end; wrapped, they take a line of their own instead of hanging beside a button. */
+  .di-toolbar-bar > .di-toolbar-end {
+    flex: 1 1 auto;
+    justify-content: flex-end;
+  }
+
+  /* Over a list, the bar's words start on the table's text edge. */
+  .di-toolbar-bar.is-list {
+    padding-inline: var(--di-table-edge);
+  }
+
+  @media (min-width: 601px) {
+    .di-toolbar-bar.is-list {
+      padding-block: var(--di-gap-8);
+    }
+  }
+
+  .di-toolbar.is-align-end {
+    justify-content: flex-end;
+  }
+
+  .di-toolbar.is-align-start {
+    justify-content: flex-start;
+  }
+
+  /* A row's quick actions: the row's menu, last, always shows; the others while the row is hovered or focused. */
+  .di-toolbar.is-row {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: var(--di-gap-4);
+  }
+
+  @media (hover: hover) {
+    .di-toolbar.is-row > :not(:last-child) {
+      opacity: 0;
+      transition: opacity var(--di-duration) var(--di-ease);
+    }
+
+    tr:hover .di-toolbar.is-row > *,
+    tr:focus-within .di-toolbar.is-row > *,
+    .di-toolbar.is-row:has([aria-expanded="true"]) > * {
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .di-toolbar > .di-search {
+      flex-basis: 100%;
+      max-width: none;
+    }
+
+    .di-toolbar:is(.is-align-end, .is-align-start) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  /*
+   * A one-line form: fields and their actions share the control row, so a
+   * button lines up with the input next to it, not with the label above it,
+   * and an error line under a field does not move the button. The hint row
+   * exists only when a field has a hint, so a toolbar without one ends on
+   * its controls rather than on an empty row and its gap.
+   */
+  .di-toolbar:not(.is-list):has(> .di-field) {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, max-content);
+    grid-template-rows: auto auto;
+    align-items: center;
+    justify-content: start;
+    column-gap: var(--di-gap-8);
+    row-gap: var(--di-gap-6);
+  }
+
+  .di-toolbar:not(.is-list):has(> .di-field) > .di-field {
+    grid-row: 1 / span 2;
+    display: grid;
+    grid-template-rows: subgrid;
+    min-width: 0;
+  }
+
+  .di-toolbar:not(.is-list):has(> .di-field > .di-field-hint) {
+    grid-template-rows: auto auto auto;
+  }
+
+  .di-toolbar:not(.is-list):has(> .di-field > .di-field-hint) > .di-field {
+    grid-row: 1 / span 3;
+  }
+
+  /* A hidden label leaves the flow, so the control would take the label's row. */
+  .di-toolbar:not(.is-list):has(> .di-field) > .di-field > .di-sr:first-child + * {
+    grid-row: 2;
+  }
+
+  .di-toolbar:not(.is-list):has(> .di-field) > :not(.di-field) {
+    grid-row: 2;
+  }
+
+  @media (max-width: 600px) {
+    .di-toolbar:not(.is-list):has(> .di-field) {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  /* A one-line add form: the first field takes the room, the toolbar's own width decides when it stacks. */
+  .di-toolbar-frame {
+    container-type: inline-size;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .di-toolbar.is-fill-first:has(> .di-field) {
+    grid-template-columns: minmax(min(16rem, 100%), 1fr);
+    grid-auto-columns: max-content;
+    justify-content: stretch;
+  }
+
+  .di-toolbar.is-fill-first > .di-field:has(select) {
+    min-width: 10rem;
+  }
+
+  .di-toolbar.is-fill-first > .di-field:has(input[type="number"]) {
+    width: 8rem;
+  }
+
+  @container (width < 600px) {
+    .di-toolbar.is-fill-first:has(> .di-field) {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .di-toolbar.is-fill-first > .di-field {
+      width: auto;
+      min-width: 0;
+    }
+  }
+}

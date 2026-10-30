@@ -6,7 +6,7 @@ import { StatusPill } from "../../../marks/status/StatusPill";
 import { PageHeader, PageHeaderTitle } from "../../page/PageHeader";
 import { Button } from "../../../actions/Button";
 import { Fact, FactList } from "../../../data/records/FactList";
-import { Actions } from "../../arrangement/Actions";
+import { Toolbar } from "../../../actions/Toolbar";
 import { Stack } from "../../arrangement/Stack";
 import { Panel } from "../../page/Panel";
 import { Select } from "../../../forms/select/Select";
@@ -61,9 +61,9 @@ const meta = {
               <option value="open">Open</option>
               <option value="in_progress">In progress</option>
             </Select>
-            <Actions>
+            <Toolbar align="end">
               <Button>Save</Button>
-            </Actions>
+            </Toolbar>
           </Stack>
         </Panel>
       </SplitAside>
