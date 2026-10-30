@@ -4,7 +4,7 @@
     display: inline-flex;
     /* The steps stand on the word's baseline, so the mark lines up with any text beside it. */
     align-items: baseline;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     font-size: var(--di-font-size-300);
     font-weight: var(--di-weight-medium);
     line-height: 1;

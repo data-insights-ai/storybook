@@ -1,10 +1,14 @@
 import type { ReactNode } from "react";
-import "./VersionTag.css";
+import { Badge } from "../Badge";
 
 /**
  * A version, a build or a short hash. Mono, quiet, no dot: it names a
- * thing rather than reporting a state.
+ * thing rather than reporting a state. Drawn on `Badge`, the one pill.
  */
 export function VersionTag({ children }: { children: ReactNode }) {
-  return <span className="di-version-tag">{children}</span>;
+  return (
+    <Badge tone="quiet" track="record">
+      {children}
+    </Badge>
+  );
 }

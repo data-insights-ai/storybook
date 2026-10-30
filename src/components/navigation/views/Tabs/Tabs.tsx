@@ -1,6 +1,7 @@
 import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
 import { useActiveInView } from "../../../../internal/useActiveInView";
+import { Badge } from "../../../marks/Badge";
 import "./Tabs.css";
 
 /**
@@ -73,7 +74,11 @@ export function Tabs({
             onClick={() => onChange(item.value)}
           >
             {item.label}
-            {item.badge === undefined ? null : <span className="di-tab-badge">{item.badge}</span>}
+            {item.badge === undefined ? null : (
+              <span className="di-tab-badge">
+                <Badge tone="quiet">{item.badge}</Badge>
+              </span>
+            )}
           </button>
         );
       })}

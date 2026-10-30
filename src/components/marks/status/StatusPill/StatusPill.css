@@ -1,94 +1,36 @@
 @layer components {
-  .di-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--di-space-4);
-    height: var(--di-pill-height);
-    padding: 0 var(--di-space-8);
-    border: 1px solid transparent;
-    border-radius: var(--di-pill-radius);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    font-weight: var(--di-weight-medium);
-    letter-spacing: var(--di-tracking-mono);
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  .di-pill-prose {
-    font-family: var(--di-font-ui);
-    font-size: var(--di-font-size-200);
-    letter-spacing: normal;
-  }
-
+  /* The dot beside the word; its size is a mark, not a density step. */
   .di-pill-dot {
-    width: 5px;
-    height: 5px;
+    width: var(--di-mark-dot);
+    height: var(--di-mark-dot);
     flex: none;
     border-radius: var(--di-radius-pill);
     background: currentColor;
-    position: relative;
-    top: -0.5px; /* optical centre on the uppercase mono label */
   }
 
-  .di-pill-ring {
-    background: transparent;
-    border: 1.5px solid var(--di-mark-ring);
-  }
-
-  .di-pill-ok {
-    border-color: var(--di-status-ok-border);
-    background: var(--di-status-ok-bg);
-    color: var(--di-status-ok-fg);
-  }
-
-  .di-pill-ok .di-pill-dot {
+  .di-pill-dot-ok {
     background: var(--di-status-ok-dot);
   }
 
-  .di-pill-warn {
-    border-color: var(--di-status-warn-border);
-    background: var(--di-status-warn-bg);
-    color: var(--di-status-warn-fg);
-  }
-
-  .di-pill-warn .di-pill-dot {
+  .di-pill-dot-warn {
     background: var(--di-status-warn-dot);
   }
 
-  .di-pill-danger {
-    border-color: var(--di-status-danger-border);
-    background: var(--di-status-danger-bg);
-    color: var(--di-status-danger-fg);
-  }
-
-  .di-pill-danger .di-pill-dot {
+  .di-pill-dot-danger {
     background: var(--di-status-danger-dot);
   }
 
-  .di-pill-recorded {
-    border-color: var(--di-status-recorded-border);
-    background: var(--di-status-recorded-bg);
-    color: var(--di-status-recorded-fg);
-  }
-
-  .di-pill-recorded .di-pill-dot {
+  .di-pill-dot-recorded {
     background: var(--di-status-recorded-dot);
   }
 
-  .di-pill-neutral {
-    border-color: var(--di-status-neutral-border);
-    background: var(--di-status-neutral-bg);
-    color: var(--di-status-neutral-fg);
-  }
-
-  .di-pill-neutral .di-pill-dot {
+  .di-pill-dot-neutral {
     background: var(--di-status-neutral-dot);
   }
 
-  .di-pill-inferred {
-    border-color: var(--di-mark-border);
-    background: var(--di-mark-surface);
-    color: var(--di-mark-ink);
+  /* A model's claim: the hollow ring, never a dot. */
+  .di-pill-dot-inferred {
+    background: transparent;
+    border: 1.5px solid var(--di-mark-ring);
   }
 }

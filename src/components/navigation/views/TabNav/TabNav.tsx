@@ -3,6 +3,7 @@ import { mergeProps } from "@base-ui/react/merge-props";
 import { useRender } from "@base-ui/react/use-render";
 import { cx } from "../../../../internal/cx";
 import { useActiveInView } from "../../../../internal/useActiveInView";
+import { Badge } from "../../../marks/Badge";
 import "../Tabs/Tabs.css";
 
 /**
@@ -45,7 +46,11 @@ export function TabNavLink({ active = false, badge, render, className, children,
         children: (
           <>
             {children}
-            {badge === undefined ? null : <span className="di-tab-badge">{badge}</span>}
+            {badge === undefined ? null : (
+              <span className="di-tab-badge">
+                <Badge tone="quiet">{badge}</Badge>
+              </span>
+            )}
           </>
         ),
       },

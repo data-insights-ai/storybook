@@ -2,18 +2,23 @@
   .di-eyebrow {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin-bottom: var(--di-eyebrow-gap);
   }
 
+  /* The mono caption every label above a value uses; the eyebrow adds only its ink. */
   .di-eyebrow-label {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    font-weight: var(--di-weight-medium);
-    letter-spacing: var(--di-tracking-eyebrow);
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
     text-transform: uppercase;
     color: var(--di-one-ink);
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+  }
+
+  .di-eyebrow.is-danger .di-eyebrow-label {
+    color: var(--di-status-danger-fg);
   }
 
   .di-eyebrow-rule {

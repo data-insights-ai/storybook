@@ -2,8 +2,8 @@
   .di-chip {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-4);
-    height: var(--di-h-dense);
+    gap: var(--di-gap-4);
+    height: var(--di-control-h-sm);
     padding: 0 var(--di-space-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-control);

@@ -177,7 +177,7 @@ export const WithFooter: Story = {
       <p>{args.children}</p>
       <PanelFooter>Rotated last on 2025-09-29 by Nora Feld</PanelFooter>
       <PanelActions>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Rotate now
         </Button>
       </PanelActions>
@@ -204,7 +204,7 @@ export const ActionInHead: Story = {
   render: (args) => (
     <Panel {...args}>
       <PanelActions>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Edit
         </Button>
       </PanelActions>
@@ -253,7 +253,7 @@ export const SlotsWrittenReversed: Story = {
   render: (args) => (
     <Panel {...args}>
       <PanelActions>
-        <Button size="dense">Retry</Button>
+        <Button size="sm">Retry</Button>
       </PanelActions>
       <PanelFooter>3 attempts left</PanelFooter>
       <PanelNote>Retries stop after three attempts.</PanelNote>

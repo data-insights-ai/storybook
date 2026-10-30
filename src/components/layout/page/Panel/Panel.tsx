@@ -1,5 +1,6 @@
 import { Children, isValidElement, useId, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
 import "./Panel.css";
 
 /**
@@ -74,7 +75,12 @@ export function Panel({
 
   return (
     <section
-      className={cx("di-panel", `di-panel-${surface}`, emphasis && "is-emphasis", className)}
+      className={cx(
+        surfaceClass({ plane: surface, edge: emphasis ? "one" : "none" }),
+        "di-panel",
+        emphasis && "is-emphasis",
+        className,
+      )}
       aria-labelledby={title !== undefined && heading ? id : undefined}
     >
       {headed ? (

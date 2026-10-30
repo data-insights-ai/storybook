@@ -1,57 +1,15 @@
 @layer components {
   /*
-   * A surface is a step in tone with a faint edge, not a box drawn with a
-   * line. The head, the content and the footer are rows inside it, at one
-   * inset all round and 16px apart: no band, no rule between them.
+   * The plane is the one surface (`.di-surface`): a step in tone with a
+   * faint edge, not a box drawn with a line. The head, the content and the
+   * footer are rows inside it, at one inset all round and 16px apart (12
+   * compact): no band, no rule between them.
    */
   .di-panel {
-    --di-panel-inner: var(--di-panel-pad);
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     overflow: hidden;
-    padding: var(--di-panel-inner);
-    border: 1px solid var(--di-panel-border);
-    border-radius: var(--di-panel-radius);
-    background: var(--di-panel-bg);
-    box-shadow: var(--di-elevation-surface);
-  }
-
-  /* A step below the surface it sits in: the deepest a region goes. */
-  .di-panel-inset {
-    --di-panel-bg: var(--di-bg-subtle);
-    --di-panel-inner: var(--di-space-16);
-    border-radius: var(--di-radius-inset);
-    box-shadow: none;
-  }
-
-  @media (max-width: 600px) {
-    .di-panel {
-      --di-panel-inner: var(--di-space-16);
-    }
-  }
-
-  /*
-   * Never a surface on the same surface: a panel or a tile inside a panel
-   * takes the inset tone and drops its edge, whatever the caller wrote.
-   */
-  .di-panel-content :is(.di-panel, .di-stat-tile, .di-stage:not(.is-current)) {
-    --di-panel-bg: var(--di-bg-subtle);
-    border-color: transparent;
-    border-radius: var(--di-radius-inset);
-    background: var(--di-bg-subtle);
-    box-shadow: none;
-  }
-
-  .di-panel-content .di-panel {
-    --di-panel-inner: var(--di-space-16);
-  }
-
-  /* The one thing that matters in the view. Gold marks the object, never its words. */
-  .di-panel.is-emphasis {
-    box-shadow:
-      0 0 0 1px var(--di-one-edge),
-      var(--di-one-glow);
   }
 
   /* On a narrow panel the meta and the actions drop under the title rather than off the edge. */
@@ -59,14 +17,14 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
-    gap: var(--di-space-8) var(--di-space-16);
+    gap: var(--di-gap-8) var(--di-gap-16);
   }
 
   .di-panel-titles {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     min-width: 0;
   }
 
@@ -74,7 +32,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-4) var(--di-space-8);
+    gap: var(--di-gap-4) var(--di-gap-8);
     min-width: 0;
   }
 
@@ -107,7 +65,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
@@ -119,7 +77,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-panel-content {
@@ -142,24 +100,24 @@
    * first column keeps the title's line.
    */
   .di-panel-content-flush {
-    --di-table-edge: var(--di-panel-inner);
-    margin-inline: calc(-1 * var(--di-panel-inner));
+    --di-table-edge: var(--di-surface-inner);
+    margin-inline: calc(-1 * var(--di-surface-inner));
   }
 
   .di-panel-content-flush:first-child {
-    margin-top: calc(-1 * var(--di-panel-inner));
+    margin-top: calc(-1 * var(--di-surface-inner));
   }
 
   .di-panel-content-flush:last-child {
-    margin-bottom: calc(-1 * var(--di-panel-inner));
+    margin-bottom: calc(-1 * var(--di-surface-inner));
   }
 
   .di-panel-content-flush > .di-panel-note {
-    padding: 0 var(--di-panel-inner);
+    padding: 0 var(--di-surface-inner);
   }
 
   .di-panel-content-flush:last-child > .di-panel-note:last-child {
-    padding-bottom: var(--di-panel-inner);
+    padding-bottom: var(--di-surface-inner);
   }
 
   /* The footer row: what it reports at its start, the actions at its end. */
@@ -167,14 +125,14 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8) var(--di-space-16);
+    gap: var(--di-gap-8) var(--di-gap-16);
   }
 
   .di-panel-footer {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
     font-size: var(--di-font-size-300);
     color: var(--di-text-muted);
@@ -186,7 +144,7 @@
 
   /* The lead belongs to what follows it, a step apart rather than run into it. */
   .di-panel-lead:not(:last-child) {
-    margin-bottom: var(--di-space-12);
+    margin-bottom: var(--di-gap-12);
   }
 
   .di-panel-lead {
@@ -203,7 +161,7 @@
   }
 
   .di-panel-note {
-    margin-top: var(--di-space-8);
+    margin-top: var(--di-gap-8);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);

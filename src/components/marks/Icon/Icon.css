@@ -36,7 +36,7 @@
   .di-icon-catalog {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -46,7 +46,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin: 0;
     padding: var(--di-space-16) var(--di-space-8) var(--di-space-12);
     border: 1px solid var(--di-rule);

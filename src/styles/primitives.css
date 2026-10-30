@@ -1,0 +1,173 @@
+/*
+ * The building blocks components draw with, so a look exists once:
+ * the surface, the selected row, the option row in a popup, and the
+ * ordinal of a real sequence. They are classes a component adds, not
+ * components: Panel, a record card, a notice and a stat tile have
+ * different jobs and one plane; a table row, a list item and a nav link
+ * have different keyboards and one selected edge.
+ */
+
+@layer components {
+  /*
+   * A surface lifts by tone, never by a line. `--di-panel-*` is the one set
+   * of surface tokens. A plane re-points the four values; an edge is a
+   * named meaning (danger, the one thing in the view), not a border.
+   */
+  .di-surface {
+    --di-surface-bg: var(--di-panel-bg);
+    --di-surface-radius: var(--di-panel-radius);
+    --di-surface-shadow: var(--di-elevation-surface);
+    --di-surface-inner: var(--di-panel-pad);
+    border-radius: var(--di-surface-radius);
+    background: var(--di-surface-bg);
+    box-shadow: var(--di-surface-shadow);
+  }
+
+  .di-surface-padded {
+    padding: var(--di-surface-inner);
+  }
+
+  /* A step below the surface it sits in: the deepest a region goes. */
+  .di-surface-inset {
+    --di-surface-bg: var(--di-bg-subtle);
+    --di-surface-radius: var(--di-radius-inset);
+    --di-surface-shadow: none;
+    --di-surface-inner: var(--di-inset-group);
+  }
+
+  /* The hero zone: navy in both themes, a plane of its own. */
+  .di-surface-hero {
+    --di-surface-bg: var(--di-bg-hero);
+    --di-surface-shadow: inset 0 1px 0 var(--di-border), var(--di-shadow-plane);
+  }
+
+  .di-surface-edge-danger {
+    box-shadow:
+      inset 0 0 0 1px var(--di-status-danger-border),
+      var(--di-surface-shadow);
+  }
+
+  /* The one thing that matters in the view. Gold marks the object, never its words. */
+  .di-surface-edge-one {
+    box-shadow:
+      0 0 0 1px var(--di-one-edge),
+      var(--di-one-glow);
+  }
+
+  @media (max-width: 600px) {
+    .di-surface:not(.di-surface-inset) {
+      --di-surface-inner: var(--di-inset-group);
+    }
+  }
+
+  /*
+   * Never a surface on the same surface: one inside another takes the
+   * inset tone and drops its lift, whatever the caller wrote.
+   */
+  .di-surface .di-surface:not(.di-surface-hero) {
+    --di-surface-bg: var(--di-bg-subtle);
+    --di-surface-radius: var(--di-radius-inset);
+    --di-surface-shadow: none;
+    --di-surface-inner: var(--di-inset-group);
+  }
+
+  /*
+   * The row a pane is showing, or the page a link leads to: a step of
+   * tint and the cornflower selected edge. One look for a list item, a
+   * nav link, a table row and a timeline episode; each keeps its own
+   * keyboard.
+   */
+  .di-row {
+    transition: background-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-row:hover {
+    background: var(--di-row-hover-bg);
+  }
+
+  .di-row-current,
+  .di-row-current:hover {
+    background: var(--di-row-current-bg);
+    box-shadow: inset var(--di-select-edge) 0 0 var(--di-select);
+  }
+
+  tr.di-row-current,
+  tr.di-row-current:hover {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  tr.di-row-current > :is(td, th) {
+    background: var(--di-row-current-bg);
+  }
+
+  tr.di-row-current > :first-child {
+    box-shadow: inset var(--di-select-edge) 0 0 var(--di-select);
+  }
+
+  /*
+   * An option in a popup: a menu item, a command, a combobox option. One
+   * height per density, an icon lead, the label, and a meta at the end.
+   */
+  .di-option {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-8);
+    width: 100%;
+    min-height: var(--di-option-h);
+    padding: var(--di-gap-4) var(--di-gap-8);
+    border: 0;
+    border-radius: var(--di-radius-micro);
+    background: transparent;
+    color: var(--di-text);
+    font: inherit;
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-snug);
+    text-align: left;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+  }
+
+  .di-option:is(:hover, [data-highlighted], .is-highlighted):not(:disabled, [aria-disabled="true"], [data-disabled]) {
+    background: var(--di-option-hover-bg);
+  }
+
+  .di-option > svg {
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+    flex: none;
+    color: var(--di-text-muted);
+  }
+
+  .di-option-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .di-option-meta {
+    flex: none;
+    margin-left: auto;
+    font-family: var(--di-meta-family);
+    font-size: var(--di-font-size-200);
+    color: var(--di-meta-color);
+  }
+
+  .di-option:is(:disabled, [aria-disabled="true"], [data-disabled]) {
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
+
+  /* The number of a step in a real sequence: a process, a rank, a phase. */
+  .di-ordinal {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-weight: var(--di-weight-medium);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: var(--di-tracking-mono);
+    color: var(--di-text-subtle);
+  }
+
+  .di-ordinal.is-danger {
+    color: var(--di-status-danger-fg);
+  }
+}
