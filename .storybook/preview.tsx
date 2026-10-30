@@ -1,25 +1,11 @@
 import type { Preview } from "@storybook/react-vite";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
-import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { create } from "storybook/theming";
+import { DocsContainer, type DocsContainerProps } from "@storybook/addon-docs/blocks";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { GLOBALS_UPDATED } from "storybook/internal/core-events";
+import { brandTheme, resolveMode, type Mode } from "./theme";
 import "../src/styles/styles.css";
 import "./preview.css";
-
-const docsTheme = create({
-  base: "light",
-  brandTitle: "datAInsights",
-  brandUrl: "https://www.data-insights.ai",
-  brandImage: "./mark.svg",
-  colorPrimary: "#0a1f44",
-  colorSecondary: "#2b6cb0",
-  appBg: "#e9e8e3",
-  appContentBg: "#fdfdfb",
-  appBorderColor: "#d9d8d2",
-  textColor: "#0a1f44",
-  textMutedColor: "#3d4a66",
-  fontBase: '"IBM Plex Sans", "Helvetica Neue", sans-serif',
-  fontCode: '"IBM Plex Mono", ui-monospace, monospace',
-});
 
 const preview: Preview = {
   globalTypes: {
@@ -41,7 +27,7 @@ const preview: Preview = {
     layout: "padded",
     backgrounds: { disable: true },
     docs: {
-      theme: docsTheme,
+      container: ThemedDocs,
       codePanel: true,
     },
     options: {
@@ -155,7 +141,7 @@ const preview: Preview = {
   decorators: [
     withThemeByDataAttribute({
       themes: { light: "light", dark: "dark" },
-      defaultTheme: "light",
+      defaultTheme: resolveMode(undefined),
       attributeName: "data-theme",
     }),
     (Story, context) => {
@@ -193,4 +179,23 @@ function StoryCanvas({ title, name, children }: { title: string; name: string; c
       <div ref={body}>{children}</div>
     </main>
   );
+}
+
+type GlobalsSource = { store?: { userGlobals?: { get?: () => Record<string, unknown> } } };
+
+/** A docs page has no story decorator, so it sets the theme on the document itself and follows the toolbar. */
+function ThemedDocs(props: DocsContainerProps) {
+  const { context } = props;
+  const [mode, setMode] = useState<Mode>(() =>
+    resolveMode((context as unknown as GlobalsSource).store?.userGlobals?.get?.().theme),
+  );
+  useEffect(() => {
+    const follow = ({ globals }: { globals: Record<string, unknown> }) => setMode(resolveMode(globals.theme));
+    context.channel.on(GLOBALS_UPDATED, follow);
+    return () => context.channel.off(GLOBALS_UPDATED, follow);
+  }, [context]);
+  useLayoutEffect(() => {
+    document.documentElement.setAttribute("data-theme", mode);
+  }, [mode]);
+  return <DocsContainer {...props} theme={brandTheme(mode)} />;
 }

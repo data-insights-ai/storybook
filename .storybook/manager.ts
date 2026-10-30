@@ -1,21 +1,36 @@
 import { addons } from "storybook/manager-api";
-import { create } from "storybook/theming";
+import { GLOBALS_UPDATED, SET_GLOBALS } from "storybook/internal/core-events";
+import { brandTheme, palette, resolveMode, type Mode } from "./theme";
 
-addons.setConfig({
-  theme: create({
-    base: "light",
-    brandTitle: "datAInsights",
-    brandUrl: "https://www.data-insights.ai",
-    brandImage: "./mark.svg",
-    colorPrimary: "#0a1f44",
-    colorSecondary: "#7c5f17",
-    appBg: "#f7f4ec",
-    appContentBg: "#fbf8f1",
-    appBorderColor: "#e0dbd1",
-    textColor: "#0e1528",
-    textMutedColor: "#5a5348",
-    barBg: "#fbf8f1",
-    barTextColor: "#5a5348",
-    barSelectedColor: "#0a1f44",
-  }),
+let mode: Mode | undefined;
+
+function apply(next: Mode) {
+  if (next === mode) return;
+  mode = next;
+  const c = palette[next];
+  const root = document.documentElement;
+  root.dataset.diTheme = next;
+  root.style.setProperty("--sb-di-raised", c.raised);
+  root.style.setProperty("--sb-di-select", c.select);
+  root.style.setProperty("--sb-di-text", c.text);
+  root.style.setProperty("--sb-di-subtle", c.subtle);
+  root.style.setProperty("--sb-di-hover", c.hover);
+  addons.setConfig({ theme: brandTheme(next) });
+}
+
+apply(resolveMode(undefined));
+
+addons.register("di/theme", (api) => {
+  let chosen: unknown;
+  const follow = ({ globals }: { globals?: Record<string, unknown> }) => {
+    chosen = globals?.theme;
+    apply(resolveMode(chosen));
+    api.setOptions({ theme: brandTheme(mode ?? "light") });
+  };
+  api.on(SET_GLOBALS, follow);
+  api.on(GLOBALS_UPDATED, follow);
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    apply(resolveMode(chosen));
+    api.setOptions({ theme: brandTheme(mode ?? "light") });
+  });
 });

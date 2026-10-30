@@ -1,8 +1,39 @@
 body,
 .docs-story,
-.sb-show-main {
-  background: var(--di-bg-page, #f4f1e8);
-  color: var(--di-text, #0a1f44);
+.sb-show-main,
+.sbdocs.sbdocs-wrapper {
+  background: var(--di-bg-page);
+  color: var(--di-text);
+}
+
+/* Docs pages read like the library: Space Grotesk names, IBM Plex Sans at 14px reads, IBM Plex Mono labels and code. */
+.sbdocs-content h1,
+.sbdocs-content h2,
+.sbdocs-content h3,
+.sbdocs-content h4 {
+  font-family: var(--di-font-display);
+  font-weight: 700;
+  color: var(--di-text);
+  letter-spacing: var(--di-tracking-tight);
+}
+
+.sbdocs-content h2 {
+  border-bottom: 0;
+}
+
+.sbdocs-content p,
+.sbdocs-content li,
+.sbdocs-content td,
+.sbdocs-content th {
+  font-family: var(--di-font-ui);
+  font-size: var(--di-font-size-400);
+  line-height: 1.55;
+  color: var(--di-text);
+}
+
+.sbdocs-content code,
+.sbdocs-content pre {
+  font-family: var(--di-font-code);
 }
 
 .docblock-code-toggle:focus-visible,
