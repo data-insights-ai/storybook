@@ -112,3 +112,33 @@ export const Dashboard: Story = {
     await expect(canvas.getByText("renews 2 Nov 2026")).toBeVisible();
   },
 };
+
+/**
+ * Markers in each tone. The dashed rule takes the chart colour; its label is
+ * text and takes the status ink, so it reads in either theme.
+ */
+export const Markers: Story = {
+  render: () => (
+    <ChartCardGrid>
+      <h2 className="di-sr">Contract</h2>
+      <ChartCard title="Seats" figure="5 of 5" note="The contract ends on 28 Oct">
+        <TrendChart
+          label="Seats in use by day, with renewal, expiry and cut-off"
+          data={seats}
+          series={[{ key: "used", label: "In use", kind: "area" }]}
+          formatX={short}
+          markers={[
+            { at: days[6]!, label: "Renewal", tone: "neutral" },
+            { at: days[16]!, label: "Expires", tone: "warn" },
+            { at: days[26]!, label: "Cut-off", tone: "danger" },
+          ]}
+          height="sm"
+        />
+      </ChartCard>
+    </ChartCardGrid>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    for (const label of ["Renewal", "Expires", "Cut-off"]) await expect(canvas.getByText(label)).toBeInTheDocument();
+  },
+};

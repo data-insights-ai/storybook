@@ -73,6 +73,7 @@ export function TimeField({
         aria-labelledby={labelId}
         aria-describedby={describedBy}
         className="di-control di-date-control"
+        aria-disabled={disabled || undefined}
         data-disabled={disabled || undefined}
         data-invalid={invalid || undefined}
       >

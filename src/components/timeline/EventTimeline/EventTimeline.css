@@ -392,6 +392,10 @@
     transform: translateX(calc(-100% - var(--di-space-12)));
   }
 
+  .di-timeline-canvas {
+    display: contents;
+  }
+
   .di-timeline-loading {
     position: absolute;
     inset: 0;

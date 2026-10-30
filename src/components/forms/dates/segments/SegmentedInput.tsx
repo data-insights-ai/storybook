@@ -197,6 +197,7 @@ export function SegmentedInput({
       role={group ? "group" : undefined}
       aria-labelledby={group ? labelledBy : undefined}
       aria-describedby={group ? describedBy : undefined}
+      aria-disabled={group && disabled ? true : undefined}
       data-disabled={disabled || undefined}
       data-invalid={invalid || undefined}
       onPointerDown={onPointerDown}
