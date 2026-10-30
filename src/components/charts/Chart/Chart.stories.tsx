@@ -9,10 +9,6 @@ import { Chart, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipConte
  * chart component. Show code prints the story's source, so a helper would
  * print as one tag and teach nothing about the only thing a caller has to
  * get right: a `ChartConfig` keyed by series, read back as `--color-<key>`.
- *
- * The elaborate brand specimens — the cited mark, the P10/P90 edge labels —
- * live in Foundations/Practice. Those demonstrate the brand. These
- * demonstrate the component.
  */
 
 const series = [

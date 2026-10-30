@@ -1,72 +1,107 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { cx } from "../../internal/cx";
 import logo from "../../assets/logo.svg";
 import logoInverse from "../../assets/logo-inverse.svg";
 import logoMono from "../../assets/logo-mono.svg";
 import mark from "../../assets/mark.svg";
 import markInverse from "../../assets/mark-inverse.svg";
 import markMono from "../../assets/mark-mono.svg";
-import { Page, Section } from "../guide/Guide";
-import "../tokens/foundations.css";
+import { CodeBlock, Fact, FactList, Grid, Panel, PanelNote } from "../../index";
+import { Doc, DocSection, Rules } from "../guide/Doc";
 
-const cells = [
-  { title: "Primary", body: "Navy on ivory or paper. The default lockup.", src: logo, dark: false, mark: false },
+const lockups = [
+  { title: "Primary", src: logo, theme: "light", isMark: false, use: "The default, on paper, ivory or white." },
   {
     title: "Inverse",
-    body: "Ivory on navy: the sidebar after dark, a cover, a slide.",
     src: logoInverse,
-    dark: true,
-    mark: false,
-  },
-  { title: "Mono", body: "One colour, when the pair cannot be printed.", src: logoMono, dark: false, mark: false },
-  { title: "Mark", body: "Symbol only, when the name is already in the sentence.", src: mark, dark: false, mark: true },
-  {
-    title: "Mark, inverse",
-    body: "The same symbol on navy. The gold node is the tittle.",
-    src: markInverse,
-    dark: true,
-    mark: true,
+    theme: "dark",
+    isMark: false,
+    use: "On navy: the sidebar after dark, a slide.",
   },
   {
-    title: "Mark, mono",
-    body: "The symbol in one ink, where the mono lockup has no room.",
-    src: markMono,
-    dark: false,
-    mark: true,
+    title: "Monochrome",
+    src: logoMono,
+    theme: "light",
+    isMark: false,
+    use: "Single-ink print. The gold node turns navy.",
   },
-];
+  { title: "Mark", src: mark, theme: "light", isMark: true, use: "A favicon, an avatar, an app tile." },
+  { title: "Mark, inverse", src: markInverse, theme: "dark", isMark: true, use: "The mark on navy." },
+  { title: "Mark, monochrome", src: markMono, theme: "light", isMark: true, use: "A stamp or an emboss." },
+] as const;
 
-function Lockups() {
+const signature = `Nora Feld
+Operator · datAInsights
+datAInsights GmbH
+data-insights.ai`;
+
+function LogoPage() {
   return (
-    <Page
-      eyebrow="The mark"
-      title="The mark, then the name."
-      lede="Brackets hold a temporal interval. The nodes are an evidence chain. One of them is gold. That dot is the scarcest mark in the system."
+    <Doc
+      title="Logo"
+      lede="The mark, then the name. Six fixed files, and nothing else: a lockup is never rebuilt from the mark and a typeface, recoloured, stretched, rotated, shadowed, or set on gold or a photograph."
     >
-      <Section
-        eyebrow="Lockups"
-        title="Six files, and nothing else."
-        lede="Each is a fixed asset. A lockup is never rebuilt from the mark and a typeface — see Foundations/Mark for the misuses."
+      <DocSection
+        title="What the mark means"
+        lede="Every part carries a meaning, so the mark is never cropped or used as a frame."
       >
-        <div className="di-logo-grid">
-          {cells.map((cell) => (
-            <article key={cell.title} className="di-logo-cell">
-              <div className={cx("di-logo-stage", cell.dark && "is-dark", cell.mark && "is-mark")}>
-                <img src={cell.src} alt="datAInsights" />
-              </div>
-              <div className="di-logo-meta">
-                <h2>{cell.title}</h2>
-                <p>{cell.body}</p>
-              </div>
-            </article>
+        <Panel title="Parts" heading={3}>
+          <FactList layout="columns">
+            <Fact label="Brackets">A time interval: the window in which a claim holds.</Fact>
+            <Fact label="Peak">Two edges meeting: the A, and the simplest graph.</Fact>
+            <Fact label="Stem">The I. Upright, unornamented.</Fact>
+            <Fact label="Gold node">The one verified fact. A view gets only one.</Fact>
+          </FactList>
+        </Panel>
+      </DocSection>
+
+      <DocSection title="Lockups" lede="Each shown on the ground it is made for, whatever the page's theme.">
+        <Grid min="300px" gap={16}>
+          {lockups.map((item) => (
+            <div key={item.title} data-theme={item.theme}>
+              <Panel title={item.title} heading={3}>
+                <img
+                  src={item.src}
+                  alt={`datAInsights ${item.title.toLowerCase()}`}
+                  style={{ blockSize: item.isMark ? "var(--di-space-48)" : "var(--di-space-32)", inlineSize: "auto" }}
+                />
+                <PanelNote>{item.use}</PanelNote>
+              </Panel>
+            </div>
           ))}
-        </div>
-      </Section>
-    </Page>
+        </Grid>
+      </DocSection>
+
+      <DocSection title="Space and size">
+        <Rules>
+          <li>Clear space: at least the height of the mark's cap (1X) on all four sides.</li>
+          <li>Smallest lockup: 20px high on screen, 10mm in print. Smallest mark: 16px or 6mm.</li>
+        </Rules>
+      </DocSection>
+
+      <DocSection title="Beside another mark">
+        <Rules>
+          <li>Match the optical height, not the bounding box.</li>
+          <li>Separate with a vertical rule. Not an ampersand, a slash, a plus or a ×.</li>
+          <li>In a strip of three or more, use the monochrome logo; the other brands keep their colours.</li>
+          <li>Order alphabetically or by the date of the announcement.</li>
+        </Rules>
+      </DocSection>
+
+      <DocSection
+        title="Email signature"
+        lede="The name in Space Grotesk; role and company in IBM Plex Sans; the address, which a machine resolves, in IBM Plex Mono and underlined as a link. No second colour, no slogan, no photograph."
+      >
+        <CodeBlock label="Signature template">{signature}</CodeBlock>
+      </DocSection>
+    </Doc>
   );
 }
 
-const meta = { title: "Foundations/Logo", tags: ["layer:foundation"] } satisfies Meta;
+const meta = {
+  title: "Foundations/Logo",
+  tags: ["layer:foundation"],
+  parameters: { layout: "fullscreen" },
+} satisfies Meta;
 export default meta;
 
-export const Lockup: StoryObj = { render: () => <Lockups /> };
+export const Logo: StoryObj = { render: () => <LogoPage /> };

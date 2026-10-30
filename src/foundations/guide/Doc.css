@@ -1,0 +1,55 @@
+.di-doc {
+  max-width: 1120px;
+}
+
+.di-doc-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--di-space-16);
+  min-width: 0;
+}
+
+.di-doc-prose,
+.di-doc-rules {
+  max-width: var(--di-measure-prose);
+}
+
+.di-doc-prose {
+  display: flex;
+  flex-direction: column;
+  gap: var(--di-space-12);
+}
+
+.di-doc-prose p,
+.di-doc-rules {
+  margin: 0;
+  font-size: var(--di-font-size-400);
+  line-height: 1.55;
+  color: var(--di-text);
+}
+
+.di-doc-rules {
+  display: flex;
+  flex-direction: column;
+  gap: var(--di-space-8);
+  padding-inline-start: var(--di-space-16);
+}
+
+.di-doc-rules li::marker {
+  color: var(--di-text-subtle);
+}
+
+.di-doc code {
+  font-family: var(--di-font-code);
+  font-size: 0.93em;
+  padding: 0 var(--di-space-4);
+  border-radius: var(--di-radius-micro);
+  background: var(--di-bg-subtle);
+  overflow-wrap: anywhere;
+}
+
+.di-doc .di-codeblock code,
+.di-doc pre code {
+  padding: 0;
+  background: none;
+}

@@ -212,7 +212,7 @@ primary action, the command bar, the tab strip. 40 is a table row.
 compact; `DensityProvider` sets `data-density` on the root, and any region may
 set it on its own element. Density scales every size and inset, and a `size`
 (sm, md, lg) stays a role: never pick a smaller size to make a screen denser.
-Compact keeps 40px targets on a touch screen. `Foundations/Density` has the
+Compact keeps 40px targets on a touch screen. `Foundations/Scale` has the
 matrix.
 
 **The index column** — 38px (`--di-index-col`): the ordinal of a row in
@@ -221,7 +221,7 @@ Nothing else carries a number of its own.
 
 ### What this system refuses
 
-`Foundations/Decisions` is the record, with a reason on every line. The short
+The end of `Foundations/Register` is the record, with a reason on every line. The short
 version, because a generator that does not know these will reach for them:
 
 - **No undo-first.** Every action is confirmed *before* it runs, stating basis,
