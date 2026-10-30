@@ -70,8 +70,8 @@
   }
 
   .di-disclosure:has(> .di-disclosure-heading > button.di-disclosure-head:focus-visible) {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   .di-disclosure-lead {
@@ -156,8 +156,8 @@
   }
 
   .di-disclosure-toggle:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   /* A finger gets the full target; the chevron keeps its size. */
@@ -200,8 +200,11 @@
   }
 
   /* clip, not hidden: it does not become a scroll container, so a table's sticky head still sticks. */
+  /* The clip reaches a ring width past the content on every side, so a control at the edge keeps its ring. */
   .di-disclosure-clip {
     min-height: 0;
+    margin: calc(-1 * var(--di-focus-ring-reach));
+    padding: var(--di-focus-ring-reach);
     overflow: clip;
   }
 

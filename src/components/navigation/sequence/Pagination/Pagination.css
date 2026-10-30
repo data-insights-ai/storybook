@@ -93,9 +93,19 @@
     outline: none;
   }
 
+  /* The pages stand side by side with no gap: the ring is drawn inside the one in focus. */
+  .di-page-btn:focus-visible {
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
+  /* Drawn inside the strong fill, the ring takes the focus colour made for it. */
+  .di-page-btn.is-current {
+    --di-focus-ring-color: var(--di-focus-ring-on-strong);
+  }
+
   .di-page-arrow:focus-visible::before {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-page-btn:disabled {

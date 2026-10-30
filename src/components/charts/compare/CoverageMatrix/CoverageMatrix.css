@@ -15,8 +15,8 @@
   }
 
   .di-matrix:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: var(--di-space-2);
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   /*

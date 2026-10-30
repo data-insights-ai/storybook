@@ -61,8 +61,8 @@
   }
 
   button.di-step-button:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   .di-step-bullet {
@@ -329,6 +329,7 @@
     --di-text-muted: var(--di-inverse-muted);
     --di-text-subtle: var(--di-inverse-muted);
     --di-focus: var(--di-inverse-focus);
+    --di-focus-ring-color: var(--di-inverse-focus);
     --di-border: var(--di-inverse-border);
     --di-border-strong: var(--di-inverse-raised);
     --di-fill-strong: var(--di-inverse-text);

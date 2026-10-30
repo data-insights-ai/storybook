@@ -80,6 +80,17 @@
     background: var(--di-row-hover-bg);
   }
 
+  /* A framed chip: the ring sits on its frame, so a set edge and the ring read as one thicker edge. */
+  button.di-tag:focus-visible,
+  .di-tag:has(> .di-tag-press:focus-visible) {
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: 0;
+  }
+
+  .di-tag-press:focus-visible {
+    outline: none;
+  }
+
   /* Set: the one selection look, a tint with the cornflower edge, never a second outline. */
   .di-tag.is-pressed {
     border-color: var(--di-choice-selected-edge);
@@ -154,9 +165,12 @@
   }
 
   /* Compact: one line; a tag that does not fit is cut, never wrapped. */
+  /* The cut reaches a ring width past the tags, so the one in focus keeps its ring. */
   .di-tag-list.is-compact {
     flex-wrap: nowrap;
     min-width: 0;
+    margin: calc(-1 * var(--di-focus-ring-reach));
+    padding: var(--di-focus-ring-reach);
     overflow: hidden;
   }
 

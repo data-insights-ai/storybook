@@ -22,6 +22,21 @@
     gap: var(--di-gap-8);
   }
 
+  /*
+   * The native input lies over its whole cell, unseen: a click lands on it,
+   * and Tab scrolls the whole cell into view, ring and all, rather than a
+   * pixel of it.
+   */
+  .di-choice-cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
+  }
+
   /* A joined row the height of a field. It never runs past its container: what does not fit wraps. */
   .di-choice-segments {
     display: inline-flex;
@@ -110,9 +125,12 @@
     border-color: var(--di-choice-on-bg);
   }
 
-  .di-choice-toggle:has(:focus-visible) {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+  /* A framed cell: the ring sits on its frame, so a chosen edge and the ring read as one thicker edge. */
+  .di-choice-toggle:has(:focus-visible),
+  .di-choice-card:has(:focus-visible) {
+    z-index: 1;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: 0;
   }
 
   .di-choice-toggle:has(:disabled) {
@@ -128,11 +146,11 @@
     color: var(--di-bg-disabled);
   }
 
-  .di-choice-segment:has(:focus-visible),
-  .di-choice-card:has(:focus-visible) {
+  /* A segment touches its neighbours inside the track: the ring is drawn inside it. */
+  .di-choice-segment:has(:focus-visible) {
     z-index: 1;
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-choice-segment:has(:disabled),

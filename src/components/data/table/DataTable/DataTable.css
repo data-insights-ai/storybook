@@ -53,6 +53,11 @@
     overflow-x: auto;
   }
 
+  /* The frame takes focus to scroll by key; its ring is drawn inside the frame that clips it. */
+  .di-table-scroll:focus-visible {
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
   .di-table {
     width: 100%;
     border-collapse: collapse;

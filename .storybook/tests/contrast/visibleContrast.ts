@@ -39,13 +39,13 @@ export type ContrastFinding = {
   expected: number;
 };
 
-type Rgba = { r: number; g: number; b: number; a: number };
+export type Rgba = { r: number; g: number; b: number; a: number };
 type Paint = Rgba | string | null;
 
 const sample = new OffscreenCanvas(1, 1).getContext("2d", { willReadFrequently: true })!;
 
 /** Any CSS colour the browser computes (rgb, color(), oklch, keywords) through the canvas, which speaks all of them. */
-function parse(colour: string): Rgba | null {
+export function parse(colour: string): Rgba | null {
   if (!colour || colour === "none") return null;
   sample.clearRect(0, 0, 1, 1);
   sample.fillStyle = "rgba(0, 0, 0, 0)";
@@ -57,7 +57,7 @@ function parse(colour: string): Rgba | null {
 
 const isPaintServer = (value: string) => value.startsWith("url(");
 
-function over(top: Rgba, bottom: Rgba): Rgba {
+export function over(top: Rgba, bottom: Rgba): Rgba {
   const a = top.a + bottom.a * (1 - top.a);
   if (a === 0) return { r: 0, g: 0, b: 0, a: 0 };
   const mix = (t: number, b: number) => (t * top.a + b * bottom.a * (1 - top.a)) / a;
@@ -72,7 +72,7 @@ function luminance({ r, g, b }: Rgba) {
   return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
 }
 
-function ratio(a: Rgba, b: Rgba) {
+export function ratio(a: Rgba, b: Rgba) {
   const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
   return (hi + 0.05) / (lo + 0.05);
 }

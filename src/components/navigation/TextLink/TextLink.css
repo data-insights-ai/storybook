@@ -23,6 +23,18 @@
       text-decoration-color var(--di-duration) var(--di-ease);
   }
 
+  /*
+   * In running text the line above and below sit close: the ring hugs the
+   * words, and a button link keeps the height of its words, not of the line.
+   */
+  .di-textlink:focus-visible {
+    outline-offset: 0;
+  }
+
+  button.di-textlink {
+    line-height: var(--di-leading-snug);
+  }
+
   .di-textlink:hover:not(:disabled) {
     color: var(--di-text-press);
     text-decoration-color: var(--di-text);

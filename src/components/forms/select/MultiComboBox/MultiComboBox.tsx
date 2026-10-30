@@ -1,5 +1,6 @@
 import { useRef, useState, type FocusEvent, type KeyboardEvent, type MouseEvent, type ReactNode } from "react";
 import { Check, ChevronDown } from "lucide-react";
+import { flushSync } from "react-dom";
 import { Combobox } from "@base-ui/react/combobox";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
@@ -126,6 +127,8 @@ export function MultiComboBox({
   };
   const remove = (value: string) => set(chosen.filter((v) => v !== value));
   const keyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    // Tab leaves the field: the list closes before focus moves on, so it never covers the next control.
+    if (event.key === "Tab" && visible) flushSync(() => setOpen(false));
     if (freeEntry) {
       const listChoosing = visible && event.currentTarget.hasAttribute("aria-activedescendant");
       if (free.keyDown(event, { listChoosing }) && listed) {

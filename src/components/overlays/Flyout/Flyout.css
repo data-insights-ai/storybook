@@ -112,8 +112,8 @@
   }
 
   .di-flyout-item:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: -2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   /* The dot sits on the centre of the title's first line. */
