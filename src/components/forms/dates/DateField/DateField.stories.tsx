@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateField, defaultDateFieldLabels } from "./DateField";
 import { Grid } from "../../../layout/arrangement/Grid";
-import { Modal, ModalContent, ModalTitle } from "../../../overlays/Modal";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalFrame, ModalTitle } from "../../../overlays/Modal";
 import { Button } from "../../../actions/Button";
 
 const meta = {
@@ -88,17 +88,83 @@ export const Bounded: Story = {
   args: { value: "2026-10-29", min: "2026-10-29", hint: "From today on." },
 };
 
-export const WithError: Story = {
-  args: { value: "2026-10-01", hint: "The last day comes before the first.", hintTone: "error" },
+const cell = (canvasElement: HTMLElement, name: RegExp) =>
+  within(canvasElement.ownerDocument.body).getByRole("button", { name });
+
+/**
+ * Open, the calendar shows the chosen day in the selection colour (cornflower, not the navy of an action),
+ * today with a quiet ring, and the days before `min` greyed. It rests open.
+ */
+export const CalendarOpen: Story = {
+  args: { value: "2026-10-20", min: "2026-10-12", hint: "From 12 October on." },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: /Choose a date/ }));
+    const chosen = cell(canvasElement, /20 October 2026/);
+    await waitFor(() => expect(chosen).toHaveFocus());
+    await expect(chosen).toHaveAttribute("data-selected");
+    await expect(getComputedStyle(chosen).boxShadow).not.toBe("none");
+    await expect(cell(canvasElement, /11 October 2026/)).toBeDisabled();
+    const popup = canvasElement.ownerDocument.querySelector(".di-date-field-popover")!.getBoundingClientRect();
+    await expect(popup.right).toBeLessThanOrEqual(canvasElement.ownerDocument.documentElement.clientWidth);
+  },
 };
 
-/** German writes the day first and starts the week on Monday. */
+export const WithError: Story = {
+  args: {
+    value: "2026-10-01",
+    min: "2026-10-12",
+    hint: "The first day can be 12 October at the earliest.",
+    hintTone: "error",
+  },
+};
+
+export const Required: Story = { args: { required: true, hint: "The day the export starts from." } };
+
+export const Disabled: Story = { args: { value: "2026-10-29", disabled: true } };
+
+/**
+ * A day to read, not to change: the inset tone without a frame and in full ink, as a read-only text field, and
+ * no calendar button. Disabled, by contrast, greys the text. The segments stay focusable, so the day can be read
+ * out and copied.
+ */
+export const ReadOnly: Story = {
+  render: function Render(args) {
+    return (
+      <div style={{ display: "grid", gap: "var(--di-rhythm-field)", maxWidth: "320px" }}>
+        <DateField {...args} id="created" label="Created" value="2026-10-29" readOnly />
+        <DateField {...args} id="archived" label="Archived" value="2026-10-29" disabled />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const [readOnly, disabled] = canvas.getAllByRole("group");
+    const look = (element: HTMLElement) => getComputedStyle(element);
+    await expect(look(disabled).borderTopColor).not.toBe("rgba(0, 0, 0, 0)");
+    await expect(look(readOnly).borderTopColor).toBe("rgba(0, 0, 0, 0)");
+    await expect(look(readOnly).color).not.toBe(look(disabled).color);
+    await expect(within(readOnly).queryByRole("button")).toBeNull();
+    await expect(within(readOnly).getAllByRole("spinbutton")[0]).toHaveAttribute("aria-readonly", "true");
+  },
+};
+
+/**
+ * German writes the day first, starts the week on Monday and names the months in German. A long label wraps above
+ * the control; the calendar rests open.
+ */
 export const German: Story = {
   args: {
     locale: "de-DE",
-    label: "Erster Tag",
+    label: "Erster Tag des Aufbewahrungszeitraums für Ereignisprotokolle",
     value: "2026-10-29",
+    required: true,
+    hint: "Ältere Ereignisse werden nach Ablauf der Frist gelöscht.",
     labels: { calendar: "Datum wählen", previous: "Vorheriger Monat", next: "Nächster Monat" },
+  },
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "Datum wählen" }));
+    const page = within(canvasElement.ownerDocument.body);
+    await waitFor(() => expect(page.getByText("Oktober 2026", { selector: ".di-calendar-heading" })).toBeVisible());
   },
 };
 
@@ -111,27 +177,51 @@ export const Period: Story = {
     const [from, setFrom] = useState("2026-10-01");
     const [to, setTo] = useState("2026-10-31");
     return (
-      <Grid min="160px">
-        <DateField {...args} id="period-from" label="First day" value={from} onChange={setFrom} />
-        <DateField {...args} id="period-to" label="Last day" value={to} min={from} onChange={setTo} />
-      </Grid>
+      <div style={{ maxWidth: "400px" }}>
+        <Grid min="160px">
+          <DateField {...args} id="period-from" label="First day" value={from} onChange={setFrom} />
+          <DateField {...args} id="period-to" label="Last day" value={to} min={from} onChange={setTo} />
+        </Grid>
+      </div>
     );
   },
 };
 
-/** Inside a modal the calendar stays within the dialog's inert boundary. */
+/**
+ * Inside a modal the calendar opens within the dialog's inert boundary; Esc closes the calendar, not the dialog.
+ * The story rests with the dialog open.
+ */
 export const InModal: Story = {
+  play: async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(page.getByRole("button", { name: "Grant access" }));
+    const modal = await page.findByRole("dialog", { name: "Grant access" });
+    await userEvent.click(within(modal).getByRole("button", { name: /Choose a date/ }));
+    await waitFor(() => expect(modal.querySelector(".di-date-field-popover")).not.toBeNull());
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(modal.querySelector(".di-date-field-popover")).toBeNull());
+    await expect(modal).toBeVisible();
+  },
   render: function Render(args) {
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState("");
     return (
       <>
-        <Button onClick={() => setOpen(true)}>Open</Button>
+        <Button onClick={() => setOpen(true)}>Grant access</Button>
         <Modal open={open} labelledBy="grant-title" onClose={() => setOpen(false)}>
-          <ModalContent>
-            <ModalTitle id="grant-title">Grant access</ModalTitle>
-            <DateField {...args} id="expires" label="Expires" value={value} onChange={setValue} />
-          </ModalContent>
+          <ModalFrame>
+            <ModalContent>
+              <ModalTitle id="grant-title">Grant access</ModalTitle>
+              <ModalBody>The auditor can read the register until the day you set.</ModalBody>
+              <DateField {...args} id="expires" label="Expires" value={value} onChange={setValue} />
+            </ModalContent>
+            <ModalFooter>
+              <Button variant="secondary" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => setOpen(false)}>Grant access</Button>
+            </ModalFooter>
+          </ModalFrame>
         </Modal>
       </>
     );

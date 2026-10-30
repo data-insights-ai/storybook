@@ -64,7 +64,40 @@ export const TwelveHours: Story = { args: { locale: "en-US", value: "18:30" } };
 
 export const WithHint: Story = { args: { hint: "In Europe/Vienna." } };
 
+export const WithError: Story = {
+  args: { value: "05:30", hint: "Reports go out between 06:00 and 22:00.", hintTone: "error" },
+};
+
 export const Disabled: Story = { args: { disabled: true } };
+
+/** A time to read, not to change: the inset tone without a frame, in full ink; disabled greys it instead. */
+export const ReadOnly: Story = {
+  render: function Render(args) {
+    return (
+      <div style={{ display: "grid", gap: "var(--di-rhythm-field)", maxWidth: "240px" }}>
+        <TimeField {...args} id="sent-at" label="Sent at" value="08:00" readOnly />
+        <TimeField {...args} id="paused-at" label="Paused at" value="08:00" disabled />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const [readOnly, disabled] = within(canvasElement).getAllByRole("group");
+    await expect(getComputedStyle(disabled).borderTopColor).not.toBe("rgba(0, 0, 0, 0)");
+    await expect(getComputedStyle(readOnly).borderTopColor).toBe("rgba(0, 0, 0, 0)");
+    await expect(getComputedStyle(readOnly).color).not.toBe(getComputedStyle(disabled).color);
+  },
+};
+
+/** A long German label wraps above the control; the control keeps its width. */
+export const German: Story = {
+  args: {
+    locale: "de-DE",
+    label: "Tägliche Zusammenfassung versenden um",
+    value: "07:30",
+    required: true,
+    hint: "In der Zeitzone Europe/Berlin.",
+  },
+};
 
 /** A window from one time to another, the way quiet hours are set. */
 export const Window: Story = {
@@ -72,17 +105,19 @@ export const Window: Story = {
     const [start, setStart] = useState("22:00");
     const [end, setEnd] = useState("07:00");
     return (
-      <Grid min="160px">
-        <TimeField {...args} id="quiet-from" label="From" value={start} onChange={setStart} />
-        <TimeField
-          {...args}
-          id="quiet-until"
-          label="Until"
-          value={end}
-          hint={end <= start ? "Runs past midnight." : ""}
-          onChange={setEnd}
-        />
-      </Grid>
+      <div style={{ maxWidth: "400px" }}>
+        <Grid min="160px">
+          <TimeField {...args} id="quiet-from" label="From" value={start} onChange={setStart} />
+          <TimeField
+            {...args}
+            id="quiet-until"
+            label="Until"
+            value={end}
+            hint={end <= start ? "Runs past midnight." : ""}
+            onChange={setEnd}
+          />
+        </Grid>
+      </div>
     );
   },
 };
