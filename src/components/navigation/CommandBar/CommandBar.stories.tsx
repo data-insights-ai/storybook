@@ -144,6 +144,54 @@ export const Typing: Story = {
   },
 };
 
+/** The colour a zone is painted with: its own, or the first one behind it. */
+function ground(el: Element | null): string {
+  for (let at = el; at; at = at.parentElement) {
+    const colour = getComputedStyle(at).backgroundColor;
+    if (colour !== "rgba(0, 0, 0, 0)" && colour !== "transparent") return colour;
+  }
+  return "";
+}
+
+/**
+ * Three zones a step apart in tone (the field, the results, the quiet foot),
+ * every zone's text on one edge, the highlight inside the results' inset,
+ * and an answer's note under the answer it qualifies.
+ */
+async function zonesAndEdges(canvasElement: HTMLElement) {
+  const bar = canvasElement.querySelector<HTMLElement>(".di-command")!;
+  const input = bar.querySelector(".di-command-input")!;
+  const list = bar.querySelector(".di-command-list")!;
+  const foot = bar.querySelector(".di-command-foot")!;
+  await expect(ground(foot)).not.toBe(ground(list));
+  await expect(ground(foot)).not.toBe(ground(input));
+  await expect(ground(list)).not.toBe(ground(input));
+  await expect(foot.compareDocumentPosition(list) & Node.DOCUMENT_POSITION_PRECEDING).toBeTruthy();
+  const edge = bar.getBoundingClientRect().left + parseFloat(getComputedStyle(bar).borderLeftWidth);
+  const left = (el: Element) => el.getBoundingClientRect().left - edge;
+  const text = (el: Element) => left(el) + parseFloat(getComputedStyle(el).paddingLeft);
+  const textEdge = left(bar.querySelector(".di-command-icon")!);
+  for (const el of [
+    ...bar.querySelectorAll(".di-command-group-label"),
+    ...bar.querySelectorAll(".di-command-row-icon"),
+    foot.firstElementChild!.firstElementChild ?? foot.firstElementChild!,
+  ]) {
+    await expect(Math.abs(text(el) - textEdge)).toBeLessThanOrEqual(0.5);
+  }
+  const highlighted = bar.querySelector(".di-option[data-highlighted]");
+  if (highlighted) {
+    await expect(left(highlighted)).toBeGreaterThanOrEqual(4);
+    await expect(left(highlighted)).toBeLessThan(textEdge);
+    await expect(ground(highlighted)).not.toBe(ground(list));
+  }
+  for (const answer of bar.querySelectorAll(".di-command-answer")) {
+    const words = answer.querySelector(".di-option-label")!.getBoundingClientRect();
+    const note = answer.querySelector(".di-option-meta")!.getBoundingClientRect();
+    await expect(note.top).toBeGreaterThanOrEqual(words.bottom - 0.5);
+    await expect(Math.abs(note.left - words.left)).toBeLessThanOrEqual(0.5);
+  }
+}
+
 /**
  * A query that matched records and also produced an answer. The answer
  * wears the ring, so it never reads as one of the records, and it wraps
@@ -178,6 +226,13 @@ export const WithResults: Story = {
       </>
     ),
   },
+  play: async ({ canvasElement }) => {
+    await zonesAndEdges(canvasElement);
+    const hints = Array.from(canvasElement.querySelectorAll(".di-command-hint"));
+    await expect(hints.map((hint) => hint.querySelector("kbd")?.textContent)).toEqual(["↑↓", "↵", "esc"]);
+    const foot = canvasElement.querySelector(".di-command-foot")!;
+    await expect(foot.lastElementChild).toHaveTextContent("local processing");
+  },
 };
 
 /** A query with nothing behind it. The bar says so, as a status, instead of offering an option that does nothing. */
@@ -196,6 +251,7 @@ export const NoResults: Story = {
 
 /** Where the query goes is stated, not implied. */
 export const External: Story = {
+  play: async ({ canvasElement }) => zonesAndEdges(canvasElement),
   args: {
     value: "summarise the last seal",
     privacyNote: "sent to the model · eu-central",
@@ -214,6 +270,11 @@ export const External: Story = {
 
 /** German labels run longest; a row wraps between words and its key stays on the first line. */
 export const LongGermanLabels: Story = {
+  play: async ({ canvasElement }) => {
+    await zonesAndEdges(canvasElement);
+    const hints = Array.from(canvasElement.querySelectorAll(".di-command-hint"));
+    await expect(hints.map((hint) => hint.textContent)).toEqual(["↑↓bewegen", "↵öffnen", "escschließen"]);
+  },
   args: {
     label: "Navigieren, suchen oder fragen",
     placeholder: "Gehe zu, suche oder frage",
