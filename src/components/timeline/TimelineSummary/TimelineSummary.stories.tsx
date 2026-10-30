@@ -187,6 +187,23 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
   );
 }
 
+/** Waits for the strip, then checks every episode row carries its mark at one x and no record change has one. */
+async function marksInOneColumn(canvasElement: HTMLElement) {
+  await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
+  const rows = [...canvasElement.querySelectorAll(".di-tsummary-row")];
+  await expect(rows.length).toBeGreaterThan(0);
+  const lefts = new Set(
+    rows.map((row) => {
+      const mark = row.querySelector(".di-tsummary-tone .di-sev");
+      return mark ? Math.round(mark.getBoundingClientRect().left) : NaN;
+    }),
+  );
+  await expect([...lefts].some(Number.isNaN)).toBe(false);
+  await expect(lefts.size).toBe(1);
+  await expect(canvasElement.querySelector(".di-tsummary-head .di-sev")).toBeNull();
+  await expect(canvasElement.querySelector(".di-tsummary-note .di-sev")).toBeNull();
+}
+
 const meta = {
   title: "Timeline/TimelineSummary",
   component: TimelineSummary,
@@ -206,9 +223,7 @@ const meta = {
     onEpisodePick: fn(),
   },
   // The strip lays its blocks out once it knows its width; the checks after a story measure the drawn strip.
-  play: async ({ canvasElement }) => {
-    await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
-  },
+  play: async ({ canvasElement }) => marksInOneColumn(canvasElement),
   decorators: [
     (Story) => (
       <Panel>
@@ -255,7 +270,7 @@ export const Default: Story = {
     const list = await canvas.findByRole("list", {
       name: "Episodes and record changes, oldest first",
     });
-    await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
+    await marksInOneColumn(canvasElement);
     const [first] = within(list).getAllByRole("button");
     await expect(first).toHaveAttribute("aria-pressed", "false");
     await userEvent.click(first);
@@ -287,17 +302,15 @@ const inIntakeOrExport = (event: SampleEvent) => event.lane === "intake" || even
 
 /**
  * The same three days narrowed to two stages, Intake and Export: their
- * episodes differ in tone, so each row carries its own mark, in a column
- * of one width down the list.
+ * episodes differ in tone, and each row carries its own mark in the same
+ * end column as in every other summary.
  */
 export const MixedSeverity: Story = {
   render: (args) => <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} sampleFocus={inIntakeOrExport} />,
   play: async ({ canvasElement }) => {
-    await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
-    const marks = canvasElement.querySelectorAll(".di-tsummary-row .di-sev");
-    await expect(marks.length).toBeGreaterThan(1);
-    const lefts = new Set([...marks].map((mark) => Math.round(mark.getBoundingClientRect().left)));
-    await expect(lefts.size).toBe(1);
+    await marksInOneColumn(canvasElement);
+    const words = [...canvasElement.querySelectorAll(".di-tsummary-row .di-sev-label")].map((w) => w.textContent);
+    await expect(new Set(words).size).toBeGreaterThan(1);
   },
 };
 
@@ -309,7 +322,7 @@ const GERMAN_LANES: TimelineLane[] = [
   { id: "export", label: "Export an Empfängersysteme" },
 ];
 
-/** Long German lane names and meta: the rows wrap between words, the severity stays in its column. */
+/** Long German lane names and meta: the rows wrap between words, every row keeps its severity in the end column. */
 export const German: Story = {
   args: {
     title: "Was geschah",
