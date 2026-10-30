@@ -26,11 +26,36 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * The state reads without colour: a check where a step is done, a number
+ * where it is not, a filled bullet and a heavier name for the current step,
+ * and every bullet the same size whatever it holds.
+ */
+async function statesWithoutColour(canvasElement: HTMLElement) {
+  const bullets = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-step-bullet"));
+  for (const [i, bullet] of bullets.entries()) {
+    const done = bullet.classList.contains("is-done");
+    await expect(bullet.querySelector("svg") !== null).toBe(done);
+    await expect(bullet.textContent).toBe(done ? "" : String(i + 1));
+    const box = bullet.getBoundingClientRect();
+    await expect([box.width, box.height]).toEqual([22, 22]);
+  }
+  const current = canvasElement.querySelector<HTMLElement>(".di-step-bullet.is-current");
+  const upcoming = canvasElement.querySelector<HTMLElement>(".di-step-bullet.is-upcoming");
+  if (current && upcoming) {
+    await expect(getComputedStyle(current).backgroundColor).not.toBe(getComputedStyle(upcoming).backgroundColor);
+    await expect(getComputedStyle(upcoming).borderColor).not.toBe(getComputedStyle(upcoming).backgroundColor);
+    const weight = (selector: string) => Number(getComputedStyle(canvasElement.querySelector(selector)!).fontWeight);
+    await expect(weight(".di-step-label.is-current")).toBeGreaterThan(weight(".di-step-label.is-upcoming"));
+  }
+}
+
 /** A bounded process, and only that. It never stands in for the rail. */
 export const InProgress: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Current step")).toBeInTheDocument();
+    await statesWithoutColour(canvasElement);
   },
 };
 
@@ -65,6 +90,7 @@ export const Complete: Story = {
       { label: "Publish", state: "done" },
     ],
   },
+  play: async ({ canvasElement }) => statesWithoutColour(canvasElement),
 };
 
 /** Two steps: the shortest bounded process worth a stepper. */
@@ -117,5 +143,25 @@ export const Inline: StoryObj<typeof meta> = {
     await expect(Math.round(bullets[0].left)).toBe(Math.round(list.left));
     for (const bullet of bullets) await expect(Math.round(bullet.top)).toBe(Math.round(bullets[0].top));
     await expect(bullets[bullets.length - 1].left - bullets[0].left).toBeLessThan(600);
+    await statesWithoutColour(canvasElement);
+  },
+};
+
+/** On a phone only the current step keeps its name; the bullets keep their size and their marks. */
+export const Phone: StoryObj<typeof meta> = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  play: async ({ canvasElement }) => {
+    await expect(window.innerWidth).toBe(390);
+    await statesWithoutColour(canvasElement);
+  },
+};
+
+/** Inline on a phone: the same bullets, one line. */
+export const InlinePhone: StoryObj<typeof meta> = {
+  args: { layout: "inline" },
+  globals: { viewport: { value: "phone", isRotated: false } },
+  play: async ({ canvasElement }) => {
+    await expect(window.innerWidth).toBe(390);
+    await statesWithoutColour(canvasElement);
   },
 };

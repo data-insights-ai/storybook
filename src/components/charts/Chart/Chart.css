@@ -9,7 +9,7 @@
     font-size: var(--di-font-size-200);
   }
 
-  .di-chart .recharts-cartesian-axis-tick text {
+  .di-chart .recharts-cartesian-axis-tick-value {
     fill: var(--di-text-muted);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);

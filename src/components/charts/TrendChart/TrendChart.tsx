@@ -29,6 +29,8 @@ const toneColor: Record<TrendTone, string> = {
 };
 
 const markerColor = { neutral: "var(--di-text-muted)", warn: "var(--di-chart-warn)", danger: "var(--di-chart-danger)" };
+// The rule takes the chart colour; its label is text and takes the status ink, which reads at 4.5:1.
+const markerInk = { neutral: "var(--di-text-muted)", warn: "var(--di-status-warn-fg)", danger: "var(--di-status-danger-fg)" };
 
 /**
  * Values over time, from one datum per period: `{ at: "2026-10-01", seats: 4 }`.
@@ -126,7 +128,7 @@ export function TrendChart({
             x={m.at}
             stroke={markerColor[m.tone ?? "neutral"]}
             strokeDasharray="3 3"
-            label={{ value: m.label, position: "insideTopRight", fill: markerColor[m.tone ?? "neutral"], fontSize: 11 }}
+            label={{ value: m.label, position: "insideTopRight", fill: markerInk[m.tone ?? "neutral"], fontSize: 11 }}
           />
         ))}
       </ComposedChart>

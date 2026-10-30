@@ -21,6 +21,7 @@ const families = [
     role: "the seal",
     swatches: [
       ["--di-seal", "#C9A24A", "#0a1f44", "The mark. A fact, recorded."],
+      ["--di-text-on-seal", "#0A1F44", "#c9a24a", "Ink on the filled seal, such as a done step's check. Navy in both themes."],
       ["--di-ai-ring", "#A6811F", "#061631", "The hollow ring. A model's claim."],
       ["--di-seal-ink", "#7A5C0E", "#fcfbf7", "The only gold readable as text on paper."],
       ["--di-gold-400", "#D9B45E", "#0a1f44", "Gold on the night sheet."],
@@ -60,7 +61,8 @@ const night = [
   ["--di-bg-surface", "--di-text", "#0c1b37", "A panel on that ground."],
   ["--di-fill-strong", "--di-text-on-strong", "#c9a24a", "The committing control. Gold, because navy cannot act on navy."],
   ["--di-focus", "--di-text-on-strong", "#d9b45e", "The focus ring follows its ground."],
-  ["--di-seal", "--di-text-on-strong", "#c9a24a", "The seal does not move. A fact is a fact in either theme."],
+  ["--di-seal", "--di-text-on-seal", "#c9a24a", "The seal does not move. A fact is a fact in either theme."],
+  ["--di-text-on-seal", "--di-seal", "#0a1f44", "Its ink does not move either: navy on the seal, 6.8:1."],
   ["--di-seal-ink", "--di-text-on-strong", "#d9b45e", "Gold read as text on navy is Gold 400."],
 ];
 
