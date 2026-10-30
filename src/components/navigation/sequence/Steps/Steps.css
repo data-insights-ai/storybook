@@ -169,9 +169,30 @@
     }
   }
 
-  /* On a phone only the current step keeps its name; the others are their bullets. */
-  @media (max-width: 600px) {
-    .di-step:not([aria-current]) .di-step-label {
+  /* Where the current title is set under the track; elsewhere it sits with its bullet. */
+  .di-steps-now {
+    display: none;
+    flex: 1 0 100%;
+    min-width: 0;
+    font-size: var(--di-font-size-300);
+    font-weight: var(--di-weight-medium);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+    text-wrap: balance;
+    overflow-wrap: break-word;
+  }
+
+  /*
+   * A narrow inline run: every name goes, and the current one is set under
+   * the track, so the bullets stay on one line at any width.
+   */
+  .di-steps[data-layout="inline"] {
+    flex-wrap: wrap;
+    row-gap: var(--di-gap-8);
+  }
+
+  @container (max-width: 600px) {
+    .di-steps[data-layout="inline"] .di-step[aria-current] .di-step-label {
       position: absolute;
       width: 1px;
       height: 1px;
@@ -179,10 +200,31 @@
       clip: rect(0 0 0 0);
     }
 
-    /* A spread run sets out like the inline one, so the current name sits beside its bullet with the width of the row, not a quarter of it. */
+    .di-steps[data-layout="inline"] .di-steps-now {
+      display: block;
+    }
+  }
+
+  /*
+   * On a phone the bullets run edge to edge on one line, joined by lines that
+   * share the width, and the current step's title is set under the track from
+   * its start edge: a long German title then has the row's whole width
+   * instead of squeezing the connectors beside it.
+   */
+  @media (max-width: 600px) {
+    .di-steps[data-variant="progress"] .di-step-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+
     .di-steps[data-layout="spread"] {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
+      row-gap: var(--di-gap-8);
     }
 
     .di-steps[data-layout="spread"] .di-step {
@@ -203,23 +245,11 @@
     }
 
     .di-steps[data-layout="spread"] .di-step-button {
-      flex-direction: row;
-      gap: var(--di-gap-8);
       padding: 0;
-      text-align: left;
     }
 
-    .di-steps[data-variant="progress"] .di-step[aria-current],
-    .di-steps[data-variant="progress"] .di-step[aria-current] .di-step-button {
-      flex-shrink: 1;
-      min-width: 0;
-    }
-
-    .di-steps[data-variant="progress"] .di-step[aria-current] .di-step-label {
-      min-width: 0;
-      white-space: normal;
-      overflow-wrap: break-word;
-      text-wrap: balance;
+    .di-steps[data-layout="spread"] .di-steps-now {
+      display: block;
     }
   }
 

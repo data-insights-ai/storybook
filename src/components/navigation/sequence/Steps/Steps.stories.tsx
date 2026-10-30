@@ -279,12 +279,42 @@ export const Inline: Story = {
   },
 };
 
+/**
+ * Narrow: the bullets stay on one row inside the list, and the current title
+ * is set once under the track, a gap of the scale below it, from the first
+ * bullet's edge, with the row's full width to wrap in.
+ */
+async function titleUnderTheTrack(list: HTMLElement) {
+  const box = list.getBoundingClientRect();
+  const bullets = Array.from(list.querySelectorAll<HTMLElement>(".di-step-bullet")).map((b) =>
+    b.getBoundingClientRect(),
+  );
+  for (const bullet of bullets) {
+    await expect(Math.round(bullet.top)).toBe(Math.round(bullets[0].top));
+    await expect(bullet.right).toBeLessThanOrEqual(box.right + 0.5);
+  }
+  await expect(Math.round(bullets[0].left)).toBe(Math.round(box.left));
+  const now = list.querySelector<HTMLElement>(".di-steps-now")!;
+  const title = now.getBoundingClientRect();
+  await expect(getComputedStyle(now).display).not.toBe("none");
+  await expect(now.textContent).toBe(list.querySelector("[aria-current] .di-step-label")!.textContent);
+  await expect(Math.round(title.left)).toBe(Math.round(box.left));
+  const gap = parseFloat(getComputedStyle(list).rowGap);
+  await expect(gap).toBeGreaterThan(0);
+  await expect(Math.abs(title.top - bullets[0].bottom - gap)).toBeLessThanOrEqual(0.5);
+  for (const label of list.querySelectorAll<HTMLElement>(".di-step-label")) {
+    await expect(label.getBoundingClientRect().width).toBeLessThanOrEqual(1);
+  }
+}
+
 const german = ["Datenquelle verbinden", "Berechtigungen überprüfen", "Einträge versiegeln", "Veröffentlichen"];
 
 /**
  * Long German titles: spread titles wrap under their bullet, never into the
  * next step; inline titles stay on one line until the page is too narrow,
- * then only the current one keeps its name.
+ * then only the current one keeps its name. Narrower still (a phone, or a
+ * side column), the bullets keep one line and the current title moves under
+ * the track.
  */
 export const LongGermanLabels: Story = {
   args: {
@@ -298,6 +328,11 @@ export const LongGermanLabels: Story = {
       <Steps {...args} layout="inline">
         {progress(1, german)}
       </Steps>
+      <div style={{ maxWidth: "18rem" }}>
+        <Steps {...args} layout="inline" label="Registrierung in der Seitenspalte">
+          {progress(1, german)}
+        </Steps>
+      </div>
       <Steps variant="cards" label="Ablauf">
         {german.map((title, i) => (
           <Step key={title} title={title} state={i === 1 ? "current" : undefined}>
@@ -316,21 +351,28 @@ export const LongGermanLabels: Story = {
       await expect(labels[i].right).toBeLessThanOrEqual(label.left + 1);
     }
     for (const label of labels) await expect(label.right).toBeLessThanOrEqual(spread.getBoundingClientRect().right + 1);
-    await statesWithoutColour(canvasElement.querySelector<HTMLElement>(".di-steps")!);
+    await statesWithoutColour(spread);
+    const inline = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-steps[data-layout='inline']"));
+    if (window.innerWidth <= 600) await titleUnderTheTrack(spread);
+    else await expect(getComputedStyle(spread.querySelector(".di-steps-now")!).display).toBe("none");
+    for (const list of inline) {
+      if (list.getBoundingClientRect().width <= 600) await titleUnderTheTrack(list);
+    }
   },
 };
 
-/** On a phone only the current step keeps its name; the bullets keep their size and their marks. */
+/** On a phone the bullets keep one line, their size and their marks; the current step's name is set under them. */
 export const Phone: Story = {
   globals: { viewport: { value: "phone", isRotated: false } },
   render: (args) => <Steps {...args}>{progress(2)}</Steps>,
   play: async ({ canvasElement }) => {
     await expect(window.innerWidth).toBe(390);
     await statesWithoutColour(canvasElement);
+    await titleUnderTheTrack(canvasElement.querySelector<HTMLElement>(".di-steps")!);
   },
 };
 
-/** Inline on a phone: the same bullets, one line. */
+/** Inline on a phone: the same bullets, one line, and the current name under them. */
 export const InlinePhone: Story = {
   args: { layout: "inline" },
   globals: { viewport: { value: "phone", isRotated: false } },
@@ -338,6 +380,7 @@ export const InlinePhone: Story = {
   play: async ({ canvasElement }) => {
     await expect(window.innerWidth).toBe(390);
     await statesWithoutColour(canvasElement);
+    await titleUnderTheTrack(canvasElement.querySelector<HTMLElement>(".di-steps")!);
   },
 };
 
