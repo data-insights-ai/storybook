@@ -1,14 +1,18 @@
+import { Check } from "lucide-react";
 import { cx } from "../../../internal/cx";
 import "./Stepper.css";
 
 /**
  * A bounded process, and only that. A stepper never stands in for the
  * rail or the breadcrumb. `spread` spans the width of what it heads, the
- * steps spread evenly, each a numbered bullet with its name beneath.
+ * steps spread evenly, each a bullet with its name beneath.
  * `inline` sets the steps in one line from the left edge, each name beside
- * its bullet, for a page wide enough that spread steps would drift apart. The state
- * is a word for a screen reader, not only a filled bullet. With `onStep`
- * a completed step is a button that returns to it.
+ * its bullet, for a page wide enough that spread steps would drift apart.
+ * The state never rests on colour alone: a done step shows a check in place
+ * of its number, the current step a filled bullet and a heavier name, an
+ * upcoming step an outlined bullet with its number, and each state is a word
+ * for a screen reader. With `onStep` a completed step is a button that
+ * returns to it.
  */
 export function Stepper({
   label,
@@ -33,7 +37,7 @@ export function Stepper({
         const inner = (
           <>
             <span className={cx("di-step-bullet", `is-${step.state}`)} aria-hidden>
-              {i + 1}
+              {step.state === "done" ? <Check className="di-step-check" /> : i + 1}
             </span>
             <span className={cx("di-step-label", `is-${step.state}`)}>{step.label}</span>
             <span className="di-sr">{stateLabels[step.state]}</span>

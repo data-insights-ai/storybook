@@ -15,7 +15,8 @@ const chromium = () => ({
 });
 
 /**
- * Every story runs once per theme, so the axe check (`a11y: { test: "error" }`) sees the dark remap as well.
+ * Every story runs once per theme, so the axe check (`a11y: { test: "error" }`) sees the dark remap as well, and
+ * `.storybook/contrast` measures the text axe leaves incomplete.
  * `initialGlobals` pins the toolbar global for the whole project; a story's own `globals` still win.
  * https://storybook.js.org/docs/writing-tests/integrations/vitest-addon
  */
@@ -28,7 +29,7 @@ function stories(name: string, theme: "light" | "dark", setupFiles: string[] = [
         initialGlobals: { theme },
       }),
     ],
-    test: { name, setupFiles, browser: chromium() },
+    test: { name, setupFiles: ["./.storybook/contrast/vitest.setup.ts", ...setupFiles], browser: chromium() },
   };
 }
 

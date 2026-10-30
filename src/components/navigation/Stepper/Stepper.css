@@ -83,6 +83,12 @@
     color: var(--di-text-on-seal);
   }
 
+  .di-step-check {
+    width: 12px;
+    height: 12px;
+    stroke-width: 3;
+  }
+
   .di-step-bullet.is-current {
     border-color: var(--di-fill-strong);
     background: var(--di-fill-strong);
@@ -145,7 +151,7 @@
     white-space: nowrap;
   }
 
-  /* Too narrow for every name on one line: the others are their numbers. */
+  /* Too narrow for every name on one line: the others are their bullets. */
   @container (max-width: 800px) {
     .di-stepper[data-layout="inline"] .di-step:not([aria-current]) .di-step-label {
       position: absolute;
@@ -156,7 +162,7 @@
     }
   }
 
-  /* On a phone only the current step keeps its name; the others are their numbers. */
+  /* On a phone only the current step keeps its name; the others are their bullets. */
   @media (max-width: 600px) {
     .di-step:not([aria-current]) .di-step-label {
       position: absolute;

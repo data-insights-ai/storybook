@@ -169,7 +169,6 @@
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     line-height: 1;
-    opacity: 0.75;
   }
 
   @media (pointer: coarse) {
