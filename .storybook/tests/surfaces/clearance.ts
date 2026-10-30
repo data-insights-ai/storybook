@@ -17,7 +17,7 @@ const FULL_BLEED: [selector: string, reason: string][] = [
   ["[role=listbox], [role=menu], [role=option], [role=menuitem]", "menu and option rows span their popover"],
   ["img, video, canvas, svg, figure", "media is drawn to the edge"],
   ["input, select, textarea, button, a[href]", "a control is its own frame, not a surface"],
-  [".di-command-row, .di-ld-item, .di-accordion-toggle", "a row whose whole width is the target spans its list"],
+  [".di-command-row", "a row whose whole width is the target spans its list"],
   [".di-command-field", "the palette's input is its head, edge to edge"],
   [".di-token-field", "a token field is one control; its chips sit at the field's own inset"],
   [".di-chart-tip", "a chart tooltip is a label, padded at the label scale"],
