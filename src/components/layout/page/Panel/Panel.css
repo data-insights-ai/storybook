@@ -21,7 +21,7 @@
   }
 
   .di-panel-titles {
-    --di-eyebrow-gap: 0;
+    --di-eyebrow-gap: calc(var(--di-gap-8) - var(--di-gap-4));
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;

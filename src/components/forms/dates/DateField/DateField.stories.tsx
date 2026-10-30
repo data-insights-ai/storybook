@@ -160,7 +160,8 @@ export const ReadOnly: Story = {
 
 /**
  * German writes the day first, starts the week on Monday and names the months in German. A long label wraps above
- * the control; the calendar rests open.
+ * the control; the calendar rests open, on the field's start edge and at least as wide, so no word of the hint
+ * stands beside it.
  */
 export const German: Story = {
   args: {
@@ -175,6 +176,14 @@ export const German: Story = {
     await userEvent.click(within(canvasElement).getByRole("button", { name: "Datum wählen" }));
     const page = within(canvasElement.ownerDocument.body);
     await waitFor(() => expect(page.getByText("Oktober 2026", { selector: ".di-calendar-heading" })).toBeVisible());
+    const control = canvasElement.querySelector(".di-date-control")!.getBoundingClientRect();
+    const popup = canvasElement.ownerDocument.querySelector(".di-date-field-popover")!;
+    await waitFor(() => expect(getComputedStyle(popup).opacity).toBe("1"));
+    const box = popup.getBoundingClientRect();
+    // On the field's start edge (the popup keeps 5px from the window's edge) and reaching at least its end.
+    await expect(box.left).toBeGreaterThanOrEqual(control.left - 1);
+    await expect(box.left).toBeLessThanOrEqual(Math.max(control.left, 5) + 1);
+    await expect(box.right).toBeGreaterThanOrEqual(Math.min(control.right, window.innerWidth - 5) - 1);
   },
 };
 

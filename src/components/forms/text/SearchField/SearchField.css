@@ -44,12 +44,14 @@
     outline: none;
   }
 
-  /* The key inside the field is a tone, not a second frame, centred on the field's line. */
+  /*
+   * The key inside the field is the key every control carries (Kbd `onControl`): a tone of the ink, not a second
+   * frame, here of the field's quiet ink, centred on the field's line.
+   */
   .di-search .di-search-kbd {
     flex: none;
     align-self: center;
-    border-color: transparent;
-    background: var(--di-bg-subtle);
+    color: var(--di-text-muted);
   }
 
   .di-search-input::placeholder {

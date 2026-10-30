@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
+import { TextField } from "../../text/TextField";
 import { FieldHint } from "./FieldHint";
 
 const meta = {
@@ -50,7 +51,25 @@ export const Error: Story = {
   args: { tone: "error", children: "This host did not resolve." },
 };
 
-/** Empty text renders nothing at all, so a field can leave it unset. */
+/**
+ * Empty text renders nothing at all, so a field can leave it unset: a `TextField` with no `hint` ends on its
+ * control, with no empty line and no gap under it, and nothing describes the input.
+ */
 export const Empty: Story = {
   args: { children: "" },
+  render: () => (
+    <div style={{ maxWidth: 360 }}>
+      <TextField id="empty-hint-host" label="Host" defaultValue="feed.example.io" />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const field = canvasElement.querySelector(".di-field")!;
+    await expect(field.querySelector(".di-field-hint")).toBeNull();
+    const input = within(canvasElement).getByRole("textbox", { name: "Host" });
+    await expect(input).not.toHaveAttribute("aria-describedby");
+    const control = input.closest(".di-control") ?? input;
+    await expect(Math.abs(field.getBoundingClientRect().bottom - control.getBoundingClientRect().bottom)).toBeLessThan(
+      1,
+    );
+  },
 };

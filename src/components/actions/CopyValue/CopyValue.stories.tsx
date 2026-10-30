@@ -24,6 +24,14 @@ export const Identifier: Story = {
   },
 };
 
+/** The lines a value runs over: one on a wide screen, where a wide fact has the room; at most three on a phone. */
+async function expectFewLines(value: Element) {
+  const range = document.createRange();
+  range.selectNodeContents(value);
+  const lines = new Set(Array.from(range.getClientRects(), (line) => Math.round(line.top))).size;
+  await expect(lines).toBeLessThanOrEqual(window.innerWidth >= 1000 ? 1 : 3);
+}
+
 /** In a fact list, beside the other facts of a record. */
 export const InFacts: Story = {
   render: (args) => (
@@ -37,9 +45,10 @@ export const InFacts: Story = {
 };
 
 /**
- * A long webhook URL. It wraps only at its boundaries — after "//", before
- * "/", "." and "-" — so no word of the address is split on a phone, and the
- * whole value stays readable and checkable.
+ * A long webhook URL, in a `Fact wide` so it takes the list's whole row: one
+ * line on a wide screen. It wraps only at its boundaries — after "//",
+ * before "/", "." and "-" — so no word of the address is split on a phone,
+ * and the whole value stays readable and checkable.
  */
 export const LongAddress: Story = {
   args: {
@@ -48,7 +57,7 @@ export const LongAddress: Story = {
   },
   render: (args) => (
     <FactList layout="columns">
-      <Fact label="Endpoint">
+      <Fact label="Endpoint" wide>
         <CopyValue {...args} />
       </Fact>
       <Fact label="Format">JSON</Fact>
@@ -57,6 +66,7 @@ export const LongAddress: Story = {
   play: async ({ canvasElement }) => {
     const value = canvasElement.querySelector(".di-copy-value")!;
     await expect(value.querySelectorAll("wbr").length).toBeGreaterThan(5);
+    await expectFewLines(value);
   },
 };
 
@@ -69,10 +79,13 @@ export const LongAddressGerman: Story = {
   },
   render: (args) => (
     <FactList layout="columns">
-      <Fact label="Empfangsadresse">
+      <Fact label="Empfangsadresse" wide>
         <CopyValue {...args} />
       </Fact>
       <Fact label="Signaturverfahren">HMAC-SHA256</Fact>
     </FactList>
   ),
+  play: async ({ canvasElement }) => {
+    await expectFewLines(canvasElement.querySelector(".di-copy-value")!);
+  },
 };

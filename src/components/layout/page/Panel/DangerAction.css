@@ -1,7 +1,8 @@
 @layer components {
   /*
    * A row of the danger panel: the action and its cost at the start, the
-   * button at the end, dropping under the text on a narrow panel. Rows are
+   * button at the end, dropping under the text on a narrow panel. Why the
+   * button is blocked sits under it, on its end edge. Rows are
    * a step of space apart, not ruled; only the panel's title is bold, so the
    * action's name is medium weight.
    */
@@ -32,19 +33,23 @@
 
   .di-danger-action-body,
   .di-danger-action-note {
-    margin-top: var(--di-gap-4);
+    margin: var(--di-gap-4) 0 0;
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
   }
 
   .di-danger-action-note {
+    max-inline-size: 32ch;
+    text-align: end;
     color: var(--di-status-warn-fg);
   }
 
   .di-danger-action-control {
     display: flex;
-    flex: none;
-    gap: var(--di-gap-8);
+    flex: 0 1 auto;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-inline-start: auto;
   }
 }

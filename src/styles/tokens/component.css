@@ -21,9 +21,11 @@
     --di-button-secondary-bg: var(--di-bg-surface);
     --di-button-secondary-border: var(--di-border-input);
 
-    /* The distance from an eyebrow to the title under it. A head re-points
-       it rather than the eyebrow guessing which head it sits in. */
-    --di-eyebrow-gap: var(--di-gap-12);
+    /* The distance from an eyebrow to the title under it, the same in every
+       head: a page, a panel, a dialog, a notice. A head whose own column
+       gap already spaces it re-points it to the rest; only the brand tier,
+       with its display-size title, takes a step more. */
+    --di-eyebrow-gap: var(--di-gap-8);
 
     /* One style for every interface label: a field, a stat, a legend, a
        segment, a section's meta. Labels are prose a person reads, so they
