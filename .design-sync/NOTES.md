@@ -76,6 +76,9 @@ values.
   the segment *before* the matched one — `Overlays/Dialog` → export
   `Dialog`, group `overlays`. Since 2026-10-29 every title ends in its
   meta component's name, so the six title renames were removed.
+  Since the 2026-10-30 group move a title is `Group/Component`, or
+  `Group/Sub/Component` in Forms, Text (`Blocks`) and Layout (`Page`, `Arrange`),
+  so those cards group under the sub-folder.
   `AppShell→Console` was **removed 2026-10-16**: `Patterns/AppShell` became the
   slot-based `AppShell` a product renders (meta `component: AppShell`), and
   `Console` is now the Storybook-window variant no product renders and no story

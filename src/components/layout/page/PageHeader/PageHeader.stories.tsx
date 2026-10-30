@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Breadcrumb } from "../../../navigation/Breadcrumb";
 import { Button } from "../../../actions/Button";
-import { Fact, FactList } from "../../../data/records/FactList";
+import { Fact, FactList } from "../../../records/FactList";
 import {
   PageHeader,
   PageHeaderAside,
@@ -13,7 +13,7 @@ import {
   PageHeaderTitle,
 } from "./PageHeader";
 import { Highlight } from "../../../text/Highlight";
-import { StatusPill } from "../../../marks/status/StatusPill";
+import { StatusPill } from "../../../status/StatusPill";
 
 const meta = {
   title: "Layout/Page/PageHeader",

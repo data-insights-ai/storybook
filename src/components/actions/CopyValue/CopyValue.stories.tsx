@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { CopyValue } from "./CopyValue";
-import { Fact, FactList } from "../../data/records/FactList";
+import { Fact, FactList } from "../../records/FactList";
 
 const meta = {
   title: "Actions/CopyValue",

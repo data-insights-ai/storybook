@@ -4,7 +4,7 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Gauge, LogOut, UserRound } from "lucide-react";
 import { AppShellBar } from "../AppShellBar";
 import { AppShellContent } from "../AppShellContent";
-import { Fact, FactList } from "../../data/records/FactList";
+import { Fact, FactList } from "../../records/FactList";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Panel } from "../../layout/page/Panel";
 import {

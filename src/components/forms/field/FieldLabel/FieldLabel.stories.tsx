@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
-import { Stack } from "../../../layout/arrangement/Stack";
+import { Stack } from "../../../layout/arrange/Stack";
 import { ComboBox } from "../../select/ComboBox";
 import { DateRangePicker } from "../../dates/DateRangePicker";
 import { SearchField } from "../../text/SearchField";

@@ -2,22 +2,14 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StrictMode, useEffect, useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
-import { Fact, FactList } from "../../data/records/FactList";
-import {
-  CellStack,
-  DataTable,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHead,
-  TableRow,
-} from "../../data/table/DataTable";
+import { Fact, FactList } from "../../records/FactList";
+import { CellStack, DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
 import { Radio } from "../../forms/choice/Radio";
 import { TextField } from "../../forms/text/TextField";
 import { Page } from "../../layout/page/Page";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
-import { TextLink } from "../../navigation/TextLink";
+import { TextLink } from "../../text/TextLink";
 import { Dialog, DialogFooter } from "./Dialog";
 
 const meta = {

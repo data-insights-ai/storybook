@@ -41,21 +41,22 @@ A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` ho
 
 ### Where a component sits
 
-The Storybook sidebar is grouped by the job a component does:
+The Storybook sidebar is grouped by the question a developer asks, one group per job:
 
 - `Foundations/`: the brand, the tokens and the reasoning behind them. No component lives here.
-- `Actions/`: what a person presses: `Button` (with `badge` for a count), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `CopyValue`.
-- `Forms/`: labelled controls: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `Switch`, `Checkbox` and the date fields.
-- `Data/`: what a person reads: records (`AttentionList`, `RecordCard`, `FactList`, `ProposalPanel`), figures (`Figure`, `FigureRow`, `Sparkline`) and `DataTable`.
-- `Text/`: how text is set: `Eyebrow`, `Highlight`, `Kbd`, `MetaLine`, `CodeBlock`, `PullQuote`, `TickRule`.
-- `Marks/`: what every other component draws with: `Badge`, `SeverityMark`, `StatusPill`, `Tag` (`mono` for a filter, a version or a hash), `SealValue`, `Icon`, `IconTile`.
-- `Status/`: the state of one thing, inline: `LevelMeter` so far; the status marks join it in the final move.
-- `Feedback/`: `Notice` (`variant` banner, empty, line), `Toast`, `Tooltip`, `Loading` (`shape` inline, app, list, detail, form, table) and the progress bars.
-- `Overlays/`: what opens over the page: `Dialog` (`placement` side, center, bottom), `ConfirmDialog`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
-- `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Menu`, `CommandBar`, `Pagination`, `Steps`, `TextLink`.
-- `Layout/`: how a page is arranged: `Page`, `PageHeader` (`level={2}` for a section), `Panel` (`surface="hero"`, `tone="danger"`), `DetailSection`, `Stack`, `Grid`, `Split`, `Disclosure`.
-- `Charts/`: `Chart`, over time (`TrendChart`, `Seismograph`) and compared (`Distribution`, `CoverageMatrix`); a dashboard figure is a `Panel` with a `Figure` and the chart, in a `Grid`.
-- `Timeline/`: what happened when (`EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`).
+- `Actions/`: let someone do something: `Button` (with `badge` for a count), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `Menu`, `CopyValue`.
+- `Forms/`: let someone enter or choose: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `ChoiceGroup`, `Switch`, `Checkbox`, the date fields and `CreateFlow`.
+- `Tables/`: many rows to scan, sort and filter: `DataTable`, `InfiniteTable`, `NewEntries`.
+- `Records/`: one record or a short list of them: `RecordCard`, `FactList`, `ProposalPanel`, `AttentionList`, `IconTile`.
+- `Figures/`: a number: `Figure`, `FigureRow`, `Sparkline`.
+- `Text/`: how text is set: `Eyebrow`, `MetaLine`, `TextLink`, `Kbd`, `Highlight`, `Icon`, and the blocks `CodeBlock`, `PullQuote`, `TickRule`.
+- `Status/`: the state of a thing, inline: `StatusPill`, `SeverityMark`, `SealValue`, `Badge`, `Tag` (`mono` for a filter, a version or a hash), `LevelMeter`.
+- `Feedback/`: what happened or is happening: `Notice` (`variant` banner, empty, line), `Toast`, `Loading` (`shape` inline, app, list, detail, form, table), `Progress`, `RouteProgress`, `Delayed`.
+- `Charts/`: data on a scale: `Chart`, `TrendChart`, `Seismograph`, `Distribution`, `CoverageMatrix`; a dashboard figure is a `Panel` with a `Figure` and the chart, in a `Grid`.
+- `Timelines/`: events and periods over time: `EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`.
+- `Layout/`: how a page is arranged: `Page`, `PageHeader` (`level={2}` for a section), `Panel` (`surface="hero"`, `tone="danger"`), `DetailSection`, and `Stack`, `Grid`, `Split`, `Disclosure`.
+- `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Pagination`, `Steps`, `CommandBar`.
+- `Overlays/`: what opens over the page: `Dialog` (`placement` side, center, bottom), `ConfirmDialog`, `ShortcutHelp`, `Flyout`, `Tooltip`.
 - `Shell/`: the frame of the app: `AppShellBar`, `AppShellContent`, `SignIn`, `SkipLink`, `ThemeProvider`, `DensityProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 

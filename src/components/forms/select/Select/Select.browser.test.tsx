@@ -4,7 +4,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import "../../../../styles/styles.css";
 import { Select } from "./Select";
-import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../tables/DataTable";
 
 let root: Root | undefined;
 

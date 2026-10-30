@@ -1,9 +1,9 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, Ref } from "react";
 import { cx } from "../../../internal/cx";
 import { useShortcutKeys } from "../../../internal/shortcutKeys";
-import { Badge } from "../../marks/Badge";
+import { Badge } from "../../status/Badge";
 import { Kbd } from "../../text/Kbd";
-import "../../navigation/TextLink/TextLink.css";
+import "../../text/TextLink/TextLink.css";
 import "./Button.css";
 
 type Variant = "primary" | "secondary" | "ghost" | "link" | "danger" | "seal" | "inferred";

@@ -1,5 +1,5 @@
 import type { ReactElement } from "react";
-import { Tooltip } from "../../../feedback/Tooltip";
+import { Tooltip } from "../../../overlays/Tooltip";
 import type { BadgeTone } from "./badgeTone";
 
 /* Loaded only when the rail collapses, so an expanded sidebar ships no tooltip code. */

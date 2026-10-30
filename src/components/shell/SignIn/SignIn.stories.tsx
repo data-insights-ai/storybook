@@ -4,11 +4,11 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { SignIn, SignInVersion } from "./SignIn";
 import { TextField } from "../../forms/text/TextField";
-import { Tag } from "../../marks/Tag";
-import { TextLink } from "../../navigation/TextLink";
-import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
-import { Fact, FactList } from "../../data/records/FactList";
-import { StatusPill } from "../../marks/status/StatusPill";
+import { Tag } from "../../status/Tag";
+import { TextLink } from "../../text/TextLink";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
+import { Fact, FactList } from "../../records/FactList";
+import { StatusPill } from "../../status/StatusPill";
 
 const meta = {
   title: "Shell/SignIn",

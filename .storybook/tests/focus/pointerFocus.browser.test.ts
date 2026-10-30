@@ -5,9 +5,9 @@ import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import { composeStories } from "@storybook/react-vite";
 import "../../../src/styles/styles.css";
-import * as disclosure from "../../../src/components/layout/folding/Disclosure/Disclosure.stories";
-import * as proposal from "../../../src/components/data/records/ProposalPanel/ProposalPanel.stories";
-import * as tooltip from "../../../src/components/feedback/Tooltip/Tooltip.stories";
+import * as disclosure from "../../../src/components/layout/arrange/Disclosure/Disclosure.stories";
+import * as proposal from "../../../src/components/records/ProposalPanel/ProposalPanel.stories";
+import * as tooltip from "../../../src/components/overlays/Tooltip/Tooltip.stories";
 
 /*
  * A pointer click focuses a control without a ring; Tab to the same control

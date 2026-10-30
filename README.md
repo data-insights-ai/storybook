@@ -52,7 +52,7 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 
 ## Upgrade to 0.11
 
-0.11.0 merges many components into fewer and removes the old names and props outright: there are no aliases, wrappers or ignored props to fall back on. [MIGRATION-0.11.md](MIGRATION-0.11.md) lists each change as old → new with a short example, grouped by component, and the files in each product that change.
+0.11.0 merges many components into fewer and removes the old names and props outright: there are no aliases, wrappers or ignored props to fall back on. [MIGRATION-0.11.md](MIGRATION-0.11.md) lists each change as old → new with a short example, grouped by component, and the files in each product that change. The Storybook sidebar is regrouped into those fourteen groups, so story links change; imports from the package do not.
 
 ## Context and repeated views
 
@@ -80,6 +80,8 @@ A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around 
 ## How it is put together
 
 One package. Storybook 10, React 19, Vite.
+
+Components sit in `src/components`, one folder per Storybook group: Actions, Forms, Tables, Records, Figures, Text, Status, Feedback, Charts, Timelines, Layout, Navigation, Overlays and Shell. `Foundations/Groups` says which question each group answers and where a component that fits two is placed.
 
 Tokens are three layers in `src/styles/tokens`:
 

@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 import { useEffect, useRef, type MouseEventHandler, type ReactNode } from "react";
 import { editable } from "../../../internal/useShortcut";
 import { useMedia } from "../../../internal/useMedia";
-import { Tooltip } from "../../feedback/Tooltip";
+import { Tooltip } from "../../overlays/Tooltip";
 import { Button } from "../Button";
 
 /** The controls a `Toolbar` pushes to its far end, wherever they are written. */

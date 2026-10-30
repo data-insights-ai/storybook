@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchX, UserPlus } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../actions/Button";
-import { Stack } from "../../layout/arrangement/Stack";
+import { Stack } from "../../layout/arrange/Stack";
 import { Panel } from "../../layout/page/Panel";
-import { TextLink } from "../../navigation/TextLink";
+import { TextLink } from "../../text/TextLink";
 import { MetaLine } from "../../text/MetaLine";
 import { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./Notice";
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Notice, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../../../feedback/Notice";
-import { Stack } from "../../../layout/arrangement/Stack";
+import { Stack } from "../../../layout/arrange/Stack";
 import { Toolbar, ToolbarEnd } from "../../../actions/Toolbar";
 import { PageHeader, PageHeaderTitle } from "../../../layout/page/PageHeader";
 import { Panel } from "../../../layout/page/Panel";

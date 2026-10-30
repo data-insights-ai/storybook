@@ -3,12 +3,12 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Plus } from "lucide-react";
 import { Button } from "../../actions/Button";
-import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 import { SearchField } from "../../forms/text/SearchField";
-import { StatusPill } from "../../marks/status/StatusPill";
+import { StatusPill } from "../../status/StatusPill";
 import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
 import { Panel, PanelActions } from "../../layout/page/Panel";
-import { Stack } from "../../layout/arrangement/Stack";
+import { Stack } from "../../layout/arrange/Stack";
 import { Toolbar } from "../../actions/Toolbar";
 import { DensityProvider, densityChoices, useDensity, type Density } from "./DensityProvider";
 

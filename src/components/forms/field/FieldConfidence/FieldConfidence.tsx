@@ -1,6 +1,6 @@
-import { LevelMeter } from "../../../charts/compare/LevelMeter";
-import { SealMark } from "../../../marks/status/SealValue";
-import { TextLink } from "../../../navigation/TextLink";
+import { LevelMeter } from "../../../status/LevelMeter";
+import { SealMark } from "../../../status/SealValue";
+import { TextLink } from "../../../text/TextLink";
 import "../Field/Field.css";
 import "./FieldConfidence.css";
 

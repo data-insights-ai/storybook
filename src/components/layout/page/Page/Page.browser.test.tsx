@@ -4,13 +4,13 @@ import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import "../../../../styles/styles.css";
 import { AppShellContent } from "../../../shell/AppShellContent";
-import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../data/table/DataTable";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../tables/DataTable";
 import { Toolbar } from "../../../actions/Toolbar";
 import { Dialog } from "../../../overlays/Dialog";
 import { Page, PageAside } from "./Page";
 import { PageHeader, PageHeaderTitle } from "../PageHeader";
-import { Grid } from "../../arrangement/Grid";
-import { CreateFlow } from "../../../overlays/CreateFlow";
+import { Grid } from "../../arrange/Grid";
+import { CreateFlow } from "../../../forms/CreateFlow";
 import { ChoiceGroup } from "../../../forms/choice/ChoiceGroup";
 import { TextField } from "../../../forms/text/TextField";
 

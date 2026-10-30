@@ -14,6 +14,7 @@ import "../../styles/styles.css";
 const modules = import.meta.glob<Parameters<typeof composeStories>[0]>(
   [
     "./**/*.stories.tsx",
+    "../status/LevelMeter/LevelMeter.stories.tsx",
     "../../screens/overview/SecurityOverview.stories.tsx",
     "../../foundations/tokens/Color.stories.tsx",
   ],
