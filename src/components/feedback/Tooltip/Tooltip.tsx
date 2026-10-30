@@ -13,6 +13,8 @@ import "./Tooltip.css";
  * focusable term). It opens on hover and on keyboard focus, closes on
  * Escape and when the pointer leaves, and is placed in the top layer beside
  * the trigger, so a scroll frame or a clipped panel does not cut it off.
+ * It keeps 8px from the viewport's edge, shifting along its side rather
+ * than onto the trigger's neighbours.
  * The trigger keeps its own accessible name; the tooltip repeats it for
  * the eye.
  *
@@ -39,7 +41,7 @@ export function Tooltip({
     <Base.Root>
       <Base.Trigger delay={300} render={children} />
       <Base.Portal>
-        <Base.Positioner side={side} sideOffset={8} className="di-tooltip-positioner">
+        <Base.Positioner side={side} sideOffset={8} collisionPadding={8} className="di-tooltip-positioner">
           <Base.Popup className="di-tooltip">
             {label}
             {badge === "" ? null : <Badge tone={badgeTone}>{badge}</Badge>}

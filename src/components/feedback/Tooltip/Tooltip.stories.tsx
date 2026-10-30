@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Download, RefreshCw, Settings } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
-import { Panel } from "../../layout/page/Panel";
-import { Toolbar, ToolbarEnd } from "../../layout/arrangement/Toolbar";
+import { Panel, PanelActions, PanelMeta } from "../../layout/page/Panel";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../data/table/DataTable";
+import { StatusPill } from "../../marks/status/StatusPill";
 import { Tooltip } from "./Tooltip";
 
 /**
@@ -36,34 +37,79 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** The icon buttons at the end of a list's toolbar name themselves on hover and on focus. */
+const sources = [
+  ["feed.example.io", "running"],
+  ["beta.example.dev", "paused"],
+  ["archive.example.net", "running"],
+] as const;
+
+/**
+ * The icon actions in a panel's head name themselves on hover and on
+ * focus. Both are the same quiet icon button, centred on the title's line;
+ * the count is the head's meta. Hovered with the pointer, the control shows
+ * its tooltip and no focus ring; the tooltip keeps 8px from the window's
+ * edge and covers neither its own button nor the one beside it.
+ */
 export const OnAnIconButton: Story = {
   render: (args) => (
-    <Panel title="Sources">
-      <Toolbar>
-        <span>12 sources</span>
-        <ToolbarEnd>
-          <Tooltip label="Refresh">
-            <Button variant="ghost" iconOnly aria-label="Refresh">
-              <RefreshCw />
-            </Button>
-          </Tooltip>
-          <Tooltip label={args.label} side={args.side}>
-            <Button variant="ghost" iconOnly aria-label={args.label}>
-              <Download />
-            </Button>
-          </Tooltip>
-        </ToolbarEnd>
-      </Toolbar>
+    <Panel title="Sources" heading={2} padded={false}>
+      <PanelMeta>12 sources</PanelMeta>
+      <PanelActions>
+        <Tooltip label="Refresh">
+          <Button variant="ghost" size="sm" iconOnly aria-label="Refresh">
+            <RefreshCw />
+          </Button>
+        </Tooltip>
+        <Tooltip label={args.label} side={args.side}>
+          <Button variant="ghost" size="sm" iconOnly aria-label={args.label}>
+            <Download />
+          </Button>
+        </Tooltip>
+      </PanelActions>
+      <DataTable caption="Source hosts and their state" indexed={false}>
+        <TableHead>
+          <TableColumn width="fill">Host</TableColumn>
+          <TableColumn align="end">State</TableColumn>
+        </TableHead>
+        <TableBody>
+          {sources.map(([host, state]) => (
+            <TableRow key={host}>
+              <TableCell mono>{host}</TableCell>
+              <TableCell align="end">
+                <StatusPill tone={state === "running" ? "ok" : "warn"}>{state}</StatusPill>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </DataTable>
     </Panel>
   ),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    await userEvent.tab();
-    await userEvent.tab();
-    await expect(canvas.getByRole("button", { name: args.label })).toHaveFocus();
+    const title = canvas.getByRole("heading", { name: "Sources" }).getBoundingClientRect();
+    const [refresh, exportButton] = [
+      canvas.getByRole("button", { name: "Refresh" }),
+      canvas.getByRole("button", { name: args.label }),
+    ];
+    const a = refresh.getBoundingClientRect();
+    const b = exportButton.getBoundingClientRect();
+    await expect([a.width, a.height]).toEqual([b.width, b.height]);
+    await expect(refresh.className).toBe(exportButton.className);
+    const middle = (r: DOMRect) => r.top + r.height / 2;
+    await expect(Math.abs(middle(a) - middle(title))).toBeLessThanOrEqual(2);
+    await expect(Math.abs(middle(b) - middle(title))).toBeLessThanOrEqual(2);
+    await userEvent.hover(exportButton);
     const body = within(canvasElement.ownerDocument.body);
-    await waitFor(() => expect(body.getByText(args.label, { selector: ".di-tooltip" })).toBeVisible());
+    const tip = await waitFor(() => body.getByText(args.label, { selector: ".di-tooltip" }));
+    await waitFor(() => expect(tip).toBeVisible());
+    const box = tip.getBoundingClientRect();
+    const view = canvasElement.ownerDocument.documentElement.clientWidth;
+    await expect(box.right).toBeLessThanOrEqual(view - 8);
+    await expect(box.left).toBeGreaterThanOrEqual(8);
+    const overlaps = (r: DOMRect) =>
+      box.left < r.right && box.right > r.left && box.top < r.bottom && box.bottom > r.top;
+    await expect([overlaps(a), overlaps(b)]).toEqual([false, false]);
+    await expect(exportButton).not.toHaveFocus();
   },
 };
 
