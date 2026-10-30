@@ -148,8 +148,8 @@ export function Motifs() {
         <figcaption>
           <strong>Hairline rules</strong>
           <span>
-            <code>--di-rule</code>, 1px. The connective tissue of layout, and how depth is drawn. Never used for
-            decoration — only to divide.
+            <code>--di-rule</code>, 1px, between the figures of a row and the rows of a table, and nowhere else. Depth
+            is a step in tone, not a line.
           </span>
         </figcaption>
       </figure>
@@ -240,7 +240,7 @@ export function Surfaces() {
       <figure className="di-surface-slide">
         <figcaption>Slide · title</figcaption>
         <div>
-          <p>01 · Introduction</p>
+          <p>Introduction</p>
           <strong>Provable AI for regulated decisions.</strong>
           <img src={markInverse} alt="" />
         </div>

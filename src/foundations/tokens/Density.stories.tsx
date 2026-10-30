@@ -35,10 +35,10 @@ const tokens = [
   },
 ];
 
-const setUp = `import { DensityProvider, ThemeProvider, type Density } from "@data-insights-ai/ui";
+const setUp = `import { DensityProvider, ThemeProvider, type Density, type ThemeChoice } from "@data-insights-ai/ui";
 
 // The person's choice lives in their profile, like the theme.
-function Root({ profile, save }: { profile: { density: Density }; save: (d: Density) => void }) {
+function Root({ profile, save }: { profile: { theme: ThemeChoice; density: Density }; save: (d: Density) => void }) {
   return (
     <ThemeProvider value={profile.theme}>
       <DensityProvider value={profile.density} onChange={save}>
@@ -55,7 +55,7 @@ function Matrix({ density }: { density: "comfortable" | "compact" }) {
   return (
     <div data-density={density}>
       <Panel label={density} title="Sources">
-        <Toolbar>
+        <Toolbar fillFirst>
           <TextField id={`density-${density}`} label="Name" placeholder="edge-gw-01" />
           <Button size="sm" variant="secondary">
             Small
@@ -97,7 +97,7 @@ export const Density: StoryObj = {
       <Section
         eyebrow="Tokens"
         title="One value per density."
-        lede="Comfortable keeps the values the console shipped with, so it is the default and nothing moved when density arrived. Compact is 7/8 of comfortable rounded to an even pixel; a gap or an inset steps one rung down the space ramp. The body stays 14px in both: compact is less air, not smaller text."
+        lede="Comfortable keeps the values the product screens shipped with, so it is the default and nothing moved when density arrived. Compact is 7/8 of comfortable rounded to an even pixel; a gap or an inset steps one rung down the space ramp. The body stays 14px in both: compact is less air, not smaller text."
       >
         <DataTable caption="Density tokens" indexed={false}>
           <TableHead>
@@ -124,7 +124,7 @@ export const Density: StoryObj = {
       <Section
         eyebrow="In a product"
         title="The person chooses; the profile keeps it."
-        lede="`DensityProvider` writes `data-density` on the root before the first paint. The app passes the saved value and stores a new one in `onChange`, exactly as it does for the theme; `useDensity` gives a settings control the value and the setter."
+        lede="DensityProvider writes data-density on the root before the first paint. The app passes the saved value and stores a new one in onChange, exactly as it does for the theme; useDensity gives a settings control the value and the setter."
       >
         <CodeBlock label="Setting the density from the profile">{setUp}</CodeBlock>
       </Section>
@@ -132,7 +132,7 @@ export const Density: StoryObj = {
       <Section
         eyebrow="Rules"
         title="When a region may differ."
-        lede="`data-density` works on any element, and everything inside it follows."
+        lede="data-density works on any element, and everything inside it follows."
       >
         <Rules>
           <Rule>
@@ -146,9 +146,9 @@ export const Density: StoryObj = {
             target there, whatever was chosen.
           </Rule>
           <Rule>
-            Density is never a prop. A component has a `size` for its role and follows the density through its tokens;
-            `pnpm lint:tokens` fails on a raw length in component CSS, so a value the density cannot move cannot come
-            back.
+            Density is never a prop. A component has a <code>size</code> for its role and follows the density through
+            its tokens; <code>pnpm lint:tokens</code> fails on a raw length in component CSS, so a value the density
+            cannot move cannot come back.
           </Rule>
         </Rules>
       </Section>

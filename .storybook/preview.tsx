@@ -91,6 +91,7 @@ const preview: Preview = {
           "Practice",
           "Surfaces",
           "Pages",
+          "Groups",
           "Decisions",
         ];
         // Listed items sort in list order; anything unlisted falls to the end.

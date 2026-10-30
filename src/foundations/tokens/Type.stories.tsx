@@ -64,7 +64,7 @@ const prose: Row[] = [
   },
   {
     token: "--di-font-size-400 · 14 · 400",
-    note: "The console body — base.css",
+    note: "The body of a product screen — base.css",
     sample: "The source was paused after four consecutive rate limits.",
     style: { fontFamily: SANS, fontSize: "var(--di-font-size-400)", lineHeight: 1.5 },
   },
@@ -110,7 +110,7 @@ const machine: Row[] = [
   },
   {
     token: "--di-font-size-100 · 10 · 500",
-    note: "Kbd, tile ordinal",
+    note: "Kbd, the ordinal of a step or a table row",
     sample: "⌘K",
     style: { fontFamily: MONO, fontWeight: 500, fontSize: "var(--di-font-size-100)" },
   },
