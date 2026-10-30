@@ -21,7 +21,7 @@ const meta = {
           "**Purpose:** tells the reader that something is on its way when there is no count to give, in the shape of what is coming.",
           "**When to use:** a short wait for one value or action (`inline`), the application starting before there is a shell (`app`), a page or a table whose data is loading (`list`, `detail`, `form`, `table`). **When not to:** a wait with a count (rows imported, files sent) is `Progress`; a page change inside the shell is `RouteProgress` in the bar plus a page shape here; holding any other content back for the first moments is `Delayed`; a quota such as “1 of 10 seats used” is a `LevelMeter`, not a wait.",
           "**Anatomy:** one status region holding the label, and for `inline` a turning ring before it, for `app` the mark above it; the page and table shapes draw the header, toolbar, table frame, panels or fields they stand in for, with bars where the values will be.",
-          "**Variants:** `shape`. `rows` sets the rows of `list` and `table`; `index` keeps the place of a `TableIndex` column; `heading={false}` drops the page header when the layout above already shows it.",
+          "**Variants:** `shape`. `rows` sets the rows of `list` and `table`; `index` keeps the place of a `TableIndex` column; a `Toolbar` child (table) keeps the loaded table's toolbar in the frame's head while the rows load, so its search and filters do not jump; `heading={false}` drops the page header when the layout above already shows it.",
           "**States:** nothing appears for the first `delay` ms (150 by default), while the space is already reserved, so a fast answer neither flashes nor shifts the page. Only the bars and dots breathe; with reduced motion everything stands still.",
           "**Content rules:** the label says what is being waited for, as a short sentence in sentence case: “Loading sources”, “Verifying the manifest”. Not “Please wait”, not an ellipsis.",
           '**Accessibility:** `role="status"` with `aria-live="polite"`; the label is the announced text. In the page and table shapes it is visually hidden and every bar is hidden from assistive technology.',
@@ -102,7 +102,8 @@ export const Table: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("Loading sources")).toBeInTheDocument();
+    await expect(await canvas.findByRole("status", { name: "Loading sources" })).toBeInTheDocument();
+    await expect(canvasElement.querySelectorAll(".di-loading-table")).toHaveLength(1);
     await waitFor(() => expect(canvas.getByRole("table", { name: "Sources" })).toBeInTheDocument(), { timeout: 3000 });
   },
 };

@@ -48,6 +48,31 @@ export function CoverageScreen({ state = "ready" }: { state?: CoverageState }) {
       (!onlyGaps || row.arrival !== "arriving") &&
       `${row.table} ${row.source}`.toLowerCase().includes(query.trim().toLowerCase()),
   );
+  const toolbar = (
+    <Toolbar label="Filter the tables" role="search">
+      <SearchField
+        id="coverage-search"
+        label="Search tables"
+        placeholder="Table or source"
+        size="sm"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
+      {onlyGaps ? (
+        <Tag pressed onRemove={() => setOnlyGaps(false)} removeLabel="Show every table">
+          Not arriving ({tables.filter((row) => row.arrival !== "arriving").length})
+        </Tag>
+      ) : (
+        <Tag onClick={() => setOnlyGaps(true)}>Not arriving</Tag>
+      )}
+      <ToolbarEnd>
+        <Button variant="secondary" size="sm">
+          <Download aria-hidden />
+          Export
+        </Button>
+      </ToolbarEnd>
+    </Toolbar>
+  );
 
   return (
     <ProductShell area="workspace" active="coverage" crumbs={["Example Security GmbH", "Production", "Coverage"]}>
@@ -73,33 +98,13 @@ export function CoverageScreen({ state = "ready" }: { state?: CoverageState }) {
         </FigureRow>
 
         {state === "loading" ? (
-          <Loading shape="table" label="Loading the tables" rows={6} />
+          <Loading shape="table" label="Loading the tables" rows={6}>
+            {toolbar}
+          </Loading>
         ) : (
           <Panel padded={false}>
             <DataTable caption="Tables the detections read" indexed={false}>
-              <Toolbar label="Filter the tables" role="search">
-                <SearchField
-                  id="coverage-search"
-                  label="Search tables"
-                  placeholder="Table or source"
-                  size="sm"
-                  value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                />
-                {onlyGaps ? (
-                  <Tag pressed onRemove={() => setOnlyGaps(false)} removeLabel="Show every table">
-                    Not arriving ({tables.filter((row) => row.arrival !== "arriving").length})
-                  </Tag>
-                ) : (
-                  <Tag onClick={() => setOnlyGaps(true)}>Not arriving</Tag>
-                )}
-                <ToolbarEnd>
-                  <Button variant="secondary" size="sm">
-                    <Download aria-hidden />
-                    Export
-                  </Button>
-                </ToolbarEnd>
-              </Toolbar>
+              {toolbar}
               <TableHead>
                 <TableColumn width="fill">Table</TableColumn>
                 <TableColumn>Arrival</TableColumn>

@@ -7,6 +7,23 @@
     box-shadow: var(--di-table-shadow);
   }
 
+  /* On another surface it drops its frame, as the DataTable it stands in for does. */
+  :is(
+      .di-login-card,
+      .di-disclosure,
+      .di-dialog,
+      .di-dialog-docked,
+      .di-modal,
+      .di-flyout,
+      .di-record,
+      .di-panel-content
+    )
+    .di-loading-table:not(.di-panel-content-flush .di-loading-table) {
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
   .di-loading-table-row {
     display: flex;
     align-items: center;

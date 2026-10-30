@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { useDelayed } from "../../../internal/useDelayed";
 import { LoadingPage } from "./LoadingPage";
@@ -14,6 +15,10 @@ export type LoadingShape = "inline" | "app" | "list" | "detail" | "form" | "tabl
  * page or table it will become (`list`, `detail`, `form`, `table`), with
  * bars standing in for the values.
  *
+ * A table that loads keeps its `Toolbar`, given as the child: the same search and filters
+ * stand in the frame's head from the first frame, so nothing moves when
+ * the rows arrive.
+ *
  * Nothing appears for the first `delay` ms, and the space is reserved
  * from the first frame, so a fast answer neither flashes nor shifts the
  * page. Only the bars and the dots breathe; nothing sweeps, and
@@ -27,6 +32,7 @@ export function Loading({
   index = false,
   delay = 150,
   className,
+  children,
 }: {
   /** What is being waited for, as a short sentence: "Loading sources". Shown for `inline` and `app`, read out for the others. */
   label: string;
@@ -40,20 +46,29 @@ export function Loading({
   /** Milliseconds before anything appears; 0 shows it at once. */
   delay?: number;
   className?: string;
+  /** `table`: the `Toolbar` the loaded `DataTable` holds, drawn in the frame's head while the rows load. */
+  children?: ReactNode;
 }) {
   const shown = useDelayed(delay);
   const visible = shape === "inline" || shape === "app";
+  if (shape === "table") {
+    return (
+      <LoadingTable rows={rows ?? 5} index={index} status={{ label, shown }} className={className}>
+        {children}
+      </LoadingTable>
+    );
+  }
   return (
     <div
-      className={cx("di-loading", `di-loading-${shape}`, "di-delayed", className)}
+      className={cx("di-loading", visible && `di-loading-${shape}`, "di-delayed", className)}
       data-shown={shown}
       role="status"
       aria-live="polite"
+      aria-label={label}
     >
       {shape === "inline" ? <span className="di-loading-ring" aria-hidden /> : null}
       {shape === "app" ? <AppMark /> : null}
       <span className={visible ? "di-loading-label" : "di-sr"}>{label}</span>
-      {shape === "table" ? <LoadingTable rows={rows ?? 5} index={index} /> : null}
       {shape === "list" || shape === "detail" || shape === "form" ? (
         <LoadingPage shape={shape} rows={rows ?? 6} heading={heading} index={index} />
       ) : null}

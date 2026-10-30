@@ -85,7 +85,10 @@ export const Empty: Story = {
 export const Loading: Story = {
   args: { state: "loading" },
   play: async ({ canvasElement }) => {
-    await expect(await within(canvasElement).findByRole("status")).toHaveTextContent("Loading the register");
+    const status = await within(canvasElement).findByRole("status", { name: "Loading the register" });
+    const frame = status.closest(".di-loading-table")!;
+    await expect(within(frame as HTMLElement).getByRole("search")).toBeVisible();
+    await expect(canvasElement.querySelectorAll(".di-loading-table")).toHaveLength(1);
   },
 };
 
