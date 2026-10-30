@@ -69,8 +69,8 @@ const stages = [
 /**
  * Architecture: how a record travels from a source to the analyst, and how
  * each part of the pipeline is doing. The pipeline is the page's argument;
- * when one stage falls behind it becomes the current step and the first
- * block says what it costs.
+ * when one stage falls behind it takes the warn tone, with its backlog in
+ * words, and the first block says what it costs.
  */
 export function ArchitectureScreen({ state = "running" }: { state?: ArchitectureState }) {
   const backlog = state === "backlog";
@@ -117,14 +117,12 @@ export function ArchitectureScreen({ state = "running" }: { state?: Architecture
           </PageHeader>
           <Steps variant="cards" label="Pipeline stages">
             {stages.map((stage) => (
-              <Step
-                key={stage.id}
-                title={stage.title}
-                state={backlog && stage.id === "process" ? "current" : undefined}
-              >
+              <Step key={stage.id} title={stage.title} tone={backlog && stage.id === "process" ? "warn" : undefined}>
                 <StepIcon>{stage.icon}</StepIcon>
                 {stage.body}
-                <StepFooter>{backlog && stage.id === "process" ? "12,480 waiting" : stage.foot}</StepFooter>
+                <StepFooter>
+                  {backlog && stage.id === "process" ? <StatusPill tone="warn">12,480 waiting</StatusPill> : stage.foot}
+                </StepFooter>
               </Step>
             ))}
           </Steps>

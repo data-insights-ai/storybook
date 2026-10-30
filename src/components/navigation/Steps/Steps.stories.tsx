@@ -6,6 +6,7 @@ import { TextField } from "../../forms/text/TextField";
 import { Panel } from "../../layout/page/Panel";
 import { Stack } from "../../layout/arrange/Stack";
 import { SealValue } from "../../status/SealValue";
+import { StatusPill } from "../../status/StatusPill";
 import { Step, StepFooter, StepIcon, Steps, type StepState } from "./Steps";
 
 /**
@@ -214,6 +215,40 @@ export const Pipeline: Story = {
   },
 };
 
+/**
+ * A stage that falls behind takes `tone="warn"`: an amber edge and its
+ * words in the footer, never the navy of the step that runs now.
+ */
+export const ALaggingStage: Story = {
+  args: { variant: "cards", label: "Pipeline" },
+  render: (args) => (
+    <section aria-labelledby="steps-lagging">
+      <h2 id="steps-lagging" className="di-sr">
+        Pipeline
+      </h2>
+      <Steps {...args}>
+        <Step title="Collect">Sensors forward their records.</Step>
+        <Step title="Process" tone="warn">
+          Records are parsed and enriched.
+          <StepFooter>
+            <StatusPill tone="warn">41 min behind</StatusPill>
+          </StepFooter>
+        </Step>
+        <Step title="Store">Results land in the ledger.</Step>
+      </Steps>
+    </section>
+  ),
+  play: async ({ canvasElement }) => {
+    const cards = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-step-card"));
+    const lagging = cards[1];
+    await expect(lagging).not.toHaveAttribute("aria-current");
+    await expect(getComputedStyle(lagging).backgroundColor).toBe(getComputedStyle(cards[0]).backgroundColor);
+    await expect(getComputedStyle(lagging).boxShadow).toContain("inset");
+    await expect(getComputedStyle(lagging).boxShadow).not.toBe(getComputedStyle(cards[0]).boxShadow);
+    await expect(within(lagging).getByText("41 min behind")).toBeVisible();
+  },
+};
+
 export const FirstStep: Story = {
   render: (args) => <Steps {...args}>{progress(0)}</Steps>,
   play: async ({ canvasElement }) => statesWithoutColour(canvasElement),
@@ -296,7 +331,16 @@ async function titleUnderTheTrack(list: HTMLElement) {
   const now = list.querySelector<HTMLElement>(".di-steps-now")!;
   const title = now.getBoundingClientRect();
   await expect(getComputedStyle(now).display).not.toBe("none");
-  await expect(now.textContent).toBe(list.querySelector("[aria-current] .di-step-label")!.textContent);
+  await expect(now.querySelector(".di-steps-now-title")!.textContent).toBe(
+    list.querySelector("[aria-current] .di-step-label")!.textContent,
+  );
+  const steps = Array.from(list.querySelectorAll(".di-step"));
+  const at = steps.findIndex((step) => step.hasAttribute("aria-current")) + 1;
+  await expect(now.querySelector(".di-steps-now-position")!.textContent).toMatch(
+    new RegExp(`\\b${at}\\D+${steps.length}\\b`),
+  );
+  const position = now.querySelector<HTMLElement>(".di-steps-now-position")!.getBoundingClientRect();
+  await expect(Math.round(position.top)).toBe(Math.round(title.top));
   await expect(Math.round(title.left)).toBe(Math.round(box.left));
   const gap = parseFloat(getComputedStyle(list).rowGap);
   await expect(gap).toBeGreaterThan(0);
@@ -318,6 +362,7 @@ const german = ["Datenquelle verbinden", "Berechtigungen überprüfen", "Einträ
 export const LongGermanLabels: Story = {
   args: {
     label: "Registrierung der Datenquelle",
+    stepOf: (n, total) => `Schritt ${n} von ${total}`,
     stateLabels: { done: "Erledigt", current: "Aktueller Schritt", upcoming: "Nicht begonnen" },
   },
   render: (args) => (
@@ -360,14 +405,21 @@ export const LongGermanLabels: Story = {
   },
 };
 
-/** On a phone the bullets keep one line, their size and their marks; the current step's name is set under them. */
+/**
+ * On a phone the bullets keep one line, their size and their marks; the
+ * current step is set under them as its position and name, so the name is
+ * not read as the first bullet's.
+ */
 export const Phone: Story = {
+  args: { stepOf: (n, total) => `Step ${n} of ${total}` },
   globals: { viewport: { value: "phone", isRotated: false } },
   render: (args) => <Steps {...args}>{progress(2)}</Steps>,
   play: async ({ canvasElement }) => {
     await expect(window.innerWidth).toBe(390);
     await statesWithoutColour(canvasElement);
     await titleUnderTheTrack(canvasElement.querySelector<HTMLElement>(".di-steps")!);
+    await expect(canvasElement.querySelector(".di-steps-now-position")!.textContent).toBe("Step 3 of 4");
+    await expect(canvasElement.querySelector(".di-steps-now-title")!.textContent).toBe("Seal");
   },
 };
 
