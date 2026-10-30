@@ -42,11 +42,17 @@
     color: var(--di-text-subtle);
   }
 
-  /* The markers sit 12px in from either edge, so a first or last step is not cut by the frame. */
   .di-chain-track {
     position: relative;
     min-width: 0;
     padding: 0 var(--di-space-12);
+  }
+
+  /* The markers sit 12px in from either edge, so a first or last step is not cut by the frame.
+     An absolute child's percentages ignore its parent's padding, hence the inset layer. */
+  .di-chain-plot {
+    position: absolute;
+    inset: 0 var(--di-space-12);
   }
 
   .di-chain-rule {
@@ -62,8 +68,8 @@
 
   .di-chain-links {
     position: absolute;
-    inset: 0 var(--di-space-12);
-    width: calc(100% - 2 * var(--di-space-12));
+    inset: 0;
+    width: 100%;
     height: 100%;
     overflow: visible;
   }
