@@ -40,7 +40,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
   <Section
     eyebrow="List page"
     title="Find, filter, open."
-    lede="`Page width='list'`: `PageHeader` with the primary action, a sticky `ListToolbar`, then an `InfiniteTable` — or an `EmptyState` in its place."
+    lede="`Page width='list'`: `PageHeader` with the primary action, a sticky `ListToolbar`, then an `InfiniteTable` — or a `Notice variant='empty'` in its place."
   >
     <Rules>
       <Rule>Search and filters run on the server and live in the URL, so a link, reload and back show the same list.</Rule>
@@ -51,7 +51,7 @@ import { Columns, Lines, Page, Rule, Rules, Section } from "./guide/Guide";
       <Rule>A row's detail and a create or edit form open in a side `Dialog`. Where the page has its side column an `md` dialog docks there and the list keeps working beside it; narrower, and always at `lg` and `xl`, the dialog covers the page. A confirmation stays a centred `Dialog` or `ConfirmDialog`.</Rule>
     </Rules>
     <Columns>
-      <Lines title="Do" items={["The create form opens in a side Dialog or its own page from the header action.", "Filters are selects whose first option names them: All roles.", "One EmptyState, no eyebrow, an icon and the one action."]} />
+      <Lines title="Do" items={["The create form opens in a side Dialog or its own page from the header action.", "Filters are selects whose first option names them: All roles.", "One empty Notice, no eyebrow, an icon and the one action."]} />
       <Lines title="Don't" items={["An add form that is always open above the list.", "A list that loads everything and filters in the browser.", "An empty card repeating the page's eyebrow over the full width."]} />
     </Columns>
   </Section>
