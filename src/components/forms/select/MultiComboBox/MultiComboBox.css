@@ -48,17 +48,23 @@
     max-width: 100%;
     min-height: var(--di-token-h);
     padding: 0 var(--di-space-2) 0 var(--di-gap-6);
-    border: 1px solid var(--di-border);
     border-radius: var(--di-radius-micro);
-    background: var(--di-bg-page);
+    background: var(--di-bg-subtle);
     font-size: var(--di-font-size-300);
     color: var(--di-text);
   }
 
+  /* One outline per object: an entry inside the field is a tone, and a rejected one says so with a mark, not a red edge. */
   .di-token.is-invalid {
-    border-color: var(--di-status-danger-border);
+    padding-left: var(--di-gap-4);
     background: var(--di-status-danger-bg);
     color: var(--di-status-danger-fg);
+  }
+
+  .di-token-mark {
+    flex: none;
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
   }
 
   .di-token-text {
