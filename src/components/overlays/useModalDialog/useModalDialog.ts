@@ -5,8 +5,11 @@ import { focusFirstField } from "../../../internal/shortcutKeys";
  * Opens and closes a native modal `<dialog>` with `open`, and returns focus
  * to what opened it when it closes or is removed outright: browsers restore
  * focus on `close()`, but not when the product unmounts the dialog.
+ *
+ * On open, focus goes to the first field; with no field, to the element
+ * `fallback` selects (a sheet's title), rather than to the close button.
  */
-export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open: boolean) {
+export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open: boolean, fallback?: string) {
   const opener = useRef<HTMLElement | null>(null);
   const shown = useRef(false);
   // Read before any layout or passive effect: by then the content may already
@@ -26,13 +29,14 @@ export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open: b
     if (!dialog) return;
     if (open && !dialog.open) {
       dialog.showModal();
-      focusFirstField(dialog);
+      if (!focusFirstField(dialog) && fallback)
+        dialog.querySelector<HTMLElement>(fallback)?.focus({ preventScroll: true });
     }
     if (!open && dialog.open) {
       dialog.close();
       returnFocus(opener, dialog);
     }
-  }, [ref, open]);
+  }, [ref, open, fallback]);
 
   useEffect(() => {
     const dialog = ref.current;

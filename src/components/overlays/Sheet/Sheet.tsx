@@ -42,7 +42,8 @@ type SheetProps = {
  * button close it, and focus returns to whatever opened it.
  *
  * Anywhere else, and always at `lg` and `xl`, it is a modal native
- * `<dialog>` from the right edge: focus moves in and is trapped, the page
+ * `<dialog>` from the right edge: focus moves in, to the first field or,
+ * with none, to the title (never the close button), and is trapped; the page
  * behind is inert, and on a phone it takes the screen. `SheetFooter` holds
  * its actions and stays in view while the body scrolls.
  */
@@ -61,7 +62,7 @@ function ModalSheet({ open, onClose, title, lede, eyebrow, closeLabel, size = "m
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
-  useModalDialog(ref, open);
+  useModalDialog(ref, open, ".di-sheet-title");
 
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc and a press on the backdrop close the dialog
@@ -189,7 +190,7 @@ function SheetFrame({
       <header className="di-sheet-head">
         <div className="di-sheet-heading">
           {eyebrow ? <p className="di-sheet-eyebrow">{eyebrow}</p> : null}
-          <h2 className="di-sheet-title" id={titleId}>
+          <h2 className="di-sheet-title" id={titleId} tabIndex={-1}>
             {title}
           </h2>
           {lede ? <p className="di-sheet-lede">{lede}</p> : null}
