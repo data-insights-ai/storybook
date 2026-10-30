@@ -1,4 +1,4 @@
-import { useWindowVirtualizer, type VirtualItem } from "@tanstack/react-virtual";
+import { useVirtualizer, useWindowVirtualizer, type VirtualItem } from "@tanstack/react-virtual";
 import {
   Children,
   isValidElement,
@@ -52,9 +52,15 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * fetches when `onLoadMore` is called. Rows not rendered are held by space as
  * tall as the rendered rows measure, so the scroll height follows the
  * density and the fonts instead of a fixed guess. Its `TableToolbar` and `TableHead`
- * are children, as in `DataTable`. The page scrolls, not the table, and
- * the head stays in view under the app bar (`--di-sticky-top`) and under a
- * sticky `ListToolbar` above the table.
+ * are children, as in `DataTable`.
+ *
+ * **Where it scrolls:** when the register is the page (an audit log, a
+ * source's events) the page scrolls, not the table, and the head stays in
+ * view under the app bar (`--di-sticky-top`) and under a sticky
+ * `ListToolbar` above it. When the register is one block among others (in
+ * a `Panel`, beside a record, in a `Dialog`) give it `maxRows`: it then
+ * scrolls in a frame about that many rows tall, its head held at the
+ * frame's top and its count under it, so the page around it stays short.
  */
 export function InfiniteTable({
   caption,
@@ -73,6 +79,7 @@ export function InfiniteTable({
   indexed = false,
   narrow = "scroll",
   layout = "measured",
+  maxRows,
   children,
 }: {
   caption: string;
@@ -103,25 +110,39 @@ export function InfiniteTable({
   narrow?: "scroll" | "stack";
   /** Column widths are measured once and kept while rows come and go; `auto` lets each render size them. */
   layout?: "auto" | "measured";
+  /** Scrolls in a frame about this many rows tall instead of with the page. Leave it out when the register is the page. */
+  maxRows?: number;
   /** `TableToolbar` and `TableHead`. */
   children: ReactNode;
 }) {
+  const host = useRef<HTMLDivElement>(null);
   const top = useRef<HTMLTableRowElement>(null);
-  const start = useListStart(top);
+  const framed = maxRows !== undefined;
+  const frame = useFrame(host, framed);
+  const start = useListStart(top, frame);
   const keys = Array.from({ length: count }, (_, i) => rowKey(i));
-  const held = useHeld(keys, order === "newest-first", top, start);
+  const held = useHeld(keys, order === "newest-first", top, start, frame);
   const shown = count - held.count;
 
   const sized = useRef<Map<unknown, number>>(undefined);
   const mean = useRef<Mean>({ of: 0, size: 0 });
-  const virtualizer = useWindowVirtualizer({
+  const common = {
     count: shown,
     estimateSize: () => meanSize(sized.current, mean.current) ?? estimateRowHeight ?? fallbackRowHeight,
     overscan: 12,
     scrollMargin: start,
-    getItemKey: (index) => keys[index + held.count],
+    getItemKey: (index: number) => keys[index + held.count],
     initialMeasurementsCache: memoryKey ? measured.get(memoryKey) : undefined,
+  };
+  // Both hooks run every render, as hooks must; the one that does not fit the register stays disabled.
+  const onPage = useWindowVirtualizer<HTMLTableRowElement>({ ...common, enabled: !framed });
+  // eslint-disable-next-line react-hooks/incompatible-library -- the component reads the virtualizer afresh each render and memoizes nothing from it
+  const inFrame = useVirtualizer<HTMLElement, HTMLTableRowElement>({
+    ...common,
+    enabled: framed && frame !== null,
+    getScrollElement: () => frame,
   });
+  const virtualizer = framed ? inFrame : onPage;
   useLayoutEffect(() => {
     sized.current = virtualizer.itemSizeCache;
   }, [virtualizer]);
@@ -131,7 +152,7 @@ export function InfiniteTable({
     },
     [memoryKey, virtualizer],
   );
-  const end = useNearEnd({ hasMore, loadingMore, loaded: count, onLoadMore });
+  const end = useNearEnd({ hasMore, loadingMore, loaded: count, onLoadMore, frame });
 
   const toolbar: ReactNode[] = [];
   const head: ReactNode[] = [];
@@ -143,9 +164,9 @@ export function InfiniteTable({
   const { before, after } = gaps(rows, virtualizer.getTotalSize(), start);
 
   return (
-    <div className="di-infinite">
+    <div ref={host} className={framed ? "di-infinite is-framed" : "di-infinite"}>
       {held.count > 0 ? <NewEntries label={newEntriesLabel(held.count)} onShow={held.show} /> : null}
-      <DataTable caption={caption} rowCount={shown} indexed={indexed} narrow={narrow} layout={layout}>
+      <DataTable caption={caption} rowCount={shown} indexed={indexed} narrow={narrow} layout={layout} maxRows={maxRows}>
         {toolbar}
         {head}
         <TableBody>
@@ -153,10 +174,11 @@ export function InfiniteTable({
           {rows.map((r) =>
             renderRow(r.index + held.count, { key: String(r.key), rowIndex: r.index, ref: virtualizer.measureElement }),
           )}
-          <TableSpacer height={after} />
+          {/* A frame clips what is past its edge, so the end is watched inside it: the spacer after the rows. */}
+          <TableSpacer height={after} ref={framed ? end : undefined} />
         </TableBody>
         <TableFooter>
-          <span ref={end}>
+          <span ref={framed ? undefined : end}>
             {loadingMore ? <Loading shape="inline" label={loadingLabel} delay={0} /> : footerLabel(shown, hasMore)}
           </span>
         </TableFooter>
@@ -192,14 +214,32 @@ function remember(key: string, items: VirtualItem[]) {
   if (measured.size > 20) measured.delete(measured.keys().next().value as string);
 }
 
-/* Where the first row starts in the document; content above the register can move it. */
-function useListStart(top: RefObject<Element | null>) {
+/* The frame a framed register scrolls in: the table's own scroll region. */
+function useFrame(host: RefObject<HTMLElement | null>, framed: boolean) {
+  const [frame, setFrame] = useState<HTMLElement | null>(null);
+  useLayoutEffect(() => {
+    const el = framed ? (host.current?.querySelector<HTMLElement>(".di-table-scroll") ?? null) : null;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the frame exists only once the table is laid out
+    setFrame(el);
+  }, [host, framed]);
+  return frame;
+}
+
+/*
+ * Where the first row starts in what scrolls: the document, or the frame
+ * (under the head held at its top). Content above the register can move it.
+ */
+function useListStart(top: RefObject<Element | null>, frame: HTMLElement | null) {
   const [start, setStart] = useState(0);
   // eslint-disable-next-line react-hooks/exhaustive-deps -- content above the register can move it on any render; an unchanged start does not render again
   useLayoutEffect(() => {
     const el = top.current;
     if (!el) return;
-    const at = Math.round(el.getBoundingClientRect().top + window.scrollY);
+    const at = Math.round(
+      frame
+        ? el.getBoundingClientRect().top - frame.getBoundingClientRect().top + frame.scrollTop
+        : el.getBoundingClientRect().top + window.scrollY,
+    );
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the start is read from layout before paint
     if (Math.abs(at - start) > 1) setStart(at);
   });
@@ -214,11 +254,13 @@ function useNearEnd({
   loadingMore,
   loaded,
   onLoadMore,
+  frame,
 }: {
   hasMore: boolean;
   loadingMore: boolean;
   loaded: number;
   onLoadMore: () => void;
+  frame: HTMLElement | null;
 }) {
   const [target, setTarget] = useState<Element | null>(null);
   const [near, setNear] = useState(false);
@@ -228,10 +270,13 @@ function useNearEnd({
   });
   useEffect(() => {
     if (!target) return;
-    const observer = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), { rootMargin: ahead });
+    const observer = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), {
+      root: frame,
+      rootMargin: ahead,
+    });
     observer.observe(target);
     return () => observer.disconnect();
-  }, [target]);
+  }, [target, frame]);
   // An observer reports changes only; a short page can leave the end in reach, so each page checks again.
   useEffect(() => {
     if (near && hasMore && !loadingMore) load.current();
@@ -252,20 +297,28 @@ export function heldCount(keys: string[], anchor: string | undefined) {
   return at < 0 ? 0 : at;
 }
 
-function useHeld(keys: string[], enabled: boolean, top: RefObject<Element | null>, start: number) {
+function useHeld(
+  keys: string[],
+  enabled: boolean,
+  top: RefObject<Element | null>,
+  start: number,
+  frame: HTMLElement | null,
+) {
   const [anchor, setAnchor] = useState<string>();
   const [atTop, setAtTop] = useState(true);
   const first = keys[0];
   useEffect(() => {
     if (!enabled) return;
     const check = () => {
+      if (frame) return setAtTop(frame.scrollTop <= 0);
       const edge = stickyTop(top.current);
       setAtTop((top.current?.getBoundingClientRect().top ?? edge) >= edge);
     };
     check();
-    window.addEventListener("scroll", check, { passive: true });
-    return () => window.removeEventListener("scroll", check);
-  }, [enabled, top]);
+    const scroller = frame ?? window;
+    scroller.addEventListener("scroll", check, { passive: true });
+    return () => scroller.removeEventListener("scroll", check);
+  }, [enabled, top, frame]);
   const [seen, setSeen] = useState({ atTop, first });
   if (seen.atTop !== atTop || seen.first !== first) {
     setSeen({ atTop, first });
@@ -273,7 +326,8 @@ function useHeld(keys: string[], enabled: boolean, top: RefObject<Element | null
   }
   const show = useCallback(() => {
     setAnchor(undefined);
-    window.scrollTo({ top: Math.max(0, start - stickyTop(top.current) - 24), behavior: "smooth" });
-  }, [start, top]);
+    if (frame) frame.scrollTo({ top: 0, behavior: "smooth" });
+    else window.scrollTo({ top: Math.max(0, start - stickyTop(top.current) - 24), behavior: "smooth" });
+  }, [start, top, frame]);
   return { count: enabled ? heldCount(keys, anchor) : 0, show };
 }
