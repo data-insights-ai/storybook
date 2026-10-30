@@ -158,7 +158,7 @@ export const InAPanel: Story = {
 
 /**
  * How a process runs, on an overview: each stage a card, the one that runs
- * now on navy, its closing line a slot that can hold a `Spinner` or a sealed
+ * now on navy, its closing line a slot that can hold a `Loading` or a sealed
  * value.
  */
 export const Pipeline: Story = {
