@@ -85,9 +85,8 @@ export const InProse: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <p style={{ maxWidth: 420, fontSize: 13, lineHeight: 1.6 }}>
-      The manifest for this entry was sealed at 09:12:04Z. <TextLink>Open the record</TextLink> to see
-      every source it cites, or <TextLink quiet={true}>export the seal</TextLink> for offline
-      verification.
+      The manifest for this entry was sealed at 09:12:04Z. <TextLink>Open the record</TextLink> to see every source it
+      cites, or <TextLink quiet={true}>export the seal</TextLink> for offline verification.
     </p>
   ),
 };
@@ -95,9 +94,7 @@ export const InProse: Story = {
 /** A router's link component renders the anchor; the text link supplies only its look. */
 export const WithRouterLink: Story = {
   parameters: { controls: { disable: true } },
-  render: () => (
-    <TextLink render={<a href="#/records/0148" data-router="link" />}>REG-0148</TextLink>
-  ),
+  render: () => <TextLink render={<a href="#/records/0148" data-router="link" />}>REG-0148</TextLink>,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const link = canvas.getByRole("link", { name: "REG-0148" });

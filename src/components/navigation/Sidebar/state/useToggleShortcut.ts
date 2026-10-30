@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 
 function editable(target: EventTarget | null) {
-  return target instanceof HTMLElement && (target.isContentEditable || target.closest("input, textarea, select") !== null);
+  return (
+    target instanceof HTMLElement && (target.isContentEditable || target.closest("input, textarea, select") !== null)
+  );
 }
 
 export function useToggleShortcut(key: string | false, toggle: () => void) {

@@ -74,7 +74,9 @@
     margin-top: var(--di-page-content-top, 0);
     position: sticky;
     top: calc(var(--di-sticky-top) + var(--di-page-side-stick, var(--di-space-16)));
-    max-height: calc(100dvh - var(--di-sticky-top) - var(--di-page-side-stick, var(--di-space-16)) - var(--di-space-16));
+    max-height: calc(
+      100dvh - var(--di-sticky-top) - var(--di-page-side-stick, var(--di-space-16)) - var(--di-space-16)
+    );
     overflow-y: auto;
     gap: var(--di-space-24);
   }

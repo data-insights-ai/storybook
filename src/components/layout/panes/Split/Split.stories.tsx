@@ -19,8 +19,8 @@ const meta = {
       <SplitMain>
         <Panel title="What happened" padded>
           <p>
-            An account signed in to a workstation from a public address, ran domain discovery, then signed in as
-            local administrator on two servers and started a remote service on each.
+            An account signed in to a workstation from a public address, ran domain discovery, then signed in as local
+            administrator on two servers and started a remote service on each.
           </p>
         </Panel>
         <Panel title="Affected" padded>
@@ -86,7 +86,9 @@ export const Preview: Story = {
       </SplitMain>
       <SplitAside label="Preview">
         <Panel title="Preview" padded>
-          <pre style={{ margin: 0, whiteSpace: "pre-wrap", overflowWrap: "anywhere", fontFamily: "var(--di-font-code)" }}>
+          <pre
+            style={{ margin: 0, whiteSpace: "pre-wrap", overflowWrap: "anywhere", fontFamily: "var(--di-font-code)" }}
+          >
             {'{"time":"2026-10-23T09:14:02Z","severity":"high","src":"203.0.113.7","user":"nora.feld"}'}
           </pre>
         </Panel>

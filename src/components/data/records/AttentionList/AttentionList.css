@@ -40,7 +40,9 @@
   .di-attention-item.is-emphasis {
     flex-basis: 100%;
     padding-block: var(--di-space-24);
-    box-shadow: 0 0 0 1px var(--di-one-edge), var(--di-one-glow);
+    box-shadow:
+      0 0 0 1px var(--di-one-edge),
+      var(--di-one-glow);
   }
 
   .di-attention-rank {

@@ -4,15 +4,7 @@ import { expect, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Icon } from "../../../marks/Icon";
 import { IconTile } from "../../../marks/IconTile";
-import {
-  RecordCard,
-  RecordCount,
-  RecordFooter,
-  RecordLine,
-  RecordLines,
-  RecordMark,
-  RecordStatus,
-} from "./RecordCard";
+import { RecordCard, RecordCount, RecordFooter, RecordLine, RecordLines, RecordMark, RecordStatus } from "./RecordCard";
 import { StatusPill } from "../../../marks/status/StatusPill";
 
 const meta = {

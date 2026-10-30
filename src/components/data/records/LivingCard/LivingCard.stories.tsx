@@ -63,8 +63,7 @@ export const Default: Story = {
         </FigureRow>
         <Sparkline bars={bars} label="Unsealed entries over the last eight hours, rising sharply in the last two." />
       </LivingBody>
-      <LivingInsight
-        body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
+      <LivingInsight body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
         <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
         <Button variant="inferred" size="dense">
           Review the proposal
@@ -125,7 +124,10 @@ export const WithoutInsight: Story = {
             steady
           </Figure>
         </FigureRow>
-        <Sparkline bars={bars.map((bar) => ({ percent: bar.percent }))} label="Unsealed entries, flat over the last eight hours." />
+        <Sparkline
+          bars={bars.map((bar) => ({ percent: bar.percent }))}
+          label="Unsealed entries, flat over the last eight hours."
+        />
       </LivingBody>
     </LivingCard>
   ),
@@ -143,8 +145,7 @@ export const OneAction: Story = {
         </FigureRow>
         <Sparkline bars={bars} label="Coverage over the last eight hours, falling in the last two." />
       </LivingBody>
-      <LivingInsight
-        body="Four archive sources stopped reporting at 08:44Z.">
+      <LivingInsight body="Four archive sources stopped reporting at 08:44Z.">
         <LivingBasis>inferred from 1 source · confidence 0.71</LivingBasis>
         <Button variant="inferred" size="dense" onClick={fn()}>
           Review the proposal

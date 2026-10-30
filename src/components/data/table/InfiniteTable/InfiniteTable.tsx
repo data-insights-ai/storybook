@@ -161,8 +161,16 @@ function useListStart(top: RefObject<Element | null>) {
 /* The next page is asked for while the end of the loaded rows is this far below the viewport. */
 const ahead = "0px 0px 800px 0px";
 
-function useNearEnd({ hasMore, loadingMore, loaded, onLoadMore }: {
-  hasMore: boolean; loadingMore: boolean; loaded: number; onLoadMore: () => void;
+function useNearEnd({
+  hasMore,
+  loadingMore,
+  loaded,
+  onLoadMore,
+}: {
+  hasMore: boolean;
+  loadingMore: boolean;
+  loaded: number;
+  onLoadMore: () => void;
 }) {
   const [target, setTarget] = useState<Element | null>(null);
   const [near, setNear] = useState(false);

@@ -32,7 +32,13 @@ function Actions() {
       </Menu>
       <Flyout id="bulk-tags" title="Tags" open={tags} onOpenChange={setTags}>
         <FlyoutTrigger>
-          <Button variant="secondary" size="dense" onClick={() => setTags(!tags)} aria-expanded={tags} aria-controls="bulk-tags">
+          <Button
+            variant="secondary"
+            size="dense"
+            onClick={() => setTags(!tags)}
+            aria-expanded={tags}
+            aria-controls="bulk-tags"
+          >
             Tags
             <ChevronDown aria-hidden />
           </Button>

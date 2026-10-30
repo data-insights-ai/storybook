@@ -79,12 +79,7 @@ export function AccordionItem({
         </button>
       </Heading>
       {/* Kept mounted while closed, so the fold runs both ways; CSS takes it out of reach once folded. */}
-      <div
-        id={`${id}-body`}
-        className="di-accordion-fold"
-        role="region"
-        aria-labelledby={`${id}-title`}
-      >
+      <div id={`${id}-body`} className="di-accordion-fold" role="region" aria-labelledby={`${id}-title`}>
         <div className="di-accordion-clip">
           <div className="di-accordion-body">{body}</div>
         </div>

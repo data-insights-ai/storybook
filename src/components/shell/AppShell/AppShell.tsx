@@ -52,13 +52,7 @@ export function AppShellBarEnd({ children }: { children: ReactNode }) {
  * charts use every column they are given, and `Page` keeps a record or a form
  * at its measure. `contained` stops widening at 1440px.
  */
-export function AppShellContent({
-  width = "full",
-  children,
-}: {
-  width?: "contained" | "full";
-  children: ReactNode;
-}) {
+export function AppShellContent({ width = "full", children }: { width?: "contained" | "full"; children: ReactNode }) {
   return (
     <main id="di-content" className={cx("di-content", width === "contained" && "is-contained")} tabIndex={-1}>
       {children}

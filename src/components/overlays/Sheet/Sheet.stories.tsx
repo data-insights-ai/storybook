@@ -28,7 +28,14 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function Opener(args: { title: string; lede?: string; index?: string; eyebrow?: string; closeLabel: string; size?: "md" | "lg" | "xl" }) {
+function Opener(args: {
+  title: string;
+  lede?: string;
+  index?: string;
+  eyebrow?: string;
+  closeLabel: string;
+  size?: "md" | "lg" | "xl";
+}) {
   const [open, setOpen] = useState(false);
   return (
     <>

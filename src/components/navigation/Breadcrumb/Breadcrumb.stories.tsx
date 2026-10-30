@@ -8,11 +8,7 @@ const meta = {
   tags: ["layer:primitive", "autodocs"],
   args: {
     label: "Breadcrumb",
-    items: [
-      { label: "WS-01", href: "#ws" },
-      { label: "sources", href: "#sources" },
-      { label: "feed.example.io" },
-    ],
+    items: [{ label: "WS-01", href: "#ws" }, { label: "sources", href: "#sources" }, { label: "feed.example.io" }],
   },
   argTypes: {
     label: { control: "text" },

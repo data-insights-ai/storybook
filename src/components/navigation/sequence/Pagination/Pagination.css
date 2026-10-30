@@ -20,7 +20,8 @@
     font-size: var(--di-font-size-200);
     font-variant-numeric: tabular-nums;
     line-height: 1;
-    transition: background-color var(--di-duration) var(--di-ease),
+    transition:
+      background-color var(--di-duration) var(--di-ease),
       border-color var(--di-duration) var(--di-ease),
       color var(--di-duration) var(--di-ease);
   }

@@ -60,8 +60,16 @@ export const Path: Story = {
 
 /** A screen reader hears the items as a list; an item longer than the line wraps inside instead of being clipped. */
 export const LongItem: Story = {
-  args: { items: ["vpn-gw-01", "a-very-long-host-name-that-is-wider-than-the-column.finance.example.org", "srv-fs-02"] },
-  decorators: [(Story) => <div style={{ width: 200 }}><Story /></div>],
+  args: {
+    items: ["vpn-gw-01", "a-very-long-host-name-that-is-wider-than-the-column.finance.example.org", "srv-fs-02"],
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: 200 }}>
+        <Story />
+      </div>
+    ),
+  ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getAllByRole("listitem")).toHaveLength(3);

@@ -37,24 +37,14 @@ export function SkeletonTable({
   const widths = [132, 98, 154, 112, 140, 88, 120];
   const shown = useDelayed(delay);
   return (
-    <div
-      className={cx("di-skeleton", "di-delayed", className)}
-      data-shown={shown}
-      role="status"
-      aria-live="polite"
-    >
+    <div className={cx("di-skeleton", "di-delayed", className)} data-shown={shown} role="status" aria-live="polite">
       <span className="di-sr">{label}</span>
       <div className="di-skeleton-row is-header" aria-hidden>
         <span className="di-skeleton-index" />
         <span className="di-skeleton-bar is-header" style={{ width: 96 }} />
       </div>
       {Array.from({ length: rows }, (_, i) => (
-        <div
-          key={i}
-          className="di-skeleton-row"
-          style={{ "--di-skeleton-row": i + 1 } as CSSProperties}
-          aria-hidden
-        >
+        <div key={i} className="di-skeleton-row" style={{ "--di-skeleton-row": i + 1 } as CSSProperties} aria-hidden>
           <span className="di-skeleton-index" />
           <span className="di-skeleton-bar" style={{ width: widths[i % widths.length] }} />
           <span className="di-skeleton-bar is-trailing" />

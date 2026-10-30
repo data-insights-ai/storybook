@@ -83,7 +83,15 @@ function ModalSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, si
       }}
     >
       {open ? (
-        <SheetFrame titleId={titleId} title={title} lede={lede} index={index} eyebrow={eyebrow} closeLabel={closeLabel} onClose={onClose}>
+        <SheetFrame
+          titleId={titleId}
+          title={title}
+          lede={lede}
+          index={index}
+          eyebrow={eyebrow}
+          closeLabel={closeLabel}
+          onClose={onClose}
+        >
           {children}
         </SheetFrame>
       ) : null}
@@ -91,7 +99,17 @@ function ModalSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, si
   );
 }
 
-function DockedSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, children, side }: SheetProps & { side: HTMLElement }) {
+function DockedSheet({
+  open,
+  onClose,
+  title,
+  lede,
+  index,
+  eyebrow,
+  closeLabel,
+  children,
+  side,
+}: SheetProps & { side: HTMLElement }) {
   const ref = useRef<HTMLElement>(null);
   const titleId = useId();
   const opener = useRef<HTMLElement | null>(null);
@@ -130,7 +148,15 @@ function DockedSheet({ open, onClose, title, lede, index, eyebrow, closeLabel, c
         onClose();
       }}
     >
-      <SheetFrame titleId={titleId} title={title} lede={lede} index={index} eyebrow={eyebrow} closeLabel={closeLabel} onClose={onClose}>
+      <SheetFrame
+        titleId={titleId}
+        title={title}
+        lede={lede}
+        index={index}
+        eyebrow={eyebrow}
+        closeLabel={closeLabel}
+        onClose={onClose}
+      >
         {children}
       </SheetFrame>
     </section>,
@@ -147,7 +173,9 @@ function SheetFrame({
   closeLabel,
   onClose,
   children,
-}: Pick<SheetProps, "title" | "lede" | "index" | "eyebrow" | "closeLabel" | "onClose" | "children"> & { titleId: string }) {
+}: Pick<SheetProps, "title" | "lede" | "index" | "eyebrow" | "closeLabel" | "onClose" | "children"> & {
+  titleId: string;
+}) {
   const footer: ReactNode[] = [];
   const body: ReactNode[] = [];
   Children.forEach(children, (child) => {

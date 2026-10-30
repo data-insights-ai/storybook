@@ -71,7 +71,8 @@ export function ListDetailItems({ children }: { children: ReactNode }) {
     if (at === -1) return;
     event.preventDefault();
     const last = buttons.length - 1;
-    const next = { Home: 0, End: last, ArrowDown: Math.min(at + 1, last), ArrowUp: Math.max(at - 1, 0) }[event.key] ?? at;
+    const next =
+      { Home: 0, End: last, ArrowDown: Math.min(at + 1, last), ArrowUp: Math.max(at - 1, 0) }[event.key] ?? at;
     buttons[next]?.focus();
   };
   return (

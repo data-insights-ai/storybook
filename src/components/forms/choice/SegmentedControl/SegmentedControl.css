@@ -26,7 +26,8 @@
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
-    transition: background-color var(--di-duration) var(--di-ease),
+    transition:
+      background-color var(--di-duration) var(--di-ease),
       color var(--di-duration) var(--di-ease);
   }
 

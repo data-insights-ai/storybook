@@ -5,10 +5,12 @@
  */
 import type { Role } from "../shell/shell.sample";
 
-const day = (i: number) => new Date(Date.UTC(2026, 8, 13 + i)).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+const day = (i: number) =>
+  new Date(Date.UTC(2026, 8, 13 + i)).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 
 export const credits = [
-  220, 214, 208, 202, 196, 190, 184, 178, 172, 166, 160, 154, 148, 142, 136, 130, 124, 118, 112, 106, 100, 94, 88, 82, 76, 70, 300, 194.5, 188.5, 182.5,
+  220, 214, 208, 202, 196, 190, 184, 178, 172, 166, 160, 154, 148, 142, 136, 130, 124, 118, 112, 106, 100, 94, 88, 82,
+  76, 70, 300, 194.5, 188.5, 182.5,
 ].map((balance, i) => ({ at: day(i), balance }));
 
 export const audit = [
@@ -26,7 +28,12 @@ export const team = [
 ];
 
 export const products = [
-  { id: "security", name: "Security operations", owner: "Professional · 4 of 5 seats", member: "Workspaces Production and Staging" },
+  {
+    id: "security",
+    name: "Security operations",
+    owner: "Professional · 4 of 5 seats",
+    member: "Workspaces Production and Staging",
+  },
   { id: "reports", name: "Reports", owner: "Open to every member", member: "12 reports shared with you" },
 ];
 
@@ -83,7 +90,12 @@ const actsOn: Record<Decision["kind"], (role: Role) => boolean> = {
 export const firstDue = (state: OrganizationState, role: Role) =>
   state.decisions.filter((d) => actsOn[d.kind](role)).sort((a, b) => a.daysLeft - b.daysLeft)[0];
 
-export const people: Record<Role, string> = { owner: "Nora Feld", admin: "Kim Ops", billing: "Robin Billing", member: "Sam Analyst" };
+export const people: Record<Role, string> = {
+  owner: "Nora Feld",
+  admin: "Kim Ops",
+  billing: "Robin Billing",
+  member: "Sam Analyst",
+};
 
 export const roleNames: Record<Role, string> = {
   owner: "you are the owner",

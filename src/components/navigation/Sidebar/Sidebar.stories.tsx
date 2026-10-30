@@ -35,7 +35,11 @@ const records = [
 ];
 
 // Stands in for a client-side router's Link: it navigates without a page load.
-function RouterLink({ to, onNavigate, ...rest }: AnchorHTMLAttributes<HTMLAnchorElement> & { to: string; onNavigate: (to: string) => void }) {
+function RouterLink({
+  to,
+  onNavigate,
+  ...rest
+}: AnchorHTMLAttributes<HTMLAnchorElement> & { to: string; onNavigate: (to: string) => void }) {
   return (
     <a
       {...rest}
@@ -116,7 +120,10 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey }
       <SidebarInset>
         <AppShellBar>
           <SidebarTrigger label="Toggle navigation" />
-          <Breadcrumb label="Breadcrumb" items={[{ label: "Example studio", href: "#/workspace" }, { label: current.label }]} />
+          <Breadcrumb
+            label="Breadcrumb"
+            items={[{ label: "Example studio", href: "#/workspace" }, { label: current.label }]}
+          />
         </AppShellBar>
         <AppShellContent>
           <PageHeader eyebrow="Record" lede="Press Ctrl+B or Cmd+B to collapse the navigation to its icon rail.">
@@ -219,7 +226,9 @@ export const Remembered: Story = {
 };
 
 export const MobileDrawer: Story = {
-  parameters: { viewport: { options: { phone: { name: "Phone", styles: { width: "390px", height: "844px" }, type: "mobile" } } } },
+  parameters: {
+    viewport: { options: { phone: { name: "Phone", styles: { width: "390px", height: "844px" }, type: "mobile" } } },
+  },
   globals: { viewport: { value: "phone", isRotated: false } },
   render: (args) => <SampleSidebar label={args.label} closeLabel={args.closeLabel} />,
   play: async ({ canvasElement }) => {
@@ -267,7 +276,14 @@ function WorkspaceSwitcher() {
     >
       <MenuGroup label="Workspaces">
         {["Northwind Security", "Harbor Labs"].map((name) => (
-          <MenuItem key={name} checked={name === current} onSelect={() => { setCurrent(name); setOpen(false); }}>
+          <MenuItem
+            key={name}
+            checked={name === current}
+            onSelect={() => {
+              setCurrent(name);
+              setOpen(false);
+            }}
+          >
             {name}
           </MenuItem>
         ))}

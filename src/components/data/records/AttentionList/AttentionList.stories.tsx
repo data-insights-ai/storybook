@@ -74,7 +74,8 @@ export const Default: Story = {
     await expect(getComputedStyle(rank).textDecorationLine).toBe("none");
     await expect(getComputedStyle(rank).boxShadow).toMatch(/3px 0px 0px 0px inset/);
     await expect(first.getBoundingClientRect().width).toBeGreaterThanOrEqual(second.getBoundingClientRect().width);
-    if (window.innerWidth > 900) await expect(first.getBoundingClientRect().width).toBeGreaterThan(second.getBoundingClientRect().width);
+    if (window.innerWidth > 900)
+      await expect(first.getBoundingClientRect().width).toBeGreaterThan(second.getBoundingClientRect().width);
   },
 };
 
@@ -99,7 +100,9 @@ export const OneDecision: Story = {
 
 /** Nothing is due: no empty list, one quiet line and what it rests on. */
 export const Clear: Story = {
-  render: () => <AttentionClear title="Everything is running" note="14 sources delivering · nothing to decide before 30 Apr" />,
+  render: () => (
+    <AttentionClear title="Everything is running" note="14 sources delivering · nothing to decide before 30 Apr" />
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Everything is running")).toBeVisible();

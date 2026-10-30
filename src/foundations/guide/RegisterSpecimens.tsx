@@ -48,12 +48,10 @@ export function IndexSpecimen() {
         An ordinal: the row's handle, and what an operator says out loud.
       </Panel>
       <Panel index="C" title="Coverage">
-        <PanelMeta>4 sources</PanelMeta>
-        A letter, where the entries are kinds rather than a sequence.
+        <PanelMeta>4 sources</PanelMeta>A letter, where the entries are kinds rather than a sequence.
       </Panel>
       <Panel index="!!" indexTone="danger" title="Ingest run">
-        <PanelMeta>failed 08:44Z</PanelMeta>
-        A failure keeps its column, tinted. It is still a record.
+        <PanelMeta>failed 08:44Z</PanelMeta>A failure keeps its column, tinted. It is still a record.
       </Panel>
     </div>
   );

@@ -95,7 +95,8 @@ export const Vocabulary: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: "Brand meanings, with the Lucide export under each one. Import that name from lucide-react and pass the element to Icon.",
+        story:
+          "Brand meanings, with the Lucide export under each one. Import that name from lucide-react and pass the element to Icon.",
       },
     },
   },

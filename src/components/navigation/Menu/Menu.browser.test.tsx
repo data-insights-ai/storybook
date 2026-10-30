@@ -21,7 +21,13 @@ function openMenuAt(edge: "top" | "bottom") {
   root = createRoot(host);
   flushSync(() =>
     root!.render(
-      <Menu open onOpenChange={() => {}} label="Theme" align="start" trigger={(props) => <button {...props}>Theme</button>}>
+      <Menu
+        open
+        onOpenChange={() => {}}
+        label="Theme"
+        align="start"
+        trigger={(props) => <button {...props}>Theme</button>}
+      >
         <MenuItem onSelect={() => {}}>Auto</MenuItem>
         <MenuItem onSelect={() => {}}>Light</MenuItem>
         <MenuItem onSelect={() => {}}>Dark</MenuItem>
@@ -91,7 +97,8 @@ describe("menu inside what clips or contains it", () => {
 
   test("an ancestor that transforms and contains its layout still has the menu at the trigger", () => {
     const frame = document.createElement("div");
-    frame.style.cssText = "margin: 60px 0 0 300px; width: 200px; container-type: inline-size; transform: translateX(30px); overflow: hidden; height: 30px";
+    frame.style.cssText =
+      "margin: 60px 0 0 300px; width: 200px; container-type: inline-size; transform: translateX(30px); overflow: hidden; height: 30px";
     const { trigger, menu, items } = openMenuIn(frame);
     const box = frame.getBoundingClientRect();
     expect(Math.abs(menu.top - (trigger.bottom + 4))).toBeLessThanOrEqual(5);
@@ -104,7 +111,8 @@ describe("menu inside what clips or contains it", () => {
 describe("menu keys", () => {
   test("a letter jumps to the next item that starts with it, wrapping", async () => {
     openMenuAt("top");
-    const item = (name: string) => Array.from(document.querySelectorAll<HTMLElement>('[role="menuitem"]')).find((el) => el.textContent === name);
+    const item = (name: string) =>
+      Array.from(document.querySelectorAll<HTMLElement>('[role="menuitem"]')).find((el) => el.textContent === name);
     item("Auto")!.focus();
     await userEvent.keyboard("d");
     expect(document.activeElement).toBe(item("Dark"));

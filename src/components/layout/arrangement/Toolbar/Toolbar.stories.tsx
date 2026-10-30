@@ -71,7 +71,13 @@ export const InlineForm: Story = {
           <option value="nora">Nora Feld</option>
           <option value="jonas">Jonas Brandt</option>
         </Select>
-        <TextField id="toolbar-note" label="Note" defaultValue="Covers the night shift until Friday, when the rota changes back to the usual handover" hint="Use 1 to 80 characters." hintTone="error" />
+        <TextField
+          id="toolbar-note"
+          label="Note"
+          defaultValue="Covers the night shift until Friday, when the rota changes back to the usual handover"
+          hint="Use 1 to 80 characters."
+          hintTone="error"
+        />
         <Button type="submit">Grant</Button>
       </Toolbar>
     </form>
@@ -95,7 +101,13 @@ export const AddForm: Story = {
   render: () => (
     <form onSubmit={(event) => event.preventDefault()}>
       <Toolbar fillFirst>
-        <TextField id="tb-domain" label="Domain" mono placeholder="northwind.example" hint="Verified by a DNS record." />
+        <TextField
+          id="tb-domain"
+          label="Domain"
+          mono
+          placeholder="northwind.example"
+          hint="Verified by a DNS record."
+        />
         <Select id="tb-mode" label="Sign-in" mono={false} defaultValue="required">
           <option value="required">Required</option>
           <option value="optional">Optional</option>

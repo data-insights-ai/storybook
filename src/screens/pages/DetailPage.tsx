@@ -21,7 +21,7 @@ import {
   StatusPill,
   Switch,
   TextField,
-} from "../.."; 
+} from "../..";
 
 /** A detail page: summary header, sections that read until Edit, the danger zone last. */
 export function DetailPageScreen() {
@@ -70,7 +70,11 @@ export function DetailPageScreen() {
             <Fact label="Name">{name}</Fact>
             <Fact label="Created">3 Mar 2026</Fact>
             <Fact label="Organization ID">
-              <CopyValue value="6f1c2a9e-4b7d-4e0a-9c55-2f3d8a71b0c4" copyLabel="Copy organization ID" copiedLabel="Copied" />
+              <CopyValue
+                value="6f1c2a9e-4b7d-4e0a-9c55-2f3d8a71b0c4"
+                copyLabel="Copy organization ID"
+                copiedLabel="Copied"
+              />
             </Fact>
           </FactList>
           <DetailSectionForm
@@ -79,13 +83,25 @@ export function DetailPageScreen() {
             onCancel={() => setEditing(false)}
             onSubmit={() => (setName(draft.trim() || name), setEditing(false))}
           >
-            <TextField id="screen-org-name" label="Name" value={draft} maxLength={120} onChange={(e) => setDraft(e.target.value)} />
+            <TextField
+              id="screen-org-name"
+              label="Name"
+              value={draft}
+              maxLength={120}
+              onChange={(e) => setDraft(e.target.value)}
+            />
           </DetailSectionForm>
         </DetailSection>
 
         <DetailSection title="Security" lede="Rules for everyone who signs in to this organization.">
           <Switch id="screen-mfa" layout="row" title="Require multi-factor sign-in" on={mfa} onToggle={setMfa} />
-          <Switch id="screen-sessions" layout="row" title="End sessions after 12 hours" on={sessions} onToggle={setSessions} />
+          <Switch
+            id="screen-sessions"
+            layout="row"
+            title="End sessions after 12 hours"
+            on={sessions}
+            onToggle={setSessions}
+          />
           {dirty ? (
             <SaveBar label="Unsaved changes" message="Security rules changed">
               <Button variant="secondary" onClick={() => (setMfa(saved.mfa), setSessions(saved.sessions))}>

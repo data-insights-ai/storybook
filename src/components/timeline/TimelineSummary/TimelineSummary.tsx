@@ -1,13 +1,4 @@
-import {
-  Children,
-  createContext,
-  isValidElement,
-  useContext,
-  useId,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { Children, createContext, isValidElement, useContext, useId, useMemo, useState, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { StatusPill } from "../../marks/status/StatusPill";
 import type { TimelineMarker, TimelineSpan, TimelineTone } from "../types";
@@ -109,35 +100,25 @@ export function TimelineSummary({
     [locale, timeZone],
   );
 
-  const pick = onEpisodePick
-    ? (episode: number) => onEpisodePick(episode === active ? null : episode)
-    : undefined;
+  const pick = onEpisodePick ? (episode: number) => onEpisodePick(episode === active ? null : episode) : undefined;
   const place: Place = { active, hovered, hover, pick };
 
   const blocks = useMemo(() => {
     const spanMs = Math.max(1, bounds.end - bounds.start);
     // Per minute and at least one, so a burst inside a single bucket is not infinitely steep.
-    const rateOf = (e: TimelineEpisode) =>
-      e.total / Math.max(MINUTE, e.end - e.start);
+    const rateOf = (e: TimelineEpisode) => e.total / Math.max(MINUTE, e.end - e.start);
     const peak = Math.max(Number.MIN_VALUE, ...episodes.map(rateOf));
     let lastLabel = -Infinity;
     return episodes.map((episode, i) => {
-      const w = Math.max(
-        MIN_PX,
-        ((episode.end - episode.start) / spanMs) * width,
-      );
-      const left = Math.min(
-        Math.max(0, ((episode.start - bounds.start) / spanMs) * width),
-        width - w,
-      );
+      const w = Math.max(MIN_PX, ((episode.end - episode.start) / spanMs) * width);
+      const left = Math.min(Math.max(0, ((episode.start - bounds.start) / spanMs) * width), width - w);
       const centre = left + w / 2;
       const empty = episode.total === 0;
       const labelled = !empty && centre - lastLabel >= LABEL_PX;
       if (labelled) {
         lastLabel = centre;
       }
-      const height =
-        LOW_PX + (HIGH_PX - LOW_PX) * Math.sqrt(rateOf(episode) / peak);
+      const height = LOW_PX + (HIGH_PX - LOW_PX) * Math.sqrt(rateOf(episode) / peak);
       const duration = Math.max(1, episode.end - episode.start);
       return {
         left,
@@ -187,15 +168,8 @@ export function TimelineSummary({
                     onPointerLeave={() => hover(null)}
                     onClick={pick ? () => pick(i) : undefined}
                   >
-                    {block.labelled ? (
-                      <span className="di-tsummary-block-index">
-                        {ordinal(i)}
-                      </span>
-                    ) : null}
-                    <span
-                      className="di-tsummary-block-fill"
-                      style={{ height: block.height }}
-                    >
+                    {block.labelled ? <span className="di-tsummary-block-index">{ordinal(i)}</span> : null}
+                    <span className="di-tsummary-block-fill" style={{ height: block.height }}>
                       {block.stretches.map((stretch) => (
                         <span
                           key={stretch.left}
@@ -210,10 +184,7 @@ export function TimelineSummary({
             : null}
           {width > 0
             ? markers.map((marker) => {
-                const x =
-                  ((marker.at - bounds.start) /
-                    Math.max(1, bounds.end - bounds.start)) *
-                  width;
+                const x = ((marker.at - bounds.start) / Math.max(1, bounds.end - bounds.start)) * width;
                 return x >= 0 && x <= width ? (
                   <span
                     key={`${marker.at}-${marker.label}`}
@@ -286,11 +257,7 @@ export function TimelineSummaryEpisode({
 }) {
   const place = useContext(SummaryPlace);
   const active = place?.active === episode;
-  const className = cx(
-    "di-tsummary-row",
-    active && "is-active",
-    place?.hovered === episode && "is-hovered",
-  );
+  const className = cx("di-tsummary-row", active && "is-active", place?.hovered === episode && "is-hovered");
   const body = (
     <>
       <span className="di-tsummary-index">{ordinal(episode)}</span>

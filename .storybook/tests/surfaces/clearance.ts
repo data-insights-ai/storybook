@@ -13,33 +13,15 @@ import { describe, groundOf, hasEdge, opaque, shown } from "./paint";
 const MIN_TEXT = 10;
 const MIN_CONTROL = 8;
 const FULL_BLEED: [selector: string, reason: string][] = [
-  [
-    "table, thead, tbody, tr, td, th",
-    "table rows run to the frame; cells carry their own padding",
-  ],
-  [
-    "[role=listbox], [role=menu], [role=option], [role=menuitem]",
-    "menu and option rows span their popover",
-  ],
+  ["table, thead, tbody, tr, td, th", "table rows run to the frame; cells carry their own padding"],
+  ["[role=listbox], [role=menu], [role=option], [role=menuitem]", "menu and option rows span their popover"],
   ["img, video, canvas, svg, figure", "media is drawn to the edge"],
-  [
-    "input, select, textarea, button, a[href]",
-    "a control is its own frame, not a surface",
-  ],
-  [
-    ".di-command-row, .di-ld-item, .di-accordion-toggle",
-    "a row whose whole width is the target spans its list",
-  ],
+  ["input, select, textarea, button, a[href]", "a control is its own frame, not a surface"],
+  [".di-command-row, .di-ld-item, .di-accordion-toggle", "a row whose whole width is the target spans its list"],
   [".di-command-field", "the palette's input is its head, edge to edge"],
-  [
-    ".di-token-field",
-    "a token field is one control; its chips sit at the field's own inset",
-  ],
+  [".di-token-field", "a token field is one control; its chips sit at the field's own inset"],
   [".di-chart-tip", "a chart tooltip is a label, padded at the label scale"],
-  [
-    ".di-icon-catalog",
-    "an icon specimen grid: each cell is sized to its icon and longest name",
-  ],
+  [".di-icon-catalog", "an icon specimen grid: each cell is sized to its icon and longest name"],
 ];
 const BLEED = FULL_BLEED.map(([selector]) => selector).join(", ");
 /* The entries past the generic ones name controls that are themselves full-bleed rows or fields. */
@@ -48,21 +30,13 @@ const BLEED_CONTROLS = FULL_BLEED.slice(4)
   .join(", ");
 
 function isSurface(el: Element): boolean {
-  if (
-    el.matches(BLEED) ||
-    el === document.body ||
-    el === document.documentElement
-  )
-    return false;
+  if (el.matches(BLEED) || el === document.body || el === document.documentElement) return false;
   const style = getComputedStyle(el);
   const rect = el.getBoundingClientRect();
   if (rect.width < 120 || rect.height < 48) return false;
   if (hasEdge(style)) return true;
   const ground = groundOf(el);
-  return (
-    opaque(style.backgroundColor) &&
-    (!ground || ground.color !== style.backgroundColor)
-  );
+  return opaque(style.backgroundColor) && (!ground || ground.color !== style.backgroundColor);
 }
 
 function surfaceOf(el: Element): Element | null {
@@ -73,11 +47,7 @@ function surfaceOf(el: Element): Element | null {
   return null;
 }
 
-function tooClose(
-  inner: DOMRect,
-  surface: Element,
-  min: number,
-): string | null {
+function tooClose(inner: DOMRect, surface: Element, min: number): string | null {
   const box = surface.getBoundingClientRect();
   const style = getComputedStyle(surface);
   const edges = {
@@ -86,12 +56,8 @@ function tooClose(
     top: inner.top - (box.top + parseFloat(style.borderTopWidth)),
     bottom: box.bottom - parseFloat(style.borderBottomWidth) - inner.bottom,
   };
-  const close = Object.entries(edges).filter(
-    ([, gap]) => gap > -1 && gap < min - 0.5,
-  );
-  return close.length
-    ? close.map(([side, gap]) => `${side} ${gap.toFixed(0)}px`).join(", ")
-    : null;
+  const close = Object.entries(edges).filter(([, gap]) => gap > -1 && gap < min - 0.5);
+  return close.length ? close.map(([side, gap]) => `${side} ${gap.toFixed(0)}px`).join(", ") : null;
 }
 
 export function clearanceFindings(root: Element): string[] {
@@ -99,13 +65,7 @@ export function clearanceFindings(root: Element): string[] {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     const host = node.parentElement;
-    if (
-      !host ||
-      !(node.textContent ?? "").trim() ||
-      !shown(host) ||
-      host.closest(BLEED)
-    )
-      continue;
+    if (!host || !(node.textContent ?? "").trim() || !shown(host) || host.closest(BLEED)) continue;
     const surface = surfaceOf(host);
     if (!surface) continue;
     const range = document.createRange();
@@ -114,31 +74,15 @@ export function clearanceFindings(root: Element): string[] {
       if (rect.width < 1) continue;
       const close = tooClose(rect, surface, MIN_TEXT);
       if (close)
-        findings.add(
-          `"${node.textContent!.trim().slice(0, 30)}" is ${close} from the edge of ${describe(surface)}`,
-        );
+        findings.add(`"${node.textContent!.trim().slice(0, 30)}" is ${close} from the edge of ${describe(surface)}`);
     }
   }
-  for (const control of root.querySelectorAll(
-    "input, select, textarea, button, a[href]",
-  )) {
-    if (
-      !shown(control) ||
-      control.matches(BLEED_CONTROLS) ||
-      control.parentElement?.closest(BLEED)
-    )
-      continue;
+  for (const control of root.querySelectorAll("input, select, textarea, button, a[href]")) {
+    if (!shown(control) || control.matches(BLEED_CONTROLS) || control.parentElement?.closest(BLEED)) continue;
     const surface = surfaceOf(control);
     if (!surface) continue;
-    const close = tooClose(
-      control.getBoundingClientRect(),
-      surface,
-      MIN_CONTROL,
-    );
-    if (close)
-      findings.add(
-        `${describe(control)} is ${close} from the edge of ${describe(surface)}`,
-      );
+    const close = tooClose(control.getBoundingClientRect(), surface, MIN_CONTROL);
+    if (close) findings.add(`${describe(control)} is ${close} from the edge of ${describe(surface)}`);
   }
   return [...findings];
 }

@@ -38,9 +38,7 @@ export function ToggleGroup({
     onChange(
       value.includes(v)
         ? value.filter((x) => x !== v)
-        : options
-            .map((o) => o.value)
-            .filter((x) => x === v || value.includes(x)),
+        : options.map((o) => o.value).filter((x) => x === v || value.includes(x)),
     );
   return (
     <fieldset className={cx("di-toggle-group", className)} disabled={disabled}>

@@ -59,7 +59,9 @@ function Flow(args: Parameters<typeof CreateFlow>[0]) {
       onSubmit={() => setDone(true)}
       onCancel={() => setStep(0)}
     >
-      {step === 0 ? <ChoiceCards name="kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} /> : null}
+      {step === 0 ? (
+        <ChoiceCards name="kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} />
+      ) : null}
       {step === 1 ? (
         <TextField id="conn-name" label="Name" value={name} onChange={(e) => setName(e.target.value)} />
       ) : null}

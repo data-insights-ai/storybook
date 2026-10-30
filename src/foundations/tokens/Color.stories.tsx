@@ -22,7 +22,12 @@ const families = [
     swatches: [
       ["--di-one", "#C9A24A", "#0a1f44", "Marks the one object that matters in a view. In daylight never text."],
       ["--di-one-edge", "#A6811F", "#061631", "Its edge: the attention item, the verdict."],
-      ["--di-seal", "#C9A24A", "#0a1f44", "The seal: a brand moment — sign-in, onboarding, a licence or certificate. Never beside the one."],
+      [
+        "--di-seal",
+        "#C9A24A",
+        "#0a1f44",
+        "The seal: a brand moment — sign-in, onboarding, a licence or certificate. Never beside the one.",
+      ],
       ["--di-ai-ring", "#A6811F", "#061631", "The hollow ring beside an inferred value."],
     ],
   },
@@ -66,7 +71,12 @@ const night = [
   ["--di-bg-subtle", "--di-text", "#081838", "Inset and strip, a step below the ground."],
   ["--di-bg-surface", "--di-text", "#0F2A57", "A surface lifts from the ground."],
   ["--di-bg-plane", "--di-text", "#133068", "The plane: a menu, a lifted row."],
-  ["--di-bg-hero", "--di-text", "#1A3A78", "The hero zone, a clear step above a surface (ΔL* ≥ 3, checked in zones.test.ts)."],
+  [
+    "--di-bg-hero",
+    "--di-text",
+    "#1A3A78",
+    "The hero zone, a clear step above a surface (ΔL* ≥ 3, checked in zones.test.ts).",
+  ],
   ["--di-fill-strong", "--di-text-on-strong", "#F2F0E6", "The committing control turns paper-white."],
   ["--di-one-ink", "--di-bg-page", "#E6C677", "After dark gold may be read as text."],
   ["--di-select", "--di-bg-page", "#79AEEA", "Selection and focus stay cornflower."],
@@ -113,7 +123,13 @@ const accents = [
     name: "Cornflower",
     role: "selection and signal",
     swatches: [
-      ["--di-signal", "--di-text-on-strong", "#2B6CB0", "light", "Selection, focus, a compared series, a note that something is new."],
+      [
+        "--di-signal",
+        "--di-text-on-strong",
+        "#2B6CB0",
+        "light",
+        "Selection, focus, a compared series, a note that something is new.",
+      ],
       ["--di-signal-ink", "--di-text-on-strong", "#1F5288", "light", "Cornflower as text on paper."],
       ["--di-signal-tint", "--di-signal-ink", "#E2EBF7", "light", "The ground of a selected row."],
       ["--di-signal", "--di-bg-page", "#79AEEA", "dark", "Cornflower on the night sheet."],
@@ -138,8 +154,7 @@ function AccentsInUse() {
     <div className="di-accent-use">
       <p className="di-accent-use-eyebrow">In use</p>
       <p className="di-accent-use-claim">
-        Coverage rose to <Highlight variant="figure">94 %</Highlight> —{" "}
-        <Highlight>without a new source</Highlight>.
+        Coverage rose to <Highlight variant="figure">94 %</Highlight> — <Highlight>without a new source</Highlight>.
       </p>
       <Chart label="Coverage by quarter, recorded against comparison" config={coverageConfig}>
         <BarChart data={coverage} margin={{ top: 8, right: 0, bottom: 0, left: 0 }} barGap={2}>
@@ -182,26 +197,35 @@ function Board() {
         lede="A component binds to the name on the left, never to the hex. The hex is printed so a designer can check a mock against the build, not so it can be typed into one."
       >
         <Rules>
-          <Rule>In an operational view gold marks one object: the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small pill with navy words that names that object; never gold text.</Rule>
-          <Rule>The seal is gold too, and so it is a brand moment only: sign-in, the brand mark, an empty or onboarding state, a licence or certificate seal. It never appears in an operational view beside the one, and the seal button is never an operational action. Components draw the record marks in --di-mark: neutral ink, and gold only inside a data-brand region.</Rule>
+          <Rule>
+            In an operational view gold marks one object: the first attention item, a verdict, the one value of a chart.
+            In daylight it is an edge, a mark, or the small pill with navy words that names that object; never gold
+            text.
+          </Rule>
+          <Rule>
+            The seal is gold too, and so it is a brand moment only: sign-in, the brand mark, an empty or onboarding
+            state, a licence or certificate seal. It never appears in an operational view beside the one, and the seal
+            button is never an operational action. Components draw the record marks in --di-mark: neutral ink, and gold
+            only inside a data-brand region.
+          </Rule>
         </Rules>
         <div className="di-swatches">
-        {families.map((family) => (
-          <section key={family.name} className="di-swatch-col">
-            <h2>
-              {family.name} <span>/ {family.role}</span>
-            </h2>
-            {family.swatches.map(([name, hex, ink, role]) => (
-              <div key={name} className="di-swatch" style={{ background: hex, color: ink }}>
-                <b>
-                  {name}
-                  <small>{hex}</small>
-                </b>
-                <span>{role}</span>
-              </div>
-            ))}
-          </section>
-        ))}
+          {families.map((family) => (
+            <section key={family.name} className="di-swatch-col">
+              <h2>
+                {family.name} <span>/ {family.role}</span>
+              </h2>
+              {family.swatches.map(([name, hex, ink, role]) => (
+                <div key={name} className="di-swatch" style={{ background: hex, color: ink }}>
+                  <b>
+                    {name}
+                    <small>{hex}</small>
+                  </b>
+                  <span>{role}</span>
+                </div>
+              ))}
+            </section>
+          ))}
         </div>
       </Section>
       <Section
@@ -225,7 +249,12 @@ function Board() {
       >
         <div className="di-swatches">
           {(["light", "dark"] as const).map((theme) => (
-            <section key={theme} className="di-swatch-col" data-theme={theme} style={{ background: "var(--di-bg-page)" }}>
+            <section
+              key={theme}
+              className="di-swatch-col"
+              data-theme={theme}
+              style={{ background: "var(--di-bg-page)" }}
+            >
               {severities.map(([word, token, day, night]) => (
                 <div key={token} className="di-swatch is-mark">
                   <i style={{ background: `var(${token})` }} aria-hidden />

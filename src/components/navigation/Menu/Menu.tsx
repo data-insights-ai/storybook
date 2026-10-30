@@ -1,4 +1,13 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
 import { Check } from "lucide-react";
 import { cx } from "../../../internal/cx";
 import { SealMark } from "../../marks/status/SealValue";
@@ -90,7 +99,10 @@ export function Menu({
   }, [open, triggerNode, align]);
 
   const items = useCallback(
-    () => Array.from(list.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"], [role="menuitemradio"]') ?? []).filter((item) => !item.disabled),
+    () =>
+      Array.from(
+        list.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"], [role="menuitemradio"]') ?? [],
+      ).filter((item) => !item.disabled),
     [],
   );
 
@@ -156,14 +168,21 @@ export function Menu({
   }
 
   return (
-    <div ref={anchor} className="di-menu-anchor" onBlur={(event) => {
-      if (open && !event.currentTarget.contains(event.relatedTarget)) onOpenChange(false);
-    }}>
+    <div
+      ref={anchor}
+      className="di-menu-anchor"
+      onBlur={(event) => {
+        if (open && !event.currentTarget.contains(event.relatedTarget)) onOpenChange(false);
+      }}
+    >
       {trigger({
         "aria-expanded": open,
         "aria-haspopup": "menu",
         "aria-controls": id,
-        onClick: () => { entry.current = "first"; onOpenChange(!open); },
+        onClick: () => {
+          entry.current = "first";
+          onOpenChange(!open);
+        },
         onKeyDown: (event) => {
           if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
           event.preventDefault();
@@ -230,7 +249,9 @@ export function MenuItem({
       onClick={onSelect}
     >
       {checked === undefined ? null : (
-        <span className="di-menu-choice-mark" aria-hidden>{checked ? <Check /> : null}</span>
+        <span className="di-menu-choice-mark" aria-hidden>
+          {checked ? <Check /> : null}
+        </span>
       )}
       {inferred ? <SealMark state="inferred" size={6} /> : null}
       {children}
@@ -243,7 +264,9 @@ export function MenuGroup({ label, children }: { label: string; children: ReactN
   const id = useId();
   return (
     <div role="group" aria-labelledby={id}>
-      <p id={id} className="di-menu-group-label">{label}</p>
+      <p id={id} className="di-menu-group-label">
+        {label}
+      </p>
       {children}
     </div>
   );

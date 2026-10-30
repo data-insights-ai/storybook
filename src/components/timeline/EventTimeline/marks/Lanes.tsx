@@ -17,9 +17,7 @@ export function cellsOf(lane: TimelineLane, events: TimelineEvent[] | undefined)
   if (!events) {
     return lane.cells ?? [];
   }
-  return events
-    .filter((e) => e.lane === lane.id)
-    .map((e) => ({ start: e.at, end: e.at, count: 1, tone: e.tone }));
+  return events.filter((e) => e.lane === lane.id).map((e) => ({ start: e.at, end: e.at, count: 1, tone: e.tone }));
 }
 
 export const countIn = (cells: TimelineCell[], view: Span) =>
@@ -42,9 +40,7 @@ function lanePaths(cells: TimelineCell[], scale: Scale, plotPx: number, y: numbe
     const w = half(x1 - x0);
     path.d += `M${half(x0)} ${y}h${w}v${CELL_H}h${-w}z`;
   }
-  return [...paths.values()].sort(
-    (a, b) => TONES.indexOf(a.tone) - TONES.indexOf(b.tone) || a.shade - b.shade,
-  );
+  return [...paths.values()].sort((a, b) => TONES.indexOf(a.tone) - TONES.indexOf(b.tone) || a.shade - b.shade);
 }
 
 // One row per lane in the caller's order, so the order lanes started in reads as a staircase.

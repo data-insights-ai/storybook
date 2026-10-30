@@ -32,7 +32,12 @@ export function AttentionList({
   const id = useId();
   const list = (
     // role="list": Safari drops the list role from an <ol> whose markers are styled away.
-    <ol className="di-attention" role="list" aria-label={title ? undefined : label} aria-labelledby={title ? id : undefined}>
+    <ol
+      className="di-attention"
+      role="list"
+      aria-label={title ? undefined : label}
+      aria-labelledby={title ? id : undefined}
+    >
       {children}
     </ol>
   );

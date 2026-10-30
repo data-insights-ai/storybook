@@ -75,7 +75,13 @@ export function Panel({
 
   return (
     <section
-      className={cx("di-panel", `di-panel-${surface}`, emphasis && "is-emphasis", indexTone === "danger" && "is-danger", className)}
+      className={cx(
+        "di-panel",
+        `di-panel-${surface}`,
+        emphasis && "is-emphasis",
+        indexTone === "danger" && "is-danger",
+        className,
+      )}
       aria-labelledby={title !== undefined && heading ? id : undefined}
     >
       {index === undefined ? null : (
@@ -106,8 +112,18 @@ export function Panel({
 }
 
 function PanelTitle({ id, heading, title }: { id: string; heading?: 2 | 3; title: string }) {
-  if (heading === 2) return <h2 id={id} className="di-panel-title">{title}</h2>;
-  if (heading === 3) return <h3 id={id} className="di-panel-title">{title}</h3>;
+  if (heading === 2)
+    return (
+      <h2 id={id} className="di-panel-title">
+        {title}
+      </h2>
+    );
+  if (heading === 3)
+    return (
+      <h3 id={id} className="di-panel-title">
+        {title}
+      </h3>
+    );
   return <span className="di-panel-title">{title}</span>;
 }
 

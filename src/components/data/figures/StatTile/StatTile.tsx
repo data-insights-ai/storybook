@@ -60,12 +60,6 @@ export function StatTile({
  * The direction is named in the text as well as the colour: a screen
  * reader hears "down 12 percent", never a green or a red.
  */
-export function StatTileDelta({
-  tone = "ok",
-  children,
-}: {
-  tone?: "ok" | "warn" | "danger";
-  children: ReactNode;
-}) {
+export function StatTileDelta({ tone = "ok", children }: { tone?: "ok" | "warn" | "danger"; children: ReactNode }) {
   return <p className={cx("di-stat-tile-delta", `is-${tone}`)}>{children}</p>;
 }

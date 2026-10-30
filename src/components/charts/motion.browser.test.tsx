@@ -26,11 +26,7 @@ afterEach(() => {
 });
 
 function shapes() {
-  return Array.from(
-    document.querySelectorAll(
-      "svg path, svg rect, .di-sparkline-bar, [class*='-bar']",
-    ),
-  ).map((el) =>
+  return Array.from(document.querySelectorAll("svg path, svg rect, .di-sparkline-bar, [class*='-bar']")).map((el) =>
     [
       el.getAttribute("d"),
       el.getAttribute("width"),
@@ -43,11 +39,7 @@ function shapes() {
 
 const cases = Object.entries(modules).flatMap(([file, mod]) =>
   Object.entries(composeStories(mod)).map(
-    ([name, Story]) =>
-      [
-        `${file.replace(/^.*\//, "")} ${name}`,
-        Story as () => React.ReactElement,
-      ] as const,
+    ([name, Story]) => [`${file.replace(/^.*\//, "")} ${name}`, Story as () => React.ReactElement] as const,
   ),
 );
 
@@ -61,22 +53,13 @@ test.each(cases)("%s draws no series in", async (_, Story) => {
   const first = shapes();
   const moving = document
     .getAnimations()
-    .filter(
-      (a) => !(a instanceof CSSAnimation && a.animationName === "di-chart-in"),
-    )
+    .filter((a) => !(a instanceof CSSAnimation && a.animationName === "di-chart-in"))
     // The tooltip follows the pointer; it is not a series.
     .filter(
-      (a) =>
-        !(
-          (a.effect as KeyframeEffect | null)?.target as Element | null
-        )?.closest?.(".recharts-tooltip-wrapper"),
+      (a) => !((a.effect as KeyframeEffect | null)?.target as Element | null)?.closest?.(".recharts-tooltip-wrapper"),
     )
     .map((a) =>
-      a instanceof CSSAnimation
-        ? a.animationName
-        : a instanceof CSSTransition
-          ? a.transitionProperty
-          : "script",
+      a instanceof CSSAnimation ? a.animationName : a instanceof CSSTransition ? a.transitionProperty : "script",
     );
   await new Promise((r) => setTimeout(r, 400));
   expect(moving).toEqual([]);

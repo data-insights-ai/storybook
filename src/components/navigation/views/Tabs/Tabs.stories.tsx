@@ -53,10 +53,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByRole("tab", { name: "Record" })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
+    await expect(canvas.getByRole("tab", { name: "Record" })).toHaveAttribute("aria-selected", "true");
   },
 };
 
@@ -66,10 +63,7 @@ export const Selecting: Story = {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("tab", { name: /Sources/ }));
     await expect(args.onChange).toHaveBeenCalledWith("sources");
-    await expect(canvas.getByRole("tab", { name: /Sources/ })).toHaveAttribute(
-      "aria-selected",
-      "true",
-    );
+    await expect(canvas.getByRole("tab", { name: /Sources/ })).toHaveAttribute("aria-selected", "true");
   },
 };
 
@@ -118,12 +112,18 @@ export const MultipleStrips: Story = {
   render: function Render(args) {
     const [first, setFirst] = useState("record");
     const [second, setSecond] = useState("record");
-    return <div>
-      <Tabs {...args} idPrefix="first" label="First record" value={first} onChange={setFirst} />
-      <TabPanel idPrefix="first" value={first}>First record view</TabPanel>
-      <Tabs {...args} idPrefix="second" label="Second record" value={second} onChange={setSecond} />
-      <TabPanel idPrefix="second" value={second}>Second record view</TabPanel>
-    </div>;
+    return (
+      <div>
+        <Tabs {...args} idPrefix="first" label="First record" value={first} onChange={setFirst} />
+        <TabPanel idPrefix="first" value={first}>
+          First record view
+        </TabPanel>
+        <Tabs {...args} idPrefix="second" label="Second record" value={second} onChange={setSecond} />
+        <TabPanel idPrefix="second" value={second}>
+          Second record view
+        </TabPanel>
+      </div>
+    );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -133,7 +133,7 @@ export const MultipleStrips: Story = {
     await userEvent.keyboard("{ArrowRight}");
     await expect(second.getByRole("tab", { name: /Sources/ })).toHaveFocus();
     await expect(within(strips[0]).getByRole("tab", { name: "Record" })).toHaveAttribute("aria-selected", "true");
-    const ids = Array.from(canvasElement.querySelectorAll("[id]"), node => node.id);
+    const ids = Array.from(canvasElement.querySelectorAll("[id]"), (node) => node.id);
     await expect(new Set(ids).size).toBe(ids.length);
     for (const panel of canvas.getAllByRole("tabpanel")) {
       const tab = canvasElement.ownerDocument.getElementById(panel.getAttribute("aria-labelledby")!);
@@ -143,7 +143,13 @@ export const MultipleStrips: Story = {
 };
 
 export const UnusualValues: Story = {
-  args: { idPrefix: 'scope " : /', items: [{ value: "record", label: "Record" }, { value: 'a" ] # : /\ud800', label: "Other view" }] },
+  args: {
+    idPrefix: 'scope " : /',
+    items: [
+      { value: "record", label: "Record" },
+      { value: 'a" ] # : /\ud800', label: "Other view" },
+    ],
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     canvas.getByRole("tab", { name: "Record" }).focus();

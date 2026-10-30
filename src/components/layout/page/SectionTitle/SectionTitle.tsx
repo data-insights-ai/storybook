@@ -36,7 +36,11 @@ export function SectionTitle({
 }) {
   return (
     <div className={cx("di-section-title", `di-section-title-${tier}`)}>
-      {eyebrow === "" ? null : <Eyebrow variant="plain" className="di-section-eyebrow">{eyebrow}</Eyebrow>}
+      {eyebrow === "" ? null : (
+        <Eyebrow variant="plain" className="di-section-eyebrow">
+          {eyebrow}
+        </Eyebrow>
+      )}
       {children}
       {lede ? <p className="di-section-lede">{lede}</p> : null}
     </div>

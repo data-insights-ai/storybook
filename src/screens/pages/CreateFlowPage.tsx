@@ -11,10 +11,15 @@ import {
   PageHeaderCrumbs,
   PageHeaderTitle,
   TextField,
-} from "../.."; 
+} from "../..";
 
 const kinds = [
-  { value: "oidc", label: "OpenID Connect", description: "Any identity provider that speaks OIDC.", icon: <KeyRound /> },
+  {
+    value: "oidc",
+    label: "OpenID Connect",
+    description: "Any identity provider that speaks OIDC.",
+    icon: <KeyRound />,
+  },
   { value: "saml", label: "SAML 2.0", description: "A provider that signs SAML assertions.", icon: <Building2 /> },
   { value: "ldap", label: "LDAP", description: "A directory reached through a relay.", icon: <Network /> },
 ];
@@ -55,7 +60,9 @@ export function CreateFlowPageScreen() {
           onSubmit={() => setStep(0)}
           onCancel={() => setStep(0)}
         >
-          {step === 0 ? <ChoiceCards name="screen-kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} /> : null}
+          {step === 0 ? (
+            <ChoiceCards name="screen-kind" legend="Protocol" options={kinds} value={kind} onChange={setKind} />
+          ) : null}
           {step === 1 ? (
             <>
               <TextField id="screen-conn-name" label="Name" value={name} onChange={(e) => setName(e.target.value)} />

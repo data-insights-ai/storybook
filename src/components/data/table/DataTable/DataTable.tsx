@@ -144,7 +144,11 @@ function moveBetweenRows(event: KeyboardEvent<HTMLDivElement>) {
   const rows = Array.from(event.currentTarget.querySelectorAll("tbody tr")).filter((r) => controls(r).length > 0);
   const at = rows.indexOf(row);
   const next =
-    event.key === "Home" ? rows[0] : event.key === "End" ? rows[rows.length - 1] : rows[at + (event.key === "ArrowDown" ? 1 : -1)];
+    event.key === "Home"
+      ? rows[0]
+      : event.key === "End"
+        ? rows[rows.length - 1]
+        : rows[at + (event.key === "ArrowDown" ? 1 : -1)];
   if (!next || next === row) return;
   event.preventDefault();
   const column = Math.max(0, controls(row).indexOf(target));
@@ -155,7 +159,7 @@ function moveBetweenRows(event: KeyboardEvent<HTMLDivElement>) {
 }
 
 function controls(row: Element) {
-  return Array.from(row.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), summary, [tabindex=\"0\"]"));
+  return Array.from(row.querySelectorAll<HTMLElement>('a[href], button:not(:disabled), summary, [tabindex="0"]'));
 }
 
 const StackContext = createContext(false);
@@ -286,7 +290,11 @@ export function TableColumn({
 }) {
   const role = useRole("columnheader");
   if (index) {
-    return <th scope="col" role={role} className="di-table-index"><span className="di-sr">{children}</span></th>;
+    return (
+      <th scope="col" role={role} className="di-table-index">
+        <span className="di-sr">{children}</span>
+      </th>
+    );
   }
   // A sortable column that is not the sorted one still says so, quietly: a
   // header that only reveals it is a control once pressed is a guess.
@@ -403,7 +411,11 @@ export function TableSpacer({ height, ref }: { height: number; ref?: Ref<HTMLTab
 
 /** The ordinal cell. Mono, quiet, and the row's handle in conversation. */
 export function TableIndex({ children }: { children: ReactNode }) {
-  return <td role={useRole("cell")} className="di-table-index">{children}</td>;
+  return (
+    <td role={useRole("cell")} className="di-table-index">
+      {children}
+    </td>
+  );
 }
 
 /**
@@ -439,7 +451,13 @@ export function TableCell({
     <td
       role={useRole("cell")}
       data-label={label}
-      className={cx(align === "end" && "is-end", mono && "di-mono", pinned && "is-pinned", label && "is-labelled", fills && "is-fill")}
+      className={cx(
+        align === "end" && "is-end",
+        mono && "di-mono",
+        pinned && "is-pinned",
+        label && "is-labelled",
+        fills && "is-fill",
+      )}
       /* A value cut by a measured column shows whole in its tooltip. */
       onMouseEnter={measured ? revealCut : undefined}
     >

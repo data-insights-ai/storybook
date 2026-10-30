@@ -52,7 +52,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const certificate = new File(["-----BEGIN CERTIFICATE-----"], "collector-eu-west.pem", { type: "application/x-pem-file" });
+const certificate = new File(["-----BEGIN CERTIFICATE-----"], "collector-eu-west.pem", {
+  type: "application/x-pem-file",
+});
 
 /**
  * One dashed area with a line about dropping and a button that opens the
@@ -66,7 +68,9 @@ export const Default: Story = {
     const choose = canvas.getByRole("button", { name: "Choose file Certificate" });
     await expect(choose).toHaveTextContent("Choose file");
     await expect(choose).toHaveAccessibleDescription("No file chosen PEM-encoded certificate of the collector.");
-    await expect(canvas.getByRole("group", { name: "Certificate" })).toHaveAccessibleDescription("Drop a certificate here");
+    await expect(canvas.getByRole("group", { name: "Certificate" })).toHaveAccessibleDescription(
+      "Drop a certificate here",
+    );
     const input = canvas.getByLabelText("Certificate", { selector: "input" });
     await expect(input).toHaveAttribute("aria-hidden", "true");
     // As after the picker: the choose button keeps focus while the file arrives.

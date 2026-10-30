@@ -12,7 +12,9 @@
     background: var(--di-bg-surface);
     color: var(--di-text-muted);
     text-align: center;
-    transition: border-color var(--di-duration) var(--di-ease), background var(--di-duration) var(--di-ease);
+    transition:
+      border-color var(--di-duration) var(--di-ease),
+      background var(--di-duration) var(--di-ease);
   }
 
   /* A file held over the area: the place it lands is selected. */

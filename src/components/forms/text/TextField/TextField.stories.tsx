@@ -186,12 +186,7 @@ export const ProseLabel: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <FieldStack>
-      <TextField
-        id="account-name"
-        label="Full name"
-        labelTrack="prose"
-        placeholder="Nora Feld"
-      />
+      <TextField id="account-name" label="Full name" labelTrack="prose" placeholder="Nora Feld" />
       <TextField
         id="account-email"
         label="Work email"
@@ -250,7 +245,13 @@ export const German: Story = {
       >
         <TextLink>Schlüssel erneuern</TextLink>
       </TextField>
-      <TextField id="de-workspace" label="Kennung des Arbeitsbereichs" readOnly={true} mono={true} defaultValue="ws_7f3a99e2c41b" />
+      <TextField
+        id="de-workspace"
+        label="Kennung des Arbeitsbereichs"
+        readOnly={true}
+        mono={true}
+        defaultValue="ws_7f3a99e2c41b"
+      />
       <TextField
         id="de-retention"
         label="Aufbewahrungsfrist laut Arbeitsbereichsrichtlinie"

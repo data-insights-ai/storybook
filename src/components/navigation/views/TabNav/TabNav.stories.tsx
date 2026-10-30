@@ -19,7 +19,10 @@ const tabs = [
   { href: "#/access/administrators", label: "Administrators" },
 ];
 
-function RouterLink({ onNavigate, ...props }: AnchorHTMLAttributes<HTMLAnchorElement> & { onNavigate: (href: string) => void }) {
+function RouterLink({
+  onNavigate,
+  ...props
+}: AnchorHTMLAttributes<HTMLAnchorElement> & { onNavigate: (href: string) => void }) {
   return (
     <a
       {...props}

@@ -62,12 +62,15 @@ function componentsOf(sf) {
   const out = [];
   for (const st of sf.statements) {
     if (!exported(st)) continue;
-    if (ts.isFunctionDeclaration(st) && st.name && pascal(st.name.text)) out.push({ name: st.name.text, doc: documented(st, sf) });
+    if (ts.isFunctionDeclaration(st) && st.name && pascal(st.name.text))
+      out.push({ name: st.name.text, doc: documented(st, sf) });
     if (ts.isVariableStatement(st)) {
       for (const d of st.declarationList.declarations) {
         const init = d.initializer;
-        const callable = init && (ts.isArrowFunction(init) || ts.isFunctionExpression(init) || ts.isCallExpression(init));
-        if (ts.isIdentifier(d.name) && pascal(d.name.text) && callable) out.push({ name: d.name.text, doc: documented(st, sf) });
+        const callable =
+          init && (ts.isArrowFunction(init) || ts.isFunctionExpression(init) || ts.isCallExpression(init));
+        if (ts.isIdentifier(d.name) && pascal(d.name.text) && callable)
+          out.push({ name: d.name.text, doc: documented(st, sf) });
       }
     }
   }
@@ -108,7 +111,8 @@ function metaOf(sf) {
   };
   visit(sf);
   if (!literal) return undefined;
-  const prop = (name) => literal.properties.find((p) => ts.isPropertyAssignment(p) && p.name.getText(sf) === name)?.initializer;
+  const prop = (name) =>
+    literal.properties.find((p) => ts.isPropertyAssignment(p) && p.name.getText(sf) === name)?.initializer;
   const title = prop("title");
   const tags = prop("tags");
   const component = prop("component");
@@ -136,22 +140,28 @@ for (const file of all.filter(isStory)) {
   const rendered = jsxNames(parsed.get(file));
   if (meta?.component) rendered.add(meta.component);
   for (const i of importsOf(parsed.get(file))) {
-    for (const module of reexported(i.target)) i.names.filter((n) => rendered.has(n)).forEach((n) => shown.add(`${module}#${n}`));
+    for (const module of reexported(i.target))
+      i.names.filter((n) => rendered.has(n)).forEach((n) => shown.add(`${module}#${n}`));
   }
   if (!meta?.title) continue;
   titles.push([file, meta.title]);
   const tagged = meta.tags.filter((t) => t.startsWith("layer:")).map((t) => t.slice(6));
-  if (tagged.length !== 1 || !layers.includes(tagged[0])) find("layer-tag", `${file} carries ${tagged.length ? tagged.join(", ") : "no layer tag"}`);
+  if (tagged.length !== 1 || !layers.includes(tagged[0]))
+    find("layer-tag", `${file} carries ${tagged.length ? tagged.join(", ") : "no layer tag"}`);
   if (!meta.component) continue;
   const inComponents = file.split(path.sep).join("/").startsWith("src/components/");
   const name = path.basename(file, ".stories.tsx");
   if (inComponents && name !== meta.component) find("story-name", `${file} renders ${meta.component}`);
-  if (inComponents && path.basename(path.dirname(file)) !== meta.component) find("component-folder", `${meta.component} is not in a folder of its own (${path.dirname(file)})`);
+  if (inComponents && path.basename(path.dirname(file)) !== meta.component)
+    find("component-folder", `${meta.component} is not in a folder of its own (${path.dirname(file)})`);
   const rel = path.relative(path.join("src", "components"), path.dirname(file)).split(path.sep);
   if (!rel[0].startsWith("..")) {
     const folders = rel.at(-1) === meta.component ? rel.slice(0, -1) : rel;
     const wanted = [...folders, meta.component].map((s) => s.toLowerCase()).join("/");
-    const got = meta.title.split("/").map((s) => s.toLowerCase().replaceAll(" ", "")).join("/");
+    const got = meta.title
+      .split("/")
+      .map((s) => s.toLowerCase().replaceAll(" ", ""))
+      .join("/");
     if (got !== wanted) find("title-path", `${file} is titled ${meta.title}, its folder says ${wanted}`);
   }
   const source = importsOf(parsed.get(file)).find((i) => i.names.includes(meta.component));
@@ -165,14 +175,19 @@ for (const file of all.filter(isStory)) {
 }
 
 // Every top-level group is one storySort sorts; an unlisted one falls to the end of the sidebar.
-const walkMdx = (dir) => readdirSync(dir).flatMap((n) => { const f = path.join(dir, n); return statSync(f).isDirectory() ? walkMdx(f) : n.endsWith(".mdx") ? [f] : []; });
+const walkMdx = (dir) =>
+  readdirSync(dir).flatMap((n) => {
+    const f = path.join(dir, n);
+    return statSync(f).isDirectory() ? walkMdx(f) : n.endsWith(".mdx") ? [f] : [];
+  });
 for (const file of walkMdx("src")) {
   const title = readFileSync(file, "utf8").match(/<Meta[^>]*title="([^"]+)"/)?.[1];
   if (title) titles.push([file, title]);
 }
 const sections = storySortSections();
 for (const [file, title] of titles) {
-  if (!sections.includes(title.split("/")[0])) find("sidebar-section", `${file} is titled ${title}, whose group storySort does not list`);
+  if (!sections.includes(title.split("/")[0]))
+    find("sidebar-section", `${file} is titled ${title}, whose group storySort does not list`);
 }
 
 // Layer direction, one component per module, folder cycles.
@@ -182,7 +197,8 @@ for (const file of modules) {
   for (const { target } of importsOf(sf)) {
     const from = layerOfModule.get(file);
     const to = layerOfModule.get(target);
-    if (from !== undefined && to !== undefined && to > from) find("layer-direction", `${file} (${layers[from]}) imports ${target} (${layers[to]})`);
+    if (from !== undefined && to !== undefined && to > from)
+      find("layer-direction", `${file} (${layers[from]}) imports ${target} (${layers[to]})`);
     const [fa, fb] = [file, target].map((f) => path.relative(path.join("src", "components"), f).split(path.sep)[0]);
     if (!fa.startsWith("..") && !fb.startsWith("..") && fa !== fb && !fa.includes(".") && !fb.includes(".")) {
       if (!folderEdges.has(fa)) folderEdges.set(fa, new Set());
@@ -195,7 +211,8 @@ for (const file of modules) {
 const reach = (a, b, seen = new Set()) =>
   [...(folderEdges.get(a) ?? [])].some((n) => n === b || (!seen.has(n) && seen.add(n) && reach(n, b, seen)));
 for (const [a, targets] of folderEdges) {
-  for (const b of targets) if (a < b && reach(b, a)) find("folder-cycle", `components/${a} and components/${b} import each other`);
+  for (const b of targets)
+    if (a < b && reach(b, a)) find("folder-cycle", `components/${a} and components/${b} import each other`);
 }
 
 /** The modules a module's exports come from: itself, and whatever an index.ts re-exports. */

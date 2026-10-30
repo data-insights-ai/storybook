@@ -110,7 +110,10 @@ export const Choice: Story = {
     await expect(canvas.getByText("Chosen: dark. Showing: dark.")).toBeVisible();
 
     await userEvent.click(canvas.getByRole("button", { name: "Theme: Dark" }));
-    await expect(within(document.body).getByRole("menuitemradio", { name: "Dark" })).toHaveAttribute("aria-checked", "true");
+    await expect(within(document.body).getByRole("menuitemradio", { name: "Dark" })).toHaveAttribute(
+      "aria-checked",
+      "true",
+    );
     await userEvent.click(within(document.body).getByRole("menuitemradio", { name: "Light" }));
     await waitFor(() => expect(root()).toBe("light"));
 
@@ -131,6 +134,8 @@ export const German: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Chosen: dark. Showing: dark.")).toBeVisible();
     await userEvent.click(canvas.getByRole("button", { name: "Darstellung: Dunkel" }));
-    await waitFor(() => expect(within(document.body).getByRole("menuitemradio", { name: "Automatisch" })).toBeVisible());
+    await waitFor(() =>
+      expect(within(document.body).getByRole("menuitemradio", { name: "Automatisch" })).toBeVisible(),
+    );
   },
 };

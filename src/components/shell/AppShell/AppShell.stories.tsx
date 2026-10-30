@@ -56,10 +56,7 @@ export const Product: Story = {
       </AppShellRail>
       <AppShellMain>
         <AppShellBar>
-          <Breadcrumb
-            label="Breadcrumb"
-            items={[{ label: "WS-01", href: "#/overview" }, { label: "findings" }]}
-          />
+          <Breadcrumb label="Breadcrumb" items={[{ label: "WS-01", href: "#/overview" }, { label: "findings" }]} />
           <AppShellBarEnd>
             <StatusPill tone="warn">sample data</StatusPill>
           </AppShellBarEnd>
@@ -120,16 +117,38 @@ export const Contained: Story = {
 
 /** Persistent context stays before navigation in both layout and keyboard order. */
 export const WithContext: Story = {
-  render: (args) => <AppShell {...args}>
-    <AppShellRail workspace="Register" workspaceId="" navLabel="Sections" groups={linkedGroups} active="findings" sealedMark={sampleChrome.sealedMark}>
-      <AppShellFoot><span>Local runtime</span></AppShellFoot>
-      <AppShellContext>
-        <Select id="context-organization" label="Organization" labelTrack="prose" mono={false} defaultValue="studio"><option value="studio">Example studio</option><option value="lab">Example lab</option></Select>
-        <Select id="context-workspace" label="Workspace" labelTrack="prose" mono={false} defaultValue="operations"><option value="operations">Operations</option><option value="research">Research</option></Select>
-      </AppShellContext>
-    </AppShellRail>
-    <AppShellMain><AppShellContent><h1>Workspace overview</h1><p>Context remains visible as the page changes.</p></AppShellContent></AppShellMain>
-  </AppShell>,
+  render: (args) => (
+    <AppShell {...args}>
+      <AppShellRail
+        workspace="Register"
+        workspaceId=""
+        navLabel="Sections"
+        groups={linkedGroups}
+        active="findings"
+        sealedMark={sampleChrome.sealedMark}
+      >
+        <AppShellFoot>
+          <span>Local runtime</span>
+        </AppShellFoot>
+        <AppShellContext>
+          <Select id="context-organization" label="Organization" labelTrack="prose" mono={false} defaultValue="studio">
+            <option value="studio">Example studio</option>
+            <option value="lab">Example lab</option>
+          </Select>
+          <Select id="context-workspace" label="Workspace" labelTrack="prose" mono={false} defaultValue="operations">
+            <option value="operations">Operations</option>
+            <option value="research">Research</option>
+          </Select>
+        </AppShellContext>
+      </AppShellRail>
+      <AppShellMain>
+        <AppShellContent>
+          <h1>Workspace overview</h1>
+          <p>Context remains visible as the page changes.</p>
+        </AppShellContent>
+      </AppShellMain>
+    </AppShell>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const organization = canvas.getByRole("combobox", { name: "Organization" });
@@ -139,7 +158,6 @@ export const WithContext: Story = {
     await expect(canvas.getByRole("combobox", { name: "Workspace" })).toHaveValue("operations");
   },
 };
-
 
 // Measure the composited background, including transparent ghost controls.
 function textContrast(element: HTMLElement) {
@@ -152,10 +170,14 @@ function textContrast(element: HTMLElement) {
     const behind = ground(node.parentElement);
     return color.slice(0, 3).map((channel, index) => channel * alpha + behind[index] * (1 - alpha));
   }
-  const luminance = (channels: number[]) => channels.slice(0, 3).map(channel => {
-    const value = channel / 255;
-    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
-  }).reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+  const luminance = (channels: number[]) =>
+    channels
+      .slice(0, 3)
+      .map((channel) => {
+        const value = channel / 255;
+        return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+      })
+      .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
   const ink = luminance(rgba(getComputedStyle(element).color));
   const paper = luminance(ground(element));
   return (Math.max(ink, paper) + 0.05) / (Math.min(ink, paper) + 0.05);
@@ -164,17 +186,28 @@ function textContrast(element: HTMLElement) {
 const buttonVariants = ["primary", "secondary", "ghost", "danger", "seal", "inferred"] as const;
 
 function ContextControls({ theme }: { theme: "light" | "dark" }) {
-  return <div data-theme={theme}>
-    <AppShell skipLabel="Skip to content">
-      <AppShellRail workspace="Register" workspaceId="" navLabel="Sections" groups={[]} active="">
-        <AppShellContext>
-          {buttonVariants.map(variant => <Button key={variant} variant={variant}>{variant} action</Button>)}
-          <Button disabled={true}>Unavailable action</Button>
-        </AppShellContext>
-      </AppShellRail>
-      <AppShellMain><AppShellContent><h1>Context controls</h1><p>Sidebar controls retain readable surfaces in either page theme.</p></AppShellContent></AppShellMain>
-    </AppShell>
-  </div>;
+  return (
+    <div data-theme={theme}>
+      <AppShell skipLabel="Skip to content">
+        <AppShellRail workspace="Register" workspaceId="" navLabel="Sections" groups={[]} active="">
+          <AppShellContext>
+            {buttonVariants.map((variant) => (
+              <Button key={variant} variant={variant}>
+                {variant} action
+              </Button>
+            ))}
+            <Button disabled={true}>Unavailable action</Button>
+          </AppShellContext>
+        </AppShellRail>
+        <AppShellMain>
+          <AppShellContent>
+            <h1>Context controls</h1>
+            <p>Sidebar controls retain readable surfaces in either page theme.</p>
+          </AppShellContent>
+        </AppShellMain>
+      </AppShell>
+    </div>
+  );
 }
 
 const contextContrastPlay: Story["play"] = async ({ canvasElement }) => {
@@ -184,8 +217,10 @@ const contextContrastPlay: Story["play"] = async ({ canvasElement }) => {
     await expect(textContrast(button)).toBeGreaterThanOrEqual(4.5);
     await userEvent.hover(button);
     // Wait for actual CSS hover transitions, rather than checking their first frame.
-    await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-    await waitFor(() => expect(button.getAnimations().some(animation => animation.playState === "running")).toBe(false));
+    await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+    await waitFor(() =>
+      expect(button.getAnimations().some((animation) => animation.playState === "running")).toBe(false),
+    );
     await expect(textContrast(button)).toBeGreaterThanOrEqual(4.5);
     await userEvent.unhover(button);
   }
@@ -208,19 +243,39 @@ export const ContextLongChoices: Story = {
   render: function Render(args) {
     const [open, setOpen] = useState(true);
     const [workspace, setWorkspace] = useState("operations");
-    return <AppShell {...args}>
-      <AppShellRail workspace="Register" workspaceId="" navLabel="Sections" groups={[]} active="">
-        <AppShellContext>
-          <Menu open={open} onOpenChange={setOpen} align="start" label="Choose workspace" trigger={props => <Button {...props} variant="secondary">Workspace</Button>}>
-            <MenuGroup label="Example studio with a deliberately long organization name">
-              <MenuItem checked={workspace === "operations"} onSelect={() => setWorkspace("operations")}>International operations and monitoring workspace</MenuItem>
-              <MenuItem checked={workspace === "research"} onSelect={() => setWorkspace("research")}>ResearchWorkspaceWithAnUnbrokenNameThatMustStillFitItsContainer</MenuItem>
-            </MenuGroup>
-          </Menu>
-        </AppShellContext>
-      </AppShellRail>
-      <AppShellMain><AppShellContent><h1>Workspace context</h1></AppShellContent></AppShellMain>
-    </AppShell>;
+    return (
+      <AppShell {...args}>
+        <AppShellRail workspace="Register" workspaceId="" navLabel="Sections" groups={[]} active="">
+          <AppShellContext>
+            <Menu
+              open={open}
+              onOpenChange={setOpen}
+              align="start"
+              label="Choose workspace"
+              trigger={(props) => (
+                <Button {...props} variant="secondary">
+                  Workspace
+                </Button>
+              )}
+            >
+              <MenuGroup label="Example studio with a deliberately long organization name">
+                <MenuItem checked={workspace === "operations"} onSelect={() => setWorkspace("operations")}>
+                  International operations and monitoring workspace
+                </MenuItem>
+                <MenuItem checked={workspace === "research"} onSelect={() => setWorkspace("research")}>
+                  ResearchWorkspaceWithAnUnbrokenNameThatMustStillFitItsContainer
+                </MenuItem>
+              </MenuGroup>
+            </Menu>
+          </AppShellContext>
+        </AppShellRail>
+        <AppShellMain>
+          <AppShellContent>
+            <h1>Workspace context</h1>
+          </AppShellContent>
+        </AppShellMain>
+      </AppShell>
+    );
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -231,7 +286,9 @@ export const ContextLongChoices: Story = {
       await expect(item.getBoundingClientRect().height).toBeGreaterThan(32);
       await expect(textContrast(item)).toBeGreaterThanOrEqual(4.5);
     }
-    await expect(menu.getBoundingClientRect().right).toBeLessThanOrEqual(canvas.getByRole("complementary").getBoundingClientRect().right);
+    await expect(menu.getBoundingClientRect().right).toBeLessThanOrEqual(
+      canvas.getByRole("complementary").getBoundingClientRect().right,
+    );
   },
 };
 
@@ -239,38 +296,69 @@ const reflowName = "Workspace".repeat(17);
 
 function LongNameShell({ theme }: { theme: "light" | "dark" }) {
   const [open, setOpen] = useState(false);
-  return <div data-theme={theme}>
-    <AppShell skipLabel="Skip to content">
-      <AppShellRail workspace={reflowName} workspaceId="REG-01" navLabel="Sections" groups={[{ label: "Workspaces", items: [{ id: "current", label: reflowName, href: "#workspace" }] }]} active="current">
-        <AppShellContext>
-          <Menu open={open} onOpenChange={setOpen} label="Choose workspace" align="start" trigger={props => <Button {...props} variant="secondary">{reflowName}</Button>}>
-            <MenuGroup label="Example studio">
-              <MenuItem checked={true} onSelect={() => setOpen(false)}>{reflowName}</MenuItem>
-            </MenuGroup>
-          </Menu>
-        </AppShellContext>
-      </AppShellRail>
-      <AppShellMain>
-        <AppShellBar>
-          <Breadcrumb label="Breadcrumb" items={[{ label: "Example studio", href: "#organization" }, { label: reflowName, href: "#workspace" }, { label: reflowName + " settings" }]} />
-          <AppShellBarEnd>
-            <Button variant="secondary">{"Manage " + reflowName}</Button>
-            <Button variant="ghost">Sign out</Button>
-          </AppShellBarEnd>
-        </AppShellBar>
-        <AppShellContent>
-          <PageHeader eyebrow="Workspace" lede="Long names remain readable without hiding ancestors or page actions.">
-            <PageHeaderTitle>{reflowName}</PageHeaderTitle>
-          </PageHeader>
-        </AppShellContent>
-      </AppShellMain>
-    </AppShell>
-  </div>;
+  return (
+    <div data-theme={theme}>
+      <AppShell skipLabel="Skip to content">
+        <AppShellRail
+          workspace={reflowName}
+          workspaceId="REG-01"
+          navLabel="Sections"
+          groups={[{ label: "Workspaces", items: [{ id: "current", label: reflowName, href: "#workspace" }] }]}
+          active="current"
+        >
+          <AppShellContext>
+            <Menu
+              open={open}
+              onOpenChange={setOpen}
+              label="Choose workspace"
+              align="start"
+              trigger={(props) => (
+                <Button {...props} variant="secondary">
+                  {reflowName}
+                </Button>
+              )}
+            >
+              <MenuGroup label="Example studio">
+                <MenuItem checked={true} onSelect={() => setOpen(false)}>
+                  {reflowName}
+                </MenuItem>
+              </MenuGroup>
+            </Menu>
+          </AppShellContext>
+        </AppShellRail>
+        <AppShellMain>
+          <AppShellBar>
+            <Breadcrumb
+              label="Breadcrumb"
+              items={[
+                { label: "Example studio", href: "#organization" },
+                { label: reflowName, href: "#workspace" },
+                { label: reflowName + " settings" },
+              ]}
+            />
+            <AppShellBarEnd>
+              <Button variant="secondary">{"Manage " + reflowName}</Button>
+              <Button variant="ghost">Sign out</Button>
+            </AppShellBarEnd>
+          </AppShellBar>
+          <AppShellContent>
+            <PageHeader eyebrow="Workspace" lede="Long names remain readable without hiding ancestors or page actions.">
+              <PageHeaderTitle>{reflowName}</PageHeaderTitle>
+            </PageHeader>
+          </AppShellContent>
+        </AppShellMain>
+      </AppShell>
+    </div>
+  );
 }
 
 function narrowReflow(theme: "light" | "dark", width: number): Story {
   return {
-    parameters: { viewport: { options: { reflow: { name: "Reflow", styles: { width: width + "px", height: "844px" }, type: "mobile" } } } },
+    parameters: {
+      viewport: {
+        options: { reflow: { name: "Reflow", styles: { width: width + "px", height: "844px" }, type: "mobile" } },
+      },
+    },
     globals: { viewport: { value: "reflow", isRotated: false } },
     render: () => <LongNameShell theme={theme} />,
     play: async ({ canvasElement }) => {
@@ -278,14 +366,22 @@ function narrowReflow(theme: "light" | "dark", width: number): Story {
       const doc = canvasElement.ownerDocument;
       await expect(doc.defaultView!.innerWidth).toBe(width);
       await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
-      const elements = canvasElement.querySelectorAll<HTMLElement>(".di-shell, .di-sidebar, .di-brand-row, .di-nav-text, .di-sidebar-context, .di-menu-anchor, .di-topbar, .di-top-actions, .di-breadcrumb, .di-breadcrumb-list, .di-breadcrumb-item, .di-breadcrumb-link, .di-breadcrumb-current, .di-page-title, .di-btn");
+      const elements = canvasElement.querySelectorAll<HTMLElement>(
+        ".di-shell, .di-sidebar, .di-brand-row, .di-nav-text, .di-sidebar-context, .di-menu-anchor, .di-topbar, .di-top-actions, .di-breadcrumb, .di-breadcrumb-list, .di-breadcrumb-item, .di-breadcrumb-link, .di-breadcrumb-current, .di-page-title, .di-btn",
+      );
       for (const element of elements) {
-        await expect(element.scrollWidth, element.className + " content fits").toBeLessThanOrEqual(element.clientWidth + 1);
-        await expect(element.getBoundingClientRect().right, element.className + " right edge").toBeLessThanOrEqual(width + 1);
+        await expect(element.scrollWidth, element.className + " content fits").toBeLessThanOrEqual(
+          element.clientWidth + 1,
+        );
+        await expect(element.getBoundingClientRect().right, element.className + " right edge").toBeLessThanOrEqual(
+          width + 1,
+        );
         await expect(element.getBoundingClientRect().left, element.className + " left edge").toBeGreaterThanOrEqual(-1);
       }
       const instance = canvasElement.querySelector<HTMLElement>(".di-instance")!;
-      await expect(instance.clientHeight).toBeLessThanOrEqual(Math.ceil(parseFloat(getComputedStyle(instance).lineHeight)) + 1);
+      await expect(instance.clientHeight).toBeLessThanOrEqual(
+        Math.ceil(parseFloat(getComputedStyle(instance).lineHeight)) + 1,
+      );
       const breadcrumb = within(canvas.getByRole("navigation", { name: "Breadcrumb" }));
       const ancestor = breadcrumb.getByRole("link", { name: reflowName });
       await expect(ancestor).toHaveAttribute("href", "#workspace");
@@ -305,20 +401,30 @@ export const ReflowSmallNight: Story = narrowReflow("dark", 320);
 export const ReflowPhoneNight: Story = narrowReflow("dark", 390);
 export const ReflowTabletNight: Story = narrowReflow("dark", 768);
 
-
 /** The Storybook window every screen sits in obeys the same reflow bounds. */
 export const ReflowConsole: Story = {
-  parameters: { viewport: { options: { reflow: { name: "Reflow", styles: { width: "390px", height: "844px" }, type: "mobile" } } } },
+  parameters: {
+    viewport: { options: { reflow: { name: "Reflow", styles: { width: "390px", height: "844px" }, type: "mobile" } } },
+  },
   globals: { viewport: { value: "reflow", isRotated: false } },
-  render: () => <Console title={reflowName} crumb={["Example studio " + reflowName, reflowName]} active="overview" chrome={{ ...sampleChrome, workspace: reflowName, operator: { ...sampleChrome.operator, name: reflowName } }}>
-    <h1>Workspace overview</h1>
-  </Console>,
+  render: () => (
+    <Console
+      title={reflowName}
+      crumb={["Example studio " + reflowName, reflowName]}
+      active="overview"
+      chrome={{ ...sampleChrome, workspace: reflowName, operator: { ...sampleChrome.operator, name: reflowName } }}
+    >
+      <h1>Workspace overview</h1>
+    </Console>
+  ),
   play: async ({ canvasElement }) => {
     const doc = canvasElement.ownerDocument;
     await expect(doc.defaultView!.innerWidth).toBe(390);
     await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
     await expect(canvasElement.querySelector(".sb-window-title > svg")!.getBoundingClientRect().width).toBe(14);
-    for (const element of canvasElement.querySelectorAll<HTMLElement>(".sb-canvas, .sb-window-title, .sb-window, .sb-crumb, .sb-crumb-part, .sb-operator-name")) {
+    for (const element of canvasElement.querySelectorAll<HTMLElement>(
+      ".sb-canvas, .sb-window-title, .sb-window, .sb-crumb, .sb-crumb-part, .sb-operator-name",
+    )) {
       await expect(element.scrollWidth, element.className).toBeLessThanOrEqual(element.clientWidth + 1);
     }
   },
@@ -327,41 +433,80 @@ export const ReflowConsole: Story = {
 function MobileNavigationExample() {
   const [label, setLabel] = useState("Example studio");
   const [context, setContext] = useState("north");
-  return <AppShell skipLabel="Skip to content">
-    <AppShellRail workspace={label} workspaceId="REG-01" navLabel="Sections" groups={linkedGroups} active="findings"
-      mobileNavigation={{ openLabel: "Open navigation", closeLabel: "Close navigation", contextKey: context }} sealedMark={sampleChrome.sealedMark}>
-      <AppShellContext>
-        <Select id="navigation-context" label="Register" value={context} onChange={(event) => setContext(event.target.value)}>
-          <option value="north">Northern register</option><option value="south">Southern register</option>
-        </Select>
-        <Button variant="ghost" onClick={() => setLabel("Renamed example studio")}>Refresh display label</Button>
-        <Select id="navigation-draft" label="Local display choice" defaultValue="compact">
-          <option value="compact">Compact</option><option value="comfortable">Comfortable</option>
-        </Select>
-      </AppShellContext>
-      <AppShellFoot><span>Local preview</span><span>v1</span></AppShellFoot>
-    </AppShellRail>
-    <AppShellMain><AppShellBar><Breadcrumb label="Breadcrumb" items={[{ label: "Example studio", href: "#studio" }, { label: "Register" }]} /></AppShellBar>
-      <AppShellContent><h1>Register overview</h1><p>The content stays near the top on a small screen. Navigation opens when requested.</p><Button variant="secondary">Page action</Button></AppShellContent>
-    </AppShellMain>
-  </AppShell>;
+  return (
+    <AppShell skipLabel="Skip to content">
+      <AppShellRail
+        workspace={label}
+        workspaceId="REG-01"
+        navLabel="Sections"
+        groups={linkedGroups}
+        active="findings"
+        mobileNavigation={{ openLabel: "Open navigation", closeLabel: "Close navigation", contextKey: context }}
+        sealedMark={sampleChrome.sealedMark}
+      >
+        <AppShellContext>
+          <Select
+            id="navigation-context"
+            label="Register"
+            value={context}
+            onChange={(event) => setContext(event.target.value)}
+          >
+            <option value="north">Northern register</option>
+            <option value="south">Southern register</option>
+          </Select>
+          <Button variant="ghost" onClick={() => setLabel("Renamed example studio")}>
+            Refresh display label
+          </Button>
+          <Select id="navigation-draft" label="Local display choice" defaultValue="compact">
+            <option value="compact">Compact</option>
+            <option value="comfortable">Comfortable</option>
+          </Select>
+        </AppShellContext>
+        <AppShellFoot>
+          <span>Local preview</span>
+          <span>v1</span>
+        </AppShellFoot>
+      </AppShellRail>
+      <AppShellMain>
+        <AppShellBar>
+          <Breadcrumb
+            label="Breadcrumb"
+            items={[{ label: "Example studio", href: "#studio" }, { label: "Register" }]}
+          />
+        </AppShellBar>
+        <AppShellContent>
+          <h1>Register overview</h1>
+          <p>The content stays near the top on a small screen. Navigation opens when requested.</p>
+          <Button variant="secondary">Page action</Button>
+        </AppShellContent>
+      </AppShellMain>
+    </AppShell>
+  );
 }
 
 /** A labelled mobile opt-in leaves the existing desktop rail unchanged. */
 export const MobileNavigation: Story = {
-  parameters: { viewport: { options: { phone: { name: "Phone", styles: { width: "390px", height: "844px" }, type: "mobile" } } } },
+  parameters: {
+    viewport: { options: { phone: { name: "Phone", styles: { width: "390px", height: "844px" }, type: "mobile" } } },
+  },
   globals: { viewport: { value: "phone", isRotated: false } },
   render: () => <MobileNavigationExample />,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement), doc = canvasElement.ownerDocument;
+    const canvas = within(canvasElement),
+      doc = canvasElement.ownerDocument;
     await expect(doc.defaultView!.innerWidth).toBe(390);
-    await expect(canvas.getByRole("heading", { name: "Register overview" }).getBoundingClientRect().top).toBeLessThan(240);
+    await expect(canvas.getByRole("heading", { name: "Register overview" }).getBoundingClientRect().top).toBeLessThan(
+      240,
+    );
     const trigger = canvas.getByRole("button", { name: "Open navigation" });
     await userEvent.click(trigger);
     const dialog = canvas.getByRole("dialog", { name: "Sections" });
     await waitFor(() => expect(dialog).toBeVisible());
     await expect(dialog.contains(doc.activeElement)).toBe(true);
-    await userEvent.selectOptions(within(dialog).getByRole("combobox", { name: "Local display choice" }), "comfortable");
+    await userEvent.selectOptions(
+      within(dialog).getByRole("combobox", { name: "Local display choice" }),
+      "comfortable",
+    );
     await userEvent.click(within(dialog).getByRole("button", { name: "Refresh display label" }));
     await waitFor(() => expect(dialog).toBeVisible());
     await userEvent.click(within(dialog).getByRole("button", { name: "Close navigation" }));
@@ -388,7 +533,10 @@ export const MobileNavigation: Story = {
   },
 };
 
-export const MobileNavigationNight: Story = { ...MobileNavigation, globals: { ...MobileNavigation.globals, theme: "dark" } };
+export const MobileNavigationNight: Story = {
+  ...MobileNavigation,
+  globals: { ...MobileNavigation.globals, theme: "dark" },
+};
 /** Change the actual viewport to inspect the same composition at either size.
  *
  * Opt in with `mobileNavigation={{ openLabel: "Open navigation", closeLabel:

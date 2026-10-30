@@ -52,7 +52,12 @@ export function PeriodTimeline({
   const now = day(today);
   const year = needsYear(start, end);
   return (
-    <div className="di-periods" role="group" aria-label={label} style={{ "--di-period-today": at(now) } as CSSProperties}>
+    <div
+      className="di-periods"
+      role="group"
+      aria-label={label}
+      style={{ "--di-period-today": at(now) } as CSSProperties}
+    >
       <ul className="di-periods-rows">
         {periods.map((p) => {
           const s = day(p.start);

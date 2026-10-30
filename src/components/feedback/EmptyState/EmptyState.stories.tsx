@@ -119,8 +119,19 @@ export const WithoutAction: Story = {
 
 /** An ordinary first-use action needs no decorative record number. */
 export const WithoutIndex: Story = {
-  args: { index: undefined, eyebrow: "Get started", title: "No sources connected", body: "Connect your first source to start receiving records." },
-  render: (args) => <EmptyState {...args}><EmptyStateAction><Button>Connect source</Button></EmptyStateAction></EmptyState>,
+  args: {
+    index: undefined,
+    eyebrow: "Get started",
+    title: "No sources connected",
+    body: "Connect your first source to start receiving records.",
+  },
+  render: (args) => (
+    <EmptyState {...args}>
+      <EmptyStateAction>
+        <Button>Connect source</Button>
+      </EmptyStateAction>
+    </EmptyState>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { name: "Connect source" })).toBeVisible();

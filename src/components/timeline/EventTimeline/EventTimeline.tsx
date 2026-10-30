@@ -141,10 +141,7 @@ export function EventTimeline({
   const number = useMemo(() => new Intl.NumberFormat(locale), [locale]);
   const ticks = useMemo(() => ticksFor(view, plotPx, clock.offsetOf), [view, plotPx, clock]);
   const peak = useMemo(() => Math.max(0, ...bars.map(totalOf)), [bars]);
-  const cells = useMemo(
-    () => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events)])),
-    [lanes, events],
-  );
+  const cells = useMemo(() => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events)])), [lanes, events]);
   const counts = new Map(
     lanes.map((lane) => {
       const count = countIn(cells.get(lane.id) ?? [], view);
@@ -177,10 +174,7 @@ export function EventTimeline({
     if (canvas.current) canvas.current.inert = loading;
   });
 
-  const hoverPx =
-    gestures.hover !== null && gestures.hover >= 0 && gestures.hover <= plotPx
-      ? gestures.hover
-      : null;
+  const hoverPx = gestures.hover !== null && gestures.hover >= 0 && gestures.hover <= plotPx ? gestures.hover : null;
   const target = useMemo((): TimelineTarget | null => {
     if (hoverPx === null || gestures.brush || loading) {
       return null;
@@ -244,13 +238,7 @@ export function EventTimeline({
       <div className="di-timeline-frame" ref={frame}>
         {plotPx > 0 ? (
           <>
-            <Overview
-              bars={overviewBars}
-              bounds={bounds}
-              view={view}
-              plotPx={plotPx}
-              onView={change}
-            />
+            <Overview bars={overviewBars} bounds={bounds} view={view} plotPx={plotPx} onView={change} />
             <div
               ref={gestures.ref}
               className="di-timeline-stage"
@@ -263,13 +251,7 @@ export function EventTimeline({
               {/* Under the loading veil the plot is stale and inactive, so it is inert. */}
               <div ref={canvas} className="di-timeline-canvas">
                 <svg width={plotPx} height={axisTop + AXIS_H} className="di-timeline-svg" aria-hidden>
-                  <TimeAxis
-                    ticks={ticks}
-                    label={clock.tick}
-                    scale={scale}
-                    plotPx={plotPx}
-                    top={axisTop}
-                  />
+                  <TimeAxis ticks={ticks} label={clock.tick} scale={scale} plotPx={plotPx} top={axisTop} />
                   {score ? (
                     <ScoreTrack
                       score={score}
@@ -284,14 +266,7 @@ export function EventTimeline({
                     <Events events={events} scale={scale} plotPx={plotPx} mid={mid} half={half} />
                   ) : (
                     <g transform={`translate(0 ${waveTop})`}>
-                      <Waveform
-                        bars={bars}
-                        scale={scale}
-                        plotPx={plotPx}
-                        mid={WAVE_H / 2}
-                        half={half}
-                        peak={peak}
-                      />
+                      <Waveform bars={bars} scale={scale} plotPx={plotPx} mid={WAVE_H / 2} half={half} peak={peak} />
                     </g>
                   )}
                   {highlighted?.map((e) => {
@@ -309,12 +284,7 @@ export function EventTimeline({
                     );
                   })}
                   <g transform={`translate(0 ${waveTop})`}>
-                    <Markers
-                      markers={markers}
-                      scale={scale}
-                      plotPx={plotPx}
-                      height={axisTop - waveTop}
-                    />
+                    <Markers markers={markers} scale={scale} plotPx={plotPx} height={axisTop - waveTop} />
                   </g>
                   {gestures.brush ? (
                     <rect
@@ -325,13 +295,7 @@ export function EventTimeline({
                     />
                   ) : null}
                   {hoverPx !== null && !gestures.brush ? (
-                    <line
-                      x1={hoverPx}
-                      x2={hoverPx}
-                      y1={0}
-                      y2={axisTop}
-                      className="di-timeline-cursor"
-                    />
+                    <line x1={hoverPx} x2={hoverPx} y1={0} y2={axisTop} className="di-timeline-cursor" />
                   ) : null}
                 </svg>
               </div>
@@ -363,20 +327,8 @@ export function EventTimeline({
             <div className={cx("di-timeline-lanes-fold", lanesOpen && "is-open")}>
               <div className="di-timeline-lanes-inner">
                 {plotPx > 0 ? (
-                  <svg
-                    width={plotPx}
-                    height={lanes.length * LANE_H}
-                    className="di-timeline-svg"
-                    aria-hidden
-                  >
-                    <Lanes
-                      lanes={lanes}
-                      cells={cells}
-                      counts={counts}
-                      scale={scale}
-                      plotPx={plotPx}
-                      top={0}
-                    />
+                  <svg width={plotPx} height={lanes.length * LANE_H} className="di-timeline-svg" aria-hidden>
+                    <Lanes lanes={lanes} cells={cells} counts={counts} scale={scale} plotPx={plotPx} top={0} />
                     {hoverPx !== null && !gestures.brush ? (
                       <line
                         x1={hoverPx}

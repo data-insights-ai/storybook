@@ -25,7 +25,9 @@
     background: transparent;
     color: var(--di-text-subtle);
     cursor: pointer;
-    transition: color var(--di-duration) var(--di-ease), border-color var(--di-duration) var(--di-ease);
+    transition:
+      color var(--di-duration) var(--di-ease),
+      border-color var(--di-duration) var(--di-ease);
   }
 
   .di-copy-button:hover {

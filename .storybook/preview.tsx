@@ -153,15 +153,7 @@ const preview: Preview = {
 export default preview;
 
 /** One main, and an h1 when the story does not already render one. */
-function StoryCanvas({
-  title,
-  name,
-  children,
-}: {
-  title: string;
-  name: string;
-  children: ReactNode;
-}) {
+function StoryCanvas({ title, name, children }: { title: string; name: string; children: ReactNode }) {
   const body = useRef<HTMLDivElement>(null);
   const [labelled, setLabelled] = useState(false);
   useLayoutEffect(() => {

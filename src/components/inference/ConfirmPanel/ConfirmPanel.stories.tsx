@@ -47,9 +47,7 @@ export const Reversible: Story = {
   ),
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "why was this proposed?" }),
-    );
+    await userEvent.click(canvas.getByRole("button", { name: "why was this proposed?" }));
     await expect(args.onWhy).toHaveBeenCalled();
     await expect(
       canvas.getByRole("heading", {
@@ -62,17 +60,12 @@ export const Reversible: Story = {
     for (const child of panel.querySelectorAll("*")) {
       const bg = getComputedStyle(child).backgroundColor;
       if (child.closest(".di-btn")) continue;
-      await expect(bg === "rgba(0, 0, 0, 0)" || bg === "transparent").toBe(
-        true,
-      );
+      await expect(bg === "rgba(0, 0, 0, 0)" || bg === "transparent").toBe(true);
     }
-    await expect(canvas.getByRole("button", { name: "Merge" })).toHaveClass(
-      "di-btn-primary",
+    await expect(canvas.getByRole("button", { name: "Merge" })).toHaveClass("di-btn-primary");
+    await expect(getComputedStyle(canvas.getByText("Same manifest hash on both entries")).fontFamily).not.toMatch(
+      /Mono/,
     );
-    await expect(
-      getComputedStyle(canvas.getByText("Same manifest hash on both entries"))
-        .fontFamily,
-    ).not.toMatch(/Mono/);
   },
 };
 
@@ -81,12 +74,8 @@ export const Irreversible: Story = {
   args: { question: "Revoke four stale sources?" },
   render: (args) => (
     <ConfirmPanel {...args}>
-      <ExplainRow label="Basis">
-        No entry from these hosts since 2026-08-12
-      </ExplainRow>
-      <ExplainRow label="Scope">
-        4 sources · 0 sealed entries affected
-      </ExplainRow>
+      <ExplainRow label="Basis">No entry from these hosts since 2026-08-12</ExplainRow>
+      <ExplainRow label="Scope">4 sources · 0 sealed entries affected</ExplainRow>
       <ExplainRow label="Reversible">No</ExplainRow>
       <ConfirmActions>
         <Button variant="secondary" size="dense">
@@ -116,13 +105,9 @@ export const LongLabelsNarrow: Story = {
   ],
   render: (args) => (
     <ConfirmPanel {...args}>
-      <ExplainRow label="Entscheidungsgrundlage">
-        1.284 Einträge warten hinter einem pausierten Host
-      </ExplainRow>
+      <ExplainRow label="Entscheidungsgrundlage">1.284 Einträge warten hinter einem pausierten Host</ExplainRow>
       <ExplainRow label="Wirkungsbereich">1 Quelle in WS-01</ExplainRow>
-      <ExplainRow label="Rückgängig machbar">
-        Ja, die Quelle kann wieder pausiert werden
-      </ExplainRow>
+      <ExplainRow label="Rückgängig machbar">Ja, die Quelle kann wieder pausiert werden</ExplainRow>
       <ConfirmActions>
         <Button variant="secondary" size="dense">
           Abbrechen

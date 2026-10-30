@@ -14,8 +14,20 @@ const cells = [
   { title: "Inverse", body: "Ivory on navy. Sidebar, cover, dark fields.", src: logoInverse, dark: true, mark: false },
   { title: "Mono", body: "One colour, when the pair cannot be printed.", src: logoMono, dark: false, mark: false },
   { title: "Mark", body: "Symbol only, when the name is already in the sentence.", src: mark, dark: false, mark: true },
-  { title: "Mark, inverse", body: "The same symbol on navy. The gold node is the tittle.", src: markInverse, dark: true, mark: true },
-  { title: "Mark, mono", body: "The symbol in one ink, where the mono lockup has no room.", src: markMono, dark: false, mark: true },
+  {
+    title: "Mark, inverse",
+    body: "The same symbol on navy. The gold node is the tittle.",
+    src: markInverse,
+    dark: true,
+    mark: true,
+  },
+  {
+    title: "Mark, mono",
+    body: "The symbol in one ink, where the mono lockup has no room.",
+    src: markMono,
+    dark: false,
+    mark: true,
+  },
 ];
 
 function Lockups() {
@@ -30,19 +42,19 @@ function Lockups() {
         title="Six files, and nothing else."
         lede="Each is a fixed asset. A lockup is never rebuilt from the mark and a typeface — see Foundations/Mark for the misuses."
       >
-      <div className="di-logo-grid">
-        {cells.map((cell) => (
-          <article key={cell.title} className="di-logo-cell">
-            <div className={cx("di-logo-stage", cell.dark && "is-dark", cell.mark && "is-mark")}>
-              <img src={cell.src} alt="datAInsights" />
-            </div>
-            <div className="di-logo-meta">
-              <h2>{cell.title}</h2>
-              <p>{cell.body}</p>
-            </div>
-          </article>
-        ))}
-      </div>
+        <div className="di-logo-grid">
+          {cells.map((cell) => (
+            <article key={cell.title} className="di-logo-cell">
+              <div className={cx("di-logo-stage", cell.dark && "is-dark", cell.mark && "is-mark")}>
+                <img src={cell.src} alt="datAInsights" />
+              </div>
+              <div className="di-logo-meta">
+                <h2>{cell.title}</h2>
+                <p>{cell.body}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </Section>
     </Page>
   );

@@ -31,10 +31,7 @@ export function SegmentedControl({
     <fieldset className={cx("di-segmented", className)} disabled={disabled}>
       <legend className="di-sr">{legend}</legend>
       {options.map((option) => (
-        <label
-          key={option.value}
-          className={cx("di-segment", option.value === value && "is-active")}
-        >
+        <label key={option.value} className={cx("di-segment", option.value === value && "is-active")}>
           <input
             type="radio"
             className="di-sr"

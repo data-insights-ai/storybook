@@ -24,7 +24,8 @@
     background: var(--di-sidebar-bg);
     color: var(--di-sidebar-fg);
     border-right: 1px solid var(--di-sidebar-edge);
-    transition: width var(--di-duration-slow) var(--di-ease),
+    transition:
+      width var(--di-duration-slow) var(--di-ease),
       padding var(--di-duration-slow) var(--di-ease);
   }
 

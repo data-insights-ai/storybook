@@ -52,7 +52,9 @@ export function CaseTriage({ showing: initial = "list" }: { showing?: "list" | "
   const [filter, setFilter] = useState("open");
   const [open, setOpen] = useState(4);
   const [showing, setShowing] = useState<"list" | "detail">(initial);
-  const list = cases.filter((c) => (filter === "open" ? c.status !== "Resolved" : true)).sort((a, b) => rank[a.severity] - rank[b.severity]);
+  const list = cases
+    .filter((c) => (filter === "open" ? c.status !== "Resolved" : true))
+    .sort((a, b) => rank[a.severity] - rank[b.severity]);
   const record = cases.find((c) => c.n === open) ?? cases[0];
   return (
     <ProductShell area="workspace" active="cases" crumbs={["Production", "Cases"]}>
@@ -106,8 +108,14 @@ function CaseHeader({ record }: { record: CaseRow }) {
     <PageHeader>
       <PageHeaderTitle level={2}>{`Case ${record.n} · ${record.title}`}</PageHeaderTitle>
       <PageHeaderStatus>
-        <SeverityMark level={record.severity} label={severityWords[record.severity]} variant={record.severity === "critical" ? "chip" : "mark"} />
-        <StatusPill tone="neutral">{record.assignee ? `${record.status} · ${record.assignee}` : record.status}</StatusPill>
+        <SeverityMark
+          level={record.severity}
+          label={severityWords[record.severity]}
+          variant={record.severity === "critical" ? "chip" : "mark"}
+        />
+        <StatusPill tone="neutral">
+          {record.assignee ? `${record.status} · ${record.assignee}` : record.status}
+        </StatusPill>
       </PageHeaderStatus>
       <PageHeaderMeta>{`Opened ${record.opened} · ${record.signals.toLocaleString("en")} signals · updates live`}</PageHeaderMeta>
     </PageHeader>
@@ -147,7 +155,12 @@ function CaseFour({ record }: { record: CaseRow }) {
         </Figure>
       </FigureRow>
 
-      <Panel label="Story" title="Five phases in three days, from a leaked password to data leaving" heading={3} padded={false}>
+      <Panel
+        label="Story"
+        title="Five phases in three days, from a leaked password to data leaving"
+        heading={3}
+        padded={false}
+      >
         <PanelMeta>
           <TextLink href="#graph">Attack graph</TextLink>
         </PanelMeta>
@@ -220,7 +233,10 @@ function CaseWithoutVerdict({ record }: { record: CaseRow }) {
   return (
     <>
       <CaseHeader record={record} />
-      <EmptyState title="No verdict yet" body="The analysis has not concluded on this case. Open its signals to triage it by hand." />
+      <EmptyState
+        title="No verdict yet"
+        body="The analysis has not concluded on this case. Open its signals to triage it by hand."
+      />
     </>
   );
 }

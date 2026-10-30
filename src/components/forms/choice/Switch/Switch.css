@@ -20,7 +20,8 @@
     border-radius: var(--di-radius-pill);
     background: var(--di-bg-subtle);
     cursor: pointer;
-    transition: background-color var(--di-duration) var(--di-ease),
+    transition:
+      background-color var(--di-duration) var(--di-ease),
       border-color var(--di-duration) var(--di-ease);
   }
 

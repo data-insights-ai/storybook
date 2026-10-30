@@ -67,7 +67,9 @@ export const Default: Story = {
     await expect(args.onSubmit).toHaveBeenCalledOnce();
     const sheet = canvasElement.querySelector(".di-login")!;
     await expect(sheet.getBoundingClientRect().height).toBeGreaterThanOrEqual(window.innerHeight);
-    await expect(getComputedStyle(document.documentElement).backgroundColor).toBe(getComputedStyle(sheet).backgroundColor);
+    await expect(getComputedStyle(document.documentElement).backgroundColor).toBe(
+      getComputedStyle(sheet).backgroundColor,
+    );
   },
 };
 

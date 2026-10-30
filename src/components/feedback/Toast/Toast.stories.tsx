@@ -83,7 +83,6 @@ export const Long: Story = {
   },
 };
 
-
 /**
  * The receipt arriving and leaving. It rises and fades in one move, under
  * 240ms — and the caller holds it for that beat on the way out, so the
@@ -105,9 +104,7 @@ export const Arriving: Story = {
     const dismiss = useCallback((id: number) => {
       setEntries((list) => list.map((e) => (e.id === id ? { ...e, leaving: true } : e)));
       // One beat for the exit animation, then it is gone.
-      timers.current.push(
-        setTimeout(() => setEntries((list) => list.filter((e) => e.id !== id)), 200),
-      );
+      timers.current.push(setTimeout(() => setEntries((list) => list.filter((e) => e.id !== id)), 200));
     }, []);
 
     const emit = useCallback(() => {

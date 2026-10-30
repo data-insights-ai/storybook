@@ -76,7 +76,9 @@ export const WithNote: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("People with a seat in this workspace, and the invitations still open.")).toBeVisible();
+    await expect(
+      canvas.getByText("People with a seat in this workspace, and the invitations still open."),
+    ).toBeVisible();
   },
 };
 

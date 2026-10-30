@@ -47,7 +47,9 @@
   /* The current page is lifted a step, with the selection's cornflower edge. */
   .di-sb-button[aria-current="page"] {
     background: var(--di-sidebar-active);
-    box-shadow: inset 3px 0 0 var(--di-select), var(--di-elevation-surface);
+    box-shadow:
+      inset 3px 0 0 var(--di-select),
+      var(--di-elevation-surface);
   }
 
   .di-sb-icon {

@@ -85,7 +85,11 @@ export const Brand: Story = {
       <SectionTitle tier="brand" eyebrow="One" lede="Every claim on a screen is tied to the source it came from.">
         <SectionTitleHeading>Each entry has a source.</SectionTitleHeading>
       </SectionTitle>
-      <SectionTitle tier="brand" eyebrow="Two" lede="A source carries the time it was recorded, so a finding can be replayed.">
+      <SectionTitle
+        tier="brand"
+        eyebrow="Two"
+        lede="A source carries the time it was recorded, so a finding can be replayed."
+      >
         <SectionTitleHeading>Each source has a timestamp.</SectionTitleHeading>
       </SectionTitle>
     </Stack>

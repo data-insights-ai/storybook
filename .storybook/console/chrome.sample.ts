@@ -1,13 +1,5 @@
 import { createElement } from "react";
-import {
-  Activity,
-  Boxes,
-  FileSearch,
-  Radar,
-  Settings2,
-  ShieldAlert,
-  Waypoints,
-} from "lucide-react";
+import { Activity, Boxes, FileSearch, Radar, Settings2, ShieldAlert, Waypoints } from "lucide-react";
 import type { ConsoleChrome } from "./Console";
 
 /** English sample chrome. A product replaces this with its own strings. */

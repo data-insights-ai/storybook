@@ -27,7 +27,15 @@ export function Modal({
   useModalDialog(ref, open);
 
   return (
-    <dialog ref={ref} className="di-modal" role="dialog" aria-modal="true" aria-labelledby={labelledBy} onCancel={onClose} onClose={onClose}>
+    <dialog
+      ref={ref}
+      className="di-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={labelledBy}
+      onCancel={onClose}
+      onClose={onClose}
+    >
       {open ? children : null}
     </dialog>
   );

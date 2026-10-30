@@ -34,7 +34,15 @@ function stories(
         initialGlobals: viewport ? { theme, viewport: { value: viewport, isRotated: false } } : { theme },
       }),
     ],
-    test: { name, setupFiles: ["./.storybook/tests/contrast/vitest.setup.ts", "./.storybook/tests/surfaces/vitest.setup.ts", ...setupFiles], browser: chromium() },
+    test: {
+      name,
+      setupFiles: [
+        "./.storybook/tests/contrast/vitest.setup.ts",
+        "./.storybook/tests/surfaces/vitest.setup.ts",
+        ...setupFiles,
+      ],
+      browser: chromium(),
+    },
   };
 }
 

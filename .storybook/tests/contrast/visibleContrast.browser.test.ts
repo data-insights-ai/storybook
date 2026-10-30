@@ -66,7 +66,11 @@ test("an SVG line paints only its stroke: no default black fill under the text",
 });
 
 test("text over an SVG image cannot be measured, so it fails", async () => {
-  const pixel = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><rect width="1" height="1" fill="#888"/></svg>');
+  const pixel =
+    "data:image/svg+xml," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><rect width="1" height="1" fill="#888"/></svg>',
+    );
   const host = fixture(`
     <div style="position: relative; width: 240px; height: 40px;">
       <svg width="240" height="40" style="position: absolute; inset: 0;">

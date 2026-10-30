@@ -4,7 +4,21 @@ import { Globe, Plus, Server } from "lucide-react";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { Chip } from "../../../marks/Chip";
-import { CellIcon, CellLead, CellStack, DataTable, TableBody, TableCell, TableFooter, TableColumn, TableHead, TableIndex, TableRow, TableSpacer, TableToolbar } from "./DataTable";
+import {
+  CellIcon,
+  CellLead,
+  CellStack,
+  DataTable,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableColumn,
+  TableHead,
+  TableIndex,
+  TableRow,
+  TableSpacer,
+  TableToolbar,
+} from "./DataTable";
 import { LevelMeter } from "../../../charts/compare/LevelMeter";
 import { Pagination } from "../../../navigation/sequence/Pagination";
 import { SearchField } from "../../../forms/text/SearchField";
@@ -12,7 +26,16 @@ import { Select } from "../../../forms/select/Select";
 import { SealValue } from "../../../marks/status/SealValue";
 import { StatusPill } from "../../../marks/status/StatusPill";
 import { TextLink } from "../../../navigation/TextLink";
-import { sources, SourceRows, SortableSources, SelectableSources, people, events, devices, windowed } from "./DataTable.sample";
+import {
+  sources,
+  SourceRows,
+  SortableSources,
+  SelectableSources,
+  people,
+  events,
+  devices,
+  windowed,
+} from "./DataTable.sample";
 
 const meta = {
   title: "Data/Table/DataTable",
@@ -59,9 +82,7 @@ export const Default: Story = {
             <TableIndex>{row.ordinal}</TableIndex>
             <TableCell>
               <CellLead>
-                <CellIcon>
-                  {row.kind === "Registry" ? <Server aria-hidden /> : <Globe aria-hidden />}
-                </CellIcon>
+                <CellIcon>{row.kind === "Registry" ? <Server aria-hidden /> : <Globe aria-hidden />}</CellIcon>
                 <CellStack primary={row.host} secondary={`WS-01 · ${row.kind.toLowerCase()}`} />
               </CellLead>
             </TableCell>
@@ -263,7 +284,10 @@ export const FillColumnProse: Story = {
         </TableHead>
         <TableBody>
           {[
-            { id: "F-1042", text: "A service account signed in from a host it had never used, then read the payroll share for forty minutes." },
+            {
+              id: "F-1042",
+              text: "A service account signed in from a host it had never used, then read the payroll share for forty minutes.",
+            },
             { id: "F-1043", text: "The mail gateway stopped sending audit events after its certificate was renewed." },
           ].map((row) => (
             <TableRow key={row.id}>
@@ -295,7 +319,10 @@ export const SelectableRows: Story = {
     const row = canvas.getAllByRole("row")[3]!;
     await userEvent.click(within(row).getByText("Registry"));
     await expect(row).toHaveClass("is-active");
-    await expect(within(row).getByRole("button", { name: "archive.example.com" })).toHaveAttribute("aria-pressed", "true");
+    await expect(within(row).getByRole("button", { name: "archive.example.com" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
     await expect(getComputedStyle(row).cursor).toBe("pointer");
   },
 };
@@ -516,7 +543,10 @@ export const CellLines: Story = {
             <CellStack primary="Register retention" secondary="Yearly · 25 seats per unit" />
           </TableCell>
           <TableCell align="end" mono>
-            <CellStack primary="€9,900.00 per year" secondary={["100 × 25 = 2,500 seats", "Total €990,000.00 per year"]} />
+            <CellStack
+              primary="€9,900.00 per year"
+              secondary={["100 × 25 = 2,500 seats", "Total €990,000.00 per year"]}
+            />
           </TableCell>
         </TableRow>
       </TableBody>

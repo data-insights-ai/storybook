@@ -43,7 +43,8 @@ module.exports = {
     },
     {
       name: "components-through-their-index",
-      comment: "Another folder reaches a component only through that component's index.ts; a component's own subfolders reach each other directly.",
+      comment:
+        "Another folder reaches a component only through that component's index.ts; a component's own subfolders reach each other directly.",
       severity: "error",
       from: { path: "^src/components/([^/]+/[A-Z][^/]*|[^/]+/[^/]+/[A-Z][^/]*)/" },
       to: { path: "^src/components/", pathNot: ["^src/components/$1/", "/index\\.ts$", "\\.css$", "\\.sample\\.ts$"] },

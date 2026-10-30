@@ -57,7 +57,9 @@ for (const key of ["exports", "classes"]) {
   }
 }
 if (failed) {
-  console.error("the public API differs from scripts/public-api.json; run node scripts/check-api.mjs --write if that is intended");
+  console.error(
+    "the public API differs from scripts/public-api.json; run node scripts/check-api.mjs --write if that is intended",
+  );
   process.exit(1);
 }
 console.log(`public API unchanged: ${current.exports.length} exports, ${current.classes.length} class names`);

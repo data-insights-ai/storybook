@@ -318,7 +318,12 @@ function measure(element: Element): Omit<ContrastFinding, "element" | "text" | "
         if (!box) continue;
         point = pointOf(box, at);
         if (!inView(point.x, point.y)) {
-          return { reason: `the text cannot be scrolled into view at its ${at}`, foreground: "?", background: "?", ratio: 0 };
+          return {
+            reason: `the text cannot be scrolled into view at its ${at}`,
+            foreground: "?",
+            background: "?",
+            ratio: 0,
+          };
         }
       }
       const result = measureAt(element, fg, point.x, point.y);
@@ -327,7 +332,12 @@ function measure(element: Element): Omit<ContrastFinding, "element" | "text" | "
     }
   }
   if (!worst) return null;
-  return { reason: "", foreground: hex(worst.fg), background: hex(worst.bg), ratio: Math.floor(worst.ratio * 100) / 100 };
+  return {
+    reason: "",
+    foreground: hex(worst.fg),
+    background: hex(worst.bg),
+    ratio: Math.floor(worst.ratio * 100) / 100,
+  };
 }
 
 export async function visibleContrast(root: Element): Promise<ContrastFinding[]> {
@@ -343,7 +353,12 @@ export async function visibleContrast(root: Element): Promise<ContrastFinding[]>
       if (!result) continue;
       const expected = large(element) ? 3 : 4.5;
       if (result.reason || result.ratio < expected) {
-        findings.push({ element: describe(element), text: (element.textContent ?? "").trim().slice(0, 40), expected, ...result });
+        findings.push({
+          element: describe(element),
+          text: (element.textContent ?? "").trim().slice(0, 40),
+          expected,
+          ...result,
+        });
       }
     }
     return findings;

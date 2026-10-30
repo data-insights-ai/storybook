@@ -21,13 +21,25 @@ const display: Row[] = [
     token: "--di-font-size-1000 · 56 · 700",
     note: "Foundations page title, a hero figure at its widest",
     sample: "Provable AI.",
-    style: { fontFamily: DISPLAY, fontWeight: 700, fontSize: "var(--di-font-size-1000)", letterSpacing: TIGHT, lineHeight: 1.05 },
+    style: {
+      fontFamily: DISPLAY,
+      fontWeight: 700,
+      fontSize: "var(--di-font-size-1000)",
+      letterSpacing: TIGHT,
+      lineHeight: 1.05,
+    },
   },
   {
     token: "--di-font-size-700 · 28 · 700",
     note: "PageHeader: the page's name. Figure, StatTile value",
     sample: "Production",
-    style: { fontFamily: DISPLAY, fontWeight: 700, fontSize: "var(--di-font-size-700)", letterSpacing: TIGHT, lineHeight: 1.1 },
+    style: {
+      fontFamily: DISPLAY,
+      fontWeight: 700,
+      fontSize: "var(--di-font-size-700)",
+      letterSpacing: TIGHT,
+      lineHeight: 1.1,
+    },
   },
   {
     token: "--di-font-size-600 · 20 · 700",
@@ -75,7 +87,14 @@ const machine: Row[] = [
     token: "--di-mono-label-* · 11 · 500 · 0.1em",
     note: "The label above a value: a figure, a table column, a navigation group",
     sample: "TIME TO ACKNOWLEDGE",
-    style: { fontFamily: MONO, fontWeight: 500, fontSize: "var(--di-font-size-200)", letterSpacing: "var(--di-tracking-label)", textTransform: "uppercase", color: "var(--di-text-muted)" },
+    style: {
+      fontFamily: MONO,
+      fontWeight: 500,
+      fontSize: "var(--di-font-size-200)",
+      letterSpacing: "var(--di-tracking-label)",
+      textTransform: "uppercase",
+      color: "var(--di-text-muted)",
+    },
   },
   {
     token: "--di-meta-* · 12 · 400",

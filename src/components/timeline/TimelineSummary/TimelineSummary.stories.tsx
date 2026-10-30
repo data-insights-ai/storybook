@@ -2,11 +2,7 @@ import { useMemo, useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { bucketFor } from "../scale";
-import {
-  episodesIn,
-  episodesOf,
-  type TimelineEpisode,
-} from "./episodes";
+import { episodesIn, episodesOf, type TimelineEpisode } from "./episodes";
 import {
   TimelineSummary,
   TimelineSummaryDetail,
@@ -15,20 +11,8 @@ import {
   TimelineSummaryMeta,
   TimelineSummaryTime,
 } from "./TimelineSummary";
-import type {
-  TimelineLane,
-  TimelineMarker,
-  TimelineTone,
-} from "../types";
-import {
-  boundsOf,
-  foldBars,
-  foldLanes,
-  activity,
-  activityLanes,
-  rhythm,
-  type SampleEvent,
-} from "../timeline.sample";
+import type { TimelineLane, TimelineMarker, TimelineTone } from "../types";
+import { boundsOf, foldBars, foldLanes, activity, activityLanes, rhythm, type SampleEvent } from "../timeline.sample";
 
 const NOW = Date.UTC(2026, 9, 12, 10, 0, 0);
 const HOUR = 3_600_000;
@@ -74,17 +58,13 @@ function when(episode: TimelineEpisode) {
 
 /** The three busiest lanes, read in the order the lanes run. */
 function whatHappened(episode: TimelineEpisode) {
-  const busiest = new Set(
-    [...episode.lanes].sort((a, b) => b.count - a.count).slice(0, 3),
-  );
+  const busiest = new Set([...episode.lanes].sort((a, b) => b.count - a.count).slice(0, 3));
   const named = episode.lanes.filter((l) => busiest.has(l)).map((l) => l.label);
   if (named.length === 0) {
     return "Unclassified activity";
   }
   const more = episode.lanes.length - named.length;
-  return more > 0
-    ? `${list.format(named)} and ${more} more`
-    : list.format(named);
+  return more > 0 ? `${list.format(named)} and ${more} more` : list.format(named);
 }
 
 type SampleProps = ComponentProps<typeof TimelineSummary> & {
@@ -100,37 +80,21 @@ type SampleProps = ComponentProps<typeof TimelineSummary> & {
  * of the whole record at one coarse width, folded into episodes, and a row
  * per episode with the record's markers placed between them.
  */
-function Sample({
-  sample,
-  sampleLanes,
-  sampleMarkers = [],
-  sampleFocus,
-  onEpisodePick,
-  ...args
-}: SampleProps) {
+function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisodePick, ...args }: SampleProps) {
   const bounds = useMemo(() => boundsOf(sample), [sample]);
   const episodes = useMemo(() => {
     const bucketMs = bucketFor(bounds.end - bounds.start, STRIP_PX);
-    const found = episodesOf(
-      foldBars(sample, bounds, bucketMs),
-      foldLanes(sampleLanes, sample, bounds, bucketMs),
-    );
+    const found = episodesOf(foldBars(sample, bounds, bucketMs), foldLanes(sampleLanes, sample, bounds, bucketMs));
     if (!sampleFocus) {
       return found;
     }
     const focused = sample.filter(sampleFocus);
-    return episodesIn(
-      found,
-      foldBars(focused, bounds, bucketMs),
-      foldLanes(sampleLanes, focused, bounds, bucketMs),
-    );
+    return episodesIn(found, foldBars(focused, bounds, bucketMs), foldLanes(sampleLanes, focused, bounds, bucketMs));
   }, [sample, sampleLanes, sampleFocus, bounds]);
   const [active, setActive] = useState<number | null>(null);
 
   const rows = [
-    ...episodes.flatMap((episode, i) =>
-      episode.total > 0 ? [{ at: episode.start, episode, i }] : [],
-    ),
+    ...episodes.flatMap((episode, i) => (episode.total > 0 ? [{ at: episode.start, episode, i }] : [])),
     ...sampleMarkers.map((marker) => ({ at: marker.at, marker })),
   ].sort((a, b) => a.at - b.at);
   const total = episodes.reduce((n, e) => n + e.total, 0);
@@ -149,8 +113,7 @@ function Sample({
     >
       <TimelineSummaryMeta>
         <span className="di-quiet">
-          {episodes.filter((e) => e.total > 0).length} episodes holding{" "}
-          {count.format(total)} events over{" "}
+          {episodes.filter((e) => e.total > 0).length} episodes holding {count.format(total)} events over{" "}
           {duration(bounds.end - bounds.start)}
         </span>
       </TimelineSummaryMeta>
@@ -165,12 +128,9 @@ function Sample({
           >
             <TimelineSummaryTime>{when(row.episode)}</TimelineSummaryTime>
             <TimelineSummaryDetail>
-              {row.episode.kind === "burst" ? "Burst" : "Ongoing activity"} ·{" "}
-              {count.format(row.episode.total)} events ·{" "}
+              {row.episode.kind === "burst" ? "Burst" : "Ongoing activity"} · {count.format(row.episode.total)} events ·{" "}
               {duration(row.episode.end - row.episode.start)}
-              {row.episode.danger
-                ? ` · ${count.format(row.episode.danger)} critical`
-                : ""}
+              {row.episode.danger ? ` · ${count.format(row.episode.danger)} critical` : ""}
             </TimelineSummaryDetail>
           </TimelineSummaryEpisode>
         ) : (
@@ -191,8 +151,7 @@ const meta = {
   tags: ["layer:block", "autodocs"],
   args: {
     title: "What happened",
-    label:
-      "Episodes of activity across the record, each as a block on one strip",
+    label: "Episodes of activity across the record, each as a block on one strip",
     listLabel: "Episodes and record changes, oldest first",
     bounds: { start: 0, end: 0 },
     episodes: [],
@@ -260,23 +219,10 @@ export const Default: Story = {
  * no critical event is left out and its number skipped.
  */
 export const CriticalOnly: Story = {
-  render: (args) => (
-    <Sample
-      {...args}
-      sample={ACTIVITY}
-      sampleLanes={activityLanes}
-      sampleFocus={isCritical}
-    />
-  ),
+  render: (args) => <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} sampleFocus={isCritical} />,
 };
 
 /** A health check every minute for twelve hours never goes quiet, so it is one episode. */
 export const Steady: Story = {
-  render: (args) => (
-    <Sample
-      {...args}
-      sample={RHYTHM}
-      sampleLanes={[{ id: "health", label: "Health checks" }]}
-    />
-  ),
+  render: (args) => <Sample {...args} sample={RHYTHM} sampleLanes={[{ id: "health", label: "Health checks" }]} />,
 };

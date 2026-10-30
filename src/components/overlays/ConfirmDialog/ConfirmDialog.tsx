@@ -108,7 +108,12 @@ export function ConfirmDialog({
               <Button variant="secondary" onClick={close} autoFocus={!needsText} disabled={busy}>
                 {cancelLabel}
               </Button>
-              <Button type="submit" variant={tone === "danger" ? "danger" : "primary"} loading={busy} disabled={!allowed}>
+              <Button
+                type="submit"
+                variant={tone === "danger" ? "danger" : "primary"}
+                loading={busy}
+                disabled={!allowed}
+              >
                 {confirmLabel}
               </Button>
             </ModalFooter>

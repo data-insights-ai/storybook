@@ -39,7 +39,7 @@ import {
   TableIndex,
   TableRow,
   TableToolbar,
-} from "../.."; 
+} from "../..";
 
 type Source = {
   ordinal: string;

@@ -225,9 +225,12 @@ export const SlotsWrittenReversed: Story = {
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const order = ["Three exports, one failing.", "The Sentinel export has failed since 08:40; the other two deliver.", "Retries stop after three attempts.", "Retry"].map(
-      (text) => canvas.getByText(text).getBoundingClientRect().top,
-    );
+    const order = [
+      "Three exports, one failing.",
+      "The Sentinel export has failed since 08:40; the other two deliver.",
+      "Retries stop after three attempts.",
+      "Retry",
+    ].map((text) => canvas.getByText(text).getBoundingClientRect().top);
     await expect([...order].sort((a, b) => a - b)).toEqual(order);
     const meta = canvas.getByText("live").getBoundingClientRect();
     const title = canvas.getByText("Delivery").getBoundingClientRect();

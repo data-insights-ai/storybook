@@ -14,7 +14,8 @@ export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open: b
   // effect pass in StrictMode still finds it.
   if (open && !shown.current && typeof document !== "undefined") {
     const active = document.activeElement;
-    if (active instanceof HTMLElement && active !== document.body && !ref.current?.contains(active)) opener.current = active;
+    if (active instanceof HTMLElement && active !== document.body && !ref.current?.contains(active))
+      opener.current = active;
   }
   shown.current = open;
 

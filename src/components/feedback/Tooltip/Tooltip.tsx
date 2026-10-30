@@ -6,5 +6,9 @@ import "./Tooltip.css";
  * a fact lives: a tooltip that holds the scope of an action is a bug.
  */
 export function Tooltip({ children }: { children: ReactNode }) {
-  return <span className="di-tooltip" role="tooltip">{children}</span>;
+  return (
+    <span className="di-tooltip" role="tooltip">
+      {children}
+    </span>
+  );
 }

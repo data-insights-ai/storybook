@@ -3,7 +3,12 @@ import { expect, within } from "storybook/test";
 import { PeriodTimeline } from "./PeriodTimeline";
 
 const short = (iso: string, { year }: { year: boolean }) =>
-  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: year ? "numeric" : undefined, timeZone: "UTC" });
+  new Date(iso).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: year ? "numeric" : undefined,
+    timeZone: "UTC",
+  });
 
 const meta = {
   title: "Timeline/PeriodTimeline",
@@ -15,8 +20,23 @@ const meta = {
     formatDate: short,
     today: "2026-10-22",
     periods: [
-      { id: "a", label: "Professional", start: "2026-10-22", end: "2027-05-10", graceEnd: "2027-05-24", tone: "ok", caption: "valid until 10 May 2027" },
-      { id: "b", label: "Team Add-on", start: "2026-12-01", end: "2027-06-01", tone: "neutral", caption: "starts 1 Dec 2026" },
+      {
+        id: "a",
+        label: "Professional",
+        start: "2026-10-22",
+        end: "2027-05-10",
+        graceEnd: "2027-05-24",
+        tone: "ok",
+        caption: "valid until 10 May 2027",
+      },
+      {
+        id: "b",
+        label: "Team Add-on",
+        start: "2026-12-01",
+        end: "2027-06-01",
+        tone: "neutral",
+        caption: "starts 1 Dec 2026",
+      },
     ],
   },
 } satisfies Meta<typeof PeriodTimeline>;
@@ -47,7 +67,15 @@ export const TodayAtTheEnd: Story = {
   args: {
     today: "2027-07-01",
     periods: [
-      { id: "a", label: "Professional", start: "2026-10-22", end: "2027-05-10", graceEnd: "2027-05-24", tone: "danger", caption: "expired 24 May 2027" },
+      {
+        id: "a",
+        label: "Professional",
+        start: "2026-10-22",
+        end: "2027-05-10",
+        graceEnd: "2027-05-24",
+        tone: "danger",
+        caption: "expired 24 May 2027",
+      },
     ],
   },
   play: async ({ canvasElement }) => todayInside(canvasElement),
@@ -57,7 +85,16 @@ export const TodayAtTheEnd: Story = {
 export const WithinAYear: Story = {
   args: {
     today: "2026-03-01",
-    periods: [{ id: "a", label: "Professional", start: "2026-02-01", end: "2026-06-30", tone: "ok", caption: "valid until 30 Jun 2026" }],
+    periods: [
+      {
+        id: "a",
+        label: "Professional",
+        start: "2026-02-01",
+        end: "2026-06-30",
+        tone: "ok",
+        caption: "valid until 30 Jun 2026",
+      },
+    ],
   },
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByText("1 Feb")).toBeVisible();

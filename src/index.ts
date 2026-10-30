@@ -64,7 +64,11 @@ export { CreateFlow } from "./components/overlays/CreateFlow";
 export { ConfirmActions, ConfirmPanel } from "./components/inference/ConfirmPanel";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/compare/CoverageMatrix";
 export { DangerAction, DangerZone } from "./components/feedback/DangerZone";
-export type { CoverageMatrixColumn, CoverageMatrixMark, CoverageMatrixTone } from "./components/charts/compare/CoverageMatrix";
+export type {
+  CoverageMatrixColumn,
+  CoverageMatrixMark,
+  CoverageMatrixTone,
+} from "./components/charts/compare/CoverageMatrix";
 export {
   CellIcon,
   CellLead,
@@ -84,11 +88,7 @@ export { DetailSection, DetailSectionActions, DetailSectionForm } from "./compon
 export { Disclosure, DisclosureLead } from "./components/layout/folding/Disclosure";
 export { Distribution } from "./components/charts/compare/Distribution";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
-export {
-  EventTimeline,
-  EventTimelineMeta,
-  EventTimelineReadout,
-} from "./components/timeline/EventTimeline";
+export { EventTimeline, EventTimelineMeta, EventTimelineReadout } from "./components/timeline/EventTimeline";
 export { useTimelineView } from "./components/timeline/EventTimeline/navigation/useTimelineView";
 export type { TimelineNavigation } from "./components/timeline/EventTimeline/navigation/useTimelineView";
 export { bucketFor as timelineBucketFor, eventsReadable as timelineEventsReadable } from "./components/timeline/scale";
@@ -150,7 +150,13 @@ export { Grid } from "./components/layout/arrangement/Grid";
 export { Numbered } from "./components/layout/arrangement/Numbered";
 export { Stack } from "./components/layout/arrangement/Stack";
 export { Toolbar, ToolbarEnd } from "./components/layout/arrangement/Toolbar";
-export { LivingActions, LivingBasis, LivingBody, LivingCard, LivingInsight } from "./components/data/records/LivingCard";
+export {
+  LivingActions,
+  LivingBasis,
+  LivingBody,
+  LivingCard,
+  LivingInsight,
+} from "./components/data/records/LivingCard";
 export { ListToolbar, ListToolbarEnd, ListToolbarNote } from "./components/data/table/ListToolbar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/navigation/Menu";
 export {
@@ -163,14 +169,7 @@ export {
   ModalTitle,
 } from "./components/overlays/Modal";
 export { NewEntries } from "./components/data/records/NewEntries";
-export {
-  Notice,
-  NoticeAction,
-  NoticeBody,
-  NoticeIcon,
-  NoticeText,
-  NoticeTitle,
-} from "./components/feedback/Notice";
+export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./components/feedback/Notice";
 export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/sequence/Pagination";
 export { Panel, PanelFooter, PanelMeta, PanelLead, PanelNote } from "./components/layout/page/Panel";

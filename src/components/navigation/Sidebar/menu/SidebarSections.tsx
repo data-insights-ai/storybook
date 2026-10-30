@@ -32,7 +32,9 @@ const GroupLabelId = createContext<string | undefined>(undefined);
  */
 export function SidebarGroup({ children }: { children: ReactNode }) {
   const labelId = useId();
-  const labelled = Children.toArray(children).some((child) => isValidElement(child) && child.type === SidebarGroupLabel);
+  const labelled = Children.toArray(children).some(
+    (child) => isValidElement(child) && child.type === SidebarGroupLabel,
+  );
   return (
     <GroupLabelId.Provider value={labelId}>
       <div className="di-sb-group" role="group" aria-labelledby={labelled ? labelId : undefined}>

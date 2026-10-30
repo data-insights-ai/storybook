@@ -82,7 +82,8 @@ export function ProductShell({
   user?: string;
   children: ReactNode;
 }) {
-  const entries = area === "workspace" ? workspaceNav : organizationNav.filter((e) => !e.roles || e.roles.includes(role));
+  const entries =
+    area === "workspace" ? workspaceNav : organizationNav.filter((e) => !e.roles || e.roles.includes(role));
   return (
     <SidebarProvider skipLabel="Skip to content">
       <Sidebar label="Sections" closeLabel="Close navigation">
@@ -108,7 +109,12 @@ export function ProductShell({
             <SidebarMenu>
               {entries.map((entry) => (
                 <SidebarMenuItem key={`${entry.id}-${entry.label}`}>
-                  <SidebarMenuButton label={entry.label} badge={entry.badge} href={`#${entry.id}`} active={entry.id === active}>
+                  <SidebarMenuButton
+                    label={entry.label}
+                    badge={entry.badge}
+                    href={`#${entry.id}`}
+                    active={entry.id === active}
+                  >
                     {icons[entry.id]}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -135,7 +141,10 @@ export function ProductShell({
       <SidebarInset>
         <AppShellBar>
           <SidebarTrigger label="Toggle navigation" />
-          <Breadcrumb label="Breadcrumb" items={crumbs.map((label, i) => (i < crumbs.length - 1 ? { label, href: "#" } : { label }))} />
+          <Breadcrumb
+            label="Breadcrumb"
+            items={crumbs.map((label, i) => (i < crumbs.length - 1 ? { label, href: "#" } : { label }))}
+          />
         </AppShellBar>
         <AppShellContent>{children}</AppShellContent>
       </SidebarInset>

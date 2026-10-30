@@ -112,8 +112,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--di-space-12);
-    padding: var(--di-space-16) var(--di-space-16) var(--di-space-16)
-      var(--di-space-24);
+    padding: var(--di-space-16) var(--di-space-16) var(--di-space-16) var(--di-space-24);
     border-bottom: 1px solid var(--di-border);
   }
 

@@ -64,7 +64,18 @@ export function Button(props: ButtonProps | LinkProps) {
   );
 
   if (props.href !== undefined) {
-    const { href, variant: _v, size: _s, iconOnly: _i, loading: _l, disabled: _d, className: _c, shortcut: _k, children, ...rest } = props;
+    const {
+      href,
+      variant: _v,
+      size: _s,
+      iconOnly: _i,
+      loading: _l,
+      disabled: _d,
+      className: _c,
+      shortcut: _k,
+      children,
+      ...rest
+    } = props;
     /*
      * An anchor has no `disabled`, so a blocked link drops its `href`:
      * it cannot be followed, cannot be tabbed to, and says why. Leaving
@@ -105,7 +116,14 @@ export function Button(props: ButtonProps | LinkProps) {
     ...rest
   } = props;
   return (
-    <button {...rest} {...keyed} type={type} disabled={disabled || loading} aria-busy={loading || undefined} className={className}>
+    <button
+      {...rest}
+      {...keyed}
+      type={type}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      className={className}
+    >
       {loading ? <span className="di-btn-spinner" aria-hidden /> : null}
       {children}
       {hint}
