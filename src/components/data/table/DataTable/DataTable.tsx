@@ -23,7 +23,7 @@ import "./DataTable.css";
  * hundred rows on one page. **Not** for one record's facts (`FactList`),
  * for a few records read as cards (`RecordCard`), for a list that grows
  * as the reader scrolls (`InfiniteTable`), or for a list beside the record
- * it opens (`ListDetail`).
+ * it opens (`Split variant="list"`).
  *
  * **Anatomy:** `Toolbar` (optional) · `TableHead` with one
  * `TableColumn` per column · `TableBody` with `TableRow`s of
@@ -121,7 +121,7 @@ export function DataTable({
   const foot: ReactNode[] = [];
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) return void grid.push(child);
-    if (child.type === TableToolbar || child.type === Toolbar) return void toolbar.push(child);
+    if (child.type === Toolbar) return void toolbar.push(child);
     if (child.type === TableFooter) return void foot.push(child);
     grid.push(child);
   });
@@ -316,16 +316,6 @@ function useRole(role: string) {
   return useContext(StackContext) ? role : undefined;
 }
 
-/**
- * A filter row above the grid, inside the same frame.
- *
- * @deprecated Removed in 0.12: put a `Toolbar` in the `DataTable`; the
- * table draws its frame (inset, rule, head tone) around it.
- */
-export function TableToolbar({ children }: { children: ReactNode }) {
-  return <Toolbar>{children}</Toolbar>;
-}
-
 /** Under the grid: a count, a pagination control. */
 export function TableFooter({ children }: { children: ReactNode }) {
   return <div className="di-table-foot">{children}</div>;
@@ -443,12 +433,6 @@ export function TableRow({
 }: {
   children: ReactNode;
   active?: boolean;
-  /**
-   * @deprecated Since 0.11 it draws nothing; removed in 0.12. A row's state is
-   * its State column (`StatusPill` or `SeverityMark` with a word), the same for
-   * every state; the leading edge is only the current row's.
-   */
-  tone?: "neutral" | "danger";
   onSelect?: () => void;
   /**
    * The row's place in the whole list, from 0, when the table renders only

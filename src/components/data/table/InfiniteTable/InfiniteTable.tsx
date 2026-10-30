@@ -12,7 +12,7 @@ import {
   type RefObject,
 } from "react";
 import { Toolbar } from "../../../actions/Toolbar";
-import { DataTable, TableBody, TableFooter, TableSpacer, TableToolbar } from "../DataTable";
+import { DataTable, TableBody, TableFooter, TableSpacer } from "../DataTable";
 import { NewEntries } from "../NewEntries";
 import { Loading } from "../../../feedback/waiting/Loading";
 import "./InfiniteTable.css";
@@ -158,7 +158,7 @@ export function InfiniteTable({
   const toolbar: ReactNode[] = [];
   const head: ReactNode[] = [];
   Children.forEach(children, (child) => {
-    if (isValidElement(child) && (child.type === TableToolbar || child.type === Toolbar)) toolbar.push(child);
+    if (isValidElement(child) && child.type === Toolbar) toolbar.push(child);
     else head.push(child);
   });
   const rows = virtualizer.getVirtualItems();

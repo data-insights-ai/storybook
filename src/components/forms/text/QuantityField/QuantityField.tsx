@@ -17,8 +17,7 @@ import "./QuantityField.css";
 export function QuantityField({
   id,
   label,
-  hideLabel,
-  labelHidden = false,
+  hideLabel = false,
   labelTrack = "record",
   required = false,
   value,
@@ -37,8 +36,6 @@ export function QuantityField({
   label: string;
   /** The label is read out but not shown, e.g. under a table column header. */
   hideLabel?: boolean;
-  /** @deprecated Use `hideLabel`, the name every other field uses. Removed in 0.12. */
-  labelHidden?: boolean;
   labelTrack?: LabelTrack;
   required?: boolean;
   value: number;
@@ -72,13 +69,7 @@ export function QuantityField({
 
   return (
     <div className={cx("di-field", "di-quantity", className)}>
-      <FieldLabel
-        htmlFor={id}
-        label={label}
-        labelTrack={labelTrack}
-        hideLabel={hideLabel ?? labelHidden}
-        required={required}
-      />
+      <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required} />
       <div className="di-quantity-group">
         <button
           type="button"

@@ -20,7 +20,7 @@ A region can also carry a theme, and the token layers resolve correctly inside i
 <div data-theme="dark" style={{ background: "var(--di-bg-page)" }}>…</div>
 ```
 
-This exists so a page can show both themes at once — `Foundations/Color` puts the night sheet beside daylight with it. For a product, prefer the document root: a half-dark screen is not a register. And it is not the way to put a **dark surface on a light page** — that is what `--di-inverse-*` is for (Toast, Tooltip, Stage, SignIn) and `--di-sidebar-*` for the rail. Those mean "a plane sitting on navy, in either theme"; a themed region means "the register after dark". Different things.
+This exists so a page can show both themes at once — `Foundations/Color` puts the night sheet beside daylight with it. For a product, prefer the document root: a half-dark screen is not a register. And it is not the way to put a **dark surface on a light page** — that is what `--di-inverse-*` is for (Toast, Tooltip, the current `Steps` card, SignIn) and `--di-sidebar-*` for the rail. Those mean "a plane sitting on navy, in either theme"; a themed region means "the register after dark". Different things.
 
 ### Compose, never invent
 
@@ -31,11 +31,11 @@ Build from the components in this system. **If something you need is missing, sa
 ### How a screen is composed
 
 - **The header only orients.** `PageHeader` holds the page's name, a `StatusPill` beside it and the meta (`PageHeaderMeta`: as of when, from where) — right of the name on a desktop, under it on a phone. No eyebrow, no claim, no rule, no button in a console header.
-- **The first block is what needs the person**: `AttentionList` with at most three `AttentionItem`s; item 01 runs full width with the one primary button and the gold edge. When nothing is due, `AttentionClear` says "Everything is running".
-- **A navy `Hero` only with a signature visual** — the chart that is the screen's argument — closed by `FigureRow variant="footer"`. Figures without a hero sit on `FigureRow variant="strip"`. Rules separate figures and nothing else.
-- **A list beside its record is `ListDetail`**: the list pane a step above the ground, the selected row a step higher with a cornflower edge; on a phone the two are separate views with `ListDetailBack`.
+- **The first block is what needs the person**: `AttentionList` with at most three `AttentionItem`s; item 01 runs full width with the one primary button and the gold edge. When nothing is due, `Notice variant="line" tone="ok"` says "Everything is running".
+- **A navy hero (`Panel surface="hero"`) only with a signature visual** — the chart that is the screen's argument — closed by `FigureRow variant="footer"`. Figures without a hero sit on `FigureRow variant="strip"`. Rules separate figures and nothing else.
+- **A list beside its record is `Split variant="list"`**: the list pane a step above the ground, the selected row a step higher with a cornflower edge; on a phone the two are separate views with `SplitBack`.
 - **Severity is `SeverityMark`**: one scale, a filled mark plus the word.
-- Meta lines (`MetaLine`) break between items; `Actions` stack full width on a phone.
+- Meta lines (`MetaLine`) break between items; a `Toolbar align="end"` of closing buttons stacks full width on a phone.
 
 A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` holding **`AppShellBar`** (the `SidebarTrigger`, a `Breadcrumb`, then `AppShellBarEnd` with app-wide status, which folds into one overflow button on a narrow bar, and `AppShellBarKeep` for the notification bell, which never folds) and **`AppShellContent`**. Below 900px the `Sidebar` is a drawer from the inline start; do not build a second mobile nav.
 
@@ -44,18 +44,18 @@ A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` ho
 The Storybook sidebar is grouped by the job a component does:
 
 - `Foundations/`: the brand, the tokens and the reasoning behind them. No component lives here.
-- `Actions/`: what a person presses: `Button`, `CountButton`, `CopyValue`, `RowActions`, `BulkActionBar`.
+- `Actions/`: what a person presses: `Button` (with `badge` for a count), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `CopyValue`.
 - `Forms/`: labelled controls: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `Switch`, `Checkbox` and the date fields.
-- `Data/`: what a person reads: records (`AttentionList`, `RecordCard`, `LivingCard`, `FactList`, `KeyValues`), figures (`FigureRow`, `HeroFigure`, `Stat`, `StatTile`) and `DataTable`.
+- `Data/`: what a person reads: records (`AttentionList`, `RecordCard`, `FactList`, `ProposalPanel`), figures (`Figure`, `FigureRow`, `Sparkline`) and `DataTable`.
 - `Text/`: how text is set: `Eyebrow`, `Highlight`, `Kbd`, `MetaLine`, `CodeBlock`, `PullQuote`, `TickRule`.
-- `Marks/`: what every other component draws with: `Badge`, `SeverityMark`, `StatusPill`, `Chip`, `Tag`, `VersionTag`, `SealValue`, `Icon`, `IconTile`.
+- `Marks/`: what every other component draws with: `Badge`, `SeverityMark`, `StatusPill`, `Tag` (`mono` for a filter, a version or a hash), `SealValue`, `Icon`, `IconTile`.
 - `Status/`: the state of one thing, inline: `LevelMeter` so far; the status marks join it in the final move.
-- `Feedback/`: `Notice`, `Toast`, `EmptyState`, `DangerZone`, `Tooltip`, and the loaders, progress bars and skeletons.
-- `Overlays/`: what opens over the page: `Modal`, `ConfirmDialog`, `Sheet`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
-- `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Menu`, `CommandBar`, `Pagination`, `Stepper`, `TextLink`.
-- `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `Hero`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `ListDetail`, `Toolbar`, `Actions`, `Accordion`, `Disclosure`.
-- `Charts/`: `Chart`, `ChartCard`, over time (`TrendChart`, `Sparkline`, `Seismograph`) and compared (`Bars`, `Distribution`, `CoverageMatrix`).
-- `Timeline/`, `Inference/`: what happened when (`EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`), and what the system inferred.
+- `Feedback/`: `Notice` (`variant` banner, empty, line), `Toast`, `Tooltip`, `Loading` (`shape` inline, app, list, detail, form, table) and the progress bars.
+- `Overlays/`: what opens over the page: `Dialog` (`placement` side, center, bottom), `ConfirmDialog`, `Flyout`, `CreateFlow`, `ShortcutHelp`.
+- `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Menu`, `CommandBar`, `Pagination`, `Steps`, `TextLink`.
+- `Layout/`: how a page is arranged: `Page`, `PageHeader` (`level={2}` for a section), `Panel` (`surface="hero"`, `tone="danger"`), `DetailSection`, `Stack`, `Grid`, `Split`, `Disclosure`.
+- `Charts/`: `Chart`, over time (`TrendChart`, `Seismograph`) and compared (`Distribution`, `CoverageMatrix`); a dashboard figure is a `Panel` with a `Figure` and the chart, in a `Grid`.
+- `Timeline/`: what happened when (`EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`).
 - `Shell/`: the frame of the app: `AppShellBar`, `AppShellContent`, `SignIn`, `SkipLink`, `ThemeProvider`, `DensityProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 
@@ -64,27 +64,27 @@ The Storybook sidebar is grouped by the job a component does:
 | Job | Use | Not |
 | --- | --- | --- |
 | What needs the person now | `AttentionList`, at most three items | a notice per item |
-| The figures of a screen | `FigureRow` (`strip`, or `footer` under a `Hero`) | a row of `StatTile`s |
-| A list beside one record | `ListDetail` | a table with a drawer |
+| The figures of a screen | `FigureRow` (`strip`, or `footer` under a hero `Panel`) | a row of panels with one figure each |
+| A list beside one record | `Split variant="list"` | a table with a drawer |
 | A severity | `SeverityMark` | a coloured word |
 | What the one emphasised block asks for | `PanelLead`, its lead line above the proof and the actions | the ask buried in a note |
-| A run of steps inside a surface | `Numbered variant="row"`: ruled rows, no box each | a box per step |
+| A run of steps inside a surface | `Steps variant="list" tone="ruled"`: ruled rows, no box each | a box per step |
 | A block of a record, or a plain surface | `Panel`, with a `title`, `surface="inset"` for a group inside another surface | |
-| One measured value on its own surface | `StatTile`, with a `StatTileDelta` or a `Sparkline` when it has them | |
-| A small labelled figure set in a row inside something else | `Figure` in a `FigureRow` | `Stat` and `StatRow`, deprecated, removed in 0.12.0 |
-| The detail of one row | `Sheet` with an `eyebrow` naming the kind of record | |
-| Work that needs more room than an inline form: a multi-field create or invite | `Sheet` | |
+| One measured value on its own surface | `Panel` with a `Figure`, a `FigureNote` or a `Sparkline` when it has them | |
+| A small labelled figure set in a row inside something else | `Figure` in a `FigureRow` | |
+| The detail of one row | `Dialog` (side) with an `eyebrow` naming the kind of record | |
+| Work that needs more room than an inline form: a multi-field create or invite | `Dialog` (side) | |
 | The first step of a create flow: one of a handful of kinds | `ChoiceGroup appearance="cards"`, with `planned` for the kinds that cannot be chosen yet | disabled cards |
-| An irreversible action | `Modal` or `ConfirmDialog` | a modal for anything reversible |
+| An irreversible action | `ConfirmDialog` | a modal for anything reversible |
 | A panel dropping from a topbar control | `Flyout` | |
 | Views of one record | `Tabs` | `TabNav`, whose tabs are places with their own URL |
-| A row's actions | `Menu` or `RowActions` | buttons repeated in every row |
+| A row's actions | `Menu` or `Toolbar variant="row"` | buttons repeated in every row |
 | A message that stays on the page | `Notice` | `Toast`, the receipt of an action that already ran |
-| Nothing to show yet | `EmptyState` | an empty table |
+| Nothing to show yet | `Notice variant="empty"` | an empty table |
 | A label for a control without one | `Tooltip` | a tooltip holding a fact that is nowhere else |
 | A record read beside the decisions about it | `Split` | |
 | A record's detail page, edited section by section | `DetailSection` | |
-| A term and its value | `FactList`, or `KeyValues` for a short list | |
+| A term and its value | `FactList` (`layout="pairs"` for a short list) | |
 | A status | `StatusPill` | a coloured word, or colour alone |
 | A recorded or inferred value | `SealValue` | a gold word |
 
@@ -126,22 +126,22 @@ Rules that make output look native rather than approximate:
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
 - **Three families.** `--di-font-display` (Space Grotesk) is the page's name, a figure, a section head. `--di-font-ui` (IBM Plex Sans, 14px body) is prose. `--di-font-code` (IBM Plex Mono) is anything a machine wrote, and the capital label above a value.
 - **Rules only between figures and table rows.** A surface carries a soft shadow at most; a detached plane — menu, modal, toast — a stronger one (`--di-shadow-plane`). No blur behind text.
-- **A number only where the order is information.** The rows of a register carry their ordinal in a 38px index column (`--di-index-col`); the steps of a process are `Numbered` or a `Stepper`; the `AttentionList` ranks; a story numbers its phases. A panel, a sheet, a tile or an empty state carries no number: a sheet opened from a row names its record in the `eyebrow`, and a failure says so in words beside its title.
+- **A number only where the order is information.** The rows of a register carry their ordinal in a 38px index column (`--di-index-col`); the steps of a process are `Steps`; the `AttentionList` ranks; a story numbers its phases. A panel, a sheet, a tile or an empty state carries no number: a sheet opened from a row names its record in the `eyebrow`, and a failure says so in words beside its title.
 - Motion runs at one of two durations and no others: `--di-duration` 120ms and `--di-duration-slow` 200ms, ease-out, one change at a time.
 
 ### API shape
 
 - **Only ever text → a `string` prop. Anything that can hold a component → a slot.** A slot is a named sub-component written as a child, in any order: `<Panel><PanelFooter>…</PanelFooter></Panel>`, `<Notice><NoticeIcon/>…`, `<Toast><ToastAction>…`.
 - **A variant is one union prop**, never a family of booleans: `hint` + `hintTone` (`neutral | sealed | error`), `layout`, `tone`, `size`.
-- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `scope` (`PrivacyBadge`), `state` (`CommandChip`), `level` (a field’s `confidence`), `variant` (`Button`, `IconTile`, `Eyebrow`), `tier` (`PageHeader`, `SectionTitle`), `layout` (`FactList`, `Switch`), `labelTrack` (`TextField`, `Select`), `size` (`Button`, `Notice`), `gap` (`Stack`). `neutral` is the word for "nothing special" — never `default`, never `info`.
+- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `level` (a field’s `confidence`), `variant` (`Button`, `IconTile`, `Eyebrow`), `tier` (`PageHeader`), `layout` (`FactList`, `Switch`), `labelTrack` (`TextField`, `Select`), `size` (`Button`, `Notice`), `gap` (`Stack`). `neutral` is the word for "nothing special" — never `default`, never `info`.
 - **One name per thing.** The hollow ring is `inferred` everywhere: `SealMark`, `StatusPill`, `Button`. Never `ai`. Gold as a value is `seal`, never `gold` — a public prop does not name a colour.
 - **Every visible string is a prop.** Nothing has baked-in language.
-- **`DataTable` takes no `rows` array.** Map your own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, `TableCell`; `TableToolbar` and `TableFooter` are slots. Under 600px of frame the grid scrolls sideways; `narrow="stack"` turns each row into a block instead, for a log or a list of events read row by row.
+- **`DataTable` takes no `rows` array.** Map your own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, `TableCell`; a `Toolbar` and `TableFooter` are slots. Under 600px of frame the grid scrolls sideways; `narrow="stack"` turns each row into a block instead, for a log or a list of events read row by row.
 - **`Pagination` and `Switch` are controlled** — you own `page` / `checked`.
 - **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. A blocked link (`disabled` or `loading`) drops its `href` and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined in-text control and stays a `<button>` — it is for acting, not for going somewhere.
 - **`Icon` takes one Lucide icon as its child**: `<Icon label="Search"><Search aria-hidden /></Icon>`.
 - **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, gold), `--di-chart-compare` (the comparison series, cornflower — also `LevelMeter`'s comparison track), `--di-chart-muted`, `--di-chart-band`. An ordered status scale (low → warn → danger: a stacked severity, a meter's zones, a `Distribution` row's `tone`) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Never draw a one-off SVG chart.
-- **A page or section heading is a slot, because it can hold a `Highlight`**: `<PageHeader eyebrow="…" lede="…"><PageHeaderTitle>…</PageHeaderTitle><PageHeaderAside>…</PageHeaderAside></PageHeader>`, and `SectionTitleHeading` / `SectionTitleMeta` the same way. A `Panel`, `Modal` or `Sheet` title stays a string — the page marks one place, and it is never a panel's title.
+- **A page or section heading is a slot, because it can hold a `Highlight`**: `<PageHeader eyebrow="…" lede="…"><PageHeaderTitle>…</PageHeaderTitle><PageHeaderAside>…</PageHeaderAside></PageHeader>`, the same for a section with `PageHeader level={2}`. A `Panel` or `Dialog` title stays a string — the page marks one place, and it is never a panel's title.
 - Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first.
 
 ### Exploring a variation
@@ -168,7 +168,7 @@ use, and nothing else.
 | Display | `--di-font-size-1000` | Space Grotesk | 56px | 700 | Brand page title |
 | Title | `--di-font-size-800` | Space Grotesk | 34px | 700 | Brand page section |
 | Page | `--di-font-size-700` | Space Grotesk | 28px | 700 | `PageHeader`: the page's name; `Figure` value |
-| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `SectionTitle`, the attention heading |
+| Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `PageHeader level={2}`, the attention heading |
 | Brand lede | `--di-font-size-550` | IBM Plex Sans | 18px | 400 | `PageHeader tier="brand"` lede |
 | Block | `--di-font-size-500` | IBM Plex Sans | 16px | 600 | A panel's or an attention item's title |
 | **Body** | `--di-font-size-400` | IBM Plex Sans | **14px** | 400 | The console body — `base.css` |
@@ -216,7 +216,7 @@ Compact keeps 40px targets on a touch screen. `Foundations/Scale` has the
 matrix.
 
 **The index column** — 38px (`--di-index-col`): the ordinal of a row in
-`DataTable` and `SkeletonTable`, and the icon column of `Notice` and `Modal`.
+`DataTable` and `Loading shape="table"`, and the icon column of `Notice`.
 Nothing else carries a number of its own.
 
 ### What this system refuses
@@ -267,11 +267,11 @@ Read the real files before styling: `styles.css` and its `@import` closure carry
 ### A brand page
 
 The same library, at the display tier. There is **no parallel set of brand
-components** — `PageHeader` and `SectionTitle` each carry a `tier`, and `brand`
+components** — `PageHeader` carries a `tier` at either `level`, and `brand`
 is the other value.
 
 - **`tier="brand"`** sets the title on the top of the ramp and measures it to
-  16ch (`PageHeader`) or 22ch (`SectionTitle`), with the lede at
+  16ch (`PageHeader`) or 22ch (`PageHeader level={2}`), with the lede at
   `--di-font-size-550` / `-500`. It carries **no bottom margin**: a brand page's
   rhythm belongs to the `Stack` around it.
 - **`Stack gap={48}`, `{64}`, `{96}`** is that rhythm. 48 separates the parts of
@@ -284,8 +284,8 @@ is the other value.
   a form in for themselves rather than reading a record.
 - **`Eyebrow`** has two variants and they are not interchangeable. `sealed` is the
   section label beside the seal with a rule to the edge, and there is **one per view**.
-  `plain` is the label alone and repeats down a page — it is what `PageHeader` and
-  `SectionTitle` render from their `eyebrow` string. A page that repeated the
+  `plain` is the label alone and repeats down a page — it is what `PageHeader` renders
+  from its `eyebrow` string. A page that repeated the
   sealed one would be claiming a seal per heading.
 
 The Foundations pages are rendered from exactly these components and nothing
@@ -328,4 +328,4 @@ A `Panel` is one surface at one inset all round (24px, 16px on a phone): the hea
 
 `TableHead` holds `TableColumn` (props: `index`, `sort`, `align`) — there is no `as="th"`. `TableRow` takes `active` and `tone`; `TableCell` takes `align` and `mono`. A cell's lead is `CellLead` + `CellIcon` + `CellStack`.
 
-**A line that reports a measured value is a slot, not a string.** A count, a timestamp, a version, a delta, a caveat or a basis routinely arrives sealed, in the mono track, or with a state beside it, and a `string` prop can carry none of that. These are the slots: `PanelMeta`, `StageFooter`, `ExplainFooter`, `RecordCount`, `SessionDetail`, `StatTileDelta`, `LivingBasis`, `SignInVersion`. Text a person reads as prose — `title`, `label`, `caption`, `legend`, `body`, and every `*Label` accessible name — stays a string prop.
+**A line that reports a measured value is a slot, not a string.** A count, a timestamp, a version, a delta, a caveat or a basis routinely arrives sealed, in the mono track, or with a state beside it, and a `string` prop can carry none of that. These are the slots: `PanelMeta`, `StepFooter`, `ProposalNote`, `RecordCount`, `RecordDetail`, `FigureNote`, `RecordBasis`, `SignInVersion`. Text a person reads as prose — `title`, `label`, `caption`, `legend`, `body`, and every `*Label` accessible name — stays a string prop.

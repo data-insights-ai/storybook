@@ -8,7 +8,7 @@ import "./Figure.css";
  * One measured value with its label, and what it is read against.
  *
  * Use it for a count, a rate or a share a person reads at a glance: in a
- * `Panel` of its own, in a `FigureRow`, in a `Hero` (`size="hero"`), in a
+ * `Panel` of its own, in a `FigureRow`, in a hero `Panel` (`size="hero"`), in a
  * `RecordCard`. Not for a value among other facts of a record (use
  * `FactList`), a state word (`StatusPill`) or a series over time with an
  * axis (`TrendChart`).

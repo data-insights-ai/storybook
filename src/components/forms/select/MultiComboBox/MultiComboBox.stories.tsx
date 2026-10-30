@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { MultiComboBox } from "./MultiComboBox";
-import { TokenField } from "./TokenField";
 import { Button } from "../../../actions/Button";
 import { Dialog } from "../../../overlays/Dialog";
 
@@ -341,29 +340,5 @@ export const German: Story = {
     required: true,
     hint: "Wählen Sie mindestens ein Mitglied oder eine Berechtigung aus, bevor Sie speichern.",
     hintTone: "error",
-  },
-};
-
-/** `TokenField` is deprecated: it renders this field with `freeEntry`, so nothing changes for its callers until 0.12. */
-export const DeprecatedTokenField: Story = {
-  render: function Render() {
-    const [values, setValues] = useState(["nora.feld@data-insights.ai"]);
-    return (
-      <div style={{ maxWidth: "480px" }}>
-        <TokenField
-          id="legacy-emails"
-          label="Email addresses"
-          values={values}
-          onChange={setValues}
-          isValid={(v) => email.test(v)}
-          removeLabel={(v) => `Remove ${v}`}
-        />
-      </div>
-    );
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await userEvent.type(canvas.getByRole("textbox", { name: "Email addresses" }), "jonas@data-insights.ai ");
-    await expect(canvas.getByRole("button", { name: "Remove jonas@data-insights.ai" })).toBeVisible();
   },
 };

@@ -73,16 +73,8 @@ const HeadingLevel = createContext<1 | 2>(1);
  * The header's heading: the h1 of a `PageHeader`, the h2 of a
  * `PageHeader level={2}`. Text, and at most one `Highlight` inside it.
  */
-export function PageHeaderTitle({
-  level,
-  children,
-}: {
-  /** @deprecated Removed in 0.12.0. Set `level` on `PageHeader`; the title follows it. */
-  level?: 1 | 2;
-  children: ReactNode;
-}) {
-  const fromHeader = useContext(HeadingLevel);
-  return (level ?? fromHeader) === 1 ? (
+export function PageHeaderTitle({ children }: { children: ReactNode }) {
+  return useContext(HeadingLevel) === 1 ? (
     <h1 className="di-page-title">{children}</h1>
   ) : (
     <h2 className="di-page-title">{children}</h2>

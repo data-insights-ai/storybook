@@ -13,11 +13,6 @@
 
 @layer tokens {
   /*
-   * Deprecated, bound by no component, removed in 0.12.0: --di-focus-halo,
-   * --di-seal-bg, --di-status-ok-on-navy, --di-signal, --di-signal-ink,
-   * --di-signal-tint, and the primitives --di-danger-700 and --di-navy-200.
-   */
-  /*
    * Not `:root[data-theme=…]`. A theme is a token boundary, not a document
    * property: an element carrying `data-theme` re-declares these roles, and
    * `component.css` re-declares its slots on the same selector, so a region
@@ -86,7 +81,6 @@
     /* Selection and focus are cornflower, in both themes. */
     --di-select: var(--di-cornflower-600);
     --di-focus: var(--di-cornflower-600);
-    --di-focus-halo: rgba(43, 108, 176, 0.22);
     /*
      * The focus ring, one model (Foundations/Register): outside the control
      * at the offset when it stands free, drawn inside it (the inset) where a
@@ -122,9 +116,6 @@
     --di-highlight: var(--di-poppy-600);
     --di-highlight-ink: var(--di-poppy-700);
     --di-highlight-tint: var(--di-poppy-100);
-    --di-signal: var(--di-cornflower-600);
-    --di-signal-ink: var(--di-cornflower-800);
-    --di-signal-tint: var(--di-cornflower-100);
 
     /* Navy is the one filled control in daylight. */
     --di-fill-strong: var(--di-navy-900);
@@ -137,7 +128,6 @@
      */
     --di-seal: var(--di-gold-500);
     --di-seal-ink: var(--di-gold-700);
-    --di-seal-bg: var(--di-gold-100);
     --di-seal-border: var(--di-gold-200);
     --di-text-on-seal: var(--di-navy-900);
     --di-ai-ring: var(--di-gold-600);
@@ -181,7 +171,6 @@
     --di-status-ok-bg: var(--di-ok-100);
     --di-status-ok-border: rgba(28, 107, 60, 0.22);
     --di-status-ok-dot: var(--di-ok-700);
-    --di-status-ok-on-navy: var(--di-ok-200);
     --di-status-warn-fg: var(--di-amber-800);
     --di-status-warn-bg: var(--di-amber-100);
     --di-status-warn-border: rgba(201, 106, 0, 0.28);
@@ -287,7 +276,6 @@
 
     --di-select: var(--di-cornflower-300);
     --di-focus: var(--di-cornflower-300);
-    --di-focus-halo: rgba(121, 174, 234, 0.3);
     --di-focus-ring-color: var(--di-focus);
     --di-focus-ring-on-strong: var(--di-cornflower-600);
 
@@ -304,9 +292,6 @@
     --di-highlight: var(--di-poppy-300);
     --di-highlight-ink: var(--di-poppy-300);
     --di-highlight-tint: var(--di-poppy-900);
-    --di-signal: var(--di-cornflower-300);
-    --di-signal-ink: var(--di-cornflower-300);
-    --di-signal-tint: rgba(121, 174, 234, 0.16);
 
     /* After dark the filled control is paper-white: navy has nothing left to act against. */
     --di-fill-strong: var(--di-night-ink);
@@ -314,7 +299,6 @@
 
     --di-seal: var(--di-gold-500);
     --di-seal-ink: var(--di-gold-400);
-    --di-seal-bg: rgba(217, 180, 94, 0.14);
     --di-seal-border: rgba(217, 180, 94, 0.36);
     --di-ai-ring: var(--di-gold-400);
     --di-ai-surface: rgba(217, 180, 94, 0.08);
@@ -348,7 +332,6 @@
     --di-status-ok-bg: rgba(110, 219, 151, 0.12);
     --di-status-ok-border: rgba(110, 219, 151, 0.3);
     --di-status-ok-dot: var(--di-ok-300);
-    --di-status-ok-on-navy: var(--di-ok-300);
     --di-status-warn-fg: var(--di-amber-300);
     --di-status-warn-bg: rgba(255, 163, 61, 0.14);
     --di-status-warn-border: rgba(255, 178, 94, 0.32);

@@ -12,7 +12,6 @@ import { TimeField } from "../../dates/TimeField";
 import { TextField } from "../../text/TextField";
 import { SearchField } from "../../text/SearchField";
 import { ChoiceGroup, type ChoiceOption } from "./ChoiceGroup";
-import { ChoiceCards, SegmentedControl, ToggleGroup } from "./deprecated";
 
 const meta = {
   title: "Forms/Choice/ChoiceGroup",
@@ -521,8 +520,8 @@ export const GroupedCards: Story = {
     const [value, setValue] = useState("defender");
     return (
       <Stack gap={16}>
-        <PageHeader lede="Where this workspace reads its events from.">
-          <PageHeaderTitle level={2}>Choose a source</PageHeaderTitle>
+        <PageHeader level={2} lede="Where this workspace reads its events from.">
+          <PageHeaderTitle>Choose a source</PageHeaderTitle>
         </PageHeader>
         <ChoiceGroup
           appearance="cards"
@@ -692,48 +691,5 @@ export const German: Story = {
     const root = canvasElement.querySelector(".di-choice-segments")!;
     await expect(root.scrollWidth).toBeLessThanOrEqual(root.clientWidth + 1);
     await expect(canvasElement.scrollWidth).toBeLessThanOrEqual(canvasElement.clientWidth + 1);
-  },
-};
-
-/**
- * SegmentedControl, ToggleGroup and ChoiceCards are deprecated (removed in
- * 0.12) and render this component: each here draws the same chosen look as
- * the ChoiceGroup calls above.
- */
-export const DeprecatedNames: Story = {
-  name: "Deprecated names",
-  render: function Render() {
-    const [view, setView] = useState("open");
-    const [quiet, setQuiet] = useState(["sat", "sun"]);
-    const [kind, setKind] = useState("hub");
-    return (
-      <Stack gap={24}>
-        <SegmentedControl
-          name="old-view"
-          legend="Show"
-          options={[
-            { value: "open", label: "Open" },
-            { value: "all", label: "All" },
-          ]}
-          value={view}
-          onChange={setView}
-        />
-        <ToggleGroup legend="Quiet on" options={days} value={quiet} onChange={setQuiet} />
-        <ChoiceCards name="old-kind" legend="Source type" options={sources} value={kind} onChange={setKind} />
-      </Stack>
-    );
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    await expect(canvas.getByRole("radio", { name: "Open" })).toBeChecked();
-    await expect(canvas.getByRole("checkbox", { name: "Sunday" })).toBeChecked();
-    await expect(canvas.getByRole("radio", { name: /Event Hub/ })).toBeChecked();
-    const chosen = [...canvasElement.querySelectorAll(".is-chosen")];
-    await expect(chosen).toHaveLength(4);
-    const fill = (selector: string) =>
-      new Set(chosen.filter((c) => c.matches(selector)).map((c) => getComputedStyle(c).backgroundColor));
-    const toggles = fill(".di-choice-toggle");
-    await expect(toggles.size).toBe(1);
-    await expect([...fill(".di-choice-segment")].some((bg) => toggles.has(bg))).toBe(false);
   },
 };

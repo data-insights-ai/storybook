@@ -57,7 +57,6 @@ const preview: Preview = {
           "Layout",
           "Charts",
           "Timeline",
-          "Inference",
           "Shell",
           "Patterns",
         ];

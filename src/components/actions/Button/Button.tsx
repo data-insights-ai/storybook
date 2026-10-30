@@ -9,9 +9,6 @@ import "./Button.css";
 type Variant = "primary" | "secondary" | "ghost" | "link" | "danger" | "seal" | "inferred";
 /** A button's role in the layout, not the density: density scales every size. */
 type Size = "sm" | "md" | "lg";
-/** @deprecated `dense` is `sm` and `comfort` is `lg`; removed in 0.12.0. */
-type RenamedSize = "dense" | "comfort";
-const renamed: Record<RenamedSize, Size> = { dense: "sm", comfort: "lg" };
 
 type Common = {
   /**
@@ -28,7 +25,7 @@ type Common = {
    */
   variant?: Variant;
   /** `sm` in a row or a toolbar of small controls, `md` the standard, `lg` a sign-in or a brand page. */
-  size?: Size | RenamedSize;
+  size?: Size;
   /** A square control: a filter, a pagination arrow, a kebab. */
   iconOnly?: boolean;
   /** Swaps the icon for a spinner and blocks the press. */
@@ -128,7 +125,7 @@ export function Button(props: ButtonProps | LinkProps) {
     : cx(
         "di-btn",
         `di-btn-${variant}`,
-        `di-btn-${size === "dense" || size === "comfort" ? renamed[size] : size}`,
+        `di-btn-${size}`,
         iconOnly && "di-btn-icon",
         count !== null && "di-btn-counted",
         loading && "di-btn-loading",
