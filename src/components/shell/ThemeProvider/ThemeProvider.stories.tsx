@@ -2,7 +2,9 @@ import { useState, type ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Gauge, LogOut, UserRound } from "lucide-react";
+import { AppShellBar } from "../AppShellBar";
 import { AppShellContent } from "../AppShellContent";
+import { Fact, FactList } from "../../data/records/FactList";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Panel } from "../../layout/page/Panel";
 import {
@@ -15,6 +17,7 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarThemeChoice,
+  SidebarTrigger,
   themeLabels,
 } from "../../navigation/Sidebar";
 import { ThemeProvider, useTheme, type ThemeChoice } from "./ThemeProvider";
@@ -22,10 +25,11 @@ import { ThemeProvider, useTheme, type ThemeChoice } from "./ThemeProvider";
 function Shown() {
   const { choice, resolved } = useTheme();
   return (
-    <Panel>
-      <p>
-        Chosen: {choice}. Showing: {resolved}.
-      </p>
+    <Panel title="Appearance" heading={2}>
+      <FactList layout="pairs">
+        <Fact label="Your choice">{choice}</Fact>
+        <Fact label="Showing">{resolved}</Fact>
+      </FactList>
     </Panel>
   );
 }
@@ -65,6 +69,10 @@ function Sample({ initial, language }: { initial: ThemeChoice; language: keyof t
           </SidebarFooter>
         </Sidebar>
         <SidebarInset>
+          <AppShellBar>
+            <SidebarTrigger label="Toggle navigation" />
+            <span>Overview</span>
+          </AppShellBar>
           <AppShellContent>
             <PageHeader>
               <PageHeaderTitle>Overview</PageHeaderTitle>
@@ -95,6 +103,10 @@ type Story = StoryObj<typeof meta>;
 // Storybook's own theme toolbar writes the root once a story mounts, so a
 // story reads the root only after a change of its own.
 const root = () => document.documentElement.getAttribute("data-theme");
+const shown = (canvasElement: HTMLElement) =>
+  Array.from(canvasElement.querySelectorAll("dd"))
+    .map((dd) => dd.textContent)
+    .join(" ");
 
 /** Auto follows the device; Light and Dark hold whatever the device says. */
 export const Choice: Story = {
@@ -102,12 +114,12 @@ export const Choice: Story = {
   play: async ({ canvasElement, globals }) => {
     const canvas = within(canvasElement);
     const device = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-    await expect(canvas.getByText(`Chosen: auto. Showing: ${device}.`)).toBeVisible();
+    await expect(shown(canvasElement)).toBe(`auto ${device}`);
 
     await userEvent.click(canvas.getByRole("button", { name: "Theme: Auto" }));
     await userEvent.click(within(document.body).getByRole("menuitemradio", { name: "Dark" }));
     await waitFor(() => expect(root()).toBe("dark"));
-    await expect(canvas.getByText("Chosen: dark. Showing: dark.")).toBeVisible();
+    await expect(shown(canvasElement)).toBe("dark dark");
 
     await userEvent.click(canvas.getByRole("button", { name: "Theme: Dark" }));
     await expect(within(document.body).getByRole("menuitemradio", { name: "Dark" })).toHaveAttribute(
@@ -132,7 +144,7 @@ export const German: Story = {
   args: { value: "dark", language: "de" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("Chosen: dark. Showing: dark.")).toBeVisible();
+    await expect(shown(canvasElement)).toBe("dark dark");
     await userEvent.click(canvas.getByRole("button", { name: "Darstellung: Dunkel" }));
     await waitFor(() =>
       expect(within(document.body).getByRole("menuitemradio", { name: "Automatisch" })).toBeVisible(),

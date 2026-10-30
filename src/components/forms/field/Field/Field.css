@@ -129,10 +129,10 @@
     color: var(--di-text-disabled);
   }
 
-  /* A value to read and copy, not to change: the inset tone, no frame, full ink. */
+  /* A value to read and copy, not to change: its own tone (a step above disabled), no frame, full ink. */
   .di-control[readonly] {
     border-color: transparent;
-    background: var(--di-bg-subtle);
+    background: var(--di-bg-readonly);
   }
 
   .di-control[aria-invalid="true"] {

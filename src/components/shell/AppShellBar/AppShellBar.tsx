@@ -58,7 +58,10 @@ export function AppShellBarEnd({ moreLabel, children }: { moreLabel: string; chi
       const gap = parseFloat(style.columnGap);
       const kept = Array.from(end.children)
         .filter((child) => child !== group)
-        .reduce((sum, child) => sum + child.getBoundingClientRect().width + parseFloat(getComputedStyle(end).columnGap), 0);
+        .reduce(
+          (sum, child) => sum + child.getBoundingClientRect().width + parseFloat(getComputedStyle(end).columnGap),
+          0,
+        );
       const room =
         bar.clientWidth -
         parseFloat(style.paddingLeft) -

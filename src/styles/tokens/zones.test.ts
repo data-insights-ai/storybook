@@ -47,6 +47,8 @@ const pairs = {
     ["--di-bg-strip", "--di-bg-page"],
     ["--di-bg-subtle", "--di-bg-page"],
     ["--di-bg-subtle", "--di-bg-surface"],
+    ["--di-bg-readonly", "--di-bg-disabled"],
+    ["--di-bg-readonly", "--di-bg-surface"],
   ],
   dark: [
     ["--di-bg-chrome", "--di-bg-page"],
@@ -54,6 +56,8 @@ const pairs = {
     ["--di-bg-strip", "--di-bg-page"],
     ["--di-bg-subtle", "--di-bg-page"],
     ["--di-bg-subtle", "--di-bg-surface"],
+    ["--di-bg-readonly", "--di-bg-disabled"],
+    ["--di-bg-readonly", "--di-bg-surface"],
     ["--di-bg-surface", "--di-bg-hero"],
     ["--di-bg-page", "--di-bg-hero"],
   ],

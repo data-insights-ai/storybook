@@ -37,7 +37,7 @@ Build from the components in this system. **If something you need is missing, sa
 - **Severity is `SeverityMark`**: one scale, a filled mark plus the word.
 - Meta lines (`MetaLine`) break between items; `Actions` stack full width on a phone.
 
-A screen's frame is **`AppShell`**, rendered full-bleed from its slots: `AppShellRail` (the fixed navy rail — workspace, `groups`, `active`, with `AppShellContext` and `AppShellFoot` inside it) and `AppShellMain` (holding `AppShellBar` with a `Breadcrumb` and an `AppShellBarEnd`, then `AppShellContent`). On a narrow screen the rail collapses behind an "open navigation" button by itself; do not build a second mobile nav.
+A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` holding **`AppShellBar`** (the `SidebarTrigger`, a `Breadcrumb`, then `AppShellBarEnd` with app-wide status, which folds into one overflow button on a narrow bar, and `AppShellBarKeep` for the notification bell, which never folds) and **`AppShellContent`**. Below 900px the `Sidebar` is a drawer from the inline start; do not build a second mobile nav.
 
 ### Where a component sits
 
@@ -55,7 +55,7 @@ The Storybook sidebar is grouped by the job a component does:
 - `Layout/`: how a page is arranged: `Page`, `PageHeader`, `SectionTitle`, `Panel`, `Hero`, `DetailSection`, `Stage`, `Stack`, `Grid`, `Split`, `ListDetail`, `Toolbar`, `Actions`, `Accordion`, `Disclosure`.
 - `Charts/`: `Chart`, `ChartCard`, over time (`TrendChart`, `Sparkline`, `Seismograph`) and compared (`Bars`, `Distribution`, `LevelMeter`, `CoverageMatrix`).
 - `Timeline/`, `Inference/`: what happened when, and what the system inferred.
-- `Shell/`: the frame of the app: `AppShell`, `SignIn`, `ThemeProvider`, `DensityProvider`.
+- `Shell/`: the frame of the app: `AppShellBar`, `AppShellContent`, `SignIn`, `SkipLink`, `ThemeProvider`, `DensityProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 
 ### Which component for which job

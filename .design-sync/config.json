@@ -46,9 +46,8 @@
     "Chart": {
       "cardMode": "column"
     },
-    "AppShell": {
-      "cardMode": "column",
-      "skip": ["shell-appshell--mobile-navigation-night"]
+    "AppShellBar": {
+      "cardMode": "column"
     },
     "ComboBox": {
       "skip": ["forms-select-combobox--night"]

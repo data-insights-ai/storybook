@@ -168,7 +168,7 @@
   }
 
   .di-table tbody tr:not(.di-row-current):hover td {
-    background: var(--di-bg-row-hover);
+    background: var(--di-row-hover-bg);
   }
 
   .di-table tbody tr.di-table-spacer td {
@@ -249,7 +249,7 @@
   }
 
   .di-table tbody tr:hover td.is-pinned {
-    background: var(--di-bg-row-hover);
+    background: var(--di-row-hover-bg);
   }
 
   .di-table tbody tr.is-active td.is-pinned {
@@ -458,7 +458,7 @@
 
     .di-table-wrap.is-stackable tbody tr:hover,
     .di-table-wrap.is-stackable tbody tr:hover td {
-      background: var(--di-bg-row-hover);
+      background: var(--di-row-hover-bg);
     }
 
     .di-table-wrap.is-stackable tbody tr:is(.di-table-spacer, .di-table-empty):hover,

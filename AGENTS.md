@@ -8,11 +8,11 @@ A designer reviews work in Storybook (`pnpm storybook`, port 4500). Change what 
 
 Components carry no outer margin; spacing belongs to the container. A product screen is assembled like this:
 
-- `AppShellBar` is one row at every width: the `SidebarTrigger`, the page's name (a `Breadcrumb`, which shows only the current page on a phone), then `AppShellBarEnd` with app-wide controls and status, which folds into one overflow button (`moreLabel`) when it does not fit beside the name. Below 900px the `Sidebar` is a drawer from the inline start that the trigger opens.
+- `AppShellBar` is one row at every width: the `SidebarTrigger`, the page's name (a `Breadcrumb`, which shows only the current page on a phone), then `AppShellBarEnd` with app-wide controls and status, which folds into one overflow button (`moreLabel`) when it does not fit beside the name. What must stay visible goes in `AppShellBarKeep` after the overflow: the notification bell, whose count is its point, and at most one more control. Status words ("Demo data off", "Admin sealed") and a refresh fold. Below 900px the `Sidebar` is a drawer from the inline start that the trigger opens.
 - `AppShellContent` is a vertical flow (inside `SidebarInset` as well, below the `AppShellBar`): its direct children — `PageHeader`, a `Notice`, a `DataTable`, a `Panel`, a form — are spaced 24px apart. Do not add margins to separate them. The shell frames the page; a `Page` rendered outside it (an error route) keeps the same frame itself, and sticky heads stop at the window's top instead of under the bar (`--di-sticky-top` is 0 outside the shell).
 - Inside a block, group with `Stack` (`gap={8|12|16|24|32}`); a section of related blocks is one `Stack`, so the page sees it as a single child.
 - A form is a `Stack variant="form"` of fields (16px apart), followed by `Toolbar align="end"` for its buttons. A one-line form (pick a value and apply it) is a `Toolbar`: the fields, then the button; a one-line add form, where the first field takes the free width, is `Toolbar fillFirst`. A toolbar that contains fields aligns every control on the control row, so buttons line up with inputs and an error line does not move them.
-- Every field draws its label with `FieldLabel` and its one line with `FieldHint`; a control a product draws itself takes the same two, so `required` (the mark after the label), read-only (the inset tone, no frame) and an error read alike in every field. On a touch screen a field is 40px tall.
+- Every field draws its label with `FieldLabel` and its one line with `FieldHint`; a control a product draws itself takes the same two, so `required` (the mark after the label), read-only (its own tone `--di-bg-readonly`, a step above disabled, no frame, full ink) and an error read alike in every field. On a touch screen a field is 40px tall.
 - Fields stretch to their container. Constrain a form's width by placing it in a `Panel` or a `Grid` column, not by sizing the controls.
 - Large screens (1920px and 2560px) are part of the layout, not an afterthought: `AppShellContent` follows the window; `Page width="list"` and `"detail"` keep a side column at `--di-rail-width` on the right from a page width of 1280px (a record's `PageAside` and every `md` side `Dialog` the page opens, docked; otherwise empty) and the content takes the rest, so a table never runs across the whole window; `"full"` is an overview on the whole frame; `"form"` keeps its measure (it grows at 1920); a dashboard is a `Grid`, which adds columns as the page widens; a `Chart` grows taller. `pnpm test` checks these at 1920, 2560, 3440 and 390 (`src/components/layout/page/Page/Page.browser.test.tsx`).
 - A `DataTable` with no rows is not rendered empty: show a `Notice variant="empty"` instead. A `DataTable` has no frame of its own: it sits on a surface, usually a `Panel`, and takes that panel's ground (`padded={false}` lets it run to the edges). An `InfiniteTable` with a sticky head stays outside a `Panel`, whose clipping would break the sticky head.
@@ -99,9 +99,9 @@ Focus is cornflower in both themes (`#2B6CB0` on paper, `#79AEEA` after dark), s
 
 Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first. What follows is a receipt carrying an audit id (`Toast`), never an undo.
 
-The sign-in sheet is `data-theme="dark"` and its card `data-theme="light"` in both themes, so the card resolves every token — a panel, a table, a notice inside it included — from the daylight set rather than pinning colours one by one. Text on the dotted canvas has a solid background. Contrast has to be measurable.
+The sign-in page follows the theme: the paper ground `#F3F2EE` with one surface card and the navy button in daylight, the navy ground `#0A1F44` with a navy surface card and the paper-white button after dark, IBM Plex Sans at 400 for its text. The identity provider's hosted login copies exactly that (ground, primary, font), so the two read as one place. No rules in or under the card: depth is a step in tone. Text on it has a solid background; contrast has to be measurable.
 
-A region a story pins to `data-theme="light"` or `"dark"` (the sign-in card, a swatch in Foundations, the hero zone) is a designed object of that theme, not a gap in coverage: the dark project measures it in the theme it pins, which is the theme it ships in. Do not add a dark variant of it for the sake of the test.
+A region a story pins to `data-theme="light"` or `"dark"` (a swatch in Foundations, the hero zone) is a designed object of that theme, not a gap in coverage: the dark project measures it in the theme it pins, which is the theme it ships in. Do not add a dark variant of it for the sake of the test.
 
 ## Stories and components
 
@@ -121,7 +121,7 @@ Every component lives in `src/components`, under the folder of its concept, in a
 | `layout/` | `arrangement/` Stack, Grid, Actions (deprecated: `Toolbar align`), FieldStack (deprecated: `Stack variant="form"`), InlineForm (deprecated: `Toolbar fillFirst`); `panes/` Split, ListDetail (deprecated: `Split variant="list"`); `page/` Page, PageHeader, Panel (with `DangerAction`), DetailSection, pageSide (the side column a side Dialog docks in), SectionTitle and Hero (deprecated: `PageHeader level={2}`, `Panel surface="hero"`); `folding/` Disclosure (and `DisclosureGroup`), Accordion (deprecated: `Disclosure toggle="head"`) |
 | `charts/` | Chart, ChartCard (deprecated: `Panel` in a `Grid`); `time/` TrendChart, Seismograph; `compare/` Bars (deprecated: `Sparkline`), Distribution, LevelMeter, CoverageMatrix |
 | `timeline/` | ChainTimeline, EventTimeline (with its `marks/` and `navigation/`), PeriodTimeline, WeekTimeline, TimelineSummary; `scale/` and `types/`, shared by EventTimeline and TimelineSummary |
-| `shell/` | AppShell, SignIn, SkipLink, ThemeProvider, DensityProvider |
+| `shell/` | AppShellBar (with `AppShellBarEnd` and `AppShellBarKeep`), AppShellContent, SignIn, SkipLink, ThemeProvider, DensityProvider |
 
 A folder names what a component is about, and the story `title` follows it; what can go inside a component is its layer tag. Sample data that only a story or a pattern reads sits beside it as `*.sample.ts` (`timeline/timeline.sample.ts`, `shell/chrome.sample.ts`), which the package build leaves out. The package's entry and its class names are recorded in `scripts/public-api.json`; `pnpm build` fails when they change, and `node scripts/check-api.mjs --write` records an intended change.
 
@@ -138,7 +138,7 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Layout/` — `Arrangement/` (Stack, Grid, Toolbar, Actions), `Panes/` (Split), `Page/` (Page, PageHeader, Panel, DetailSection), `Folding/` (Disclosure).
 - `Navigation/` holds `Views/` (Tabs, TabNav) and `Sequence/` (Pagination, Steps) beside the rest; `Charts/` holds `Time/` and `Compare/` beside Chart and ChartCard.
 - `Charts/`, `Timeline/`, `Inference/` — what a screen measures, what happened when, and what the system inferred.
-- `Shell/` — AppShell, SignIn, ThemeProvider, DensityProvider. A product renders `AppShell` full-bleed from its slots. The Storybook window the older patterns sit in, with the sample chrome they share, is `.storybook/console/Console.tsx`: such a story adds it as a decorator, and it is not in the package.
+- `Shell/` — AppShellBar, AppShellContent, SignIn, SkipLink, ThemeProvider, DensityProvider. A product's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` holding `AppShellBar` and `AppShellContent`; the patterns share that frame in `src/screens/shell/ProductShell.tsx`.
 - `Patterns/` — whole screens composed only from public components: Security overview, Case triage, Organization home (one story per role), and the older console examples. `src/screens` keeps one folder per kind (`overview/`, `cases/`, `home/`, `pages/`, `records/`, `shell/`). A pattern is an example, never a package export.
 
 A group gets subgroups only where a natural one exists, and a flat group runs to about eight or ten entries before it needs one (Navigation holds ten). Inside a group, entries sort alphabetically by title.
@@ -148,7 +148,7 @@ What a component may hold is a second axis, and it is a tag on its story meta, n
 - `layer:primitive` — **a leaf: it exposes no slot a caller fills with a component.** It renders the text, figures and marks it was handed and nothing else can go inside it: Button, Badge, StatusPill, Pagination, Breadcrumb, Tooltip, the loaders.
 - `layer:form` — a labelled control.
 - `layer:block` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Dialog, Menu, Tabs, RecordCard, SignIn.
-- `layer:pattern` — a whole arrangement: AppShell, Sidebar, ShortcutHelp, ThemeProvider and the arrangement components.
+- `layer:pattern` — a whole arrangement: Sidebar, ShortcutHelp, ThemeProvider and the arrangement components.
 
 A deprecated export says so in its doc comment, `@deprecated Removed in <version>: <why>`, with what to use instead, and every story that shows it carries the tag `status:deprecated`.
 
@@ -178,7 +178,7 @@ A slot is a named sub-component written as a child, `<Parent><ParentSlot>`: `Not
 
 Where a component takes exactly one leading node, that node is the first child and there is no slot for it — `Button`, `CommandRow`, `PrivacyBadge`, `Icon`. `TextField` puts the label-side slot in plain `children`, because the field has only one.
 
-Two `ReactNode`s survive on purpose, and only these two. `NavItem.icon` is a field on the `NavGroup` data a product hands `AppShellRail`, not a slot on a component. `Menu`'s `trigger` is a render prop, because the menu has to put its own `aria-expanded` and ref onto a button the caller owns. Anything else typed `ReactNode` is a decision that was skipped.
+Two kinds of `ReactNode` survive on purpose, and only these. An option's `icon` (`ChoiceGroup` options, `StatusPill icon`) is a field on data the caller hands over, not a slot. `Menu`'s `trigger` is a render prop, because the menu has to put its own `aria-expanded` and ref onto a button the caller owns. Anything else typed `ReactNode` is a decision that was skipped.
 
 A variant is one union prop, never a family of booleans or a second prop that can contradict the first: `hintTone`, not `hint` plus `error` plus `sealHint`; `layout`, not `inline` plus `split`.
 
@@ -236,18 +236,18 @@ This holds outside the repo too. The design system synced to claude.ai/design ca
 | `size` | A raw length in component CSS (`src/components`, `styles/primitives.css`). Use a density token or a fixed measure from `component.css`. Exempt: values of 1px or less (rules, hairlines), borders, outlines and their offsets, strokes, underline offsets, a box-shadow ring of 2px or less, and media or container query conditions. |
 | `colour` | A hex literal in a component. It is correct in daylight and wrong on the night sheet, because the token flips and a hex cannot. |
 | `layer` | A component binding to a primitive. A primitive has no dark counterpart; bind to a semantic role, or define a local `--di-*` from it where a surface re-points its own roles, as `Toast` and the current `Stage` do. |
-| `api` | A prop typed `ReactNode` in `src/components` other than `children`, `NavItem.icon` or `Menu.trigger`. |
+| `api` | A prop typed `ReactNode` in `src/components` other than `children`, an option's `icon` or `Menu.trigger`. |
 
 `pnpm build` runs it first, so drift cannot reach the package. `pnpm check` runs the format check, ESLint, typecheck, the tests and the build together.
 
 An exception has to say why, in a comment the lint reads:
 
 ```css
-/* di-lint-allow-file layer: the sign-in card pins the daylight palette in
- * both themes, because it sits on a navy sheet either way. */
+/* di-lint-allow-file colour: a specimen shows the literal brand colour,
+ * because the colour itself is what it shows. */
 ```
 
-`di-lint-allow <rule>: <reason>` covers the block it sits above; `di-lint-allow-file <rule>: <reason>` at the top covers the file. Two files use it: `SignIn.css`, which must not follow the theme, and the Foundations specimen stylesheets, which show literal brand colours because that is what they are showing. A rule with no stated reason is drift with a comment on it.
+`di-lint-allow <rule>: <reason>` covers the block it sits above; `di-lint-allow-file <rule>: <reason>` at the top covers the file. The Foundations specimen stylesheets use it. A rule with no stated reason is drift with a comment on it.
 
 ## Structure
 

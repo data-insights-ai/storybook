@@ -97,7 +97,7 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
             <Panel key={product.id} surface="inset" title={product.name} heading={3}>
               {can.billing(role) ? product.owner : product.member}
               <PanelNote>
-                <TextLink href={`#${product.id}`}>{`Open ${product.name}`}</TextLink>
+                <TextLink href={`#${product.id}`} trail="arrow">{`Open ${product.name}`}</TextLink>
               </PanelNote>
             </Panel>
           ))}
@@ -107,7 +107,9 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
       {can.billing(role) ? (
         <Panel label="Credit" title="Enough for about three months" heading={2}>
           <PanelMeta>
-            <TextLink href="#credits">Credits</TextLink>
+            <TextLink href="#credits" trail="arrow">
+              Credits
+            </TextLink>
           </PanelMeta>
           <Grid min="300px">
             <FigureRow label="Credit and use">
@@ -137,7 +139,9 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
             <Panel label="Team" title={`${team.length} members`} heading={2}>
               {can.manageTeam(role) ? (
                 <PanelMeta>
-                  <TextLink href="#members">Members</TextLink>
+                  <TextLink href="#members" trail="arrow">
+                    Members
+                  </TextLink>
                 </PanelMeta>
               ) : null}
               <FactList layout="pairs">
@@ -153,7 +157,9 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
           {can.audit(role) ? (
             <Panel label="Recent changes" title="Last change 2 days ago" heading={2}>
               <PanelMeta>
-                <TextLink href="#audit">Audit log</TextLink>
+                <TextLink href="#audit" trail="arrow">
+                  Audit log
+                </TextLink>
               </PanelMeta>
               <FactList layout="pairs">
                 {audit.map((change) => (

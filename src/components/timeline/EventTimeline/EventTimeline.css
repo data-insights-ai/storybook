@@ -298,7 +298,7 @@
   }
 
   .di-timeline-lanes-toggle:hover {
-    background: var(--di-bg-row-hover);
+    background: var(--di-row-hover-bg);
   }
 
   .di-timeline-lanes-toggle:focus-visible {
