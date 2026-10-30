@@ -1,6 +1,7 @@
 import { Children, isValidElement, useId, type ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 import { cx } from "../../../../internal/cx";
+import { surfaceClass } from "../../../../internal/surface";
 import "./Accordion.css";
 
 /**
@@ -25,7 +26,7 @@ export function Accordion({
   className?: string;
 }) {
   return (
-    <ul className={cx("di-accordion", className)} aria-label={label}>
+    <ul className={cx(surfaceClass({ padded: false }), "di-accordion", className)} aria-label={label}>
       {children}
     </ul>
   );

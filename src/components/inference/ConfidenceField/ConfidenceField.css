@@ -10,7 +10,7 @@
     align-items: center;
     gap: var(--di-gap-8);
     min-height: var(--di-control-h-md);
-    padding: 0 var(--di-space-8);
+    padding: 0 var(--di-gap-8);
     border: 1px solid var(--di-mark-ring);
     border-radius: var(--di-field-radius);
     background: var(--di-bg-surface);
@@ -20,7 +20,7 @@
 
   /* The track spans the field's full width, so the fill reads as a share of it. */
   .di-confidence-track {
-    height: 3px;
+    height: var(--di-confidence-track-height);
     border-radius: var(--di-radius-micro);
     background: var(--di-rule);
     overflow: hidden;
@@ -41,7 +41,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--di-gap-6);
-    padding-inline: calc(var(--di-space-8) + 1px);
+    padding-inline: calc(var(--di-gap-8) + 1px);
   }
 
   .di-confidence-label {

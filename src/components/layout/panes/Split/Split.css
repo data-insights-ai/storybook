@@ -48,7 +48,7 @@
 
   @media (min-width: 1280px) {
     .di-split.is-preview {
-      grid-template-columns: minmax(0, 3fr) minmax(360px, 2fr);
+      grid-template-columns: minmax(0, 3fr) minmax(var(--di-split-preview-min), 2fr);
     }
 
     .di-split.is-preview > .di-split-aside {

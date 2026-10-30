@@ -4,7 +4,6 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Plus } from "lucide-react";
 import { Button } from "../../actions/Button";
 import { SegmentedControl } from "../../forms/choice/SegmentedControl";
-import { TextField } from "../../forms/text/TextField";
 import { Panel } from "../../layout/page/Panel";
 import { Stack } from "../../layout/arrangement/Stack";
 import { Toolbar } from "../../layout/arrangement/Toolbar";
@@ -37,7 +36,6 @@ function Sample({ initial }: { initial: Density }) {
         </Panel>
         <Panel title="Sources" heading={2}>
           <Toolbar>
-            <TextField id="density-name" label="Name" placeholder="edge-gw-01" />
             <Button size="sm">Small</Button>
             <Button>Medium</Button>
             <Button size="lg">

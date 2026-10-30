@@ -21,6 +21,7 @@
   }
 
   .di-panel-titles {
+    --di-eyebrow-gap: 0;
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
@@ -34,15 +35,6 @@
     align-items: center;
     gap: var(--di-gap-4) var(--di-gap-8);
     min-width: 0;
-  }
-
-  .di-panel-label {
-    font-family: var(--di-mono-label-family);
-    font-size: var(--di-mono-label-size);
-    font-weight: var(--di-mono-label-weight);
-    letter-spacing: var(--di-mono-label-tracking);
-    text-transform: uppercase;
-    color: var(--di-mono-label-color);
   }
 
   /* A panel's name is a heading: the display face, the one bold line of the block. */

@@ -106,7 +106,7 @@ export function ListDetailItem({
     <li>
       <button
         type="button"
-        className={cx("di-ld-item", selected && "is-selected")}
+        className={cx("di-ld-item", "di-row", selected && "di-row-current")}
         aria-current={selected ? "true" : undefined}
         onClick={onSelect}
       >

@@ -58,7 +58,7 @@
     justify-self: end;
     min-width: 0;
     max-width: 48ch;
-    padding-left: var(--di-space-12);
+    padding-left: var(--di-gap-12);
     text-align: right;
   }
 
@@ -137,7 +137,7 @@
     align-items: center;
     justify-content: flex-end;
     gap: var(--di-gap-8);
-    padding-left: var(--di-space-12);
+    padding-left: var(--di-gap-12);
   }
 
   /*
@@ -191,7 +191,7 @@
   }
 
   .di-page-head-console .di-page-title {
-    max-width: 680px;
+    max-width: var(--di-page-title-measure);
     font-size: var(--di-page-title-size);
     line-height: var(--di-leading-tight);
   }

@@ -1,20 +1,13 @@
 @layer components {
   .di-numbered {
     display: grid;
-    grid-template-columns: 36px minmax(0, 1fr);
+    grid-template-columns: var(--di-numbered-col) minmax(0, 1fr);
     align-items: baseline;
     gap: var(--di-gap-8);
-    padding: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-space-12) var(--di-inset-group);
     border-radius: var(--di-radius-inset);
     background: var(--di-bg-subtle);
     min-width: 0;
-  }
-
-  .di-numbered-index {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    letter-spacing: 0.14em;
-    color: var(--di-text-muted);
   }
 
   .di-numbered-body {
@@ -25,7 +18,7 @@
   }
 
   .di-numbered.is-row {
-    padding: var(--di-space-12) 0;
+    padding: var(--di-gap-12) 0;
     border-radius: 0;
     background: none;
   }

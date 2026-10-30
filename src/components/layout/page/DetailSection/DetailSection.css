@@ -1,23 +1,18 @@
 @layer components {
   /* The same surface and inset as a Panel, so a section and a panel beside it share their edges. */
   .di-detail-section {
-    --di-detail-section-pad: var(--di-panel-pad);
+    --di-detail-section-pad: var(--di-surface-inner);
     display: flex;
     flex-direction: column;
     min-width: 0;
-    border: 1px solid var(--di-panel-border);
-    border-radius: var(--di-panel-radius);
-    background: var(--di-panel-bg);
-    box-shadow: var(--di-elevation-surface);
   }
 
-  /* In a sheet or a panel the section is a part of that surface: no frame of
-     its own, its title on the surface's edge. */
-  :is(.di-sheet-body, .di-panel-content) .di-detail-section {
+  /* In a sheet or a panel the section is a part of that surface: not even
+     the inset tone, its title on the surface's edge. */
+  :is(.di-sheet-body, .di-panel-content) .di-surface.di-detail-section {
     --di-detail-section-pad: 0px;
-    border-color: transparent;
-    background: none;
-    box-shadow: none;
+    --di-surface-bg: transparent;
+    --di-surface-shadow: none;
   }
 
   .di-detail-section-head {
@@ -62,7 +57,7 @@
     flex-direction: column;
     gap: var(--di-rhythm-field);
     min-width: 0;
-    padding: var(--di-space-16) var(--di-detail-section-pad) var(--di-detail-section-pad);
+    padding: var(--di-gap-16) var(--di-detail-section-pad) var(--di-detail-section-pad);
   }
 
   .di-detail-section-form {
@@ -81,15 +76,5 @@
   .di-detail-section-error {
     font-size: var(--di-font-size-300);
     color: var(--di-status-danger-fg);
-  }
-
-  @media (max-width: 600px) {
-    .di-detail-section {
-      --di-detail-section-pad: var(--di-space-16);
-    }
-
-    :is(.di-sheet-body, .di-panel-content) .di-detail-section {
-      --di-detail-section-pad: 0px;
-    }
   }
 }

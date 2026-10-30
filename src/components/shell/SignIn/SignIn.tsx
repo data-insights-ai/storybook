@@ -1,6 +1,6 @@
 import { Children, isValidElement, type FormEvent, type ReactNode } from "react";
 import logoInverse from "../../../assets/logo-inverse.svg";
-import { SealMark } from "../../marks/status/SealValue";
+import { Eyebrow } from "../../text/Eyebrow";
 import "./SignIn.css";
 
 /**
@@ -62,10 +62,7 @@ export function SignIn({
 
         <form className="di-login-card" data-theme="light" aria-label={title} onSubmit={handleSubmit}>
           <div className="di-login-body">
-            <p className="di-login-eyebrow">
-              <SealMark state="sealed" />
-              {eyebrow}
-            </p>
+            <Eyebrow variant="sealed">{eyebrow}</Eyebrow>
             <h1 className="di-login-title">{title}</h1>
             <p className="di-login-lede">{lede}</p>
             <div className="di-login-form">{fields}</div>

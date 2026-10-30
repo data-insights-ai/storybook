@@ -189,8 +189,10 @@ export const WithFooter: Story = {
     const body = canvas.getByText(/expires on/).getBoundingClientRect();
     const footer = canvas.getByText(/Rotated last/).getBoundingClientRect();
     const action = canvas.getByRole("button", { name: "Rotate now" }).getBoundingClientRect();
-    const panel = canvasElement.querySelector(".di-panel")!.getBoundingClientRect();
-    await expect(footer.top - body.bottom).toBeGreaterThanOrEqual(16);
+    const frame = canvasElement.querySelector(".di-panel")!;
+    const panel = frame.getBoundingClientRect();
+    // The rows are one gap apart: 16px comfortable, 12px compact.
+    await expect(footer.top - body.bottom).toBeGreaterThanOrEqual(parseFloat(getComputedStyle(frame).rowGap));
     await expect(Math.round(panel.right - action.right)).toBe(Math.round(footer.left - panel.left));
   },
 };

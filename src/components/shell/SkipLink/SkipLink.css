@@ -12,8 +12,8 @@
   }
 
   .di-skip:focus {
-    left: 16px;
-    top: 16px;
+    left: var(--di-space-16);
+    top: var(--di-space-16);
     z-index: 30;
     width: auto;
     height: auto;

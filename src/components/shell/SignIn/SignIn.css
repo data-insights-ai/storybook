@@ -31,7 +31,7 @@
     flex-direction: column;
     gap: var(--di-gap-12);
     width: 100%;
-    max-width: 396px;
+    max-width: var(--di-signin-width);
   }
 
   .di-login-kicker {
@@ -42,7 +42,7 @@
   }
 
   .di-login-logo {
-    width: 128px;
+    width: var(--di-signin-logo-width);
     height: auto;
   }
 
@@ -64,21 +64,10 @@
   }
 
   .di-login-body {
+    --di-eyebrow-gap: 0;
     flex: 1;
     min-width: 0;
     padding: var(--di-space-32);
-  }
-
-  .di-login-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: var(--di-gap-8);
-    font-family: var(--di-mono-label-family);
-    font-size: var(--di-mono-label-size);
-    font-weight: var(--di-mono-label-weight);
-    letter-spacing: var(--di-mono-label-tracking);
-    text-transform: uppercase;
-    color: var(--di-mono-label-color);
   }
 
   .di-login-title {
@@ -109,7 +98,7 @@
 
   .di-login-restrict {
     margin-top: var(--di-gap-16);
-    padding-top: var(--di-space-16);
+    padding-top: var(--di-gap-16);
     border-top: 1px solid var(--di-rule-hairline);
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
@@ -121,7 +110,7 @@
     align-items: center;
     gap: var(--di-gap-6);
     flex-wrap: wrap;
-    padding-top: var(--di-space-12);
+    padding-top: var(--di-gap-12);
     border-top: 1px solid var(--di-rule-hairline);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);

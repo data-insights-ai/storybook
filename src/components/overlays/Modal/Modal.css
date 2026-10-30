@@ -1,6 +1,6 @@
 @layer components {
   .di-modal {
-    width: min(480px, calc(100vw - 32px));
+    width: min(var(--di-modal-width), calc(100vw - var(--di-space-32)));
     padding: 0;
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-surface);
@@ -15,7 +15,7 @@
    */
   .di-modal {
     opacity: 0;
-    translate: 0 -8px;
+    translate: 0 calc(-1 * var(--di-space-8));
     transition:
       opacity var(--di-duration-slow) var(--di-ease),
       translate var(--di-duration-slow) var(--di-ease),
@@ -31,7 +31,7 @@
   @starting-style {
     .di-modal[open] {
       opacity: 0;
-      translate: 0 -8px;
+      translate: 0 calc(-1 * var(--di-space-8));
     }
   }
 
@@ -64,15 +64,15 @@
     justify-content: center;
     width: var(--di-index-col);
     flex: none;
-    padding-top: var(--di-space-16);
+    padding-top: var(--di-modal-inset);
     border-right: 1px solid var(--di-border);
     background: var(--di-status-warn-bg);
     color: var(--di-status-warn-fg);
   }
 
   .di-modal-icon > svg {
-    width: 18px;
-    height: 18px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-modal-body {
@@ -90,21 +90,13 @@
 
   /* One inset all round; the footer is the last row of the same surface, not a band under it. */
   .di-modal {
-    --di-modal-inset: var(--di-space-24);
+    --di-modal-inset: var(--di-inset);
   }
 
   .di-modal-content {
+    --di-eyebrow-gap: var(--di-gap-6);
     min-width: 0;
     padding: var(--di-modal-inset);
-  }
-
-  .di-modal-eyebrow {
-    margin-bottom: var(--di-gap-6);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-100);
-    letter-spacing: var(--di-tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--di-status-danger-fg);
   }
 
   /* The dialog's name is a heading: the display face, its one bold line. */
@@ -150,7 +142,7 @@
 
   @media (max-width: 600px) {
     .di-modal {
-      --di-modal-inset: var(--di-space-16);
+      --di-modal-inset: var(--di-inset-group);
     }
   }
 }

@@ -41,8 +41,8 @@
   }
 
   .di-disclosure-toggle > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     transition: transform var(--di-duration) var(--di-ease);
   }
 

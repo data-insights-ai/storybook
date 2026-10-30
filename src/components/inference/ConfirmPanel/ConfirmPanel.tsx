@@ -1,5 +1,6 @@
 import { useId, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
+import { surfaceClass } from "../../../internal/surface";
 import { takeSlot } from "../../../internal/slots";
 import { SealMark } from "../../marks/status/SealValue";
 import "../Inference.css";
@@ -37,7 +38,7 @@ export function ConfirmPanel({
   const [actions, rows] = takeSlot(children, ConfirmActions);
   const Question = `h${heading}` as "h2" | "h3" | "h4";
   return (
-    <section className={cx("di-confirm", className)} aria-labelledby={id}>
+    <section className={cx(surfaceClass(), "di-confirm", className)} aria-labelledby={id}>
       <p className="di-inference-label">
         <SealMark state="inferred" size={7} />
         {label}

@@ -1,4 +1,4 @@
-/* The surface, label, rows and note that ExplainPanel and ConfirmPanel share: one family. */
+/* ExplainPanel and ConfirmPanel: the one surface (`.di-surface`), and the label, rows and note they share. */
 @layer components {
   .di-explain,
   .di-confirm {
@@ -6,10 +6,6 @@
     flex-direction: column;
     gap: var(--di-gap-16);
     min-width: 0;
-    padding: var(--di-panel-pad);
-    border-radius: var(--di-radius-surface);
-    background: var(--di-bg-surface);
-    box-shadow: var(--di-elevation-surface);
   }
 
   .di-inference-label {
@@ -116,7 +112,7 @@
     flex-direction: column;
     gap: var(--di-gap-4);
     margin: var(--di-gap-8) 0 0;
-    padding-left: var(--di-space-16);
+    padding-left: var(--di-gap-16);
     color: var(--di-text-muted);
   }
 

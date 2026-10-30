@@ -16,7 +16,7 @@
     overflow-wrap: anywhere;
     position: sticky;
     top: 0;
-    width: 248px;
+    width: var(--di-shell-rail-width);
     height: 100dvh;
     overflow-y: auto;
     flex: none;
@@ -68,13 +68,13 @@
   }
 
   .di-rail-toggle > svg {
-    width: 18px;
-    height: 18px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-rail-dialog {
     inset: 0 auto 0 0;
-    width: min(360px, calc(100vw - var(--di-space-32)));
+    width: min(var(--di-shell-drawer-width), calc(100vw - var(--di-space-32)));
     height: 100dvh;
     max-height: 100dvh;
     max-width: none;
@@ -88,7 +88,7 @@
     color: var(--di-sidebar-fg);
     box-shadow: var(--di-shadow-plane);
     opacity: 0;
-    translate: -16px 0;
+    translate: calc(-1 * var(--di-space-16)) 0;
     transition:
       opacity var(--di-duration-slow) var(--di-ease),
       translate var(--di-duration-slow) var(--di-ease),
@@ -118,12 +118,12 @@
   @starting-style {
     .di-rail-dialog[open] {
       opacity: 0;
-      translate: -16px 0;
+      translate: calc(-1 * var(--di-space-16)) 0;
     }
   }
 
   .di-brand-logo {
-    width: 124px;
+    width: var(--di-shell-logo-width);
     height: auto;
   }
 
@@ -227,7 +227,7 @@
     background: transparent;
     color: var(--di-sidebar-fg);
     font-family: var(--di-font-ui);
-    font-size: 13.5px;
+    font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-medium);
     text-align: left;
     text-decoration: none;
@@ -253,8 +253,8 @@
   }
 
   .di-nav-icon > svg {
-    width: 17px;
-    height: 17px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-nav-btn[aria-current="page"] .di-nav-icon {
@@ -288,7 +288,7 @@
 
   /* What follows the sticky bar stops under it. */
   .di-topbar ~ * {
-    --di-sticky-top: 59px;
+    --di-sticky-top: calc(var(--di-shell-bar-height) + 1px);
   }
 
   .di-topbar {
@@ -302,7 +302,7 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--di-space-16);
-    min-height: 58px;
+    min-height: var(--di-shell-bar-height);
     padding: var(--di-space-8) var(--di-space-16);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-bg-page);
@@ -326,11 +326,11 @@
     line-height: var(--di-leading-snug);
   }
 
-  :is(.di-top-actions, .di-sidebar-context) .di-btn-dense {
+  :is(.di-top-actions, .di-sidebar-context) .di-btn-sm {
     min-height: var(--di-control-h-sm);
   }
 
-  :is(.di-top-actions, .di-sidebar-context) .di-btn-comfort {
+  :is(.di-top-actions, .di-sidebar-context) .di-btn-lg {
     min-height: var(--di-control-h-lg);
   }
 
@@ -360,7 +360,7 @@
   }
 
   .di-content.is-contained {
-    max-width: 1440px;
+    max-width: var(--di-content-max);
   }
 
   .di-content:focus {

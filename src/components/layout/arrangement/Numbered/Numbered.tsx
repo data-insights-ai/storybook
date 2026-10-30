@@ -19,7 +19,7 @@ export function Numbered({
 }) {
   return (
     <section className={cx("di-numbered", `is-${variant}`)}>
-      <span className="di-numbered-index">{index}</span>
+      <span className="di-numbered-index di-ordinal">{index}</span>
       <div className="di-numbered-body">{children}</div>
     </section>
   );
