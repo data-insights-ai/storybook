@@ -52,8 +52,10 @@ export type TimelineScore = {
 /**
  * One way to move the view: the keys or gestures, each shown as a key cap,
  * and what they do. `keys` are alternatives — any one of them works.
+ * `pointer` shows it only to a mouse (`fine`) or only to touch (`coarse`),
+ * so a phone does not list a scroll wheel.
  */
-export type TimelineInstruction = { keys: string[]; label: string };
+export type TimelineInstruction = { keys: string[]; label: string; pointer?: "fine" | "coarse" };
 
 /** What sits under the pointer, for the caller's readout. */
 export type TimelineTarget = { at: number; score?: number } & (

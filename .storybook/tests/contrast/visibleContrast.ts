@@ -77,9 +77,10 @@ export function ratio(a: Rgba, b: Rgba) {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-const hex = ({ r, g, b }: Rgba) => "#" + [r, g, b].map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
+export const hex = ({ r, g, b }: Rgba) =>
+  "#" + [r, g, b].map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
 
-function opacity(element: Element) {
+export function opacity(element: Element) {
   let value = 1;
   for (let node: Element | null = element; node; node = node.parentElement) {
     value *= parseFloat(getComputedStyle(node).opacity);

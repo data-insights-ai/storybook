@@ -1,5 +1,10 @@
 @layer components {
+  /*
+   * Routine is the series ink mixed into the surface rather than laid over
+   * it at an opacity, so it keeps 3:1 on the panel and on a lane track.
+   */
   .di-timeline {
+    --di-timeline-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
     display: flex;
     flex-direction: column;
     gap: var(--di-gap-8);
@@ -15,9 +20,13 @@
     gap: var(--di-gap-4) var(--di-gap-12);
   }
 
+  /* The block's name, as a panel title: the display face. */
   .di-timeline-title {
     grid-area: title;
-    font-weight: var(--di-weight-semibold);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
   }
 
   .di-timeline-meta {
@@ -69,7 +78,6 @@
 
   .di-timeline-brush {
     fill: transparent;
-    stroke: var(--di-text);
     cursor: grab;
   }
 
@@ -100,7 +108,7 @@
 
   /* The ordered scale of the chart tokens, so red means the same here as in every chart. */
   .di-timeline-fill.is-neutral {
-    fill: var(--di-chart-series);
+    fill: var(--di-timeline-routine);
   }
 
   .di-timeline-fill.is-warn {
@@ -109,11 +117,6 @@
 
   .di-timeline-fill.is-danger {
     fill: var(--di-chart-danger);
-  }
-
-  /* The rim recedes so the severe core reads first. */
-  .di-timeline-wave .is-neutral {
-    fill-opacity: 0.45;
   }
 
   .di-timeline-events {
@@ -131,11 +134,10 @@
     stroke-width: 1.25px;
   }
 
-  .di-timeline-event.is-neutral {
-    opacity: 0.6;
+  .di-timeline-event.is-neutral .di-timeline-stem {
+    stroke: var(--di-timeline-routine);
   }
 
-  .di-timeline-event.is-neutral .di-timeline-stem,
   .di-timeline-active.is-neutral {
     stroke: var(--di-chart-series);
   }
@@ -151,7 +153,7 @@
   }
 
   .di-timeline-event.is-neutral .di-timeline-tip {
-    fill: var(--di-chart-series);
+    fill: var(--di-timeline-routine);
   }
 
   .di-timeline-event.is-warn .di-timeline-tip {
@@ -173,12 +175,10 @@
 
   .di-timeline-grid {
     stroke: var(--di-chart-muted);
-    stroke-opacity: 0.6;
   }
 
   .is-day .di-timeline-grid {
     stroke: var(--di-chart-muted-strong);
-    stroke-opacity: 1;
   }
 
   .di-timeline-tick,
@@ -187,10 +187,6 @@
   }
 
   .di-timeline-tick-label {
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    font-variant-numeric: tabular-nums;
-    fill: var(--di-text-subtle);
     text-anchor: middle;
   }
 
@@ -199,13 +195,21 @@
     font-weight: var(--di-weight-semibold);
   }
 
-  /* Score: bands above the thresholds, the line, and what it is measured against. */
+  /* Score: a tint above each threshold, the threshold itself in its full colour, the line, and what it is measured against. */
   .di-timeline-band.is-warn {
     fill: var(--di-status-warn-bg);
   }
 
   .di-timeline-band.is-danger {
     fill: var(--di-status-danger-bg);
+  }
+
+  .di-timeline-threshold.is-warn {
+    stroke: var(--di-chart-warn);
+  }
+
+  .di-timeline-threshold.is-danger {
+    stroke: var(--di-chart-danger);
   }
 
   .di-timeline-score-line {
@@ -236,16 +240,29 @@
     fill: var(--di-bg-subtle);
   }
 
-  /* Labels sit on the marks; the halo keeps them legible over a busy plot. */
+  /*
+   * One label style for everything written on the plot: the track's name,
+   * the flags, the scale values and the clock. Each sits in a band or a
+   * column of its own, never on a bar; the halo only parts it from a rule.
+   */
   .di-timeline-mark-label,
   .di-timeline-marker-label,
-  .di-timeline-score-tick {
-    font-size: var(--di-font-size-100);
-    dominant-baseline: central;
+  .di-timeline-score-tick,
+  .di-timeline-tick-label {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-variant-numeric: tabular-nums;
+    fill: var(--di-text-muted);
     paint-order: stroke;
     stroke: var(--di-bg-surface);
     stroke-width: 3px;
     stroke-linejoin: round;
+  }
+
+  .di-timeline-mark-label,
+  .di-timeline-marker-label,
+  .di-timeline-score-tick {
+    dominant-baseline: central;
   }
 
   /* A lane is read like a row of a list: its name at the label step, the count beside it. */
@@ -266,13 +283,6 @@
     font-weight: var(--di-weight-regular);
     font-variant-numeric: tabular-nums;
     fill: var(--di-text-muted);
-  }
-
-  .di-timeline-score-tick {
-    font-family: var(--di-font-code);
-    font-variant-numeric: tabular-nums;
-    fill: var(--di-text-subtle);
-    text-anchor: end;
   }
 
   .di-timeline-lanes-block {
@@ -332,25 +342,22 @@
     grid-template-rows: 1fr;
   }
 
+  /* Folded, the lanes are hidden once the fold has closed, not only clipped: nothing measures or reaches them. */
   .di-timeline-lanes-inner {
     min-height: 0;
     overflow: hidden;
+    visibility: hidden;
+    transition: visibility 0s linear var(--di-duration-slow);
+  }
+
+  .di-timeline-lanes-fold.is-open .di-timeline-lanes-inner {
+    visibility: visible;
+    transition-delay: 0s;
   }
 
   .di-timeline-lanes-inner > svg {
     display: block;
     margin-top: var(--di-gap-8);
-  }
-
-  .di-timeline-mark-label,
-  .di-timeline-marker-label {
-    font-family: var(--di-font-code);
-    fill: var(--di-text-subtle);
-  }
-
-  .di-timeline-mark-label.is-strong {
-    font-family: var(--di-font-ui);
-    fill: var(--di-text-muted);
   }
 
   .di-timeline-marker {
@@ -359,7 +366,7 @@
   }
 
   .di-timeline-marker-flag {
-    fill: var(--di-text-subtle);
+    fill: var(--di-text-muted);
   }
 
   .di-timeline-selecting {
@@ -422,7 +429,7 @@
   }
 
   .di-timeline-swatch.is-neutral {
-    background: color-mix(in srgb, var(--di-chart-series) 55%, transparent);
+    background: var(--di-timeline-routine);
   }
 
   .di-timeline-swatch.is-warn {
@@ -438,16 +445,29 @@
     color: var(--di-text-muted);
   }
 
+  /* How to move the view is the quiet footer of the block: smaller, a step back in tone, under a rule. */
   .di-timeline-help {
     display: flex;
     flex-wrap: wrap;
     gap: var(--di-gap-6) var(--di-gap-16);
     margin: 0;
-    padding: var(--di-space-8) 0 0;
-    border-top: 1px solid var(--di-rule-hairline);
+    padding: var(--di-gap-8) 0 0;
+    border-top: 1px solid var(--di-rule);
     list-style: none;
-    color: var(--di-text-muted);
-    font-size: var(--di-font-size-400);
+    color: var(--di-text-subtle);
+    font-size: var(--di-font-size-300);
+  }
+
+  @media (pointer: coarse) {
+    .di-timeline-help .is-fine {
+      display: none;
+    }
+  }
+
+  @media not (pointer: coarse) {
+    .di-timeline-help .is-coarse {
+      display: none;
+    }
   }
 
   .di-timeline-help li {

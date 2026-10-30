@@ -1,9 +1,10 @@
-import { placeLabels, textWidth } from "../../scale";
+import { placeLabels, textWidth, TICK_FONT } from "../../scale";
 import type { Scale } from "../../scale";
 import type { TimelineMarker } from "../../types";
 
-const MARK_FONT = 10;
 const LABEL_GAP = 10;
+/** The band above the bars that holds the flags and their labels, so a label never sits on a bar. */
+export const MARK_BAND = 18;
 
 // What people did to the record, on the same clock as what happened in it.
 export function Markers({
@@ -21,7 +22,7 @@ export function Markers({
     .map((m) => ({ ...m, x: Math.round(scale.x(m.at)) + 0.5 }))
     .filter((m) => m.x >= 0 && m.x <= plotPx);
   const sides = placeLabels(
-    visible.map((m) => ({ x: m.x, width: textWidth(m.label, MARK_FONT) + LABEL_GAP })),
+    visible.map((m) => ({ x: m.x, width: textWidth(m.label, TICK_FONT) + LABEL_GAP })),
     plotPx,
   );
   return (
@@ -33,7 +34,7 @@ export function Markers({
           {sides[i] ? (
             <text
               x={sides[i] === "right" ? m.x + 6 : m.x - 6}
-              y={11}
+              y={MARK_BAND / 2 + 1}
               textAnchor={sides[i] === "right" ? "start" : "end"}
               className="di-timeline-marker-label"
             >
