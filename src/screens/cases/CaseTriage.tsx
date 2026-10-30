@@ -3,6 +3,7 @@ import {
   Actions,
   Button,
   CellStack,
+  ChoiceGroup,
   DataTable,
   EmptyState,
   Figure,
@@ -17,7 +18,6 @@ import {
   PanelLead,
   PanelMeta,
   PanelNote,
-  SegmentedControl,
   SeverityMark,
   Split,
   SplitBack,
@@ -65,7 +65,9 @@ export function CaseTriage({ showing: initial = "list" }: { showing?: "list" | "
       <Split variant="list" showing={showing}>
         <SplitList label="Cases">
           <SplitListHead>
-            <SegmentedControl
+            <ChoiceGroup
+              appearance="segments"
+              hideLegend
               name="case-filter"
               legend="Show"
               options={[

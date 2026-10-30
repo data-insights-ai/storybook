@@ -4,6 +4,7 @@ import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
 import { FieldLabel } from "../../field/FieldLabel";
+import { FieldConfidence, type FieldConfidenceReading } from "../../field/FieldConfidence";
 import "../../field/Field/Field.css";
 import "./Select.css";
 
@@ -20,6 +21,7 @@ export function Select({
   label,
   hint = "",
   hintTone = "neutral",
+  confidence,
   labelTrack = "record",
   hideLabel = false,
   mono = false,
@@ -35,6 +37,11 @@ export function Select({
   hint?: string;
   /** What that line is. `error` also marks the control invalid. */
   hintTone?: HintTone;
+  /**
+   * A value a model filled in: a meter and the reading in words take the
+   * place of the hint. An error hint still replaces them.
+   */
+  confidence?: FieldConfidenceReading;
   /** Which track the label runs in. `record` is the console, `prose` a form. */
   labelTrack?: LabelTrack;
   /**
@@ -49,6 +56,8 @@ export function Select({
   children: ReactNode;
 } & Omit<SelectHTMLAttributes<HTMLSelectElement>, "children">) {
   const invalid = hint !== "" && hintTone === "error";
+  const reading = invalid ? undefined : confidence;
+  const describedBy = hint === "" && !reading ? undefined : `${id}-hint`;
 
   return (
     <div className={cx("di-field", className)}>
@@ -60,16 +69,20 @@ export function Select({
           disabled={disabled}
           required={required}
           aria-invalid={invalid || undefined}
-          aria-describedby={hint === "" ? undefined : `${id}-hint`}
+          aria-describedby={describedBy}
           {...props}
         >
           {children}
         </select>
         <ChevronDown className="di-select-caret" aria-hidden />
       </div>
-      <FieldHint id={`${id}-hint`} tone={hintTone}>
-        {hint}
-      </FieldHint>
+      {reading ? (
+        <FieldConfidence id={`${id}-hint`} reading={reading} />
+      ) : (
+        <FieldHint id={`${id}-hint`} tone={hintTone}>
+          {hint}
+        </FieldHint>
+      )}
     </div>
   );
 }

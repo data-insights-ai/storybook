@@ -118,6 +118,11 @@
     font-variant-numeric: tabular-nums;
   }
 
+  /* A placeholder is a sentence about the value, not a value: it stays in the UI track. */
+  .di-control-mono::placeholder {
+    font-family: var(--di-font-ui);
+  }
+
   .di-control:disabled {
     cursor: not-allowed;
     background: var(--di-bg-disabled);

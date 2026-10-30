@@ -56,7 +56,7 @@
 
     --di-field-bg: var(--di-bg-surface);
     --di-field-border: var(--di-border-input);
-    --di-field-radius: var(--di-radius-micro);
+    --di-field-radius: var(--di-button-radius);
     --di-field-height: var(--di-control-h-md);
     --di-field-border-hover: var(--di-text-muted);
     --di-field-border-invalid: var(--di-status-danger-dot);
@@ -71,6 +71,11 @@
     --di-row-current-bg: var(--di-bg-selected);
     --di-select-edge: 3px;
     --di-option-hover-bg: var(--di-bg-page);
+
+    /* A chosen segment, toggle or card: the selection tint and edge of a row, the text at full strength. */
+    --di-choice-selected-bg: var(--di-bg-selected);
+    --di-choice-selected-edge: var(--di-select);
+    --di-choice-selected-fg: var(--di-text);
 
     --di-table-bg: var(--di-bg-surface);
     --di-table-shadow: var(--di-elevation-surface);

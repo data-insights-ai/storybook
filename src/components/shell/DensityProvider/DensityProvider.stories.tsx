@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Plus } from "lucide-react";
 import { Button } from "../../actions/Button";
-import { SegmentedControl } from "../../forms/choice/SegmentedControl";
+import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
 import { Panel } from "../../layout/page/Panel";
 import { Stack } from "../../layout/arrangement/Stack";
 import { Toolbar } from "../../layout/arrangement/Toolbar";
@@ -15,11 +15,13 @@ const labels: Record<Density, string> = { comfortable: "Comfortable", compact: "
 function DensitySetting() {
   const { density, setDensity } = useDensity();
   return (
-    <SegmentedControl
+    <ChoiceGroup
+      appearance="segments"
+      hideLegend
       name="density"
       legend="Density"
       value={density}
-      onChange={(next) => setDensity(next as Density)}
+      onChange={(next: string) => setDensity(next as Density)}
       options={densityChoices.map((value) => ({ value, label: labels[value] }))}
     />
   );

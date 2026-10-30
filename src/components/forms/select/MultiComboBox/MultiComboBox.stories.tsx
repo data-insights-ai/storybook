@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { MultiComboBox } from "./MultiComboBox";
+import { TokenField } from "./TokenField";
 import { Button } from "../../../actions/Button";
-import { Modal, ModalContent, ModalTitle } from "../../../overlays/Modal";
+import { Dialog } from "../../../overlays/Dialog";
 
 const people = [
   { value: "u-nora", label: "Nora Feld" },
@@ -153,12 +154,9 @@ export const InAModal: Story = {
     return (
       <>
         <Button onClick={() => setOpen(true)}>Choose members</Button>
-        <Modal open={open} labelledBy="notify-members-title" onClose={() => setOpen(false)}>
-          <ModalContent>
-            <ModalTitle id="notify-members-title">Notify members</ModalTitle>
-            <MultiComboBox {...args} values={values} onChange={setValues} />
-          </ModalContent>
-        </Modal>
+        <Dialog placement="center" open={open} title="Notify members" closeLabel="Close" onClose={() => setOpen(false)}>
+          <MultiComboBox {...args} values={values} onChange={setValues} />
+        </Dialog>
       </>
     );
   },
@@ -198,5 +196,174 @@ export const KeyboardWalk: Story = {
     await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
     await expect(input).toHaveFocus();
     await expect(canvas.getByRole("button", { name: "Remove Jonas Berger" })).toBeVisible();
+  },
+};
+
+/** A notification needs someone to go to: the label carries the mark, the input says it is required. */
+export const Required: Story = {
+  args: { required: true, hint: "At least one member gets the alert." },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("combobox", { name: "Members" })).toHaveAttribute("aria-required", "true");
+    await expect(canvasElement.querySelector(".di-field-label.is-required")).not.toBeNull();
+  },
+};
+
+/** Escape closes the list; pressed again on the closed list it leaves the chosen members alone. */
+export const EscapeKeepsEntries: Story = {
+  args: { values: ["u-nora", "u-lea"] },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole("combobox", { name: "Members" });
+    await userEvent.click(input);
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(input).toHaveAttribute("aria-expanded", "false"));
+    await userEvent.keyboard("{Escape}");
+    await expect(args.onChange).not.toHaveBeenCalled();
+    await expect(canvas.getByRole("button", { name: "Remove Lea Hofmann" })).toBeVisible();
+  },
+};
+
+const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function Addresses({
+  initial,
+  suggest = false,
+  disabled = false,
+  hint = "Separate addresses with a space or comma, or paste a list.",
+}: {
+  initial: string[];
+  suggest?: boolean;
+  disabled?: boolean;
+  hint?: string;
+}) {
+  const [values, setValues] = useState<string[]>(initial);
+  const bad = values.filter((v) => !email.test(v)).length;
+  return (
+    <div style={{ maxWidth: "480px" }}>
+      <MultiComboBox
+        id="invite-emails"
+        label="Email addresses"
+        freeEntry
+        options={
+          suggest
+            ? [
+                { value: "nora.feld@data-insights.ai", label: "nora.feld@data-insights.ai" },
+                { value: "jonas.berger@data-insights.ai", label: "jonas.berger@data-insights.ai" },
+                { value: "lea.hofmann@data-insights.ai", label: "lea.hofmann@data-insights.ai" },
+              ]
+            : undefined
+        }
+        toggleLabel={suggest ? "Show colleagues" : undefined}
+        values={values}
+        onChange={setValues}
+        validate={(v) => email.test(v)}
+        invalidLabel="not an email address"
+        removeLabel={(v) => `Remove ${v}`}
+        placeholder="name@example.com"
+        disabled={disabled}
+        required
+        hint={bad > 0 ? `${bad} entry is not an email address.` : hint}
+        hintTone={bad > 0 ? "error" : "neutral"}
+      />
+    </div>
+  );
+}
+
+/**
+ * Free entry: the reader types the values. A separator or a pasted list turns
+ * text into entries; one `validate` rejects stays, marked, until corrected.
+ * Without suggestions there is no list and no toggle: a plain text input.
+ */
+export const FreeEntry: Story = {
+  render: () => <Addresses initial={["nora.feld@data-insights.ai"]} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole("textbox", { name: "Email addresses" });
+    await expect(canvas.queryByRole("combobox")).toBeNull();
+    await userEvent.type(input, "jonas.brandt@data-insights.ai, not-an-address ");
+    await expect(canvas.getByText("jonas.brandt@data-insights.ai")).toBeVisible();
+    await expect(canvas.getByText("1 entry is not an email address.")).toBeVisible();
+    await userEvent.click(canvas.getByRole("button", { name: "Remove not-an-address" }));
+    await expect(canvas.queryByText("not-an-address")).toBeNull();
+    await userEvent.click(input);
+    await userEvent.paste("lea.vogt@data-insights.ai; milan.kovac@data-insights.ai");
+    await expect(canvas.getByText("milan.kovac@data-insights.ai")).toBeVisible();
+    await userEvent.keyboard("{Backspace}");
+    await expect(input).toHaveValue("milan.kovac@data-insights.ai");
+  },
+};
+
+/** An entry the field does not take stays where it was typed, marked, until it is corrected or removed. */
+export const FreeEntryInvalid: Story = {
+  render: () => (
+    <Addresses initial={["nora.feld@data-insights.ai", "jonas.brandt@data-insights", "lena.vogt@data-insights.ai"]} />
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("1 entry is not an email address.")).toBeVisible();
+    await expect(canvas.getByRole("textbox", { name: "Email addresses" })).toHaveAttribute("aria-invalid", "true");
+    await expect(canvasElement.querySelectorAll(".di-token.is-invalid")).toHaveLength(1);
+  },
+};
+
+/** Free entry with suggestions: typing narrows them, a pick or Enter on new text adds an entry. */
+export const FreeEntryWithSuggestions: Story = {
+  render: () => <Addresses initial={[]} suggest />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    const input = canvas.getByRole("combobox", { name: "Email addresses" });
+    await userEvent.click(input);
+    await userEvent.type(input, "lea");
+    await userEvent.click(page.getByRole("option", { name: /lea.hofmann/ }));
+    await userEvent.type(input, "auditor@extern.example{Enter}");
+    await expect(input).toHaveValue("");
+    await userEvent.keyboard("{Escape}");
+    await expect(canvas.getByRole("button", { name: "Remove lea.hofmann@data-insights.ai" })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Remove auditor@extern.example" })).toBeVisible();
+  },
+};
+
+export const FreeEntryDisabled: Story = {
+  render: () => <Addresses initial={["nora.feld@data-insights.ai"]} disabled />,
+};
+
+/** German labels run long: the label wraps, entries wrap inside the frame, the error hangs off its first line. */
+export const German: Story = {
+  args: {
+    id: "de-members",
+    label: "Mitglieder, die bei einer kritischen Meldung benachrichtigt werden",
+    values: ["u-nora", "u-lea", "u-tomas", "u-sara"],
+    toggleLabel: "Mitglieder anzeigen",
+    removeLabel: (name: string) => `${name} entfernen`,
+    placeholder: "Mitglieder suchen",
+    required: true,
+    hint: "Wählen Sie mindestens ein Mitglied oder eine Berechtigung aus, bevor Sie speichern.",
+    hintTone: "error",
+  },
+};
+
+/** `TokenField` is deprecated: it renders this field with `freeEntry`, so nothing changes for its callers until 0.12. */
+export const DeprecatedTokenField: Story = {
+  render: function Render() {
+    const [values, setValues] = useState(["nora.feld@data-insights.ai"]);
+    return (
+      <div style={{ maxWidth: "480px" }}>
+        <TokenField
+          id="legacy-emails"
+          label="Email addresses"
+          values={values}
+          onChange={setValues}
+          isValid={(v) => email.test(v)}
+          removeLabel={(v) => `Remove ${v}`}
+        />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByRole("textbox", { name: "Email addresses" }), "jonas@data-insights.ai ");
+    await expect(canvas.getByRole("button", { name: "Remove jonas@data-insights.ai" })).toBeVisible();
   },
 };

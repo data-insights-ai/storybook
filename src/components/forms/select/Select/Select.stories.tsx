@@ -12,7 +12,7 @@ const meta = {
     hint: "",
     hintTone: "neutral",
     labelTrack: "record",
-    mono: true,
+    mono: false,
     disabled: false,
     children: null,
     required: false,
@@ -29,12 +29,19 @@ const meta = {
     required: { control: "boolean" },
     children: { control: false },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 400 }}>
+        <Story />
+      </div>
+    ),
+  ],
   render: (args) => (
     <Select {...args}>
-      <option value="1h">last hour</option>
-      <option value="24h">last 24 hours</option>
-      <option value="7d">last 7 days</option>
-      <option value="30d">last 30 days</option>
+      <option value="1h">Last hour</option>
+      <option value="24h">Last 24 hours</option>
+      <option value="7d">Last 7 days</option>
+      <option value="30d">Last 30 days</option>
     </Select>
   ),
 } satisfies Meta<typeof Select>;
@@ -71,7 +78,7 @@ export const WithError: Story = {
   },
 };
 
-/** A select holding words rather than a range. */
+/** Roles: a select of words in the UI track, as every select is unless its options are identifiers. */
 export const Prose: Story = {
   args: { id: "role", label: "Role", mono: false, defaultValue: "operator" },
   render: (args) => (
@@ -84,7 +91,12 @@ export const Prose: Story = {
 };
 
 export const Required: Story = {
-  args: { required: true, hint: "Required." },
+  args: { required: true, hint: "The audit export covers this window." },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByLabelText("Window")).toBeRequired();
+    await expect(canvasElement.querySelector(".di-field-label.is-required")).not.toBeNull();
+  },
 };
 
 export const Disabled: Story = {

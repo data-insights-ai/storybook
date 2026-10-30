@@ -5,8 +5,8 @@
   .di-combobox-control {
     position: relative;
   }
-  .di-combobox-control .di-control {
-    padding-right: var(--di-space-48);
+  .di-combobox-control:has(.di-combobox-toggle) .di-control {
+    padding-right: var(--di-control-h-md);
   }
   .di-combobox-toggle {
     position: absolute;
