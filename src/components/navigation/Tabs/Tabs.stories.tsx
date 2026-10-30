@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, fn, userEvent, within } from "storybook/test";
+import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Panel } from "../../layout/page/Panel";
 import { TabPanel, Tabs } from "./Tabs";
@@ -97,7 +97,7 @@ export const OnARecord: Story = {
 
 /**
  * Long labels on a phone: the strip scrolls on its own, never the page, and
- * the selected tab is scrolled into view.
+ * the selected tab is scrolled into view; the edge that hides tabs fades.
  */
 export const LongLabelsOnAPhone: Story = {
   globals: { viewport: { value: "phone", isRotated: false } },
@@ -118,6 +118,13 @@ export const LongLabelsOnAPhone: Story = {
     await expect(selected.left).toBeGreaterThanOrEqual(strip.left - 1);
     await expect(selected.right).toBeLessThanOrEqual(strip.right + 1);
     await expect(canvasElement.ownerDocument.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+    const list = canvas.getByRole("tablist");
+    await expect(list.scrollWidth).toBeGreaterThan(list.clientWidth);
+    await waitFor(() => expect(list).toHaveClass("is-more-start"));
+    await expect(getComputedStyle(list).maskImage).toContain("gradient");
+    list.scrollLeft = 0;
+    await waitFor(() => expect(list).toHaveClass("is-more-end"));
+    await expect(list).not.toHaveClass("is-more-start");
   },
 };
 

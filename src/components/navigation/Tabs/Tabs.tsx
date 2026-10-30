@@ -1,6 +1,7 @@
 import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { useActiveInView } from "../../../internal/useActiveInView";
+import { useScrollEdges } from "../../../internal/useScrollEdges";
 import { TabCount } from "../tabStrip";
 
 /**
@@ -47,6 +48,7 @@ export function Tabs({
   const buttons = useRef(new Map<string, HTMLButtonElement>());
   const strip = useRef<HTMLDivElement>(null);
   useActiveInView(strip);
+  const [, edges] = useScrollEdges(strip);
   const usable = items.filter((item) => !item.disabled);
   const tabStop = usable.some((item) => item.value === value) ? value : usable[0]?.value;
 
@@ -68,7 +70,13 @@ export function Tabs({
 
   return (
     // eslint-disable-next-line jsx-a11y/interactive-supports-focus -- focus roves over the tabs inside; the list itself is not a stop (APG tabs pattern)
-    <div ref={strip} role="tablist" aria-label={label} className={cx("di-tabs", className)} onKeyDown={onKeyDown}>
+    <div
+      ref={strip}
+      role="tablist"
+      aria-label={label}
+      className={cx("di-tabs", edges.start && "is-more-start", edges.end && "is-more-end", className)}
+      onKeyDown={onKeyDown}
+    >
       {items.map((item) => {
         const selected = item.value === value;
         return (
