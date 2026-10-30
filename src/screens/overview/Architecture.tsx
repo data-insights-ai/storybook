@@ -160,7 +160,7 @@ export function ArchitectureScreen() {
               <NoticeBody>Every diagnostic check passed.</NoticeBody>
             </NoticeText>
             <NoticeAction>
-              <Button size="dense">
+              <Button size="sm">
                 <Network aria-hidden />
                 Run diagnostics
               </Button>

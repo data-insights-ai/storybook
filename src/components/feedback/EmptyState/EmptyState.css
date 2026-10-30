@@ -18,7 +18,7 @@
   }
 
   .di-empty-eyebrow {
-    margin-bottom: var(--di-space-8);
+    margin-bottom: var(--di-gap-8);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     letter-spacing: var(--di-tracking-eyebrow);
@@ -31,7 +31,7 @@
   }
 
   .di-empty-title {
-    margin-bottom: var(--di-space-6);
+    margin-bottom: var(--di-gap-6);
     font-size: var(--di-font-size-500);
     font-weight: var(--di-weight-semibold);
     letter-spacing: var(--di-tracking-tight);
@@ -50,7 +50,7 @@
   }
 
   .di-empty-action {
-    margin-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
   }
 
   .di-empty-icon {
@@ -59,7 +59,7 @@
     justify-content: center;
     width: 40px;
     height: 40px;
-    margin-bottom: var(--di-space-12);
+    margin-bottom: var(--di-gap-12);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-page);

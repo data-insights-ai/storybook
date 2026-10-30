@@ -8,13 +8,13 @@
     --di-periods-caption: minmax(120px, 26%);
     position: relative;
     display: grid;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     container: di-periods / inline-size;
   }
 
   .di-periods-rows {
     display: grid;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -24,7 +24,7 @@
     display: grid;
     grid-template-columns: var(--di-periods-label) minmax(0, 1fr) var(--di-periods-caption);
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     font-size: var(--di-font-size-300);
   }
 
@@ -121,7 +121,7 @@
   @container di-periods (max-width: 520px) {
     .di-period {
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--di-space-4);
+      gap: var(--di-gap-4);
     }
 
     .di-periods-axis > span:empty {

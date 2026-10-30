@@ -17,7 +17,7 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    height: calc(var(--di-h-ctl) - 2 * var(--di-space-2) - 2px);
+    height: calc(var(--di-control-h-md) - 2 * var(--di-space-2) - 2px);
     padding: 0 var(--di-space-12);
     border-radius: var(--di-radius-micro);
     color: var(--di-text-muted);

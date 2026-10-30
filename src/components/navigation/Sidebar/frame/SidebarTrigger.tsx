@@ -14,7 +14,7 @@ export function SidebarTrigger({ label }: { label: string }) {
   return (
     <Button
       variant="ghost"
-      size="dense"
+      size="sm"
       iconOnly
       className="di-sb-trigger"
       aria-label={label}

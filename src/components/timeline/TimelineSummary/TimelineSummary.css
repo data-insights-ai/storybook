@@ -2,7 +2,7 @@
   .di-tsummary {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     min-width: 0;
     container-type: inline-size;
   }
@@ -11,7 +11,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-4) var(--di-space-12);
+    gap: var(--di-gap-4) var(--di-gap-12);
   }
 
   .di-tsummary-title {
@@ -22,14 +22,14 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-4) var(--di-space-12);
+    gap: var(--di-gap-4) var(--di-gap-12);
     min-width: 0;
   }
 
   .di-tsummary-figure {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   /* Blocks stand on the track like bars, each with its ordinal above it. */
@@ -142,7 +142,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-4) var(--di-space-16);
+    gap: var(--di-gap-4) var(--di-gap-16);
     font-size: var(--di-font-size-300);
     color: var(--di-text-subtle);
   }
@@ -150,7 +150,7 @@
   .di-tsummary-legend-item {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-tsummary-swatch {
@@ -166,7 +166,7 @@
   .di-tsummary-edges {
     display: flex;
     justify-content: space-between;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     font-variant-numeric: tabular-nums;
@@ -193,7 +193,7 @@
       "index title title tone"
       "index time detail detail";
     align-items: baseline;
-    gap: var(--di-space-2) var(--di-space-12);
+    gap: var(--di-space-2) var(--di-gap-12);
     width: 100%;
     padding: var(--di-space-8) var(--di-space-8) var(--di-space-8) 0;
     border: 0;
@@ -281,7 +281,7 @@
     display: grid;
     grid-template-columns: var(--di-index-col) auto minmax(0, 1fr);
     align-items: baseline;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding: var(--di-space-6) var(--di-space-8) var(--di-space-6) 0;
     color: var(--di-text-subtle);
   }

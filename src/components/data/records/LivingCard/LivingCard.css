@@ -3,7 +3,7 @@
   .di-living {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     overflow: hidden;
     padding: var(--di-space-16);
     border: 1px solid var(--di-border);
@@ -15,7 +15,7 @@
   .di-living-head {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   /* The card's name is a heading in the display face, its one bold line. */
@@ -32,7 +32,7 @@
   .di-living-actions {
     display: flex;
     align-items: center;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     flex: none;
   }
 
@@ -41,7 +41,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
-    gap: var(--di-space-16) var(--di-space-24);
+    gap: var(--di-gap-16) var(--di-gap-24);
   }
 
   .di-living-body > :last-child:not(:first-child) {
@@ -62,7 +62,7 @@
   .di-living-insight-row {
     display: flex;
     align-items: flex-start;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-living-insight-copy {
@@ -77,7 +77,7 @@
   }
 
   .di-living-insight-basis {
-    margin-top: var(--di-space-4);
+    margin-top: var(--di-gap-4);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     line-height: var(--di-leading-snug);
@@ -87,8 +87,8 @@
   .di-living-insight-actions {
     display: flex;
     align-items: center;
-    gap: var(--di-space-6);
-    margin-top: var(--di-space-12);
+    gap: var(--di-gap-6);
+    margin-top: var(--di-gap-12);
     padding-left: var(--di-space-16);
   }
 }

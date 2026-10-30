@@ -57,7 +57,7 @@ export const Navigating: Story = {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <AppShellBar>
-          <Button variant="secondary" size="dense" onClick={navigate}>
+          <Button variant="secondary" size="sm" onClick={navigate}>
             Navigate
           </Button>
           <RouteProgress active={active} label="Loading page" />

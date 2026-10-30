@@ -15,7 +15,8 @@ const chromium = () => ({
 });
 
 /**
- * Every story runs once per theme, and again at phone width (390px) in both, so the axe check (`a11y: { test: "error" }`) sees the dark remap as well, and
+ * Every story runs once per theme, again at phone width (390px) in both, and in compact density (light, desk and
+ * phone), so the axe check (`a11y: { test: "error" }`) sees the dark remap as well, and
  * `.storybook/tests/contrast` measures every visible text where it is painted.
  * `initialGlobals` pins the toolbar global for the whole project; a story's own `globals` still win.
  * https://storybook.js.org/docs/writing-tests/integrations/vitest-addon
@@ -25,13 +26,18 @@ function stories(
   theme: "light" | "dark",
   setupFiles: string[] = [],
   viewport?: "phone",
+  density: "comfortable" | "compact" = "comfortable",
 ): TestProjectInlineConfiguration {
   return {
     extends: true,
     plugins: [
       storybookTest({
         configDir: path.join(dirname, ".storybook"),
-        initialGlobals: viewport ? { theme, viewport: { value: viewport, isRotated: false } } : { theme },
+        initialGlobals: {
+          theme,
+          density,
+          ...(viewport ? { viewport: { value: viewport, isRotated: false } } : {}),
+        },
       }),
     ],
     test: {
@@ -74,6 +80,8 @@ export default defineConfig({
       stories("storybook-dark", "dark", ["./.storybook/tests/vitest.dark.setup.ts"]),
       stories("storybook-phone", "light", [], "phone"),
       stories("storybook-phone-dark", "dark", ["./.storybook/tests/vitest.dark.setup.ts"], "phone"),
+      stories("storybook-compact", "light", [], undefined, "compact"),
+      stories("storybook-compact-phone", "light", [], "phone", "compact"),
     ],
   },
 });

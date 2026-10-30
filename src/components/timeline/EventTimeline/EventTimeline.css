@@ -2,7 +2,7 @@
   .di-timeline {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
     container-type: inline-size;
   }
@@ -12,7 +12,7 @@
     grid-template-columns: auto minmax(0, 1fr) auto;
     grid-template-areas: "title meta controls";
     align-items: center;
-    gap: var(--di-space-4) var(--di-space-12);
+    gap: var(--di-gap-4) var(--di-gap-12);
   }
 
   .di-timeline-title {
@@ -25,7 +25,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-4) var(--di-space-12);
+    gap: var(--di-gap-4) var(--di-gap-12);
     min-width: 0;
   }
 
@@ -46,7 +46,7 @@
   .di-timeline-frame {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     min-width: 0;
   }
 
@@ -284,8 +284,8 @@
   .di-timeline-lanes-toggle {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
-    height: var(--di-h-dense);
+    gap: var(--di-gap-6);
+    height: var(--di-control-h-sm);
     padding: 0 var(--di-space-8) 0 0;
     border: 0;
     border-radius: var(--di-radius-control);
@@ -339,7 +339,7 @@
 
   .di-timeline-lanes-inner > svg {
     display: block;
-    margin-top: var(--di-space-8);
+    margin-top: var(--di-gap-8);
   }
 
   .di-timeline-mark-label,
@@ -409,14 +409,14 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-4) var(--di-space-16);
+    gap: var(--di-gap-4) var(--di-gap-16);
     font-size: var(--di-font-size-400);
   }
 
   .di-timeline-legend-item {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-timeline-swatch {
@@ -446,7 +446,7 @@
   .di-timeline-help {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-6) var(--di-space-16);
+    gap: var(--di-gap-6) var(--di-gap-16);
     margin: 0;
     padding: var(--di-space-8) 0 0;
     border-top: 1px solid var(--di-rule-hairline);
@@ -458,14 +458,14 @@
   .di-timeline-help li {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-timeline-keys {
     display: inline-flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-2) var(--di-space-4);
+    gap: var(--di-space-2) var(--di-gap-4);
     white-space: nowrap;
   }
 

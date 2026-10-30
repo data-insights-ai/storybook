@@ -21,9 +21,9 @@
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     width: 100%;
-    min-height: var(--di-h-ctl);
+    min-height: var(--di-control-h-md);
     padding: var(--di-space-6) var(--di-space-8);
     box-sizing: border-box;
     border: 0;
@@ -111,7 +111,7 @@
   }
 
   .di-sb-tooltip .di-tooltip {
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     font-family: var(--di-font-ui);
     transition: opacity var(--di-duration) var(--di-ease);
   }

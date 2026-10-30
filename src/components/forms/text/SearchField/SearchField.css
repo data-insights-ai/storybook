@@ -2,7 +2,7 @@
   .di-search {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     height: var(--di-field-height);
     padding: 0 var(--di-space-8);
     border: 1px solid var(--di-field-border);
@@ -11,8 +11,8 @@
     transition: border-color var(--di-duration) var(--di-ease);
   }
 
-  .di-search.is-dense {
-    height: var(--di-h-dense);
+  .di-search.is-small {
+    height: var(--di-control-h-sm);
   }
 
   .di-search:hover:not(:has(:disabled)) {
@@ -67,7 +67,7 @@
 
   @media (pointer: coarse) {
     .di-search,
-    .di-search.is-dense {
+    .di-search.is-small {
       height: var(--di-field-height);
     }
 

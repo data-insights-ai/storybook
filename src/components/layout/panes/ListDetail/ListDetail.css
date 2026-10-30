@@ -6,14 +6,14 @@
   .di-ld-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
     align-items: start;
   }
 
   .di-ld-list {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 
@@ -22,7 +22,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding: 0 var(--di-space-8) var(--di-space-4);
   }
 
@@ -38,7 +38,7 @@
   .di-ld-item {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     width: 100%;
     padding: var(--di-space-12) var(--di-space-16);
     border: 0;
@@ -69,7 +69,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-ld-item-title {
@@ -88,7 +88,7 @@
   .di-ld-pane {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
     min-width: 0;
   }
 
@@ -101,8 +101,8 @@
     align-self: flex-start;
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-6);
-    min-height: var(--di-h-ctl);
+    gap: var(--di-gap-6);
+    min-height: var(--di-control-h-md);
     padding: 0;
     border: 0;
     background: none;
@@ -125,7 +125,7 @@
   @container (width >= 56rem) {
     .di-ld-grid {
       grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
-      gap: var(--di-space-32);
+      gap: var(--di-gap-32);
     }
 
     /* The list is a pane of its own, a step above the ground and full height. */

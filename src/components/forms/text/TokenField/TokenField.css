@@ -3,7 +3,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     min-height: var(--di-field-height);
     padding: var(--di-space-2) var(--di-space-4);
     border: 1px solid var(--di-field-border);

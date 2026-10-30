@@ -14,7 +14,7 @@
 
     display: flex;
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     max-width: 480px;
     padding: var(--di-space-12) var(--di-space-12);
     border-radius: var(--di-radius-surface);
@@ -50,7 +50,7 @@
   .di-toast-seal {
     flex: none;
     align-self: flex-start;
-    margin-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
   }
 
   .di-toast-copy {
@@ -74,7 +74,7 @@
   }
 
   .di-toast-audit {
-    margin-top: var(--di-space-4);
+    margin-top: var(--di-gap-4);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-inverse-mark);

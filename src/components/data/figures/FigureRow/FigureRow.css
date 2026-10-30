@@ -12,7 +12,7 @@
     --di-figure-gap: var(--di-space-32);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
-    gap: var(--di-space-16) var(--di-figure-gap);
+    gap: var(--di-gap-16) var(--di-figure-gap);
     margin: 0;
     clip-path: inset(-8px -8px -8px 0);
   }
@@ -20,7 +20,7 @@
   .di-figure {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     min-width: 0;
     margin-inline-start: calc(-0.5 * var(--di-figure-gap));
     padding-inline-start: calc(0.5 * var(--di-figure-gap));
@@ -67,7 +67,7 @@
   .di-figure-row.is-compact .di-figure-list {
     --di-figure-gap: var(--di-space-24);
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
-    gap: var(--di-space-8) var(--di-figure-gap);
+    gap: var(--di-gap-8) var(--di-figure-gap);
   }
 
   .di-figure-row.is-compact .di-figure-value {

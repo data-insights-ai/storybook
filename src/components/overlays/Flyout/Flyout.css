@@ -50,7 +50,7 @@
   .di-flyout-body {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     min-height: 0;
     padding: var(--di-space-12) var(--di-space-16);
     overflow-y: auto;
@@ -62,7 +62,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding: var(--di-space-8) var(--di-space-16);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);

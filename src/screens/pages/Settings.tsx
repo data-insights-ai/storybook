@@ -62,7 +62,7 @@ export function SettingsScreen() {
               </StatusPill>
             </SessionTag>
             <SessionAction>
-              <Button variant="secondary" size="dense">
+              <Button variant="secondary" size="sm">
                 <LogOut aria-hidden />
                 Sign out
               </Button>

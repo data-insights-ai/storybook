@@ -9,7 +9,7 @@
     grid-template-columns: auto 1fr auto auto;
     grid-template-areas: "mark copy tag action";
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     min-width: 0;
   }
 

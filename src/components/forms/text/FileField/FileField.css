@@ -5,7 +5,7 @@
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--di-space-8) var(--di-space-12);
+    gap: var(--di-gap-8) var(--di-gap-12);
     padding: var(--di-space-16);
     border: 1px dashed var(--di-border-input);
     border-radius: var(--di-radius-control);
@@ -44,7 +44,7 @@
   .di-file-row {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-height: var(--di-field-height);
     padding: var(--di-space-4) var(--di-space-4) var(--di-space-4) var(--di-space-12);
     border: 1px solid var(--di-border-input);

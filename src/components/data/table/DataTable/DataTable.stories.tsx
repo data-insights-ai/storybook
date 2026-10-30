@@ -358,7 +358,7 @@ export const NoRows: Story = {
             <span aria-hidden />
           </TableCell>
           <TableCell align="end">
-            <Button variant="ghost" size="dense">
+            <Button variant="ghost" size="sm">
               Clear filters
             </Button>
           </TableCell>
@@ -585,7 +585,7 @@ export const PinnedWithoutIndex: Story = {
               <CellStack primary="€9,900.00 per year" secondary={["Total €9,900.00 per year"]} prose />
             </TableCell>
             <TableCell align="end">
-              <Button size="dense">Subscribe</Button>
+              <Button size="sm">Subscribe</Button>
             </TableCell>
           </TableRow>
         </TableBody>

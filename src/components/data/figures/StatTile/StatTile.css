@@ -34,7 +34,7 @@
 
   /* The measurement, in the mono track so a column of them stays still. */
   .di-stat-tile-value {
-    margin-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
     font-family: var(--di-heading-family);
     font-size: var(--di-figure-size);
     font-weight: var(--di-weight-bold);
@@ -73,6 +73,6 @@
   }
 
   .di-stat-tile-body .di-tick-rule {
-    margin-top: var(--di-space-12);
+    margin-top: var(--di-gap-12);
   }
 }

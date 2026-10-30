@@ -11,7 +11,7 @@
   .di-command-input {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     height: 46px;
     padding: 0 var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
@@ -49,7 +49,7 @@
   }
 
   .di-command-group + .di-command-group {
-    margin-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
     padding-top: var(--di-space-6);
     border-top: 1px solid var(--di-rule-hairline);
   }
@@ -67,9 +67,9 @@
   .di-command-row {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     width: 100%;
-    height: var(--di-h-comfort);
+    height: var(--di-control-h-lg);
     padding: 0 var(--di-space-8);
     border: 0;
     border-radius: var(--di-radius-micro);
@@ -116,7 +116,7 @@
   .di-command-foot {
     display: flex;
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding: var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-bg-page);
@@ -128,7 +128,7 @@
   .di-command-privacy {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     margin-left: auto;
     color: var(--di-text-muted);
   }
@@ -141,7 +141,7 @@
   .di-command-chip {
     display: inline-flex;
     align-items: center;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     height: 22px;
     padding: 0 var(--di-space-8);
     border: 1px solid var(--di-border);

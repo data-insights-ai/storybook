@@ -2,7 +2,7 @@
   .di-attention-section {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
   }
 
   .di-attention-heading {
@@ -17,7 +17,7 @@
   .di-attention {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -30,7 +30,7 @@
     grid-template-columns: 2.25rem minmax(0, 1fr);
     grid-template-rows: 1fr auto;
     align-items: baseline;
-    gap: var(--di-space-12) var(--di-space-16);
+    gap: var(--di-gap-12) var(--di-gap-16);
     padding: var(--di-space-24);
     border-radius: var(--di-radius-surface);
     background: var(--di-bg-surface);
@@ -71,7 +71,7 @@
     grid-column: 2;
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     min-width: 0;
   }
 
@@ -79,7 +79,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   /* The one gold object of the view, with the edge and the rank bar: a small pill, navy words. */
@@ -126,14 +126,14 @@
     align-self: end;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   /* On a phone the one button runs the item's width. */
   @media (max-width: 600px) {
     .di-attention-item {
       grid-template-columns: 1.75rem minmax(0, 1fr);
-      gap: var(--di-space-12);
+      gap: var(--di-gap-12);
       padding: var(--di-space-16);
     }
 
@@ -151,7 +151,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: var(--di-space-4) var(--di-space-16);
+    gap: var(--di-gap-4) var(--di-gap-16);
     padding: var(--di-space-16) 0;
     border-block: 1px solid var(--di-rule);
   }
@@ -168,7 +168,7 @@
     display: inline-block;
     width: 8px;
     height: 8px;
-    margin-right: var(--di-space-12);
+    margin-right: var(--di-gap-12);
     border-radius: 50%;
     background: var(--di-status-ok-dot);
     vertical-align: 0.1em;

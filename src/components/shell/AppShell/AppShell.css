@@ -58,7 +58,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--di-space-6);
-    min-height: var(--di-h-ctl);
+    min-height: var(--di-control-h-md);
     padding: var(--di-space-6) var(--di-space-8);
     border: 1px solid var(--di-sidebar-edge);
     border-radius: var(--di-radius-control);
@@ -319,7 +319,7 @@
     min-width: 0;
     max-width: 100%;
     height: auto;
-    min-height: var(--di-h-ctl);
+    min-height: var(--di-control-h-md);
     padding-block: var(--di-space-4);
     white-space: normal;
     overflow-wrap: anywhere;
@@ -327,11 +327,11 @@
   }
 
   :is(.di-top-actions, .di-sidebar-context) .di-btn-dense {
-    min-height: var(--di-h-dense);
+    min-height: var(--di-control-h-sm);
   }
 
   :is(.di-top-actions, .di-sidebar-context) .di-btn-comfort {
-    min-height: var(--di-h-comfort);
+    min-height: var(--di-control-h-lg);
   }
 
   .di-top-actions {

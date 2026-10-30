@@ -14,7 +14,7 @@
     flex: none;
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     width: var(--di-sb-width);
     height: 100dvh;
     padding: var(--di-space-16) var(--di-space-12);
@@ -42,7 +42,7 @@
   .di-sb-footer {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 
@@ -55,7 +55,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     min-width: 0;
   }
 
@@ -157,7 +157,7 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     min-height: 0;
   }
 
@@ -166,8 +166,8 @@
     align-self: flex-end;
     align-items: center;
     justify-content: center;
-    width: var(--di-h-ctl);
-    height: var(--di-h-ctl);
+    width: var(--di-control-h-md);
+    height: var(--di-control-h-md);
     border: 1px solid var(--di-sidebar-edge);
     border-radius: var(--di-radius-control);
     background: var(--di-sidebar-raised);

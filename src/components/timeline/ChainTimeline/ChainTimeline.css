@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: minmax(120px, 200px) minmax(0, 1fr);
     grid-template-rows: auto auto;
-    column-gap: var(--di-space-12);
+    column-gap: var(--di-gap-12);
     min-width: 0;
   }
 
@@ -144,7 +144,7 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding: var(--di-space-6) var(--di-space-12) 0;
     font-size: var(--di-font-size-200);
     font-variant-numeric: tabular-nums;

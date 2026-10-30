@@ -56,9 +56,9 @@
   .di-menu-item {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     width: 100%;
-    min-height: var(--di-h-dense);
+    min-height: var(--di-control-h-sm);
     padding: var(--di-space-4) var(--di-space-8);
     border: 0;
     border-radius: var(--di-radius-micro);
@@ -111,7 +111,7 @@
 
   .di-menu-divider {
     height: 1px;
-    margin: var(--di-space-4) 0;
+    margin: var(--di-gap-4) 0;
     background: var(--di-rule-hairline);
   }
 }

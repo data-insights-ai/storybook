@@ -96,7 +96,7 @@ export const Counting: Story = {
           value={(done / total) * 100}
         />
         <div>
-          <Button variant="secondary" size="dense" onClick={run}>
+          <Button variant="secondary" size="sm" onClick={run}>
             Run again
           </Button>
         </div>

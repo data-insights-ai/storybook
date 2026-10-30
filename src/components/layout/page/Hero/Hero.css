@@ -20,12 +20,12 @@
       "lead visual visual"
       "footer footer footer";
     /* Rows are spaced by margins, so a slot left out leaves no empty gap. */
-    gap: 0 var(--di-space-32);
+    gap: 0 var(--di-gap-32);
     align-items: start;
   }
 
   .di-hero-grid > :is(.di-hero-lead, .di-hero-visual, .di-hero-footer) {
-    margin-top: var(--di-space-24);
+    margin-top: var(--di-gap-24);
   }
 
   .di-hero-grid:not(:has(> .di-hero-lead)) {
@@ -39,7 +39,7 @@
     grid-area: titles;
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     min-width: 0;
   }
 
@@ -66,7 +66,7 @@
     align-self: end;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-hero-lead {
@@ -99,7 +99,7 @@
     }
 
     .di-hero-grid > :is(.di-hero-aside, .di-hero-lead, .di-hero-visual, .di-hero-footer) {
-      margin-top: var(--di-space-16);
+      margin-top: var(--di-gap-16);
     }
 
     .di-hero-aside {

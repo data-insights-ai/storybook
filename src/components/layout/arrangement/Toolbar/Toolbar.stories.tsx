@@ -30,7 +30,7 @@ export const Default: Story = {
         state: running
       </Chip>
       <ToolbarEnd>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Export
         </Button>
       </ToolbarEnd>
@@ -47,10 +47,10 @@ export const InlineActions: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <Actions>
-      <Button variant="primary" size="dense">
+      <Button variant="primary" size="sm">
         Seal now
       </Button>
-      <Button variant="secondary" size="dense">
+      <Button variant="secondary" size="sm">
         Open log
       </Button>
     </Actions>
@@ -135,7 +135,7 @@ export const EndWrittenFirst: Story = {
   render: () => (
     <Toolbar>
       <ToolbarEnd>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Export
         </Button>
       </ToolbarEnd>

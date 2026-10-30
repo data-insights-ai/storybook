@@ -55,7 +55,7 @@
 
       .di-select-control::picker(select) {
         max-block-size: 320px;
-        margin-block: var(--di-space-4);
+        margin-block: var(--di-gap-4);
         padding: var(--di-space-4);
         border: 1px solid var(--di-border-strong);
         border-radius: var(--di-radius-control);
@@ -65,7 +65,7 @@
       }
 
       .di-select-control option {
-        min-block-size: var(--di-h-ctl);
+        min-block-size: var(--di-control-h-md);
         padding: var(--di-space-6) var(--di-space-8);
         border-radius: var(--di-radius-micro);
         font-weight: inherit;

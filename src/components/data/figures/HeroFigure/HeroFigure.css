@@ -2,7 +2,7 @@
   .di-hero-fig {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 
@@ -45,7 +45,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
   }

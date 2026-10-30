@@ -41,9 +41,9 @@ const radius = [
 ];
 
 const heights = [
-  { token: "--di-h-dense", px: 28, use: 'Button size="dense", Chip, a menu item, a dense SearchField.' },
-  { token: "--di-h-ctl", px: 32, use: "The standard. Every form control unless told otherwise." },
-  { token: "--di-h-comfort", px: 36, use: 'Button size="comfort", the command bar input, the tab strip.' },
+  { token: "--di-control-h-sm", px: 28, use: 'Button size="sm", Chip, a menu item, a dense SearchField.' },
+  { token: "--di-control-h-md", px: 32, use: "The standard. Every form control unless told otherwise." },
+  { token: "--di-control-h-lg", px: 36, use: 'Button size="lg", the command bar input, the tab strip.' },
   { token: "--di-h-row", px: 40, use: "A table row, via --di-table-row-height. Its only use." },
 ];
 

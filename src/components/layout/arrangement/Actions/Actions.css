@@ -3,7 +3,7 @@
     display: flex;
     justify-content: flex-end;
     flex-wrap: wrap;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-inline-actions.is-start {

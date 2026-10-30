@@ -89,7 +89,7 @@ export const Moving: Story = {
       <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
         <LevelMeter label="Level now" value={72} compare={point.value} compareLabel={point.label} />
         <div>
-          <Button variant="secondary" size="dense" onClick={() => setAt((at + 1) % points.length)}>
+          <Button variant="secondary" size="sm" onClick={() => setAt((at + 1) % points.length)}>
             Move comparison point
           </Button>
         </div>

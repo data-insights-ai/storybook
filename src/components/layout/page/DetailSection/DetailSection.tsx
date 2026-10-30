@@ -78,7 +78,7 @@ export function DetailSection({
               <Button
                 ref={editButton}
                 variant="secondary"
-                size="dense"
+                size="sm"
                 onClick={onEdit}
                 data-di-shortcut="e"
                 aria-keyshortcuts="e"

@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 
@@ -17,8 +17,8 @@
     grid-template-rows: auto auto auto;
     align-items: center;
     justify-content: start;
-    column-gap: var(--di-space-8);
-    row-gap: var(--di-space-6);
+    column-gap: var(--di-gap-8);
+    row-gap: var(--di-gap-6);
   }
 
   .di-toolbar:has(> .di-field) > .di-field {
@@ -48,7 +48,7 @@
   .di-toolbar-end {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin-left: auto;
   }
 

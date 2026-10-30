@@ -99,7 +99,7 @@
   }
 
   .di-modal-eyebrow {
-    margin-bottom: var(--di-space-6);
+    margin-bottom: var(--di-gap-6);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-100);
     letter-spacing: var(--di-tracking-eyebrow);
@@ -117,18 +117,18 @@
   }
 
   .di-modal-text {
-    margin-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
     font-size: var(--di-font-size-400);
     line-height: var(--di-leading-body);
     color: var(--di-text-muted);
   }
 
   .di-modal-text > * + * {
-    margin-top: var(--di-space-8);
+    margin-top: var(--di-gap-8);
   }
 
   .di-modal-text > .di-field {
-    margin-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
   }
 
   /*
@@ -136,14 +136,14 @@
    * inline margin on a wrapper div in the story; the frame owns the spacing.
    */
   .di-modal-content > .di-field {
-    margin-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
   }
 
   .di-modal-footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     flex-wrap: wrap;
     padding: 0 var(--di-modal-inset) var(--di-modal-inset);
   }

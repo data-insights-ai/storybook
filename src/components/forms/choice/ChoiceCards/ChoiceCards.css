@@ -8,7 +8,7 @@
 
   /* A field label: the choice is named the way every field is. */
   .di-choicecards-legend {
-    margin-bottom: var(--di-space-8);
+    margin-bottom: var(--di-gap-8);
     padding: 0;
     font-family: var(--di-label-family);
     font-size: var(--di-label-size);
@@ -19,11 +19,11 @@
   .di-choicecards {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
   }
 
   .di-choicecards-group-label {
-    margin-bottom: var(--di-space-8);
+    margin-bottom: var(--di-gap-8);
     font-family: var(--di-label-family);
     font-size: var(--di-label-size);
     font-weight: var(--di-label-weight);
@@ -36,14 +36,14 @@
   .di-choicecards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     align-items: stretch;
   }
 
   .di-choicecard {
     display: flex;
     align-items: flex-start;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding: var(--di-space-12) var(--di-space-16);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-container);
@@ -113,7 +113,7 @@
   .di-choicecards-planned {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding-top: var(--di-space-24);
     border-top: 1px solid var(--di-border);
   }
@@ -122,7 +122,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    column-gap: var(--di-space-8);
+    column-gap: var(--di-gap-8);
     margin: 0;
   }
 
@@ -142,7 +142,7 @@
   .di-choicecards-planned-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(max(140px, calc((100% - 4 * var(--di-space-8)) / 5)), 1fr));
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -151,7 +151,7 @@
   .di-choicecard-planned {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
     padding: var(--di-space-8) var(--di-space-12);
     border: 1px dashed var(--di-border-strong);

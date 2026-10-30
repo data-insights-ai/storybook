@@ -72,7 +72,7 @@ export const WithActions: Story = {
   render: (args) => (
     <DetailSection {...args}>
       <DetailSectionActions>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Add domain
         </Button>
       </DetailSectionActions>

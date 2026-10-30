@@ -3,7 +3,7 @@
     display: grid;
     grid-template-columns: 36px minmax(0, 1fr);
     align-items: baseline;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding: var(--di-space-12) var(--di-space-16);
     border-radius: var(--di-radius-inset);
     background: var(--di-bg-subtle);
@@ -21,7 +21,7 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   .di-numbered.is-row {

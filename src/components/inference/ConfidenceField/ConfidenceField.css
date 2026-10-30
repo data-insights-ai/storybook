@@ -2,14 +2,14 @@
   .di-confidence {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-confidence-value {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
-    min-height: var(--di-h-ctl);
+    gap: var(--di-gap-8);
+    min-height: var(--di-control-h-md);
     padding: 0 var(--di-space-8);
     border: 1px solid var(--di-mark-ring);
     border-radius: var(--di-field-radius);
@@ -40,7 +40,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
     padding-inline: calc(var(--di-space-8) + 1px);
   }
 

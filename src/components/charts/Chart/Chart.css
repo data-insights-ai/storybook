@@ -47,7 +47,7 @@
   }
 
   .di-chart-tip-label {
-    margin: 0 0 var(--di-space-6);
+    margin: 0 0 var(--di-gap-6);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-muted);
@@ -63,13 +63,13 @@
 
   .di-chart-tip ul {
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
   }
 
   .di-chart-tip li {
     display: grid;
     grid-template-columns: 8px minmax(0, 1fr) auto;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     align-items: center;
   }
 
@@ -81,7 +81,7 @@
 
   /* Below the series, ruled off: what the point carries that is not a series. */
   .di-chart-tip ul.di-chart-tip-details {
-    margin-top: var(--di-space-6);
+    margin-top: var(--di-gap-6);
     padding-top: var(--di-space-6);
     border-top: 1px solid var(--di-rule-hairline);
   }
@@ -118,7 +118,7 @@
 
   .di-chart-legend {
     flex-wrap: wrap;
-    gap: var(--di-space-8) var(--di-space-16);
+    gap: var(--di-gap-8) var(--di-gap-16);
     padding: var(--di-space-4) var(--di-space-4) 0;
     color: var(--di-text-muted);
     font-family: var(--di-font-ui);
@@ -128,7 +128,7 @@
   .di-chart-legend li {
     display: flex;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-chart-legend i.is-dashed {

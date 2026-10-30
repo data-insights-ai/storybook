@@ -4,13 +4,13 @@
   .di-skp-body {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
   }
 
   .di-skp-head {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding-block: var(--di-space-4);
   }
 
@@ -59,7 +59,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   .di-skp-control {
@@ -85,7 +85,7 @@
   .di-skp-panel {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     padding: var(--di-space-16);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-surface);
@@ -95,14 +95,14 @@
   .di-skp-facts {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: var(--di-space-16) var(--di-space-24);
+    gap: var(--di-gap-16) var(--di-gap-24);
   }
 
   .di-skp-fact,
   .di-skp-field {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
 
   .di-skp-actions {

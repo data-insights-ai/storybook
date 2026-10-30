@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     min-height: 100dvh;
     background: var(--di-bg-page);
     color: var(--di-text);

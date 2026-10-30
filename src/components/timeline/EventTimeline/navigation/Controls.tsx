@@ -32,7 +32,7 @@ export function Controls({ navigation, labels }: { navigation: TimelineNavigatio
         <Button
           key={label}
           variant="ghost"
-          size="dense"
+          size="sm"
           iconOnly
           aria-label={label}
           title={label}

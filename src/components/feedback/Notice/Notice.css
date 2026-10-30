@@ -22,7 +22,7 @@
     justify-content: center;
     width: var(--di-index-col);
     flex: none;
-    padding-top: var(--di-notice-pad);
+    padding-top: var(--di-gap-12);
     border-right: 1px solid var(--di-border);
     background: var(--di-bg-page);
   }
@@ -38,8 +38,8 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) max-content;
     align-items: start;
-    column-gap: var(--di-notice-pad);
-    padding: var(--di-notice-pad);
+    column-gap: var(--di-gap-12);
+    padding: var(--di-gap-12);
   }
 
   .di-notice-copy > * {
@@ -54,11 +54,11 @@
   .di-notice > .di-notice-action {
     grid-column: 3;
     grid-row: 1;
-    padding: var(--di-notice-pad) var(--di-notice-pad) var(--di-notice-pad) 0;
+    padding: var(--di-gap-12) var(--di-gap-12) var(--di-gap-12) 0;
   }
 
   .di-notice-title {
-    font-size: var(--di-notice-title-size);
+    font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-semibold);
     letter-spacing: var(--di-tracking-tight);
     line-height: var(--di-leading-snug);
@@ -67,33 +67,16 @@
 
   .di-notice-body {
     margin-top: var(--di-space-2);
-    font-size: var(--di-notice-body-size);
+    font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-muted);
-  }
-
-  /*
-   * The two densities. The inset and the two type steps move together —
-   * a notice padded to 16 with 13px copy in it reads as a mistake, not a
-   * variant, which is why this is one prop and not three.
-   */
-  .di-notice-md {
-    --di-notice-pad: var(--di-space-12);
-    --di-notice-title-size: var(--di-font-size-400);
-    --di-notice-body-size: var(--di-font-size-300);
-  }
-
-  .di-notice-comfort {
-    --di-notice-pad: var(--di-space-16);
-    --di-notice-title-size: var(--di-font-size-500);
-    --di-notice-body-size: var(--di-font-size-400);
   }
 
   .di-notice-action {
     align-self: center;
     display: flex;
     align-items: center;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
 
   .di-notice-neutral .di-notice-icon {
@@ -135,13 +118,13 @@
     .di-notice-copy > .di-notice-action {
       grid-column: 1;
       grid-row: auto;
-      margin-top: var(--di-space-12);
+      margin-top: var(--di-gap-12);
     }
 
     .di-notice > .di-notice-action {
       grid-column: 2;
       grid-row: 2;
-      padding: 0 var(--di-notice-pad) var(--di-notice-pad);
+      padding: 0 var(--di-gap-12) var(--di-gap-12);
     }
 
     .di-notice-action {

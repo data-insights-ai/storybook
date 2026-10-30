@@ -26,7 +26,7 @@ export const Appearing: Story = {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <div>
-          <Button variant="secondary" size="dense" onClick={() => setRun((n) => n + 1)}>
+          <Button variant="secondary" size="sm" onClick={() => setRun((n) => n + 1)}>
             Wait again
           </Button>
         </div>

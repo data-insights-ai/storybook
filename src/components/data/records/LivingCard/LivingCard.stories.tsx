@@ -51,7 +51,7 @@ export const Default: Story = {
   render: (args) => (
     <LivingCard {...args}>
       <LivingActions>
-        <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
+        <Button variant="ghost" size="sm" iconOnly={true} aria-label="Card actions">
           <MoreVertical aria-hidden />
         </Button>
       </LivingActions>
@@ -65,13 +65,13 @@ export const Default: Story = {
       </LivingBody>
       <LivingInsight body="The rise follows the pause on feed.example.io at 08:47Z. Resuming it clears the backlog.">
         <LivingBasis>inferred from 3 sources · confidence 0.88</LivingBasis>
-        <Button variant="inferred" size="dense">
+        <Button variant="inferred" size="sm">
           Review the proposal
         </Button>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Open the source
         </Button>
-        <Button variant="ghost" size="dense">
+        <Button variant="ghost" size="sm">
           Dismiss
         </Button>
       </LivingInsight>
@@ -98,7 +98,7 @@ export const ActionsWrittenLast: Story = {
         </FigureRow>
       </LivingBody>
       <LivingActions>
-        <Button variant="ghost" size="dense" iconOnly={true} aria-label="Card actions">
+        <Button variant="ghost" size="sm" iconOnly={true} aria-label="Card actions">
           <MoreVertical aria-hidden />
         </Button>
       </LivingActions>
@@ -147,7 +147,7 @@ export const OneAction: Story = {
       </LivingBody>
       <LivingInsight body="Four archive sources stopped reporting at 08:44Z.">
         <LivingBasis>inferred from 1 source · confidence 0.71</LivingBasis>
-        <Button variant="inferred" size="dense" onClick={fn()}>
+        <Button variant="inferred" size="sm" onClick={fn()}>
           Review the proposal
         </Button>
       </LivingInsight>

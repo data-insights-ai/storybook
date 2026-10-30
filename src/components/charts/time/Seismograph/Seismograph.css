@@ -2,7 +2,7 @@
   .di-seismograph {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 
@@ -34,7 +34,7 @@
     position: relative;
     height: var(--di-space-16);
     margin-left: var(--di-space-48);
-    margin-right: var(--di-space-24);
+    margin-right: var(--di-gap-24);
     border-top: 1px solid var(--di-rule);
     cursor: pointer;
     touch-action: none;

@@ -235,6 +235,8 @@ export { useShortcut } from "./internal/useShortcut";
 export { ShortcutHelp, type AppShortcut } from "./components/overlays/ShortcutHelp";
 export { Tag, TagList } from "./components/marks/Tag";
 export { ThemeProvider, themeChoices, useTheme } from "./components/shell/ThemeProvider";
+export { DensityProvider, densityChoices, useDensity } from "./components/shell/DensityProvider";
+export type { Density } from "./components/shell/DensityProvider";
 export type { ResolvedTheme, ThemeChoice } from "./components/shell/ThemeProvider";
 export { SkipLink } from "./components/shell/SkipLink";
 export { SignIn, SignInVersion } from "./components/shell/SignIn";

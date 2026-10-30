@@ -34,7 +34,7 @@ export const NoResults: Story = {
   render: (args) => (
     <EmptyState {...args}>
       <EmptyStateAction>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Clear filters
         </Button>
       </EmptyStateAction>
@@ -56,7 +56,7 @@ export const NotConfigured: Story = {
   render: (args) => (
     <EmptyState {...args}>
       <EmptyStateAction>
-        <Button variant="primary" size="dense">
+        <Button variant="primary" size="sm">
           Connect a source
         </Button>
       </EmptyStateAction>
@@ -73,7 +73,7 @@ export const MonoBody: Story = {
   render: (args) => (
     <EmptyState {...args}>
       <EmptyStateAction>
-        <Button variant="secondary" size="dense">
+        <Button variant="secondary" size="sm">
           Edit query
         </Button>
       </EmptyStateAction>
@@ -92,7 +92,7 @@ export const Failure: Story = {
   render: (args) => (
     <EmptyState {...args}>
       <EmptyStateAction>
-        <Button variant="primary" size="dense">
+        <Button variant="primary" size="sm">
           Retry
         </Button>
       </EmptyStateAction>

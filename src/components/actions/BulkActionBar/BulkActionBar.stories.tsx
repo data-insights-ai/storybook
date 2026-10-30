@@ -20,7 +20,7 @@ function Actions() {
         align="end"
         label="Set criticality"
         trigger={(props) => (
-          <Button {...props} variant="secondary" size="dense">
+          <Button {...props} variant="secondary" size="sm">
             Set criticality
             <ChevronDown aria-hidden />
           </Button>
@@ -34,7 +34,7 @@ function Actions() {
         <FlyoutTrigger>
           <Button
             variant="secondary"
-            size="dense"
+            size="sm"
             onClick={() => setTags(!tags)}
             aria-expanded={tags}
             aria-controls="bulk-tags"
@@ -45,10 +45,10 @@ function Actions() {
         </FlyoutTrigger>
         <TextField id="bulk-tag" label="Tag" value={tag} onChange={(e) => setTag(e.target.value)} />
         <FlyoutFooter>
-          <Button size="dense" disabled={tag === ""} onClick={() => setTags(false)}>
+          <Button size="sm" disabled={tag === ""} onClick={() => setTags(false)}>
             Add
           </Button>
-          <Button size="dense" variant="secondary" disabled={tag === ""} onClick={() => setTags(false)}>
+          <Button size="sm" variant="secondary" disabled={tag === ""} onClick={() => setTags(false)}>
             Remove
           </Button>
         </FlyoutFooter>

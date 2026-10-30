@@ -16,7 +16,7 @@
   .di-table-toolbar {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding: var(--di-space-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-table-head-bg);
@@ -95,7 +95,7 @@
   }
 
   .di-table-sort {
-    margin-left: var(--di-space-4);
+    margin-left: var(--di-gap-4);
   }
 
   .di-table-sort.is-idle {
@@ -261,7 +261,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
     padding: var(--di-space-12);
     border-top: 1px solid var(--di-border);
     background: var(--di-table-head-bg);
@@ -273,7 +273,7 @@
   .di-cell {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-4);
+    gap: var(--di-gap-4);
     min-width: 0;
   }
 
@@ -299,7 +299,7 @@
   .di-cell-lead {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
   }
 
@@ -339,7 +339,7 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: var(--di-space-6) var(--di-space-12);
+      gap: var(--di-gap-6) var(--di-gap-12);
       padding: var(--di-space-12) var(--di-table-edge);
       border-bottom: 1px solid var(--di-table-rule);
     }
@@ -406,7 +406,7 @@
     .di-table-wrap.is-stackable td.is-labelled {
       display: grid;
       grid-template-columns: minmax(96px, 38%) minmax(0, 1fr);
-      gap: var(--di-space-12);
+      gap: var(--di-gap-12);
       align-items: baseline;
       justify-items: start;
       flex-basis: 100%;

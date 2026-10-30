@@ -24,7 +24,7 @@
       "title status meta"
       "lede lede lede"
       "facts facts facts";
-    column-gap: var(--di-space-12);
+    column-gap: var(--di-gap-12);
     align-items: center;
   }
 
@@ -40,7 +40,7 @@
 
   .di-page-crumbs {
     grid-area: crumbs;
-    margin-bottom: var(--di-space-12);
+    margin-bottom: var(--di-gap-12);
   }
 
   .di-page-status {
@@ -49,7 +49,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--di-space-6);
+    gap: var(--di-gap-6);
   }
 
   .di-page-meta {
@@ -78,14 +78,14 @@
     }
 
     .di-page-status {
-      margin-top: var(--di-space-8);
+      margin-top: var(--di-gap-8);
     }
 
     .di-page-meta {
       --di-meta-justify: flex-start;
       justify-self: start;
       max-width: none;
-      margin-top: var(--di-space-8);
+      margin-top: var(--di-gap-8);
       padding-left: 0;
       text-align: left;
     }
@@ -95,7 +95,7 @@
     --di-meta-justify: flex-start;
     justify-self: start;
     max-width: none;
-    margin-top: var(--di-space-8);
+    margin-top: var(--di-gap-8);
     padding-left: 0;
     text-align: left;
   }
@@ -103,7 +103,7 @@
   .di-page-facts {
     grid-area: facts;
     min-width: 0;
-    margin-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
   }
 
   .di-page-eyebrow {
@@ -136,7 +136,7 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     padding-left: var(--di-space-12);
   }
 
@@ -162,7 +162,7 @@
     }
 
     .di-page-status {
-      margin-top: var(--di-space-8);
+      margin-top: var(--di-gap-8);
     }
 
     .di-page-meta,
@@ -170,7 +170,7 @@
       --di-meta-justify: flex-start;
       justify-self: start;
       max-width: none;
-      margin-top: var(--di-space-8);
+      margin-top: var(--di-gap-8);
       padding-left: 0;
       text-align: left;
     }
@@ -179,7 +179,7 @@
       flex-direction: column;
       align-items: stretch;
       justify-self: stretch;
-      margin-top: var(--di-space-16);
+      margin-top: var(--di-gap-16);
       padding-left: 0;
     }
   }
@@ -201,7 +201,7 @@
   }
 
   .di-page-head-console .di-lede {
-    margin-top: var(--di-space-8);
+    margin-top: var(--di-gap-8);
     max-width: 62ch;
     font-size: var(--di-font-size-400);
     line-height: var(--di-leading-snug);
@@ -232,7 +232,7 @@
   }
 
   .di-page-head-brand .di-lede {
-    margin-top: var(--di-space-16);
+    margin-top: var(--di-gap-16);
     max-width: 58ch;
     font-size: var(--di-font-size-550);
     line-height: 1.55;

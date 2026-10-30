@@ -141,7 +141,7 @@ export function RegisterScreen() {
       >
         <PageHeaderTitle>Source register</PageHeaderTitle>
         <PageHeaderAside>
-          <Button variant="primary" size="dense">
+          <Button variant="primary" size="sm">
             <Plus aria-hidden />
             Connect a source
           </Button>
@@ -158,7 +158,7 @@ export function RegisterScreen() {
             <NoticeBody>After 2026-09-29 no new entry can be sealed with it.</NoticeBody>
           </div>
           <NoticeAction>
-            <Button variant="secondary" size="dense">
+            <Button variant="secondary" size="sm">
               <Stamp aria-hidden />
               Rotate key
             </Button>
@@ -200,7 +200,7 @@ export function RegisterScreen() {
             state
           </Chip>
           <span style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-            <Button variant="secondary" size="dense">
+            <Button variant="secondary" size="sm">
               <Download aria-hidden />
               Export
             </Button>
@@ -209,7 +209,7 @@ export function RegisterScreen() {
               onOpenChange={setMenu}
               label="Register actions"
               trigger={(props) => (
-                <Button {...props} variant="secondary" size="dense" iconOnly={true} aria-label="Register actions">
+                <Button {...props} variant="secondary" size="sm" iconOnly={true} aria-label="Register actions">
                   <MoreVertical aria-hidden />
                 </Button>
               )}

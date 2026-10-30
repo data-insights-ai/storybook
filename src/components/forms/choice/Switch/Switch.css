@@ -7,7 +7,7 @@
   .di-switch-row.is-row {
     flex-direction: row-reverse;
     justify-content: space-between;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
   }
 
   .di-switch {

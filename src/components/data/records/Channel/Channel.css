@@ -32,8 +32,8 @@
   .di-channel-status {
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
-    margin-bottom: var(--di-space-8);
+    gap: var(--di-gap-8);
+    margin-bottom: var(--di-gap-8);
     font-family: var(--di-label-family);
     font-size: var(--di-label-size);
     font-weight: var(--di-label-weight);
@@ -49,7 +49,7 @@
     grid-area: value;
     display: flex;
     align-items: center;
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
     min-width: 0;
     font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-medium);
@@ -67,8 +67,8 @@
     grid-area: specs;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--di-space-8) var(--di-space-16);
-    margin-top: var(--di-space-8);
+    gap: var(--di-gap-8) var(--di-gap-16);
+    margin-top: var(--di-gap-8);
     font-family: var(--di-label-family);
     font-size: var(--di-label-size);
     font-weight: var(--di-label-weight);

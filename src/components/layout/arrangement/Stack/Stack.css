@@ -2,26 +2,26 @@
   .di-stack {
     display: flex;
     flex-direction: column;
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
     min-width: 0;
   }
 
   /* One rule per step of the ramp, so the caller passes a value and
      nothing has to translate it into a class name at runtime. */
   .di-stack[data-gap="8"] {
-    gap: var(--di-space-8);
+    gap: var(--di-gap-8);
   }
   .di-stack[data-gap="12"] {
-    gap: var(--di-space-12);
+    gap: var(--di-gap-12);
   }
   .di-stack[data-gap="16"] {
-    gap: var(--di-space-16);
+    gap: var(--di-gap-16);
   }
   .di-stack[data-gap="24"] {
-    gap: var(--di-space-24);
+    gap: var(--di-gap-24);
   }
   .di-stack[data-gap="32"] {
-    gap: var(--di-space-32);
+    gap: var(--di-gap-32);
   }
   .di-stack[data-gap="48"] {
     gap: var(--di-space-48);
