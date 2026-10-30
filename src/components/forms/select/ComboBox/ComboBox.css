@@ -50,7 +50,8 @@
     outline-offset: -2px;
   }
   .di-combobox-option[data-selected] {
-    background: var(--di-bg-selected);
+    background: var(--di-row-current-bg);
+    box-shadow: inset var(--di-select-edge) 0 0 var(--di-select);
   }
   /* A long value wraps beside its label rather than pushing out of the popup. */
   .di-combobox-option .di-option-meta {
