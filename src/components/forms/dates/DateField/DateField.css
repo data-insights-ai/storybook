@@ -14,8 +14,8 @@
   }
 
   .di-date-control:has(.di-date-segment:focus) {
-    outline: 2px solid var(--di-focus);
-    outline-offset: 2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   /* Doubled class: above .di-control's hover, so neither state takes the hover edge. */
@@ -64,8 +64,8 @@
   }
 
   .di-date-field-toggle:focus-visible {
-    outline: 2px solid var(--di-focus);
-    outline-offset: -2px;
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-date-field-toggle:disabled {

@@ -239,6 +239,8 @@ export const AfterDark: Story = {
   render: (args) => Default.render!(args, {} as never),
   play: async ({ canvasElement }) => {
     const button = within(canvasElement).getByRole("button", { name: "Sign in" });
+    // The fill eases from the theme of the story before; read it where it lands.
+    await Promise.all(button.getAnimations().map((animation) => animation.finished.catch(() => undefined)));
     const fill = getComputedStyle(button).backgroundColor;
     await expect(fill).not.toBe(getComputedStyle(canvasElement.querySelector(".di-login")!).backgroundColor);
     await expect(getComputedStyle(canvasElement.querySelector(".di-login")!).backgroundColor).toBe("rgb(10, 31, 68)");

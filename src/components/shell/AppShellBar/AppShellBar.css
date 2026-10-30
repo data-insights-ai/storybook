@@ -1,4 +1,9 @@
 @layer components {
+  /* Tab scrolls a control clear of the sticky bar, its ring included. */
+  html:has(.di-topbar) {
+    scroll-padding-top: calc(var(--di-shell-bar-height) + 1px + var(--di-focus-ring-reach));
+  }
+
   /* What follows the sticky bar stops under it. */
   .di-topbar ~ * {
     --di-sticky-top: calc(var(--di-shell-bar-height) + 1px);

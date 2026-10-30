@@ -107,6 +107,33 @@ export const NewConnection: Story = {
   },
 };
 
+/** The first step in the dialog, the chosen type in focus: the ring sits on the card's edge, whole, inside the scrolling body. */
+export const ChoosingAType: Story = {
+  render: (args) => <InADialog {...args} />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "New connection" }));
+    const canvas = within(
+      await within(canvasElement.ownerDocument.body).findByRole("dialog", { name: "New connection" }),
+    );
+    await userEvent.click(canvas.getByText("OpenID Connect"));
+    await expect(canvas.getByRole("radio", { name: /OpenID Connect/ })).toBeChecked();
+  },
+};
+
+/** The second step in the dialog, the name field in focus, its ring whole above the sticky actions. */
+export const FillingInDetails: Story = {
+  render: (args) => <InADialog {...args} />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "New connection" }));
+    const canvas = within(
+      await within(canvasElement.ownerDocument.body).findByRole("dialog", { name: "New connection" }),
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Next" }));
+    await waitFor(() => expect(canvas.getByLabelText("Name")).toHaveFocus());
+    await userEvent.type(canvas.getByLabelText("Name"), "Head office");
+  },
+};
+
 /** On its own page (`width="page"`): the step is a panel with its lede, and the cards use the page's width. */
 export const OnAPage: Story = {
   args: { width: "page" },

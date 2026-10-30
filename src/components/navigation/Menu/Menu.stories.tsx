@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { MoreVertical } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
+import { Toolbar } from "../../actions/Toolbar";
 import { DataTable, TableBody, TableCell, TableRow } from "../../data/table/DataTable";
 import { Menu, MenuDivider, MenuGroup, MenuItem } from "./Menu";
 
@@ -169,7 +170,7 @@ export const TabExit: Story = {
   render: function Render(args) {
     const [open, setOpen] = useState(false);
     return (
-      <div>
+      <Toolbar align="start">
         <Menu
           {...args}
           open={open}
@@ -179,7 +180,7 @@ export const TabExit: Story = {
           <MenuItem onSelect={() => setOpen(false)}>Open record</MenuItem>
         </Menu>
         <Button variant="secondary">Next action</Button>
-      </div>
+      </Toolbar>
     );
   },
   play: async ({ canvasElement }) => {

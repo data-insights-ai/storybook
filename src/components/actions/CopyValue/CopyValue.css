@@ -34,6 +34,11 @@
   }
 
   /* A tone, not a frame: the value often sits in a framed field or card already. */
+  /* The button already reaches past the value's line: its ring is drawn inside it, clear of the lines around. */
+  .di-copy-button:focus-visible {
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
   .di-copy-button:hover {
     background: var(--di-row-hover-bg);
     color: var(--di-text);

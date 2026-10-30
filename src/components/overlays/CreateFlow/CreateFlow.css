@@ -52,7 +52,11 @@
     color: var(--di-status-danger-fg);
   }
 
-  /* The footer keeps to the bottom of the viewport while a long step scrolls: the ground, not a rule, sets it off. */
+  /*
+   * The footer keeps to the bottom of the viewport while a long step
+   * scrolls: the ground, not a rule, sets it off. Its ground starts a ring
+   * width below the step, so a ring at the step's foot stays in sight.
+   */
   .di-create-flow-actions {
     position: sticky;
     bottom: 0;
@@ -61,7 +65,8 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--di-gap-8);
-    padding: var(--di-gap-12) 0;
+    margin-top: var(--di-focus-ring-reach);
+    padding: calc(var(--di-gap-12) - var(--di-focus-ring-reach)) 0 var(--di-gap-12);
     background: var(--di-bg-page);
   }
 
@@ -69,6 +74,11 @@
   :is(.di-dialog, .di-dialog-docked) .di-create-flow-actions {
     padding-bottom: 0;
     background: var(--di-surface-bg, var(--di-bg-surface));
+  }
+
+  /* Tab scrolls a focused field clear of the sticky actions, its ring included. */
+  :is(html, .di-dialog-body):has(.di-create-flow-actions) {
+    scroll-padding-bottom: calc(var(--di-field-height) + 2 * var(--di-gap-16) + var(--di-focus-ring-reach));
   }
 
   .di-create-flow-spacer {
@@ -92,7 +102,7 @@
 
   /* The actions are the panel's last row at its inset, 16 below the step as a panel's rows are; they stay in view on a long step. */
   .di-create-flow[data-width="page"] .di-create-flow-actions {
-    padding: var(--di-gap-16) var(--di-create-flow-pad) var(--di-create-flow-pad);
+    padding: calc(var(--di-gap-16) - var(--di-focus-ring-reach)) var(--di-create-flow-pad) var(--di-create-flow-pad);
     border-radius: 0 0 var(--di-panel-radius) var(--di-panel-radius);
     background: var(--di-surface-bg);
   }

@@ -32,8 +32,8 @@
     padding-inline: var(--di-space-8);
   }
 
-  .di-sb :focus-visible {
-    outline-color: var(--di-sidebar-focus);
+  .di-sb {
+    --di-focus-ring-color: var(--di-sidebar-focus);
   }
 
   .di-sb-header,
@@ -175,17 +175,46 @@
     min-height: 0;
   }
 
+  /*
+   * The drawer's head is the shell bar's row: the brand at its start, the
+   * close button a quiet icon at its end, centred on the row, so opening
+   * the drawer replaces the bar's start in place.
+   */
+  /* The foot keeps the head row's inset, so the drawer holds its content alike above and below. */
+  .di-sb-drawer {
+    --di-sb-close-size: var(--di-control-h-md);
+    padding-bottom: calc((var(--di-shell-bar-height) - var(--di-sb-close-size)) / 2);
+  }
+
   .di-sb-close {
+    position: absolute;
+    top: calc((var(--di-shell-bar-height) - var(--di-sb-close-size)) / 2);
+    inset-inline-end: var(--di-space-12);
     display: inline-flex;
-    align-self: flex-end;
     align-items: center;
     justify-content: center;
-    width: var(--di-control-h-md);
-    height: var(--di-control-h-md);
-    border: 1px solid var(--di-sidebar-edge);
+    width: var(--di-sb-close-size);
+    height: var(--di-sb-close-size);
+    padding: 0;
+    border: 0;
     border-radius: var(--di-radius-control);
-    background: var(--di-sidebar-raised);
+    background: transparent;
     color: var(--di-sidebar-fg);
+    cursor: pointer;
+  }
+
+  .di-sb-close:hover {
+    background: color-mix(in srgb, var(--di-sidebar-fg) 6%, transparent);
+  }
+
+  @media (pointer: coarse) {
+    .di-sb-drawer {
+      --di-sb-close-size: var(--di-target);
+    }
+  }
+
+  .di-sb-drawer .di-sb-header > :first-child {
+    margin-inline-end: calc(var(--di-sb-close-size) + var(--di-gap-8));
   }
 
   .di-sb-close > svg {

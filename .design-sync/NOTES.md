@@ -82,23 +82,17 @@ values.
   `Console` is now the Storybook-window variant no product renders and no story
   owns. The card is `AppShell`. Since 0.10.0 `Console` and `ConsoleFrame` live in
   `.storybook/console/Console.tsx`, outside the bundle.
-  `null` excludes: `Foundations/*` (Color, Type, Logo, Scale, Decisions — doc
-  pages with no component) and every `Patterns/*` story (Architecture, Case
+  `null` excludes: `Introduction` and `Foundations/*` (Register, Voice, Color,
+  Type, Scale, Logo, Pages, Groups — doc pages with no component) and every `Patterns/*` story (Architecture, Case
   triage, Coverage, Create flow, Detail page, Inference, List page, Login,
-  Organization home, Register, Security overview, Settings, Watchlist). The
-  MDX pages are guidelines (`guidelinesGlob`), not stories, and need none.
+  Organization home, Register, Security overview, Settings, Watchlist).
   **A new Foundations story or pattern needs a new null**, or it gets scanned
   as a component. The converter's source is not in this repo; the check is
   that every `Foundations/*` and `Patterns/*` story title's last segment is a
   key here.
-- **`guidelinesGlob: ["src/foundations/**/*.mdx"]`** — the converter's defaults
-  (`docs/*.md`, `docs/guides/**`, `guides/**`) match nothing here, which is why
-  `guidelines/` came out empty and silent on the first upload. The six MDX brand
-  documents (Essence, Register, Voice, Mark, Surfaces, Practice) are **docs**-type
-  entries in storybook's `index.json`; the roster scan filters to **story**-type
-  entries, so they were invisible to every earlier step.
-  Paths keep the `src/foundations/` prefix (repo-relative to the package dir).
-  Cosmetic; `index.md` links them correctly.
+- **`guidelinesGlob: ["src/foundations/**/*.mdx"]`** matches nothing since 2026-10-30: every
+  Foundations page is a story now (so the story tests check it), excluded by a `null` above. The
+  guidelines a design agent reads are `conventions.md` (`readmeHeader`).
 - **`dtsPropsFor.Button`** — see the union note under Tool limitations.
 - **`readmeHeader: ".design-sync/conventions.md"`** — the design agent's header.
 - **`overrides`** — reasons under Tool limitations: `Modal` single

@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
 import {
+  Button,
+  ChoiceGroup,
   DataTable,
   Fact,
   FactList,
@@ -90,6 +93,47 @@ const decisions: { pattern: string; verdict: Verdict; built: string; reason: str
     reason: "The sidebar keeps the declared order: a rail when collapsed, a drawer on a phone.",
   },
 ];
+
+function FocusExample() {
+  const [kind, setKind] = useState("syslog");
+  const [view, setView] = useState("list");
+  return (
+    <Example
+      title="Press Tab"
+      note="The field and the button take the ring outside, the segments inside, the chosen card on its cornflower edge."
+    >
+      <Stack gap={16}>
+        <Toolbar label="Sources">
+          <SearchField id="register-focus-search" label="Search sources" placeholder="Search sources" />
+          <ChoiceGroup
+            appearance="segments"
+            hideLegend
+            legend="View"
+            name="register-focus-view"
+            options={[
+              { value: "list", label: "List" },
+              { value: "map", label: "Map" },
+            ]}
+            value={view}
+            onChange={setView}
+          />
+          <Button variant="secondary">Export</Button>
+        </Toolbar>
+        <ChoiceGroup
+          appearance="cards"
+          legend="Source type"
+          name="register-focus-kind"
+          options={[
+            { value: "syslog", label: "Syslog", description: "CEF or RFC 5424 over TLS." },
+            { value: "hec", label: "Splunk HEC", description: "Events pushed over HTTPS." },
+          ]}
+          value={kind}
+          onChange={setKind}
+        />
+      </Stack>
+    </Example>
+  );
+}
 
 function RegisterPage() {
   return (
@@ -191,17 +235,36 @@ function RegisterPage() {
 
       <DocSection
         title="Focus and selection"
-        lede="Focus shows where the keyboard is; selection shows what is chosen. Both are cornflower lines, and neither is a pale fill."
+        lede="Focus shows where the keyboard is; selection shows what is chosen. Both are cornflower lines, never a pale fill. Foundations/Color shows the selected looks."
       >
+        <FocusExample />
         <Rules>
           <li>A ring shows only on keyboard focus (:focus-visible). After a pointer click there is none.</li>
-          <li>A ring is never clipped and never overlaps a neighbour.</li>
           <li>
-            Rows in a list, a menu, the sidebar, options and segments get an inset ring. A free-standing control gets an
-            outside ring with an offset, and the scroll frame around it leaves room for it.
+            The ring is one model: <code>--di-focus-ring-width</code> solid <code>--di-focus-ring-color</code>. A
+            free-standing control (a button, a field, a link at a block&apos;s edge) takes it outside, at{" "}
+            <code>--di-focus-ring-offset</code>, with the ground showing between.
           </li>
-          <li>Focused and selected is one indicator that changes, never two rings.</li>
-          <li>The selected thing is a raised neutral tone; cornflower marks it as an edge or a border.</li>
+          <li>
+            An item that touches its neighbours or sits in a clipping frame takes it inside: menu and option rows,
+            sidebar items, table rows, tabs, segments, pages.
+          </li>
+          <li>
+            A framed item in a group (a choice card, a toggle, a tag) takes it on its edge. Chosen, its cornflower edge
+            and the ring read as one thicker edge: focus and selection are one indicator, never two rings.
+          </li>
+          <li>
+            Inside a strong fill (the current page) the ring takes <code>--di-focus-ring-on-strong</code>, so it holds
+            3:1.
+          </li>
+          <li>
+            Every scroll frame keeps the ring&apos;s reach (<code>--di-focus-ring-reach</code>) as padding, so a ring is
+            never clipped and never lies under a sticky bar. A link in running text hugs its words.
+          </li>
+          <li>
+            The story tests Tab through every story in both themes, densities and widths, and fail a ring that is
+            clipped, overlaps a neighbour, falls under 3:1, doubles a selection edge or lies under a sticky layer.
+          </li>
         </Rules>
       </DocSection>
 

@@ -78,6 +78,13 @@
     --di-surface-shadow: var(--di-shadow-plane);
   }
 
+  /* Tab scrolls a field clear of the floating bar, its ring included. */
+  html:has(.di-toolbar[data-sticky="bottom"]) {
+    scroll-padding-bottom: calc(
+      var(--di-space-16) + var(--di-field-height) + 2 * var(--di-gap-8) + var(--di-focus-ring-reach)
+    );
+  }
+
   /* The same inset above and below; in the list's place it keeps the filter row's height on a wide screen. */
   .di-toolbar-bar {
     padding: var(--di-inset-group);
@@ -114,6 +121,12 @@
     flex-wrap: nowrap;
     justify-content: flex-end;
     gap: var(--di-gap-4);
+  }
+
+  /* Icon buttons close together in a row's cell: the ring is drawn inside the one in focus. */
+  .di-toolbar.is-row > :focus-visible,
+  .di-toolbar.is-row > * :focus-visible {
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   @media (hover: hover) {

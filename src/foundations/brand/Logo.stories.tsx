@@ -75,6 +75,10 @@ function LogoPage() {
         <Rules>
           <li>Clear space: at least the height of the mark's cap (1X) on all four sides.</li>
           <li>Smallest lockup: 20px high on screen, 10mm in print. Smallest mark: 16px or 6mm.</li>
+          <li>
+            In the product the Sidebar carries the brand on the bar&apos;s row, with the mark at one height,{" "}
+            <code>--di-sb-mark-h</code>, on the rail and in the lockup.
+          </li>
         </Rules>
       </DocSection>
 

@@ -87,6 +87,21 @@
     --di-select: var(--di-cornflower-600);
     --di-focus: var(--di-cornflower-600);
     --di-focus-halo: rgba(43, 108, 176, 0.22);
+    /*
+     * The focus ring, one model (Foundations/Register): outside the control
+     * at the offset when it stands free, drawn inside it (the inset) where a
+     * neighbour or a clipping frame sits next to it. On a selected item the
+     * ring is drawn over the selection edge, so it is one indicator. The
+     * reach is how far an outside ring extends: a scroll frame keeps that
+     * much room.
+     */
+    --di-focus-ring-width: 2px;
+    --di-focus-ring-offset: 2px;
+    --di-focus-ring-inset: calc(-1 * var(--di-focus-ring-width));
+    --di-focus-ring-reach: calc(var(--di-focus-ring-width) + var(--di-focus-ring-offset));
+    --di-focus-ring-color: var(--di-focus);
+    /* A ring drawn inside the strong fill (a current page, a chosen thumb). */
+    --di-focus-ring-on-strong: var(--di-cornflower-300);
 
     --di-chart-series: var(--di-navy-900);
     --di-chart-highlight: var(--di-gold-500);
@@ -273,6 +288,8 @@
     --di-select: var(--di-cornflower-300);
     --di-focus: var(--di-cornflower-300);
     --di-focus-halo: rgba(121, 174, 234, 0.3);
+    --di-focus-ring-color: var(--di-focus);
+    --di-focus-ring-on-strong: var(--di-cornflower-600);
 
     --di-chart-series: var(--di-night-ink);
     --di-chart-highlight: var(--di-gold-400);

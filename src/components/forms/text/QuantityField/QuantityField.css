@@ -56,9 +56,11 @@
     height: var(--di-icon-sm);
   }
 
+  /* The field and its steps are joined: the ring is drawn inside the part in focus, over its frame. */
   .di-quantity-step:focus-visible,
   .di-quantity-input:focus-visible {
     position: relative;
     z-index: 1;
+    outline-offset: var(--di-focus-ring-inset);
   }
 }

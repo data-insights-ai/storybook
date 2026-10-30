@@ -139,7 +139,7 @@
   }
 
   .di-split-item:focus-visible {
-    outline-offset: -2px;
+    outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-split-item-marks {
