@@ -1,64 +1,47 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
 import { surfaceClass } from "../../../../internal/surface";
-import { TickRule } from "../../../text/TickRule";
-import "./StatTile.css";
+import { Figure, FigureNote } from "../Figure";
 
 /**
- * One measured value. The figure runs in the mono track
- * with tabular figures, so a column of tiles does not jitter as the
- * numbers update.
+ * One measured value on its own surface.
  *
- * The delta names its own direction in words as well as colour: a
- * screen reader hears "down 12 percent", not a green or a red.
+ * @deprecated Removed in 0.12.0. Use `<Panel><Figure/></Panel>`: `label`,
+ * `value` and `tone` go to `Figure`, `compact` becomes `size="compact"`,
+ * and the children stay (a `StatTileDelta` becomes a `FigureNote`).
+ * `ruled` goes: the tick rule was decoration.
  */
 export function StatTile({
   label,
   value,
   tone = "neutral",
   compact = false,
-  ruled = false,
   className,
   children,
 }: {
   label: string;
   value: string;
-  /** `danger` is a value that crossed a threshold, not a styling choice. */
   tone?: "neutral" | "danger";
   compact?: boolean;
-  /** Closes the tile on the tick scale. For a tile that reports a measurement. */
+  /** Ignored; the tick rule was decoration. */
   ruled?: boolean;
   className?: string;
-  /** What the figure is read against: a `StatTileDelta`, a `Sparkline`. */
   children?: ReactNode;
 }) {
   return (
-    <div
-      className={cx(
-        surfaceClass({ edge: tone === "danger" ? "danger" : "none", padded: false }),
-        "di-stat-tile",
-        tone === "danger" && "is-danger",
-        className,
-      )}
-    >
-      <div className="di-stat-tile-body">
-        <p className="di-stat-tile-label">{label}</p>
-        <p className={cx("di-stat-tile-value", compact && "is-compact")}>{value}</p>
+    <div className={cx(surfaceClass(), className)}>
+      <Figure label={label} value={value} tone={tone} size={compact ? "compact" : "regular"}>
         {children}
-        {ruled ? <TickRule /> : null}
-      </div>
+      </Figure>
     </div>
   );
 }
 
 /**
- * The change since the last reading, under the figure. A slot rather
- * than a `delta` string beside a `deltaTone`, so the same place can hold
- * a `Sparkline` — what a figure is read against is not always a word.
+ * The change since the last reading.
  *
- * The direction is named in the text as well as the colour: a screen
- * reader hears "down 12 percent", never a green or a red.
+ * @deprecated Removed in 0.12.0. Use `FigureNote`, with the same `tone`.
  */
 export function StatTileDelta({ tone = "ok", children }: { tone?: "ok" | "warn" | "danger"; children: ReactNode }) {
-  return <p className={cx("di-stat-tile-delta", `is-${tone}`)}>{children}</p>;
+  return <FigureNote tone={tone}>{children}</FigureNote>;
 }

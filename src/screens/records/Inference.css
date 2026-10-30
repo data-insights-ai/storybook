@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--di-space-16);
-  align-items: stretch;
+  align-items: start;
 }
 
 .inference-badges {

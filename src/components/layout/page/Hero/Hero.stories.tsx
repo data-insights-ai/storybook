@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { TrendChart } from "../../../charts/time/TrendChart";
-import { Figure, FigureRow } from "../../../data/figures/FigureRow";
-import { HeroFigure } from "../../../data/figures/HeroFigure";
+import { FigureRow } from "../../../data/figures/FigureRow";
+import { Figure } from "../../../data/figures/Figure";
 import { SeverityMark } from "../../../marks/status/SeverityMark";
 import { TextLink } from "../../../navigation/TextLink";
 import { Hero, HeroAside, HeroFooter, HeroLead, HeroVisual } from "./Hero";
@@ -47,11 +47,11 @@ export const Default: Story = {
         <TextLink href="#cases">All cases</TextLink>
       </HeroAside>
       <HeroLead>
-        <HeroFigure label="Open cases" value="3">
+        <Figure size="hero" label="Open cases" value="3">
           <SeverityMark level="critical" label="1 critical" />
           <SeverityMark level="high" label="1 high" />
           <SeverityMark level="medium" label="1 medium" />
-        </HeroFigure>
+        </Figure>
       </HeroLead>
       <HeroVisual>
         <TrendChart

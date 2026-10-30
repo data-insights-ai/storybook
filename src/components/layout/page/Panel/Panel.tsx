@@ -225,7 +225,7 @@ export function PanelLead({ children }: { children: string }) {
 
 /**
  * The one figure the panel is about, in a column before its `PanelVisual`:
- * a `HeroFigure` in the hero, a `Figure` on a dashboard. On a narrow panel
+ * a `Figure size="hero"` in the hero, a `Figure` on a dashboard. On a narrow panel
  * it stacks above the visual.
  */
 export function PanelFigure({ children }: { children: ReactNode }) {

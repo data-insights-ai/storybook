@@ -18,7 +18,7 @@
 
   /* The console list: a term column that wraps, then the value. */
   .di-facts-rows {
-    margin: var(--di-gap-12) 0 0;
+    margin: 0;
     border-top: 1px solid var(--di-rule-hairline);
   }
 
@@ -108,7 +108,6 @@
     min-width: 0;
   }
 
-  .di-facts-columns .di-fact-label,
   .di-facts-inline .di-fact-label {
     font-size: var(--di-font-size-200);
     color: var(--di-text-subtle);
@@ -138,6 +137,67 @@
   .di-facts-inline .di-fact-value {
     overflow-wrap: anywhere;
     font-size: var(--di-font-size-300);
+    color: var(--di-text);
+  }
+
+  /* Labels above values read as captions: the one mono label style. */
+  .di-facts-columns .di-fact-label,
+  .di-facts-stacked .di-fact-label {
+    font-family: var(--di-mono-label-family);
+    font-size: var(--di-mono-label-size);
+    font-weight: var(--di-mono-label-weight);
+    letter-spacing: var(--di-mono-label-tracking);
+    text-transform: uppercase;
+    color: var(--di-mono-label-color);
+  }
+
+  /* A short list beside a figure: the term keeps up to two fifths, the value ends the line. */
+  .di-facts-pairs {
+    display: grid;
+    grid-template-columns: fit-content(40%) minmax(0, 1fr);
+    gap: var(--di-gap-6) var(--di-gap-12);
+    margin: 0;
+    font-size: var(--di-font-size-400);
+  }
+
+  .di-facts-pairs .di-fact {
+    display: contents;
+  }
+
+  .di-facts-pairs .di-fact-label {
+    color: var(--di-text-subtle);
+  }
+
+  .di-facts-pairs .di-fact-value {
+    overflow-wrap: anywhere;
+    text-align: end;
+    color: var(--di-text);
+  }
+
+  .di-facts-stacked {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-12);
+    margin: 0;
+  }
+
+  .di-facts-stacked .di-fact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-4);
+    min-width: 0;
+  }
+
+  /* A token keeps its parts together: a range breaks at its arrow, not inside a date. */
+  .di-facts-stacked .di-fact-value.di-fact-mono {
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  .di-facts-stacked .di-fact-value {
+    overflow-wrap: anywhere;
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-snug);
     color: var(--di-text);
   }
 }

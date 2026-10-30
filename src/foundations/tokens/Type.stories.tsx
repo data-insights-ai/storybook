@@ -31,7 +31,7 @@ const display: Row[] = [
   },
   {
     token: "--di-font-size-700 · 28 · 700",
-    note: "PageHeader: the page's name. Figure, StatTile value",
+    note: "PageHeader: the page's name. Figure value",
     sample: "Production",
     style: {
       fontFamily: DISPLAY,

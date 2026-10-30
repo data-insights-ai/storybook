@@ -1,20 +1,17 @@
 import type { ReactNode } from "react";
-import "./Stat.css";
+import { cx } from "../../../../internal/cx";
+import { Figure, InFigureList } from "../Figure";
 
 /**
- * A labelled figure: `label` above, `value` with an optional `suffix` (a unit)
- * below. What qualifies the figure, a `StatusPill` or a note, goes in as
- * children. For a figure on its own surface, with a trend
- * or a delta, use `StatTile`.
+ * A labelled figure.
  *
- * @deprecated Removed in 0.12.0. Use `Figure` inside a `FigureRow`: `label`
- * stays, `value` takes the figure with its unit, and what qualified it goes in
- * `Figure`'s children.
+ * @deprecated Removed in 0.12.0. Use `Figure`: `label` and `value` stay,
+ * `suffix` becomes `unit`, and what qualified it goes in its children.
  */
 export function Stat({
   label,
-  value,
-  suffix = "",
+  value = "",
+  suffix,
   children,
 }: {
   label: string;
@@ -23,25 +20,24 @@ export function Stat({
   children?: ReactNode;
 }) {
   return (
-    <div className="di-stat">
-      <div className="di-stat-label">{label}</div>
-      {value ? (
-        <div className="di-stat-value">
-          {value}
-          {suffix ? <span>{suffix}</span> : null}
-        </div>
-      ) : null}
+    <Figure label={label} value={value} unit={suffix}>
       {children}
-    </div>
+    </Figure>
   );
 }
 
 /**
- * A row of `Stat`s side by side, wrapping on a narrow page.
+ * A row of `Stat`s.
  *
- * @deprecated Removed in 0.12.0 with `Stat`. Use `FigureRow` (`variant="strip"`,
- * or `"footer"` under a `Hero`), which also names the row with `label`.
+ * @deprecated Removed in 0.12.0 with `Stat`. Use `FigureRow` with a
+ * `label` that names the row.
  */
 export function StatRow({ children }: { children: ReactNode }) {
-  return <div className="di-stat-row">{children}</div>;
+  return (
+    <div className={cx("di-figure-row", "di-figure-row-strip")}>
+      <dl className="di-figure-list">
+        <InFigureList.Provider value={true}>{children}</InFigureList.Provider>
+      </dl>
+    </div>
+  );
 }
