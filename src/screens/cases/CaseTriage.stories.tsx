@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
-import { toolbarRows } from "../../components/actions/Toolbar/Toolbar.sample";
+import { toolbarRows } from "../../components/actions/Toolbar/rows.sample";
 import { CaseTriage } from "./CaseTriage";
 
 const meta = {

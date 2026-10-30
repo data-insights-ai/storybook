@@ -12,7 +12,8 @@ import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
 import { Toolbar } from "./Toolbar";
 import { ToolbarAction, ToolbarEnd, ToolbarNote, ToolbarSelection, ToolbarStatus } from "./ToolbarParts";
-import { MembersFilter, MembersTable, toolbarRows, words, type Words } from "./Toolbar.sample";
+import { MembersFilter, MembersTable, words, type Words } from "./Toolbar.sample";
+import { toolbarRows } from "./rows.sample";
 
 const phone = () => window.innerWidth <= 600;
 

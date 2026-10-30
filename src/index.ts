@@ -59,7 +59,7 @@ export { CountButton } from "./components/actions/CountButton";
 export { CopyValue } from "./components/actions/CopyValue";
 export { CreateFlow } from "./components/overlays/CreateFlow";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/compare/CoverageMatrix";
-export { DangerZone } from "./components/feedback/DangerZone";
+export { DangerZone } from "./components/layout/page/Panel";
 export { Dialog, DialogFooter, type DialogProps } from "./components/overlays/Dialog";
 export type {
   CoverageMatrixColumn,

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { RegisterScreen } from "./Register";
-import { toolbarRows } from "../../components/actions/Toolbar/Toolbar.sample";
+import { toolbarRows } from "../../components/actions/Toolbar/rows.sample";
 
 const meta = {
   title: "Patterns/Register",
