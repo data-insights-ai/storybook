@@ -183,13 +183,12 @@ export function RegisterScreen() {
 
       <DataTable caption="Sources on record">
         <TableToolbar>
-          <div style={{ width: 240 }}>
+          <div style={{ flex: "1 1 15rem", minWidth: 0, maxWidth: "20rem" }}>
             <SearchField
               id="register-search"
               label="Search the register"
               placeholder="host, hash or operator"
-              dense={true}
-              shortcut="⌘K"
+              size="sm"
             />
           </div>
           <Chip active={true} removeLabel="Remove the workspace filter">

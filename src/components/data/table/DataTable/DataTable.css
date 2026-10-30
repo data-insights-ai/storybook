@@ -13,8 +13,10 @@
     --di-table-shadow: none;
   }
 
+  /* Filters wrap onto a second line on a phone rather than running past the frame. */
   .di-table-toolbar {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--di-gap-8);
     padding: var(--di-space-12);
