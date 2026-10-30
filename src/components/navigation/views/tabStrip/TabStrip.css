@@ -1,12 +1,13 @@
 @layer components {
   /*
-   * A strip wider than its frame scrolls on its own, so the page does not.
-   * The baseline is drawn inside the strip, where the scroll cannot clip the
-   * active tab's mark that sits on it.
+   * The strip Tabs and TabNav share. A strip wider than its frame scrolls on
+   * its own, so the page does not. The baseline is drawn inside the strip,
+   * where the scroll cannot clip the active tab's mark that sits on it.
    */
   .di-tabs {
     display: flex;
     gap: var(--di-space-2);
+    min-width: 0;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
@@ -28,9 +29,12 @@
     border-bottom: 2px solid transparent;
     background: transparent;
     color: var(--di-text-muted);
+    font-family: var(--di-font-ui);
     font-size: var(--di-font-size-400);
     font-weight: var(--di-weight-medium);
     white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
     transition:
       color var(--di-duration) var(--di-ease),
       border-color var(--di-duration) var(--di-ease);
@@ -50,22 +54,23 @@
     cursor: not-allowed;
   }
 
+  /* Inside the strip, where the scroll would clip a ring drawn outside the tab. */
+  .di-tab:focus-visible {
+    outline-offset: -2px;
+  }
+
   .di-tab-badge {
     display: inline-flex;
   }
 
+  /* A finger gets the 40px target whatever the density. */
+  @media (pointer: coarse) {
+    .di-tab {
+      height: var(--di-target);
+    }
+  }
+
   .di-tabpanel {
     padding-top: var(--di-gap-16);
-  }
-}
-
-@layer components {
-  a.di-tab {
-    text-decoration: none;
-  }
-
-  /* Inside the strip, where the scroll would clip a ring drawn outside the tab. */
-  .di-tab:focus-visible {
-    outline-offset: -2px;
   }
 }

@@ -3,11 +3,30 @@ import { cx } from "../../../../internal/cx";
 import "./Pagination.css";
 
 /**
- * Controlled. The caller owns `page` because it also owns which rows are
- * visible. Every control calls `onPageChange` with the page it wants.
+ * Moves through the pages of one list: a register, a table, a search
+ * result.
  *
- * The numbers are buttons, not links: they change what this view shows
- * rather than navigating away from it.
+ * - **Use it** under a list that loads a page at a time and where the
+ *   reader may want to jump (page 3 of 40).
+ * - **Not** for a list that grows as the reader scrolls (`InfiniteTable`),
+ *   for steps of a process (`Steps`), or for the views of a record
+ *   (`Tabs`).
+ *
+ * Anatomy: Previous, the page numbers, Next. With more than seven pages it
+ * keeps the first, the last and the pages round the current one, and an
+ * ellipsis stands for the rest, so the control never runs wider than seven
+ * slots. `numbered={false}` leaves only the arrows and the current page,
+ * for a footer with no room.
+ *
+ * Controlled: the caller owns `page` because it also owns which rows are
+ * visible; every control calls `onPageChange` with the page it wants. The
+ * numbers are buttons, not links: they change what this view shows rather
+ * than navigating away from it.
+ *
+ * Accessibility: a `nav` named by `label`; each number is announced with
+ * `pageLabel` ("Page 3"), the current one with `aria-current="page"`;
+ * the ellipsis is hidden from screen readers. On a touch screen each button
+ * is 40px.
  */
 export function Pagination({
   page,
@@ -31,8 +50,6 @@ export function Pagination({
   /** Off leaves only the arrows and the current page. */
   numbered?: boolean;
 }) {
-  const numbers = Array.from({ length: pages }, (_, i) => i + 1);
-
   return (
     <nav className="di-pages" aria-label={label}>
       <button
@@ -45,18 +62,24 @@ export function Pagination({
         <ChevronLeft aria-hidden />
       </button>
       {numbered ? (
-        numbers.map((n) => (
-          <button
-            key={n}
-            type="button"
-            className={cx("di-page-btn", "di-page-num", n === page && "is-current")}
-            aria-label={`${pageLabel} ${n}`}
-            aria-current={n === page ? "page" : undefined}
-            onClick={() => onPageChange(n)}
-          >
-            {n}
-          </button>
-        ))
+        pageSlots(page, pages).map((n, i) =>
+          n === "gap" ? (
+            <span key={`gap-${i}`} className="di-page-gap" aria-hidden>
+              …
+            </span>
+          ) : (
+            <button
+              key={n}
+              type="button"
+              className={cx("di-page-btn", "di-page-num", n === page && "is-current")}
+              aria-label={`${pageLabel} ${n}`}
+              aria-current={n === page ? "page" : undefined}
+              onClick={() => onPageChange(n)}
+            >
+              {n}
+            </button>
+          ),
+        )
       ) : (
         <span className="di-page-current" aria-current="page">
           {page}
@@ -73,4 +96,13 @@ export function Pagination({
       </button>
     </nav>
   );
+}
+
+/** At most seven slots: the first and last page, the current one with its neighbours, a gap for the rest. */
+function pageSlots(page: number, pages: number): (number | "gap")[] {
+  const range = (from: number, to: number) => Array.from({ length: to - from + 1 }, (_, i) => from + i);
+  if (pages <= 7) return range(1, pages);
+  if (page <= 4) return [...range(1, 5), "gap", pages];
+  if (page >= pages - 3) return [1, "gap", ...range(pages - 4, pages)];
+  return [1, "gap", page - 1, page, page + 1, "gap", pages];
 }

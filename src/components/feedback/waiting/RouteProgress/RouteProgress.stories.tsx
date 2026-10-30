@@ -59,7 +59,7 @@ export const Navigating: Story = {
       <Stack gap={24}>
         <AppShellBar>
           <span>feed.example.io</span>
-          <AppShellBarEnd>
+          <AppShellBarEnd moreLabel="More">
             <Button variant="secondary" size="sm" onClick={navigate}>
               Navigate again
             </Button>

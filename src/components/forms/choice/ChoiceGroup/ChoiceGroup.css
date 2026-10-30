@@ -48,7 +48,7 @@
     height: var(--di-segment-h);
     padding: 0 var(--di-gap-12);
     border-radius: var(--di-radius-micro);
-    color: var(--di-text-muted);
+    color: var(--di-text);
     font-family: var(--di-label-family);
     font-size: var(--di-label-size);
     line-height: 1;
@@ -60,15 +60,71 @@
   }
 
   .di-choice-segment:hover:not(.is-chosen, :has(:disabled)) {
-    color: var(--di-text);
     background: var(--di-row-hover-bg);
   }
 
-  /* The one chosen look for a segment and a card: the selection tint, a cornflower edge, the text at full strength. */
-  .di-choice-segment.is-chosen {
-    background: var(--di-choice-selected-bg);
-    box-shadow: inset 0 0 0 1px var(--di-choice-selected-edge);
-    color: var(--di-choice-selected-fg);
+  /* One thumb on the track: a cornflower fill and no edge of its own, so the track is the only outline. */
+  .di-choice-segment.is-chosen,
+  .di-choice-toggle.is-chosen {
+    background: var(--di-choice-on-bg);
+    color: var(--di-choice-on-fg);
+  }
+
+  /* Toggles: separate cells of one width, each in the field frame, no track around them. */
+  .di-choice-toggles {
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(var(--di-choice-toggle-w), 1fr);
+    gap: var(--di-gap-4);
+    align-self: flex-start;
+    max-width: 100%;
+  }
+
+  .di-choice-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--di-field-height);
+    padding: 0 var(--di-gap-8);
+    border: 1px solid var(--di-field-border);
+    border-radius: var(--di-field-radius);
+    background: var(--di-field-bg);
+    color: var(--di-text);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      border-color var(--di-duration) var(--di-ease),
+      background-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-choice-toggle:hover:not(.is-chosen, :has(:disabled)) {
+    border-color: var(--di-field-border-hover);
+  }
+
+  .di-choice-toggle.is-chosen {
+    border-color: var(--di-choice-on-bg);
+  }
+
+  .di-choice-toggle:has(:focus-visible) {
+    outline: 2px solid var(--di-focus);
+    outline-offset: 2px;
+  }
+
+  .di-choice-toggle:has(:disabled) {
+    border-color: var(--di-field-border);
+    background: var(--di-bg-disabled);
+    color: var(--di-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .di-choice-toggle.is-chosen:has(:disabled) {
+    border-color: var(--di-text-disabled);
+    background: var(--di-text-disabled);
+    color: var(--di-bg-disabled);
   }
 
   .di-choice-segment:has(:focus-visible),
@@ -85,8 +141,8 @@
   }
 
   .di-choice-segment.is-chosen:has(:disabled) {
-    background: var(--di-bg-disabled);
-    box-shadow: inset 0 0 0 1px var(--di-text-disabled);
+    background: var(--di-text-disabled);
+    color: var(--di-bg-disabled);
   }
 
   @media (pointer: coarse) {

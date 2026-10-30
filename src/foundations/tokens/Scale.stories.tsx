@@ -132,7 +132,7 @@ export const Dimensions: StoryObj = {
       <Section
         eyebrow="The index column"
         title="A number only where the order is information."
-        lede="`--di-index-col`, 38px, holds the ordinal of a row in a `DataTable` and a table-shaped `Loading` with `index`, and the icon of a `Notice` and a `Modal`. Numbers count where order means something: the rows of a register, the steps of a process (`Numbered`, `Stepper`), the rank in an `AttentionList`, the phases of a story."
+        lede="`--di-index-col`, 38px, holds the ordinal of a row in a `DataTable` and a table-shaped `Loading` with `index`, and the icon of a `Notice` and a `Modal`. Numbers count where order means something: the rows of a register, the steps of a process (`Steps`), the rank in an `AttentionList`, the phases of a story."
       >
         <Rules>
           <Rule>
@@ -143,7 +143,7 @@ export const Dimensions: StoryObj = {
             A sheet opened from a row names its record in the eyebrow (`Member · WS-01`), not by the row's ordinal.
           </Rule>
           <Rule>A failure is a status beside its title, in words, not a tinted number.</Rule>
-          <Rule>`Toast`, `Stage` and `Session` carry no index either. They report; they are not entries.</Rule>
+          <Rule>`Toast` and `Session` carry no index either. They report; they are not entries.</Rule>
         </Rules>
       </Section>
 

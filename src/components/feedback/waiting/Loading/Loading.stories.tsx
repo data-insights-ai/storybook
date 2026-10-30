@@ -130,7 +130,7 @@ export const PageInTheShell: Story = {
     <Stack gap={24}>
       <AppShellBar>
         <span>Members</span>
-        <AppShellBarEnd>
+        <AppShellBarEnd moreLabel="More">
           <Button variant="secondary" size="sm">
             Invite
           </Button>

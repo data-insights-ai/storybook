@@ -1,64 +1,59 @@
-import { describe, shown } from "./paint";
+import { describe } from "./paint";
 
 /**
- * One outline per object (Rule O1): no element outlined on all four sides
- * sits within 8px of another outlined element around it. Selection inside a
- * container is a fill, items in a framed row are either framed cells or
- * unframed inside one frame. Focus rings are temporary and exempt.
+ * One outline per object: an element framed on all four sides (a border, or
+ * an inset spread ring, as a selection ring is drawn) never sits within 8px
+ * inside another framed element. An outer ring is a surface's elevation in
+ * dark, its depth rather than a line, as the shadow is in daylight.
+ * Selection inside a container is a fill; a key or an entry inside a field
+ * is a tone. Focus rings are exempt: they are outlines and they pass. A
+ * table cell bounds what it holds: a pill in a cell is measured against the
+ * cell, which has no frame, not against the table around it.
+ *
+ * The allow-list holds only what other batches still own, each until its fix
+ * lands: the Kbd on a primary Button (Actions) and the coverage matrix marks
+ * (Charts).
  */
 const NEAR = 8;
-
-/** Known offenders, each owned by the batch that fixes it; remove an entry with its fix. */
-const PENDING = [
-  /\.di-matrix-mark\b.* in /,
-  /button\.di-btn\.di-btn-secondary in div\.di-bulk/,
-  /\.di-kbd-on-control in button\.di-btn/,
-  /\.di-search-kbd in div\.di-search/,
-  /\.di-choice-segment\.is-chosen in /,
-  /\.di-token(\.is-invalid)? in /,
+const OWNED_ELSEWHERE: [inner: string, outer: string][] = [
+  [".di-kbd-on-control", ".di-btn"],
+  [".di-matrix-mark", ".di-matrix-column"],
 ];
 
-function drawn(color: string): boolean {
-  return color !== "transparent" && !/rgba\([^)]*,\s*0\)$/.test(color);
-}
+const clear = (color: string) => color === "transparent" || /rgba\(.*,\s*0\)$/.test(color);
 
-function outlined(el: Element): boolean {
-  if (el.matches(":focus, :focus-visible")) return false;
+function framed(el: Element): boolean {
   const style = getComputedStyle(el);
-  const framed = ["top", "right", "bottom", "left"].every(
+  if (style.display === "none" || style.visibility === "hidden") return false;
+  const sides = (["Top", "Right", "Bottom", "Left"] as const).filter(
     (side) =>
-      parseFloat(style.getPropertyValue(`border-${side}-width`)) >= 1 &&
-      style.getPropertyValue(`border-${side}-style`) !== "none" &&
-      drawn(style.getPropertyValue(`border-${side}-color`)),
+      parseFloat(style.getPropertyValue(`border-${side.toLowerCase()}-width`)) >= 1 &&
+      style.getPropertyValue(`border-${side.toLowerCase()}-style`) !== "none" &&
+      !clear(style.getPropertyValue(`border-${side.toLowerCase()}-color`)),
   );
-  return framed || /(^|,\s*)rgba?\([^)]*\) 0px 0px 0px [1-9]/.test(style.boxShadow);
+  return sides.length === 4 || /0px 0px 0px [1-9][^,]*inset/.test(style.boxShadow);
 }
 
 export function outlineFindings(root: Element): string[] {
-  const findings = new Set<string>();
-  for (const el of root.querySelectorAll("*")) {
-    if (!outlined(el) || !shown(el)) continue;
-    const inner = el.getBoundingClientRect();
-    if (inner.width < 8 || inner.height < 8) continue;
+  const findings: string[] = [];
+  for (const el of root.querySelectorAll<HTMLElement>("*")) {
+    if (el.matches(":focus-visible") || !framed(el)) continue;
+    const box = el.getBoundingClientRect();
+    if (box.width < 8 || box.height < 8) continue;
     let outer = el.parentElement;
-    while (outer && outer !== root && !outlined(outer)) outer = outer.parentElement;
-    if (
-      !outer ||
-      outer === root ||
-      el.closest("[popover], dialog, [role=tooltip]") !== outer.closest("[popover], dialog, [role=tooltip]")
-    )
-      continue;
-    const box = outer.getBoundingClientRect();
+    while (outer && outer !== root && !outer.matches("td, th") && !framed(outer)) outer = outer.parentElement;
+    if (!outer || outer === root || outer.matches("td, th")) continue;
+    const around = outer;
+    if (OWNED_ELSEWHERE.some(([inner, owner]) => el.matches(inner) && around.matches(owner))) continue;
+    const frame = outer.getBoundingClientRect();
     const gap = Math.min(
-      inner.left - box.left,
-      box.right - inner.right,
-      inner.top - box.top,
-      box.bottom - inner.bottom,
+      box.left - frame.left,
+      frame.right - box.right,
+      box.top - frame.top,
+      frame.bottom - box.bottom,
     );
-    if (gap < 0 || gap > NEAR) continue;
-    const finding = `${describe(el)} in ${describe(outer)}`;
-    if (PENDING.some((known) => known.test(finding))) continue;
-    findings.add(`${finding} (${Math.round(gap)}px)`);
+    if (gap >= 0 && gap <= NEAR)
+      findings.push(`${describe(el)} is framed ${Math.round(gap)}px inside ${describe(outer)}`);
   }
-  return [...findings];
+  return findings;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, type FormEvent, type ReactNode } from "react";
 import { Button } from "../../actions/Button";
-import { Stepper } from "../../navigation/sequence/Stepper";
+import { Step, Steps } from "../../navigation/sequence/Steps";
 import { cx } from "../../../internal/cx";
 import { focusFirstField } from "../../../internal/shortcutKeys";
 import { surfaceClass } from "../../../internal/surface";
@@ -9,13 +9,13 @@ import "./CreateFlow.css";
 /**
  * Creating something that needs a choice before its details: choose the
  * type (`ChoiceGroup appearance="cards"`), fill in the details, review, create. One step is
- * on screen at a time, under a `Stepper` that says where the reader is.
+ * on screen at a time, under `Steps` that say where the reader is.
  * Enter moves on; Back keeps what was entered. Each step starts in its
  * first field, or on its heading when it has none.
  *
  * The flow is a form. The caller owns the step and the values and checks
  * them; `canAdvance` false keeps Next disabled until the step is complete.
- * The stepper spans the flow, a completed step is pressed to return to it
+ * The steps span the flow, a completed step is pressed to return to it
  * (`onBack` once per step), and the actions sit in a footer that stays in
  * view: Back and Cancel at the left, the one action that moves on at the
  * right.
@@ -47,7 +47,7 @@ export function CreateFlow({
   onCancel,
   children,
 }: {
-  /** Names the stepper, e.g. "Steps". */
+  /** Names the steps, e.g. "Steps". */
   label: string;
   /** Each step's title, in order. The current one heads its body. */
   steps: string[];
@@ -101,16 +101,17 @@ export function CreateFlow({
 
   return (
     <form className="di-create-flow" data-width={width} onSubmit={submit} aria-labelledby={headingId}>
-      <Stepper
+      <Steps
+        variant="progress"
         label={label}
         stateLabels={stateLabels}
         onStep={goTo}
         layout={width === "page" ? "inline" : "spread"}
-        steps={steps.map((title, i) => ({
-          label: title,
-          state: i < step ? "done" : i === step ? "current" : "upcoming",
-        }))}
-      />
+      >
+        {steps.map((title, i) => (
+          <Step key={title} title={title} state={i < step ? "done" : i === step ? "current" : "upcoming"} />
+        ))}
+      </Steps>
       <div className={cx(width === "page" && surfaceClass({ padded: false }), "di-create-flow-panel")}>
         <div className="di-create-flow-step">
           <div className="di-create-flow-head">

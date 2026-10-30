@@ -13,8 +13,7 @@
     align-items: center;
     gap: var(--di-gap-8);
     height: var(--di-command-input-h);
-    padding: 0 var(--di-gap-12);
-    border-bottom: 1px solid var(--di-border);
+    padding: 0 var(--di-space-12);
     background: var(--di-bg-page);
   }
 
@@ -35,6 +34,7 @@
     color: var(--di-text);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-500);
+    text-overflow: ellipsis;
     outline: none;
   }
 
@@ -42,20 +42,23 @@
     color: var(--di-text-subtle);
   }
 
+  /* The groups are spaced apart by distance, not ruled: the label names each one. */
   .di-command-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
     max-height: var(--di-command-list-max);
-    padding: var(--di-gap-6);
+    padding: var(--di-gap-4);
     overflow-y: auto;
+    scroll-padding-block: var(--di-gap-4);
   }
 
-  .di-command-group + .di-command-group {
-    margin-top: var(--di-gap-6);
-    padding-top: var(--di-gap-6);
-    border-top: 1px solid var(--di-rule-hairline);
+  .di-command-list:empty {
+    display: none;
   }
 
   .di-command-group-label {
-    padding: var(--di-gap-4) var(--di-gap-8);
+    padding: var(--di-gap-6) var(--di-gap-8) var(--di-gap-4);
     font-family: var(--di-mono-label-family);
     font-size: var(--di-mono-label-size);
     font-weight: var(--di-mono-label-weight);
@@ -78,63 +81,79 @@
     height: var(--di-icon-md);
   }
 
-  .di-command-row-label {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .di-command-foot {
+  /* A long answer wraps under its first line; the icon and the note keep to that line. */
+  .di-command-row > .di-command-row-icon,
+  .di-command-row > .di-option-meta {
+    min-height: var(--di-command-line);
+    align-self: flex-start;
     display: flex;
     align-items: center;
-    gap: var(--di-gap-12);
+  }
+
+  .di-command-row {
+    --di-command-line: calc(var(--di-font-size-400) * var(--di-leading-snug));
+    align-items: flex-start;
+    padding-block: calc((var(--di-option-h) - var(--di-command-line)) / 2);
+  }
+
+  @media (pointer: coarse) {
+    .di-command-row {
+      min-height: var(--di-target);
+      padding-block: calc((var(--di-target) - var(--di-command-line)) / 2);
+    }
+  }
+
+  .di-command-empty {
     padding: var(--di-space-12);
-    border-top: 1px solid var(--di-border);
-    background: var(--di-bg-page);
+    color: var(--di-text-muted);
+    font-size: var(--di-font-size-400);
+  }
+
+  .di-command-status:empty {
+    display: none;
+  }
+
+  /* The foot is a row inside the plane, no band: the key legend, then where the query goes. */
+  .di-command-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-4) var(--di-gap-12);
+    padding: var(--di-gap-8) var(--di-space-12) var(--di-space-12);
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-200);
     color: var(--di-text-subtle);
+  }
+
+  .di-command-hints {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-gap-4) var(--di-gap-12);
+  }
+
+  .di-command-hints > span {
+    white-space: nowrap;
+  }
+
+  /* A touch screen has no keys to press. */
+  @media (pointer: coarse) {
+    .di-command-hints,
+    .di-command-input .di-kbd {
+      display: none;
+    }
   }
 
   .di-command-privacy {
     display: inline-flex;
     align-items: center;
     gap: var(--di-gap-4);
-    margin-left: auto;
+    margin-inline-start: auto;
     color: var(--di-text-muted);
+    white-space: nowrap;
   }
 
   .di-command-privacy > svg {
     width: var(--di-icon-xs);
     height: var(--di-icon-xs);
-  }
-
-  .di-command-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--di-gap-4);
-    height: var(--di-pill-height);
-    padding: 0 var(--di-gap-8);
-    border: 1px solid var(--di-border);
-    border-radius: var(--di-radius-pill);
-    background: var(--di-bg-surface);
-    color: var(--di-text-muted);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-200);
-    line-height: 1;
-    white-space: nowrap;
-  }
-
-  .di-command-chip.is-active {
-    border-color: var(--di-text);
-    background: var(--di-bg-page);
-    color: var(--di-text);
-  }
-
-  /* Proposed, not chosen: the ring's edge rather than the register's. */
-  .di-command-chip.is-suggested {
-    border-color: var(--di-mark-ring);
-    background: var(--di-mark-surface);
-    color: var(--di-mark-ink);
   }
 }

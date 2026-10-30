@@ -1,0 +1,89 @@
+@layer components {
+  /* What follows the sticky bar stops under it. */
+  .di-topbar ~ * {
+    --di-sticky-top: calc(var(--di-shell-bar-height) + 1px);
+  }
+
+  /*
+   * One row at every width: the name truncates, the end folds into its
+   * overflow button. Opaque, not frosted, so the text passing under it keeps
+   * a contrast that can be measured.
+   */
+  .di-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-16);
+    min-width: 0;
+    height: var(--di-shell-bar-height);
+    padding: 0 var(--di-space-16);
+    border-bottom: 1px solid var(--di-border);
+    background: var(--di-bg-page);
+  }
+
+  .di-topbar-start {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--di-space-8);
+    min-width: 0;
+  }
+
+  .di-topbar-start > * {
+    min-width: 0;
+  }
+
+  .di-topbar-start > :is(button, a, .di-btn) {
+    flex: none;
+  }
+
+  /* A plain name in the bar (a heading, a line of text) truncates rather than wraps. */
+  .di-topbar-start > :is(p, span, h1, h2) {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .di-top-actions {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: var(--di-space-6);
+    margin-inline-start: auto;
+    white-space: nowrap;
+  }
+
+  .di-topbar-more-positioner {
+    z-index: 30;
+  }
+
+  /* The folded end: its items one under the other, on the plane a menu takes. */
+  .di-topbar-more {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--di-gap-8);
+    max-width: calc(100vw - var(--di-space-32));
+    padding: var(--di-gap-12);
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    box-shadow: var(--di-shadow-plane);
+    white-space: normal;
+    outline: none;
+  }
+
+  .di-topbar-more[data-open] {
+    animation: di-topbar-more-in var(--di-duration) var(--di-ease);
+  }
+
+  @keyframes di-topbar-more-in {
+    from {
+      opacity: 0;
+      translate: 0 calc(-1 * var(--di-space-4));
+    }
+  }
+}

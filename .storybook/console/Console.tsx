@@ -108,7 +108,7 @@ export function Console({
                 </span>
               ))}
             </p>
-            <AppShellBarEnd>
+            <AppShellBarEnd moreLabel="More">
               <button type="button" className="sb-demo" aria-pressed={demo} onClick={() => setDemo((value) => !value)}>
                 <span className="sb-demo-dot" aria-hidden />
                 {demo ? chrome.demoOn : chrome.demoOff}

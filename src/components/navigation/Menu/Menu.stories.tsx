@@ -6,6 +6,25 @@ import { Button } from "../../actions/Button";
 import { DataTable, TableBody, TableCell, TableRow } from "../../data/table/DataTable";
 import { Menu, MenuDivider, MenuGroup, MenuItem } from "./Menu";
 
+/**
+ * A row's or a record's actions, kept out of sight until asked for.
+ *
+ * - **Use it** for the secondary actions of a table row, a record or a
+ *   panel, and for switching between a few exclusive choices such as a
+ *   workspace (`MenuGroup` with `checked` items).
+ * - **Not** for the one primary action (a `Button`), for places to go
+ *   (`Sidebar`, `TabNav`), for picking a value in a form (`Select`), or for
+ *   searching across the app (`CommandBar`).
+ *
+ * Anatomy: the trigger (any control, given the wiring), then the plane with
+ * `MenuItem`s, optional `MenuGroup`s with a mono caption, and `MenuDivider`s.
+ * Variants: `tone="danger"` for a destructive item (last, after a divider),
+ * `inferred` for an item a model proposed, `checked` for one choice of a group.
+ * Content: an item is a verb and its object ("Export entry"), sentence case,
+ * no full stop. Accessibility: `role="menu"` with roving focus — arrows,
+ * Home/End, a letter jumps, Escape closes and returns focus to the trigger;
+ * Tab leaves. On a touch screen each item is at least 40px tall.
+ */
 const meta = {
   title: "Navigation/Menu",
   component: Menu,
@@ -275,5 +294,45 @@ export const InATable: StoryObj = {
     await expect(getComputedStyle(menu).position).toBe("fixed");
     const frame = canvasElement.querySelector(".di-table-wrap")!.getBoundingClientRect();
     await expect(menu.getBoundingClientRect().bottom).toBeGreaterThan(frame.bottom);
+  },
+};
+
+/** German labels run longest: an item wraps between words inside the plane, which never runs off a phone. */
+export const LongGermanLabels: Story = {
+  args: { open: true, label: "Aktionen für Eintrag 04" },
+  render: function Render(args) {
+    const [open, setOpen] = useState(args.open);
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-end", paddingBottom: 280 }}>
+        <Menu
+          {...args}
+          open={open}
+          onOpenChange={setOpen}
+          trigger={(props) => (
+            <Button {...props} variant="secondary" iconOnly={true} aria-label="Aktionen für Eintrag 04">
+              <MoreVertical aria-hidden />
+            </Button>
+          )}
+        >
+          <MenuGroup label="Datenquelle">
+            <MenuItem onSelect={() => setOpen(false)}>Zu den Einstellungen der Datenquelle wechseln</MenuItem>
+            <MenuItem onSelect={() => setOpen(false)}>Manifest in die Zwischenablage kopieren</MenuItem>
+          </MenuGroup>
+          <MenuDivider />
+          <MenuItem tone="danger" onSelect={() => setOpen(false)}>
+            Datenquelle widerrufen und alle Sitzungen beenden
+          </MenuItem>
+        </Menu>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const menu = within(canvasElement).getByRole("menu");
+    const box = menu.getBoundingClientRect();
+    await expect(box.left).toBeGreaterThanOrEqual(0);
+    await expect(box.right).toBeLessThanOrEqual(document.documentElement.clientWidth);
+    for (const item of within(menu).getAllByRole("menuitem")) {
+      await expect(item.scrollWidth).toBeLessThanOrEqual(item.clientWidth);
+    }
   },
 };
