@@ -1,15 +1,31 @@
 import { useRef, type KeyboardEvent, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
 import { useActiveInView } from "../../../../internal/useActiveInView";
-import { Badge } from "../../../marks/Badge";
-import "./Tabs.css";
+import { TabCount } from "../tabStrip";
 
 /**
- * Tabs switch views of one record. They never navigate away from it —
- * that is the rail's job.
+ * Switches between views of one record on the same page: its fields, its
+ * sources, its log.
  *
- * Controlled, with the arrow-key movement a tablist owes its user: the
- * strip holds one tab stop and the arrows move the selection within it.
+ * - **Use it** when the views belong to one thing and do not need their own
+ *   address.
+ * - **Not** for places with a URL (`TabNav`), for moving between records or
+ *   sections of the app (`Sidebar`), for changing how the same content is
+ *   shown (`ChoiceGroup appearance="segments"`), or for steps of a process
+ *   (`Steps`).
+ *
+ * Anatomy: a strip of tabs, each a label and an optional count (`badge`,
+ * drawn as a quiet `Badge`), over the `TabPanel` of the selected one.
+ * The selected tab carries the ink mark on the strip's baseline. A strip
+ * wider than its frame scrolls sideways and keeps the selected tab in view.
+ *
+ * States: a disabled tab stays in the strip and is skipped by the keyboard.
+ * Content: one or two words per label in sentence case; a count only when
+ * it changes what the reader picks.
+ *
+ * Accessibility: a `tablist` with one tab stop; the arrows, Home and End
+ * move the selection, and each `TabPanel` is labelled by its tab. On a
+ * touch screen each tab is 40px tall.
  */
 export function Tabs({
   label,
@@ -74,11 +90,7 @@ export function Tabs({
             onClick={() => onChange(item.value)}
           >
             {item.label}
-            {item.badge === undefined ? null : (
-              <span className="di-tab-badge">
-                <Badge tone="quiet">{item.badge}</Badge>
-              </span>
-            )}
+            {item.badge === undefined ? null : <TabCount>{item.badge}</TabCount>}
           </button>
         );
       })}

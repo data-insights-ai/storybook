@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
+import { PageHeader, PageHeaderTitle } from "../../../layout/page/PageHeader";
+import { Panel } from "../../../layout/page/Panel";
 import { TabPanel, Tabs } from "./Tabs";
 
 const meta = {
@@ -49,6 +51,75 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+/** A record's views under its header: the strip switches the panel below it and nothing else on the page. */
+export const OnARecord: Story = {
+  parameters: { controls: { disable: true } },
+  render: function Render() {
+    const [value, setValue] = useState("record");
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--di-space-24)" }}>
+        <PageHeader eyebrow="Entry 03">
+          <PageHeaderTitle>feed.example.io</PageHeaderTitle>
+        </PageHeader>
+        <div>
+          <Tabs
+            label="Entry views"
+            value={value}
+            onChange={setValue}
+            items={[
+              { value: "record", label: "Record" },
+              { value: "sources", label: "Sources", badge: "12" },
+              { value: "log", label: "Log" },
+            ]}
+          />
+          <TabPanel value={value}>
+            <Panel heading={2} title={value === "record" ? "Record" : value === "sources" ? "Sources" : "Log"}>
+              <p>
+                {value === "record"
+                  ? "Received 09:12:04Z from feed.example.io, sealed at 09:12:06Z."
+                  : value === "sources"
+                    ? "Twelve sources cite this entry; the newest arrived an hour ago."
+                    : "Three changes since it was received, the last by Nora Feld."}
+              </p>
+            </Panel>
+          </TabPanel>
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("tab", { name: /Sources/ }));
+    await expect(canvas.getByRole("heading", { name: "Sources" })).toBeVisible();
+  },
+};
+
+/**
+ * Long labels on a phone: the strip scrolls on its own, never the page, and
+ * the selected tab is scrolled into view.
+ */
+export const LongLabelsOnAPhone: Story = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  args: {
+    label: "Ansichten des Eintrags",
+    value: "retention",
+    items: [
+      { value: "record", label: "Eintrag" },
+      { value: "notifications", label: "Benachrichtigungen", badge: "12" },
+      { value: "sources", label: "Quellenverzeichnis" },
+      { value: "retention", label: "Aufbewahrungsrichtlinien" },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const strip = canvas.getByRole("tablist").getBoundingClientRect();
+    const selected = canvas.getByRole("tab", { name: "Aufbewahrungsrichtlinien" }).getBoundingClientRect();
+    await expect(selected.left).toBeGreaterThanOrEqual(strip.left - 1);
+    await expect(selected.right).toBeLessThanOrEqual(strip.right + 1);
+    await expect(canvasElement.ownerDocument.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+  },
+};
 
 export const Default: Story = {
   play: async ({ canvasElement }) => {

@@ -4,32 +4,48 @@
     max-width: 100%;
   }
 
+  /* One line at every width: the ancestors shrink first, the current page last. */
   .di-breadcrumb-list {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+    gap: var(--di-gap-6);
     min-width: 0;
     max-width: 100%;
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--di-gap-6);
     padding: 0;
     margin: 0;
     list-style: none;
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    white-space: nowrap;
   }
 
   .di-breadcrumb-item {
     display: flex;
     align-items: baseline;
-    min-width: 0;
-    max-width: 100%;
     gap: var(--di-gap-6);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-300);
+    flex: 0 100 auto;
+    min-width: var(--di-space-32);
+    white-space: nowrap;
+  }
+
+  .di-breadcrumb-item.is-current {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .di-breadcrumb-item:has(.di-breadcrumb-fold) {
+    flex: none;
+    min-width: 0;
   }
 
   .di-breadcrumb-link,
+  .di-breadcrumb-text,
   .di-breadcrumb-current {
     min-width: 0;
-    overflow-wrap: anywhere;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .di-breadcrumb-sep {
@@ -37,19 +53,41 @@
     color: var(--di-text-subtle);
   }
 
+  /* An ancestor that opens is underlined like every link; one that does not stays plain. */
   .di-breadcrumb-link {
+    padding: 0;
+    border: 0;
+    background: none;
     color: var(--di-text-muted);
-    text-decoration: none;
-  }
-
-  a.di-breadcrumb-link:hover {
-    color: var(--di-text);
+    font: inherit;
     text-decoration: underline;
     text-decoration-color: var(--di-select);
     text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .di-breadcrumb-link:hover {
+    color: var(--di-text);
+    text-decoration-color: var(--di-text);
+  }
+
+  .di-breadcrumb-text {
+    color: var(--di-text-muted);
   }
 
   .di-breadcrumb-current {
     color: var(--di-text);
+    font-weight: var(--di-weight-medium);
+  }
+
+  /* A phone's bar has one row: only the page itself, the drawer is the way back up. */
+  @media (max-width: 600px) {
+    .di-breadcrumb-item:not(.is-current) {
+      display: none;
+    }
+
+    .di-breadcrumb-item.is-current > .di-breadcrumb-sep {
+      display: none;
+    }
   }
 }

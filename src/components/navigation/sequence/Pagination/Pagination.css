@@ -56,4 +56,24 @@
     font-variant-numeric: tabular-nums;
     color: var(--di-text);
   }
+
+  .di-page-gap {
+    min-width: var(--di-gap-16);
+    text-align: center;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-subtle);
+  }
+
+  /* A finger gets the 40px target whatever the density; seven slots still fit a phone. */
+  @media (pointer: coarse) {
+    .di-pages {
+      gap: 0;
+    }
+
+    .di-page-btn {
+      min-width: var(--di-target);
+      height: var(--di-target);
+    }
+  }
 }

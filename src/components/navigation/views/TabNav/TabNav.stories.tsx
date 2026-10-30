@@ -68,3 +68,28 @@ export const Default: Story = {
     await expect(within(nav).getByRole("link", { name: /Grants/ })).not.toHaveAttribute("aria-current");
   },
 };
+
+/** A settings page on a phone, in German: the strip scrolls on its own and opens with the current section in view. */
+export const LongLabelsOnAPhone: Story = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  args: { label: "Einstellungen" },
+  render: (args) => (
+    <TabNav label={args.label}>
+      <TabNavLink href="#/settings/general">Allgemein</TabNavLink>
+      <TabNavLink href="#/settings/notifications" badge="3">
+        Benachrichtigungen
+      </TabNavLink>
+      <TabNavLink href="#/settings/retention" active>
+        Aufbewahrungsrichtlinien
+      </TabNavLink>
+    </TabNav>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const strip = canvas.getByRole("navigation", { name: "Einstellungen" }).getBoundingClientRect();
+    const current = canvas.getByRole("link", { name: "Aufbewahrungsrichtlinien" }).getBoundingClientRect();
+    await expect(current.left).toBeGreaterThanOrEqual(strip.left - 1);
+    await expect(current.right).toBeLessThanOrEqual(strip.right + 1);
+    await expect(canvasElement.ownerDocument.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+  },
+};
