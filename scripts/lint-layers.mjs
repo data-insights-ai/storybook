@@ -58,19 +58,22 @@ const documented = (node, sf) =>
   (ts.getLeadingCommentRanges(sf.text, node.getFullStart()) ?? []).some((r) => sf.text.startsWith("/**", r.pos));
 
 /** Exported components of a module: PascalCase functions, and consts bound to a function or a call. */
+/* A deprecated name only waits for its removal; its story is its replacement's. */
+const deprecated = (st) => ts.getJSDocTags(st).some((t) => t.tagName.text === "deprecated");
+
 function componentsOf(sf) {
   const out = [];
   for (const st of sf.statements) {
     if (!exported(st)) continue;
     if (ts.isFunctionDeclaration(st) && st.name && pascal(st.name.text))
-      out.push({ name: st.name.text, doc: documented(st, sf) });
+      out.push({ name: st.name.text, doc: documented(st, sf), deprecated: deprecated(st) });
     if (ts.isVariableStatement(st)) {
       for (const d of st.declarationList.declarations) {
         const init = d.initializer;
         const callable =
           init && (ts.isArrowFunction(init) || ts.isFunctionExpression(init) || ts.isCallExpression(init));
         if (ts.isIdentifier(d.name) && pascal(d.name.text) && callable)
-          out.push({ name: d.name.text, doc: documented(st, sf) });
+          out.push({ name: d.name.text, doc: documented(st, sf), deprecated: deprecated(st) });
       }
     }
   }
@@ -237,7 +240,7 @@ for (const st of entry.statements) {
   for (const el of st.exportClause.elements) {
     const c = components.get(el.name.text);
     if (!c) continue;
-    if (!shown.has(`${c.module}#${c.name}`)) find("public-story", `${c.name} (${c.module}) has no story`);
+    if (!c.deprecated && !shown.has(`${c.module}#${c.name}`)) find("public-story", `${c.name} (${c.module}) has no story`);
     if (!c.doc) find("public-doc", `${c.name} (${c.module}) has no doc comment`);
   }
 }
