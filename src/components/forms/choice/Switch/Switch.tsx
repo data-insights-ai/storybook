@@ -1,4 +1,5 @@
 import { cx } from "../../../../internal/cx";
+import { ChoiceText } from "../Choice";
 import "./Switch.css";
 
 /**
@@ -6,7 +7,8 @@ import "./Switch.css";
  * `on` and decides whether the change needs a confirmation first.
  *
  * It is a button with `role="switch"`, not a checkbox: the state it
- * reports is the state of the system, not of a form.
+ * reports is the state of the system, not of a form. Its title and
+ * description are `Checkbox`'s, so a switch and a box read alike.
  *
  * `layout` decides where the control sits, and it is always a decision.
  * `inline` is the default and matches `Checkbox` and `Radio`: the control
@@ -35,40 +37,23 @@ export function Switch({
   disabled?: boolean;
   className?: string;
 }) {
-  const control = (
-    <span className="di-switch-control">
-      <button
-        type="button"
-        id={id}
-        role="switch"
-        aria-checked={on}
-        aria-describedby={description === "" ? undefined : `${id}-desc`}
-        disabled={disabled}
-        className={cx("di-switch", on && "is-on")}
-        onClick={() => onToggle(!on)}
-      >
-        <span className="di-switch-thumb" aria-hidden />
-      </button>
-    </span>
-  );
-
-  const text = (
-    <span className="di-switch-text">
-      <label className="di-switch-title" htmlFor={id}>
-        {title}
-      </label>
-      {description === "" ? null : (
-        <span className="di-switch-desc" id={`${id}-desc`}>
-          {description}
-        </span>
-      )}
-    </span>
-  );
-
   return (
-    <div className={cx("di-switch-row", `is-${layout}`, disabled && "is-disabled", className)}>
-      {layout === "inline" ? control : text}
-      {layout === "inline" ? text : control}
+    <div className={cx("di-choice", "di-switch-row", `is-${layout}`, disabled && "is-disabled", className)}>
+      <span className="di-choice-control">
+        <button
+          type="button"
+          id={id}
+          role="switch"
+          aria-checked={on}
+          aria-describedby={description === "" ? undefined : `${id}-desc`}
+          disabled={disabled}
+          className={cx("di-switch", on && "is-on")}
+          onClick={() => onToggle(!on)}
+        >
+          <span className="di-switch-thumb" aria-hidden />
+        </button>
+      </span>
+      <ChoiceText id={id} label={title} description={description} />
     </div>
   );
 }

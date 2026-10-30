@@ -3,6 +3,7 @@ import { Check, ChevronDown, X } from "lucide-react";
 import { Combobox } from "@base-ui/react/combobox";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { useListToggle } from "../../../../internal/useListToggle";
@@ -120,11 +121,7 @@ export function MultiComboBox({
         }}
         disabled={disabled}
       >
-        <div className="di-field-row">
-          <label id={`${id}-label`} className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
-            {label}
-          </label>
-        </div>
+        <FieldLabel id={`${id}-label`} htmlFor={id} label={label} labelTrack={labelTrack} />
         <div
           ref={control}
           className={cx("di-token-field", "di-multicombo-control", invalid && "is-invalid", disabled && "is-disabled")}

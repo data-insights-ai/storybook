@@ -1,26 +1,28 @@
 @layer components {
   .di-toggle-group {
-    display: inline-flex;
-    flex-wrap: wrap;
-    gap: var(--di-space-4);
     margin: 0;
     padding: 0;
     border: 0;
     min-width: 0;
   }
 
+  /* The field label's distance to its control. */
   .di-toggle-legend {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+    margin-bottom: var(--di-space-6);
+    padding: 0;
   }
 
+  .di-toggle-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-space-4);
+  }
+
+  /* A field’s height, so the days line up with the fields beside them. */
   .di-toggle {
-    min-width: 36px;
-    height: var(--di-h-dense);
+    position: relative;
+    min-width: var(--di-field-height);
+    height: var(--di-field-height);
     padding: 0 var(--di-space-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-control);
@@ -35,7 +37,7 @@
   }
 
   .di-toggle:hover:not(:disabled) {
-    border-color: var(--di-text);
+    border-color: var(--di-field-border-hover);
     color: var(--di-text);
   }
 
@@ -52,6 +54,14 @@
 
   .di-toggle:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    border-color: var(--di-border);
+    background: var(--di-bg-disabled);
+    color: var(--di-text-disabled);
+  }
+
+  .di-toggle[aria-pressed="true"]:disabled {
+    border-color: var(--di-text-disabled);
+    background: var(--di-text-disabled);
+    color: var(--di-bg-disabled);
   }
 }

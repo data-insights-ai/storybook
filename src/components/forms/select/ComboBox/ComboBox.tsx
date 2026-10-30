@@ -3,6 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { Autocomplete } from "@base-ui/react/autocomplete";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { useListToggle } from "../../../../internal/useListToggle";
@@ -130,12 +131,16 @@ export function ComboBox({
         }}
         itemToStringValue={(item: ComboBoxSuggestion) => item.value}
       >
-        <div className={cx("di-field-row", hideLabel && "di-sr")}>
-          <label id={`${id}-label`} className={cx("di-field-label", `di-field-label-${labelTrack}`)} htmlFor={id}>
-            {label}
-          </label>
+        <FieldLabel
+          id={`${id}-label`}
+          htmlFor={id}
+          label={label}
+          labelTrack={labelTrack}
+          hideLabel={hideLabel}
+          required={required}
+        >
           {children}
-        </div>
+        </FieldLabel>
         <Autocomplete.InputGroup ref={control} className="di-combobox-control">
           <Autocomplete.Input
             ref={input}

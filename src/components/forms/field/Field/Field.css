@@ -6,11 +6,17 @@
     gap: var(--di-space-6);
   }
 
+  /* A long label wraps; the slot beside it keeps its one line. */
   .di-field-row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--di-space-12);
+  }
+
+  .di-field-row > :not(.di-field-label) {
+    flex: none;
+    font-size: var(--di-label-size);
   }
 
   /*
@@ -29,6 +35,14 @@
     letter-spacing: normal;
     text-transform: none;
     color: var(--di-label-color);
+    min-width: 0;
+    text-wrap: pretty;
+  }
+
+  .di-field-label.is-required::after {
+    content: "*" / "";
+    margin-left: var(--di-space-2);
+    color: var(--di-text-muted);
   }
 
   .di-field-label-prose {
@@ -49,12 +63,13 @@
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);
     color: var(--di-text-subtle);
+    text-wrap: pretty;
   }
 
   .di-field-hint.is-error,
   .di-field-hint.is-sealed {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: var(--di-space-4);
   }
 
@@ -62,9 +77,10 @@
     color: var(--di-status-danger-fg);
   }
 
+  /* The icon centres on the first line, so a wrapped error still hangs off it. */
   .di-field-hint.is-error > svg {
     width: 14px;
-    height: 14px;
+    height: calc(1em * var(--di-leading-snug));
     flex: none;
   }
 
@@ -93,8 +109,8 @@
     color: var(--di-text-subtle);
   }
 
-  .di-control:hover:not(:disabled) {
-    border-color: var(--di-border-strong);
+  .di-control:hover:not(:disabled, [readonly]) {
+    border-color: var(--di-field-border-hover);
   }
 
   .di-control-mono {
@@ -108,7 +124,20 @@
     color: var(--di-text-disabled);
   }
 
+  /* A value to read and copy, not to change: the inset tone, no frame, full ink. */
+  .di-control[readonly] {
+    border-color: transparent;
+    background: var(--di-bg-subtle);
+  }
+
   .di-control[aria-invalid="true"] {
-    border-color: var(--di-status-danger-dot);
+    border-color: var(--di-field-border-invalid);
+  }
+
+  /* Under 16px a phone zooms the page into the field it focuses. */
+  @media (pointer: coarse) {
+    .di-control {
+      font-size: var(--di-font-size-500);
+    }
   }
 }

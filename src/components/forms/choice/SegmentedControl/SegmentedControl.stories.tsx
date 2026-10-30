@@ -13,9 +13,9 @@ const meta = {
     value: "dense",
     disabled: false,
     options: [
-      { value: "dense", label: "dense" },
-      { value: "standard", label: "standard" },
-      { value: "comfort", label: "comfort" },
+      { value: "dense", label: "Dense" },
+      { value: "standard", label: "Standard" },
+      { value: "comfort", label: "Comfort" },
     ],
     onChange: fn(),
   },
@@ -50,7 +50,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByLabelText("dense")).toBeChecked();
+    await expect(canvas.getByLabelText("Dense")).toBeChecked();
   },
 };
 
@@ -58,9 +58,9 @@ export const Default: Story = {
 export const Selecting: Story = {
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(canvas.getByLabelText("comfort"));
+    await userEvent.click(canvas.getByLabelText("Comfort"));
     await expect(args.onChange).toHaveBeenCalledWith("comfort");
-    await expect(canvas.getByLabelText("comfort")).toBeChecked();
+    await expect(canvas.getByLabelText("Comfort")).toBeChecked();
   },
 };
 
@@ -71,8 +71,8 @@ export const Pair: Story = {
     legend: "Unit",
     value: "abs",
     options: [
-      { value: "abs", label: "count" },
-      { value: "pct", label: "percent" },
+      { value: "abs", label: "Count" },
+      { value: "pct", label: "Percent" },
     ],
   },
 };

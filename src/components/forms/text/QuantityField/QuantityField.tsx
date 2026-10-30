@@ -2,6 +2,8 @@ import { Minus, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
+import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import "../../field/Field/Field.css";
 import "./QuantityField.css";
 
@@ -9,13 +11,16 @@ import "./QuantityField.css";
  * A whole number between `min` and `max`, stepped with − and + or typed.
  * Only a valid number reaches `onChange`; while the typed text is not one,
  * the field shows `invalidHint` and keeps the last valid value. In a table
- * whose column already names the value, `labelHidden` keeps the label for
+ * whose column already names the value, `hideLabel` keeps the label for
  * screen readers only.
  */
 export function QuantityField({
   id,
   label,
+  hideLabel,
   labelHidden = false,
+  labelTrack = "record",
+  required = false,
   value,
   onChange,
   min = 1,
@@ -31,7 +36,11 @@ export function QuantityField({
   id: string;
   label: string;
   /** The label is read out but not shown, e.g. under a table column header. */
+  hideLabel?: boolean;
+  /** @deprecated Use `hideLabel`, the name every other field uses. Removed in 0.12. */
   labelHidden?: boolean;
+  labelTrack?: LabelTrack;
+  required?: boolean;
   value: number;
   onChange: (value: number) => void;
   min?: number;
@@ -59,12 +68,13 @@ export function QuantityField({
 
   return (
     <div className={cx("di-field", "di-quantity", className)}>
-      <label
-        className={cx("di-field-label", "di-field-label-record", labelHidden && "di-sr")}
+      <FieldLabel
         htmlFor={id}
-      >
-        {label}
-      </label>
+        label={label}
+        labelTrack={labelTrack}
+        hideLabel={hideLabel ?? labelHidden}
+        required={required}
+      />
       <div className="di-quantity-group">
         <button
           type="button"
@@ -85,6 +95,7 @@ export function QuantityField({
           aria-valuemax={max}
           aria-valuenow={value}
           aria-invalid={invalid || undefined}
+          aria-required={required || undefined}
           aria-describedby={line === "" ? undefined : `${id}-hint`}
           disabled={disabled}
           value={text}

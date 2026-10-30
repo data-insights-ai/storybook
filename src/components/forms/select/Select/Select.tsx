@@ -3,6 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { cx } from "../../../../internal/cx";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import "../../field/Field/Field.css";
 import "./Select.css";
 
@@ -51,9 +52,7 @@ export function Select({
 
   return (
     <div className={cx("di-field", className)}>
-      <label className={cx("di-field-label", `di-field-label-${labelTrack}`, hideLabel && "di-sr")} htmlFor={id}>
-        {label}
-      </label>
+      <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required} />
       <div className="di-select">
         <select
           id={id}

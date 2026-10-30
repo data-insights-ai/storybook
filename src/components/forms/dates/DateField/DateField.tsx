@@ -4,6 +4,7 @@ import { getLocalTimeZone, today } from "@internationalized/date";
 import { Popover } from "@base-ui/react/popover";
 import { cx } from "../../../../internal/cx";
 import type { LabelTrack } from "../../field/Field";
+import { FieldLabel } from "../../field/FieldLabel";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { MonthCalendar } from "../calendar";
@@ -106,12 +107,9 @@ export function DateField({
       }}
     >
       <div className={cx("di-field", "di-date-field", className)}>
-        <div className={cx("di-field-row", hideLabel && "di-sr")}>
-          <span id={labelId} className={cx("di-field-label", `di-field-label-${labelTrack}`)}>
-            {label}
-          </span>
+        <FieldLabel id={labelId} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required}>
           {children}
-        </div>
+        </FieldLabel>
         <div
           ref={control}
           id={id}

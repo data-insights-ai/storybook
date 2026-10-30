@@ -6,12 +6,14 @@
     border: 0;
   }
 
+  /* A field label: the choice is named the way every field is. */
   .di-choicecards-legend {
     margin-bottom: var(--di-space-8);
     padding: 0;
-    font-size: var(--di-font-size-300);
-    font-weight: var(--di-weight-medium);
-    color: var(--di-text);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    color: var(--di-label-color);
   }
 
   .di-choicecards {
@@ -50,14 +52,16 @@
     transition: border-color var(--di-duration) var(--di-ease), background-color var(--di-duration) var(--di-ease);
   }
 
-  .di-choicecard:hover {
+  .di-choicecard:hover:not(.is-active) {
     border-color: var(--di-border-strong);
     background: var(--di-bg-row-hover);
   }
 
+  /* Selection is cornflower, as for a selected row: one step up, the edge in --di-select. */
   .di-choicecard.is-active {
-    border-color: var(--di-fill-strong);
-    box-shadow: inset 0 0 0 1px var(--di-fill-strong);
+    border-color: var(--di-select);
+    background: var(--di-bg-selected);
+    box-shadow: inset 0 0 0 1px var(--di-select);
   }
 
   .di-choicecard:has(input:focus-visible) {

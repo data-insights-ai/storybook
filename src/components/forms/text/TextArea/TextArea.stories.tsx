@@ -6,7 +6,14 @@ const meta = {
   title: "Forms/Text/TextArea",
   component: TextArea,
   tags: ["layer:form", "autodocs"],
-  args: { id: "ca", label: "Server CA", mono: true, rows: 6, placeholder: "-----BEGIN CERTIFICATE-----" },
+  args: { id: "ca", label: "Server CA", mono: true, rows: 6, placeholder: "-----BEGIN CERTIFICATE-----", required: true },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 560 }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof TextArea>;
 
 export default meta;

@@ -57,6 +57,8 @@
     --di-field-border: var(--di-border-input);
     --di-field-radius: var(--di-radius-micro);
     --di-field-height: var(--di-h-ctl);
+    --di-field-border-hover: var(--di-text-muted);
+    --di-field-border-invalid: var(--di-status-danger-dot);
 
     --di-panel-bg: var(--di-bg-surface);
     --di-panel-border: transparent;
@@ -141,6 +143,14 @@
     [data-theme] {
       --di-content-pad: var(--di-space-48);
       --di-chart-height: 360px;
+    }
+  }
+
+  /* On a touch screen a field is a 40px target, the row height. */
+  @media (pointer: coarse) {
+    :root,
+    [data-theme] {
+      --di-field-height: var(--di-h-row);
     }
   }
 }

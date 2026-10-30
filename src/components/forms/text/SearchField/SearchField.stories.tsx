@@ -9,8 +9,8 @@ const meta = {
   args: {
     id: "search",
     label: "Search the register",
-    placeholder: "host, hash or operator",
-    shortcut: "",
+    placeholder: "Host, hash or operator",
+    shortcut: "/",
     dense: false,
     disabled: false,
     readOnly: false,
@@ -47,17 +47,17 @@ export const Default: Story = {
   },
 };
 
-/** The shortcut is decoration: the caller binds the key. */
-export const WithShortcut: Story = {
-  args: { shortcut: "⌘K" },
+/** A search inside a picker or a sheet, not the page’s own: it shows no key, since only the page’s search answers `/`. */
+export const WithoutShortcut: Story = {
+  args: { shortcut: "", placeholder: "Filter members" },
 };
 
 export const Dense: Story = {
-  args: { dense: true, shortcut: "/" },
+  args: { dense: true },
 };
 
 export const WithValue: Story = {
-  args: { defaultValue: "registry.example.org", shortcut: "⌘K" },
+  args: { defaultValue: "registry.example.org" },
 };
 
 export const Disabled: Story = {

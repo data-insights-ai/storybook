@@ -12,17 +12,27 @@
     cursor: text;
   }
 
-  .di-token-field:focus-within {
+  .di-token-field:hover:not(.is-disabled) {
+    border-color: var(--di-field-border-hover);
+  }
+
+  .di-token-field:has(.di-token-input:focus-visible) {
     outline: 2px solid var(--di-focus);
-    outline-offset: 1px;
+    outline-offset: 2px;
   }
 
   .di-token-field.is-invalid {
-    border-color: var(--di-status-danger-fg);
+    border-color: var(--di-field-border-invalid);
   }
 
   .di-token-field.is-disabled {
-    opacity: 0.6;
+    cursor: not-allowed;
+    background: var(--di-bg-disabled);
+  }
+
+  .di-token-field.is-disabled .di-token,
+  .di-token-field.is-disabled .di-token-input {
+    color: var(--di-text-disabled);
   }
 
   .di-token-list {
@@ -56,6 +66,7 @@
   }
 
   .di-token-remove {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -72,6 +83,22 @@
   .di-token-remove > svg {
     width: 12px;
     height: 12px;
+  }
+
+  .di-token-remove:disabled {
+    cursor: not-allowed;
+  }
+
+  @media (pointer: coarse) {
+    .di-token-remove::after {
+      content: "";
+      position: absolute;
+      inset: -11px;
+    }
+
+    .di-token-input {
+      font-size: var(--di-font-size-500);
+    }
   }
 
   .di-token-input {
