@@ -397,8 +397,12 @@ export const WithFooter: Story = {
       <PanelStatus>
         <StatusPill tone="warn">expiring</StatusPill>
       </PanelStatus>
-      <p>{args.children}</p>
-      <PanelFooter>Rotated last on 2025-09-29 by Nora Feld</PanelFooter>
+      <p>
+        The signing key for this workspace expires on <time dateTime="2026-09-29">2026-09-29</time>.
+      </p>
+      <PanelFooter>
+        Rotated last on <time dateTime="2025-09-29">2025-09-29</time> by Nora Feld
+      </PanelFooter>
       <PanelActions>
         <Button variant="secondary" size="sm">
           Rotate now
@@ -417,6 +421,8 @@ export const WithFooter: Story = {
     // The rows are one gap apart: 16px comfortable, 12px compact.
     await expect(footer.top - body.bottom).toBeGreaterThanOrEqual(parseFloat(getComputedStyle(frame).rowGap));
     await expect(Math.round(panel.right - action.right)).toBe(Math.round(footer.left - panel.left));
+    // A date never breaks inside ("2026-" / "09-29").
+    for (const time of canvasElement.querySelectorAll("time")) await expect(time.getClientRects()).toHaveLength(1);
   },
 };
 

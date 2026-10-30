@@ -28,6 +28,6 @@
     background: var(--di-bg-surface);
     box-shadow: var(--di-shadow-plane);
     color: var(--di-text);
-    outline-offset: calc(-1 * var(--di-focus-ring-width) - var(--di-space-4));
+    outline-offset: var(--di-focus-ring-inset);
   }
 }
