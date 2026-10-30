@@ -4,7 +4,7 @@
     align-items: center;
     gap: var(--di-gap-8);
     height: var(--di-field-height);
-    padding: 0 var(--di-space-8);
+    padding: 0 var(--di-gap-8);
     border: 1px solid var(--di-field-border);
     border-radius: var(--di-field-radius);
     background: var(--di-field-bg);
@@ -25,8 +25,8 @@
   }
 
   .di-search-icon {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     flex: none;
     color: var(--di-text-muted);
   }

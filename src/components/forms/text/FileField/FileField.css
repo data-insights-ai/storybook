@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--di-gap-8) var(--di-gap-12);
-    padding: var(--di-space-16);
+    padding: var(--di-inset-group);
     border: 1px dashed var(--di-border-input);
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);

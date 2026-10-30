@@ -6,8 +6,8 @@
   /* The count sits on the icon's corner, ringed in the ground so it reads apart from the glyph. */
   .di-count-btn-count {
     position: absolute;
-    top: calc(var(--di-space-2) * -1);
-    right: calc(var(--di-space-4) * -1);
+    top: calc(var(--di-gap-6) * -1);
+    right: calc(var(--di-gap-6) * -1);
     display: inline-flex;
     border-radius: var(--di-radius-pill);
     box-shadow: 0 0 0 2px var(--di-bg-page);

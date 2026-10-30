@@ -5,7 +5,7 @@
     align-items: center;
     gap: var(--di-gap-4);
     min-height: var(--di-field-height);
-    padding: var(--di-space-2) var(--di-space-4);
+    padding: var(--di-space-2) var(--di-gap-4);
     border: 1px solid var(--di-field-border);
     border-radius: var(--di-field-radius);
     background: var(--di-field-bg);
@@ -45,8 +45,8 @@
     align-items: center;
     gap: var(--di-space-2);
     max-width: 100%;
-    min-height: 22px;
-    padding: 0 var(--di-space-2) 0 var(--di-space-6);
+    min-height: var(--di-token-h);
+    padding: 0 var(--di-space-2) 0 var(--di-gap-6);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-micro);
     background: var(--di-bg-page);
@@ -70,8 +70,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 18px;
-    height: 18px;
+    width: var(--di-token-remove);
+    height: var(--di-token-remove);
     padding: 0;
     border: 0;
     border-radius: var(--di-radius-micro);
@@ -81,8 +81,8 @@
   }
 
   .di-token-remove > svg {
-    width: 12px;
-    height: 12px;
+    width: var(--di-icon-xs);
+    height: var(--di-icon-xs);
   }
 
   .di-token-remove:disabled {
@@ -93,7 +93,7 @@
     .di-token-remove::after {
       content: "";
       position: absolute;
-      inset: -11px;
+      inset: calc((var(--di-token-remove) - var(--di-target)) / 2);
     }
 
     .di-token-input {
@@ -104,8 +104,8 @@
   .di-token-input {
     flex: 1 1 12rem;
     min-width: 8rem;
-    height: 26px;
-    padding: 0 var(--di-space-4);
+    height: calc(var(--di-field-height) - 2 * var(--di-space-2) - 2 * 1px);
+    padding: 0 var(--di-gap-4);
     border: 0;
     background: transparent;
     font: inherit;

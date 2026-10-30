@@ -17,8 +17,8 @@
     flex: none;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: var(--di-control-h-sm);
+    height: var(--di-control-h-sm);
     padding: 0;
     border: 1px solid transparent;
     border-radius: var(--di-radius-control);
@@ -36,7 +36,7 @@
   }
 
   .di-copy-button > svg {
-    width: 14px;
-    height: 14px;
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
   }
 }

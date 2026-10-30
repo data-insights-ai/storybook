@@ -34,8 +34,8 @@
   }
 
   .di-multicombo-toggle > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 
   .di-multicombo-toggle:disabled {
@@ -43,22 +43,16 @@
     cursor: not-allowed;
   }
 
-  .di-multicombo-option {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--di-gap-8);
-  }
-
   .di-multicombo-check {
     display: inline-flex;
     flex: none;
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     color: var(--di-text);
   }
 
   .di-multicombo-check > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 }

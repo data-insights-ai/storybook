@@ -79,7 +79,7 @@
 
   /* The icon centres on the first line, so a wrapped error still hangs off it. */
   .di-field-hint.is-error > svg {
-    width: 14px;
+    width: var(--di-icon-sm);
     height: calc(1em * var(--di-leading-snug));
     flex: none;
   }
@@ -95,7 +95,7 @@
   .di-control {
     width: 100%;
     height: var(--di-field-height);
-    padding: 0 var(--di-space-8);
+    padding: 0 var(--di-gap-8);
     border: 1px solid var(--di-field-border);
     border-radius: var(--di-field-radius);
     background: var(--di-field-bg);

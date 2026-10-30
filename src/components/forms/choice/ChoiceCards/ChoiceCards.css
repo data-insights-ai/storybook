@@ -35,7 +35,7 @@
   /* The grid fills the measure; a row's cards share its height. */
   .di-choicecards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--di-choicecards-min)), 1fr));
     gap: var(--di-gap-12);
     align-items: stretch;
   }
@@ -44,7 +44,7 @@
     display: flex;
     align-items: flex-start;
     gap: var(--di-gap-12);
-    padding: var(--di-space-12) var(--di-space-16);
+    padding: var(--di-space-12) var(--di-inset-group);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-container);
     background: var(--di-bg-surface);
@@ -78,8 +78,8 @@
   }
 
   .di-choicecard-icon > svg {
-    width: 20px;
-    height: 20px;
+    width: var(--di-icon-lg);
+    height: var(--di-icon-lg);
   }
 
   .di-choicecard.is-active .di-choicecard-icon {
@@ -141,7 +141,10 @@
   /* At most five a row on a wide page, still two a row on a phone. */
   .di-choicecards-planned-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(max(140px, calc((100% - 4 * var(--di-space-8)) / 5)), 1fr));
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(max(var(--di-choicecards-planned-min), calc((100% - 4 * var(--di-gap-8)) / 5)), 1fr)
+    );
     gap: var(--di-gap-8);
     margin: 0;
     padding: 0;
@@ -167,7 +170,7 @@
   }
 
   .di-choicecard-planned-icon > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
   }
 }

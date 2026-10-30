@@ -1,8 +1,8 @@
 @layer components {
   .di-field textarea.di-control {
     height: auto;
-    min-height: 76px;
-    padding: var(--di-space-8) var(--di-space-8);
+    min-height: calc(3 * var(--di-font-size-400) * var(--di-leading-snug) + 2 * var(--di-gap-8) + 2 * 1px);
+    padding: var(--di-gap-8);
     line-height: var(--di-leading-snug);
     resize: vertical;
   }

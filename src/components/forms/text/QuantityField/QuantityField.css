@@ -13,7 +13,7 @@
   .di-quantity-input.di-control {
     width: 7ch;
     height: 100%;
-    padding: 0 var(--di-space-4);
+    padding: 0 var(--di-gap-4);
     border-radius: 0;
     text-align: center;
   }
@@ -52,8 +52,8 @@
   }
 
   .di-quantity-step > svg {
-    width: 14px;
-    height: 14px;
+    width: var(--di-icon-sm);
+    height: var(--di-icon-sm);
   }
 
   .di-quantity-step:focus-visible,

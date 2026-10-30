@@ -5,7 +5,7 @@
     justify-content: center;
     gap: var(--di-gap-6);
     height: var(--di-button-height);
-    padding: 0 var(--di-space-12);
+    padding: 0 var(--di-gap-12);
     border: 1px solid transparent;
     border-radius: var(--di-button-radius);
     font-family: var(--di-font-ui);
@@ -22,14 +22,14 @@
   }
 
   .di-btn > svg {
-    width: 16px;
-    height: 16px;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
     flex: none;
   }
 
   .di-btn-sm {
     height: var(--di-control-h-sm);
-    padding: 0 var(--di-space-12);
+    padding: 0 var(--di-gap-12);
     font-size: var(--di-font-size-300);
   }
 
@@ -39,7 +39,7 @@
 
   .di-btn-lg {
     height: var(--di-control-h-lg);
-    padding: 0 var(--di-space-16);
+    padding: 0 var(--di-gap-16);
     font-size: var(--di-font-size-500);
   }
 
@@ -143,8 +143,8 @@
   }
 
   .di-btn-spinner {
-    width: 11px;
-    height: 11px;
+    width: var(--di-button-spinner);
+    height: var(--di-button-spinner);
     flex: none;
     border: 2px solid currentColor;
     border-top-color: transparent;

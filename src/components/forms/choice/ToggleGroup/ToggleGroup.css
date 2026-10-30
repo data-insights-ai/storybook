@@ -23,7 +23,7 @@
     position: relative;
     min-width: var(--di-field-height);
     height: var(--di-field-height);
-    padding: 0 var(--di-space-8);
+    padding: 0 var(--di-gap-8);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-control);
     background: var(--di-bg-surface);
