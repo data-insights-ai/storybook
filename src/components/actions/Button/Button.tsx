@@ -80,9 +80,9 @@ const drawn = (badge: number | string | undefined) => {
  *
  * The icon is the first child. An icon-only button needs `aria-label`.
  *
- * **Badge:** `<Button variant="ghost" iconOnly aria-label="Notifications"
- * badge={3} badgeLabel="3 unread">` draws the count after the icon, inside
- * the button, which widens for it, so the count never covers the glyph or
+ * **Badge:** `badge={3}` with `badgeLabel="3 unread"` on an icon-only ghost
+ * button named "Notifications" draws the count after the icon, inside the
+ * button, which widens for it, so the count never covers the glyph or
  * a neighbour. Its name is read as "Notifications, 3 unread".
  *
  * **Accessibility:** a `<button>`, or an `<a>` with `href`; `loading` sets

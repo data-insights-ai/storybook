@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Globe, ShieldCheck, Timer } from "lucide-react";
 import { StatusPill } from "./StatusPill";
+import { onPanel } from "../../../../.storybook/onPanel";
+import { Panel } from "../../layout/page/Panel";
 
 const meta = {
   title: "Status/StatusPill",
@@ -29,6 +31,7 @@ type Story = StoryObj<typeof meta>;
 
 /** Beside the names it qualifies, in a list a person scans: the word carries the state, the dot confirms it. */
 export const InAList: Story = {
+  decorators: [onPanel("Sources")],
   parameters: { controls: { disable: true } },
   render: () => (
     <ul style={{ display: "grid", gap: "var(--di-gap-8)", maxWidth: 420, margin: 0, padding: 0, listStyle: "none" }}>
@@ -53,6 +56,7 @@ export const InAList: Story = {
 
 /** Where a query is processed and how long it is kept: an icon in place of the dot. Both, or neither. */
 export const Privacy: Story = {
+  decorators: [onPanel("Data handling")],
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -71,6 +75,7 @@ export const Privacy: Story = {
 
 /** The whole set. Every word clears 5:1 on its own wash. */
 export const AllTones: Story = {
+  decorators: [onPanel("States")],
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -88,29 +93,22 @@ export const AllTones: Story = {
 export const NightSheet: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div
-      data-theme="dark"
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "var(--di-space-8)",
-        padding: "var(--di-space-16)",
-        borderRadius: "var(--di-radius-surface)",
-        background: "var(--di-bg-page)",
-      }}
-    >
-      <StatusPill tone="ok">running</StatusPill>
-      <StatusPill tone="warn">paused</StatusPill>
-      <StatusPill tone="danger">failed</StatusPill>
-      <StatusPill tone="recorded">sealed</StatusPill>
-      <StatusPill tone="neutral">queued</StatusPill>
-      <StatusPill tone="inferred">ai insight</StatusPill>
-    </div>
+    <Panel surface="hero" title="Sources tonight" heading={2}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--di-space-8)" }}>
+        <StatusPill tone="ok">running</StatusPill>
+        <StatusPill tone="warn">paused</StatusPill>
+        <StatusPill tone="danger">failed</StatusPill>
+        <StatusPill tone="recorded">sealed</StatusPill>
+        <StatusPill tone="neutral">queued</StatusPill>
+        <StatusPill tone="inferred">ai insight</StatusPill>
+      </div>
+    </Panel>
   ),
 };
 
 /** In the reading font, among prose, in German: the state of a licence on a page a person reads. */
 export const Prose: Story = {
+  decorators: [onPanel("Lizenz")],
   parameters: { controls: { disable: true } },
   render: () => (
     <p style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--di-gap-8)", maxWidth: 420 }}>

@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Switch } from "./Switch";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Choice/Switch",
   component: Switch,
   tags: ["layer:form", "autodocs"],
+  decorators: [onPanel("Workspace settings")],
   args: {
     id: "demo-data",
     on: false,

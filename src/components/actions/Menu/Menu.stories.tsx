@@ -6,6 +6,7 @@ import { Button } from "../Button";
 import { Toolbar } from "../Toolbar";
 import { DataTable, TableBody, TableCell, TableRow } from "../../tables/DataTable";
 import { Menu, MenuDivider, MenuGroup, MenuItem } from "./Menu";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 /**
  * A row's or a record's actions, kept out of sight until asked for.
@@ -30,6 +31,14 @@ const meta = {
   title: "Actions/Menu",
   component: Menu,
   tags: ["layer:block", "autodocs"],
+  // Room under the trigger, outside the panel, for the open menu.
+  decorators: [
+    (Story) => (
+      <div style={{ paddingBottom: 280 }}>
+        <Story />
+      </div>
+    ),
+  ],
   args: {
     open: false,
     label: "Actions for entry 04",
@@ -48,7 +57,7 @@ const meta = {
   render: function Render(args) {
     const [open, setOpen] = useState(args.open);
     return (
-      <div style={{ display: "flex", justifyContent: "flex-end", paddingBottom: 200 }}>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Menu
           {...args}
           open={open}
@@ -83,6 +92,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Closed: Story = {
+  decorators: [onPanel("Entry 04")],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.queryByRole("menu")).toBeNull();
@@ -91,6 +101,7 @@ export const Closed: Story = {
 
 /** Open, with the arrow-key movement a menu owes its user. */
 export const Open: Story = {
+  decorators: [onPanel("Entry 04")],
   args: { open: true },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -109,6 +120,7 @@ export const Open: Story = {
  * this is the story that ends open rather than the one named for it.
  */
 export const Opening: Story = {
+  decorators: [onPanel("Entry 04")],
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Actions for entry 04" }));
@@ -119,11 +131,13 @@ export const Opening: Story = {
 
 /** A model proposed one of these, so it wears the ring. */
 export const WithInferredItem: Story = {
+  decorators: [onPanel("Entry 04")],
   args: { open: true },
 };
 
 /** Keyboard entry chooses the correct end, and Escape returns to the trigger. */
 export const KeyboardEntry: Story = {
+  decorators: [onPanel("Entry 04")],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = canvas.getByRole("button", { name: "Actions for entry 04" });
@@ -140,6 +154,7 @@ export const KeyboardEntry: Story = {
 
 /** Choosing an item closes the menu and hands focus back to the trigger, by pointer or by key. */
 export const ChoosingReturnsFocus: Story = {
+  decorators: [onPanel("Entry 04")],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = canvas.getByRole("button", { name: "Actions for entry 04" });
@@ -156,6 +171,7 @@ export const ChoosingReturnsFocus: Story = {
 };
 
 export const DismissOutside: Story = {
+  decorators: [onPanel("Entry 04")],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Actions for entry 04" }));
@@ -167,6 +183,7 @@ export const DismissOutside: Story = {
 
 /** Tab leaves the menu and resumes normal page navigation. */
 export const TabExit: Story = {
+  decorators: [onPanel("Entry 04")],
   render: function Render(args) {
     const [open, setOpen] = useState(false);
     return (
@@ -198,11 +215,12 @@ export const TabExit: Story = {
 
 /** Choice state belongs to the caller, while groups name each choice set. */
 export const GroupedChoices: Story = {
+  decorators: [onPanel("Workspace")],
   render: function Render(args) {
     const [open, setOpen] = useState(false);
     const [view, setView] = useState("operations");
     return (
-      <div style={{ paddingBottom: 240 }}>
+      <div>
         <Menu
           {...args}
           open={open}
@@ -300,11 +318,12 @@ export const InATable: StoryObj = {
 
 /** German labels run longest: an item wraps between words inside the plane, which never runs off a phone. */
 export const LongGermanLabels: Story = {
+  decorators: [onPanel("Eintrag 04")],
   args: { open: true, label: "Aktionen für Eintrag 04" },
   render: function Render(args) {
     const [open, setOpen] = useState(args.open);
     return (
-      <div style={{ display: "flex", justifyContent: "flex-end", paddingBottom: 280 }}>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Menu
           {...args}
           open={open}

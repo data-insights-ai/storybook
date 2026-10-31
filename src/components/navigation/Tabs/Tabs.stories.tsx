@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
+import { Page } from "../../layout/page/Page";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Panel } from "../../layout/page/Panel";
 import { TabPanel, Tabs } from "./Tabs";
@@ -9,6 +10,13 @@ const meta = {
   title: "Navigation/Tabs",
   component: Tabs,
   tags: ["layer:block", "autodocs"],
+  decorators: [
+    (Story) => (
+      <Page width="full">
+        <Story />
+      </Page>
+    ),
+  ],
   args: {
     label: "Entry views",
     value: "record",
@@ -42,7 +50,9 @@ const meta = {
           }}
         />
         <TabPanel value={value} idPrefix={args.idPrefix}>
-          <p className="di-quiet">The {value} view of entry 03.</p>
+          <Panel>
+            <p className="di-quiet">The {value} view of entry 03.</p>
+          </Panel>
         </TabPanel>
       </div>
     );
@@ -194,11 +204,11 @@ export const MultipleStrips: Story = {
       <div>
         <Tabs {...args} idPrefix="first" label="First record" value={first} onChange={setFirst} />
         <TabPanel idPrefix="first" value={first}>
-          First record view
+          <Panel>First record view</Panel>
         </TabPanel>
         <Tabs {...args} idPrefix="second" label="Second record" value={second} onChange={setSecond} />
         <TabPanel idPrefix="second" value={second}>
-          Second record view
+          <Panel>Second record view</Panel>
         </TabPanel>
       </div>
     );

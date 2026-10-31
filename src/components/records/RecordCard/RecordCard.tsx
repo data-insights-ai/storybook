@@ -129,8 +129,8 @@ export function RecordLine({ primary, detail }: { primary: string; detail: strin
  * What a model read into the record, in place: the claim, the ground it
  * rests on (`RecordBasis`) and the actions an operator may take, each
  * still going through its own confirmation. A step of tone inside the
- * card, quieter than the measurement; the head's `StatusPill
- * tone="inferred"` names it. The first action is the one asked for.
+ * card, quieter than the measurement; the head's
+ * `StatusPill tone="inferred"` names it. The first action is the one asked for.
  */
 export function RecordInsight({ body, children }: { body: string; children?: ReactNode }) {
   const basis: ReactNode[] = [];

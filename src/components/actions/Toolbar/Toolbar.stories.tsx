@@ -15,6 +15,7 @@ import { Toolbar } from "./Toolbar";
 import { ToolbarAction, ToolbarEnd, ToolbarNote, ToolbarSelection, ToolbarStatus } from "./ToolbarParts";
 import { MembersFilter, MembersTable, words, type Words } from "./Toolbar.sample";
 import { toolbarRows } from "./rows.sample";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const phone = () => window.innerWidth <= 600;
 
@@ -304,6 +305,7 @@ export const RowActions: Story = {
  * does not move it.
  */
 export const InlineForm: Story = {
+  decorators: [onPanel("Grant temporary access")],
   globals: { viewport: { value: "desk", isRotated: false } },
   render: () => (
     <form onSubmit={(event) => event.preventDefault()}>
@@ -376,15 +378,17 @@ export const AddForm: Story = {
 /** `ToolbarEnd` sits at the far end even when it is written first. */
 export const EndWrittenFirst: Story = {
   render: () => (
-    <Toolbar label="Filter sources" role="search">
-      <ToolbarEnd>
-        <Button variant="secondary">Export</Button>
-      </ToolbarEnd>
-      <Select id="tb-first-state" label="State" hideLabel mono={false} defaultValue="">
-        <option value="">Every state</option>
-        <option value="running">Running</option>
-      </Select>
-    </Toolbar>
+    <Page>
+      <Toolbar label="Filter sources" role="search">
+        <ToolbarEnd>
+          <Button variant="secondary">Export</Button>
+        </ToolbarEnd>
+        <Select id="tb-first-state" label="State" hideLabel mono={false} defaultValue="">
+          <option value="">Every state</option>
+          <option value="running">Running</option>
+        </Select>
+      </Toolbar>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
     const bar = canvasElement.querySelector(".di-toolbar")!;

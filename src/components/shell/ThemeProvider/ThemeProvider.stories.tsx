@@ -127,7 +127,7 @@ type SampleArgs = ComponentProps<typeof ThemeProvider> & { language: keyof typeo
 
 const meta = {
   title: "Shell/ThemeProvider",
-  tags: ["layer:pattern"],
+  tags: ["layer:pattern", "autodocs"],
   component: ThemeProvider,
   parameters: { layout: "fullscreen" },
   args: { value: "auto", language: "en", children: null },

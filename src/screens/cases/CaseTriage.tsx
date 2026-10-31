@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  EmptyState,
   Button,
   CellStack,
   ChoiceGroup,
@@ -7,9 +8,6 @@ import {
   Figure,
   FigureRow,
   MetaLine,
-  Notice,
-  NoticeBody,
-  NoticeTitle,
   PageHeader,
   PageHeaderMeta,
   PageHeaderStatus,
@@ -242,10 +240,12 @@ function CaseWithoutVerdict({ record }: { record: CaseRow }) {
   return (
     <>
       <CaseHeader record={record} />
-      <Notice variant="empty">
-        <NoticeTitle>No verdict yet</NoticeTitle>
-        <NoticeBody>The analysis has not concluded on this case. Open its signals to triage it by hand.</NoticeBody>
-      </Notice>
+      <Panel>
+        <EmptyState
+          title="No verdict yet"
+          body="The analysis has not concluded on this case. Open its signals to triage it by hand."
+        />
+      </Panel>
     </>
   );
 }

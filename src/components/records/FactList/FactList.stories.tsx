@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Fact, FactList } from "./FactList";
+import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
 import { SealValue } from "../../status/SealValue";
 import { StatusPill } from "../../status/StatusPill";
@@ -77,10 +78,12 @@ export const LongValues: Story = {
     ),
   ],
   render: (args) => (
-    <FactList {...args}>
-      <Fact label="Resource">org:395768980536623109/workspace:01a15463-15d1-78d1-a799-9c96d5e69c8b</Fact>
-      <Fact label="Client">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36</Fact>
-    </FactList>
+    <Panel title="Audit entry" heading={2}>
+      <FactList {...args}>
+        <Fact label="Resource">org:395768980536623109/workspace:01a15463-15d1-78d1-a799-9c96d5e69c8b</Fact>
+        <Fact label="Client">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36</Fact>
+      </FactList>
+    </Panel>
   ),
   play: async ({ canvasElement }) => {
     const list = canvasElement.querySelector("dl");
@@ -98,17 +101,19 @@ export const WithMarks: Story = {
     ),
   ],
   render: (args) => (
-    <FactList {...args}>
-      <Fact label="Kind">Registry</Fact>
-      <Fact label="Manifest">
-        <SealValue state="sealed" stateLabel="Sealed">
-          a4f9c21e
-        </SealValue>
-      </Fact>
-      <Fact label="State">
-        <StatusPill tone="ok">running</StatusPill>
-      </Fact>
-    </FactList>
+    <Panel title="registry.example.org" heading={2}>
+      <FactList {...args}>
+        <Fact label="Kind">Registry</Fact>
+        <Fact label="Manifest">
+          <SealValue state="sealed" stateLabel="Sealed">
+            a4f9c21e
+          </SealValue>
+        </Fact>
+        <Fact label="State">
+          <StatusPill tone="ok">running</StatusPill>
+        </Fact>
+      </FactList>
+    </Panel>
   ),
 };
 
@@ -121,12 +126,14 @@ export const WithMarks: Story = {
 export const Grid: Story = {
   args: { layout: "grid" },
   render: (args) => (
-    <FactList {...args}>
-      <Fact label="Promise">No guesses. Only traceable answers.</Fact>
-      <Fact label="Proof">Knowledge graphs. Timestamps. Replayable evidence.</Fact>
-      <Fact label="For">Government, finance, pharma, legal, infrastructure.</Fact>
-      <Fact label="Against">Black-box models. Hallucinations. “Trust us” AI.</Fact>
-    </FactList>
+    <Page width="full">
+      <FactList {...args}>
+        <Fact label="Promise">No guesses. Only traceable answers.</Fact>
+        <Fact label="Proof">Knowledge graphs. Timestamps. Replayable evidence.</Fact>
+        <Fact label="For">Government, finance, pharma, legal, infrastructure.</Fact>
+        <Fact label="Against">Black-box models. Hallucinations. “Trust us” AI.</Fact>
+      </FactList>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -219,20 +226,26 @@ export const Stacked: Story = {
 export const ColumnsWide: Story = {
   args: { layout: "columns" },
   render: (args) => (
-    <FactList {...args}>
-      <Fact label="Endpoint" wide>
-        https://collector.example.com:8088/services/collector/event
-      </Fact>
-      <Fact label="Token">…9f3a</Fact>
-      <Fact label="Index">soc</Fact>
-      <Fact label="Trust the server by">System trust store</Fact>
-    </FactList>
+    <Panel title="Splunk HEC export" heading={2}>
+      <FactList {...args}>
+        <Fact label="Endpoint" wide>
+          https://collector.example.com:8088/services/collector/event
+        </Fact>
+        <Fact label="Token">…9f3a</Fact>
+        <Fact label="Index">soc</Fact>
+        <Fact label="Trust the server by">System trust store</Fact>
+      </FactList>
+    </Panel>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const endpoint = canvas.getByText(/services\/collector/);
     const token = canvas.getByText("…9f3a");
-    await expect(endpoint.getBoundingClientRect().height).toBeLessThan(token.getBoundingClientRect().height * 1.5);
+    const row = endpoint.closest("dl")!.getBoundingClientRect();
+    await expect(endpoint.getBoundingClientRect().width).toBeGreaterThan(row.width / 2);
+    // On a phone panel the row itself is narrower than the endpoint, so only a wider row must hold it on one line.
+    if (row.width >= 480)
+      await expect(endpoint.getBoundingClientRect().height).toBeLessThan(token.getBoundingClientRect().height * 1.5);
   },
 };
 
@@ -240,10 +253,12 @@ export const ColumnsWide: Story = {
 export const Inline: Story = {
   args: { layout: "inline" },
   render: (args) => (
-    <FactList {...args}>
-      <Fact label="Seats">12 of 25</Fact>
-      <Fact label="Renews">1 Nov 2026</Fact>
-    </FactList>
+    <Panel title="Licence" heading={2}>
+      <FactList {...args}>
+        <Fact label="Seats">12 of 25</Fact>
+        <Fact label="Renews">1 Nov 2026</Fact>
+      </FactList>
+    </Panel>
   ),
 };
 
@@ -260,13 +275,15 @@ export const LongLabels: Story = {
     ),
   ],
   render: (args) => (
-    <FactList {...args}>
-      <Fact label="Zustellungen von Benachrichtigungen">365 Tage</Fact>
-      <Fact label="Aufbewahrungsdauer des Prüfprotokolls">1.095 Tage</Fact>
-      <Fact label="Kennung" mono>
-        01a155a0-dd8b-79bb-a708-3841c4fc4562
-      </Fact>
-    </FactList>
+    <Panel title="Aufbewahrung" heading={2}>
+      <FactList {...args}>
+        <Fact label="Zustellungen von Benachrichtigungen">365 Tage</Fact>
+        <Fact label="Aufbewahrungsdauer des Prüfprotokolls">1.095 Tage</Fact>
+        <Fact label="Kennung" mono>
+          01a155a0-dd8b-79bb-a708-3841c4fc4562
+        </Fact>
+      </FactList>
+    </Panel>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

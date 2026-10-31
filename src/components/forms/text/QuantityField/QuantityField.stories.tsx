@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { QuantityField } from "./QuantityField";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Text/QuantityField",
   component: QuantityField,
   tags: ["layer:form", "autodocs"],
+  decorators: [onPanel("Licence")],
   args: {
     id: "seats",
     label: "Seats",

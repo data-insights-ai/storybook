@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { ChoiceGroup } from "../ChoiceGroup";
 import { Radio } from "./Radio";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Choice/Radio",
   component: Radio,
   tags: ["layer:form", "autodocs"],
+  decorators: [onPanel("Retention")],
   args: {
     id: "retention-30",
     name: "retention",

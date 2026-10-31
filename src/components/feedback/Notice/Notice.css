@@ -140,63 +140,6 @@
   }
 
   /*
-   * Empty: in place of the content that is missing, centred, at a
-   * readable measure. The icon stands on the surface itself: a tile would
-   * vanish on the inset tone a nested notice takes.
-   */
-  .di-notice-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: var(--di-gap-32) var(--di-surface-inner);
-    text-align: center;
-  }
-
-  .di-notice-empty .di-notice-copy {
-    display: contents;
-  }
-
-  .di-notice-empty .di-notice-icon {
-    display: flex;
-    margin-bottom: var(--di-gap-12);
-  }
-
-  .di-notice-empty .di-notice-icon > svg {
-    width: var(--di-icon-lg);
-    height: var(--di-icon-lg);
-  }
-
-  .di-notice-empty .di-notice-heading .di-eyebrow {
-    justify-content: center;
-  }
-
-  .di-notice-empty .di-notice-title {
-    font-size: var(--di-block-title-size);
-  }
-
-  .di-notice-empty .di-notice-body {
-    margin-top: var(--di-gap-6);
-    font-size: var(--di-font-size-400);
-    line-height: var(--di-leading-body);
-  }
-
-  .di-notice-empty .di-notice-body.di-mono {
-    font-size: var(--di-font-size-300);
-    overflow-wrap: anywhere;
-  }
-
-  .di-notice-empty .di-notice-title,
-  .di-notice-empty .di-notice-body {
-    max-width: var(--di-measure-prose);
-  }
-
-  .di-notice-empty .di-notice-action {
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: var(--di-gap-16);
-  }
-
-  /*
    * Line: nothing needs the reader. One ruled line, the tone's dot before
    * the title, and what the calm rests on beside it.
    */

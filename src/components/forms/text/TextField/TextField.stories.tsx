@@ -5,7 +5,7 @@ import { Stack } from "../../../layout/arrange/Stack";
 import { Toolbar } from "../../../actions/Toolbar";
 import { TextField } from "./TextField";
 import { TextLink } from "../../../text/TextLink";
-import { Panel } from "../../../layout/page/Panel";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Text/TextField",
@@ -38,6 +38,7 @@ const meta = {
     children: { control: false },
   },
   decorators: [
+    onPanel("Account"),
     (Story, { parameters }) =>
       parameters.measure === false ? (
         <Story />
@@ -144,18 +145,16 @@ export const ReadOnly: Story = {
 export const ReadOnlyBesideDisabled: Story = {
   name: "Read-only beside disabled",
   render: () => (
-    <Panel title="Workspace">
-      <Stack variant="form">
-        <TextField id="ro-id" label="Workspace ID" readOnly defaultValue="ws_7f3a99e2c41b" mono />
-        <TextField
-          id="ro-region"
-          label="Region"
-          disabled
-          defaultValue="eu-central"
-          hint="Set when the workspace was created; it cannot move."
-        />
-      </Stack>
-    </Panel>
+    <Stack variant="form">
+      <TextField id="ro-id" label="Workspace ID" readOnly defaultValue="ws_7f3a99e2c41b" mono />
+      <TextField
+        id="ro-region"
+        label="Region"
+        disabled
+        defaultValue="eu-central"
+        hint="Set when the workspace was created; it cannot move."
+      />
+    </Stack>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

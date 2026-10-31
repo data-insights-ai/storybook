@@ -3,6 +3,7 @@ import { Bell } from "lucide-react";
 import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
+import { AppShellBar, AppShellBarEnd, AppShellBarKeep } from "../../shell/AppShellBar";
 import { Flyout, FlyoutFooter, FlyoutItem, FlyoutItems, FlyoutTrigger } from "./Flyout";
 import { TextLink } from "../../text/TextLink";
 
@@ -25,34 +26,40 @@ const entries = [
 function Notifications() {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-start", minHeight: 460 }}>
-      <Flyout id="latest" title="Notifications" open={open} onOpenChange={setOpen}>
-        <FlyoutTrigger>
-          <Button
-            variant="ghost"
-            iconOnly
-            aria-label="Notifications"
-            badge={2}
-            badgeLabel="2 unread"
-            aria-expanded={open}
-            aria-controls="latest"
-            onClick={() => setOpen(!open)}
-          >
-            <Bell aria-hidden />
-          </Button>
-        </FlyoutTrigger>
-        <FlyoutItems label="Latest notifications" unreadLabel="unread">
-          {entries.map((e) => (
-            <FlyoutItem key={e.title} title={e.title} time={e.time} unread={e.unread} href="#entry" />
-          ))}
-        </FlyoutItems>
-        <FlyoutFooter>
-          <TextLink href="#all">All notifications</TextLink>
-          <Button variant="secondary" size="sm">
-            Mark all read
-          </Button>
-        </FlyoutFooter>
-      </Flyout>
+    <div style={{ minHeight: 460 }}>
+      <AppShellBar>
+        <AppShellBarEnd moreLabel="More">
+          <AppShellBarKeep>
+            <Flyout id="latest" title="Notifications" open={open} onOpenChange={setOpen}>
+              <FlyoutTrigger>
+                <Button
+                  variant="ghost"
+                  iconOnly
+                  aria-label="Notifications"
+                  badge={2}
+                  badgeLabel="2 unread"
+                  aria-expanded={open}
+                  aria-controls="latest"
+                  onClick={() => setOpen(!open)}
+                >
+                  <Bell aria-hidden />
+                </Button>
+              </FlyoutTrigger>
+              <FlyoutItems label="Latest notifications" unreadLabel="unread">
+                {entries.map((e) => (
+                  <FlyoutItem key={e.title} title={e.title} time={e.time} unread={e.unread} href="#entry" />
+                ))}
+              </FlyoutItems>
+              <FlyoutFooter>
+                <TextLink href="#all">All notifications</TextLink>
+                <Button variant="secondary" size="sm">
+                  Mark all read
+                </Button>
+              </FlyoutFooter>
+            </Flyout>
+          </AppShellBarKeep>
+        </AppShellBarEnd>
+      </AppShellBar>
     </div>
   );
 }

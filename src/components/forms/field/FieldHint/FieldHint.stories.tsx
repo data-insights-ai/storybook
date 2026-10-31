@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { TextField } from "../../text/TextField";
 import { FieldHint } from "./FieldHint";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Field/FieldHint",
   component: FieldHint,
   tags: ["layer:form", "autodocs"],
+  decorators: [onPanel("Source")],
   args: {
     id: "hint",
     tone: "neutral",

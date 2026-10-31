@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { SeverityMark, type Severity } from "./SeverityMark";
+import { onPanel } from "../../../../.storybook/onPanel";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 
 const meta = {
   title: "Status/SeverityMark",
@@ -26,6 +28,7 @@ const meta = {
     label: { control: "text" },
     variant: { control: "radio", options: ["mark", "chip", "bare"] },
   },
+  decorators: [onPanel("Open cases")],
 } satisfies Meta<typeof SeverityMark>;
 
 export default meta;
@@ -93,11 +96,39 @@ export const Scale: Story = {
 /** The tint stops the eye on a critical item, such as a case's own header. */
 export const Chip: Story = {
   args: { level: "critical", label: "Critical", variant: "chip" },
+  render: (args) => (
+    <p style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--di-gap-8)", margin: 0 }}>
+      <SeverityMark {...args} />
+      Case 4 · leaked VPN credentials
+    </p>
+  ),
 };
 
 /** In a column headed "Severity" the word is read out but not printed. */
 export const Bare: Story = {
   args: { level: "medium", label: "Medium", variant: "bare" },
+  render: (args) => (
+    <DataTable caption="Cases by severity" indexed={false}>
+      <TableHead>
+        <TableColumn>Severity</TableColumn>
+        <TableColumn width="fill">Case</TableColumn>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>
+            <SeverityMark {...args} />
+          </TableCell>
+          <TableCell>Credential reuse on vpn-01</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <SeverityMark level="low" label="Low" variant="bare" />
+          </TableCell>
+          <TableCell>Expired certificate on mail-02</TableCell>
+        </TableRow>
+      </TableBody>
+    </DataTable>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Medium")).toHaveClass("di-sr");

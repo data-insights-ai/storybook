@@ -211,11 +211,16 @@ export const AtTheWindowEdge: Story = {
 /** Escape closes it and leaves focus on the control. */
 export const ClosesOnEscape: Story = {
   render: (args) => (
-    <Tooltip label={args.label}>
-      <Button variant="ghost" iconOnly aria-label={args.label}>
-        <Download />
-      </Button>
-    </Tooltip>
+    <Panel title="Exports" heading={2}>
+      <PanelActions>
+        <Tooltip label={args.label}>
+          <Button variant="ghost" iconOnly aria-label={args.label}>
+            <Download />
+          </Button>
+        </Tooltip>
+      </PanelActions>
+      <p style={{ margin: 0 }}>The register as of 09:12, 24,918 entries.</p>
+    </Panel>
   ),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);

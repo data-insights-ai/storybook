@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { flushSync } from "react-dom";
+import { createRoot } from "react-dom/client";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ArrowRight, FileSearch, Radar, Settings2 } from "lucide-react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
-import { Tag, TagList } from "../../status/Tag";
+import { SearchField } from "../../forms/text/SearchField";
 import { CommandBar, CommandEmpty, CommandGroup, CommandRow } from "./CommandBar";
 
 /**
@@ -141,8 +143,26 @@ export const Typing: Story = {
     await userEvent.type(input, "feed");
     await expect(input).toHaveValue("feed");
     await expect(args.onValueChange).toHaveBeenCalled();
+    await expect(searchFace()).toEqual(face(input));
   },
 };
+
+function face(input: Element) {
+  const style = getComputedStyle(input);
+  return { family: style.fontFamily, size: style.fontSize, weight: style.fontWeight };
+}
+
+/** A search typed into the palette reads like a search typed into a SearchField: the same face and size. */
+function searchFace() {
+  const host = document.createElement("div");
+  document.body.append(host);
+  const root = createRoot(host);
+  flushSync(() => root.render(<SearchField label="Search" />));
+  const measured = face(host.querySelector("input")!);
+  root.unmount();
+  host.remove();
+  return measured;
+}
 
 /** The colour a zone is painted with: its own, or the first one behind it. */
 function ground(el: Element | null): string {
@@ -292,25 +312,4 @@ export const LongGermanLabels: Story = {
       </CommandGroup>
     ),
   },
-};
-
-/**
- * The scopes the bar is searching within. A suggested scope came from a
- * model, so it carries the hollow ring rather than a filled mark.
- */
-export const Scopes: Story = {
-  parameters: { controls: { disable: true } },
-  render: () => (
-    <TagList>
-      <Tag mono pressed onRemove={fn()} removeLabel="Remove the workspace scope">
-        workspace: WS-01
-      </Tag>
-      <Tag mono onClick={fn()}>
-        state: paused
-      </Tag>
-      <Tag mono inferred onClick={fn()}>
-        sealed before 2026-09-01
-      </Tag>
-    </TagList>
-  ),
 };

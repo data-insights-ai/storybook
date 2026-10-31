@@ -83,7 +83,7 @@ function Sample({ initial }: { initial: Density }) {
 
 const meta = {
   title: "Shell/DensityProvider",
-  tags: ["layer:pattern"],
+  tags: ["layer:pattern", "autodocs"],
   component: DensityProvider,
   args: { value: "comfortable", children: null },
   argTypes: { value: { control: "radio", options: densityChoices }, children: { control: false } },

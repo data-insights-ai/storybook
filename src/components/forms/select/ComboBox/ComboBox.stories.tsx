@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { onPanel } from "../../../../../.storybook/onPanel";
 import { expect, fireEvent, fn, userEvent, waitFor, within } from "storybook/test";
 import { ComboBox } from "./ComboBox";
 import { Button } from "../../../actions/Button";
@@ -19,8 +20,9 @@ const formStyle = {
 
 const meta = {
   title: "Forms/Select/ComboBox",
-  tags: ["layer:form"],
+  tags: ["layer:form", "autodocs"],
   component: ComboBox,
+  decorators: [onPanel("Case")],
   args: {
     id: "register-code",
     name: "register",

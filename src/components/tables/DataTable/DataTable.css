@@ -80,19 +80,22 @@
     font-size: var(--di-font-size-400);
   }
 
-  /* The head names each column as a label, not as a value: mono capitals, quiet. */
+  /*
+   * The head names each column in the interface label: the reading face,
+   * quiet, at a row's height and with a cell's inset, so it reads as the
+   * table's first row rather than a strip above it.
+   */
   .di-table th {
-    height: var(--di-control-h-md);
-    padding: 0 var(--di-gap-12);
+    height: var(--di-table-row-height);
+    padding: var(--di-gap-8) var(--di-gap-12);
     border-bottom: 1px solid var(--di-border);
     background: var(--di-table-head-bg);
     text-align: start;
-    font-family: var(--di-mono-label-family);
-    font-size: var(--di-mono-label-size);
-    font-weight: var(--di-mono-label-weight);
-    letter-spacing: var(--di-mono-label-tracking);
-    text-transform: uppercase;
-    color: var(--di-mono-label-color);
+    font-family: var(--di-label-family);
+    font-size: var(--di-label-size);
+    font-weight: var(--di-label-weight);
+    line-height: var(--di-leading-snug);
+    color: var(--di-label-color);
     white-space: nowrap;
   }
 
@@ -169,8 +172,6 @@
     border: 0;
     background: none;
     font: inherit;
-    letter-spacing: inherit;
-    text-transform: inherit;
     color: inherit;
     cursor: pointer;
     transition: color var(--di-duration) var(--di-ease);
@@ -375,7 +376,7 @@
    * frame's top and its footer under it, so the count stays in view.
    */
   .di-table-wrap.is-framed .di-table-scroll {
-    max-height: calc(var(--di-control-h-md) + var(--di-table-frame-rows) * var(--di-table-row-height));
+    max-height: calc(var(--di-table-row-height) + var(--di-table-frame-rows) * var(--di-table-row-height));
     overflow: auto;
     overscroll-behavior: contain;
   }
@@ -593,12 +594,10 @@
 
     .di-table-wrap.is-stackable td.is-labelled::before {
       content: attr(data-label) / "";
-      font-family: var(--di-mono-label-family);
-      font-size: var(--di-mono-label-size);
-      font-weight: var(--di-mono-label-weight);
-      letter-spacing: var(--di-mono-label-tracking);
-      text-transform: uppercase;
-      color: var(--di-mono-label-color);
+      font-family: var(--di-label-family);
+      font-size: var(--di-label-size);
+      font-weight: var(--di-label-weight);
+      color: var(--di-label-color);
       white-space: normal;
     }
 

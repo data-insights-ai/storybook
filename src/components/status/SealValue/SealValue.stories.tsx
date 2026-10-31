@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { SealMark, SealValue } from "./SealValue";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const meta = {
   title: "Status/SealValue",
@@ -16,6 +17,7 @@ const meta = {
     stateLabel: { control: "text" },
     children: { control: "text" },
   },
+  decorators: [onPanel("Manifest")],
 } satisfies Meta<typeof SealValue>;
 
 export default meta;

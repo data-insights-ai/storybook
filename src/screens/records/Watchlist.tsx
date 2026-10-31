@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { MoreVertical, Plus, Search } from "lucide-react";
 import {
+  EmptyStateAction,
+  EmptyState,
   Button,
   CellStack,
   DataTable,
@@ -69,19 +71,19 @@ export function WatchlistScreen({ state = "ready" }: { state?: WatchlistState })
         {state === "ready" ? (
           <Watched />
         ) : (
-          <Notice variant="empty">
-            <NoticeTitle>Nothing is watched yet</NoticeTitle>
-            <NoticeBody>
-              Add a name, a company, a domain or a mailbox. New mentions in the connected sources are matched as they
-              arrive.
-            </NoticeBody>
-            <NoticeAction>
-              <Button variant="secondary">
-                <Plus aria-hidden />
-                Add entry
-              </Button>
-            </NoticeAction>
-          </Notice>
+          <Panel>
+            <EmptyState
+              title="Nothing is watched yet"
+              body="Add a name, a company, a domain or a mailbox. New mentions in the connected sources are matched as they arrive."
+            >
+              <EmptyStateAction>
+                <Button variant="secondary">
+                  <Plus aria-hidden />
+                  Add entry
+                </Button>
+              </EmptyStateAction>
+            </EmptyState>
+          </Panel>
         )}
       </Page>
     </ProductShell>
@@ -159,10 +161,10 @@ function Watched() {
           </TableBody>
         </DataTable>
         {shown.length === 0 ? (
-          <Notice variant="empty">
-            <NoticeTitle>No entry matches “{query}”.</NoticeTitle>
-            <NoticeBody>Search by the name, the domain or the address as it was added.</NoticeBody>
-          </Notice>
+          <EmptyState
+            title={`No entry matches “${query}”.`}
+            body="Search by the name, the domain or the address as it was added."
+          />
         ) : null}
       </Panel>
     </>

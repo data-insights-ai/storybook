@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { onPanel } from "../../../../../.storybook/onPanel";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { TimeField } from "./TimeField";
 import { Grid } from "../../../layout/arrange/Grid";
@@ -7,6 +8,7 @@ import { Grid } from "../../../layout/arrange/Grid";
 const meta = {
   title: "Forms/Dates/TimeField",
   component: TimeField,
+  decorators: [onPanel("Daily digest")],
   tags: ["layer:form", "autodocs"],
   args: {
     id: "send-at",

@@ -1,11 +1,25 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
+import { Page } from "../../layout/page/Page";
+import { PageHeader, PageHeaderCrumbs, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Breadcrumb } from "./Breadcrumb";
 
 const meta = {
   title: "Navigation/Breadcrumb",
   component: Breadcrumb,
   tags: ["layer:primitive", "autodocs"],
+  decorators: [
+    (Story, { args }) => (
+      <Page width="full">
+        <PageHeader>
+          <PageHeaderCrumbs>
+            <Story />
+          </PageHeaderCrumbs>
+          <PageHeaderTitle>{args.items[args.items.length - 1]?.label}</PageHeaderTitle>
+        </PageHeader>
+      </Page>
+    ),
+  ],
   args: {
     label: "Breadcrumb",
     items: [
@@ -29,7 +43,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   globals: { viewport: { value: "desk", isRotated: false } },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+    const canvas = within(canvasElement.querySelector("nav")!);
     await expect(canvas.getByText("feed.example.io")).toHaveAttribute("aria-current", "page");
     await expect(getComputedStyle(canvas.getByRole("link", { name: "Sources" })).textDecorationLine).toBe("underline");
   },
@@ -101,7 +115,7 @@ export const OnAPhone: Story = {
   globals: { viewport: { value: "phone", isRotated: false } },
   args: LongLabels.args,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+    const canvas = within(canvasElement.querySelector("nav")!);
     await expect(canvas.getByText("Aufbewahrungsrichtlinien für Protokolldaten")).toBeVisible();
     await expect(canvas.queryByRole("link", { name: "Benachrichtigungen" })).toBeNull();
     const list = canvasElement.querySelector<HTMLElement>(".di-breadcrumb-list")!;

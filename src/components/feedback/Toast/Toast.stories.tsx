@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
+import { Panel, PanelActions } from "../../layout/page/Panel";
 import { Toast, ToastAction, ToastRegion } from "./Toast";
 
 const meta = {
@@ -136,11 +137,14 @@ export const Arriving: Story = {
 
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 12, minHeight: 260 }}>
-        <div>
-          <Button variant="secondary" size="sm" onClick={emit}>
-            Emit a receipt
-          </Button>
-        </div>
+        <Panel title="Sources" heading={2}>
+          <PanelActions>
+            <Button variant="secondary" size="sm" onClick={emit}>
+              Revoke four sources
+            </Button>
+          </PanelActions>
+          <p style={{ margin: 0 }}>Each revocation leaves a receipt below, with its audit id.</p>
+        </Panel>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {entries.map((entry) => (
             <Toast

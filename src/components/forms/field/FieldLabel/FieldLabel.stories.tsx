@@ -16,6 +16,7 @@ import { QuantityField } from "../../text/QuantityField";
 import { TextArea } from "../../text/TextArea";
 import { FieldHint } from "../FieldHint";
 import { FieldLabel } from "./FieldLabel";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Field/FieldLabel",
@@ -23,6 +24,7 @@ const meta = {
   tags: ["layer:form", "autodocs"],
   args: { label: "Severity floor", labelTrack: "record", hideLabel: false, required: false },
   decorators: [
+    onPanel("Alert rule"),
     (Story) => (
       <div style={{ maxWidth: 400 }}>
         <Story />

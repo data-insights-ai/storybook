@@ -66,6 +66,13 @@ export const InATableCell: Story = {
 
 /** Focus opens the label; Escape closes it again without moving focus. */
 export const Focused: Story = {
+  render: (args) => (
+    <Panel title="Seal" heading={2}>
+      <p style={{ margin: 0 }}>
+        Sealed at 09:12:06Z under <TooltipTarget {...args} />.
+      </p>
+    </Panel>
+  ),
   play: async ({ canvas, canvasElement }) => {
     const term = canvas.getByText("RFC 3161");
     await expect(term).toHaveAccessibleDescription("Trusted timestamp protocol");
@@ -85,9 +92,11 @@ export const Focused: Story = {
 export const InMonoText: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <p style={{ fontFamily: "var(--di-font-code)" }}>
-      sealed under <TooltipTarget text="RFC 3161" label="Trusted timestamp protocol" />,{" "}
-      <TooltipTarget text="SHA-256" label="Secure hash, 256 bits" />
-    </p>
+    <Panel title="Seal" heading={2}>
+      <p style={{ margin: 0, fontFamily: "var(--di-font-code)" }}>
+        sealed under <TooltipTarget text="RFC 3161" label="Trusted timestamp protocol" />,{" "}
+        <TooltipTarget text="SHA-256" label="Secure hash, 256 bits" />
+      </p>
+    </Panel>
   ),
 };

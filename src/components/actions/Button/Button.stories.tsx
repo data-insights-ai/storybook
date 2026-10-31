@@ -6,6 +6,7 @@ import { TextField } from "../../forms/text/TextField";
 import { Page } from "../../layout/page/Page";
 import { Panel, PanelActions, PanelFooter } from "../../layout/page/Panel";
 import { Button } from "./Button";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const row = { display: "flex", flexWrap: "wrap", alignItems: "center", gap: "var(--di-gap-8)" } as const;
 
@@ -42,6 +43,7 @@ type Story = StoryObj<typeof meta>;
 
 /** Navy fill. The one control on the sheet that commits. */
 export const Primary: Story = {
+  decorators: [onPanel("Watchlist")],
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Add entry" }));
@@ -50,6 +52,7 @@ export const Primary: Story = {
 };
 
 export const Secondary: Story = {
+  decorators: [onPanel("Sources")],
   args: { variant: "secondary", children: "Filter" },
 };
 
@@ -92,6 +95,7 @@ export const Ghost: Story = {
  * key cap or spinner.
  */
 export const LinkLook: Story = {
+  decorators: [onPanel("Verify your email")],
   args: { variant: "link", children: "Send it again" },
   render: (args) => (
     <div style={{ display: "grid", gap: "var(--di-gap-8)", maxWidth: 360 }}>
@@ -110,6 +114,7 @@ export const LinkLook: Story = {
 
 /** The same in German, where the sentence wraps and the link wraps with it. */
 export const LinkLookGerman: Story = {
+  decorators: [onPanel("E-Mail-Adresse bestätigen")],
   args: { variant: "link", children: "Code erneut senden" },
   render: (args) => (
     <div style={{ display: "grid", gap: "var(--di-gap-8)", maxWidth: 300 }}>
@@ -184,30 +189,36 @@ export const WithBadgeGerman: Story = {
 
 /** Reads as an ordinary control until hover. A red fill invites the press. */
 export const Danger: Story = {
+  decorators: [onPanel("API key")],
   args: { variant: "danger", children: "Revoke key" },
 };
 
 /** A brand moment: sign-in, onboarding, a licence or a certificate. Never in an operational view. */
 export const Seal: Story = {
+  decorators: [onPanel("Register entry")],
   args: { variant: "seal", children: "Seal entry" },
 };
 
 /** Acts on a model's proposal, so it carries the ring's edge. */
 export const Inferred: Story = {
+  decorators: [onPanel("Suggested owner")],
   args: { variant: "inferred", children: "Accept suggestion" },
 };
 
 /** A row or a toolbar of small controls. */
 export const Small: Story = {
+  decorators: [onPanel("Audit log")],
   args: { size: "sm", variant: "secondary", children: "Export" },
 };
 
 /** A sign-in or a brand page. */
 export const Large: Story = {
+  decorators: [onPanel("Welcome back")],
   args: { size: "lg", children: "Sign in" },
 };
 
 export const WithIcon: Story = {
+  decorators: [onPanel("Watchlist")],
   args: { children: "Add entry" },
   render: ({ children, ...args }) => (
     <Button {...args}>
@@ -219,6 +230,7 @@ export const WithIcon: Story = {
 
 /** Icon only, so the name has to be spelled out for a screen reader. */
 export const IconOnly: Story = {
+  decorators: [onPanel("Entry")],
   args: { iconOnly: true, variant: "secondary", children: "" },
   render: (args) => (
     <Button {...args} aria-label="Remove entry">
@@ -233,6 +245,7 @@ export const IconOnly: Story = {
 
 /** Busy and unpressable. `aria-busy` says so without a second label. */
 export const Loading: Story = {
+  decorators: [onPanel("Register entry")],
   args: { loading: true, children: "Sealing" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -243,6 +256,7 @@ export const Loading: Story = {
 };
 
 export const Disabled: Story = {
+  decorators: [onPanel("Licence")],
   args: { disabled: true, children: "Unavailable" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -255,6 +269,7 @@ export const Disabled: Story = {
  * `aria-keyshortcuts`, so the key never becomes part of the button's name.
  */
 export const Shortcut: Story = {
+  decorators: [onPanel("Watchlist")],
   args: { shortcut: "n", children: "New entry" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -269,6 +284,7 @@ export const Shortcut: Story = {
  * navigation — open in a new tab, copy the address, a real status bar.
  */
 export const Navigates: Story = {
+  decorators: [onPanel("Entry 0148")],
   args: { children: "Open record" },
   parameters: { controls: { disable: true } },
   render: ({ children }) => (
@@ -285,6 +301,7 @@ export const Navigates: Story = {
 
 /** A blocked link drops its `href`, so there is nothing left to follow. */
 export const NavigatesBlocked: Story = {
+  decorators: [onPanel("Entry 0148")],
   args: { children: "Unavailable" },
   parameters: { controls: { disable: true } },
   render: ({ children }) => (
@@ -302,6 +319,7 @@ export const NavigatesBlocked: Story = {
 
 /** Every variant at once, for a pass over the whole set. */
 export const AllVariants: Story = {
+  decorators: [onPanel("Every variant")],
   args: { children: "" },
   parameters: { controls: { disable: true } },
   render: () => (
@@ -332,7 +350,7 @@ export const AllVariants: Story = {
 /**
  * After dark the fill turns paper-white: navy has nothing left to act against.
  *
- * The ground is a `data-theme="dark"` region rather than the whole canvas,
+ * The panel sits in a `data-theme="dark"` region rather than the whole canvas,
  * so the night sheet can be shown beside daylight — and so this story is a
  * render rather than a toolbar state.
  */
@@ -340,28 +358,24 @@ export const NightSheet: Story = {
   args: { children: "" },
   parameters: { controls: { disable: true } },
   render: () => (
-    <div
-      data-theme="dark"
-      style={{
-        ...row,
-        padding: "var(--di-space-16)",
-        borderRadius: "var(--di-radius-surface)",
-        background: "var(--di-bg-page)",
-      }}
-    >
-      <Button variant="primary">
-        <Check aria-hidden />
-        Commit
-      </Button>
-      <Button variant="secondary">Filter</Button>
-      <Button variant="ghost">Refresh</Button>
-      <Button variant="link">Show details</Button>
-      <Button variant="danger">Revoke key</Button>
-      <Button variant="seal">Seal entry</Button>
-      <Button variant="inferred">Accept suggestion</Button>
-      <Button variant="secondary" disabled={true}>
-        Unavailable
-      </Button>
+    <div data-theme="dark">
+      <Panel title="After dark" heading={2}>
+        <div style={row}>
+          <Button variant="primary">
+            <Check aria-hidden />
+            Commit
+          </Button>
+          <Button variant="secondary">Filter</Button>
+          <Button variant="ghost">Refresh</Button>
+          <Button variant="link">Show details</Button>
+          <Button variant="danger">Revoke key</Button>
+          <Button variant="seal">Seal entry</Button>
+          <Button variant="inferred">Accept suggestion</Button>
+          <Button variant="secondary" disabled={true}>
+            Unavailable
+          </Button>
+        </div>
+      </Panel>
     </div>
   ),
 };

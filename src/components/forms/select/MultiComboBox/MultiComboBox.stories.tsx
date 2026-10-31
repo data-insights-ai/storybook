@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { onPanel } from "../../../../../.storybook/onPanel";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { MultiComboBox } from "./MultiComboBox";
 import { Button } from "../../../actions/Button";
@@ -16,8 +17,9 @@ const people = [
 
 const meta = {
   title: "Forms/Select/MultiComboBox",
-  tags: ["layer:form"],
+  tags: ["layer:form", "autodocs"],
   component: MultiComboBox,
+  decorators: [onPanel("Notifications")],
   args: {
     id: "notify-members",
     label: "Members",

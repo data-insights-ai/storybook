@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
-import { AlertTriangle, Download, UserPlus } from "lucide-react";
+import { Download, UserPlus } from "lucide-react";
 import {
+  NoticeText,
+  EmptyStateAction,
+  EmptyState,
   Button,
   CellStack,
   ConfirmDialog,
@@ -120,26 +123,26 @@ export function ListPageScreen({
         {state === "loading" ? (
           <Loading label={w.loading} shape="table" rows={pageSize} delay={0} />
         ) : state === "error" ? (
-          <Notice variant="empty" tone="danger">
-            <NoticeIcon>
-              <AlertTriangle aria-hidden />
-            </NoticeIcon>
-            <NoticeTitle>{w.errorTitle}</NoticeTitle>
-            <NoticeBody>{w.errorBody}</NoticeBody>
+          <Notice tone="danger">
+            <NoticeIcon />
+            <NoticeText>
+              <NoticeTitle>{w.errorTitle}</NoticeTitle>
+              <NoticeBody>{w.errorBody}</NoticeBody>
+            </NoticeText>
             <NoticeAction>
               <Button variant="secondary">{w.retry}</Button>
             </NoticeAction>
           </Notice>
         ) : shown.length === 0 ? (
-          <Notice variant="empty">
-            <NoticeTitle>{w.emptyTitle}</NoticeTitle>
-            <NoticeBody>{w.emptyBody}</NoticeBody>
-            <NoticeAction>
-              <Button variant="secondary" onClick={() => (setQ(""), setRole(""))}>
-                {w.clear}
-              </Button>
-            </NoticeAction>
-          </Notice>
+          <Panel>
+            <EmptyState title={w.emptyTitle} body={w.emptyBody}>
+              <EmptyStateAction>
+                <Button variant="secondary" onClick={() => (setQ(""), setRole(""))}>
+                  {w.clear}
+                </Button>
+              </EmptyStateAction>
+            </EmptyState>
+          </Panel>
         ) : (
           <Panel padded={false}>
             <DataTable caption={w.caption} narrow="stack">

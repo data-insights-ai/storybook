@@ -15,8 +15,8 @@ import "./CodeBlock.css";
  *
  * **Variants:** `variant="record"` (the default) is read whole, so its long
  * lines wrap: a wrapped line hangs two characters in from its own indent and
- * breaks at a space or after punctuation (`\`, `/`, `,`, `:`, `=`), never
- * inside a word unless the word alone is wider than the block.
+ * breaks at a space or after a backslash, a slash, a comma, a colon or an
+ * equals sign, never inside a word unless the word alone is wider than the block.
  * `variant="log"` is scanned down its line starts, so its lines never wrap
  * (a continuation would read as a new entry): the block scrolls sideways and
  * the edge that hides text fades.

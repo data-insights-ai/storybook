@@ -188,9 +188,9 @@ function SampleSidebar({ label, closeLabel, defaultExpanded = true, storageKey, 
 
 const meta = {
   title: "Navigation/Sidebar",
-  tags: ["layer:pattern"],
+  tags: ["layer:pattern", "autodocs"],
   component: Sidebar,
-  parameters: { layout: "fullscreen" },
+  parameters: { layout: "fullscreen", docs: { story: { inline: false, height: "560px" } } },
   args: { label: "Sections", closeLabel: "Close navigation", children: null },
   argTypes: {
     label: { control: "text" },

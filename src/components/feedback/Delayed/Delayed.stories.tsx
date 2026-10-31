@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
+import { Panel, PanelActions } from "../../layout/page/Panel";
 import { Delayed } from "./Delayed";
 import { Loading } from "../Loading";
 
@@ -24,17 +25,19 @@ export const Appearing: Story = {
   render: function Render(args) {
     const [run, setRun] = useState(0);
     return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "var(--di-gap-12)" }}>
-        <div>
+      <Panel title="Hosts" heading={2}>
+        <PanelActions>
           <Button variant="secondary" size="sm" onClick={() => setRun((n) => n + 1)}>
             Wait again
           </Button>
+        </PanelActions>
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--di-gap-12)" }}>
+          <Delayed key={run} delay={args.delay}>
+            <Loading label="Resolving hosts" delay={0} />
+          </Delayed>
+          <p style={{ margin: 0 }}>This line stays where it is.</p>
         </div>
-        <Delayed key={run} delay={args.delay}>
-          <Loading label="Resolving hosts" delay={0} />
-        </Delayed>
-        <p>This line stays where it is.</p>
-      </div>
+      </Panel>
     );
   },
   play: async ({ canvasElement }) => {

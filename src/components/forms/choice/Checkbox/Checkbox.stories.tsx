@@ -1,12 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Checkbox } from "./Checkbox";
+import { DataTable, TableBody, TableCell, TableRow } from "../../../tables/DataTable";
 import { ChoiceGroup } from "../ChoiceGroup";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Choice/Checkbox",
   component: Checkbox,
   tags: ["layer:form", "autodocs"],
+  decorators: [onPanel("Ingest")],
   args: {
     id: "seal-on-ingest",
     label: "Seal on ingest",
@@ -123,10 +126,22 @@ export const Indeterminate: Story = {
 
 /** A box that selects a table row: the label is read, the row's name beside it is what a reader sees. */
 export const HiddenLabel: Story = {
-  args: { hideLabel: true },
+  args: { id: "select-splunk", hideLabel: true, label: "Select Splunk forwarder" },
+  render: (args) => (
+    <DataTable caption="Sources" indexed={false}>
+      <TableBody>
+        <TableRow>
+          <TableCell>
+            <Checkbox {...args} />
+          </TableCell>
+          <TableCell>Splunk forwarder</TableCell>
+        </TableRow>
+      </TableBody>
+    </DataTable>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const box = canvas.getByLabelText("Seal on ingest");
+    const box = canvas.getByLabelText("Select Splunk forwarder");
     await expect(box).toBeInTheDocument();
     await expect(canvasElement.querySelector(".di-choice-text")?.getBoundingClientRect().width).toBeLessThanOrEqual(1);
   },

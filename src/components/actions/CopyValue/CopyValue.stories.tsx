@@ -1,12 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { CopyValue } from "./CopyValue";
+import { Stack } from "../../layout/arrange/Stack";
 import { Fact, FactList } from "../../records/FactList";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const meta = {
   title: "Actions/CopyValue",
   component: CopyValue,
   tags: ["layer:primitive", "autodocs"],
+  decorators: [onPanel("Organization")],
   args: {
     value: "6f1c2a9e-4b7d-4e0a-9c55-2f3d8a71b0c4",
     copyLabel: "Copy organization ID",
@@ -19,6 +22,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Identifier: Story = {
+  render: (args) => (
+    <Stack gap={8}>
+      <CopyValue {...args} />
+      <p style={{ margin: 0 }}>Support asks for this ID when you report a problem.</p>
+    </Stack>
+  ),
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByRole("button", { name: "Copy organization ID" })).toBeVisible();
   },
@@ -40,6 +49,7 @@ export const InFacts: Story = {
       <Fact label="Organization ID">
         <CopyValue {...args} />
       </Fact>
+      <Fact label="Region">eu-central</Fact>
     </FactList>
   ),
 };

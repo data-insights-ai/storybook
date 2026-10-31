@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { SearchX, UserPlus } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Stack } from "../../layout/arrange/Stack";
@@ -17,13 +16,13 @@ const meta = {
     docs: {
       description: {
         component: [
-          "**Purpose:** a message about the system that is part of the page: something to know or act on, something absent, or that nothing needs the reader.",
-          "**When to use:** a state of the workspace or the record above the content (`banner`); in place of a list, a table or a panel's content that is empty or failed to load (`empty`); the first block of an overview when nothing is due (`line`). **When not to:** a receipt for an action the reader just took is a `Toast`; a field's own error is its `FieldHint`; a question before a destructive action is a `ConfirmDialog`; a single state word beside a record is a `StatusPill`.",
+          "**Purpose:** a message about the system that is part of the page: something to know or act on, or that nothing needs the reader.",
+          "**When to use:** a state of the workspace or the record above the content, or in place of content that failed to load (`banner`); the first block of an overview when nothing is due (`line`). **When not to:** content that is absent (no rows, no results, nothing set up) is an `EmptyState`; a receipt for an action the reader just took is a `Toast`; a field's own error is its `FieldHint`; a question before a destructive action is a `ConfirmDialog`; a single state word beside a record is a `StatusPill`.",
           "**Anatomy:** `NoticeIcon` (optional; without children it draws the tone's own icon), `NoticeTitle` (with an optional `eyebrow`), `NoticeBody`, `NoticeAction`. In a `banner` the title and body sit in one `NoticeText`.",
-          "**Variants:** `tone` neutral, ok, warn, danger colours the icon and, in a banner, its column. `variant` banner (the default), `empty` (centred in place of content), `line` (one ruled line with the tone's dot).",
-          '**States:** an empty result and an absent configuration are different facts and never share a screen; a failure to load is `empty` with `tone="danger"`.',
-          "**Content rules:** the title says what happened or what is absent in one sentence; the body says why or what follows; an `empty` notice offers exactly one way out, a banner at most two; `mono` only for a query, a path or an id.",
-          "**Accessibility:** a banner is a `note`; an `empty` notice is a `status`, so a search that found nothing is announced; `danger` is an `alert` in every variant. The icon is hidden from screen readers: the title carries the meaning.",
+          "**Variants:** `tone` neutral, ok, warn, danger colours the icon and, in a banner, its column. `variant` banner (the default) or `line` (one ruled line with the tone's dot).",
+          '**States:** a failure to load is a banner with `tone="danger"` in place of the content, with the one way out.',
+          "**Content rules:** the title says what happened or what is absent in one sentence; the body says why or what follows; a banner offers at most two ways out; `mono` only for a query, a path or an id.",
+          "**Accessibility:** a banner is a `note`; `danger` is an `alert` in every variant. The icon is hidden from screen readers: the title carries the meaning.",
         ].join("\n\n"),
       },
     },
@@ -35,7 +34,7 @@ const meta = {
   },
   argTypes: {
     tone: { control: "radio", options: ["neutral", "ok", "warn", "danger"] },
-    variant: { control: "radio", options: ["banner", "empty", "line"] },
+    variant: { control: "radio", options: ["banner", "line"] },
     children: { control: false },
   },
 } satisfies Meta<typeof Notice>;
@@ -306,135 +305,33 @@ export const ActionBesideText: Story = {
 };
 
 /**
- * Empty, in use: a filter found nothing, so the notice takes the list's
- * place inside its panel and offers the one way back. It sinks to the inset
- * tone, never a card on the card.
+ * Content that failed to load is a failure, not an absence: a danger
+ * banner in place of the list, inside its panel, with the one way out.
+ * Announced as an alert.
  */
-export const EmptyInAPanel: Story = {
-  args: { variant: "empty" },
+export const LoadFailed: Story = {
+  args: { tone: "danger" },
   render: (args) => (
     <Panel title="Sources" heading={2}>
       <Notice {...args}>
-        <NoticeIcon>
-          <SearchX />
-        </NoticeIcon>
-        <NoticeTitle eyebrow="No results">No source matches this filter.</NoticeTitle>
-        <NoticeBody>The register holds 24 sources. None of them was paused in the last 24 hours.</NoticeBody>
+        <NoticeIcon />
+        <NoticeText>
+          <NoticeTitle>The register could not be read.</NoticeTitle>
+          <NoticeBody>
+            The seal store did not answer within 30 seconds. Nothing was written and nothing was lost.
+          </NoticeBody>
+        </NoticeText>
         <NoticeAction>
           <Button variant="secondary" size="sm">
-            Clear filters
+            Retry
           </Button>
         </NoticeAction>
       </Notice>
     </Panel>
   ),
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const status = canvas.getByRole("status");
-    await expect(status).toHaveTextContent("No source matches this filter.");
-    const frame = status.getBoundingClientRect();
-    const title = canvas.getByText("No source matches this filter.").getBoundingClientRect();
-    await expect(Math.abs(title.left - frame.left - (frame.right - title.right))).toBeLessThanOrEqual(1);
-  },
-};
-
-/** Empty, first use: no eyebrow where the page names the place, an icon and the one action. */
-export const EmptyFirstUse: Story = {
-  args: { variant: "empty" },
-  render: (args) => (
-    <Notice {...args}>
-      <NoticeIcon>
-        <UserPlus />
-      </NoticeIcon>
-      <NoticeTitle>No invitations yet.</NoticeTitle>
-      <NoticeBody>Invite colleagues by email. They join with the role you choose.</NoticeBody>
-      <NoticeAction>
-        <Button>Invite people</Button>
-      </NoticeAction>
-    </Notice>
-  ),
-};
-
-/** Empty because nothing is configured: a different fact from no results, never on the same screen. */
-export const EmptyNotConfigured: Story = {
-  args: { variant: "empty" },
-  render: (args) => (
-    <Notice {...args}>
-      <NoticeTitle eyebrow="Nothing configured">This workspace has no sources yet.</NoticeTitle>
-      <NoticeBody>Connect a source to start a register. Nothing is sealed until the first entry lands.</NoticeBody>
-      <NoticeAction>
-        <Button>Connect a source</Button>
-      </NoticeAction>
-    </Notice>
-  ),
-};
-
-/** Empty, with the query itself in the mono track. */
-export const EmptyMonoBody: Story = {
-  args: { variant: "empty" },
-  render: (args) => (
-    <Notice {...args}>
-      <NoticeTitle eyebrow="No results">No source matches this query.</NoticeTitle>
-      <NoticeBody mono={true}>host:*.example.io AND state:paused AND seen&gt;2026-09-22T09:00:00Z</NoticeBody>
-      <NoticeAction>
-        <Button variant="secondary" size="sm">
-          Edit query
-        </Button>
-      </NoticeAction>
-    </Notice>
-  ),
-};
-
-/** Empty because loading failed: a boundary the system hit, announced as an alert. */
-export const EmptyFailure: Story = {
-  args: { variant: "empty", tone: "danger" },
-  render: (args) => (
-    <Notice {...args}>
-      <NoticeIcon />
-      <NoticeTitle eyebrow="Could not load">The register could not be read.</NoticeTitle>
-      <NoticeBody>
-        The seal store did not answer within 30 seconds. Nothing was written and nothing was lost.
-      </NoticeBody>
-      <NoticeAction>
-        <Button>Retry</Button>
-      </NoticeAction>
-    </Notice>
-  ),
-  play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByRole("alert")).toHaveTextContent("The register could not be read.");
   },
-};
-
-/** Empty with nothing to do about it: no action. */
-export const EmptyWithoutAction: Story = {
-  args: { variant: "empty" },
-  render: (args) => (
-    <Notice {...args}>
-      <NoticeTitle eyebrow="Out of scope">This view is limited to sealed entries.</NoticeTitle>
-      <NoticeBody>Unsealed entries exist, but an auditor key cannot read them.</NoticeBody>
-    </Notice>
-  ),
-};
-
-/** Empty, in German: the measure holds and the action stays one centred button. */
-export const EmptyGerman: Story = {
-  args: { variant: "empty" },
-  render: (args) => (
-    <Notice {...args}>
-      <NoticeIcon>
-        <SearchX />
-      </NoticeIcon>
-      <NoticeTitle eyebrow="Keine Ergebnisse">Keine Datenquelle entspricht diesem Filter.</NoticeTitle>
-      <NoticeBody>
-        Das Verzeichnis enthält 24 Datenquellen. Keine davon wurde in den letzten 24 Stunden pausiert.
-      </NoticeBody>
-      <NoticeAction>
-        <Button variant="secondary" size="sm">
-          Alle Filter zurücksetzen
-        </Button>
-      </NoticeAction>
-    </Notice>
-  ),
 };
 
 /** Line: the first block of an overview when nothing needs the reader, and what the calm rests on. */

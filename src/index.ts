@@ -156,6 +156,7 @@ export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/actions/Men
 export { NewEntries } from "./components/tables/NewEntries";
 export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./components/feedback/Notice";
 export type { NoticeTone, NoticeVariant } from "./components/feedback/Notice";
+export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
 export { Page, PageAside } from "./components/layout/page/Page";
 export { Pagination } from "./components/navigation/Pagination";
 export {

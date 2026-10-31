@@ -31,10 +31,11 @@ import {
 } from "lucide-react";
 import { Icon } from "./Icon";
 import { IconSet } from "./IconSet.sample";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const meta = {
   title: "Text/Icon",
-  tags: ["layer:primitive"],
+  tags: ["layer:primitive", "autodocs"],
   component: Icon,
   args: {
     size: 24,
@@ -91,6 +92,7 @@ const consoleIcons: { name: string; icon: ReactNode }[] = [
 ];
 
 export const Vocabulary: Story = {
+  decorators: [onPanel("Brand icons")],
   parameters: {
     controls: { disable: true },
     docs: {
@@ -104,6 +106,7 @@ export const Vocabulary: Story = {
 };
 
 export const Console: Story = {
+  decorators: [onPanel("Icons the console uses")],
   parameters: {
     controls: { disable: true },
     docs: {

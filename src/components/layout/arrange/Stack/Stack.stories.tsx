@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Fact, FactList } from "../../../records/FactList";
 import { Notice, NoticeBody, NoticeText, NoticeTitle } from "../../../feedback/Notice";
+import { Page } from "../../page/Page";
 import { Panel } from "../../page/Panel";
 import { PageHeader, PageHeaderTitle } from "../../page/PageHeader";
 import { Button } from "../../../actions/Button";
@@ -41,23 +42,25 @@ type Story = StoryObj<typeof meta>;
 /** One section of a screen: its title, then its panels at 24, so the page sees it as one block. */
 export const Default: Story = {
   render: (args) => (
-    <Stack {...args}>
-      <PageHeader level={2} lede="Where events come from, and whether they still arrive.">
-        <PageHeaderTitle>Collection</PageHeaderTitle>
-      </PageHeader>
-      <Panel title="Graz office">
-        <FactList layout="columns">
-          <Fact label="Last event">2 min ago</Fact>
-          <Fact label="Events today">48,120</Fact>
-        </FactList>
-      </Panel>
-      <Panel title="Linz branch">
-        <FactList layout="columns">
-          <Fact label="Last event">3 h ago</Fact>
-          <Fact label="Events today">1,204</Fact>
-        </FactList>
-      </Panel>
-    </Stack>
+    <Page width="full">
+      <Stack {...args}>
+        <PageHeader level={2} lede="Where events come from, and whether they still arrive.">
+          <PageHeaderTitle>Collection</PageHeaderTitle>
+        </PageHeader>
+        <Panel title="Graz office">
+          <FactList layout="columns">
+            <Fact label="Last event">2 min ago</Fact>
+            <Fact label="Events today">48,120</Fact>
+          </FactList>
+        </Panel>
+        <Panel title="Linz branch">
+          <FactList layout="columns">
+            <Fact label="Last event">3 h ago</Fact>
+            <Fact label="Events today">1,204</Fact>
+          </FactList>
+        </Panel>
+      </Stack>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -133,23 +136,25 @@ export const Form: Story = {
 export const Brand: Story = {
   args: { gap: 64 },
   render: (args) => (
-    <Stack {...args}>
-      <PageHeader
-        level={2}
-        tier="brand"
-        eyebrow="Source"
-        lede="Every claim on a screen is tied to the source it came from."
-      >
-        <PageHeaderTitle>Each entry has a source.</PageHeaderTitle>
-      </PageHeader>
-      <PageHeader
-        level={2}
-        tier="brand"
-        eyebrow="Time"
-        lede="A source carries the time it was recorded, so a finding can be replayed."
-      >
-        <PageHeaderTitle>Each source has a timestamp.</PageHeaderTitle>
-      </PageHeader>
-    </Stack>
+    <Page width="full">
+      <Stack {...args}>
+        <PageHeader
+          level={2}
+          tier="brand"
+          eyebrow="Source"
+          lede="Every claim on a screen is tied to the source it came from."
+        >
+          <PageHeaderTitle>Each entry has a source.</PageHeaderTitle>
+        </PageHeader>
+        <PageHeader
+          level={2}
+          tier="brand"
+          eyebrow="Time"
+          lede="A source carries the time it was recorded, so a finding can be replayed."
+        >
+          <PageHeaderTitle>Each source has a timestamp.</PageHeaderTitle>
+        </PageHeader>
+      </Stack>
+    </Page>
   ),
 };

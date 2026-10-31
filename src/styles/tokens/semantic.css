@@ -108,14 +108,13 @@
     --di-chart-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
 
     /*
-     * Poppy marks a passage on a brand page (`Highlight`); cornflower is a
-     * compared series or a note that something is new. Neither is a status
-     * and neither fills a button. Bare poppy is 4.2:1 on paper: a mark or a
-     * large figure, never body text.
+     * A marked match in text (`Highlight`) is selection, not a status: the
+     * selection tint under ink at full strength, held by a hairline of the
+     * cornflower edge, which carries the 3:1 the pale tint cannot.
      */
-    --di-highlight: var(--di-poppy-600);
-    --di-highlight-ink: var(--di-poppy-700);
-    --di-highlight-tint: var(--di-poppy-100);
+    --di-highlight: var(--di-select);
+    --di-highlight-ink: var(--di-text);
+    --di-highlight-tint: var(--di-bg-selected);
 
     /* Navy is the one filled control in daylight. */
     --di-fill-strong: var(--di-navy-900);
@@ -293,9 +292,9 @@
     --di-chart-compare: var(--di-cornflower-300);
     --di-chart-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
 
-    --di-highlight: var(--di-poppy-300);
-    --di-highlight-ink: var(--di-poppy-300);
-    --di-highlight-tint: var(--di-poppy-900);
+    --di-highlight: var(--di-select);
+    --di-highlight-ink: var(--di-text);
+    --di-highlight-tint: var(--di-bg-selected);
 
     /* After dark the filled control is paper-white: navy has nothing left to act against. */
     --di-fill-strong: var(--di-night-ink);

@@ -44,7 +44,7 @@ export const NoMatch: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(canvas.getByRole("searchbox", { name: "Search tables" }), "kerberos");
-    await waitFor(() => expect(canvas.getByRole("status")).toHaveTextContent("No table matches"));
+    await waitFor(() => expect(canvas.getByText(/No table matches/)).toBeVisible());
   },
 };
 

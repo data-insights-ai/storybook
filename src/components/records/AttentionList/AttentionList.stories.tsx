@@ -4,6 +4,7 @@ import { Button } from "../../actions/Button";
 import { TextLink } from "../../text/TextLink";
 import { MetaLine } from "../../text/MetaLine";
 import { Notice, NoticeBody, NoticeTitle } from "../../feedback/Notice";
+import { Page } from "../../layout/page/Page";
 import { AttentionItem, AttentionList } from "./AttentionList";
 
 const meta = {
@@ -31,6 +32,14 @@ const meta = {
     title: { control: "text" },
     children: { control: false },
   },
+  // The first block of an overview: it stands on the page itself.
+  decorators: [
+    (Story) => (
+      <Page width="full">
+        <Story />
+      </Page>
+    ),
+  ],
 } satisfies Meta<typeof AttentionList>;
 
 export default meta;

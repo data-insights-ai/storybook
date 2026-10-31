@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Badge } from "./Badge";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const meta = {
   title: "Status/Badge",
@@ -14,6 +15,7 @@ const meta = {
     tone: { control: "radio", options: ["neutral", "alert", "seal", "quiet"] },
     children: { control: "text" },
   },
+  decorators: [onPanel("Queues")],
 } satisfies Meta<typeof Badge>;
 
 export default meta;

@@ -8,10 +8,6 @@ import {
   FigureNote,
   FigureRow,
   Loading,
-  Notice,
-  NoticeAction,
-  NoticeBody,
-  NoticeTitle,
   Page,
   PageHeader,
   PageHeaderMeta,
@@ -23,6 +19,7 @@ import {
   TableBody,
   TableCell,
   TableColumn,
+  TableEmpty,
   TableHead,
   TableRow,
   Tag,
@@ -128,20 +125,18 @@ export function CoverageScreen({ state = "ready" }: { state?: CoverageState }) {
                     </TableCell>
                   </TableRow>
                 ))}
+                {shown.length === 0 ? (
+                  <TableEmpty
+                    message={`No table matches “${query}”. Search by the table’s name or by the source that sends it.`}
+                  >
+                    <Button variant="secondary" size="sm" onClick={() => (setQuery(""), setOnlyGaps(false))}>
+                      <RotateCw aria-hidden />
+                      Show every table
+                    </Button>
+                  </TableEmpty>
+                ) : null}
               </TableBody>
             </DataTable>
-            {shown.length === 0 ? (
-              <Notice variant="empty">
-                <NoticeTitle>No table matches “{query}”.</NoticeTitle>
-                <NoticeBody>Search by the table’s name or by the source that sends it.</NoticeBody>
-                <NoticeAction>
-                  <Button variant="secondary" onClick={() => (setQuery(""), setOnlyGaps(false))}>
-                    <RotateCw aria-hidden />
-                    Show every table
-                  </Button>
-                </NoticeAction>
-              </Notice>
-            ) : null}
           </Panel>
         )}
       </Page>

@@ -1,0 +1,75 @@
+@layer components {
+  /*
+   * In place of the content that is missing, centred at a readable
+   * measure, on the ground of the surface it stands in: no frame, no tone
+   * and no inset of its own, so it never reads as a message about the
+   * system and the surface keeps one inset all round. The slots keep
+   * their order whatever order they are written in.
+   */
+  .di-empty-state {
+    --di-eyebrow-gap: var(--di-gap-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* In a panel that runs its content to the edges (under a table), it keeps the panel's inset itself. */
+  .di-panel-content-flush > .di-empty-state {
+    padding: var(--di-surface-inner);
+  }
+
+  .di-empty-state > .di-eyebrow {
+    order: 1;
+    justify-content: center;
+    margin-bottom: var(--di-gap-8);
+  }
+
+  .di-empty-state-icon {
+    order: 0;
+    display: flex;
+    margin-bottom: var(--di-gap-12);
+    color: var(--di-text-muted);
+  }
+
+  .di-empty-state-icon > svg {
+    width: var(--di-icon-lg);
+    height: var(--di-icon-lg);
+  }
+
+  .di-empty-state-title {
+    order: 2;
+    max-width: var(--di-measure-prose);
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
+    letter-spacing: var(--di-tracking-tight);
+    line-height: var(--di-leading-snug);
+    text-wrap: balance;
+    color: var(--di-text);
+  }
+
+  .di-empty-state-body {
+    order: 3;
+    max-width: var(--di-measure-prose);
+    margin-top: var(--di-gap-6);
+    font-size: var(--di-font-size-400);
+    line-height: var(--di-leading-body);
+    text-wrap: pretty;
+    color: var(--di-text-muted);
+  }
+
+  .di-empty-state-body.di-mono {
+    font-size: var(--di-font-size-300);
+    overflow-wrap: anywhere;
+  }
+
+  .di-empty-state-action {
+    order: 4;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--di-gap-12);
+    margin-top: var(--di-gap-16);
+  }
+}

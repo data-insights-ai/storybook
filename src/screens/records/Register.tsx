@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { AlertTriangle, Globe, MoreVertical, Plus, RotateCw, Server, Stamp } from "lucide-react";
 import {
+  EmptyStateAction,
+  EmptyState,
   Button,
   CellIcon,
   CellLead,
@@ -98,16 +100,16 @@ export function RegisterScreen({ state = "ready", lang = "en" }: { state?: Regis
         ) : null}
 
         {state === "empty" ? (
-          <Notice variant="empty">
-            <NoticeTitle>{words.emptyTitle}</NoticeTitle>
-            <NoticeBody>{words.emptyBody}</NoticeBody>
-            <NoticeAction>
-              <Button variant="secondary">
-                <Plus aria-hidden />
-                {words.connect}
-              </Button>
-            </NoticeAction>
-          </Notice>
+          <Panel>
+            <EmptyState title={words.emptyTitle} body={words.emptyBody}>
+              <EmptyStateAction>
+                <Button variant="secondary">
+                  <Plus aria-hidden />
+                  {words.connect}
+                </Button>
+              </EmptyStateAction>
+            </EmptyState>
+          </Panel>
         ) : null}
 
         {state === "loading" ? (
@@ -117,9 +119,12 @@ export function RegisterScreen({ state = "ready", lang = "en" }: { state?: Regis
         ) : null}
 
         {state === "error" ? (
-          <Notice variant="empty" tone="danger">
-            <NoticeTitle>{words.errorTitle}</NoticeTitle>
-            <NoticeBody>{words.errorBody}</NoticeBody>
+          <Notice tone="danger">
+            <NoticeIcon />
+            <NoticeText>
+              <NoticeTitle>{words.errorTitle}</NoticeTitle>
+              <NoticeBody>{words.errorBody}</NoticeBody>
+            </NoticeText>
             <NoticeAction>
               <Button variant="secondary">
                 <RotateCw aria-hidden />
