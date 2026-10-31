@@ -38,7 +38,6 @@ The file lists come from a read-only scan of the products' sources (imports from
 | `TableSpacer`, `heldCount` | nothing; `InfiniteTable` keeps them inside |
 | `Chip`, `VersionTag`, `CommandChip` | `Tag mono` |
 | `PrivacyBadge` | `StatusPill track="record" icon` |
-| `EmptyState`, `EmptyStateAction`, `EmptyStateIcon` | `Notice variant="empty"`, `NoticeAction`, `NoticeIcon` |
 | `Spinner`, `AppLoader`, `SkeletonPage`, `SkeletonTable`, `SkeletonPageVariant` | `Loading shape`, `LoadingShape` |
 | `Sheet`, `SheetFooter` | `Dialog`, `DialogFooter` |
 | `Modal`, `ModalFrame`, `ModalContent`, `ModalTitle`, `ModalBody`, `ModalFooter`, `ModalIcon` | `Dialog placement="center"`, `DialogFooter` |
@@ -520,21 +519,38 @@ Files to check:
 
 ## Feedback
 
-### `EmptyState`, `EmptyStateAction`, `EmptyStateIcon` → `Notice variant="empty"`
+### `EmptyState` loses `index`, `tone` and its frame
 
-`eyebrow` and `title` become `<NoticeTitle eyebrow>`, `body` and `mono` become `<NoticeBody mono>`, the icon and action are `NoticeIcon` and `NoticeAction`; `tone` stays. `index` goes. It is announced as a status (`alert` for danger). Classes `di-empty*` are gone.
+`EmptyState`, `EmptyStateIcon` and `EmptyStateAction` stay (0.11.0 folded them into `Notice variant="empty"`; 0.11.2 splits them out again and removes that variant, because an absence is not a message about the system). `eyebrow`, `title`, `body` and `mono` are unchanged. `index` goes. `tone` goes: content that failed to load is a failure, not an absence, so it is a `Notice tone="danger"` banner in its place. The empty state has no frame or tone of its own any more; it stands on the surface its content would sit on, so an `EmptyState` that stood directly on the page goes inside a `Panel`. It is announced as a `status`. Classes `di-empty*` are now `di-empty-state*`.
 
 ```tsx
-<EmptyState eyebrow="Sources" title="No sources yet" body="Connect one to start collecting.">
+<EmptyState index="00" eyebrow="Sources" title="No sources yet" body="Connect one to start collecting.">
   <EmptyStateAction><Button>Connect</Button></EmptyStateAction>
 </EmptyState>
 →
-<Notice variant="empty">
-  <NoticeTitle eyebrow="Sources">No sources yet</NoticeTitle>
-  <NoticeBody>Connect one to start collecting.</NoticeBody>
-  <NoticeAction><Button>Connect</Button></NoticeAction>
+<Panel>
+  <EmptyState eyebrow="Sources" title="No sources yet" body="Connect one to start collecting.">
+    <EmptyStateAction><Button>Connect</Button></EmptyStateAction>
+  </EmptyState>
+</Panel>
+
+<EmptyState tone="danger" title="The register could not be read." body="Nothing was lost.">
+  <EmptyStateAction><Button>Retry</Button></EmptyStateAction>
+</EmptyState>
+→
+<Notice tone="danger">
+  <NoticeIcon />
+  <NoticeText>
+    <NoticeTitle>The register could not be read.</NoticeTitle>
+    <NoticeBody>Nothing was lost.</NoticeBody>
+  </NoticeText>
+  <NoticeAction><Button variant="secondary">Retry</Button></NoticeAction>
 </Notice>
 ```
+
+Files with `tone` (move to a `Notice`): account-platform `web/src/app/RouteError.tsx`, `web/src/features/signin/GoogleConsentPage.tsx`, `web/src/features/signin/SignInTestPage.tsx`; AI SOC `web/src/features/soc/case/CaseDetailPage.tsx`, `web/src/features/soc/ui/LoadError.tsx`, `web/src/shared/layout/ErrorState.tsx`; CVE Current `web/src/features/catalog/detail/Detail.tsx` (`tone="neutral"`, drop it). Files with `index`: AI SOC `web/src/features/soc/actors/ActorsPage.tsx`, `web/src/features/soc/case/CaseGraphPage.tsx`, `web/src/features/soc/case/derivation/DerivationTab.tsx`, `web/src/features/soc/case/RelatedTab.tsx`, `web/src/features/soc/case/signals/SignalsTab.tsx`, `web/src/features/soc/case/story/StoryTab.tsx`, `web/src/features/soc/ui/LoadError.tsx`, `web/src/features/soc/ui/NotDerivedState.tsx`. No product uses `Notice variant="empty"` (none is on 0.11 yet).
+
+Every file below uses `EmptyState`; check that each one stands inside a surface.
 
 Files to change:
 
@@ -971,7 +987,7 @@ Files to change: none.
 
 ### Class names a product queries
 
-Classes of the removed components are gone with them (`di-stat-*`, `di-stat-tile*`, `di-empty*`, `di-skeleton*`, `di-skp*`, `di-list-toolbar`, `di-sheet*`, `di-modal*`, `di-chip*`, `di-privacy`, `di-numbered*`, `di-stage*`, `di-stepper`). The combobox's `di-combobox-label` and `di-combobox-value` went with the shared field frame. The chart, matrix and timeline legends share one key (`di-chart-key*`), so `di-matrix-key`, `di-matrix-legend`, `di-timeline-legend*`, `di-timeline-note`, `di-timeline-swatch` and `di-tsummary-legend*`, `di-tsummary-swatch` are gone. `ConfirmDialog` draws its commit with the shared button, so `di-confirm-commit` and `di-confirm-error` are gone. Tests and product CSS that select these change to roles and accessible names, or to the new class.
+Classes of the removed components are gone with them (`di-stat-*`, `di-stat-tile*`, `di-empty*` (now `di-empty-state*`), `di-skeleton*`, `di-skp*`, `di-list-toolbar`, `di-sheet*`, `di-modal*`, `di-chip*`, `di-privacy`, `di-numbered*`, `di-stage*`, `di-stepper`). The combobox's `di-combobox-label` and `di-combobox-value` went with the shared field frame. The chart, matrix and timeline legends share one key (`di-chart-key*`), so `di-matrix-key`, `di-matrix-legend`, `di-timeline-legend*`, `di-timeline-note`, `di-timeline-swatch` and `di-tsummary-legend*`, `di-tsummary-swatch` are gone. `ConfirmDialog` draws its commit with the shared button, so `di-confirm-commit` and `di-confirm-error` are gone. Tests and product CSS that select these change to roles and accessible names, or to the new class.
 
 Files to change:
 
@@ -984,11 +1000,11 @@ None of these needs a code change to compile. Check the screens that use them.
 
 - **Actions.** A danger button in a dialog footer or `ProposalActions` is the filled final commit; elsewhere it opens a confirmation and stays quiet. A disabled danger button looks disabled in both themes. A blocked danger action's reason sits under its button. `CopyValue`'s button has no hover border and sits on the value's first line. `Kbd` inside a button is a tonal ground without a border.
 - **Forms.** No option has a solid cornflower background any more: a chosen segment is a quiet raised thumb, a chosen toggle or calendar day the primary ink (`--di-choice-on-bg`); selection elsewhere keeps the pale tint (`--di-bg-selected`) with the cornflower edge, and `ComboBox` and `Select` mark their current value in the list. `ChoiceGroup` takes `hint`, `hintTone` and `required`; its legend sits 6px above the options, its cards grid has at most three columns, and its native inputs carry `di-choice-cover` instead of `di-sr`. `MultiComboBox` closes its list on Tab, and Escape on a closed list no longer clears it. Calendar, range and typed-segment selection is cornflower. `Switch` uses the choice classes (`di-choice-label`, `di-choice-desc`); `di-switch-control`, `-text`, `-title`, `-desc` are gone.
-- **Data.** `RecordValue` wraps a string value with break points and aligns its icon to the first line. `Distribution` rows are `LevelMeter`s (`di-distribution-track` and `-fill` are gone). `CoverageMatrix` marks have no border and its columns are at most 128px wide. `LevelMeter` takes `segments="continuous"`, `tone` and `valueText`. A `DataTable` toolbar row wraps. A `DataTable` wider than its frame keeps the row's name pinned at the start (the `pinned` column, else the first column headed by words) and shades the side that hides columns. `CodeBlock` takes `variant="record"` (wraps with a hanging indent) or `"log"` (never wraps, scrolls).
-- **Marks and text.** `SeverityMark`'s word is regular weight at every level. `CodeBlock` is `div.di-codeblock > pre.di-codeblock-scroll > code`; `className` stays on the outer `div`. `Eyebrow` and `PullQuote` hyphenate long words, so set `lang` on the page. `Tag` takes nodes as children.
+- **Data.** `RecordValue` wraps a string value with break points and aligns its icon to the first line. `Distribution` rows are `LevelMeter`s (`di-distribution-track` and `-fill` are gone). `CoverageMatrix` marks have no border and its columns are at most 128px wide. `LevelMeter` takes `segments="continuous"`, `tone` and `valueText`. A `DataTable` toolbar row wraps. A `DataTable` wider than its frame keeps the row's name pinned at the start (the `pinned` column, else the first column headed by words) and shades the side that hides columns. `CodeBlock` takes `variant="record"` (wraps with a hanging indent) or `"log"` (never wraps, scrolls). The `DataTable` and `InfiniteTable` head is set in the interface label (IBM Plex Sans 12px, medium, muted, normal case) at a row's height and with a cell's inset; a stacked row's cell labels match it.
+- **Marks and text.** `SeverityMark`'s word is regular weight at every level. `CodeBlock` is `div.di-codeblock > pre.di-codeblock-scroll > code`; `className` stays on the outer `div`. `Eyebrow` and `PullQuote` hyphenate long words, so set `lang` on the page. `Tag` takes nodes as children. `Highlight` marks in the selection tint with a cornflower hairline and full ink, no longer poppy; `--di-highlight`, `--di-highlight-ink` and `--di-highlight-tint` point there. A `Tag` name wider than its place wraps inside its frame; in a compact `TagList` a cut tag carries its whole wording as a tooltip.
 - **Feedback.** `Toast` body is in the reading face; on a phone its action drops under the copy. `Tooltip` sits 12px from its trigger and points at it. Notice titles are in the display face.
 - **Overlays.** One dialog for side, centre and bottom placements, with one width ramp (`sm` 400, `md` 480, `lg` 760, `xl` 1120px); the head, inset, close button and scrim are shared. `ConfirmDialog` takes an `eyebrow`, `consequences` and a `tone` (`danger` or `neutral`).
-- **Navigation.** `Breadcrumb` is set in the reading face, never wraps and shows only the current page at 600px or less; `maxItems` and `collapseLabel` fold the middle. `Pagination` shows at most seven slots and renders nothing for one page. On a phone `Steps` names the position with the title ("3/4 · Seal", or `stepOf`); `Step tone="warn"` marks a lagging stage. A `Menu` item that is chosen has no tint, and group captions are mono capitals. On a phone a spread `Steps variant="progress"` sets out inline.
+- **Navigation.** `Breadcrumb` is set in the reading face, never wraps and shows only the current page at 600px or less; `maxItems` and `collapseLabel` fold the middle. `Pagination` shows at most seven slots and renders nothing for one page. On a phone `Steps` names the position with the title ("3/4 · Seal", or `stepOf`); `Step tone="warn"` marks a lagging stage. A `Menu` item that is chosen has no tint, and group captions are mono capitals. On a phone a spread `Steps variant="progress"` sets out inline. The `CommandBar` input is set in the reading face at the size of a `SearchField`.
 - **Layout.** `Disclosure` is an inset group without a border or head rule. `PanelLead` adds 12px below itself when something follows. A toolbar with `align` wraps on a phone instead of stacking at full width.
 - **Charts and timelines.** Chart gridlines are solid; `TrendChart`'s right margin follows its last label and a legend adds 48px; `Seismograph` uses round count ticks. `EventTimeline` with a `score` is narrower by a gutter for the scale, and with `markers` its bars start 18px lower; lane cells show intensity by height; `TimelineInstruction` takes an optional `pointer` (`"fine"` or `"coarse"`) so a phone does not list mouse gestures. `ChainTimeline` lanes follow density. `PeriodTimeline`'s today label is in the text ink. `EventTimelineReadout` has no `is-flipped` class.
 - **Shell.** `AppShellBar` is one row high and folds its end items into the overflow button; its start items sit in `.di-topbar-start`. `SidebarBrand` goes first in `SidebarHeader`. `SignIn` follows the theme.

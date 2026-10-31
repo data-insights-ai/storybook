@@ -512,7 +512,7 @@ export function TableIndex({ children }: { children: ReactNode }) {
  * reader sees which list is empty, and the message starts on the first
  * data column's line, past the index column; the footer goes, since a count
  * of nothing repeats the message. Where the list has never held anything,
- * show a `Notice variant="empty"` instead of the table.
+ * show an `EmptyState` instead of the table.
  */
 export function TableEmpty({ message, children }: { message: string; children?: ReactNode }) {
   const indexColumn = useContext(IndexColumnContext);

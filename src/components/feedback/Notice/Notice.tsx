@@ -7,19 +7,15 @@ import "./Notice.css";
 
 export type NoticeTone = "neutral" | "ok" | "warn" | "danger";
 
-/**
- * `banner` a message across the sheet; `empty` stands in place of content
- * that is absent or failed to load; `line` one ruled line when nothing needs
- * the reader.
- */
-export type NoticeVariant = "banner" | "empty" | "line";
+/** `banner` a message across the sheet; `line` one ruled line when nothing needs the reader. */
+export type NoticeVariant = "banner" | "line";
 
 const NoticeContext = createContext<{ tone: NoticeTone; variant: NoticeVariant }>({
   tone: "neutral",
   variant: "banner",
 });
 
-const roles = { banner: "note", empty: "status", line: "note" } as const;
+const roles = { banner: "note", line: "note" } as const;
 
 /**
  * A message about the system that is part of the page, not an
@@ -27,9 +23,9 @@ const roles = { banner: "note", empty: "status", line: "note" } as const;
  * an optional `NoticeBody` and an optional `NoticeAction`; in a `banner`
  * the title and body sit in one `NoticeText`.
  *
- * `danger` takes `role="alert"`, so it is announced when it appears; an
- * `empty` notice is a `status`, so a search that found nothing is announced
- * too.
+ * `danger` takes `role="alert"`, so it is announced when it appears.
+ * Content that is absent is not a message about the system: that is an
+ * `EmptyState`.
  */
 export function Notice({
   tone = "neutral",
@@ -46,8 +42,7 @@ export function Notice({
     <NoticeContext.Provider value={{ tone, variant }}>
       <div
         className={cx(
-          variant !== "line" &&
-            surfaceClass({ edge: variant === "empty" && tone === "danger" ? "danger" : "none", padded: false }),
+          variant === "banner" && surfaceClass({ padded: false }),
           "di-notice",
           `di-notice-${variant}`,
           `di-notice-${tone}`,
@@ -114,7 +109,7 @@ export function NoticeBody({ mono = false, children }: { mono?: boolean; childre
   return <div className={cx("di-notice-body", mono && "di-mono")}>{children}</div>;
 }
 
-/** The way out: one control in an `empty` notice, at most two in a banner, on one line. */
+/** The way out: at most two controls in a banner, on one line. */
 export function NoticeAction({ children }: { children: ReactNode }) {
   return <div className="di-notice-action">{children}</div>;
 }

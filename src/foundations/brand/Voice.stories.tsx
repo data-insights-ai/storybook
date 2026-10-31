@@ -1,16 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SearchX } from "lucide-react";
 import {
+  EmptyState,
+  EmptyStateAction,
+  EmptyStateIcon,
   Button,
   DataTable,
   Fact,
   FactList,
   Grid,
-  Notice,
-  NoticeAction,
-  NoticeBody,
-  NoticeIcon,
-  NoticeTitle,
   Panel,
   TableBody,
   TableCell,
@@ -107,20 +105,19 @@ function VoicePage() {
         <Grid min="320px" gap={16}>
           <div lang="de">
             <Panel title="Quellen" heading={3}>
-              <Notice variant="empty">
-                <NoticeIcon>
+              <EmptyState
+                title="Keine Quelle passt zu diesem Filter."
+                body="Das Register enthält 24 Quellen. Keine wurde in den letzten 24 Stunden pausiert."
+              >
+                <EmptyStateIcon>
                   <SearchX />
-                </NoticeIcon>
-                <NoticeTitle>Keine Quelle passt zu diesem Filter.</NoticeTitle>
-                <NoticeBody>
-                  Das Register enthält 24 Quellen. Keine wurde in den letzten 24 Stunden pausiert.
-                </NoticeBody>
-                <NoticeAction>
+                </EmptyStateIcon>
+                <EmptyStateAction>
                   <Button variant="secondary" size="sm">
                     Filter zurücksetzen
                   </Button>
-                </NoticeAction>
-              </Notice>
+                </EmptyStateAction>
+              </EmptyState>
             </Panel>
           </div>
           <div lang="de">
