@@ -91,18 +91,16 @@ export function OrganizationHome({ role = "owner", state = allRunning }: { role?
         </Notice>
       )}
 
-      <Panel label="Your products" title="Open a product" heading={2}>
-        <Grid min="260px">
-          {products.map((product) => (
-            <Panel key={product.id} surface="inset" title={product.name} heading={3}>
-              {can.billing(role) ? product.owner : product.member}
-              <PanelNote>
-                <TextLink href={`#${product.id}`} trail="arrow">{`Open ${product.name}`}</TextLink>
-              </PanelNote>
-            </Panel>
-          ))}
-        </Grid>
-      </Panel>
+      <Grid min="260px">
+        {products.map((product) => (
+          <Panel key={product.id} label="Product" title={product.name} heading={2}>
+            {can.billing(role) ? product.owner : product.member}
+            <PanelNote>
+              <TextLink href={`#${product.id}`} trail="arrow">{`Open ${product.name}`}</TextLink>
+            </PanelNote>
+          </Panel>
+        ))}
+      </Grid>
 
       {can.billing(role) ? (
         <Panel label="Credit" title="Enough for about three months" heading={2}>
