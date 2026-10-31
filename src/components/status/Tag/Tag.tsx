@@ -94,12 +94,28 @@ export function Tag({
   );
 }
 
+/** A tag a compact list cuts carries its whole wording as a tooltip, unless the caller gave one. */
+function titleWhenCut(tag: HTMLElement) {
+  if (tag.title !== "" && !tag.hasAttribute("data-cut-title")) return;
+  const parts = [...tag.querySelectorAll<HTMLElement>(".di-tag-name, .di-tag-detail")];
+  const cut = parts.some((part) => part.hasAttribute("data-cut") || part.scrollWidth > part.clientWidth + 1);
+  if (cut) {
+    tag.title = parts.map((part) => part.textContent?.trim()).join(" · ");
+    tag.setAttribute("data-cut-title", "");
+  } else if (tag.hasAttribute("data-cut-title")) {
+    tag.removeAttribute("title");
+    tag.removeAttribute("data-cut-title");
+  }
+}
+
 /**
  * Tags side by side. In a table cell give `max`: the first tags stay on one
  * line and the rest become one "+N more" tag (`moreLabel`), which calls
  * `onMore` — open the record's side panel there. Without `max` the tags
- * wrap like words. A scope that would show only its first letters in a
- * compact list is left out rather than cut to "·…".
+ * wrap like words, and a tag wider than its place wraps inside its frame.
+ * In a compact list a cut tag shows its whole wording as a tooltip, and a
+ * scope that would show only its first letters is left out rather than cut
+ * to "·…".
  */
 export function TagList({
   children,
@@ -124,6 +140,7 @@ export function TagList({
         const room = parseFloat(getComputedStyle(detail).fontSize) * 4;
         if (detail.scrollWidth > detail.clientWidth && detail.clientWidth < room) detail.setAttribute("data-cut", "");
       }
+      for (const tag of element.querySelectorAll<HTMLElement>(".di-tag:not(.di-tag-more)")) titleWhenCut(tag);
     };
     fit();
     const observer = new ResizeObserver(fit);

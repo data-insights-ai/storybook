@@ -4,7 +4,9 @@ import { Plus } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Toolbar, ToolbarEnd } from "../../actions/Toolbar";
+import { Panel } from "../../layout/page/Panel";
 import { Tag, TagList } from "./Tag";
+import { onPanel } from "../../../../.storybook/onPanel";
 import { separatorsAtLineStart } from "../../../../.storybook/tests/lineStart";
 
 const meta = {
@@ -34,6 +36,7 @@ type Story = StoryObj<typeof meta>;
 
 /** Roles a person holds, each with its scope muted after the name. */
 export const Grants: Story = {
+  decorators: [onPanel("Roles of Nora Feld")],
   render: () => (
     <div style={{ maxWidth: 320 }}>
       <TagList>
@@ -47,6 +50,7 @@ export const Grants: Story = {
 
 /** The filters on a list, in its toolbar: set ones carry the selection tint and a way out, offered ones a plus. */
 export const Filters: Story = {
+  decorators: [onPanel("Signals")],
   args: { onRemove: fn(), onClick: fn() },
   render: (args) => <FilterRow onRemove={args.onRemove} onClick={args.onClick} />,
   play: async ({ args, canvasElement }) => {
@@ -93,6 +97,7 @@ function FilterRow({ onRemove, onClick }: { onRemove?: () => void; onClick?: () 
 
 /** A filter that toggles in place is a pressed button. */
 export const Toggle: Story = {
+  decorators: [onPanel("Cases")],
   render: () => <ToggleTag />,
   play: async ({ canvasElement }) => {
     const tag = within(canvasElement).getByRole("button", { name: "only open" });
@@ -113,6 +118,7 @@ function ToggleTag() {
 
 /** A version and a build beside the product's name: names, not states. */
 export const Version: Story = {
+  decorators: [onPanel("Collector on ws-vie-014")],
   render: () => (
     <TagList>
       <Tag mono>v4.18.2</Tag>
@@ -123,6 +129,7 @@ export const Version: Story = {
 
 /** A scope a model proposed carries the ring until someone takes it. */
 export const Inferred: Story = {
+  decorators: [onPanel("Proposed scope")],
   args: { onClick: fn() },
   render: (args) => (
     <TagList>
@@ -138,6 +145,7 @@ export const Inferred: Story = {
 
 /** In a table cell: two tags on one line, the rest behind "+N more". */
 export const Compact: Story = {
+  decorators: [onPanel("Members")],
   render: () => (
     <div style={{ width: 360, maxWidth: "100%" }}>
       <TagList max={2} moreLabel={(n) => `+${n} more`} onMore={() => undefined}>
@@ -165,6 +173,7 @@ export const Compact: Story = {
 
 /** German wording, the longest the products have: scopes wrap under the name, filters stay whole. */
 export const German: Story = {
+  decorators: [onPanel("Rollen und Filter")],
   render: () => (
     <div style={{ display: "grid", gap: 16, maxWidth: 360 }}>
       <TagList>
@@ -184,21 +193,47 @@ export const German: Story = {
   ),
 };
 
-/** A tag wider than its place wraps its scope onto a second line; nothing is cut. */
+/**
+ * A tag never lets its text out. In a narrow column, here the side panel of a
+ * person on a phone, a name wider than its place wraps inside its frame
+ * (at a space first, inside a word only when the word alone is wider), and
+ * its scope goes onto a line of its own. Checked at the panel width of a
+ * 360px and a 390px phone.
+ */
 export const Narrow: Story = {
   render: () => (
-    <div style={{ width: 120 }}>
-      <TagList>
-        <Tag detail="Production">Workspace administrator</Tag>
-      </TagList>
+    <div className="narrow-column" style={{ width: 328, maxWidth: "100%" }}>
+      <Panel title="Roles of Nora Feld" heading={2}>
+        <TagList>
+          <Tag detail="Production">Workspace administrator</Tag>
+          <Tag detail="Produktionsumgebung Wien">Arbeitsbereichsadministratorin</Tag>
+          <Tag mono>sha256:9f2c4e1ab07d3c58e6f1a2b4c9d0e7f3</Tag>
+        </TagList>
+      </Panel>
     </div>
   ),
   play: async ({ canvasElement }) => {
-    const detail = within(canvasElement).getByText("Production");
-    await expect(detail.scrollWidth).toBeLessThanOrEqual(detail.clientWidth + 1);
-    await expect(detail.getBoundingClientRect().top).toBeGreaterThan(
-      within(canvasElement).getByText("Workspace administrator").getBoundingClientRect().bottom - 2,
-    );
+    const column = canvasElement.querySelector<HTMLElement>(".narrow-column")!;
+    for (const phone of [360, 390]) {
+      column.style.width = `${phone - 32}px`;
+      for (const tag of canvasElement.querySelectorAll<HTMLElement>(".di-tag")) {
+        const frame = tag.getBoundingClientRect();
+        for (const part of tag.querySelectorAll<HTMLElement>(".di-tag-name, .di-tag-detail")) {
+          const range = document.createRange();
+          range.selectNodeContents(part);
+          for (const line of Array.from(range.getClientRects()).filter((rect) => rect.width > 0)) {
+            await expect(line.right).toBeLessThanOrEqual(frame.right + 0.5);
+            await expect(line.left).toBeGreaterThanOrEqual(frame.left - 0.5);
+          }
+        }
+        await expect(frame.right).toBeLessThanOrEqual(column.getBoundingClientRect().right + 0.5);
+      }
+      const detail = within(canvasElement).getByText("Production");
+      await expect(detail.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+        within(canvasElement).getByText("Workspace administrator").getBoundingClientRect().top,
+      );
+    }
+    column.style.width = "328px";
     await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
   },
 };

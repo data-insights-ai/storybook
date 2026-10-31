@@ -36,10 +36,18 @@
     padding-block: 0;
   }
 
+  /*
+   * A tag never lets its text out. A name wider than its place wraps
+   * inside the frame, at a space first and inside a word only when the word
+   * alone is wider: a role or a group is read whole, never cut.
+   */
   .di-tag-name {
     display: inline-flex;
     align-items: center;
     gap: var(--di-gap-4);
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .di-tag-name > svg {
@@ -196,7 +204,11 @@
   }
 
   .di-tag-list.is-compact .di-tag-name {
-    flex: none;
+    display: block;
+    flex: 0 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .di-tag-list.is-compact .di-tag-detail {
