@@ -74,7 +74,7 @@
     --di-select-edge: 3px;
     --di-option-hover-bg: var(--di-row-hover-bg);
 
-    /* A chosen card, tag or option: the selection tint of a row with a cornflower edge, the text at full strength. */
+    /* A chosen card, tag or option: the selection tint of a row with the navy selection edge, the text at full strength. */
     --di-choice-selected-bg: var(--di-bg-selected);
     --di-choice-selected-edge: var(--di-select);
     --di-choice-selected-fg: var(--di-text);
@@ -82,7 +82,7 @@
      * A chosen segment switches a view: a quiet thumb, the surface tone
      * lifted off the track, in ink. A chosen toggle or calendar day is a
      * value: the primary ink fill, as on a primary button. No single option
-     * is ever a solid cornflower fill.
+     * is ever a solid fill of the selection colour.
      */
     --di-choice-thumb-bg: var(--di-bg-surface);
     --di-choice-thumb-fg: var(--di-text);
@@ -116,6 +116,8 @@
     /* A highlighted passage is prose, set in the band face so its tint
        stops at the descenders. */
     --di-highlight-font: var(--di-font-sans-band);
+    /* The second cue beside the tint: a match is a step heavier than the words around it. */
+    --di-highlight-weight: var(--di-weight-medium);
 
     --di-pill-radius: var(--di-radius-pill);
     --di-pill-height: var(--di-pill-h);

@@ -40,7 +40,7 @@
     background: var(--di-chart-danger);
   }
 
-  /* The comparison is cornflower: navy is the reading, cornflower what it is
+  /* The comparison is a lighter navy: navy-900 is the reading, the lighter step what it is
      measured against. Never a zone colour — the earlier point is not a status. */
   .di-level-track.is-compare .di-level-seg.is-on {
     background: var(--di-chart-compare);

@@ -33,7 +33,7 @@ Build from the components in this system. **If something you need is missing, sa
 - **The header only orients.** `PageHeader` holds the page's name, a `StatusPill` beside it and the meta (`PageHeaderMeta`: as of when, from where) — right of the name on a desktop, under it on a phone. No eyebrow, no claim, no rule, no button in a console header.
 - **The first block is what needs the person**: `AttentionList` with at most three `AttentionItem`s; item 01 runs full width with the one primary button and the gold edge. When nothing is due, `Notice variant="line" tone="ok"` says "Everything is running".
 - **A navy hero (`Panel surface="hero"`) only with a signature visual** — the chart that is the screen's argument — closed by `FigureRow variant="footer"`. Figures without a hero sit on `FigureRow variant="strip"`. Rules separate figures and nothing else.
-- **A list beside its record is `Split variant="list"`**: the list pane a step above the ground, the selected row in the selection tint with a cornflower edge; on a phone the two are separate views with `SplitBack`.
+- **A list beside its record is `Split variant="list"`**: the list pane a step above the ground, the selected row in the selection tint with the navy edge; on a phone the two are separate views with `SplitBack`.
 - **Severity is `SeverityMark`**: one scale, a filled mark plus the word.
 - Meta lines (`MetaLine`) break between items and never start a line with a separator; a date in running text is a `<time>`, which never breaks; a `Toolbar align="end"` of closing buttons stacks full width on a phone.
 
@@ -109,10 +109,10 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | Type | `--di-font-display`, `--di-font-ui`, `--di-font-code`, `--di-font-size-100` … `-1000`, `--di-weight-regular/medium/semibold/bold` |
 | Status | `--di-status-{ok,warn,danger,recorded,neutral}-{bg,fg,border,dot}` |
 | The one thing | `--di-one`, `--di-one-edge`, `--di-one-ink` (navy in daylight, gold after dark) |
-| Selection | `--di-select`, `--di-bg-selected`, `--di-focus` (cornflower) |
+| Selection | `--di-select`, `--di-focus`, `--di-sidebar-focus` (navy-700, `#A9CBF3` after dark), `--di-focus-ring-on-strong`, `--di-inverse-focus`, `--di-bg-selected` (the pale tint) |
 | Severity | `--di-severity-{critical,high,medium,low,info}` |
 | Record marks | `--di-mark`, `--di-mark-ring`, `--di-mark-surface`, `--di-mark-ink` (neutral; gold inside `data-brand`); `--di-seal` only in a brand moment |
-| Accents | `--di-highlight` (poppy), `--di-highlight-ink`, `--di-highlight-tint`; `--di-signal` (cornflower), `--di-signal-ink`, `--di-signal-tint` — see the rules below before using either |
+| Marked match | `--di-highlight-tint`, `--di-highlight-ink`, `--di-highlight-weight` (`Highlight`) |
 | Motion | `--di-duration` (120ms), `--di-duration-slow` (200ms), `--di-ease` |
 | Control height | `--di-control-h-sm` (28), `--di-control-h-md` (32, the standard), `--di-control-h-lg` (36), `--di-row-h` (40); compact 24 / 28 / 32 / 32 |
 | Density | `--di-inset`, `--di-inset-group`, `--di-gap-*`, `--di-icon-*`, `--di-option-h`, `--di-pill-h` — one value per density (`data-density`) |
@@ -122,9 +122,9 @@ Rules that make output look native rather than approximate:
 
 - **Navy is the ink and the action.** No accent acts. One filled navy control per view, so it is never unclear which button commits.
 - **Depth is a step in tone, not a line.** A table sits on a surface without a frame of its own.
-- **Poppy marks a passage on a brand page; cornflower selects.** Poppy is only ever `Highlight`. Cornflower is selection, focus and a compared series (`--di-chart-compare`). Neither is a status, so neither is a `tone`, and neither fills a button.
+- **Navy selects; `Highlight` marks a match by tint and weight.** Selection, focus and a compared series (`--di-chart-compare`, a lighter navy) are the navy family; `Highlight` is the pale selection tint and medium weight, never an edge. None of them is a status, so none is a `tone`, and none fills a button.
 - **Gold marks the one thing in a view** — the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small gold pill with navy words that names the one item (`emphasisLabel`) — **never gold text and never a gold wash under prose**; after dark gold text is allowed (`--di-one-ink`). The seal is the same gold and so a **brand moment only** — sign-in, the brand mark, empty and onboarding states, licence and certificate seals; never in an operational view beside the one thing, and `Button variant="seal"` is never an operational action. The record marks (`SealValue`, the inferred ring, a done step) are neutral in an operational view and turn gold only inside `data-brand`. Keep the word beside any mark.
-- **Selection and focus are cornflower**, in both themes. Never ring focus in gold. Never remove a focus indicator.
+- **Selection and focus are the navy family**: navy-700 in daylight, `#A9CBF3` after dark. Never ring focus in gold. Never remove a focus indicator.
 - **Warn is its own amber**, so it never reads as the gold. Severity after dark runs orange for medium for the same reason.
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
 - **Three families.** `--di-font-display` (Space Grotesk) is the page's name, a figure, a section head. `--di-font-ui` (IBM Plex Sans, 14px body) is prose. `--di-font-code` (IBM Plex Mono) is anything a machine wrote, and the capital label above a value.
@@ -143,7 +143,7 @@ Rules that make output look native rather than approximate:
 - **`Pagination` and `Switch` are controlled** — you own `page` / `checked`.
 - **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. A blocked link (`disabled` or `loading`) drops its `href` and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined in-text control and stays a `<button>` — it is for acting, not for going somewhere.
 - **`Icon` takes one Lucide icon as its child**: `<Icon label="Search"><Search aria-hidden /></Icon>`.
-- **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, gold), `--di-chart-compare` (the comparison series, cornflower — also `LevelMeter`'s comparison track), `--di-chart-muted`, `--di-chart-band`. An ordered status scale (low → warn → danger: a stacked severity, a meter's zones, a `Distribution` row's `tone`) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Never draw a one-off SVG chart.
+- **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, gold), `--di-chart-compare` (the comparison series, a lighter navy — also `LevelMeter`'s comparison track), `--di-chart-muted`, `--di-chart-band`. An ordered status scale (low → warn → danger: a stacked severity, a meter's zones, a `Distribution` row's `tone`) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Never draw a one-off SVG chart.
 - **A page or section heading is a slot, because it can hold a `Highlight`**: `<PageHeader eyebrow="…" lede="…"><PageHeaderTitle>…</PageHeaderTitle><PageHeaderAside>…</PageHeaderAside></PageHeader>`, the same for a section with `PageHeader level={2}`. A `Panel` or `Dialog` title stays a string — the page marks one place, and it is never a panel's title.
 - Nothing a model proposes runs before an operator confirms it, and the confirmation states basis, scope and reversibility first.
 
@@ -262,8 +262,8 @@ the ones a machine can.
   One bold voice per block (only the title), one label style per block (mono
   capitals above values, or sentence-case labels beside them). An opened part
   belongs to its head: same surface, same inset, its text on the title's edge.
-- **Selection is the pale tint plus a cornflower edge** — the tint shows what
-  is chosen, the edge carries the contrast. Never a solid cornflower background:
+- **Selection is the pale tint plus a navy edge** — the tint shows what
+  is chosen, the edge carries the contrast. Never a solid background in the selection colour:
   segments take a raised neutral thumb, toggles and chosen days the primary ink.
 - **Focus is one ring model:** `--di-focus-ring-width` solid
   `--di-focus-ring-color`, on `:focus-visible` only. A free-standing control

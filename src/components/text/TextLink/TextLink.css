@@ -1,6 +1,6 @@
 @layer components {
   /*
-   * Ink, underlined in cornflower. A link is not a status, so it does not
+   * Ink, underlined in the selection navy. A link is not a status, so it does not
    * borrow the status hues, and not gold: gold marks one object per view.
    * It takes the size of the line it sits in.
    */

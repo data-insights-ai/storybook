@@ -103,7 +103,7 @@ const tokenColour = (from: Element, token: string) => {
 };
 
 /**
- * Open, the calendar shows the chosen day filled with the primary ink, as a chosen toggle (a value, never a solid cornflower cell),
+ * Open, the calendar shows the chosen day filled with the primary ink, as a chosen toggle (a value, never a solid cell in the selection colour),
  * today with a quiet ring, and the days before `min` greyed. It rests open.
  */
 export const CalendarOpen: Story = {

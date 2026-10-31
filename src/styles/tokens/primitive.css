@@ -30,6 +30,10 @@
     --di-navy-700: #1d4280;
     --di-navy-600: #3d4a66;
     --di-navy-500: #556076;
+    /* The compared series: navy-700 lifted, so a second line stands apart from the navy reading (2.8:1) and from the paper (5.7:1). */
+    --di-navy-400: #3a64ad;
+    /* The same after dark: 4.3:1 on the night surface, 2.9:1 from the ink reading. */
+    --di-navy-300: #6a8fd0;
     --di-navy-100: #e6e9f0;
 
     /*
@@ -69,9 +73,9 @@
     --di-gold-50: #fbf6e8;
 
     /*
-     * The two accents. Poppy (Mohnrot) marks a passage on a brand page;
-     * cornflower (Kornblau) is selection, focus and a compared series.
-     * Neither names a state.
+     * Poppy (Mohnrot) marks a passage on a brand page. Cornflower (Kornblau)
+     * is the pale selection tint, the after-dark step of selection and focus,
+     * and the recorded status.
      */
     --di-poppy-700: #a42a1f;
     --di-poppy-600: #d23c2e;

@@ -44,7 +44,7 @@ export function SplitListItems({ children }: { children: ReactNode }) {
 
 /**
  * One record in the list. The selected one takes the current-row tint and
- * the cornflower edge, and is announced as current. Its marks — a
+ * the navy selection edge, and is announced as current. Its marks — a
  * `SeverityMark`, a `StatusPill` — are the child.
  */
 export function SplitListItem({

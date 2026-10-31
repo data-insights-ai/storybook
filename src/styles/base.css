@@ -38,8 +38,8 @@
   /*
    * A native control a product renders itself (a checkbox, a radio, a
    * progress) fills in the strong primary fill, like a toggle or a chosen
-   * day, never the browser's blue: cornflower is the selection's tint and
-   * the focus ring, not a control's paint.
+   * day, never the browser's blue: the selection tint, its edge and the
+   * focus ring are not a control's paint.
    */
   body {
     accent-color: var(--di-fill-strong);
@@ -47,7 +47,7 @@
 
   /*
    * A native range: the track in the input border tone, the part up to the
-   * thumb and the thumb in the strong fill, the focus ring cornflower like
+   * thumb and the thumb in the strong fill, the focus ring like
    * every other. Chromium has no part for the filled side, so the thumb's
    * border image reaches out to both ends, a line's height, and the input
    * clips it.
@@ -165,7 +165,7 @@
     }
   }
 
-  /* Focus is cornflower, like selection: 4.4:1 on the chrome, 6:1 on navy after dark. */
+  /* Focus is navy-700, like selection: 8:1 on the chrome; its light step after dark, 10.6:1 on the night chrome. */
   :focus-visible {
     outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
     outline-offset: var(--di-focus-ring-offset);

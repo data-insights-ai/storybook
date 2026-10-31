@@ -5,26 +5,27 @@
   }
 
   /*
-   * The tint and its cornflower hairline follow each line of a wrapped
-   * passage rather than boxing the whole run.
+   * The tint follows each line of a wrapped passage rather than boxing the
+   * whole run. No edge: a frame around words reads as a control or as focus.
+   * The cue that does not depend on colour is weight, one step above the
+   * words around the mark.
    *
    * An inline background fills the font's ascent-to-descent box, and IBM
    * Plex Sans' is 1.3em: under a display title set at 1.02 it reached into
    * the line above and painted over its descenders. The passage is set in
    * the band face, the same glyphs with that box cut to just above the caps
    * and the foot of the descenders, so a solid tint stops there — clear of
-   * the line above, with a hairline between two tinted lines. A gradient
-   * band drew the same shape, but an accessibility check cannot measure
-   * text over a gradient. `line-height: 0` keeps the shorter box from
-   * reopening the line it sits in.
+   * the line above. A gradient band drew the same shape, but an
+   * accessibility check cannot measure text over a gradient.
+   * `line-height: 0` keeps the shorter box from reopening the line it sits in.
    */
   .di-highlight-passage,
   .di-highlight-figure {
     padding: 0 var(--di-space-2);
     border-radius: var(--di-radius-micro);
     background: var(--di-highlight-tint);
-    box-shadow: inset 0 0 0 1px var(--di-highlight);
     color: var(--di-highlight-ink);
+    font-weight: var(--di-highlight-weight);
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
@@ -32,6 +33,11 @@
   .di-highlight-passage {
     font-family: var(--di-highlight-font);
     line-height: 0;
+  }
+
+  /* A title is already set heavier than any step above body text: the mark keeps the title's weight there. */
+  :is(h1, h2, h3, h4, h5, h6, [role="heading"]) > .di-highlight {
+    font-weight: inherit;
   }
 
   .di-highlight-figure {

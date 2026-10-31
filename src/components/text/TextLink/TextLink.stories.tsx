@@ -33,7 +33,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** In a sentence, which is where it has to hold its own: ink, underlined in cornflower, at the size of the line. */
+/** In a sentence, which is where it has to hold its own: ink, underlined in the selection navy, at the size of the line. */
 export const InProse: Story = {
   decorators: [onPanel("Entry REG-0148")],
   parameters: { controls: { disable: true } },

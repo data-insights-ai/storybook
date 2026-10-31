@@ -41,6 +41,20 @@ const coverage = [
   { period: "Q4", recorded: 94, compare: 85 },
 ];
 
+/** WCAG contrast of two computed rgb() colours. */
+function contrast(a: string, b: string) {
+  const lum = (colour: string) => {
+    const [r, g, bl] = colour
+      .match(/[\d.]+/g)!
+      .slice(0, 3)
+      .map((v) => Number(v) / 255)
+      .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * bl;
+  };
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
 const coverageConfig = {
   recorded: { label: "Recorded", color: "var(--di-chart-series)" },
   compare: { label: "Comparison", color: "var(--di-chart-compare)" },
@@ -161,10 +175,11 @@ export const Compare: Story = {
 
 /**
  * Two series, and the second one is a comparison: navy is what was
- * recorded, cornflower is what it is measured against. This is the one
- * place cornflower may share a view with poppy — at most one accent per
- * page, and the two meet only in a chart. A second *ordinary* series is
- * still warm neutral; cornflower names the comparison, not "series two".
+ * recorded, a lighter step of the same navy (`--di-chart-compare`) is what
+ * it is measured against. The two stay one family, yet the comparison
+ * stands at least 2:1 from the reading and 3:1 from the surface, in both
+ * themes. A second *ordinary* series is still warm neutral; the lighter
+ * navy names the comparison, not "series two".
  */
 export const AgainstComparison: Story = {
   args: { label: "Coverage by quarter, recorded against comparison", config: coverageConfig },
@@ -185,6 +200,12 @@ export const AgainstComparison: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Recorded")).toBeVisible();
     await expect(canvas.getByText("Comparison")).toBeVisible();
+    const bars = canvasElement.querySelectorAll(".recharts-bar");
+    const fill = (i: number) => getComputedStyle(bars[i].querySelector(".recharts-bar-rectangle path")!).fill;
+    const surface = getComputedStyle(canvasElement.querySelector(".di-surface")!).backgroundColor;
+    const [recorded, compare] = [fill(0), fill(1)];
+    await expect(contrast(compare, surface)).toBeGreaterThanOrEqual(3);
+    await expect(contrast(compare, recorded)).toBeGreaterThanOrEqual(2);
   },
 };
 

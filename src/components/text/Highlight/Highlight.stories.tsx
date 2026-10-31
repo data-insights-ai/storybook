@@ -21,25 +21,11 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Contrast of two colours, after WCAG. */
-function contrast(a: string, b: string): number {
-  const lum = (colour: string) => {
-    const [r, g, bl] = colour
-      .match(/[\d.]+/g)!
-      .slice(0, 3)
-      .map(Number)
-      .map((v) => v / 255);
-    const lin = (v: number) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
-    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(bl);
-  };
-  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
-  return (hi + 0.05) / (lo + 0.05);
-}
-
 /**
  * A search matched a term: each result marks where, in its name and in the
  * line under it, so the eye finds why the row is here. The mark is the
- * selection tint under full ink, held by a cornflower hairline.
+ * selection tint under full ink, one weight step above the words around
+ * it; no edge, because a frame around words reads as a control.
  */
 export const SearchMatch: Story = {
   parameters: { controls: { disable: true } },
@@ -67,9 +53,11 @@ export const SearchMatch: Story = {
     const panel = canvasElement.querySelector<HTMLElement>(".di-surface")!;
     for (const mark of marks) {
       const style = getComputedStyle(mark);
-      await expect(style.boxShadow).toContain("inset");
-      const edge = style.boxShadow.match(/rgba?\([^)]*\)/)![0];
-      await expect(contrast(edge, getComputedStyle(panel).backgroundColor)).toBeGreaterThanOrEqual(3);
+      await expect(style.boxShadow).toBe("none");
+      await expect(style.outlineStyle).toBe("none");
+      await expect(style.borderStyle).toBe("none");
+      await expect(Number(style.fontWeight)).toBeGreaterThan(Number(getComputedStyle(mark.parentElement!).fontWeight));
+      await expect(style.backgroundColor).not.toBe(getComputedStyle(panel).backgroundColor);
     }
   },
 };

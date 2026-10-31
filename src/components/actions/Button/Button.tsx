@@ -19,7 +19,7 @@ type Common = {
    *
    * `ghost` is a quiet button among other controls: no frame and no
    * underline, a ground on hover. `link` is drawn as a `TextLink` (ink,
-   * underlined in cornflower, the size of its line) for an action that
+   * underlined in the selection navy, the size of its line) for an action that
    * reads as a word: beside a field, under a form, in a sentence. A link
    * takes no `size`, `iconOnly` or `badge`, and draws no key cap or spinner.
    *

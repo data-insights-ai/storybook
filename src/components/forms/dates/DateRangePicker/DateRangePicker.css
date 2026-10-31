@@ -109,7 +109,7 @@
   /*
    * Between the first and last day: a band in the selection tint, in ink; the
    * two ends filled. The tint alone is too pale to find on the popup's ground,
-   * so a cornflower line runs along the band's top and bottom. In focus the
+   * so a navy selection line runs along the band's top and bottom. In focus the
    * ring is the one indicator, so the lines give way to it.
    */
   .di-date-range-calendar .di-calendar-cell[data-selected]:not([data-selection-start], [data-selection-end]) {

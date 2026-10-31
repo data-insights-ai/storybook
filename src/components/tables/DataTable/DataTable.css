@@ -254,7 +254,7 @@
     cursor: pointer;
   }
 
-  /* The row an open pane shows is the selected row (`.di-row-current`): the selection tint with the cornflower edge. */
+  /* The row an open pane shows is the selected row (`.di-row-current`): the selection tint with the navy selection edge. */
 
   /*
    * The row's name stays at the inline-start edge while the grid scrolls
