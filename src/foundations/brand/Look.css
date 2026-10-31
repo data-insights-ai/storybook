@@ -1,0 +1,28 @@
+.di-look-line {
+  margin: 0;
+  max-width: var(--di-measure-prose);
+}
+
+/* The tint without the cornflower edge: the wrong way, drawn on purpose. */
+.di-look-tint-only tbody tr:nth-child(2) td {
+  background: var(--di-bg-selected);
+}
+
+/* A drawn focus ring, shown at rest so the page can show it. */
+.di-look-ring {
+  outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+  outline-offset: var(--di-focus-ring-offset);
+}
+
+/* A scroll frame: with the ring's reach as padding, and without it. */
+.di-look-ring-room,
+.di-look-ring-cut {
+  padding: var(--di-space-8);
+  border-radius: var(--di-radius-inset);
+  background: var(--di-bg-subtle);
+}
+
+.di-look-ring-cut {
+  overflow: hidden;
+  padding: 0 var(--di-space-8) 0 0;
+}

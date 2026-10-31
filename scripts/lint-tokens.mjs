@@ -252,6 +252,6 @@ for (const [rule, list] of Object.entries(byRule)) {
   for (const p of list) console.log(`    ${p.file}:${p.line}  ${p.message}`);
 }
 console.log(
-  `\n${shown.length} problem${shown.length === 1 ? "" : "s"}. These ramps are stated in Foundations/Scale; a value between two steps is a decision nobody made.\n`,
+  `\n${shown.length} problem${shown.length === 1 ? "" : "s"}. These ramps are drawn in Foundations/Space and shape; a value between two steps is a decision nobody made.\n`,
 );
 process.exit(1);

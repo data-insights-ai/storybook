@@ -55,7 +55,6 @@ const preview: Preview = {
        */
       storySort: (a, b) => {
         const sections = [
-          "Introduction",
           "Foundations",
           "Actions",
           "Forms",
@@ -73,8 +72,8 @@ const preview: Preview = {
           "Shell",
           "Patterns",
         ];
-        // Read top to bottom: the rules, the voice, the tokens, the logo, then how pages and groups are built.
-        const foundations = ["Register", "Voice", "Color", "Type", "Scale", "Logo", "Pages", "Groups"];
+        // Read top to bottom: where to start, the tokens, the look they make, the logo.
+        const foundations = ["Start here", "Color", "Type", "Space and shape", "Our look", "Logo"];
         // Listed items sort in list order; anything unlisted falls to the end.
         const rank = (list, value) => {
           const index = list.indexOf(value);

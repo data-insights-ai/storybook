@@ -25,6 +25,7 @@ const meta = {
       description: {
         component: [
           "**Purpose:** what a model proposes, why, and how sure it is, on one surface; when it asks for a decision, the question and its actions too.",
+          "**Why it exists:** a person agrees to what a model proposes only after seeing its basis and what it ignored, so both come before the action, never after it.",
           "**When to use:** beside the record a proposal concerns: a merge, a resume, a revoke a model suggests. **When not to:** a destructive action the operator started themselves asks in a `ConfirmDialog`; a claim that belongs to one figure on a card is a `RecordCard`'s `RecordInsight`; plain facts of a record are a `FactList`.",
           "**Anatomy:** the mono label, the `ProposalQuestion` (a heading, when it asks), the `ProposalAnswer` (one sentence), a confidence `Figure`, the evidence or the decision's facts as a `FactList` in rows (the same fact style as the record beside it), `ProposalIgnored` (folded), the `ProposalNote` (the caveat) and `ProposalActions`.",
           "**Variants:** without `ProposalActions` it explains, everything in view. With them it asks: the facts stay in view and the explanation folds under `whyLabel`, in the same panel.",

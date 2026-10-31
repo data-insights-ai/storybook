@@ -80,7 +80,7 @@
     --di-select: var(--di-cornflower-600);
     --di-focus: var(--di-cornflower-600);
     /*
-     * The focus ring, one model (Foundations/Register): outside the control
+     * The focus ring, one model (conventions.md, "The register rules"): outside the control
      * at the offset when it stands free, drawn inside it (the inset) where a
      * neighbour or a clipping frame sits next to it. On a selected item the
      * ring is drawn over the selection edge, so it is one indicator. The

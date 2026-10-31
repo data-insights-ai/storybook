@@ -20,6 +20,9 @@ function keyAndWord(hint: string | CommandHint): CommandHint {
 /**
  * One field for going somewhere, finding a record and asking a question.
  *
+ * Why it exists: a register is meant to be queried, so going, searching and
+ * asking share one field instead of three places to look.
+ *
  * - **Use it** as the app's ⌘K palette, rendered by the caller in a dialog
  *   over the page; on its own it is the panel only.
  * - **Not** for filtering a list in place (`SearchField` in the list's

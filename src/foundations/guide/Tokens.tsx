@@ -1,11 +1,8 @@
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { DataTable, Panel, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../index";
-import "./Tokens.css";
+import { CopyValue } from "../../index";
 
-export type TokenRow = { token: string; use: string; sample?: ReactNode };
-
-/** The value a token resolves to where the table is painted, so the dark theme shows its own. */
-function useResolved(tokens: string[]) {
+/** The values tokens resolve to where they are painted, so the dark theme and the compact density show their own. */
+export function useResolved(tokens: string[]) {
   const ref = useRef<HTMLDivElement>(null);
   const [values, setValues] = useState<Record<string, string>>({});
   const key = tokens.join(" ");
@@ -17,7 +14,7 @@ function useResolved(tokens: string[]) {
       setValues(Object.fromEntries(key.split(" ").map((t) => [t, style.getPropertyValue(t).trim()])));
     };
     read();
-    // The theme and the density are set on the root by a decorator, after this table has rendered.
+    // The theme and the density are set on the root by a decorator, after the page has rendered.
     const watch = new MutationObserver(read);
     watch.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "data-density"] });
     return () => watch.disconnect();
@@ -25,82 +22,34 @@ function useResolved(tokens: string[]) {
   return { ref, values };
 }
 
-/** A panel of tokens: the swatch painted from the token, its name, what it resolves to here, and its job. */
-export function TokenTable({
-  title,
-  caption,
-  rows,
-  draw,
-}: {
-  title: string;
-  caption: string;
-  rows: TokenRow[];
-  draw?: (token: string) => ReactNode;
-}) {
-  const { ref, values } = useResolved(rows.map((r) => r.token));
+export function TokenName({ token }: { token: string }) {
   return (
-    <div ref={ref} className="di-tokens">
-      <Panel title={title} heading={3} padded={false}>
-        <DataTable caption={caption} indexed={false} narrow="stack">
-          <TableHead>
-            <TableColumn>Sample</TableColumn>
-            <TableColumn>Token</TableColumn>
-            <TableColumn>Value</TableColumn>
-            <TableColumn width="fill">Use</TableColumn>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.token}>
-                <TableCell label="Sample">
-                  <span className="di-tokens-sample">{row.sample ?? draw?.(row.token)}</span>
-                </TableCell>
-                <TableCell label="Token" mono>
-                  {row.token}
-                </TableCell>
-                <TableCell label="Value" mono>
-                  {values[row.token] || "—"}
-                </TableCell>
-                <TableCell label="Use">{row.use}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </DataTable>
-      </Panel>
+    <CopyValue className="di-token-name" value={token} copyLabel={`Copy ${token}`} copiedLabel={`${token} copied`} />
+  );
+}
+
+export function Tiles({ children }: { children: ReactNode }) {
+  return <div className="di-doc-tiles">{children}</div>;
+}
+
+/** A drawing of a token, what it is for in a few words, and its name to copy. */
+export function Tile({ drawing, name, token }: { drawing: ReactNode; name: string; token: string }) {
+  return (
+    <div className="di-doc-tile" data-token={token}>
+      {drawing}
+      <p className="di-doc-tile-name">{name}</p>
+      <TokenName token={token} />
     </div>
   );
 }
 
-export const fill = (token: string) => (
-  <i className="di-tokens-chip" style={{ background: `var(${token})` }} aria-hidden />
-);
-
-export const ink = (token: string) => (
-  <i className="di-tokens-chip is-ink" style={{ color: `var(${token})` }} aria-hidden>
-    Aa
-  </i>
-);
-
-export const length = (token: string) => (
-  <i className="di-tokens-bar" style={{ inlineSize: `var(${token})` }} aria-hidden />
-);
-
-export const corner = (token: string) => (
-  <i className="di-tokens-corner" style={{ borderStartStartRadius: `var(${token})` }} aria-hidden />
-);
-
-/**
- * The token and value cells that run over more than one line. A name or a value is one token; on a phone, where
- * the rows stack, only a value may wrap, and only between its parts.
- */
-export function brokenTokenCells(root: HTMLElement) {
-  const stacked = window.innerWidth < 600;
-  const cells = Array.from(root.querySelectorAll<HTMLElement>(".di-tokens td.di-mono"));
-  return cells
-    .filter((cell) => !stacked || cell.dataset.label === "Token")
-    .filter((cell) => {
-      const range = document.createRange();
-      range.selectNodeContents(cell);
-      return new Set(Array.from(range.getClientRects(), (line) => Math.round(line.top))).size > 1;
+/** Token names that run over more than one line or out of their tile. */
+export function brokenTokenNames(root: HTMLElement) {
+  return Array.from(root.querySelectorAll<HTMLElement>(".di-token-name .di-copy-value"))
+    .filter((name) => {
+      const tile = name.closest(".di-doc-tile, .di-doc-row") ?? name.parentElement!;
+      const lines = new Set(Array.from(name.getClientRects(), (line) => Math.round(line.top))).size;
+      return lines > 1 || name.getBoundingClientRect().right > tile.getBoundingClientRect().right + 1;
     })
-    .map((cell) => cell.textContent);
+    .map((name) => name.textContent);
 }
