@@ -92,4 +92,10 @@
   #storybook-explorer-searchfield {
     font-size: 14px;
   }
+  /* Native controls in the addon panels take the selection colour, not the browser blue. */
+  input[type="radio"],
+  input[type="checkbox"],
+  input[type="range"] {
+    accent-color: var(--sb-di-select);
+  }
 </style>
