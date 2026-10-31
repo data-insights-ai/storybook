@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
 import logo from "../../assets/logo.svg";
@@ -6,7 +7,7 @@ import logoMono from "../../assets/logo-mono.svg";
 import mark from "../../assets/mark.svg";
 import markInverse from "../../assets/mark-inverse.svg";
 import markMono from "../../assets/mark-mono.svg";
-import { CodeBlock, Fact, FactList, Grid, Panel, PanelNote, Stack } from "../../index";
+import { Fact, FactList, Grid, Panel, PanelNote, Stack } from "../../index";
 import { Doc } from "../guide/Doc";
 
 const lockups = [
@@ -30,10 +31,63 @@ const lockups = [
   { title: "Mark, monochrome", src: markMono, theme: "light", isMark: true, use: "A stamp or an emboss." },
 ] as const;
 
-const signature = `Nora Feld
-Operator · datAInsights
-datAInsights GmbH
-data-insights.ai`;
+const rule = (width: string): CSSProperties => ({
+  inlineSize: width,
+  borderBlockStart: "2px solid var(--di-text)",
+  margin: 0,
+});
+const mono: CSSProperties = { fontFamily: "var(--di-font-code)", margin: 0 };
+
+function Signature() {
+  return (
+    <div
+      data-theme="light"
+      data-signature
+      style={{
+        background: "#fff",
+        padding: "var(--di-space-24)",
+        display: "grid",
+        gap: "var(--di-space-8)",
+        color: "var(--di-text)",
+      }}
+    >
+      <hr style={rule("var(--di-space-64)")} />
+      <p style={{ margin: 0, fontFamily: "var(--di-font-ui)", fontSize: "var(--di-font-size-600)" }}>
+        Firstname Lastname
+      </p>
+      <p style={{ margin: 0, fontFamily: "var(--di-font-ui)", fontSize: "var(--di-font-size-500)" }}>
+        Role · datAInsights
+      </p>
+      <hr style={rule("var(--di-space-48)")} />
+      <p style={{ ...mono, fontSize: "var(--di-font-size-500)" }}>
+        firstname.lastname@data-insights.ai · +43 660 000 0000
+      </p>
+      <div
+        style={{
+          ...mono,
+          display: "grid",
+          gap: "var(--di-space-4)",
+          fontSize: "var(--di-font-size-400)",
+          color: "var(--di-text-subtle)",
+        }}
+      >
+        <p style={mono}>datAInsights GmbH</p>
+        <p style={mono}>Prinz-Eugen-Straße 76/12, AT-1040 Wien</p>
+        <p style={{ ...mono, fontSize: "var(--di-font-size-300)" }}>FN 606605t | ATU79575247</p>
+      </div>
+      <p
+        style={{
+          ...mono,
+          fontSize: "var(--di-font-size-400)",
+          color: "var(--di-seal-ink)",
+          marginBlockStart: "var(--di-space-8)",
+        }}
+      >
+        data-insights.ai
+      </p>
+    </div>
+  );
+}
 
 function LogoPage() {
   return (
@@ -78,7 +132,8 @@ function LogoPage() {
         </Panel>
       </Grid>
       <Panel title="Email signature" heading={2}>
-        <CodeBlock label="Signature template">{signature}</CodeBlock>
+        <Signature />
+        <PanelNote>Sample person; the company lines are the real ones. Always on white, as in a mail.</PanelNote>
       </Panel>
     </Doc>
   );
