@@ -51,7 +51,7 @@ The Storybook sidebar is grouped by the question a developer asks, one group per
 - `Figures/`: a number: `Figure`, `FigureRow`, `Sparkline`.
 - `Text/`: how text is set: `Eyebrow`, `MetaLine`, `TextLink`, `Kbd`, `Highlight`, `Icon`, and the blocks `CodeBlock`, `PullQuote`, `TickRule`.
 - `Status/`: the state of a thing, inline: `StatusPill`, `SeverityMark`, `SealValue`, `Badge`, `Tag` (`mono` for a filter, a version or a hash), `LevelMeter`.
-- `Feedback/`: what happened or is happening: `Notice` (`variant` banner, empty, line), `Toast`, `Loading` (`shape` inline, app, list, detail, form, table), `Progress`, `RouteProgress`, `Delayed`.
+- `Feedback/`: what happened or is happening: `Notice` (`variant` banner, line), `EmptyState`, `Toast`, `Loading` (`shape` inline, app, list, detail, form, table), `Progress`, `RouteProgress`, `Delayed`.
 - `Charts/`: data on a scale: `Chart`, `TrendChart`, `Seismograph`, `Distribution`, `CoverageMatrix`; a dashboard figure is a `Panel` with a `Figure` and the chart, in a `Grid`.
 - `Timelines/`: events and periods over time: `EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`.
 - `Layout/`: how a page is arranged: `Page`, `PageHeader` (`level={2}` for a section), `Panel` (`surface="hero"`, `tone="danger"`), `DetailSection`, and `Stack`, `Grid`, `Split`, `Disclosure`.
@@ -59,6 +59,8 @@ The Storybook sidebar is grouped by the question a developer asks, one group per
 - `Overlays/`: what opens over the page: `Dialog` (`placement` side, center, bottom), `ConfirmDialog`, `ShortcutHelp`, `Flyout`, `Tooltip`.
 - `Shell/`: the frame of the app: `AppShellBar`, `AppShellContent`, `SignIn`, `SkipLink`, `ThemeProvider`, `DensityProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
+
+Every example shows a component where it lives: content (a fact list, a figure, a chart, a quote, a button, a field) sits inside the surface it belongs to in a product, usually a `Panel`, sometimes a `Dialog`, a table or a `RecordCard`. Only surfaces (`Page`, `Panel`, `Dialog`, `Flyout`, `Toast`, the shell parts, the overlays) stand on the page ground on their own. Compose a variation the same way.
 
 ### Which component for which job
 
@@ -81,7 +83,7 @@ The Storybook sidebar is grouped by the question a developer asks, one group per
 | Views of one record | `Tabs` | `TabNav`, whose tabs are places with their own URL |
 | A row's actions | `Menu` or `Toolbar variant="row"` | buttons repeated in every row |
 | A message that stays on the page | `Notice` | `Toast`, the receipt of an action that already ran |
-| Nothing to show yet | `Notice variant="empty"` | an empty table |
+| Nothing to show yet | `EmptyState` in the panel | an empty table, a `Notice` |
 | A label for a control without one | `Tooltip` | a tooltip holding a fact that is nowhere else |
 | A record read beside the decisions about it | `Split` | |
 | A record's detail page, edited section by section | `DetailSection` | |
