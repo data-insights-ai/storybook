@@ -4,7 +4,7 @@
     padding: var(--di-space-12);
     border: 1px solid var(--di-border);
     border-radius: var(--di-radius-control);
-    background: var(--di-table-bg);
+    background: var(--di-bg-subtle);
   }
 
   .di-codeblock-scroll {

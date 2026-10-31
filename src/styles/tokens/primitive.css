@@ -17,10 +17,10 @@
      * paper beside navy. The ground is one value on purpose, so a warmer
      * ground is a one-line change here.
      */
-    --di-paper-chrome: #e9e8e3;
-    --di-paper-ground: #f3f2ee;
-    --di-paper-surface: #fdfdfb;
-    --di-paper-inset: #eae9e4;
+    --di-paper-chrome: #e7dec9;
+    --di-paper-ground: #f4efe3;
+    --di-paper-surface: #ffffff;
+    --di-paper-inset: #ece5d6;
     --di-paper-plane: #ffffff;
 
     /* Navy is the ink and the action in daylight, and the ground after dark. */

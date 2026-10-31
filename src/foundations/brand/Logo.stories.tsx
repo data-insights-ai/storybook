@@ -41,11 +41,8 @@ const mono: CSSProperties = { fontFamily: "var(--di-font-code)", margin: 0 };
 function Signature() {
   return (
     <div
-      data-theme="light"
       data-signature
       style={{
-        background: "#fff",
-        padding: "var(--di-space-24)",
         display: "grid",
         gap: "var(--di-space-8)",
         color: "var(--di-text)",
@@ -131,10 +128,12 @@ function LogoPage() {
           <PanelNote>Lockup 20px or 10mm, mark 16px or 6mm. Clear space: one cap height.</PanelNote>
         </Panel>
       </Grid>
-      <Panel title="Email signature" heading={2}>
-        <Signature />
-        <PanelNote>Sample person; the company lines are the real ones. Always on white, as in a mail.</PanelNote>
-      </Panel>
+      <div data-theme="light">
+        <Panel title="Email signature" heading={2}>
+          <Signature />
+          <PanelNote>Sample person; the company lines are the real ones. Always on white, as in a mail.</PanelNote>
+        </Panel>
+      </div>
     </Doc>
   );
 }

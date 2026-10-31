@@ -51,14 +51,14 @@
     --di-text-disabled: var(--di-slate-400);
     --di-text-on-strong: var(--di-paper-plane);
 
-    --di-border: rgba(10, 31, 68, 0.1);
+    --di-border: rgba(74, 58, 20, 0.1);
     --di-border-strong: rgba(10, 31, 68, 0.18);
     --di-border-input: var(--di-slate-500);
-    --di-rule: rgba(10, 31, 68, 0.1);
-    --di-rule-hairline: rgba(10, 31, 68, 0.06);
+    --di-rule: rgba(74, 58, 20, 0.1);
+    --di-rule-hairline: rgba(74, 58, 20, 0.06);
 
     /* A surface lifts by tone; this is the faint edge that keeps it apart where tones meet. */
-    --di-elevation-surface: 0 1px 0 rgba(10, 31, 68, 0.06), 0 1px 3px rgba(10, 31, 68, 0.04);
+    --di-elevation-surface: 0 0 0 1px #e2dac8, 0 1px 2px rgba(74, 58, 20, 0.05);
 
     /* The tick scale, for a block that reports a measurement. */
     --di-tick: repeating-linear-gradient(to right, rgba(10, 31, 68, 0.28) 0 1px, transparent 1px 8px);
@@ -163,7 +163,7 @@
     --di-sidebar-fg: var(--di-navy-900);
     --di-sidebar-muted: var(--di-navy-500);
     --di-sidebar-active: var(--di-paper-surface);
-    --di-sidebar-edge: rgba(10, 31, 68, 0.1);
+    --di-sidebar-edge: rgba(74, 58, 20, 0.1);
     --di-sidebar-focus: var(--di-navy-700);
 
     --di-status-ok-fg: var(--di-ok-800);
