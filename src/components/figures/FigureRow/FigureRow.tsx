@@ -81,13 +81,20 @@ function fitsItsColumn(figure: HTMLElement) {
   let fits = true;
   if (value) {
     value.style.whiteSpace = "nowrap";
-    fits = value.scrollWidth <= value.clientWidth + 1;
+    fits = !overflows(value);
     value.style.whiteSpace = "";
   }
   if (fits && label) {
     label.style.overflowWrap = "normal";
-    fits = label.scrollWidth <= label.clientWidth + 1;
+    fits = !overflows(label);
     label.style.overflowWrap = "";
   }
   return fits;
+}
+
+/* In fractions of a pixel: scrollWidth and clientWidth round, and a value 0.7px wider than its column still wraps. */
+function overflows(element: HTMLElement) {
+  const text = element.ownerDocument.createRange();
+  text.selectNodeContents(element);
+  return text.getBoundingClientRect().width > element.getBoundingClientRect().width;
 }
