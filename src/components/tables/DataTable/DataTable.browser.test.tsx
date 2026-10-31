@@ -67,11 +67,19 @@ test("a frame that fits is no tab stop; one that scrolls is", () => {
   expect(document.querySelector(".di-table-scroll")!.hasAttribute("tabindex")).toBe(false);
 });
 
-test("the head names each column as a mono label, a different kind of text than the values", () => {
+test("the head names each column in the interface label, at a row's height and a cell's inset", () => {
   renderRegister();
-  const head = getComputedStyle(document.querySelector("th")!);
-  expect(head.fontFamily).toContain("IBM Plex Mono");
-  expect(head.textTransform).toBe("uppercase");
+  const th = document.querySelector("th:not(.di-table-index)")!;
+  const td = document.querySelector("tbody td:not(.di-table-index)")!;
+  const head = getComputedStyle(th);
+  const cell = getComputedStyle(td);
+  expect(head.fontFamily).toContain("IBM Plex Sans");
+  expect(head.textTransform).toBe("none");
+  expect(head.fontWeight).toBe("500");
+  expect(head.paddingInlineStart).toBe(cell.paddingInlineStart);
+  expect(head.paddingInlineEnd).toBe(cell.paddingInlineEnd);
+  const textBlock = parseFloat(cell.lineHeight) + parseFloat(cell.paddingTop) + parseFloat(cell.paddingBottom);
+  expect(th.getBoundingClientRect().height).toBeGreaterThanOrEqual(textBlock - 0.5);
 });
 
 test("beside a filling column every other cell keeps its line, while the filling column's prose wraps", () => {
@@ -82,7 +90,7 @@ test("beside a filling column every other cell keeps its line, while the filling
   expect(title.classList.contains("is-fill")).toBe(true);
 });
 
-test("a stacked row names its cells with the same mono label", () => {
+test("a stacked row names its cells with the same label as the head", () => {
   const host = document.createElement("div");
   host.style.width = "360px";
   document.body.append(host);
@@ -105,7 +113,8 @@ test("a stacked row names its cells with the same mono label", () => {
   );
   const label = getComputedStyle(document.querySelector("td.is-labelled")!, "::before");
   expect(label.content).toContain("Seen");
-  expect(label.textTransform).toBe("uppercase");
+  expect(label.textTransform).toBe("none");
+  expect(label.fontFamily).toContain("IBM Plex Sans");
 });
 
 test("a row's disclosure is a column the arrows keep", async () => {
