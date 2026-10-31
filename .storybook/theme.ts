@@ -5,15 +5,15 @@ export type Mode = "light" | "dark";
 /** Direction A, as the library's tokens resolve it; the manager cannot read CSS custom properties. */
 export const palette = {
   light: {
-    chrome: "#E9E8E3",
-    ground: "#F3F2EE",
-    surface: "#FDFDFB",
+    chrome: "#E7DEC9",
+    ground: "#F4EFE3",
+    surface: "#FFFFFF",
     raised: "#FFFFFF",
-    hover: "#EAE9E4",
+    hover: "#ECE5D6",
     text: "#0A1F44",
     muted: "#3D4A66",
     subtle: "#556076",
-    border: "rgba(10, 31, 68, 0.1)",
+    border: "rgba(74, 58, 20, 0.1)",
     input: "rgba(10, 31, 68, 0.18)",
     select: "#1D4280",
     fill: "#0A1F44",
