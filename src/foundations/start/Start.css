@@ -1,0 +1,10 @@
+.di-start-line {
+  margin: 0;
+}
+
+/* A region in the other theme paints its own ground, as a product's dark zone does. */
+.di-start-theme {
+  padding: var(--di-space-12);
+  border-radius: var(--di-radius-inset);
+  background: var(--di-bg-page);
+}

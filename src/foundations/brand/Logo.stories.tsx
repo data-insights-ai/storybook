@@ -6,8 +6,8 @@ import logoMono from "../../assets/logo-mono.svg";
 import mark from "../../assets/mark.svg";
 import markInverse from "../../assets/mark-inverse.svg";
 import markMono from "../../assets/mark-mono.svg";
-import { CodeBlock, Fact, FactList, Grid, Panel, PanelNote } from "../../index";
-import { Doc, DocSection, Rules } from "../guide/Doc";
+import { CodeBlock, Fact, FactList, Grid, Panel, PanelNote, Stack } from "../../index";
+import { Doc } from "../guide/Doc";
 
 const lockups = [
   { title: "Primary", src: logo, theme: "light", isMark: false, use: "The default, on paper, ivory or white." },
@@ -37,67 +37,49 @@ data-insights.ai`;
 
 function LogoPage() {
   return (
-    <Doc
-      title="Logo"
-      lede="The mark, then the name. Six fixed files, and nothing else: a lockup is never rebuilt from the mark and a typeface, recoloured, stretched, rotated, shadowed, or set on gold or a photograph."
-    >
-      <DocSection
-        title="What the mark means"
-        lede="Every part carries a meaning, so the mark is never cropped or used as a frame."
-      >
-        <Panel title="Parts" heading={3}>
+    <Doc title="Logo" lede="The mark, then the name: six fixed files, never rebuilt or recoloured.">
+      <Grid min="300px" gap={16}>
+        {lockups.map((item) => (
+          <div key={item.title} data-theme={item.theme}>
+            <Panel title={item.title} heading={2}>
+              <img
+                src={item.src}
+                alt={`datAInsights ${item.title.toLowerCase()}`}
+                style={{ blockSize: item.isMark ? "var(--di-space-48)" : "var(--di-space-32)", inlineSize: "auto" }}
+              />
+              <PanelNote>{item.use}</PanelNote>
+            </Panel>
+          </div>
+        ))}
+      </Grid>
+      <Grid min="300px" gap={16}>
+        <Panel title="Parts" heading={2}>
           <FactList layout="columns">
-            <Fact label="Brackets">A time interval: the window in which a claim holds.</Fact>
-            <Fact label="Peak">Two edges meeting: the A, and the simplest graph.</Fact>
+            <Fact label="Brackets">The window in which a claim holds.</Fact>
+            <Fact label="Peak">Two edges meeting: the A, the simplest graph.</Fact>
             <Fact label="Stem">The I. Upright, unornamented.</Fact>
-            <Fact label="Gold node">The one verified fact. A view gets only one.</Fact>
+            <Fact label="Gold node">The one verified fact.</Fact>
           </FactList>
         </Panel>
-      </DocSection>
-
-      <DocSection title="Lockups" lede="Each shown on the ground it is made for, whatever the page's theme.">
-        <Grid min="300px" gap={16}>
-          {lockups.map((item) => (
-            <div key={item.title} data-theme={item.theme}>
-              <Panel title={item.title} heading={3}>
-                <img
-                  src={item.src}
-                  alt={`datAInsights ${item.title.toLowerCase()}`}
-                  style={{ blockSize: item.isMark ? "var(--di-space-48)" : "var(--di-space-32)", inlineSize: "auto" }}
-                />
-                <PanelNote>{item.use}</PanelNote>
-              </Panel>
-            </div>
-          ))}
-        </Grid>
-      </DocSection>
-
-      <DocSection title="Space and size">
-        <Rules>
-          <li>Clear space: at least the height of the mark's cap (1X) on all four sides.</li>
-          <li>Smallest lockup: 20px high on screen, 10mm in print. Smallest mark: 16px or 6mm.</li>
-          <li>
-            In the product the Sidebar carries the brand on the bar&apos;s row, with the mark at one height,{" "}
-            <code>--di-sb-mark-h</code>, on the rail and in the lockup.
-          </li>
-        </Rules>
-      </DocSection>
-
-      <DocSection title="Beside another mark">
-        <Rules>
-          <li>Match the optical height, not the bounding box.</li>
-          <li>Separate with a vertical rule. Not an ampersand, a slash, a plus or a ×.</li>
-          <li>In a strip of three or more, use the monochrome logo; the other brands keep their colours.</li>
-          <li>Order alphabetically or by the date of the announcement.</li>
-        </Rules>
-      </DocSection>
-
-      <DocSection
-        title="Email signature"
-        lede="The name in Space Grotesk; role and company in IBM Plex Sans; the address, which a machine resolves, in IBM Plex Mono and underlined as a link. No second colour, no slogan, no photograph."
-      >
+        <Panel title="Smallest" heading={2}>
+          <Stack gap={16}>
+            <img
+              src={logo}
+              alt="datAInsights at its smallest"
+              style={{ blockSize: "20px", inlineSize: "auto", alignSelf: "start" }}
+            />
+            <img
+              src={mark}
+              alt="The mark at its smallest"
+              style={{ blockSize: "16px", inlineSize: "auto", alignSelf: "start" }}
+            />
+          </Stack>
+          <PanelNote>Lockup 20px or 10mm, mark 16px or 6mm. Clear space: one cap height.</PanelNote>
+        </Panel>
+      </Grid>
+      <Panel title="Email signature" heading={2}>
         <CodeBlock label="Signature template">{signature}</CodeBlock>
-      </DocSection>
+      </Panel>
     </Doc>
   );
 }

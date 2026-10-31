@@ -10,6 +10,10 @@ import "./ConfirmDialog.css";
  * first — `body`, then each item of `consequences` — and only then asks.
  * Focus opens on Cancel, the safe choice.
  *
+ * Why it asks first: revoking or sealing cannot be quietly undone, so the
+ * system confirms before an action instead of offering Undo afterwards; the
+ * `Toast` that follows is a receipt, not a way back.
+ *
  * An irreversible action (deleting or leaving an organization, deleting a
  * workspace) sets `confirmText`, usually the record's name: the confirm
  * button stays disabled until it is typed, and focus opens on that field.

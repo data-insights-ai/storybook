@@ -1,0 +1,42 @@
+.di-type-face {
+  display: block;
+  font-size: var(--di-font-size-800);
+  line-height: 1.2;
+  color: var(--di-text);
+}
+
+.di-type-ramp {
+  display: flex;
+  flex-direction: column;
+}
+
+.di-type-specimen {
+  min-width: 0;
+  line-height: 1.3;
+  color: var(--di-text);
+  white-space: nowrap;
+}
+
+.di-type-spec {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--di-space-2);
+}
+
+.di-type-size {
+  font-family: var(--di-font-code);
+  font-size: var(--di-font-size-300);
+  color: var(--di-text-subtle);
+  white-space: nowrap;
+}
+
+.di-type-keys {
+  margin: 0;
+}
+
+@media (max-width: 599px) {
+  .di-type-spec {
+    align-items: flex-start;
+  }
+}

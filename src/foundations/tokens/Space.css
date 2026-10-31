@@ -1,0 +1,80 @@
+.di-space-row {
+  grid-template-columns: var(--di-space-48) minmax(0, 1fr);
+}
+
+.di-space-bar {
+  block-size: var(--di-space-12);
+  border-radius: var(--di-radius-micro);
+  background: var(--di-chart-series);
+}
+
+.di-space-spec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--di-space-12);
+  min-width: 0;
+}
+
+.di-space-px {
+  font-family: var(--di-font-code);
+  font-size: var(--di-font-size-300);
+  color: var(--di-text-subtle);
+}
+
+.di-radius-corner {
+  display: block;
+  inline-size: var(--di-space-64);
+  block-size: var(--di-space-48);
+  background: var(--di-bg-subtle);
+}
+
+/* The ground the samples stand on, so a shadow has somewhere to fall. */
+.di-elevation-ground {
+  padding: var(--di-space-24);
+  border-radius: var(--di-radius-inset);
+  background: var(--di-bg-page);
+}
+
+.di-elevation-sample {
+  display: block;
+  inline-size: calc(var(--di-space-96) + var(--di-space-12));
+  block-size: var(--di-space-48);
+  border-radius: var(--di-radius-surface);
+  background: var(--di-bg-surface);
+}
+
+.di-elevation-sample.is-inset {
+  border-radius: var(--di-radius-inset);
+  background: var(--di-bg-subtle);
+}
+
+.di-elevation-sample.is-surface {
+  box-shadow: var(--di-elevation-surface);
+}
+
+.di-elevation-sample.is-plane {
+  border-radius: var(--di-radius-control);
+  background: var(--di-bg-plane);
+  box-shadow: var(--di-shadow-plane);
+}
+
+.di-elevation-sample.is-window {
+  background: var(--di-bg-plane);
+  box-shadow: var(--di-shadow-window);
+}
+
+@media (max-width: 599px) {
+  .di-space-row {
+    grid-template-columns: var(--di-space-48) minmax(0, 1fr);
+    gap: var(--di-space-16);
+  }
+
+  .di-elevation-ground {
+    padding: var(--di-space-16);
+  }
+
+  .di-elevation-sample {
+    inline-size: 100%;
+  }
+}

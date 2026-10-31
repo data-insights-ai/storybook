@@ -1,0 +1,62 @@
+/* A swatch is a sample, not a surface: it stays under the 48px a surface needs. A tint is laid on its theme's surface, as it is used. */
+.di-swatch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  block-size: var(--di-space-32);
+  border-radius: var(--di-radius-inset);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--di-border);
+}
+
+.di-swatch-half {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--di-space-6);
+  min-width: 0;
+  background: var(--di-swatch-ground);
+}
+
+.di-swatch-half.is-fill {
+  background: linear-gradient(var(--di-swatch), var(--di-swatch)), var(--di-swatch-ground);
+}
+
+.di-swatch-half.is-ink {
+  color: var(--di-swatch);
+  font-family: var(--di-font-display);
+  font-weight: 700;
+  font-size: var(--di-font-size-500);
+}
+
+.di-swatch-half.is-line i {
+  inline-size: 60%;
+  block-size: var(--di-space-12);
+  border: 1px solid var(--di-swatch);
+  border-radius: var(--di-radius-micro);
+}
+
+.di-swatch-half.is-edge i {
+  inline-size: 60%;
+  block-size: var(--di-space-12);
+  border-inline-start: 2px solid var(--di-swatch);
+  background: var(--di-bg-selected);
+}
+
+.di-swatch-half.is-status b {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--di-space-4);
+  padding-inline: var(--di-space-6);
+  border-radius: var(--di-radius-pill);
+  background: var(--di-swatch);
+  color: var(--di-swatch-ink);
+  font-size: var(--di-font-size-300);
+  font-weight: 500;
+}
+
+.di-swatch-half.is-status i {
+  inline-size: var(--di-space-6);
+  block-size: var(--di-space-6);
+  border-radius: var(--di-radius-pill);
+  background: var(--di-swatch-dot);
+}
