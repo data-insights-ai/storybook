@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { onPanel } from "../../../../../.storybook/onPanel";
 import { expect, fireEvent, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateRangePicker, defaultDateRangeLabels } from "./DateRangePicker";
 import { type DateRangeValue, parseDateRange, resolveDateRange, serializeDateRange } from "../dateRange";
@@ -23,8 +24,9 @@ const clearYear = async (screen: Screen, label: string) => {
 
 const meta = {
   title: "Forms/Dates/DateRangePicker",
-  tags: ["layer:form"],
+  tags: ["layer:form", "autodocs"],
   component: DateRangePicker,
+  decorators: [onPanel("Entries")],
   // The popover stories assert the anchored panel; the phone sheet has its own story below.
   globals: { viewport: { value: "desk", isRotated: false } },
   args: {

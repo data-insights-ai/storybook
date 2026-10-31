@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { onPanel } from "../../../../../.storybook/onPanel";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { DateField, defaultDateFieldLabels } from "./DateField";
 import { Grid } from "../../../layout/arrange/Grid";
@@ -9,6 +10,7 @@ import { Button } from "../../../actions/Button";
 const meta = {
   title: "Forms/Dates/DateField",
   component: DateField,
+  decorators: [onPanel("Export")],
   tags: ["layer:form", "autodocs"],
   args: {
     id: "first-day",

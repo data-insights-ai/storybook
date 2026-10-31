@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Kbd } from "./Kbd";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const meta = {
   title: "Text/Kbd",
@@ -9,6 +10,7 @@ const meta = {
   tags: ["layer:primitive", "autodocs"],
   args: { children: "⌘K" },
   argTypes: { children: { control: "text" } },
+  decorators: [onPanel("Shortcuts")],
 } satisfies Meta<typeof Kbd>;
 
 export default meta;

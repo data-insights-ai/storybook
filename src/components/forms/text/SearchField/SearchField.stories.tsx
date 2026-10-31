@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { SearchField } from "./SearchField";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Text/SearchField",
@@ -27,6 +28,7 @@ const meta = {
     required: { control: "boolean" },
   },
   decorators: [
+    onPanel("Sources"),
     (Story) => (
       <div style={{ maxWidth: 340 }}>
         <Story />

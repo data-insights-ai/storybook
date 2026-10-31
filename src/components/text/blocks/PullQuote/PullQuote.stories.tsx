@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { PullQuote } from "./PullQuote";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Text/Blocks/PullQuote",
@@ -8,6 +9,7 @@ const meta = {
   tags: ["layer:primitive", "autodocs"],
   args: { children: "If you cannot cite it, we cannot say it." },
   argTypes: { children: { control: "text" } },
+  decorators: [onPanel("Why a register")],
 } satisfies Meta<typeof PullQuote>;
 
 export default meta;

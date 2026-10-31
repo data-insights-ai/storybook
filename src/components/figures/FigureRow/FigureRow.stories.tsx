@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
+import { Page } from "../../layout/page/Page";
+import { Panel, PanelFooter, PanelLead } from "../../layout/page/Panel";
 import { Figure, FigureNote } from "../Figure";
 import { FigureRow } from "./FigureRow";
 
@@ -14,6 +16,21 @@ const meta = {
     size: { control: "radio", options: ["regular", "compact"] },
     children: { control: false },
   },
+  decorators: [
+    (Story, { args }) =>
+      args.variant === "footer" ? (
+        <Panel surface="hero" title="Cases this week" heading={2}>
+          <PanelLead>Three bursts this week, the largest on 9 October.</PanelLead>
+          <PanelFooter>
+            <Story />
+          </PanelFooter>
+        </Panel>
+      ) : (
+        <Page width="full">
+          <Story />
+        </Page>
+      ),
+  ],
   render: (args) => (
     <FigureRow {...args}>
       <Figure label="Signals" value="1,064">

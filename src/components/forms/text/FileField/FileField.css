@@ -1,5 +1,6 @@
 @layer components {
   /* One dashed frame: the place a file goes. Nothing inside it is bordered. */
+  /* The zone is drawn by its dashed edge on whatever surface holds it, never a second plane of the same tone. */
   .di-file-drop {
     display: flex;
     align-items: center;
@@ -9,7 +10,7 @@
     padding: var(--di-inset-group);
     border: 1px dashed var(--di-border-input);
     border-radius: var(--di-radius-control);
-    background: var(--di-bg-surface);
+    background: transparent;
     color: var(--di-text-muted);
     text-align: center;
     transition:

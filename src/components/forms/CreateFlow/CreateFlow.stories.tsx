@@ -6,6 +6,7 @@ import { CreateFlow } from "./CreateFlow";
 import { Fact, FactList } from "../../records/FactList";
 import { TextField } from "../text/TextField";
 import { Page } from "../../layout/page/Page";
+import { Panel, PanelActions } from "../../layout/page/Panel";
 import { Button } from "../../actions/Button";
 import { Dialog } from "../../overlays/Dialog";
 
@@ -80,12 +81,15 @@ function Flow(args: Parameters<typeof CreateFlow>[0]) {
 function InADialog(args: Parameters<typeof CreateFlow>[0]) {
   const [open, setOpen] = useState(false);
   return (
-    <>
-      <Button onClick={() => setOpen(true)}>New connection</Button>
+    <Panel title="Sign-in connections" heading={2}>
+      <PanelActions>
+        <Button onClick={() => setOpen(true)}>New connection</Button>
+      </PanelActions>
+      <p>Members sign in through the connections listed here. None is set up yet.</p>
       <Dialog open={open} onClose={() => setOpen(false)} title="New connection" closeLabel="Close">
         <Flow {...args} />
       </Dialog>
-    </>
+    </Panel>
   );
 }
 

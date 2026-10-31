@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
+import { Toolbar, ToolbarEnd } from "../../actions/Toolbar";
+import { Page } from "../../layout/page/Page";
+import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
+import { Panel } from "../../layout/page/Panel";
 import { SearchField } from "../../forms/text/SearchField";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 import { TextLink } from "../../text/TextLink";
@@ -8,7 +12,7 @@ import { ShortcutHelp } from "./ShortcutHelp";
 
 const meta = {
   title: "Overlays/ShortcutHelp",
-  tags: ["layer:pattern"],
+  tags: ["layer:pattern", "autodocs"],
   component: ShortcutHelp,
   args: {
     title: "Keyboard shortcuts",
@@ -35,23 +39,32 @@ type Story = StoryObj<typeof meta>;
 /** `/` focuses the search, `n` presses the marked button, `?` lists both. */
 export const OnAPage: Story = {
   render: (args) => (
-    <div style={{ display: "grid", gap: 12, maxWidth: 480 }}>
-      <SearchField id="sc-search" label="Search sources" placeholder="Search sources" />
-      <Button shortcut="n">New source</Button>
-      <DataTable caption="Sources">
-        <TableHead>
-          <TableColumn>Source</TableColumn>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>
-              <TextLink href="#nvd">NVD</TextLink>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </DataTable>
+    <Page width="full">
+      <PageHeader>
+        <PageHeaderTitle>Sources</PageHeaderTitle>
+      </PageHeader>
+      <Toolbar role="search">
+        <SearchField id="sc-search" label="Search sources" placeholder="Search sources" />
+        <ToolbarEnd>
+          <Button shortcut="n">New source</Button>
+        </ToolbarEnd>
+      </Toolbar>
+      <Panel padded={false}>
+        <DataTable caption="Sources">
+          <TableHead>
+            <TableColumn>Source</TableColumn>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <TextLink href="#nvd">NVD</TextLink>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </DataTable>
+      </Panel>
       <ShortcutHelp {...args} />
-    </div>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

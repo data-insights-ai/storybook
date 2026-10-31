@@ -4,6 +4,7 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../../actions/Button";
 import { FileField } from "./FileField";
 import { Toolbar } from "../../../actions/Toolbar";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Text/FileField",
@@ -34,6 +35,7 @@ const meta = {
     onFileChange: { control: false },
   },
   decorators: [
+    onPanel("Collector certificate"),
     (Story, { parameters }) =>
       parameters.measure === false ? (
         <Story />

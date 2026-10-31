@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { TextArea } from "./TextArea";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Text/TextArea",
@@ -15,6 +16,7 @@ const meta = {
     required: true,
   },
   decorators: [
+    onPanel("Collector"),
     (Story) => (
       <div style={{ maxWidth: 560 }}>
         <Story />

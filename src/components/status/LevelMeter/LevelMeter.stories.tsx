@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
-import { Panel, PanelFooter } from "../../layout/page/Panel";
+import { Panel, PanelActions, PanelFooter } from "../../layout/page/Panel";
 import { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./LevelMeter";
 
 const stack = { display: "flex", flexDirection: "column", gap: "var(--di-gap-12)" } as const;
@@ -55,15 +55,17 @@ const meta = {
     bands: { control: "object" },
   },
   render: (args) => (
-    <div style={{ ...stack, gap: "var(--di-gap-6)" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", gap: "var(--di-gap-12)" }}>
-        <span>Load on R-0412</span>
-        <span style={num}>
-          {args.value} now{typeof args.compare === "number" ? ` · ${args.compare} seven days ago` : ""}
-        </span>
+    <Panel title="R-0412" heading={2}>
+      <div style={{ ...stack, gap: "var(--di-gap-6)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: "var(--di-gap-12)" }}>
+          <span>Load</span>
+          <span style={num}>
+            {args.value} now{typeof args.compare === "number" ? ` · ${args.compare} seven days ago` : ""}
+          </span>
+        </div>
+        <LevelMeter {...args} />
       </div>
-      <LevelMeter {...args} />
-    </div>
+    </Panel>
   ),
   decorators: [
     (Story) => (
@@ -147,17 +149,19 @@ export const NothingThen: Story = {
 export const Continuous: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={stack}>
-      {[
-        { label: "Matched on 3 of 4 inputs", value: 94, tone: "neutral" as const },
-        { label: "Matched on 1 of 4 inputs, to review", value: 41, tone: "warn" as const },
-      ].map((row) => (
-        <div key={row.label} style={{ ...stack, gap: "var(--di-gap-4)" }}>
-          <span>{row.label}</span>
-          <LevelMeter label={row.label} value={row.value} segments="continuous" tone={row.tone} />
-        </div>
-      ))}
-    </div>
+    <Panel title="Entity matches" heading={2}>
+      <div style={stack}>
+        {[
+          { label: "Matched on 3 of 4 inputs", value: 94, tone: "neutral" as const },
+          { label: "Matched on 1 of 4 inputs, to review", value: 41, tone: "warn" as const },
+        ].map((row) => (
+          <div key={row.label} style={{ ...stack, gap: "var(--di-gap-4)" }}>
+            <span>{row.label}</span>
+            <LevelMeter label={row.label} value={row.value} segments="continuous" tone={row.tone} />
+          </div>
+        ))}
+      </div>
+    </Panel>
   ),
   play: async ({ canvasElement }) => {
     const fills = canvasElement.querySelectorAll(".di-level-fill");
@@ -180,14 +184,14 @@ export const Moving: Story = {
     const [at, setAt] = useState(0);
     const point = points[at]!;
     return (
-      <div style={stack}>
-        <LevelMeter label="Load now" value={72} compare={point.value} compareLabel={point.label} />
-        <div>
+      <Panel title="R-0412" heading={2}>
+        <PanelActions>
           <Button variant="secondary" size="sm" onClick={() => setAt((at + 1) % points.length)}>
             Compare with an earlier point
           </Button>
-        </div>
-      </div>
+        </PanelActions>
+        <LevelMeter label="Load now" value={72} compare={point.value} compareLabel={point.label} />
+      </Panel>
     );
   },
   play: async ({ canvasElement }) => {

@@ -31,14 +31,35 @@ const meta = {
   render: function Render(args) {
     const [page, setPage] = useState(args.page);
     return (
-      <Pagination
-        {...args}
-        page={page}
-        onPageChange={(next) => {
-          setPage(next);
-          args.onPageChange(next);
-        }}
-      />
+      <DataTable caption="Sources" indexed={false}>
+        <TableHead>
+          <TableColumn>Host</TableColumn>
+          <TableColumn align="end">Entries</TableColumn>
+        </TableHead>
+        <TableBody>
+          {["feed.example.io", "beta.example.dev"].map((host, i) => (
+            <TableRow key={host}>
+              <TableCell>{host}</TableCell>
+              <TableCell align="end" mono>
+                {(i + 1) * 1284}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <span>
+            Page {page} of {args.pages}
+          </span>
+          <Pagination
+            {...args}
+            page={page}
+            onPageChange={(next) => {
+              setPage(next);
+              args.onPageChange(next);
+            }}
+          />
+        </TableFooter>
+      </DataTable>
     );
   },
 } satisfies Meta<typeof Pagination>;

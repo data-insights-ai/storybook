@@ -4,6 +4,7 @@ import { Panel, PanelMeta } from "../../layout/page/Panel";
 import { TextField } from "../../forms/text/TextField";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 import { TextLink } from "./TextLink";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const meta = {
   title: "Text/TextLink",
@@ -34,6 +35,7 @@ type Story = StoryObj<typeof meta>;
 
 /** In a sentence, which is where it has to hold its own: ink, underlined in cornflower, at the size of the line. */
 export const InProse: Story = {
+  decorators: [onPanel("Entry REG-0148")],
   parameters: { controls: { disable: true } },
   render: () => (
     <p style={{ maxWidth: 420 }}>
@@ -72,6 +74,7 @@ export const AtABlocksEdge: Story = {
 
 /** A button that acts, drawn as a link. */
 export const Default: Story = {
+  decorators: [onPanel("Entry REG-0148")],
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: "Open the record" }));
@@ -81,6 +84,7 @@ export const Default: Story = {
 
 /** Quiet, a secondary link under a field: muted, in the reading face, and still underlined. */
 export const Quiet: Story = {
+  decorators: [onPanel("Sign in")],
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--di-space-8)", maxWidth: 360 }}>
@@ -146,6 +150,7 @@ export const InATable: Story = {
 };
 
 export const Disabled: Story = {
+  decorators: [onPanel("Entry REG-0148")],
   args: { disabled: true, children: "Not available" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -158,6 +163,7 @@ export const Disabled: Story = {
  * opens in a new tab and copies like any other link.
  */
 export const Link: Story = {
+  decorators: [onPanel("Entry REG-0148")],
   args: { children: "Open the record" },
   parameters: { controls: { disable: true } },
   render: ({ children }) => <TextLink href="#/register/0148">{children}</TextLink>,
@@ -170,6 +176,7 @@ export const Link: Story = {
 
 /** A record id that opens its record: in the code face, because a machine wrote it. */
 export const MonoLink: Story = {
+  decorators: [onPanel("Recent entries")],
   args: { children: "REG-0148" },
   parameters: { controls: { disable: true } },
   render: ({ children }) => (
@@ -185,6 +192,7 @@ export const MonoLink: Story = {
 
 /** A router's link component renders the anchor; the text link supplies only its look. */
 export const WithRouterLink: Story = {
+  decorators: [onPanel("Recent entries")],
   parameters: { controls: { disable: true } },
   render: () => (
     // eslint-disable-next-line jsx-a11y/anchor-has-content -- TextLink renders its text into the router's anchor

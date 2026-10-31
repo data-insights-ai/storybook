@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState, type AnchorHTMLAttributes, type MouseEvent } from "react";
 import { expect, userEvent, within } from "storybook/test";
+import { Page } from "../../layout/page/Page";
+import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { TabNav, TabNavLink } from "./TabNav";
 
 const meta = {
@@ -8,6 +10,16 @@ const meta = {
   component: TabNav,
   tags: ["layer:block", "autodocs"],
   args: { label: "Access", children: null },
+  decorators: [
+    (Story, { args }) => (
+      <Page width="full">
+        <PageHeader>
+          <PageHeaderTitle>{args.label}</PageHeaderTitle>
+        </PageHeader>
+        <Story />
+      </Page>
+    ),
+  ],
 } satisfies Meta<typeof TabNav>;
 
 export default meta;

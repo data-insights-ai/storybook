@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { separatorsAtLineStart } from "../../../../.storybook/tests/lineStart";
 import { MetaLine } from "./MetaLine";
+import { onPanel } from "../../../../.storybook/onPanel";
 
 const meta = {
   title: "Text/MetaLine",
@@ -13,6 +14,7 @@ const meta = {
     align: { control: "radio", options: ["start", "end"] },
     separator: { control: "radio", options: ["dot", "arrow"] },
   },
+  decorators: [onPanel("Case 4 · leaked VPN credentials")],
 } satisfies Meta<typeof MetaLine>;
 
 export default meta;

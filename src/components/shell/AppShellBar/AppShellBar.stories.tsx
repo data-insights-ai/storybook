@@ -130,9 +130,13 @@ function Frame({ words = english, keepOnly = false }: { words?: Words; keepOnly?
 
 const meta = {
   title: "Shell/AppShellBar",
-  tags: ["layer:block"],
+  tags: ["layer:block", "autodocs"],
   component: AppShellBar,
-  parameters: { layout: "fullscreen", controls: { disable: true } },
+  parameters: {
+    layout: "fullscreen",
+    controls: { disable: true },
+    docs: { story: { inline: false, height: "560px" } },
+  },
   args: { children: null },
 } satisfies Meta<typeof AppShellBar>;
 

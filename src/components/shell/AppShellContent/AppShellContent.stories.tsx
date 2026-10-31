@@ -7,9 +7,9 @@ import { AppShellContent } from "./AppShellContent";
 
 const meta = {
   title: "Shell/AppShellContent",
-  tags: ["layer:block"],
+  tags: ["layer:block", "autodocs"],
   component: AppShellContent,
-  parameters: { layout: "fullscreen" },
+  parameters: { layout: "fullscreen", docs: { story: { inline: false, height: "560px" } } },
   args: { width: "full", children: null },
   argTypes: {
     width: { control: "inline-radio", options: ["full", "contained"] },

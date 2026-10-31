@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { TextLink } from "../../text/TextLink";
+import { AppShellBar } from "../AppShellBar";
 import { AppShellContent } from "../AppShellContent";
 import { SkipLink } from "./SkipLink";
 
@@ -33,13 +34,15 @@ function Frame({ words, ...args }: { label: string; target?: string; words: type
   return (
     <>
       <SkipLink {...args} />
-      <nav aria-label={words.nav} style={{ display: "flex", gap: "var(--di-space-16)", padding: "var(--di-space-16)" }}>
-        {words.links.map((link, i) => (
-          <TextLink key={link} href={`#/${english.links[i].toLowerCase()}`}>
-            {link}
-          </TextLink>
-        ))}
-      </nav>
+      <AppShellBar>
+        <nav aria-label={words.nav} style={{ display: "flex", gap: "var(--di-space-16)" }}>
+          {words.links.map((link, i) => (
+            <TextLink key={link} href={`#/${english.links[i].toLowerCase()}`}>
+              {link}
+            </TextLink>
+          ))}
+        </nav>
+      </AppShellBar>
       <AppShellContent>
         <PageHeader lede={words.lede}>
           <PageHeaderTitle>{words.title}</PageHeaderTitle>

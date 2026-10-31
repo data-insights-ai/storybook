@@ -96,11 +96,13 @@ export const WithSparkline: Story = {
 export const Hero: Story = {
   args: { size: "hero", label: "Open cases", value: "3" },
   render: (args) => (
-    <Figure {...args}>
-      <SeverityMark level="critical" label="1 critical" />
-      <SeverityMark level="high" label="1 high" />
-      <SeverityMark level="medium" label="1 medium" />
-    </Figure>
+    <Panel>
+      <Figure {...args}>
+        <SeverityMark level="critical" label="1 critical" />
+        <SeverityMark level="high" label="1 high" />
+        <SeverityMark level="medium" label="1 medium" />
+      </Figure>
+    </Panel>
   ),
   play: async ({ canvasElement }) => {
     const value = within(canvasElement).getByText("3");
@@ -112,6 +114,11 @@ export const Hero: Story = {
 export const WithUnit: Story = {
   name: "With unit",
   args: { size: "hero", label: "Seats in use", value: "4", unit: "of 5" },
+  render: (args) => (
+    <Panel title="Licence" heading={2}>
+      <Figure {...args}>1 seat free</Figure>
+    </Panel>
+  ),
   play: async ({ canvasElement }) => {
     const unit = canvasElement.querySelector(".di-figure-unit") as HTMLElement;
     await expect(getComputedStyle(unit).fontWeight).toBe("400");
@@ -122,11 +129,19 @@ export const WithUnit: Story = {
 export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: 32 }}>
-      <Figure size="compact" label="Ingest rate" value="412" unit="per second" />
-      <Figure size="regular" label="Ingest rate" value="412" unit="per second" />
-      <Figure size="hero" label="Ingest rate" value="412" unit="per second" />
-    </div>
+    <Panel>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: 32 }}>
+        <Figure size="compact" label="Ingest rate" value="412" unit="per second">
+          last 5 minutes
+        </Figure>
+        <Figure size="regular" label="Ingest rate" value="412" unit="per second">
+          last 5 minutes
+        </Figure>
+        <Figure size="hero" label="Ingest rate" value="412" unit="per second">
+          last 5 minutes
+        </Figure>
+      </div>
+    </Panel>
   ),
 };
 
@@ -136,8 +151,10 @@ export const LongLabel: Story = {
   args: { label: "Nicht versiegelte Einträge seit Mitternacht", value: "1.284", tone: "warn" },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 200 }}>
-        <Story />
+      <div style={{ maxWidth: 248 }}>
+        <Panel>
+          <Story />
+        </Panel>
       </div>
     ),
   ],

@@ -61,24 +61,41 @@ export const Rising: Story = {
 /** A week across the column, today marked in the series ink, the period named under the bars. */
 export const Week: Story = {
   args: {
-    values: [34, 41, 38, 52, 47, 63, 58],
+    values: [54, 65, 60, 83, 75, 92, 100],
     highlight: 6,
     tone: "series",
     width: "fill",
     height: "md",
     captions: ["09-17", "09-20", "09-23"],
-    label: "Sign-ins per day, 17 to 23 September, highest on the 22nd.",
+    label: "Sign-ins per day, 17 to 23 September, highest today.",
   },
+  render: (args) => (
+    <Panel title="Sign-ins this week" heading={2}>
+      <Sparkline {...args} />
+    </Panel>
+  ),
   play: async ({ canvasElement }) => {
     await expect(within(canvasElement).getByText("09-23")).toBeVisible();
   },
 };
 
-/** Nothing happening, which the words have to say as plainly as the bars. Nothing is marked. */
+/**
+ * Nothing happening, which the words have to say as plainly as the bars. The
+ * latest reading is marked in the series ink, never in danger.
+ */
 export const Flat: Story = {
   args: {
-    values: [48, 47, 49, 48, 50, 48, 49, 48],
-    highlight: undefined,
+    values: [96, 94, 98, 96, 98, 96, 98, 100],
+    highlight: 7,
+    tone: "series",
     label: "Unsealed entries, flat over the last eight hours.",
   },
+  render: (args) => (
+    <Panel>
+      <Figure label="Unsealed" value="48" size="compact">
+        <Sparkline {...args} />
+        <FigureNote>no change since 08:00Z</FigureNote>
+      </Figure>
+    </Panel>
+  ),
 };

@@ -6,12 +6,14 @@ import { Button } from "../../../actions/Button";
 import { Notice, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "../../../feedback/Notice";
 import { Stack } from "../../../layout/arrange/Stack";
 import { Toolbar, ToolbarEnd } from "../../../actions/Toolbar";
+import { Page } from "../../../layout/page/Page";
 import { PageHeader, PageHeaderTitle } from "../../../layout/page/PageHeader";
 import { Panel } from "../../../layout/page/Panel";
 import { TimeField } from "../../dates/TimeField";
 import { TextField } from "../../text/TextField";
 import { SearchField } from "../../text/SearchField";
 import { ChoiceGroup, type ChoiceOption } from "./ChoiceGroup";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Forms/Choice/ChoiceGroup",
@@ -219,6 +221,7 @@ export const Several: Story = {
  * The row is a field high, so it lines up with the search and the button.
  */
 export const InAToolbar: Story = {
+  decorators: [onPanel("Events")],
   name: "Segments in a toolbar",
   render: function Render() {
     const [value, setValue] = useState("24h");
@@ -467,6 +470,7 @@ const guides: Record<string, string> = {
  * radios, so Tab and the arrow keys pass them by.
  */
 export const Cards: Story = {
+  decorators: [onPanel("New source")],
   name: "Cards in a create flow",
   render: function Render() {
     const [value, setValue] = useState("hub");
@@ -533,47 +537,49 @@ export const GroupedCards: Story = {
   render: function Render() {
     const [value, setValue] = useState("defender");
     return (
-      <Stack gap={16}>
-        <PageHeader level={2} lede="Where this workspace reads its events from.">
-          <PageHeaderTitle>Choose a source</PageHeaderTitle>
-        </PageHeader>
-        <ChoiceGroup
-          appearance="cards"
-          legend="Source type"
-          hideLegend
-          name="source-grouped"
-          options={[
-            {
-              value: "defender",
-              label: "Microsoft Defender XDR",
-              description: "Incidents and alerts as they happen.",
-              more: "Every Defender product and Sentinel, with each update.",
-              group: "Recommended for Microsoft",
-            },
-            {
-              value: "entra",
-              label: "Microsoft Entra ID",
-              description: "Sign-in and audit logs.",
-              group: "Recommended for Microsoft",
-            },
-            {
-              value: "hub",
-              label: "Azure Event Hub",
-              description: "Streaming API and diagnostic settings.",
-              group: "Azure",
-            },
-            {
-              value: "activity",
-              label: "Azure activity log",
-              description: "Control-plane operations of one subscription.",
-              group: "Azure",
-            },
-            { value: "file", label: "File drop", description: "Exports uploaded by hand.", group: "Other" },
-          ]}
-          value={value}
-          onChange={setValue}
-        />
-      </Stack>
+      <Page width="full">
+        <Stack gap={16}>
+          <PageHeader level={2} lede="Where this workspace reads its events from.">
+            <PageHeaderTitle>Choose a source</PageHeaderTitle>
+          </PageHeader>
+          <ChoiceGroup
+            appearance="cards"
+            legend="Source type"
+            hideLegend
+            name="source-grouped"
+            options={[
+              {
+                value: "defender",
+                label: "Microsoft Defender XDR",
+                description: "Incidents and alerts as they happen.",
+                more: "Every Defender product and Sentinel, with each update.",
+                group: "Recommended for Microsoft",
+              },
+              {
+                value: "entra",
+                label: "Microsoft Entra ID",
+                description: "Sign-in and audit logs.",
+                group: "Recommended for Microsoft",
+              },
+              {
+                value: "hub",
+                label: "Azure Event Hub",
+                description: "Streaming API and diagnostic settings.",
+                group: "Azure",
+              },
+              {
+                value: "activity",
+                label: "Azure activity log",
+                description: "Control-plane operations of one subscription.",
+                group: "Azure",
+              },
+              { value: "file", label: "File drop", description: "Exports uploaded by hand.", group: "Other" },
+            ]}
+            value={value}
+            onChange={setValue}
+          />
+        </Stack>
+      </Page>
     );
   },
   play: async ({ canvasElement }) => {
@@ -588,6 +594,7 @@ export const GroupedCards: Story = {
  * option. The chosen one keeps its edge, so what is set still reads.
  */
 export const Disabled: Story = {
+  decorators: [onPanel("Workspace settings")],
   render: () => (
     <Stack gap={24}>
       <ChoiceGroup
@@ -642,6 +649,7 @@ export const Disabled: Story = {
 
 /** German labels run long: segments wrap inside their container, card labels wrap, nothing runs off a phone. */
 export const German: Story = {
+  decorators: [onPanel("Arbeitsbereich")],
   render: function Render() {
     const [view, setView] = useState("offen");
     const [kind, setKind] = useState("ereignis");

@@ -8,6 +8,7 @@ import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
 import { Radio } from "../../forms/choice/Radio";
 import { TextField } from "../../forms/text/TextField";
 import { Page } from "../../layout/page/Page";
+import { Panel } from "../../layout/page/Panel";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { TextLink } from "../../text/TextLink";
 import { Dialog, DialogFooter } from "./Dialog";
@@ -47,7 +48,7 @@ type Args = Parameters<typeof Dialog>[0];
 function Member(args: Args) {
   const [open, setOpen] = useState(false);
   return (
-    <>
+    <Panel title="Members" heading={2}>
       <Button variant="secondary" onClick={() => setOpen(true)}>
         Open member
       </Button>
@@ -64,7 +65,7 @@ function Member(args: Args) {
           </Button>
         </DialogFooter>
       </Dialog>
-    </>
+    </Panel>
   );
 }
 
@@ -100,7 +101,7 @@ export const FromARow: Story = {
 function EditForm(args: Args) {
   const [open, setOpen] = useState(false);
   return (
-    <>
+    <Panel title="feed.example.io" heading={2}>
       <Button onClick={() => setOpen(true)}>Edit source</Button>
       <Dialog
         {...args}
@@ -126,7 +127,7 @@ function EditForm(args: Args) {
           <Button type="submit">Save</Button>
         </DialogFooter>
       </Dialog>
-    </>
+    </Panel>
   );
 }
 
@@ -144,7 +145,7 @@ export const EditAForm: Story = {
 function Decision(args: Args) {
   const [open, setOpen] = useState(false);
   return (
-    <>
+    <Panel title="Register" heading={2}>
       <Button onClick={() => setOpen(true)}>Export register</Button>
       <Dialog {...args} open={open} onClose={() => setOpen(false)}>
         <p>The export carries every seal, so a recipient can verify it offline.</p>
@@ -160,7 +161,7 @@ function Decision(args: Args) {
           <Button onClick={() => setOpen(false)}>Export</Button>
         </DialogFooter>
       </Dialog>
-    </>
+    </Panel>
   );
 }
 
@@ -211,7 +212,7 @@ function Picker(args: Args) {
   const [open, setOpen] = useState(false);
   const [period, setPeriod] = useState("p-7d");
   return (
-    <>
+    <Panel title="Activity" heading={2}>
       <Button variant="secondary" onClick={() => setOpen(true)}>
         {periods.find((p) => p.id === period)?.label}
       </Button>
@@ -232,7 +233,7 @@ function Picker(args: Args) {
           <Button onClick={() => setOpen(false)}>Apply</Button>
         </DialogFooter>
       </Dialog>
-    </>
+    </Panel>
   );
 }
 
@@ -354,7 +355,7 @@ function MountedWhileOpen(args: Args & { shortcut?: string }) {
   const { shortcut, ...dialog } = args;
   const [open, setOpen] = useState(false);
   return (
-    <>
+    <Panel title="Finance laptops" heading={2}>
       <Button variant="secondary" shortcut={shortcut} onClick={() => setOpen(true)}>
         Edit watchlist
       </Button>
@@ -369,7 +370,7 @@ function MountedWhileOpen(args: Args & { shortcut?: string }) {
           </DialogFooter>
         </Dialog>
       ) : null}
-    </>
+    </Panel>
   );
 }
 

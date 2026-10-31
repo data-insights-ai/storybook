@@ -8,6 +8,7 @@ import { Button } from "../../../actions/Button";
 import { Fact, FactList } from "../../../records/FactList";
 import { Toolbar } from "../../../actions/Toolbar";
 import { Stack } from "../Stack";
+import { Page } from "../../page/Page";
 import { Panel } from "../../page/Panel";
 import { Select } from "../../../forms/select/Select";
 import { Split, SplitAside, SplitMain } from "./Split";
@@ -159,48 +160,50 @@ function Cases({ initial = "list" }: { initial?: "list" | "detail" }) {
   const [showing, setShowing] = useState<"list" | "detail">(initial);
   const record = records.find((r) => r.n === open) ?? records[0];
   return (
-    <Split variant="list" showing={showing}>
-      <SplitList label="Cases">
-        <SplitListHead>
-          <span>3 open cases</span>
-        </SplitListHead>
-        <SplitListItems>
-          {records.map((r) => (
-            <SplitListItem
-              key={r.n}
-              title={r.title}
-              meta={`Case ${r.n} · ${r.owner}`}
-              selected={r.n === open}
-              onSelect={() => {
-                setOpen(r.n);
-                setShowing("detail");
-              }}
-            >
-              <SeverityMark level={r.severity} label={r.word} />
-              {r.status === "Open" ? null : <StatusPill tone="neutral">{r.status}</StatusPill>}
-            </SplitListItem>
-          ))}
-        </SplitListItems>
-      </SplitList>
-      <SplitMain label={`Case ${record.n}`}>
-        <SplitBack label="All cases" onBack={() => setShowing("list")} />
-        <PageHeader
-          level={2}
-          eyebrow={`Case ${record.n}`}
-          lede={record.owner === "unassigned" ? "Not assigned yet" : `Assigned to ${record.owner}`}
-        >
-          <PageHeaderTitle>{record.title}</PageHeaderTitle>
-        </PageHeader>
-        <Panel title="What happened">
-          <FactList layout="columns">
-            <Fact label="Severity">
-              <SeverityMark level={record.severity} label={record.word} />
-            </Fact>
-            <Fact label="Status">{record.status}</Fact>
-          </FactList>
-        </Panel>
-      </SplitMain>
-    </Split>
+    <Page width="full">
+      <Split variant="list" showing={showing}>
+        <SplitList label="Cases">
+          <SplitListHead>
+            <span>3 open cases</span>
+          </SplitListHead>
+          <SplitListItems>
+            {records.map((r) => (
+              <SplitListItem
+                key={r.n}
+                title={r.title}
+                meta={`Case ${r.n} · ${r.owner}`}
+                selected={r.n === open}
+                onSelect={() => {
+                  setOpen(r.n);
+                  setShowing("detail");
+                }}
+              >
+                <SeverityMark level={r.severity} label={r.word} />
+                {r.status === "Open" ? null : <StatusPill tone="neutral">{r.status}</StatusPill>}
+              </SplitListItem>
+            ))}
+          </SplitListItems>
+        </SplitList>
+        <SplitMain label={`Case ${record.n}`}>
+          <SplitBack label="All cases" onBack={() => setShowing("list")} />
+          <PageHeader
+            level={2}
+            eyebrow={`Case ${record.n}`}
+            lede={record.owner === "unassigned" ? "Not assigned yet" : `Assigned to ${record.owner}`}
+          >
+            <PageHeaderTitle>{record.title}</PageHeaderTitle>
+          </PageHeader>
+          <Panel title="What happened">
+            <FactList layout="columns">
+              <Fact label="Severity">
+                <SeverityMark level={record.severity} label={record.word} />
+              </Fact>
+              <Fact label="Status">{record.status}</Fact>
+            </FactList>
+          </Panel>
+        </SplitMain>
+      </Split>
+    </Page>
   );
 }
 
@@ -264,21 +267,23 @@ export const ListPhoneFocus: Story = {
 export const ListHeadWrittenLast: Story = {
   globals: { viewport: { value: "wide" } },
   render: () => (
-    <Split variant="list">
-      <SplitList label="Cases">
-        <SplitListItems>
-          <SplitListItem title="Port scan from a workstation" meta="Case 3" selected onSelect={() => {}} />
-        </SplitListItems>
-        <SplitListHead>
-          <span>1 open case</span>
-        </SplitListHead>
-      </SplitList>
-      <SplitMain label="Case 3">
-        <Panel title="Port scan from a workstation">
-          <p>A workstation probed 1,024 ports on two servers within a minute.</p>
-        </Panel>
-      </SplitMain>
-    </Split>
+    <Page width="full">
+      <Split variant="list">
+        <SplitList label="Cases">
+          <SplitListItems>
+            <SplitListItem title="Port scan from a workstation" meta="Case 3" selected onSelect={() => {}} />
+          </SplitListItems>
+          <SplitListHead>
+            <span>1 open case</span>
+          </SplitListHead>
+        </SplitList>
+        <SplitMain label="Case 3">
+          <Panel title="Port scan from a workstation">
+            <p>A workstation probed 1,024 ports on two servers within a minute.</p>
+          </Panel>
+        </SplitMain>
+      </Split>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
     const head = canvasElement.querySelector(".di-split-list-head")!.getBoundingClientRect();

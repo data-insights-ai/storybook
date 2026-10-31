@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { onPanel } from "../../../../../.storybook/onPanel";
 import { expect, userEvent, within } from "storybook/test";
 import { Select } from "./Select";
 
@@ -35,6 +36,7 @@ const meta = {
         <Story />
       </div>
     ),
+    onPanel("Activity"),
   ],
   render: (args) => (
     <Select {...args}>

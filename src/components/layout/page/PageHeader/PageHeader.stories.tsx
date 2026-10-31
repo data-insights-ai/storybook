@@ -13,12 +13,20 @@ import {
   PageHeaderTitle,
 } from "./PageHeader";
 import { Highlight } from "../../../text/Highlight";
+import { Page } from "../Page";
 import { StatusPill } from "../../../status/StatusPill";
 
 const meta = {
   title: "Layout/Page/PageHeader",
   component: PageHeader,
   tags: ["layer:block", "autodocs"],
+  decorators: [
+    (Story) => (
+      <Page width="full">
+        <Story />
+      </Page>
+    ),
+  ],
   args: {
     eyebrow: "Watchlist",
     lede: "Manage the people, companies, domains, and email addresses under automatic watch.",

@@ -2,11 +2,13 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
 import { Figure } from "../../../figures/Figure";
 import { TickRule } from "./TickRule";
+import { onPanel } from "../../../../../.storybook/onPanel";
 
 const meta = {
   title: "Text/Blocks/TickRule",
   component: TickRule,
   tags: ["layer:primitive", "autodocs"],
+  decorators: [onPanel("Register report, October")],
 } satisfies Meta<typeof TickRule>;
 
 export default meta;

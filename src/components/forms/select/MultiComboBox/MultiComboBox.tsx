@@ -162,6 +162,7 @@ export function MultiComboBox({
       ref={control}
       className={cx(
         "di-token-field",
+        "di-field-control",
         "di-multicombo-control",
         listed && "has-toggle",
         invalid && "is-invalid",

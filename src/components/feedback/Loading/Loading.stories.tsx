@@ -4,7 +4,7 @@ import { expect, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 import { Stack } from "../../layout/arrange/Stack";
-import { Panel } from "../../layout/page/Panel";
+import { Panel, PanelActions } from "../../layout/page/Panel";
 import { AppShellBar, AppShellBarEnd } from "../../shell/AppShellBar";
 import { StatusPill } from "../../status/StatusPill";
 import { RouteProgress } from "../RouteProgress";
@@ -71,12 +71,12 @@ export const Table: Story = {
       return () => clearTimeout(timer.current);
     }, [load]);
     return (
-      <Stack gap={12}>
-        <div>
+      <Panel title="Connected sources" heading={2}>
+        <PanelActions>
           <Button variant="secondary" size="sm" onClick={load}>
             Reload
           </Button>
-        </div>
+        </PanelActions>
         {loading ? (
           <Loading shape="table" label="Loading sources" rows={sources.length} />
         ) : (
@@ -97,7 +97,7 @@ export const Table: Story = {
             </TableBody>
           </DataTable>
         )}
-      </Stack>
+      </Panel>
     );
   },
   play: async ({ canvasElement }) => {

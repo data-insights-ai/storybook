@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, waitFor, within } from "storybook/test";
-import { Stack } from "../../../layout/arrange/Stack";
-import { PageHeader, PageHeaderTitle } from "../../../layout/page/PageHeader";
 import { Panel } from "../../../layout/page/Panel";
 import { CodeBlock } from "./CodeBlock";
 
@@ -70,7 +68,7 @@ export const Raw: Story = {
 
 /**
  * A long log scrolls inside its frame, so the page around it keeps its
- * length; here on a record page, under its section title. A log is read down
+ * length; here in its panel on a record page. A log is read down
  * its line starts, so its lines never wrap: on a phone the block scrolls
  * sideways and its hiding edge fades.
  */
@@ -85,12 +83,9 @@ export const Long: Story = {
     ).join("\n"),
   },
   render: (args) => (
-    <Stack gap={12}>
-      <PageHeader level={2}>
-        <PageHeaderTitle>Collector vie-01</PageHeaderTitle>
-      </PageHeader>
+    <Panel title="Collector vie-01" heading={2}>
       <CodeBlock {...args} />
-    </Stack>
+    </Panel>
   ),
   play: async ({ canvasElement }) => {
     const region = within(canvasElement).getByRole("region", { name: "Collector log" });

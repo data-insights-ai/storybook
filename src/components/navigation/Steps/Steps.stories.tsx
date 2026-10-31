@@ -1,8 +1,9 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import { FileCheck2, Link2, Radio, Stamp } from "lucide-react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { Loading } from "../../feedback/Loading";
 import { TextField } from "../../forms/text/TextField";
+import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
 import { Stack } from "../../layout/arrange/Stack";
 import { SealValue } from "../../status/SealValue";
@@ -38,6 +39,13 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+/** A registration's progress stands on the page, over the step it heads. */
+const onAPage: Decorator = (Story) => (
+  <Page width="full">
+    <Story />
+  </Page>
+);
 
 const registration = ["Connect", "Verify", "Seal", "Publish"];
 
@@ -91,6 +99,7 @@ async function statesWithoutColour(canvasElement: HTMLElement) {
 
 /** Over the step it heads: where the reader is in a registration, with the current step's form under it. */
 export const InAFlow: Story = {
+  decorators: [onAPage],
   render: (args) => (
     <Stack gap={24}>
       <Steps {...args}>{progress(1)}</Steps>
@@ -116,18 +125,20 @@ export const InAFlow: Story = {
 export const SetUpGuide: Story = {
   args: { variant: "list", tone: "tonal", label: "Connect the event hub" },
   render: (args) => (
-    <Steps {...args}>
-      <Step title="Create an app registration in the tenant that holds the logs." />
-      <Step title="Grant it read access to the event hub namespace.">
-        <TextField
-          id="steps-namespace"
-          label="Event hub namespace"
-          mono
-          placeholder="logs-prod.servicebus.windows.net"
-        />
-      </Step>
-      <Step title="Paste its client secret here; it is stored encrypted and never shown again." />
-    </Steps>
+    <Panel title="Event hub" heading={2}>
+      <Steps {...args}>
+        <Step title="Create an app registration in the tenant that holds the logs." />
+        <Step title="Grant it read access to the event hub namespace.">
+          <TextField
+            id="steps-namespace"
+            label="Event hub namespace"
+            mono
+            placeholder="logs-prod.servicebus.windows.net"
+          />
+        </Step>
+        <Step title="Paste its client secret here; it is stored encrypted and never shown again." />
+      </Steps>
+    </Panel>
   ),
   play: async ({ canvasElement }) => {
     const rows = canvasElement.querySelectorAll<HTMLElement>(".di-step-row");
@@ -250,22 +261,26 @@ export const ALaggingStage: Story = {
 };
 
 export const FirstStep: Story = {
+  decorators: [onAPage],
   render: (args) => <Steps {...args}>{progress(0)}</Steps>,
   play: async ({ canvasElement }) => statesWithoutColour(canvasElement),
 };
 
 export const LastStep: Story = {
+  decorators: [onAPage],
   render: (args) => <Steps {...args}>{progress(3)}</Steps>,
   play: async ({ canvasElement }) => statesWithoutColour(canvasElement),
 };
 
 export const Complete: Story = {
+  decorators: [onAPage],
   render: (args) => <Steps {...args}>{progress(4)}</Steps>,
   play: async ({ canvasElement }) => statesWithoutColour(canvasElement),
 };
 
 /** A completed step is a button that returns to it. */
 export const Returnable: Story = {
+  decorators: [onAPage],
   args: { onStep: fn() },
   render: (args) => <Steps {...args}>{progress(2)}</Steps>,
   play: async ({ canvasElement, args }) => {
@@ -279,6 +294,7 @@ export const Returnable: Story = {
 
 /** The connector stops at the circle's edge: no line crosses a number, in any state or width. */
 export const ConnectorsClearTheCircles: Story = {
+  decorators: [onAPage],
   render: (args) => <Steps {...args}>{progress(2)}</Steps>,
   play: async ({ canvasElement }) => {
     const steps = Array.from(canvasElement.querySelectorAll<HTMLElement>(".di-step"));
@@ -299,6 +315,7 @@ export const ConnectorsClearTheCircles: Story = {
 
 /** Inline: one line from the left edge, each name beside its bullet, for a wide page. */
 export const Inline: Story = {
+  decorators: [onAPage],
   args: { layout: "inline" },
   render: (args) => <Steps {...args}>{progress(2)}</Steps>,
   play: async ({ canvasElement }) => {
@@ -360,6 +377,7 @@ const german = ["Datenquelle verbinden", "Berechtigungen überprüfen", "Einträ
  * the track.
  */
 export const LongGermanLabels: Story = {
+  decorators: [onAPage],
   args: {
     label: "Registrierung der Datenquelle",
     stepOf: (n, total) => `Schritt ${n} von ${total}`,
@@ -411,6 +429,7 @@ export const LongGermanLabels: Story = {
  * not read as the first bullet's.
  */
 export const Phone: Story = {
+  decorators: [onAPage],
   args: { stepOf: (n, total) => `Step ${n} of ${total}` },
   globals: { viewport: { value: "phone", isRotated: false } },
   render: (args) => <Steps {...args}>{progress(2)}</Steps>,
@@ -425,6 +444,7 @@ export const Phone: Story = {
 
 /** Inline on a phone: the same bullets, one line, and the current name under them. */
 export const InlinePhone: Story = {
+  decorators: [onAPage],
   args: { layout: "inline" },
   globals: { viewport: { value: "phone", isRotated: false } },
   render: (args) => <Steps {...args}>{progress(2)}</Steps>,

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
+import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
 import { Stack } from "../../layout/arrange/Stack";
 import { Eyebrow } from "./Eyebrow";
@@ -27,9 +28,11 @@ type Story = StoryObj<typeof meta>;
 export const OverASection: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <PageHeader level={2} eyebrow="Coverage" lede="Sources that delivered at least one event in the last 24 hours.">
-      <PageHeaderTitle>Sources reporting</PageHeaderTitle>
-    </PageHeader>
+    <Page width="full">
+      <PageHeader level={2} eyebrow="Coverage" lede="Sources that delivered at least one event in the last 24 hours.">
+        <PageHeaderTitle>Sources reporting</PageHeaderTitle>
+      </PageHeader>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -58,17 +61,19 @@ export const InAPanel: Story = {
 export const Sealed: Story = {
   args: { children: "Entry on record", variant: "sealed" },
   render: (args) => (
-    <Stack gap={32}>
-      <div>
-        <Eyebrow {...args} />
-        <PageHeader level={2}>
-          <PageHeaderTitle>Licence DI-2026-0148</PageHeaderTitle>
+    <Page width="full">
+      <Stack gap={32}>
+        <div>
+          <Eyebrow {...args} />
+          <PageHeader level={2}>
+            <PageHeaderTitle>Licence DI-2026-0148</PageHeaderTitle>
+          </PageHeader>
+        </div>
+        <PageHeader level={2} eyebrow="Seats">
+          <PageHeaderTitle>8 of 10 seats in use</PageHeaderTitle>
         </PageHeader>
-      </div>
-      <PageHeader level={2} eyebrow="Seats">
-        <PageHeaderTitle>8 of 10 seats in use</PageHeaderTitle>
-      </PageHeader>
-    </Stack>
+      </Stack>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
     await expect(canvasElement.querySelectorAll(".di-eyebrow-sealed")).toHaveLength(1);
@@ -80,12 +85,14 @@ export const Sealed: Story = {
 export const Danger: Story = {
   args: { children: "Delivery failed", tone: "danger" },
   render: (args) => (
-    <div>
-      <Eyebrow {...args} />
-      <PageHeader level={2} lede="The SIEM endpoint refused 12 events since 09:40. They are kept and sent again.">
-        <PageHeaderTitle>Splunk HEC export paused</PageHeaderTitle>
-      </PageHeader>
-    </div>
+    <Page width="full">
+      <div>
+        <Eyebrow {...args} />
+        <PageHeader level={2} lede="The SIEM endpoint refused 12 events since 09:40. They are kept and sent again.">
+          <PageHeaderTitle>Splunk HEC export paused</PageHeaderTitle>
+        </PageHeader>
+      </div>
+    </Page>
   ),
 };
 
@@ -93,15 +100,17 @@ export const Danger: Story = {
 export const German: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div lang="de">
-      <PageHeader
-        level={2}
-        eyebrow="Abdeckung der Datenquellen und Weiterleitungen"
-        lede="Quellen, die in den letzten 24 Stunden mindestens ein Ereignis geliefert haben."
-      >
-        <PageHeaderTitle>Meldende Datenquellen</PageHeaderTitle>
-      </PageHeader>
-    </div>
+    <Page width="full">
+      <div lang="de">
+        <PageHeader
+          level={2}
+          eyebrow="Abdeckung der Datenquellen und Weiterleitungen"
+          lede="Quellen, die in den letzten 24 Stunden mindestens ein Ereignis geliefert haben."
+        >
+          <PageHeaderTitle>Meldende Datenquellen</PageHeaderTitle>
+        </PageHeader>
+      </div>
+    </Page>
   ),
   play: async ({ canvasElement }) => {
     const label = canvasElement.querySelector(".di-eyebrow-label")!;
