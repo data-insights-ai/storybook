@@ -178,10 +178,10 @@
     --di-status-danger-bg: var(--di-danger-100);
     --di-status-danger-border: rgba(179, 22, 27, 0.24);
     --di-status-danger-dot: var(--di-severity-critical-day);
-    --di-status-recorded-fg: var(--di-cornflower-800);
-    --di-status-recorded-bg: var(--di-cornflower-100);
-    --di-status-recorded-border: rgba(43, 108, 176, 0.24);
-    --di-status-recorded-dot: var(--di-cornflower-600);
+    --di-status-recorded-fg: var(--di-navy-700);
+    --di-status-recorded-bg: var(--di-navy-100);
+    --di-status-recorded-border: rgba(29, 66, 128, 0.24);
+    --di-status-recorded-dot: var(--di-navy-400);
     --di-status-neutral-fg: var(--di-navy-600);
     --di-status-neutral-bg: var(--di-paper-chrome);
     --di-status-neutral-border: rgba(10, 31, 68, 0.12);
@@ -344,9 +344,9 @@
     --di-status-danger-border: rgba(255, 95, 90, 0.36);
     --di-status-danger-dot: var(--di-severity-critical-night);
     --di-status-recorded-fg: var(--di-cornflower-200);
-    --di-status-recorded-bg: rgba(121, 174, 234, 0.14);
-    --di-status-recorded-border: rgba(121, 174, 234, 0.32);
-    --di-status-recorded-dot: var(--di-cornflower-300);
+    --di-status-recorded-bg: rgba(169, 203, 243, 0.12);
+    --di-status-recorded-border: rgba(169, 203, 243, 0.3);
+    --di-status-recorded-dot: var(--di-navy-300);
     --di-status-neutral-fg: var(--di-night-muted);
     --di-status-neutral-bg: rgba(168, 182, 210, 0.12);
     --di-status-neutral-border: rgba(168, 182, 210, 0.24);
