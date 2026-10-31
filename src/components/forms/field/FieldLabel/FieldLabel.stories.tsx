@@ -318,7 +318,16 @@ export const FramesBesideAButton: Story = {
     const button = canvasElement.querySelector<HTMLElement>(".di-btn")!;
     const b = getComputedStyle(button);
     const height = Math.round(button.getBoundingClientRect().height);
-    const reference = getComputedStyle(canvasElement.querySelector<HTMLElement>(frames[0][1])!);
+    const first = canvasElement.querySelector<HTMLElement>(frames[0][1])!;
+    // The pointer may rest on a frame (it does in CI), so the tone at rest comes from the token, not from a frame.
+    const probe = document.createElement("div");
+    probe.style.border = "1px solid var(--di-border-input)";
+    canvasElement.append(probe);
+    const reference = {
+      borderTopColor: getComputedStyle(probe).borderTopColor,
+      backgroundColor: getComputedStyle(first).backgroundColor,
+    };
+    probe.remove();
     const drift: string[] = [];
     for (const [name, selector] of frames) {
       const frame = canvasElement.querySelector<HTMLElement>(`[data-frame="${name}"] ${selector}`)!;
