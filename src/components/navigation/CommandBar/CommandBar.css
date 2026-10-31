@@ -39,8 +39,8 @@
     border: 0;
     background: transparent;
     color: var(--di-text);
-    font-family: var(--di-font-code);
-    font-size: var(--di-font-size-500);
+    font-family: var(--di-font-ui);
+    font-size: var(--di-font-size-400);
     text-overflow: ellipsis;
     outline: none;
   }
@@ -175,6 +175,10 @@
 
   /* A touch screen has no keys to press. */
   @media (pointer: coarse) {
+    .di-command-field {
+      font-size: var(--di-font-size-500);
+    }
+
     .di-command-hints,
     .di-command-input .di-kbd {
       display: none;
