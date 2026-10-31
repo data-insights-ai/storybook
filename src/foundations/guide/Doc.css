@@ -13,8 +13,13 @@
   max-width: var(--di-measure-prose);
 }
 
-/* A token name is one word to copy: it never breaks, at any width. */
+/* A token name is one word to copy: it never breaks, at any width, so its break hints are dropped. */
+.di-token-name .di-copy-value wbr {
+  display: none;
+}
+
 .di-token-name .di-copy-value {
+  flex: none;
   font-size: var(--di-font-size-300);
   white-space: nowrap;
   overflow-wrap: normal;

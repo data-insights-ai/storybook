@@ -77,4 +77,8 @@
   .di-elevation-sample {
     inline-size: 100%;
   }
+
+  .di-elevation-ground .di-doc-tile {
+    grid-template-columns: 5rem minmax(0, 1fr);
+  }
 }
