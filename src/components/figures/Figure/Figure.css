@@ -44,7 +44,14 @@
     color: var(--di-text);
   }
 
+  /*
+   * At hero size Space Grotesk's ascent-to-descent box is 1.3em, so at a
+   * line height of 1 the text reached 8px above and 7px below its line. The
+   * band face is the same glyphs with that box cut to the caps and the
+   * descenders, so the figure stays inside its line.
+   */
   .di-figure-hero .di-figure-value {
+    font-family: var(--di-font-display-band);
     line-height: 1;
     letter-spacing: -0.02em;
   }

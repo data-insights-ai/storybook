@@ -47,7 +47,7 @@ export type LevelTone = "neutral" | "warn" | "danger";
  * channel.
  *
  * `compare` adds a thin track beneath: the same scale at another point, in
- * the comparison colour (`--di-chart-compare`, cornflower), so the eye
+ * the comparison colour (`--di-chart-compare`, a lighter navy), so the eye
  * reads the difference between two lengths rather than between two
  * numbers. `null` draws the track empty, for a point at which nothing was
  * on record, which is not the same as zero.

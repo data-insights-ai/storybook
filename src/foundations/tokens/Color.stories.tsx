@@ -49,6 +49,7 @@ const roles: Role[] = [
       { token: "--di-bg-selected", name: "Selected tint" },
       { token: "--di-select", name: "Selected edge", paint: "edge" },
       { token: "--di-focus", name: "Focus ring" },
+      { token: "--di-highlight-tint", name: "Search match, medium weight" },
     ],
   },
   {
@@ -67,13 +68,12 @@ const roles: Role[] = [
     ],
   },
   {
-    title: "Gold and accent",
+    title: "Gold and record",
     tiles: [
       { token: "--di-one", name: "The one object" },
       { token: "--di-one-edge", name: "Its edge" },
       { token: "--di-mark", name: "Record mark" },
       { token: "--di-seal", name: "Seal, brand only" },
-      { token: "--di-highlight", name: "Poppy, brand pages" },
     ],
   },
   {

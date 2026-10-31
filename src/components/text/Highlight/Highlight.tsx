@@ -15,11 +15,14 @@ import "./Highlight.css";
  * **Anatomy:** a native `<mark>` around a run of words or a figure.
  *
  * **Look:** the selection family, because a match is something picked out
- * for the reader, not a status and not the one gold thing: the selection
- * tint under ink at full strength (above 4.5:1 in both themes), held by a
- * cornflower hairline, which gives the mark the 3:1 against the surface
- * that the pale tint alone cannot. Not poppy or yellow: both read as a
- * warning.
+ * for the reader, not a status and not the one gold thing: the pale
+ * selection tint under ink at full strength (above 4.5:1 in both themes),
+ * and the matched words one weight step heavier (medium) than the words
+ * around them. Weight is the cue that does not rest on colour, since the
+ * pale tint alone is too faint to find. No edge: a frame around words reads
+ * as a control or as focus, and frames are for controls. In a title, which
+ * is already set heavier, the mark keeps the title's weight. Not poppy or
+ * yellow: both read as a warning.
  *
  * **Variants:** `passage` marks a run of words and is set in the sans band
  * face, so its tint cannot reach the line above in a tight display title;

@@ -260,9 +260,9 @@ export const InAToolbar: Story = {
     const thumb = getComputedStyle(canvas.getByText("7d").closest(".di-choice-segment")!);
     const probe = canvasElement.appendChild(document.createElement("div"));
     probe.style.background = "var(--di-select)";
-    const cornflower = getComputedStyle(probe).backgroundColor;
+    const edge = getComputedStyle(probe).backgroundColor;
     probe.remove();
-    await expect(thumb.backgroundColor).not.toBe(cornflower);
+    await expect(thumb.backgroundColor).not.toBe(edge);
     await expect(thumb.fontWeight).toBe("600");
   },
 };

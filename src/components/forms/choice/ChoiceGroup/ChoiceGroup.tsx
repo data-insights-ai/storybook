@@ -111,7 +111,7 @@ export type ChoiceGroupProps = WithOptions | Composed;
  * switch above a list never outshouts the selected record in it; a chosen
  * toggle is filled with the primary ink, as a primary button (each one is a
  * value); a chosen card takes the pale selection tint inside a 2px
- * cornflower edge. No option is ever a solid cornflower fill.
+ * navy selection edge. No option is ever a solid fill in the selection colour.
  *
  * **States:** a disabled option, a disabled group (`disabled` on the
  * fieldset); a chosen option keeps its edge while disabled. An error is the

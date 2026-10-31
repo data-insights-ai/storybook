@@ -3,7 +3,7 @@
  *
  * Depth comes from tone, not from lines: chrome, ground, surface, inset and
  * plane are steps of one ramp, and a border appears only where two equal
- * tones meet. Gold is the one thing that matters in a view; cornflower is
+ * tones meet. Gold is the one thing that matters in a view; navy-700 is
  * selection and focus; severity is one scale for everything.
  *
  * The dark theme is designed, not inverted: the ground is brand navy, the
@@ -36,7 +36,7 @@
     /* What floats or is lifted one more step: a menu, a modal, a selected row. */
     --di-bg-plane: var(--di-paper-plane);
     --di-bg-row-hover: var(--di-paper-inset);
-    /* What is selected: a row, an option, a chosen card, a set filter, selected text. The cornflower edge carries the contrast. */
+    /* What is selected: a row, an option, a chosen card, a set filter, selected text. The navy selection edge carries the contrast. */
     --di-bg-selected: var(--di-cornflower-100);
     --di-bg-disabled: var(--di-paper-inset);
     /* A value to read, not change: a well one step below the surface, above the disabled tone. */
@@ -76,9 +76,9 @@
     --di-text-on-one: var(--di-navy-900);
     --di-one-glow: 0 0 0 4px rgba(201, 162, 74, 0.16), 0 12px 32px -12px rgba(122, 92, 14, 0.35);
 
-    /* Selection and focus are cornflower, in both themes. */
-    --di-select: var(--di-cornflower-600);
-    --di-focus: var(--di-cornflower-600);
+    /* Selection and focus are the navy family: navy-700 in daylight (8:1 on the chrome, 8.2:1 on the selection tint), its light step after dark. */
+    --di-select: var(--di-navy-700);
+    --di-focus: var(--di-navy-700);
     /*
      * The focus ring, one model (conventions.md, "The register rules"): outside the control
      * at the offset when it stands free, drawn inside it (the inset) where a
@@ -92,8 +92,8 @@
     --di-focus-ring-inset: calc(-1 * var(--di-focus-ring-width));
     --di-focus-ring-reach: calc(var(--di-focus-ring-width) + var(--di-focus-ring-offset));
     --di-focus-ring-color: var(--di-focus);
-    /* A ring drawn inside the strong fill (a current page, a chosen thumb). */
-    --di-focus-ring-on-strong: var(--di-cornflower-300);
+    /* A ring drawn inside the strong fill (a current page, a chosen thumb): the light step of the family, 9.7:1 on navy. */
+    --di-focus-ring-on-strong: var(--di-cornflower-200);
 
     --di-chart-series: var(--di-navy-900);
     --di-chart-highlight: var(--di-gold-500);
@@ -103,16 +103,16 @@
     --di-chart-band: rgba(10, 31, 68, 0.08);
     --di-chart-warn: var(--di-severity-medium-day);
     --di-chart-danger: var(--di-severity-critical-day);
-    --di-chart-compare: var(--di-cornflower-600);
+    /* What a reading is measured against: a lighter step of the navy family, 2.8:1 from the series and 5.7:1 on the surface. */
+    --di-chart-compare: var(--di-navy-400);
     /* Routine marks on a timeline: the series ink mixed into the surface, not an opacity, so it keeps 3:1 there and on a track. Declared per theme, so it resolves against that theme's surface. */
     --di-chart-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
 
     /*
      * A marked match in text (`Highlight`) is selection, not a status: the
-     * selection tint under ink at full strength, held by a hairline of the
-     * cornflower edge, which carries the 3:1 the pale tint cannot.
+     * selection tint under ink at full strength. It has no edge: a frame
+     * around words reads as a control or as focus. Its second cue is weight.
      */
-    --di-highlight: var(--di-select);
     --di-highlight-ink: var(--di-text);
     --di-highlight-tint: var(--di-bg-selected);
 
@@ -153,7 +153,7 @@
     --di-inverse-muted: var(--di-night-subtle);
     --di-inverse-seal: var(--di-gold-400);
     --di-inverse-mark: var(--di-night-subtle);
-    --di-inverse-focus: var(--di-cornflower-300);
+    --di-inverse-focus: var(--di-cornflower-200);
 
     --di-index-col: 38px;
 
@@ -164,7 +164,7 @@
     --di-sidebar-muted: var(--di-navy-500);
     --di-sidebar-active: var(--di-paper-surface);
     --di-sidebar-edge: rgba(10, 31, 68, 0.1);
-    --di-sidebar-focus: var(--di-cornflower-600);
+    --di-sidebar-focus: var(--di-navy-700);
 
     --di-status-ok-fg: var(--di-ok-800);
     --di-status-ok-bg: var(--di-ok-100);
@@ -276,10 +276,11 @@
     --di-text-on-one: var(--di-navy-900);
     --di-one-glow: 0 0 60px rgba(217, 180, 94, 0.14), 0 0 0 1px rgba(217, 180, 94, 0.2);
 
-    --di-select: var(--di-cornflower-300);
-    --di-focus: var(--di-cornflower-300);
+    --di-select: var(--di-cornflower-200);
+    --di-focus: var(--di-cornflower-200);
     --di-focus-ring-color: var(--di-focus);
-    --di-focus-ring-on-strong: var(--di-cornflower-600);
+    /* Inside the paper-white strong fill: navy-700, 8.6:1. */
+    --di-focus-ring-on-strong: var(--di-navy-700);
 
     --di-chart-series: var(--di-night-ink);
     --di-chart-highlight: var(--di-gold-400);
@@ -289,10 +290,9 @@
     --di-chart-band: rgba(242, 240, 230, 0.1);
     --di-chart-warn: var(--di-severity-medium-night);
     --di-chart-danger: var(--di-severity-critical-night);
-    --di-chart-compare: var(--di-cornflower-300);
+    --di-chart-compare: var(--di-navy-300);
     --di-chart-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
 
-    --di-highlight: var(--di-select);
     --di-highlight-ink: var(--di-text);
     --di-highlight-tint: var(--di-bg-selected);
 
@@ -321,7 +321,7 @@
     --di-inverse-muted: var(--di-night-muted);
     --di-inverse-seal: var(--di-gold-400);
     --di-inverse-mark: var(--di-night-muted);
-    --di-inverse-focus: var(--di-cornflower-300);
+    --di-inverse-focus: var(--di-cornflower-200);
 
     --di-sidebar-bg: var(--di-night-chrome);
     --di-sidebar-raised: var(--di-night-surface);
@@ -329,7 +329,7 @@
     --di-sidebar-muted: var(--di-night-subtle);
     --di-sidebar-active: var(--di-night-surface);
     --di-sidebar-edge: rgba(168, 182, 210, 0.14);
-    --di-sidebar-focus: var(--di-cornflower-300);
+    --di-sidebar-focus: var(--di-cornflower-200);
 
     --di-status-ok-fg: var(--di-ok-200);
     --di-status-ok-bg: rgba(110, 219, 151, 0.12);

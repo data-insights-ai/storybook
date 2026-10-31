@@ -34,7 +34,7 @@ const trails = { arrow: "→", external: "↗" };
 
 /**
  * A link in a line of text or at the edge of a block: ink, underlined in
- * cornflower, because underline means clickable.
+ * the selection navy, because underline means clickable.
  *
  * - **Use it** to open a record, another page or an external document, or
  *   for a small action that reads as a word in a sentence.

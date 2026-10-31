@@ -78,7 +78,7 @@
 
   /*
    * The row a pane is showing, or the page a link leads to: a step of
-   * tint and the cornflower selected edge. One look for a list item, a
+   * tint and the navy selected edge. One look for a list item, a
    * nav link, a table row and a timeline episode; each keeps its own
    * keyboard.
    */
@@ -95,7 +95,7 @@
     outline-offset: var(--di-focus-ring-inset);
   }
 
-  /* The current row: the selection tint, its leading cornflower edge carrying the contrast. */
+  /* The current row: the selection tint, its leading navy edge carrying the contrast. */
   .di-row-current,
   .di-row-current:hover {
     background: var(--di-row-current-bg);

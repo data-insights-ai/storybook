@@ -3,7 +3,7 @@
   max-width: var(--di-measure-prose);
 }
 
-/* The tint without the cornflower edge: the wrong way, drawn on purpose. */
+/* The tint without the selection edge: the wrong way, drawn on purpose. */
 .di-look-tint-only tbody tr:nth-child(2) td {
   background: var(--di-bg-selected);
 }

@@ -14,14 +14,15 @@
     overflow-wrap: anywhere;
   }
 
+  /* The button is as tall as the value's line, never taller, so it never pushes into the lines above and below. */
   .di-copy-button {
+    --di-copy-button-size: min(var(--di-control-h-sm), 1lh);
     display: inline-flex;
     flex: none;
     align-items: center;
     justify-content: center;
-    width: var(--di-control-h-sm);
-    height: var(--di-control-h-sm);
-    margin-block: calc((1lh - var(--di-control-h-sm)) / 2);
+    width: var(--di-copy-button-size);
+    height: var(--di-copy-button-size);
     padding: 0;
     border: 0;
     border-radius: var(--di-radius-control);
@@ -34,7 +35,7 @@
   }
 
   /* A tone, not a frame: the value often sits in a framed field or card already. */
-  /* The button already reaches past the value's line: its ring is drawn inside it, clear of the lines around. */
+  /* The button fills the value's line: its ring is drawn inside it, clear of the lines around. */
   .di-copy-button:focus-visible {
     outline-offset: var(--di-focus-ring-inset);
   }

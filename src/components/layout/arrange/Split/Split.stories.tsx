@@ -217,7 +217,7 @@ async function paneHugsItsItems(canvasElement: HTMLElement) {
   await expect(Math.abs(pane.getBoundingClientRect().bottom - inset - last.bottom)).toBeLessThanOrEqual(2);
 }
 
-/** Triage: the list as its own pane, the open record beside it, the current item with the cornflower edge. */
+/** Triage: the list as its own pane, the open record beside it, the current item with the navy selection edge. */
 export const List: Story = {
   globals: { viewport: { value: "wide" } },
   render: () => <Cases />,

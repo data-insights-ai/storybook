@@ -91,7 +91,7 @@ const contrast = (a: string, b: string) => {
 /**
  * A fixed range shows its days in the reader's language; the end is exclusive, so the last day shown is 7 October.
  * Open, the chosen period is marked in the list and the days carry the selection: both ends filled with the primary ink, the
- * days between in the selection tint, edged above and below by a cornflower line that stands at least 3:1 against the
+ * days between in the selection tint, edged above and below by the navy selection line that stands at least 3:1 against the
  * popup. It rests open.
  */
 

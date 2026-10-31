@@ -41,7 +41,7 @@ type Story = StoryObj<typeof meta>;
  * same line under it, so it reads as one of the fields beside it. Without
  * `htmlFor` the label is a span the control names itself by. A native
  * control (here a range) fills in the strong primary fill on a track in the
- * input border tone, in either theme; cornflower is only its focus ring.
+ * input border tone, in either theme; the navy focus ring is the only colour it takes.
  */
 export const OwnControl: Story = {
   name: "Own control",
