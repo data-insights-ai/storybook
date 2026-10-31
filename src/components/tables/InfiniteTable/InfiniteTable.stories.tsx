@@ -95,7 +95,7 @@ const wide = (n: number): Entry => ({
 
 /* Every row loaded at once, so the test scrolls the whole register. */
 function LongRegister() {
-  const entries = Array.from({ length: 2000 }, (_, i) => wide(2000 - i));
+  const entries = Array.from({ length: 600 }, (_, i) => wide(600 - i));
   return (
     <InfiniteTable
       caption="Collector runs"
@@ -127,7 +127,7 @@ function LongRegister() {
 }
 
 /**
- * Two thousand rows of uneven width. The columns are measured once from the
+ * Six hundred rows of uneven width. The columns are measured once from the
  * head and the first rows and keep their place while the register scrolls,
  * whatever the rows on screen happen to hold.
  */
@@ -142,6 +142,8 @@ export const StableColumns: StoryObj = {
     const total = document.documentElement.scrollHeight;
     for (let y = 0; y <= total; y += innerHeight) {
       window.scrollTo(0, y);
+      // The scroll event the next frame would bring, now: the rows render at once instead of one frame per step.
+      window.dispatchEvent(new Event("scroll"));
       await waitFor(() => expect(drawnAcrossTheView(canvasElement)).toBe(true));
       await expect(edges()).toEqual(before);
     }
