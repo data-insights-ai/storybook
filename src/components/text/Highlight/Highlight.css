@@ -5,8 +5,8 @@
   }
 
   /*
-   * The tint follows each line of a wrapped passage rather than boxing the
-   * whole run.
+   * The tint and its cornflower hairline follow each line of a wrapped
+   * passage rather than boxing the whole run.
    *
    * An inline background fills the font's ascent-to-descent box, and IBM
    * Plex Sans' is 1.3em: under a display title set at 1.02 it reached into
@@ -18,19 +18,23 @@
    * text over a gradient. `line-height: 0` keeps the shorter box from
    * reopening the line it sits in.
    */
-  .di-highlight-passage {
+  .di-highlight-passage,
+  .di-highlight-figure {
     padding: 0 var(--di-space-2);
+    border-radius: var(--di-radius-micro);
     background: var(--di-highlight-tint);
-    color: var(--di-text);
-    font-family: var(--di-highlight-font);
-    line-height: 0;
+    box-shadow: inset 0 0 0 1px var(--di-highlight);
+    color: var(--di-highlight-ink);
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
 
-  /* Bare --di-highlight is 4.2:1 on paper; the ink clears AA at any size. */
+  .di-highlight-passage {
+    font-family: var(--di-highlight-font);
+    line-height: 0;
+  }
+
   .di-highlight-figure {
-    color: var(--di-highlight-ink);
     font-variant-numeric: tabular-nums;
   }
 }
