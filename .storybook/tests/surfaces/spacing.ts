@@ -29,6 +29,7 @@ type Extent = { top: number; bottom: number; bleeds?: Extent };
 
 /* Content that runs to a surface's edge by design: a table's rows (or the bars that stand in for them), a picture. */
 const EDGE_TO_EDGE = "table, img, video, canvas, figure, .di-table-wrap, .di-loading-table-body";
+const CONTROL = "input, select, textarea, button, a[href]";
 
 function lineBox(rect: DOMRect, host: Element): Extent {
   /* The outermost box that holds just this one line: an inline mark sits on its block's line, not on its own. */
@@ -45,6 +46,20 @@ function lineBox(rect: DOMRect, host: Element): Extent {
   if (!leading) return { top: rect.top, bottom: rect.bottom };
   const middle = (rect.top + rect.bottom) / 2;
   return { top: middle - leading / 2, bottom: middle + leading / 2 };
+}
+
+/*
+ * A control pulled onto a text line by negative block margins (the copy
+ * button beside its value) is laid out as that line: it reaches past it by
+ * design, and the clearance check keeps that reach off the surface edge.
+ */
+function laidOut(el: Element, rect: DOMRect): Extent {
+  const style = getComputedStyle(el);
+  const above = parseFloat(style.marginTop);
+  const below = parseFloat(style.marginBottom);
+  const line = el.parentElement ? parseFloat(getComputedStyle(el.parentElement).lineHeight) : NaN;
+  const onLine = above < 0 && below < 0 && Math.abs(rect.height + above + below - line) <= 1;
+  return onLine && el.matches(CONTROL) ? { top: rect.top - above, bottom: rect.bottom + below } : rect;
 }
 
 /*
@@ -91,7 +106,7 @@ function extentsIn(
     ) {
       const rect = node.getBoundingClientRect();
       if (rect.width < 1 || rect.height < 1 || rail(rect)) return;
-      take({ top: rect.top, bottom: rect.bottom });
+      take(laidOut(node, rect));
       if (node.matches(EDGE_TO_EDGE))
         bleeds = {
           top: Math.min(bleeds?.top ?? Infinity, rect.top),
