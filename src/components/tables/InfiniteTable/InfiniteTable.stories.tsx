@@ -140,9 +140,9 @@ export const StableColumns: StoryObj = {
     const edges = () => heads.map((th) => Math.round(th.getBoundingClientRect().left * 2) / 2);
     const before = edges();
     const total = document.documentElement.scrollHeight;
-    for (let y = 0; y <= total; y += 700) {
+    for (let y = 0; y <= total; y += innerHeight) {
       window.scrollTo(0, y);
-      await new Promise((r) => setTimeout(r, 40));
+      await waitFor(() => expect(drawnAcrossTheView(canvasElement)).toBe(true));
       await expect(edges()).toEqual(before);
     }
     window.scrollTo(0, 0);
@@ -181,6 +181,13 @@ function Windowed1000({ maxRows }: { maxRows?: number }) {
       </TableHead>
     </InfiniteTable>
   );
+}
+
+/* The rows for this place are in, not only the ones left over from the last place. */
+function drawnAcrossTheView(canvasElement: HTMLElement) {
+  const body = canvasElement.querySelector("tbody")!.getBoundingClientRect();
+  const rows = [...canvasElement.querySelectorAll("tbody tr[data-index]")].map((row) => row.getBoundingClientRect());
+  return rows[0].top <= Math.max(0, body.top) + 1 && rows.at(-1)!.bottom >= Math.min(innerHeight, body.bottom) - 1;
 }
 
 const settle = () =>

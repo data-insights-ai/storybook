@@ -1,13 +1,13 @@
-import type { ReactNode } from "react";
-import { Page, PageHeader, PageHeaderTitle, Panel, PanelNote } from "../../index";
+import type { ComponentProps, ReactNode } from "react";
+import { Grid, Page, PageHeader, PageHeaderTitle, Panel, PanelNote, PanelStatus, StatusPill } from "../../index";
 import "./Doc.css";
 
 /*
- * A Foundations page is built like a product page: one PageHeader, sections
- * headed by PageHeader level 2, examples on the Panel they are used on. What
- * is private here is only the prose measure and the inline code.
+ * A Foundations page shows; the written rules live in AGENTS.md and
+ * .design-sync/conventions.md. A page is a heading, at most one line under
+ * it, then sections of panels. No text stands on the canvas by itself.
  */
-export function Doc({ title, lede, children }: { title: string; lede: string; children: ReactNode }) {
+export function Doc({ title, lede, children }: { title: string; lede?: string; children: ReactNode }) {
   return (
     <main className="di-doc">
       <Page width="full">
@@ -20,23 +20,15 @@ export function Doc({ title, lede, children }: { title: string; lede: string; ch
   );
 }
 
-export function DocSection({ title, lede, children }: { title: string; lede?: string; children?: ReactNode }) {
+export function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="di-doc-section">
-      <PageHeader level={2} lede={lede}>
+      <PageHeader level={2}>
         <PageHeaderTitle>{title}</PageHeaderTitle>
       </PageHeader>
       {children}
     </section>
   );
-}
-
-export function Prose({ children }: { children: ReactNode }) {
-  return <div className="di-doc-prose">{children}</div>;
-}
-
-export function Rules({ children }: { children: ReactNode }) {
-  return <ul className="di-doc-rules">{children}</ul>;
 }
 
 /** A live example on the surface it is used on, with one line saying what to look at. */
@@ -56,5 +48,44 @@ export function Example({
       {children}
       {note ? <PanelNote>{note}</PanelNote> : null}
     </Panel>
+  );
+}
+
+type PanelLook = Pick<ComponentProps<typeof Panel>, "emphasis" | "tone">;
+
+/** The same thing built right and built wrong, side by side; the caption says what went wrong. */
+export function Pair({
+  title,
+  caption,
+  good,
+  bad,
+  goodPanel,
+  badPanel,
+}: {
+  title: string;
+  caption: string;
+  good: ReactNode;
+  bad: ReactNode;
+  goodPanel?: PanelLook;
+  badPanel?: PanelLook;
+}) {
+  return (
+    <Section title={title}>
+      <Grid min="320px" gap={16}>
+        <Panel title="Do" {...goodPanel}>
+          <PanelStatus>
+            <StatusPill tone="ok">right</StatusPill>
+          </PanelStatus>
+          {good}
+        </Panel>
+        <Panel title="Don't" {...badPanel}>
+          <PanelStatus>
+            <StatusPill tone="danger">wrong</StatusPill>
+          </PanelStatus>
+          {bad}
+          <PanelNote>{caption}</PanelNote>
+        </Panel>
+      </Grid>
+    </Section>
   );
 }

@@ -1,10 +1,16 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type TestProjectInlineConfiguration } from "vitest/config";
+import type { BrowserCommand } from "vitest/node";
 import { playwright } from "@vitest/browser-playwright";
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+/* The real pointer off the page: a story never starts under the hover an earlier one left (vitest.pointer.setup.ts). */
+const parkPointer: BrowserCommand<[]> = async ({ page }) => {
+  await page.mouse.move(-1, -1);
+};
 
 // A fresh object per project: Vitest names the instances after the project that owns them.
 const chromium = () => ({
@@ -46,12 +52,13 @@ function stories(
       provide: { focusReport: process.env.FOCUS_REPORT === "1" },
       setupFiles: [
         "./.storybook/tests/focus/vitest.setup.ts",
+        "./.storybook/tests/vitest.pointer.setup.ts",
         "./.storybook/tests/surfaces/spacing.setup.ts",
         "./.storybook/tests/contrast/vitest.setup.ts",
         "./.storybook/tests/surfaces/vitest.setup.ts",
         ...setupFiles,
       ],
-      browser: chromium(),
+      browser: { ...chromium(), commands: { parkPointer } },
     },
   };
 }

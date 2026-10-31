@@ -81,7 +81,7 @@ A shell has one `main`: `AppShellContent`. `SidebarInset` is a plain box around 
 
 One package. Storybook 10, React 19, Vite.
 
-Components sit in `src/components`, one folder per Storybook group: Actions, Forms, Tables, Records, Figures, Text, Status, Feedback, Charts, Timelines, Layout, Navigation, Overlays and Shell. `Foundations/Groups` says which question each group answers and where a component that fits two is placed.
+Components sit in `src/components`, one folder per Storybook group: Actions, Forms, Tables, Records, Figures, Text, Status, Feedback, Charts, Timelines, Layout, Navigation, Overlays and Shell. `Foundations/Start here` shows each group with the question it answers and a live example.
 
 Tokens are three layers in `src/styles/tokens`:
 

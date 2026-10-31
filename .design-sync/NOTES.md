@@ -84,8 +84,8 @@ values.
   `Console` is now the Storybook-window variant no product renders and no story
   owns. The card is `AppShell`. Since 0.10.0 `Console` and `ConsoleFrame` live in
   `.storybook/console/Console.tsx`, outside the bundle.
-  `null` excludes: `Introduction` and `Foundations/*` (Register, Voice, Color,
-  Type, Scale, Logo, Pages, Groups — doc pages with no component) and every `Patterns/*` story (Architecture, Case
+  `null` excludes: `Foundations/*` (Start here, Color, Type, Space and shape,
+  Our look, Logo — doc pages with no component) and every `Patterns/*` story (Architecture, Case
   triage, Coverage, Create flow, Detail page, Inference, List page, Login,
   Organization home, Register, Security overview, Settings, Watchlist).
   **A new Foundations story or pattern needs a new null**, or it gets scanned

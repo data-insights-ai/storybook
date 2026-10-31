@@ -1,302 +1,113 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
-import { useState } from "react";
-import {
-  Button,
-  ChoiceGroup,
-  DataTable,
-  Fact,
-  FactList,
-  Grid,
-  Highlight,
-  Panel,
-  PanelLead,
-  PanelNote,
-  SealValue,
-  SeverityMark,
-  Stack,
-  StatusPill,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHead,
-  TableRow,
-  Toolbar,
-} from "../../index";
-import { Doc, DocSection, Example, Prose, Rules } from "../guide/Doc";
-import { fill, ink, brokenTokenCells, TokenTable } from "../guide/Tokens";
+import { Panel } from "../../index";
+import { Doc } from "../guide/Doc";
+import { Swatch, type Paint } from "../guide/Swatch";
+import { brokenTokenNames, Tile, Tiles } from "../guide/Tokens";
 
-const ground = [
-  { token: "--di-bg-chrome", use: "The sidebar, one step below the ground. Also --di-bg-strip." },
-  { token: "--di-bg-page", use: "The ground of every page." },
-  { token: "--di-bg-surface", use: "A panel, a table, a dialog: one step above the ground." },
-  { token: "--di-bg-subtle", use: "Inset inside a surface: a group, a table head, a code block." },
-  { token: "--di-bg-plane", use: "What is lifted: a menu, a popover, the selected row." },
-  { token: "--di-bg-row-hover", use: "A row under the pointer." },
-  { token: "--di-bg-readonly", use: "A field that shows a value but does not take one." },
-  { token: "--di-bg-disabled", use: "A control that cannot be used now." },
-];
+type Role = {
+  title: string;
+  tiles: { token: string; name: string; paint?: Paint; ground?: string; word?: string }[];
+};
 
-const inks = [
-  { token: "--di-text", use: "Body text and headings." },
-  { token: "--di-text-muted", use: "Secondary text, the mono label above a value." },
-  { token: "--di-text-subtle", use: "Meta lines, hints, quiet notes." },
+const roles: Role[] = [
   {
-    token: "--di-fill-strong",
-    use: "The one filled control: navy by day, paper-white after dark. Its text is --di-text-on-strong.",
+    title: "Surface",
+    tiles: [
+      { token: "--di-bg-chrome", name: "Sidebar" },
+      { token: "--di-bg-page", name: "Page ground" },
+      { token: "--di-bg-surface", name: "Panel, table, dialog" },
+      { token: "--di-bg-subtle", name: "Inset group" },
+      { token: "--di-bg-plane", name: "Menu, popover" },
+      { token: "--di-bg-row-hover", name: "Row under the pointer" },
+      { token: "--di-bg-readonly", name: "Read-only field" },
+      { token: "--di-bg-disabled", name: "Disabled control" },
+      { token: "--di-fill-strong", name: "The one filled button" },
+    ],
+  },
+  {
+    title: "Text",
+    tiles: [
+      { token: "--di-text", name: "Body and headings", paint: "ink" },
+      { token: "--di-text-muted", name: "Secondary, labels", paint: "ink" },
+      { token: "--di-text-subtle", name: "Meta, hints", paint: "ink" },
+      { token: "--di-text-on-strong", name: "On the filled button", paint: "ink", ground: "--di-fill-strong" },
+    ],
+  },
+  {
+    title: "Edge",
+    tiles: [
+      { token: "--di-border", name: "Equal tones meet", paint: "line" },
+      { token: "--di-border-input", name: "Field frame", paint: "line" },
+      { token: "--di-border-strong", name: "Strong frame", paint: "line" },
+      { token: "--di-rule", name: "Between rows", paint: "line" },
+    ],
+  },
+  {
+    title: "Selection",
+    tiles: [
+      { token: "--di-bg-selected", name: "Selected tint" },
+      { token: "--di-select", name: "Selected edge", paint: "edge" },
+      { token: "--di-focus", name: "Focus ring" },
+    ],
+  },
+  {
+    title: "Status",
+    tiles: [
+      { token: "--di-status-ok-bg", name: "Running", paint: "status", word: "ok" },
+      { token: "--di-status-warn-bg", name: "Expiring", paint: "status", word: "warn" },
+      { token: "--di-status-danger-bg", name: "Failed", paint: "status", word: "failed" },
+      { token: "--di-status-recorded-bg", name: "Recorded", paint: "status", word: "sealed" },
+      { token: "--di-status-neutral-bg", name: "Paused", paint: "status", word: "paused" },
+      { token: "--di-severity-critical", name: "Critical" },
+      { token: "--di-severity-high", name: "High" },
+      { token: "--di-severity-medium", name: "Medium" },
+      { token: "--di-severity-low", name: "Low" },
+      { token: "--di-severity-info", name: "Info" },
+    ],
+  },
+  {
+    title: "Gold and accent",
+    tiles: [
+      { token: "--di-one", name: "The one object" },
+      { token: "--di-one-edge", name: "Its edge" },
+      { token: "--di-mark", name: "Record mark" },
+      { token: "--di-seal", name: "Seal, brand only" },
+      { token: "--di-highlight", name: "Poppy, brand pages" },
+    ],
+  },
+  {
+    title: "Charts",
+    tiles: [
+      { token: "--di-chart-series", name: "Series" },
+      { token: "--di-chart-highlight", name: "The one value" },
+      { token: "--di-chart-compare", name: "Comparison" },
+      { token: "--di-chart-muted", name: "Muted bar" },
+      { token: "--di-chart-band", name: "Range band" },
+      { token: "--di-chart-routine", name: "Routine" },
+      { token: "--di-chart-warn", name: "Past medium" },
+      { token: "--di-chart-danger", name: "Past critical" },
+    ],
   },
 ];
-
-const one = [
-  { token: "--di-one", use: "The one object in a view: an edge, a mark, the pill behind navy words." },
-  { token: "--di-one-edge", use: "The edge of the emphasised panel or the first attention item." },
-  { token: "--di-mark", use: "The record marks (sealed dot, inferred ring) in an operational view: ink." },
-  { token: "--di-seal", use: "The same marks in a brand context: sign-in, onboarding, a licence." },
-];
-
-const lines = [
-  {
-    token: "--di-bg-selected",
-    use: "The pale selection tint: a selected row or option, a chosen card, a set filter, a range's middle days, selected text.",
-  },
-  { token: "--di-select", use: "Selection: the selected row's edge, a chosen card's border, a link's underline." },
-  { token: "--di-focus", use: "The keyboard focus ring." },
-  { token: "--di-border", use: "Where two equal tones meet." },
-  { token: "--di-border-input", use: "The frame of a field, and the track of a range." },
-  { token: "--di-rule", use: "Between the rows of a table and the figures of a row, nowhere else." },
-  { token: "--di-shade-edge", use: "The side of a table that scrolls sideways and hides columns there." },
-];
-
-const charts = [
-  { token: "--di-chart-series", use: "The recorded series, in ink." },
-  { token: "--di-chart-highlight", use: "The one value the eye should land on." },
-  { token: "--di-chart-compare", use: "What the series is measured against." },
-  { token: "--di-chart-muted", use: "A comparison bar, grey." },
-  { token: "--di-chart-band", use: "The range around a median." },
-  { token: "--di-chart-routine", use: "Routine on a timeline: the series ink mixed into the surface." },
-  { token: "--di-chart-warn", use: "A reading past the medium threshold." },
-  { token: "--di-chart-danger", use: "A reading past the critical threshold." },
-];
-
-const accents = [
-  { token: "--di-highlight", use: "Poppy: a marked passage or figure on a brand page (Highlight)." },
-  { token: "--di-highlight-tint", use: "The band under a marked passage." },
-];
-
-function Selection() {
-  const [window, setWindow] = useState("24h");
-  const [row, setRow] = useState("edge-gw-02");
-  const [source, setSource] = useState("syslog");
-  const [days, setDays] = useState<string[]>(["sat", "sun"]);
-  return (
-    <>
-      <Example
-        title="A view and a row"
-        note="The chosen segment is a raised thumb in ink. The selected row takes the pale tint with a cornflower edge on its leading side."
-        padded={false}
-      >
-        <DataTable caption="Collectors" indexed={false}>
-          <Toolbar label="Window">
-            <ChoiceGroup
-              appearance="segments"
-              hideLegend
-              legend="Window"
-              name="color-window"
-              options={[
-                { value: "1h", label: "1h" },
-                { value: "24h", label: "24h" },
-                { value: "7d", label: "7d" },
-              ]}
-              value={window}
-              onChange={setWindow}
-            />
-          </Toolbar>
-          <TableHead>
-            <TableColumn width="fill">Collector</TableColumn>
-            <TableColumn>State</TableColumn>
-          </TableHead>
-          <TableBody>
-            {["edge-gw-01", "edge-gw-02", "edge-gw-03"].map((name) => (
-              <TableRow key={name} active={row === name} onSelect={() => setRow(name)}>
-                <TableCell mono>{name}</TableCell>
-                <TableCell>
-                  <StatusPill tone="ok">running</StatusPill>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </DataTable>
-      </Example>
-      <Example
-        title="A value"
-        note="A chosen card takes the pale tint inside a 2px cornflower edge. A chosen toggle is a value, so it takes the primary ink fill."
-      >
-        <Stack gap={16}>
-          <ChoiceGroup
-            appearance="cards"
-            legend="Source type"
-            name="color-source"
-            options={[
-              { value: "syslog", label: "Syslog", description: "CEF or RFC 5424 over TLS." },
-              { value: "hec", label: "Splunk HEC", description: "Events pushed over HTTPS." },
-            ]}
-            value={source}
-            onChange={setSource}
-          />
-          <ChoiceGroup
-            appearance="toggles"
-            multiple
-            legend="Quiet on"
-            name="color-days"
-            options={[
-              { value: "mon", label: "Mo" },
-              { value: "tue", label: "Tu" },
-              { value: "wed", label: "We" },
-              { value: "thu", label: "Th" },
-              { value: "fri", label: "Fr" },
-              { value: "sat", label: "Sa" },
-              { value: "sun", label: "Su" },
-            ]}
-            value={days}
-            onChange={setDays}
-          />
-        </Stack>
-      </Example>
-    </>
-  );
-}
 
 function ColorPage() {
   return (
-    <Doc
-      title="Color"
-      lede="Paper is the ground and depth is a step in tone. Navy is the ink and the one filled control. Gold marks one object per view. Cornflower is selection and focus: a pale tint with its edge, and the ring. Every value below is read from the token where it is painted, so the dark theme shows its own."
-    >
-      <DocSection
-        title="Ground and depth"
-        lede="Chrome, ground, surface, inset and plane are steps of one ramp. A surface never sits on the same surface: a panel inside a panel takes the inset tone and drops its edge."
-      >
-        <Grid min="320px" gap={16}>
-          <Example title="Sources" note="A surface on the ground, an inset group inside it. No line between them.">
-            <Panel surface="inset" title="Last delivery">
-              <FactList layout="columns">
-                <Fact label="Received" mono>
-                  09:12:04Z
-                </Fact>
-                <Fact label="Events" mono>
-                  1,842
-                </Fact>
-              </FactList>
-            </Panel>
-          </Example>
-          <Example
-            title="One filled control"
-            note="Only the requested action is solid. After dark it turns paper-white."
-          >
-            <Toolbar align="end">
-              <Button variant="ghost">Cancel</Button>
-              <Button variant="secondary">Save draft</Button>
-              <Button>Rotate key</Button>
-            </Toolbar>
-          </Example>
-        </Grid>
-        <TokenTable title="Ground" caption="Ground and depth tokens" rows={ground} draw={fill} />
-        <TokenTable title="Ink and action" caption="Ink tokens" rows={inks} draw={ink} />
-      </DocSection>
-
-      <DocSection
-        title="Gold, the one thing"
-        lede="Gold marks one object in a view: the block that matters, the first attention item, the value of a chart the eye should land on. In daylight it is an edge, a mark or a pill behind navy words, never text. After dark gold may be text."
-      >
-        <Grid min="320px" gap={16}>
-          <Panel title="Two sources stopped delivering" heading={3} emphasis>
-            <PanelLead>Check the firewall rule on edge-gw-02 before the next upload.</PanelLead>
-            <PanelNote>The emphasised panel: a gold edge, the title stays the one bold line.</PanelNote>
-          </Panel>
-          <Example
-            title="Record marks"
-            note="In an operational view the sealed dot and the inferred ring are ink, so gold stays with the one object."
-          >
-            <Stack gap={8}>
-              <SealValue state="sealed" stateLabel="Sealed">
-                a4f9c21e
-              </SealValue>
-              <SealValue state="inferred" stateLabel="Inferred">
-                7f3a99e0
-              </SealValue>
-            </Stack>
-          </Example>
-        </Grid>
-        <Rules>
-          <li>The seal is gold too, so it is a brand moment only: sign-in, onboarding, a licence or certificate.</li>
-          <li>Never two gold objects in one view. A second candidate gets the ink treatment.</li>
-        </Rules>
-        <TokenTable title="Gold and the marks" caption="Gold tokens" rows={one} draw={fill} />
-      </DocSection>
-
-      <DocSection
-        title="Selection and focus"
-        lede="Selection is the pale tint with the cornflower edge: the tint shows what is chosen, the edge carries the contrast. No option ever gets a solid cornflower background; toggles and chosen days take the primary ink."
-      >
-        <Selection />
-        <Rules>
-          <li>A selected row or popup option: the pale tint, with a cornflower edge on its leading side.</li>
-          <li>A chosen card or a set filter tag: the pale tint inside a 2px cornflower edge.</li>
-          <li>
-            Segments: a raised neutral thumb. Toggles and the chosen calendar day or range ends: the primary ink fill;
-            the days between a range&apos;s ends take the pale tint.
-          </li>
-          <li>
-            Native checkboxes, radios and ranges fill in the strong primary fill (<code>accent-color</code>), a range on
-            a track in the input border tone; cornflower is never a control&apos;s paint, only its ring.
-          </li>
-          <li>
-            Focus and selection on one element are one indicator that changes, never two rings. A ring shows only on
-            keyboard focus.
-          </li>
-        </Rules>
-        <TokenTable title="Lines" caption="Selection, focus and line tokens" rows={lines} draw={fill} />
-      </DocSection>
-
-      <DocSection
-        title="Status and severity"
-        lede="A state is a word beside its mark, never colour alone. Warn is its own amber, so it never reads as the one gold. Severity is one scale in every product and chart; after dark medium runs orange so it never reads as gold."
-      >
-        <Grid min="320px" gap={16}>
-          <Example title="Status" note="StatusPill: the word carries the meaning, the dot repeats it.">
-            <Toolbar>
-              <StatusPill tone="ok">running</StatusPill>
-              <StatusPill tone="warn">expiring</StatusPill>
-              <StatusPill tone="danger">failed</StatusPill>
-              <StatusPill tone="recorded">recorded</StatusPill>
-              <StatusPill tone="inferred">inferred</StatusPill>
-              <StatusPill tone="neutral">paused</StatusPill>
-            </Toolbar>
-          </Example>
-          <Example title="Severity" note="SeverityMark: a filled mark beside the word, never the text's own colour.">
-            <Toolbar>
-              <SeverityMark level="critical" label="Critical" />
-              <SeverityMark level="high" label="High" />
-              <SeverityMark level="medium" label="Medium" />
-              <SeverityMark level="low" label="Low" />
-              <SeverityMark level="info" label="Info" />
-            </Toolbar>
-          </Example>
-        </Grid>
-      </DocSection>
-
-      <DocSection
-        title="Charts and accents"
-        lede="One series in ink, the one value in gold, a comparison in cornflower or grey. A severity hue appears only where a reading crossed a threshold. Poppy marks a passage on a brand page and nothing else."
-      >
-        <Prose>
-          <p>
-            Coverage rose to <Highlight variant="figure">94 %</Highlight> <Highlight>without a new source</Highlight>.
-          </p>
-        </Prose>
-        <TokenTable title="Charts" caption="Chart tokens" rows={charts} draw={fill} />
-        <TokenTable title="Poppy" caption="Accent tokens" rows={accents} draw={fill} />
-      </DocSection>
+    <Doc title="Color" lede="Each tile shows its token in light on the left, dark on the right.">
+      {roles.map((role) => (
+        <Panel key={role.title} title={role.title} heading={2}>
+          <Tiles>
+            {role.tiles.map(({ token, name, paint, ground, word }) => (
+              <Tile
+                key={token}
+                token={token}
+                name={name}
+                drawing={<Swatch token={token} paint={paint} ground={ground} word={word} />}
+              />
+            ))}
+          </Tiles>
+        </Panel>
+      ))}
     </Doc>
   );
 }
@@ -308,9 +119,18 @@ const meta = {
 } satisfies Meta;
 export default meta;
 
+/** Every role has its tiles, every tile names its token, and no token name wraps or leaves its tile. */
 export const Color: StoryObj = {
   render: () => <ColorPage />,
   play: async ({ canvasElement }) => {
-    await expect(brokenTokenCells(canvasElement)).toEqual([]);
+    const roleNames = Array.from(canvasElement.querySelectorAll("h2"), (h) => h.textContent);
+    await expect(roleNames).toEqual(roles.map((r) => r.title));
+    for (const tile of canvasElement.querySelectorAll<HTMLElement>(".di-doc-tile")) {
+      await expect(tile.querySelector(".di-token-name")?.textContent).toBe(tile.dataset.token);
+    }
+    await expect(canvasElement.querySelectorAll(".di-doc-tile")).toHaveLength(
+      roles.reduce((n, r) => n + r.tiles.length, 0),
+    );
+    await expect(brokenTokenNames(canvasElement)).toEqual([]);
   },
 };

@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
 import logo from "../../assets/logo.svg";
@@ -6,8 +7,8 @@ import logoMono from "../../assets/logo-mono.svg";
 import mark from "../../assets/mark.svg";
 import markInverse from "../../assets/mark-inverse.svg";
 import markMono from "../../assets/mark-mono.svg";
-import { CodeBlock, Fact, FactList, Grid, Panel, PanelNote } from "../../index";
-import { Doc, DocSection, Rules } from "../guide/Doc";
+import { Fact, FactList, Grid, Panel, PanelNote, Stack } from "../../index";
+import { Doc } from "../guide/Doc";
 
 const lockups = [
   { title: "Primary", src: logo, theme: "light", isMark: false, use: "The default, on paper, ivory or white." },
@@ -30,74 +31,110 @@ const lockups = [
   { title: "Mark, monochrome", src: markMono, theme: "light", isMark: true, use: "A stamp or an emboss." },
 ] as const;
 
-const signature = `Nora Feld
-Operator · datAInsights
-datAInsights GmbH
-data-insights.ai`;
+const rule = (width: string): CSSProperties => ({
+  inlineSize: width,
+  borderBlockStart: "2px solid var(--di-text)",
+  margin: 0,
+});
+const mono: CSSProperties = { fontFamily: "var(--di-font-code)", margin: 0 };
+
+function Signature() {
+  return (
+    <div
+      data-theme="light"
+      data-signature
+      style={{
+        background: "#fff",
+        padding: "var(--di-space-24)",
+        display: "grid",
+        gap: "var(--di-space-8)",
+        color: "var(--di-text)",
+      }}
+    >
+      <hr style={rule("var(--di-space-64)")} />
+      <p style={{ margin: 0, fontFamily: "var(--di-font-ui)", fontSize: "var(--di-font-size-600)" }}>
+        Firstname Lastname
+      </p>
+      <p style={{ margin: 0, fontFamily: "var(--di-font-ui)", fontSize: "var(--di-font-size-500)" }}>
+        Role · datAInsights
+      </p>
+      <hr style={rule("var(--di-space-48)")} />
+      <p style={{ ...mono, fontSize: "var(--di-font-size-500)" }}>
+        firstname.lastname@data-insights.ai · +43 660 000 0000
+      </p>
+      <div
+        style={{
+          ...mono,
+          display: "grid",
+          gap: "var(--di-space-4)",
+          fontSize: "var(--di-font-size-400)",
+          color: "var(--di-text-subtle)",
+        }}
+      >
+        <p style={mono}>datAInsights GmbH</p>
+        <p style={mono}>Prinz-Eugen-Straße 76/12, AT-1040 Wien</p>
+        <p style={{ ...mono, fontSize: "var(--di-font-size-300)" }}>FN 606605t | ATU79575247</p>
+      </div>
+      <p
+        style={{
+          ...mono,
+          fontSize: "var(--di-font-size-400)",
+          color: "var(--di-seal-ink)",
+          marginBlockStart: "var(--di-space-8)",
+        }}
+      >
+        data-insights.ai
+      </p>
+    </div>
+  );
+}
 
 function LogoPage() {
   return (
-    <Doc
-      title="Logo"
-      lede="The mark, then the name. Six fixed files, and nothing else: a lockup is never rebuilt from the mark and a typeface, recoloured, stretched, rotated, shadowed, or set on gold or a photograph."
-    >
-      <DocSection
-        title="What the mark means"
-        lede="Every part carries a meaning, so the mark is never cropped or used as a frame."
-      >
-        <Panel title="Parts" heading={3}>
+    <Doc title="Logo" lede="The mark, then the name: six fixed files, never rebuilt or recoloured.">
+      <Grid min="300px" gap={16}>
+        {lockups.map((item) => (
+          <div key={item.title} data-theme={item.theme}>
+            <Panel title={item.title} heading={2}>
+              <img
+                src={item.src}
+                alt={`datAInsights ${item.title.toLowerCase()}`}
+                style={{ blockSize: item.isMark ? "var(--di-space-48)" : "var(--di-space-32)", inlineSize: "auto" }}
+              />
+              <PanelNote>{item.use}</PanelNote>
+            </Panel>
+          </div>
+        ))}
+      </Grid>
+      <Grid min="300px" gap={16}>
+        <Panel title="Parts" heading={2}>
           <FactList layout="columns">
-            <Fact label="Brackets">A time interval: the window in which a claim holds.</Fact>
-            <Fact label="Peak">Two edges meeting: the A, and the simplest graph.</Fact>
+            <Fact label="Brackets">The window in which a claim holds.</Fact>
+            <Fact label="Peak">Two edges meeting: the A, the simplest graph.</Fact>
             <Fact label="Stem">The I. Upright, unornamented.</Fact>
-            <Fact label="Gold node">The one verified fact. A view gets only one.</Fact>
+            <Fact label="Gold node">The one verified fact.</Fact>
           </FactList>
         </Panel>
-      </DocSection>
-
-      <DocSection title="Lockups" lede="Each shown on the ground it is made for, whatever the page's theme.">
-        <Grid min="300px" gap={16}>
-          {lockups.map((item) => (
-            <div key={item.title} data-theme={item.theme}>
-              <Panel title={item.title} heading={3}>
-                <img
-                  src={item.src}
-                  alt={`datAInsights ${item.title.toLowerCase()}`}
-                  style={{ blockSize: item.isMark ? "var(--di-space-48)" : "var(--di-space-32)", inlineSize: "auto" }}
-                />
-                <PanelNote>{item.use}</PanelNote>
-              </Panel>
-            </div>
-          ))}
-        </Grid>
-      </DocSection>
-
-      <DocSection title="Space and size">
-        <Rules>
-          <li>Clear space: at least the height of the mark's cap (1X) on all four sides.</li>
-          <li>Smallest lockup: 20px high on screen, 10mm in print. Smallest mark: 16px or 6mm.</li>
-          <li>
-            In the product the Sidebar carries the brand on the bar&apos;s row, with the mark at one height,{" "}
-            <code>--di-sb-mark-h</code>, on the rail and in the lockup.
-          </li>
-        </Rules>
-      </DocSection>
-
-      <DocSection title="Beside another mark">
-        <Rules>
-          <li>Match the optical height, not the bounding box.</li>
-          <li>Separate with a vertical rule. Not an ampersand, a slash, a plus or a ×.</li>
-          <li>In a strip of three or more, use the monochrome logo; the other brands keep their colours.</li>
-          <li>Order alphabetically or by the date of the announcement.</li>
-        </Rules>
-      </DocSection>
-
-      <DocSection
-        title="Email signature"
-        lede="The name in Space Grotesk; role and company in IBM Plex Sans; the address, which a machine resolves, in IBM Plex Mono and underlined as a link. No second colour, no slogan, no photograph."
-      >
-        <CodeBlock label="Signature template">{signature}</CodeBlock>
-      </DocSection>
+        <Panel title="Smallest" heading={2}>
+          <Stack gap={16}>
+            <img
+              src={logo}
+              alt="datAInsights at its smallest"
+              style={{ blockSize: "20px", inlineSize: "auto", alignSelf: "start" }}
+            />
+            <img
+              src={mark}
+              alt="The mark at its smallest"
+              style={{ blockSize: "16px", inlineSize: "auto", alignSelf: "start" }}
+            />
+          </Stack>
+          <PanelNote>Lockup 20px or 10mm, mark 16px or 6mm. Clear space: one cap height.</PanelNote>
+        </Panel>
+      </Grid>
+      <Panel title="Email signature" heading={2}>
+        <Signature />
+        <PanelNote>Sample person; the company lines are the real ones. Always on white, as in a mail.</PanelNote>
+      </Panel>
     </Doc>
   );
 }

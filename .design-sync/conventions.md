@@ -43,7 +43,7 @@ A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` ho
 
 The Storybook sidebar is grouped by the question a developer asks, one group per job:
 
-- `Foundations/`: the brand, the tokens and the reasoning behind them. No component lives here.
+- `Foundations/`: the brand and the tokens, shown (Start here, Color, Type, Space and shape, Our look, Logo). No component lives here.
 - `Actions/`: let someone do something: `Button` (with `badge` for a count), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `Menu`, `CopyValue`.
 - `Forms/`: let someone enter or choose: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `ChoiceGroup`, `Switch`, `Checkbox`, the date fields and `CreateFlow`.
 - `Tables/`: many rows to scan, sort and filter: `DataTable`, `InfiniteTable`, `NewEntries`.
@@ -191,7 +191,7 @@ updates.
 
 ### The dimensional ramps
 
-`Foundations/Scale` draws these. It is a rendered page, not markdown, so it
+`Foundations/Space and shape` draws these. It is a rendered page, not markdown, so it
 cannot ship as a guideline — this is the copy of it, and the library refuses
 any value off these ramps.
 
@@ -215,8 +215,8 @@ primary action, the command bar, the tab strip. 40 is a table row.
 compact; `DensityProvider` sets `data-density` on the root, and any region may
 set it on its own element. Density scales every size and inset, and a `size`
 (sm, md, lg) stays a role: never pick a smaller size to make a screen denser.
-Compact keeps 40px targets on a touch screen. `Foundations/Scale` has the
-matrix.
+Compact keeps 40px targets on a touch screen. `Foundations/Space and shape`
+shows the same panel in both.
 
 **The index column** — 38px (`--di-index-col`): the ordinal of a row in
 `DataTable` and `Loading shape="table"`, and the icon column of `Notice`.
@@ -224,8 +224,9 @@ Nothing else carries a number of its own.
 
 ### What this system refuses
 
-The end of `Foundations/Register` is the record, with a reason on every line. The short
-version, because a generator that does not know these will reach for them:
+Where a refusal produced a component, its reason is in that component's docs
+(`CommandBar`, `ProposalPanel`, `ConfirmDialog`). The short version, because a
+generator that does not know these will reach for them:
 
 - **No undo-first.** Every action is confirmed *before* it runs, stating basis,
   scope and reversibility. What follows is a receipt carrying an audit id
@@ -241,6 +242,55 @@ version, because a generator that does not know these will reach for them:
 - **Micro-interaction is a colour change on buttons**, 120ms, ease-out. No lift,
   no scale, no press. Never on a table row: forty thousand rows have to hold
   still.
+
+### The register rules
+
+`Foundations/Our look` shows these as do/don't pairs; the story tests measure
+the ones a machine can.
+
+- **Depth is a step in tone, not a line.** Never a surface on the same surface:
+  a panel inside a panel takes the inset tone and drops its edge; a table on a
+  surface drops its frame. A line only separates rows of a table or figures of
+  a row. Only a detached plane (menu, dialog, toast) casts a shadow.
+- **One outline per object.** Nothing outlined sits within 8px inside something
+  outlined. Selection inside a frame is a fill; items in a framed row are framed
+  cells with no track, or unframed in one frame.
+- **Text keeps 12px from its surface's edge.** Rows, menus and media run to the
+  edge on purpose. Footers and secondary zones are a quieter tone than the
+  content; controls under a list start on its text edge, or sit centred.
+- **One strongest element per view;** the header orients, it does not compete.
+  One bold voice per block (only the title), one label style per block (mono
+  capitals above values, or sentence-case labels beside them). An opened part
+  belongs to its head: same surface, same inset, its text on the title's edge.
+- **Selection is the pale tint plus a cornflower edge** — the tint shows what
+  is chosen, the edge carries the contrast. Never a solid cornflower background:
+  segments take a raised neutral thumb, toggles and chosen days the primary ink.
+- **Focus is one ring model:** `--di-focus-ring-width` solid
+  `--di-focus-ring-color`, on `:focus-visible` only. A free-standing control
+  takes it outside at `--di-focus-ring-offset`; an item that touches its
+  neighbours or sits in a clipping frame (menu and option rows, sidebar items,
+  table rows, tabs, segments) takes it inside; a framed item in a group takes it
+  on its edge, so focus and selection are one indicator, never two rings. Inside
+  a strong fill it is `--di-focus-ring-on-strong`. Every scroll frame keeps
+  `--di-focus-ring-reach` as padding, so a ring is never cut.
+- **Marks of provenance:** a filled dot is recorded and verifiable, a hollow
+  ring is inferred. The word beside the mark carries the meaning. Marks are ink
+  in an operational view, so gold stays with the one object; gold marks only in
+  a brand context. Timestamps are ISO 8601 in mono; the tick rule is the only
+  ornament, and only beside a measurement.
+- **A number only where order is information:** steps of a process, the rank
+  in an attention list. Never on a panel, a dialog, a card or an empty notice.
+- **Danger stays apart:** irreversible actions sit in a `Panel tone="danger"`,
+  one `DangerAction` each, and the confirmation (`ConfirmDialog`) carries the
+  danger signal itself.
+- **Wording:** a button is a verb and an object ("Rotate key"). A state is a
+  word beside its mark. An empty list says why and offers one way out. A failure
+  says what failed and what still works — no "Oops", no apology, no exclamation
+  mark. A confirmation states basis, scope and reversibility before the action;
+  what follows is a receipt with the audit id. Sentence case; capitals only in a
+  mono label. No hype words, no emoji. German addresses the reader with "Sie",
+  Spanish with "usted"; German runs about a third longer and wraps between
+  words, a button keeps its label on one line.
 
 ### The mark
 
