@@ -78,9 +78,18 @@ export function Dialog(props: DialogProps) {
   return <ModalDialog {...props} />;
 }
 
-/** The dialog's actions, pinned to its bottom edge: Cancel, then the one that commits. */
-export function DialogFooter({ children }: { children: ReactNode }) {
-  return <div className="di-dialog-footer">{children}</div>;
+/**
+ * The dialog's actions, pinned to its bottom edge: Cancel, then the one that
+ * commits. `note` says at the start why the action waits, such as "Choose at
+ * least one permission".
+ */
+export function DialogFooter({ children, note }: { children: ReactNode; note?: ReactNode }) {
+  return (
+    <div className="di-dialog-footer">
+      {note ? <p className="di-dialog-footer-note">{note}</p> : null}
+      {children}
+    </div>
+  );
 }
 
 function ModalDialog(props: DialogProps) {

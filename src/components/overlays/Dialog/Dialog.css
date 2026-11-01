@@ -13,6 +13,9 @@
     border: 0;
     background: var(--di-bg-surface);
     color: var(--di-text);
+    /* Opened from a table cell or a toolbar, it still reads from the start. */
+    text-align: start;
+    white-space: normal;
     box-shadow: var(--di-shadow-plane);
   }
 
@@ -297,6 +300,12 @@
     padding: 0 var(--di-dialog-inset) var(--di-dialog-inset);
   }
 
+  .di-dialog-footer-note {
+    margin: 0 auto 0 0;
+    color: var(--di-text-muted);
+    font-size: var(--di-font-size-300);
+  }
+
   @media (max-width: 600px) {
     .di-dialog {
       --di-dialog-inset: var(--di-inset-group);
@@ -306,6 +315,11 @@
     .di-dialog-footer {
       flex-direction: column-reverse;
       align-items: stretch;
+    }
+
+    .di-dialog-footer-note {
+      order: 1;
+      margin: 0;
     }
   }
 

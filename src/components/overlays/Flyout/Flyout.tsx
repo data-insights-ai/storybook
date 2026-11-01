@@ -125,6 +125,7 @@ export function FlyoutItems({
  */
 export function FlyoutItem({
   title,
+  detail,
   time,
   unread = false,
   href,
@@ -132,6 +133,8 @@ export function FlyoutItem({
   onSelect,
 }: {
   title: string;
+  /** Where or by whom, under the title: "Production · Alex Admin". */
+  detail?: string;
   /** When it happened, as the reader reads it: "09:12", "Yesterday". */
   time: string;
   unread?: boolean;
@@ -151,6 +154,7 @@ export function FlyoutItem({
         {unread && unreadLabel ? <span className="di-sr">, {unreadLabel}</span> : null}
       </span>
       <span className="di-flyout-item-time">{time}</span>
+      {detail ? <span className="di-flyout-item-detail">{detail}</span> : null}
     </>
   );
   const className = cx("di-flyout-item", "di-row", unread && "is-unread");

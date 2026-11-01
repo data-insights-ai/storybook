@@ -60,6 +60,10 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 - **Long words hyphenate.** Every heading hyphenates words of twelve letters or more in the language its `lang` names ("Sicherheits-produkte") instead of breaking them without a hyphen. Set `lang` on the document or the section.
 - **Size variables.** Tune a size by its variable, never by restyling a class: `--di-brand-title-size`, `--di-brand-section-title-size`, `--di-brand-lede-size`, `--di-brand-quote-size`, `--di-figure-hero-size`, `--di-disclosure-title-size`, `--di-brand-disclosure-title-size`, `--di-brand-disclosure-body-size`, `--di-brand-fact-label-size`, `--di-brand-fact-caption-size`, `--di-brand-fact-value-size` and `--di-brand-fact-statement-size`. Set one on the element that holds the block, or on `:root`.
 - **Phones.** Above a page title the breadcrumb shows the way back to the parent ("← Watchlists"), not the current page again. Side, centre and bottom dialogs follow the visible part of the window, so an on-screen keyboard no longer slides a sheet off the page behind it, and the page behind no longer scrolls in Safari. A date input keeps the width it is given.
+- **Dialogs.** A dialog opened from an end-aligned table cell or toolbar reads from the start again. `DialogFooter note` says at the footer's start why the action waits ("Choose at least one permission"); put no text between the buttons.
+- **A secret shown once.** `SecretReveal` shows a new API key or enrollment token: why to copy it now, the whole value left to right in a box of its own, and a "Copy key" button that confirms. Use it in place of a `Notice` over a `CopyValue`.
+- **Notifications.** `FlyoutItem detail` adds a line under the title for where and by whom ("Production · Alex Admin"); unread entries keep their dot, so no unread badge is needed.
+- **Switches.** A switch in `layout="row"` stays within a reading width (`--di-switch-row-width`, 36rem) of its label instead of the far edge of a wide form.
 
 ## Upgrade to 0.12
 

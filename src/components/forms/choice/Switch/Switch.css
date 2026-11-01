@@ -1,13 +1,14 @@
 @layer components {
   /*
    * The control rides the trailing edge so a column of switches lines up.
-   * The space between is the column, not slack, which is why it only
-   * appears in this layout.
+   * The column is a reading width, not the container's: in a wide form or
+   * dialog the switch stays within reach of its label.
    */
   .di-switch-row.is-row {
     flex-direction: row-reverse;
     justify-content: space-between;
     gap: var(--di-gap-16);
+    max-width: var(--di-switch-row-width, 36rem);
   }
 
   /* The track is a pill's height and nine fifths of it wide; the thumb travels the difference. */

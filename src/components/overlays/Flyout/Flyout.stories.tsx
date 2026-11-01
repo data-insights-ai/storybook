@@ -16,9 +16,9 @@ const meta = {
 
 export default meta;
 
-const entries = [
-  { title: "Source North hub stopped collecting", time: "09:12", unread: true },
-  { title: "Nora Feld granted Analyst on Operations", time: "08:47", unread: true },
+const entries: { title: string; time: string; unread: boolean; detail?: string }[] = [
+  { title: "Source North hub stopped collecting", time: "09:12", unread: true, detail: "Production · automatic" },
+  { title: "Nora Feld granted Analyst on Operations", time: "08:47", unread: true, detail: "Operations · Alex Admin" },
   { title: "Workspace Lab renamed to Research", time: "Yesterday", unread: false },
   { title: "Export of the March register finished and is ready to download", time: "Mon", unread: false },
 ];
@@ -50,6 +50,7 @@ function Notifications({ routed = false }: { routed?: boolean }) {
                   <FlyoutItem
                     key={e.title}
                     title={e.title}
+                    detail={e.detail}
                     time={e.time}
                     unread={e.unread}
                     // eslint-disable-next-line jsx-a11y/anchor-has-content -- the entry renders into the router's anchor
