@@ -51,7 +51,8 @@
 
     /* The display face's steps: a page's name, a section head, a figure. */
     --di-heading-family: var(--di-font-display);
-    --di-page-title-size: var(--di-font-size-800);
+    /* Measured against the page head: 28 px on a phone, 34 px from a desk on, so a narrow screen keeps its first screen for the content. */
+    --di-page-title-size: clamp(var(--di-font-size-700), 1rem + 2cqi, var(--di-font-size-800));
     --di-section-title-size: var(--di-font-size-600);
     --di-block-title-size: var(--di-font-size-500);
     --di-figure-size: var(--di-font-size-700);
