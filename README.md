@@ -50,6 +50,16 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.13
+
+0.13 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.13.0` and check the brand pages:
+
+- **Button links through a router.** `Button` takes `render`, as `TextLink` does: `<Button render={<Link to="/pricing" />} variant="secondary">See pricing</Button>` navigates without a page load. A blocked link (`disabled` or `loading`) is an `<a>` without an address, as with `href`. `Breadcrumb` items and `FlyoutItem` take the same `render`.
+- **Brand tier for questions and facts.** `Disclosure tier="brand"` sets a question at 18 px over a 16 px answer, for an FAQ. `FactList tier="brand"` sets any layout to be read: values at 16 px, a label beside them at 14 px, a caption above them at 12 px. A page that restyled `.di-disclosure-title` or replaced `FactList` with its own `<dl>` can switch back.
+- **Brand titles follow their column.** The brand title (`PageHeader tier="brand"`), its section title, `PullQuote` and the hero `Figure` are sized by the width of the block they stand in, not the window's: a title in half a page is set for half a page. `PullQuote` takes the full width of its column.
+- **Long words hyphenate.** Every heading hyphenates words of twelve letters or more in the language its `lang` names ("Sicherheits-produkte") instead of breaking them without a hyphen. Set `lang` on the document or the section.
+- **Size variables.** Tune a size by its variable, never by restyling a class: `--di-brand-title-size`, `--di-brand-section-title-size`, `--di-brand-lede-size`, `--di-brand-quote-size`, `--di-figure-hero-size`, `--di-disclosure-title-size`, `--di-brand-disclosure-title-size`, `--di-brand-disclosure-body-size`, `--di-brand-fact-label-size`, `--di-brand-fact-caption-size`, `--di-brand-fact-value-size` and `--di-brand-fact-statement-size`. Set one on the element that holds the block, or on `:root`.
+
 ## Upgrade to 0.12
 
 0.12 needs no code change; bump `@data-insights-ai/ui` to `0.12.0` and check the screens:
