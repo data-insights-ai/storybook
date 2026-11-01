@@ -15,6 +15,7 @@ const meta = {
   argTypes: {
     min: { control: "text" },
     gap: { control: "radio", options: [12, 16, 24] },
+    fill: { control: "boolean" },
     children: { control: false },
   },
 } satisfies Meta<typeof Grid>;
@@ -74,6 +75,39 @@ export const Panels: Story = {
       </Panel>
     </Grid>
   ),
+};
+
+/**
+ * `fill`: five trends in three columns end in two wider ones instead of an
+ * empty cell, and a wide panel still takes its own row.
+ */
+export const FillsTheLastRow: Story = {
+  args: { min: "240px", gap: 16, fill: true },
+  globals: { viewport: { value: "desk", isRotated: false } },
+  render: (args) => (
+    <div style={{ maxWidth: "800px" }}>
+      <Grid {...args}>
+        <Panel wide title="Licenses" heading={2}>
+          <p>Until May 2027.</p>
+        </Panel>
+        {["Seats", "Balance", "Members", "AI triage", "Ingested data"].map((title) => (
+          <Panel key={title} title={title} heading={2}>
+            <p>The last 30 days.</p>
+          </Panel>
+        ))}
+      </Grid>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const grid = canvasElement.querySelector<HTMLElement>(".di-grid")!;
+    const edge = grid.getBoundingClientRect().right;
+    const cells = Array.from(grid.children, (cell) => cell.getBoundingClientRect());
+    const rows = new Map<number, DOMRect[]>();
+    for (const cell of cells) rows.set(Math.round(cell.top), [...(rows.get(Math.round(cell.top)) ?? []), cell]);
+    await expect([...rows.values()].map((row) => row.length)).toEqual([1, 3, 2]);
+    for (const row of rows.values())
+      await expect(Math.round(Math.max(...row.map((cell) => cell.right)))).toBe(Math.round(edge));
+  },
 };
 
 /** Short fields side by side at 16, the form's rhythm, inside the panel that holds them; on a phone they stack. */

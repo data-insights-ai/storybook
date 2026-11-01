@@ -15,4 +15,20 @@
   .di-grid[data-gap="24"] {
     gap: var(--di-gap-24);
   }
+
+  /* Filling, the cells wrap as a row of their own minimum and grow into what is left, so a short last row
+     has no empty cells; a wide panel still takes a row to itself. */
+  .di-grid[data-fill] {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .di-grid[data-fill] > * {
+    flex: 1 1 min(var(--di-grid-min), 100%);
+    min-width: 0;
+  }
+
+  .di-grid[data-fill] > .is-wide {
+    flex-basis: 100%;
+  }
 }

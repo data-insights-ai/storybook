@@ -425,6 +425,48 @@ export const SingleRow: Story = {
 };
 
 /**
+ * A row's actions stay on one line: "Open" and the row's "…" beside it, not
+ * broken under each other in a narrow actions column.
+ */
+export const RowActionsOnOneLine: Story = {
+  args: { caption: "Products" },
+  render: (args) => (
+    <DataTable {...args}>
+      <TableHead>
+        <TableColumn width="fill">Product</TableColumn>
+        <TableColumn>Status</TableColumn>
+        <TableColumn align="end">Actions</TableColumn>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>Reports</TableCell>
+          <TableCell>
+            <StatusPill tone="ok">Enabled</StatusPill>
+          </TableCell>
+          <TableCell align="end">
+            <Toolbar>
+              <Button variant="secondary" size="sm" href="#reports">
+                Open
+              </Button>
+              <Button variant="ghost" size="sm" iconOnly aria-label="Actions for Reports">
+                <Plus aria-hidden />
+              </Button>
+            </Toolbar>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </DataTable>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const open = canvas.getByRole("link", { name: "Open" }).getBoundingClientRect();
+    const more = canvas.getByRole("button", { name: "Actions for Reports" }).getBoundingClientRect();
+    await expect(Math.abs(open.top + open.height / 2 - (more.top + more.height / 2))).toBeLessThan(1);
+    await expect(more.left).toBeGreaterThan(open.right);
+  },
+};
+
+/**
  * A filter that matches nothing: the head stays, one row says why and offers
  * the way back. The message starts on the first data column, past the index
  * column, and the way out ends on the last column; the footer is dropped,

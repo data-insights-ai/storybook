@@ -190,6 +190,12 @@
     white-space: nowrap;
   }
 
+  /* A row's actions stay one line: "Open" and its "…" broken over two rows read as two rows. */
+  .di-table td > .di-toolbar {
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+  }
+
   /*
    * Every cell keeps the same inset on all four sides of its content: a
    * value of two lines (a name and its description) stays clear of the

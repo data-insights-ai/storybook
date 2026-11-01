@@ -50,6 +50,13 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.14.1
+
+0.14.1 needs no code change.
+
+- `Grid fill` lets a short last row share the width: five cards in three columns end in two wider ones instead of an empty cell. A `Panel wide` still takes a row to itself.
+- A `Toolbar` in a table cell keeps its actions on one line, so "Open" and the row's "…" no longer break under each other when another column fills the table.
+
 ## Upgrade to 0.14
 
 0.14 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.14.0` and check the brand pages:
