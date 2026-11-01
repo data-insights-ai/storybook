@@ -131,15 +131,31 @@ export const LongLabels: Story = {
   },
 };
 
-/** On a phone only the page itself shows, on one line: the drawer is the way back up. */
+/** On a phone, above the title, one line: the way back up to the parent, long labels truncated. */
 export const OnAPhone: Story = {
   globals: { viewport: { value: "phone", isRotated: false } },
   args: LongLabels.args,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement.querySelector("nav")!);
-    await expect(canvas.getByText("Aufbewahrungsrichtlinien für Protokolldaten")).toBeVisible();
-    await expect(canvas.queryByRole("link", { name: "Benachrichtigungen" })).toBeNull();
+    await expect(canvas.getByRole("link", { name: "Benachrichtigungen" })).toBeVisible();
+    await expect(canvas.getByText("Aufbewahrungsrichtlinien für Protokolldaten")).not.toBeVisible();
+    await expect(canvas.queryByRole("link", { name: "Arbeitsbereich Nordwind Sicherheit" })).toBeNull();
     const list = canvasElement.querySelector<HTMLElement>(".di-breadcrumb-list")!;
     await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth + 1);
+  },
+};
+
+/**
+ * On a phone, above the page's title: the way back up to the parent, not the
+ * current page again.
+ */
+export const PhoneBackLink: Story = {
+  name: "Phone back link",
+  globals: { viewport: { value: "phone", isRotated: false } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.querySelector("nav")!);
+    await expect(canvas.getByRole("link", { name: "Sources" })).toBeVisible();
+    await expect(canvas.getByText("feed.example.io")).not.toBeVisible();
+    await expect(canvas.queryByRole("link", { name: "Example studio" })).toBeNull();
   },
 };
