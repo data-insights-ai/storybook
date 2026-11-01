@@ -178,12 +178,6 @@ export function EventTimeline({
     onPick: pick,
   });
 
-  // Set as a property: React 18.3 does not pass `inert` through as a boolean attribute.
-  const canvas = useRef<HTMLDivElement>(null);
-  useLayoutEffect(() => {
-    if (canvas.current) canvas.current.inert = loading;
-  });
-
   const hoverPx = gestures.hover !== null && gestures.hover >= 0 && gestures.hover <= plotPx ? gestures.hover : null;
   const target = useMemo((): TimelineTarget | null => {
     if (hoverPx === null || gestures.brush || loading) {
@@ -261,7 +255,7 @@ export function EventTimeline({
               {...gestures.handlers}
             >
               {/* Under the loading veil the plot is stale and inactive, so it is inert. */}
-              <div ref={canvas} className="di-timeline-canvas">
+              <div inert={loading} className="di-timeline-canvas">
                 <svg width={framePx} height={axisTop + AXIS_H} className="di-timeline-svg" aria-hidden>
                   <TimeAxis ticks={ticks} label={clock.tick} scale={scale} plotPx={plotPx} top={axisTop} />
                   {score ? (

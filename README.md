@@ -46,9 +46,13 @@ import "@data-insights-ai/ui/styles.css";
 import { Button } from "@data-insights-ai/ui";
 ```
 
-Import the stylesheet once. It carries the tokens, the base rules, and the woff2 faces. Importing a component pulls in that component and its own stylesheet, and leaves the unused components out. The app supplies React 18.3 or newer. Strings are props. `data-theme="dark"` on a parent switches the semantic tokens.
+Import the stylesheet once. It carries the tokens, the base rules, and the woff2 faces. Importing a component pulls in that component and its own stylesheet, and leaves the unused components out. The app supplies React 19 or newer: components take `ref` as a prop. Strings are props. `data-theme="dark"` on a parent switches the semantic tokens.
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
+
+## Upgrade to 0.13.1
+
+0.13.1 declares what the components already need: React 19 or newer (`react` and `react-dom` `>=19`). Components take `ref` as a prop, which React 18 ignores, so on React 18 a menu or popover never found its trigger. An app on React 18 upgrades React first; no code change is needed after that.
 
 ## Upgrade to 0.13
 
