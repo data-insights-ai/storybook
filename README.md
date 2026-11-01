@@ -50,6 +50,15 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.12
+
+0.12 needs no code change; bump `@data-insights-ai/ui` to `0.12.0` and check the screens:
+
+- **Sidebar.** Ivory `#fbf8f1` in daylight, a step lighter than the page; near black `#081221` after dark, a step deeper. The current page is marked by a gold edge (`--di-sidebar-mark`: gold 700 in daylight, gold 400 after dark).
+- **Page head.** The page name scales with the head from 28 px on a phone to 34 px on a desk; the lede is 16 px. Leave a little more room above the fold on a phone.
+- **Panels.** A `Panel` with `heading={2}` is a section of the page and names itself at 20 px; other panel titles stay at 16 px.
+- **CopyValue.** A value of several lines (a command, a configuration) keeps its lines and indent and wraps at spaces; a one-line value still wraps only at address boundaries.
+
 ## Upgrade to 0.11
 
 0.11 merges many components into fewer and removes the old names and props outright: there are no aliases, wrappers or ignored props to fall back on. [MIGRATION-0.11.md](MIGRATION-0.11.md) lists each change as old → new with a short example, grouped by component, and the files in each product that change. The Storybook sidebar is regrouped into those fourteen groups, so story links change; imports from the package do not.
