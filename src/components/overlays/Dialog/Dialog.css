@@ -58,12 +58,14 @@
   }
 
   /* From the right edge, the full height. */
+  /* Sized to what the reader sees, so an on-screen keyboard does not slide
+     the sheet off the page behind it. */
   .di-dialog[data-placement="side"] {
     position: fixed;
-    inset: 0 0 0 auto;
+    inset: var(--di-visible-top, 0) 0 auto auto;
     width: min(var(--di-dialog-width), 100vw);
-    height: 100dvh;
-    max-height: 100dvh;
+    height: var(--di-visible-height, 100dvh);
+    max-height: var(--di-visible-height, 100dvh);
     margin: 0;
     translate: 100% 0;
   }
@@ -72,7 +74,7 @@
   .di-dialog[data-placement="center"] {
     --di-dialog-width: var(--di-dialog-width-md);
     width: min(var(--di-dialog-width), calc(100vw - var(--di-space-32)));
-    max-height: calc(100dvh - var(--di-space-64));
+    max-height: calc(var(--di-visible-height, 100dvh) - var(--di-space-64));
     border-radius: var(--di-radius-surface);
     opacity: 0;
     translate: 0 calc(-1 * var(--di-space-8));
@@ -93,9 +95,9 @@
   /* From the bottom edge, the full width: a picker on a phone. */
   .di-dialog[data-placement="bottom"] {
     position: fixed;
-    inset: auto 0 0 0;
+    inset: auto 0 max(0px, calc(100% - var(--di-visible-top, 0px) - var(--di-visible-height, 100%))) 0;
     width: 100vw;
-    max-height: var(--di-dialog-bottom-max);
+    max-height: min(var(--di-dialog-bottom-max), var(--di-visible-height, 100dvh));
     margin: 0;
     border-radius: var(--di-radius-surface) var(--di-radius-surface) 0 0;
     translate: 0 100%;
@@ -130,6 +132,7 @@
   }
 
   /* The page behind holds still: the dialog is the only thing that scrolls. */
+  :root:has(.di-dialog[open]),
   body:has(.di-dialog[open]) {
     overflow: hidden;
   }

@@ -59,6 +59,7 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 - **Brand titles follow their column.** The brand title (`PageHeader tier="brand"`), its section title, `PullQuote` and the hero `Figure` are sized by the width of the block they stand in, not the window's: a title in half a page is set for half a page. `PullQuote` takes the full width of its column.
 - **Long words hyphenate.** Every heading hyphenates words of twelve letters or more in the language its `lang` names ("Sicherheits-produkte") instead of breaking them without a hyphen. Set `lang` on the document or the section.
 - **Size variables.** Tune a size by its variable, never by restyling a class: `--di-brand-title-size`, `--di-brand-section-title-size`, `--di-brand-lede-size`, `--di-brand-quote-size`, `--di-figure-hero-size`, `--di-disclosure-title-size`, `--di-brand-disclosure-title-size`, `--di-brand-disclosure-body-size`, `--di-brand-fact-label-size`, `--di-brand-fact-caption-size`, `--di-brand-fact-value-size` and `--di-brand-fact-statement-size`. Set one on the element that holds the block, or on `:root`.
+- **Phones.** Above a page title the breadcrumb shows the way back to the parent ("← Watchlists"), not the current page again. Side, centre and bottom dialogs follow the visible part of the window, so an on-screen keyboard no longer slides a sheet off the page behind it, and the page behind no longer scrolls in Safari. A date input keeps the width it is given.
 
 ## Upgrade to 0.12
 

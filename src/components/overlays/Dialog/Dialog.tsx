@@ -18,6 +18,7 @@ import { surfaceClass } from "../../../internal/surface";
 import { Eyebrow } from "../../text/Eyebrow";
 import { useShortcut } from "../../../internal/useShortcut";
 import { useModalDialog } from "../useModalDialog";
+import { useVisibleViewport } from "../../../internal/useVisibleViewport";
 import "./Dialog.css";
 
 export type DialogProps = {
@@ -88,6 +89,7 @@ function ModalDialog(props: DialogProps) {
   const titleId = useId();
 
   useModalDialog(ref, open, ".di-dialog-title");
+  useVisibleViewport(ref, open);
 
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- Esc and a press on the scrim close the dialog
