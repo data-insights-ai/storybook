@@ -51,7 +51,7 @@
 
     /* The display face's steps: a page's name, a section head, a figure. */
     --di-heading-family: var(--di-font-display);
-    --di-page-title-size: var(--di-font-size-700);
+    --di-page-title-size: var(--di-font-size-800);
     --di-section-title-size: var(--di-font-size-600);
     --di-block-title-size: var(--di-font-size-500);
     --di-figure-size: var(--di-font-size-700);
