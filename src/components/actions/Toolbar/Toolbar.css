@@ -203,6 +203,8 @@
      */
     .di-toolbar[role="search"]:has(> .di-search) > .di-search {
       flex: 1 1 0;
+      /* Its floor is not the input's intrinsic width: that follows the font (wider on Linux) and wrapped the actions. */
+      min-width: 0;
       order: -3;
     }
 

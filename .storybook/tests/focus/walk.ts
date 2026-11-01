@@ -14,6 +14,9 @@ const settled = async () => {
     Promise.all(running.map((animation) => animation.finished.catch(() => undefined))),
     new Promise((done) => setTimeout(done, 400)),
   ]);
+  // A Base UI guard hands focus on in the next frame; a busy runner read the guard itself before then.
+  for (let frame = 0; frame < 10 && document.activeElement?.matches("[data-base-ui-focus-guard]"); frame++)
+    await new Promise((done) => requestAnimationFrame(done));
 };
 
 /**

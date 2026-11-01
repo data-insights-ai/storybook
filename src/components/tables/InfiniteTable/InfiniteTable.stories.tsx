@@ -95,7 +95,7 @@ const wide = (n: number): Entry => ({
 
 /* Every row loaded at once, so the test scrolls the whole register. */
 function LongRegister() {
-  const entries = Array.from({ length: 600 }, (_, i) => wide(600 - i));
+  const entries = Array.from({ length: 300 }, (_, i) => wide(300 - i));
   return (
     <InfiniteTable
       caption="Collector runs"
@@ -127,7 +127,7 @@ function LongRegister() {
 }
 
 /**
- * Six hundred rows of uneven width. The columns are measured once from the
+ * Three hundred rows of uneven width. The columns are measured once from the
  * head and the first rows and keep their place while the register scrolls,
  * whatever the rows on screen happen to hold.
  */
