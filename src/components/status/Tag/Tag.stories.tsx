@@ -5,6 +5,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Toolbar, ToolbarEnd } from "../../actions/Toolbar";
 import { Panel } from "../../layout/page/Panel";
+import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 import { Tag, TagList } from "./Tag";
 import { onPanel } from "../../../../.storybook/onPanel";
 import { separatorsAtLineStart } from "../../../../.storybook/tests/lineStart";
@@ -235,5 +236,44 @@ export const Narrow: Story = {
     }
     column.style.width = "328px";
     await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
+  },
+};
+
+/**
+ * In a table a short tag keeps its word: the column is sized by the tag's
+ * whole word, so a mark like "KEV" never stacks letter by letter beside a
+ * long title that takes the room.
+ */
+export const InATable: Story = {
+  name: "In a table",
+  render: () => (
+    <div className="narrow-table" style={{ width: 360, maxWidth: "100%" }}>
+      <DataTable caption="Records" indexed={false}>
+        <TableHead>
+          <TableColumn>Record</TableColumn>
+          <TableColumn>Signals</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>
+              CVE-2026-900204 · Example memory corruption vulnerability in a component that many products bundle
+            </TableCell>
+            <TableCell>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, whiteSpace: "nowrap" }}>
+                <Tag>KEV</Tag>
+                <span>4.8%</span>
+              </span>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const name =
+      canvasElement.querySelector<HTMLElement>(".di-tag-name") ?? canvasElement.querySelector<HTMLElement>(".di-tag")!;
+    const range = document.createRange();
+    range.selectNodeContents(name);
+    await expect(Array.from(range.getClientRects()).filter((rect) => rect.width > 0)).toHaveLength(1);
   },
 };

@@ -1,6 +1,6 @@
 # Upgrading to 0.11
 
-0.11 merges many components into fewer and keeps no old name behind: no alias, no wrapper, no prop that is accepted and ignored. Bump `@data-insights-ai/ui` to `0.11.2` (0.11.0 was never published) and run the product's typecheck: it finds every removed export and prop. Class names, tokens and changed behaviour it cannot find; they are listed here too. This guide gives the replacement for each change, with a short example, and the files in each product that use it.
+0.11 merges many components into fewer and keeps no old name behind: no alias, no wrapper, no prop that is accepted and ignored. Bump `@data-insights-ai/ui` to `0.11.3` (0.11.0 was never published) and run the product's typecheck: it finds every removed export and prop. Class names, tokens and changed behaviour it cannot find; they are listed here too. This guide gives the replacement for each change, with a short example, and the files in each product that use it.
 
 The file lists come from a read-only scan of the products' sources (imports from `@data-insights-ai/ui`, the JSX props passed, and class names and tokens in code and CSS) on 2026-10-30: account-platform at `ee104713`, AI SOC at `4f8e4835`, CVE Current at `29767a8`. "Files to change" must change to compile or to keep working; "Files to check" changed look or behaviour and may need nothing.
 

@@ -10,6 +10,7 @@
     display: inline-flex;
     align-items: baseline;
     gap: var(--di-gap-4);
+    min-width: 0;
     max-width: 100%;
     padding: var(--di-gap-2) var(--di-gap-6);
     border: 1px solid var(--di-border);
@@ -42,19 +43,17 @@
    * alone is wider: a role or a group is read whole, never cut.
    */
   .di-tag-name {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--di-gap-4);
+    display: block;
     min-width: 0;
     white-space: normal;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   .di-tag-name > svg {
     width: var(--di-icon-sm);
     height: var(--di-icon-sm);
-    flex: none;
-    align-self: center;
+    margin-inline-end: var(--di-gap-4);
+    vertical-align: middle;
     color: var(--di-text-muted);
   }
 
@@ -125,7 +124,7 @@
 
   .di-tag-detail {
     min-width: 0;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     white-space: normal;
     color: var(--di-text-muted);
   }
