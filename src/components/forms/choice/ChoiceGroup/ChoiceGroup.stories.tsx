@@ -23,6 +23,7 @@ const meta = {
 
 export default meta;
 type Story = StoryObj;
+type Period = "1h" | "24h" | "7d" | "30d";
 
 /** A play ends with nothing focused, so the story rests in the state it names. */
 const rest = () => (document.activeElement as HTMLElement | null)?.blur();
@@ -224,7 +225,7 @@ export const InAToolbar: Story = {
   decorators: [onPanel("Events")],
   name: "Segments in a toolbar",
   render: function Render() {
-    const [value, setValue] = useState("24h");
+    const [value, setValue] = useState<Period>("24h");
     return (
       <Toolbar>
         <SearchField label="Search events" placeholder="Search events" />
@@ -240,7 +241,7 @@ export const InAToolbar: Story = {
             { value: "30d", label: "30d" },
           ]}
           value={value}
-          onChange={setValue}
+          onChange={(next) => setValue(next as Period)}
         />
         <ToolbarEnd>
           <Button>Export</Button>

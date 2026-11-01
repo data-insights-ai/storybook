@@ -95,6 +95,8 @@ function fitsItsColumn(figure: HTMLElement) {
 /* In fractions of a pixel: scrollWidth and clientWidth round, and a value 0.7px wider than its column still wraps. */
 function overflows(element: HTMLElement) {
   const text = element.ownerDocument.createRange();
+  // jsdom, where product tests render, lays nothing out and cannot measure a range.
+  if (typeof text.getBoundingClientRect !== "function") return false;
   text.selectNodeContents(element);
   return text.getBoundingClientRect().width > element.getBoundingClientRect().width;
 }

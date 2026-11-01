@@ -76,6 +76,9 @@ type WithOptions = Frame & {
 
 type Composed = Frame & {
   options?: undefined;
+  multiple?: undefined;
+  value?: undefined;
+  onChange?: undefined;
   /** `Checkbox` or `Radio` controls the caller lays out. */
   children: ReactNode;
 };
