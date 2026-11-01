@@ -50,6 +50,10 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.13.2
+
+0.13.2 needs no code change. A folded `Disclosure` no longer lengthens the page: an absolutely placed descendant, such as the screen-reader status of a `CopyValue`, is now clipped with the rest of the body.
+
 ## Upgrade to 0.13.1
 
 0.13.1 declares what the components already need: React 19 or newer (`react` and `react-dom` `>=19`). Components take `ref` as a prop, which React 18 ignores, so on React 18 a menu or popover never found its trigger. An app on React 18 upgrades React first; no code change is needed after that.

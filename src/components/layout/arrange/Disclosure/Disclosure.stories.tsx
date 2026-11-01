@@ -231,6 +231,28 @@ export const Closed: Story = {
   },
 };
 
+/**
+ * Folded, a long body takes no room: not even a screen-reader status placed
+ * absolutely inside it reaches past the head and lengthens the page.
+ */
+export const FoldedTakesNoRoom: Story = {
+  render: () => (
+    <Panel title="Finding" heading={2}>
+      <Disclosure id="raw" toggle="head" title="Raw record">
+        <pre style={{ height: "600px", margin: 0 }}>{"{}"}</pre>
+        <span className="di-sr" role="status">
+          Copied
+        </span>
+      </Disclosure>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const status = within(canvasElement).getByRole("status", { hidden: true });
+    const clip = canvasElement.querySelector(".di-disclosure-clip");
+    await waitFor(() => expect(status.offsetParent).toBe(clip));
+  },
+};
+
 /** Long German titles wrap inside the head; on a phone the meta moves under them. */
 export const LongTitles: Story = {
   render: () => (

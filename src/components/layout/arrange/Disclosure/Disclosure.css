@@ -218,6 +218,11 @@
     overflow: clip;
   }
 
+  /* Folded, it is positioned too, so an absolutely placed descendant (a screen-reader status) is clipped with the rest instead of lengthening the page; open, a dropdown inside may still reach past it. */
+  .di-disclosure:not(.is-open) > .di-disclosure-fold > .di-disclosure-clip {
+    position: relative;
+  }
+
   .di-disclosure-body {
     display: flex;
     flex-direction: column;
