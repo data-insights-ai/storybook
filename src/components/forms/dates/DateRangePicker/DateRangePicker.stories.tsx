@@ -11,9 +11,12 @@ import { Select } from "../../select/Select";
 type Screen = ReturnType<typeof within>;
 
 // Types a day into the segments of a typed date field: day, month, year in en-GB.
+// Types a day as DDMMYYYY and waits until its year holds it, so a loaded runner never acts on a half-typed day.
 const typeDay = async (screen: Screen, label: string, digits: string) => {
-  await userEvent.click(within(screen.getByRole("group", { name: label })).getAllByRole("spinbutton")[0]);
+  const segments = within(screen.getByRole("group", { name: label })).getAllByRole("spinbutton");
+  await userEvent.click(segments[0]);
   await userEvent.keyboard(digits);
+  await waitFor(() => expect(segments[2]).toHaveAttribute("aria-valuenow", String(Number(digits.slice(4)))));
 };
 
 // Empties the year, which leaves the day incomplete.
