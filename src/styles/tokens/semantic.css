@@ -157,13 +157,14 @@
 
     --di-index-col: 38px;
 
-    /* Navigation is never heavier than the content: a paper tone a step below the ground. */
-    --di-sidebar-bg: var(--di-paper-chrome);
-    --di-sidebar-raised: var(--di-paper-ground);
+    /* The navigation is ivory, a step above the ground; the brand gold marks the current page (5.4:1 on its tint). */
+    --di-sidebar-bg: var(--di-paper-ivory);
+    --di-sidebar-raised: var(--di-gold-100);
     --di-sidebar-fg: var(--di-navy-900);
     --di-sidebar-muted: var(--di-navy-500);
-    --di-sidebar-active: var(--di-paper-surface);
-    --di-sidebar-edge: rgba(74, 58, 20, 0.1);
+    --di-sidebar-active: var(--di-gold-100);
+    --di-sidebar-edge: rgba(122, 92, 14, 0.22);
+    --di-sidebar-mark: var(--di-gold-700);
     --di-sidebar-focus: var(--di-navy-700);
 
     --di-status-ok-fg: var(--di-ok-800);
@@ -323,12 +324,13 @@
     --di-inverse-mark: var(--di-night-muted);
     --di-inverse-focus: var(--di-cornflower-200);
 
-    --di-sidebar-bg: var(--di-night-chrome);
+    --di-sidebar-bg: var(--di-night-deep);
     --di-sidebar-raised: var(--di-night-surface);
     --di-sidebar-fg: var(--di-night-ink);
     --di-sidebar-muted: var(--di-night-subtle);
     --di-sidebar-active: var(--di-night-surface);
-    --di-sidebar-edge: rgba(168, 182, 210, 0.14);
+    --di-sidebar-edge: rgba(168, 182, 210, 0.12);
+    --di-sidebar-mark: var(--di-gold-400);
     --di-sidebar-focus: var(--di-cornflower-200);
 
     --di-status-ok-fg: var(--di-ok-200);

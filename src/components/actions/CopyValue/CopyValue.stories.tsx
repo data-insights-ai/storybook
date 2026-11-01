@@ -99,3 +99,18 @@ export const LongAddressGerman: Story = {
     await expectFewLines(canvasElement.querySelector(".di-copy-value")!);
   },
 };
+
+/** A command a person pastes into a terminal: its own lines and indent, wrapped at spaces, never inside an option. */
+export const Command: Story = {
+  args: {
+    value:
+      "curl --get 'https://cve.example.com/api/v1/cves' \\\n  --header 'Authorization: Bearer YOUR_API_KEY' \\\n  --data-urlencode 'vendor=Microsoft'",
+    copyLabel: "Copy request",
+  },
+  play: async ({ canvasElement }) => {
+    const value = canvasElement.querySelector(".di-copy-value")!;
+    await expect(value).toHaveClass("is-lines");
+    await expect(value.textContent).toContain("\n  --header");
+    await expect(getComputedStyle(value).whiteSpace).toBe("pre-wrap");
+  },
+};

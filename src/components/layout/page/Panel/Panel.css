@@ -48,6 +48,12 @@
     color: var(--di-text);
   }
 
+  /* A panel that is a section of the page (an h2) names it at the section step, below the page name and above its blocks. */
+  h2.di-panel-title {
+    font-size: var(--di-section-title-size);
+    line-height: var(--di-leading-tight);
+  }
+
   .di-panel-status {
     display: inline-flex;
     flex: none;

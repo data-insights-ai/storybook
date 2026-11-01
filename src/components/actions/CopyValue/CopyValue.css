@@ -14,6 +14,12 @@
     overflow-wrap: anywhere;
   }
 
+  /* A command or a configuration: its own lines and indent, wrapped at spaces. */
+  .di-copy-value.is-lines {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+
   /* The button is as tall as the value's line, never taller, so it never pushes into the lines above and below. */
   .di-copy-button {
     --di-copy-button-size: min(var(--di-control-h-sm), 1lh);

@@ -19,6 +19,8 @@ import "./CopyValue.css";
  * of a URL is split; a run with no boundary, such as a hash, wraps where it
  * must. In a `FactList layout="columns"` a value longer than a column (a URL)
  * sits in a `Fact wide`, which takes the whole row; an id keeps its column.
+ * A value of several lines (a command, a configuration) keeps its lines and
+ * their indent, and wraps at spaces.
  *
  * **Accessibility:** the button is named by `copyLabel`; the copied word is
  * read from a polite live region. On a touch screen its hit area is 40px.
@@ -47,13 +49,17 @@ export function CopyValue({
     return () => clearTimeout(timer);
   }, [copied]);
 
+  const lines = value.includes("\n");
+
   const copy = () => {
     void navigator.clipboard?.writeText(value).then(() => setCopied(true));
   };
 
   return (
     <span className={cx("di-copy", className)}>
-      <span className={cx("di-copy-value", mono && "di-mono")}>{addressBreaks(value)}</span>
+      <span className={cx("di-copy-value", mono && "di-mono", lines && "is-lines")}>
+        {lines ? value : addressBreaks(value)}
+      </span>
       <button type="button" className="di-copy-button" aria-label={copyLabel} title={copyLabel} onClick={copy}>
         {copied ? <Check aria-hidden /> : <Copy aria-hidden />}
       </button>
