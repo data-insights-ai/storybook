@@ -119,6 +119,21 @@
     text-wrap: balance;
   }
 
+  /*
+   * A long word in a heading ("Sicherheitsprodukte") hyphenates in the
+   * language `lang` names rather than breaking without a hyphen or running
+   * past its column; a word under twelve letters never does.
+   */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    hyphens: auto;
+    hyphenate-limit-chars: 12 5 5;
+  }
+
   p,
   li,
   dd {

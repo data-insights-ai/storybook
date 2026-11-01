@@ -50,6 +50,25 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.13
+
+0.13 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.13.0` and check the brand pages:
+
+- **Button links through a router.** `Button` takes `render`, as `TextLink` does: `<Button render={<Link to="/pricing" />} variant="secondary">See pricing</Button>` navigates without a page load. A blocked link (`disabled` or `loading`) is an `<a>` without an address, as with `href`. `Breadcrumb` items and `FlyoutItem` take the same `render`.
+- **Brand tier for questions and facts.** `Disclosure tier="brand"` sets a question at 18 px over a 16 px answer, for an FAQ. `FactList tier="brand"` sets any layout to be read: values at 16 px, a label beside them at 14 px, a caption above them at 12 px. A page that restyled `.di-disclosure-title` or replaced `FactList` with its own `<dl>` can switch back.
+- **Brand titles follow their column.** The brand title (`PageHeader tier="brand"`), its section title, `PullQuote` and the hero `Figure` are sized by the width of the block they stand in, not the window's: a title in half a page is set for half a page. `PullQuote` takes the full width of its column.
+- **Long words hyphenate.** Every heading hyphenates words of twelve letters or more in the language its `lang` names ("Sicherheits-produkte") instead of breaking them without a hyphen. Set `lang` on the document or the section.
+- **Size variables.** Tune a size by its variable, never by restyling a class: `--di-brand-title-size`, `--di-brand-section-title-size`, `--di-brand-lede-size`, `--di-brand-quote-size`, `--di-figure-hero-size`, `--di-disclosure-title-size`, `--di-brand-disclosure-title-size`, `--di-brand-disclosure-body-size`, `--di-brand-fact-label-size`, `--di-brand-fact-caption-size`, `--di-brand-fact-value-size` and `--di-brand-fact-statement-size`. Set one on the element that holds the block, or on `:root`.
+- **Phones.** Above a page title the breadcrumb shows the way back to the parent ("← Watchlists"), not the current page again. Side, centre and bottom dialogs follow the visible part of the window, so an on-screen keyboard no longer slides a sheet off the page behind it, and the page behind no longer scrolls in Safari. A date input keeps the width it is given.
+- **Dialogs.** A dialog opened from an end-aligned table cell or toolbar reads from the start again. `DialogFooter note` says at the footer's start why the action waits ("Choose at least one permission"); put no text between the buttons.
+- **A secret shown once.** `SecretReveal` shows a new API key or enrollment token: why to copy it now, the whole value left to right in a box of its own, and a "Copy key" button that confirms. Use it in place of a `Notice` over a `CopyValue`.
+- **Notifications.** `FlyoutItem detail` adds a line under the title for where and by whom ("Production · Alex Admin"); unread entries keep their dot, so no unread badge is needed.
+- **Breadcrumbs take the eyebrow's place.** A `PageHeader` with `PageHeaderCrumbs` no longer draws its `eyebrow`: a detail page names where it belongs once, in one line.
+- **Switches.** A switch in `layout="row"` stays within a reading width (`--di-switch-row-width`, 36rem) of its label instead of the far edge of a wide form. A single switch in a form keeps the default `inline` layout, control first; `row` is for a column of settings.
+- **Toolbars.** The search field shrinks before a filter wraps to a second row, and stops growing at 28rem.
+- **Danger zone.** A `Panel tone="danger"` with `heading={2}` is named at a `DetailSection` title's size, so it reads as one more section of the page; its edge marks it.
+- **More on a phone.** A tap on the bar's "More" before its popover has loaded opens it once loaded instead of being lost.
+
 ## Upgrade to 0.12
 
 0.12 needs no code change; bump `@data-insights-ai/ui` to `0.12.0` and check the screens:

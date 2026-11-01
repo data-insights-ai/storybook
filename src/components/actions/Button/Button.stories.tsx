@@ -317,6 +317,54 @@ export const NavigatesBlocked: Story = {
   },
 };
 
+/**
+ * A router's link component goes in `render`: it renders the `<a>` and
+ * navigates without a page load; the button supplies its look, its name,
+ * its key and its focus ring.
+ */
+export const WithRouterLink: Story = {
+  decorators: [onPanel("Entry 0148")],
+  args: { children: "Open record" },
+  parameters: { controls: { disable: true } },
+  render: ({ children }) => (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content -- Button renders its label into the router's anchor
+    <Button render={<a href="#/register/0148" data-router="link" />} variant="secondary" shortcut="o">
+      {children}
+    </Button>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const link = canvas.getByRole("link", { name: "Open record" });
+    await expect(link).toHaveAttribute("data-router", "link");
+    await expect(link).toHaveAttribute("href", "#/register/0148");
+    await expect(link).toHaveClass("di-btn", "di-btn-secondary");
+    await expect(link).toHaveAttribute("aria-keyshortcuts", "o");
+    link.focus();
+    await expect(getComputedStyle(link).outlineStyle).toBe("solid");
+  },
+};
+
+/** Blocked, a routed link is a link with no address, as with `href`: the router's link is not rendered. */
+export const WithRouterLinkBlocked: Story = {
+  decorators: [onPanel("Entry 0148")],
+  args: { children: "Opening" },
+  parameters: { controls: { disable: true } },
+  render: ({ children }) => (
+    // eslint-disable-next-line jsx-a11y/anchor-has-content -- Button renders its label into the router's anchor
+    <Button render={<a href="#/register/0148" data-router="link" />} variant="secondary" loading={true}>
+      {children}
+    </Button>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const link = canvas.getByRole("link", { name: "Opening" });
+    await expect(link).toHaveAttribute("aria-disabled", "true");
+    await expect(link).toHaveAttribute("aria-busy", "true");
+    await expect(link).not.toHaveAttribute("href");
+    await expect(link).not.toHaveAttribute("data-router");
+  },
+};
+
 /** Every variant at once, for a pass over the whole set. */
 export const AllVariants: Story = {
   decorators: [onPanel("Every variant")],

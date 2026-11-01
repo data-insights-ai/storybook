@@ -14,11 +14,18 @@ import "./PullQuote.css";
  * sentence does. No quote glyph, no gold, no card: anything drawn around it
  * would be a second claim. There is no attribution slot.
  *
+ * **Size:** 28 to 44px with the width of the column it stands in
+ * (`--di-brand-quote-size`); it takes that column's full width.
+ *
  * **Content:** one short sentence, four to ten words.
  *
  * **Accessibility:** a native `<blockquote>`; set `lang` on the page so long
  * words hyphenate.
  */
 export function PullQuote({ children }: { children: ReactNode }) {
-  return <blockquote className="di-pull">{children}</blockquote>;
+  return (
+    <div className="di-pull-frame">
+      <blockquote className="di-pull">{children}</blockquote>
+    </div>
+  );
 }

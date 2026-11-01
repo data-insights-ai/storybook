@@ -136,12 +136,12 @@ Rules that make output look native rather than approximate:
 
 - **Only ever text → a `string` prop. Anything that can hold a component → a slot.** A slot is a named sub-component written as a child, in any order: `<Panel><PanelFooter>…</PanelFooter></Panel>`, `<Notice><NoticeIcon/>…`, `<Toast><ToastAction>…`.
 - **A variant is one union prop**, never a family of booleans: `hint` + `hintTone` (`neutral | sealed | error`), `layout`, `tone`, `size`.
-- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `level` (a field’s `confidence`), `variant` (`Button`, `IconTile`, `Eyebrow`), `tier` (`PageHeader`), `layout` (`FactList`, `Switch`), `labelTrack` (`TextField`, `Select`), `size` (`Button`, `Notice`), `gap` (`Stack`). `neutral` is the word for "nothing special" — never `default`, never `info`.
+- **`tone` means one thing: status on the shared ramp** — `neutral | ok | warn | danger`, plus `recorded` and `inferred` on `StatusPill`. Anything that is not a status gets its own name: `surface` (`Panel`), `level` (a field’s `confidence`), `variant` (`Button`, `IconTile`, `Eyebrow`), `tier` (`PageHeader`, `Disclosure`, `FactList`), `layout` (`FactList`, `Switch`), `labelTrack` (`TextField`, `Select`), `size` (`Button`, `Notice`), `gap` (`Stack`). `neutral` is the word for "nothing special" — never `default`, never `info`.
 - **One name per thing.** The hollow ring is `inferred` everywhere: `SealMark`, `StatusPill`, `Button`. Never `ai`. Gold as a value is `seal`, never `gold` — a public prop does not name a colour.
 - **Every visible string is a prop.** Nothing has baked-in language.
 - **`DataTable` takes no `rows` array.** Map your own data into `TableHead`, `TableBody`, `TableRow`, `TableIndex`, `TableCell`; a `Toolbar` and `TableFooter` are slots. A grid wider than its frame scrolls sideways inside it: the row's name (the column marked `pinned`, else the first headed by words) stays at the inline start with every column before it, and a shade marks each side that hides columns. `narrow="stack"` turns each row into a block under 600px of frame instead, for a log, a list of events or a list of people read row by row; a row's actions (its last cell, unlabelled, `align="end"`) close the name's line.
 - **`Pagination` and `Switch` are controlled** — you own `page` / `checked`.
-- **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. A blocked link (`disabled` or `loading`) drops its `href` and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined in-text control and stays a `<button>` — it is for acting, not for going somewhere.
+- **`Button` navigates when you give it an `href`** — it renders a real `<a>` carrying the same chrome, so a link that looks like a button is `<Button href="…" variant="secondary">`, never a hand-rolled anchor with button styling and never a `Button` wrapped in an `<a>`. In an app with a router, pass the router's link as `render` instead: `<Button render={<Link to="/pricing" />} variant="secondary">`, so it navigates without a page load. A blocked link (`disabled` or `loading`) drops its address and carries `aria-disabled`, because an anchor has no `disabled`. `TextLink` is the underlined link in text: `href`, `render` for a router's link, or neither for a `<button>` that acts. `Breadcrumb` items and `FlyoutItem` take `href` or `render` the same way.
 - **`Icon` takes one Lucide icon as its child**: `<Icon label="Search"><Search aria-hidden /></Icon>`.
 - **`Chart` wraps one Recharts chart**; `ChartConfig` names each series and its colour, and `ChartTooltip`/`ChartLegend` read the same config. Chart colours are only `--di-chart-series`, `--di-chart-highlight` (the one value, gold), `--di-chart-compare` (the comparison series, a lighter navy — also `LevelMeter`'s comparison track), `--di-chart-muted`, `--di-chart-band`. An ordered status scale (low → warn → danger: a stacked severity, a meter's zones, a `Distribution` row's `tone`) is `--di-chart-series`, `--di-chart-warn`, `--di-chart-danger` — not the status dots, which sit too close together to tell apart side by side. Never draw a one-off SVG chart.
 - **A page or section heading is a slot, because it can hold a `Highlight`**: `<PageHeader eyebrow="…" lede="…"><PageHeaderTitle>…</PageHeaderTitle><PageHeaderAside>…</PageHeaderAside></PageHeader>`, the same for a section with `PageHeader level={2}`. A `Panel` or `Dialog` title stays a string — the page marks one place, and it is never a panel's title.
@@ -168,11 +168,11 @@ use, and nothing else.
 
 | Role | Token | Face | Size | Weight | Where |
 | --- | --- | --- | --- | --- | --- |
-| Display | `--di-font-size-1000` | Space Grotesk | 56px | 700 | Brand page title |
-| Title | `--di-font-size-800` | Space Grotesk | 34px | 700 | Brand page section |
+| Display | `--di-brand-title-size` (`-800` to `-1000`) | Space Grotesk | 34–56px | 700 | Brand page title |
+| Title | `--di-brand-section-title-size` (`-700` to `-800`) | Space Grotesk | 28–34px | 700 | Brand page section |
 | Page | `--di-page-title-size` (`-700` to `-800`) | Space Grotesk | 28–34px | 700 | `PageHeader`: the page's name; `Figure` value |
 | Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `PageHeader level={2}`, the attention heading |
-| Brand lede | `--di-font-size-550` | IBM Plex Sans | 18px | 400 | `PageHeader tier="brand"` lede |
+| Brand lede | `--di-brand-lede-size` (`-550`) | IBM Plex Sans | 18px | 400 | `PageHeader tier="brand"` lede, a brand question (`Disclosure tier="brand"`) |
 | Block | `--di-font-size-500` | IBM Plex Sans | 16px | 600 | A panel's or an attention item's title |
 | **Body** | `--di-font-size-400` | IBM Plex Sans | **14px** | 400 | The console body — `base.css` |
 | Interface | `--di-font-size-400` | IBM Plex Sans | 14px | 500 | Control labels |
@@ -320,13 +320,26 @@ Read the real files before styling: `styles.css` and its `@import` closure carry
 ### A brand page
 
 The same library, at the display tier. There is **no parallel set of brand
-components** — `PageHeader` carries a `tier` at either `level`, and `brand`
-is the other value.
+components** — `PageHeader` (at either `level`), `Disclosure` and `FactList`
+carry a `tier`, and `brand` is the other value.
 
 - **`tier="brand"`** sets the title on the top of the ramp and measures it to
   16ch (`PageHeader`) or 22ch (`PageHeader level={2}`), with the lede at
-  `--di-font-size-550` / `-500`. It carries **no bottom margin**: a brand page's
-  rhythm belongs to the `Stack` around it.
+  `--di-brand-lede-size`. It carries **no bottom margin**: a brand page's
+  rhythm belongs to the `Stack` around it. The title is sized by the width of
+  its own head, not the window, so a title in half a page is set for half a
+  page; a long German word hyphenates in the language `lang` names.
+- **`Disclosure tier="brand"`** for the page's questions and answers (an FAQ):
+  the question at 18px over a 16px answer. **`FactList tier="brand"`** sets any
+  layout to be read: values at 16px, labels at 14px, captions at 12px.
+- **Tune a size by its variable, never by restyling a class:**
+  `--di-brand-title-size`, `--di-brand-section-title-size`,
+  `--di-brand-lede-size`, `--di-brand-quote-size`,
+  `--di-brand-disclosure-title-size`, `--di-brand-disclosure-body-size`,
+  `--di-brand-fact-label-size`, `--di-brand-fact-caption-size`,
+  `--di-brand-fact-value-size`, `--di-brand-fact-statement-size`; the console
+  has `--di-page-title-size`, `--di-disclosure-title-size`,
+  `--di-figure-hero-size`.
 - **`Stack gap={48}`, `{64}`, `{96}`** is that rhythm. 48 separates the parts of
   a page, 64 and 96 separate the parts from each other. A console screen stops at
   48.
@@ -335,6 +348,8 @@ is the other value.
   testimonial); and **`Grid`** for a two-column band.
 - **`labelTrack="prose"`** on `TextField` and `Select`, where a person is filling
   a form in for themselves rather than reading a record.
+- **`Button size="lg"`** for the page's call to action, with `href` or a router
+  link in `render`.
 - **`Eyebrow`** has two variants and they are not interchangeable. `sealed` is the
   section label beside the seal with a rule to the edge, and there is **one per view**.
   `plain` is the label alone and repeats down a page — it is what `PageHeader` renders

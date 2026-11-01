@@ -17,7 +17,7 @@
   }
 
   .di-figure-hero {
-    --di-figure-value-size: clamp(var(--di-font-size-900), 2rem + 2vw, var(--di-font-size-1000));
+    --di-figure-value-size: var(--di-figure-hero-size);
     --di-figure-unit-size: var(--di-font-size-550);
     --di-figure-step: var(--di-gap-8);
   }

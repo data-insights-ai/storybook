@@ -89,5 +89,24 @@
     .di-breadcrumb-item.is-current > .di-breadcrumb-sep {
       display: none;
     }
+
+    /* Above a page title the current page would repeat it: show the way back up instead. */
+    .di-page-crumbs .di-breadcrumb-item.is-current:not(:only-child) {
+      display: none;
+    }
+
+    .di-page-crumbs .di-breadcrumb-item:nth-last-child(2) {
+      display: flex;
+      min-width: 0;
+    }
+
+    .di-page-crumbs .di-breadcrumb-item:nth-last-child(2) > .di-breadcrumb-sep {
+      display: none;
+    }
+
+    .di-page-crumbs .di-breadcrumb-item:nth-last-child(2)::before {
+      content: "←" / "";
+      color: var(--di-text-muted);
+    }
   }
 }

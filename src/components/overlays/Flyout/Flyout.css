@@ -151,4 +151,10 @@
     white-space: nowrap;
     color: var(--di-text-subtle);
   }
+
+  .di-flyout-item-detail {
+    grid-column: 2 / -1;
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
 }

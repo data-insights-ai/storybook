@@ -1,4 +1,10 @@
 @layer components {
+  /* The quote is sized by the column it stands in, not by the window: half a page sets it smaller. */
+  .di-pull-frame {
+    container-type: inline-size;
+    min-width: 0;
+  }
+
   .di-pull {
     max-width: 16em;
     margin: 0;
@@ -9,7 +15,7 @@
     /* No glyphs: the rule already says this is lifted out of the page. */
     quotes: none;
     font-family: var(--di-font-ui);
-    font-size: clamp(var(--di-font-size-700), 4vw, var(--di-font-size-900));
+    font-size: var(--di-brand-quote-size);
     font-style: italic;
     font-weight: var(--di-weight-regular);
     letter-spacing: var(--di-tracking-tight);

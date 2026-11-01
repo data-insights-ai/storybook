@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useRender } from "@base-ui/react/use-render";
 import { cx } from "../../../internal/cx";
 import "./Breadcrumb.css";
 
-type Crumb = { label: string; href?: string };
+/** An ancestor links with `href`, or with a router's link in `render` (`<Link to="/cases" />`), which renders the `<a>`. */
+type Crumb = { label: string; href?: string; render?: useRender.RenderProp };
 
 /**
  * Where the reader is: the page's place in the app, from the top to the
@@ -13,7 +15,8 @@ type Crumb = { label: string; href?: string };
  * - **Not** for steps of a process (`Steps`), for the sections of a record
  *   (`TabNav`), or as the only way back up (the `Sidebar` is that).
  *
- * Anatomy: the ancestors, each a link when it has an `href`, separated by
+ * Anatomy: the ancestors, each a link when it has an `href` or a router
+ * link in `render`, separated by
  * "/", then the current page, which is never a link. Content: page names as
  * the sidebar and the page title write them; an id stays as the system
  * writes it.
@@ -81,6 +84,8 @@ export function Breadcrumb({
                 <span className="di-breadcrumb-current" aria-current="page">
                   {item.label}
                 </span>
+              ) : item.render !== undefined ? (
+                <RoutedCrumb render={item.render} label={item.label} />
               ) : item.href ? (
                 <a className="di-breadcrumb-link" href={item.href}>
                   {item.label}
@@ -94,4 +99,8 @@ export function Breadcrumb({
       </ol>
     </nav>
   );
+}
+
+function RoutedCrumb({ render, label }: { render: useRender.RenderProp; label: string }) {
+  return useRender({ render, props: { className: "di-breadcrumb-link", children: label } });
 }

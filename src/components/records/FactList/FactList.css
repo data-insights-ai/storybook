@@ -92,7 +92,7 @@
 
   .di-facts-grid .di-fact-value {
     font-family: var(--di-heading-family);
-    font-size: var(--di-font-size-600);
+    font-size: var(--di-brand-fact-statement-size);
     font-weight: var(--di-weight-bold);
     letter-spacing: var(--di-tracking-tight);
     line-height: 1.25;
@@ -209,5 +209,30 @@
     font-size: var(--di-font-size-400);
     line-height: var(--di-leading-snug);
     color: var(--di-text);
+  }
+
+  /*
+   * The brand tier: the same layouts, set to be read on a marketing page
+   * rather than scanned on a screen. The grid's statements already are.
+   */
+  .di-facts-brand:is(.di-facts-rows, .di-facts-inline, .di-facts-pairs) .di-fact-label {
+    font-size: var(--di-brand-fact-label-size);
+  }
+
+  .di-facts-brand:is(.di-facts-columns, .di-facts-stacked, .di-facts-grid) .di-fact-label {
+    font-size: var(--di-brand-fact-caption-size);
+  }
+
+  .di-facts-brand:not(.di-facts-grid) .di-fact-value {
+    font-size: var(--di-brand-fact-value-size);
+    line-height: var(--di-leading-body);
+  }
+
+  .di-facts-brand.di-facts-rows .di-fact {
+    padding: var(--di-gap-12) 0;
+  }
+
+  .di-facts-brand.di-facts-pairs {
+    font-size: var(--di-brand-fact-value-size);
   }
 }

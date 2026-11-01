@@ -16,14 +16,14 @@ const meta = {
 
 export default meta;
 
-const entries = [
-  { title: "Source North hub stopped collecting", time: "09:12", unread: true },
-  { title: "Nora Feld granted Analyst on Operations", time: "08:47", unread: true },
+const entries: { title: string; time: string; unread: boolean; detail?: string }[] = [
+  { title: "Source North hub stopped collecting", time: "09:12", unread: true, detail: "Production · automatic" },
+  { title: "Nora Feld granted Analyst on Operations", time: "08:47", unread: true, detail: "Operations · Alex Admin" },
   { title: "Workspace Lab renamed to Research", time: "Yesterday", unread: false },
   { title: "Export of the March register finished and is ready to download", time: "Mon", unread: false },
 ];
 
-function Notifications() {
+function Notifications({ routed = false }: { routed?: boolean }) {
   const [open, setOpen] = useState(false);
   return (
     <div style={{ minHeight: 460 }}>
@@ -47,7 +47,15 @@ function Notifications() {
               </FlyoutTrigger>
               <FlyoutItems label="Latest notifications" unreadLabel="unread">
                 {entries.map((e) => (
-                  <FlyoutItem key={e.title} title={e.title} time={e.time} unread={e.unread} href="#entry" />
+                  <FlyoutItem
+                    key={e.title}
+                    title={e.title}
+                    detail={e.detail}
+                    time={e.time}
+                    unread={e.unread}
+                    // eslint-disable-next-line jsx-a11y/anchor-has-content -- the entry renders into the router's anchor
+                    {...(routed ? { render: <a href="#entry" data-router="link" /> } : { href: "#entry" })}
+                  />
                 ))}
               </FlyoutItems>
               <FlyoutFooter>
@@ -100,5 +108,18 @@ export const FromTheTopbar: StoryObj = {
     await userEvent.click(bell);
     const again = await canvas.findByRole("dialog", { name: "Notifications" });
     await waitFor(() => expect(getComputedStyle(again).opacity).toBe("1"));
+  },
+};
+
+/** A router's link component renders each entry's `<a>`, so opening a record from the panel needs no page load. */
+export const WithRouterLinks: StoryObj = {
+  render: () => <Notifications routed />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Notifications, 2 unread" }));
+    const panel = await canvas.findByRole("dialog", { name: "Notifications" });
+    const entry = within(panel).getByRole("link", { name: /^Workspace Lab renamed to Research/ });
+    await expect(entry).toHaveAttribute("data-router", "link");
+    await expect(entry).toHaveClass("di-flyout-item", "di-row");
   },
 };

@@ -56,6 +56,26 @@
     --di-section-title-size: var(--di-font-size-600);
     --di-block-title-size: var(--di-font-size-500);
     --di-figure-size: var(--di-font-size-700);
+    --di-figure-hero-size: clamp(var(--di-font-size-900), 2rem + 2cqi, var(--di-font-size-1000));
+    /* A group's name in a Disclosure: a step under the title of the surface that holds it. */
+    --di-disclosure-title-size: var(--di-font-size-400);
+
+    /*
+     * The brand tier (`tier="brand"`): the display steps and the reading
+     * sizes of a marketing page. The titles are measured against their own
+     * head (cqi), not the window, so a title in half a page is set for half
+     * a page.
+     */
+    --di-brand-title-size: clamp(var(--di-font-size-800), 1rem + 3.4cqi, var(--di-font-size-1000));
+    --di-brand-section-title-size: clamp(var(--di-font-size-700), 1rem + 1.6cqi, var(--di-font-size-800));
+    --di-brand-lede-size: var(--di-font-size-550);
+    --di-brand-quote-size: clamp(var(--di-font-size-700), 1rem + 3cqi, var(--di-font-size-900));
+    --di-brand-disclosure-title-size: var(--di-font-size-550);
+    --di-brand-disclosure-body-size: var(--di-font-size-500);
+    --di-brand-fact-label-size: var(--di-font-size-400);
+    --di-brand-fact-caption-size: var(--di-font-size-300);
+    --di-brand-fact-value-size: var(--di-font-size-500);
+    --di-brand-fact-statement-size: var(--di-font-size-600);
 
     --di-field-bg: var(--di-bg-surface);
     --di-field-border: var(--di-border-input);

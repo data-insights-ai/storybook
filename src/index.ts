@@ -53,6 +53,7 @@ export type {
 export type { FieldConfidenceReading } from "./components/forms/field/FieldConfidence";
 export { ConfirmDialog } from "./components/overlays/ConfirmDialog";
 export { CopyValue } from "./components/actions/CopyValue";
+export { SecretReveal } from "./components/actions/SecretReveal";
 export { CreateFlow } from "./components/forms/CreateFlow";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/CoverageMatrix";
 export { Dialog, DialogFooter, type DialogProps } from "./components/overlays/Dialog";

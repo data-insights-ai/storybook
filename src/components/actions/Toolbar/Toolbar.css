@@ -7,8 +7,9 @@
     min-width: 0;
   }
 
+  /* It grows into free room and gives it up first, before a filter wraps. */
   .di-toolbar > .di-search {
-    flex: 1 1 16rem;
+    flex: 1 1 12rem;
     max-width: 28rem;
   }
 

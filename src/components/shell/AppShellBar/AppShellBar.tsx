@@ -88,7 +88,17 @@ export function AppShellBarEnd({ moreLabel, children }: { moreLabel: string; chi
     <div ref={anchor} className="di-top-fold">
       <Suspense
         fallback={
-          <Button variant="ghost" size="sm" iconOnly aria-label={moreLabel}>
+          // A tap before the popover has loaded opens it once it has, rather than being lost.
+          <Button
+            variant="ghost"
+            size="sm"
+            iconOnly
+            aria-label={moreLabel}
+            onClick={() => {
+              update();
+              setOpen(true);
+            }}
+          >
             <Ellipsis aria-hidden />
           </Button>
         }

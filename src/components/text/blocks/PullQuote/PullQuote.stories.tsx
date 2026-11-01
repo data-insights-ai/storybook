@@ -65,3 +65,21 @@ export const German: Story = {
     await expect(quote.scrollWidth).toBeLessThanOrEqual(quote.clientWidth + 1);
   },
 };
+
+/** Sized by its column, not the window: in half a page the quote is set for half a page. */
+export const HalfColumn: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)", gap: "var(--di-space-24)" }}>
+      <PullQuote {...args} />
+      <p>Every answer is tied to its source, and every source carries the time it was recorded.</p>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const quote = canvasElement.querySelector("blockquote")!;
+    const column = quote.parentElement!.getBoundingClientRect().width;
+    const expected = Math.min(44, Math.max(28, 16 + 0.03 * column));
+    await expect(Math.abs(parseFloat(getComputedStyle(quote).fontSize) - expected)).toBeLessThan(1);
+  },
+};

@@ -75,6 +75,27 @@ export const Folded: Story = {
   },
 };
 
+/** A router's link component renders each ancestor's `<a>`, so going up the path needs no page load. */
+export const WithRouterLinks: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  args: {
+    items: [
+      // eslint-disable-next-line jsx-a11y/anchor-has-content -- the crumb renders its label into the router's anchor
+      { label: "Example studio", render: <a href="#/workspace" data-router="link" /> },
+      // eslint-disable-next-line jsx-a11y/anchor-has-content -- the crumb renders its label into the router's anchor
+      { label: "Sources", render: <a href="#/sources" data-router="link" /> },
+      { label: "feed.example.io" },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.querySelector("nav")!);
+    const sources = canvas.getByRole("link", { name: "Sources" });
+    await expect(sources).toHaveAttribute("data-router", "link");
+    await expect(sources).toHaveClass("di-breadcrumb-link");
+    await expect(getComputedStyle(sources).textDecorationLine).toBe("underline");
+  },
+};
+
 /** Without links, where the trail states a position but does not navigate: no underline. */
 export const Static: Story = {
   args: {
@@ -110,15 +131,31 @@ export const LongLabels: Story = {
   },
 };
 
-/** On a phone only the page itself shows, on one line: the drawer is the way back up. */
+/** On a phone, above the title, one line: the way back up to the parent, long labels truncated. */
 export const OnAPhone: Story = {
   globals: { viewport: { value: "phone", isRotated: false } },
   args: LongLabels.args,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement.querySelector("nav")!);
-    await expect(canvas.getByText("Aufbewahrungsrichtlinien für Protokolldaten")).toBeVisible();
-    await expect(canvas.queryByRole("link", { name: "Benachrichtigungen" })).toBeNull();
+    await expect(canvas.getByRole("link", { name: "Benachrichtigungen" })).toBeVisible();
+    await expect(canvas.getByText("Aufbewahrungsrichtlinien für Protokolldaten")).not.toBeVisible();
+    await expect(canvas.queryByRole("link", { name: "Arbeitsbereich Nordwind Sicherheit" })).toBeNull();
     const list = canvasElement.querySelector<HTMLElement>(".di-breadcrumb-list")!;
     await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth + 1);
+  },
+};
+
+/**
+ * On a phone, above the page's title: the way back up to the parent, not the
+ * current page again.
+ */
+export const PhoneBackLink: Story = {
+  name: "Phone back link",
+  globals: { viewport: { value: "phone", isRotated: false } },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.querySelector("nav")!);
+    await expect(canvas.getByRole("link", { name: "Sources" })).toBeVisible();
+    await expect(canvas.getByText("feed.example.io")).not.toBeVisible();
+    await expect(canvas.queryByRole("link", { name: "Example studio" })).toBeNull();
   },
 };

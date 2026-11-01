@@ -113,6 +113,16 @@
     transition: border-color var(--di-duration) var(--di-ease);
   }
 
+  /* Safari sizes a date input to its own content and lets it run out of its
+     box; it keeps the box it is given and its value starts at the left. */
+  .di-control:is([type="date"], [type="time"], [type="datetime-local"], [type="month"]) {
+    min-width: 0;
+  }
+
+  .di-control::-webkit-date-and-time-value {
+    text-align: start;
+  }
+
   .di-control::placeholder {
     color: var(--di-text-subtle);
   }

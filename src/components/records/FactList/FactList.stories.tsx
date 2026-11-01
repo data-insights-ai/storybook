@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { Fact, FactList } from "./FactList";
+import { Grid as Band } from "../../layout/arrange/Grid";
 import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
 import { SealValue } from "../../status/SealValue";
@@ -25,9 +26,10 @@ const meta = {
       },
     },
   },
-  args: { layout: "rows", children: null },
+  args: { layout: "rows", tier: "console", children: null },
   argTypes: {
     layout: { control: "radio", options: ["rows", "pairs", "stacked", "columns", "inline", "grid"] },
+    tier: { control: "radio", options: ["console", "brand"] },
     children: { control: false },
   },
 } satisfies Meta<typeof FactList>;
@@ -138,6 +140,38 @@ export const Grid: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Promise")).toBeVisible();
+  },
+};
+
+/**
+ * `tier="brand"`: the same layouts on a marketing page, where facts are
+ * read rather than scanned. Values at 16px, a label beside them at 14px, a
+ * caption above them at 12px; each is a `--di-brand-fact-*` variable.
+ */
+export const Brand: Story = {
+  args: { tier: "brand" },
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Page width="full">
+      <Band min="320px" gap={24}>
+        <FactList tier="brand" layout="rows">
+          <Fact label="Deployment">Cloud in your region, or on your own hardware</Fact>
+          <Fact label="Sign-in">Your identity provider, through SAML or OpenID Connect</Fact>
+          <Fact label="Offline">Licence and sign-in ship with the installer</Fact>
+        </FactList>
+        <FactList tier="brand" layout="stacked">
+          <Fact label="Sources">Any SIEM that exports syslog, CEF or a webhook</Fact>
+          <Fact label="Exports">Splunk HEC, Microsoft Sentinel, CEF over syslog</Fact>
+        </FactList>
+      </Band>
+    </Page>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(getComputedStyle(canvas.getByText(/^Cloud in your region/)).fontSize).toBe("16px");
+    await expect(getComputedStyle(canvas.getByText("Deployment")).fontSize).toBe("14px");
+    await expect(getComputedStyle(canvas.getByText("Sources")).fontSize).toBe("12px");
+    await expect(getComputedStyle(canvas.getByText(/^Splunk HEC/)).fontSize).toBe("16px");
   },
 };
 

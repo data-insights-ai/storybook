@@ -439,3 +439,78 @@ export const Transition: Story = {
     );
   },
 };
+
+function WaitingForm(args: Args) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Panel title="API keys" heading={2}>
+      <Button onClick={() => setOpen(true)}>New API key</Button>
+      <Dialog {...args} open={open} onClose={() => setOpen(false)} onSubmit={(event) => event.preventDefault()}>
+        <TextField id="key-name" label="Name" defaultValue="SIEM import" />
+        <DialogFooter note="Choose at least one permission.">
+          <Button variant="secondary" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled>
+            Issue key
+          </Button>
+        </DialogFooter>
+      </Dialog>
+    </Panel>
+  );
+}
+
+/** Why the action waits stands at the footer's start; the actions keep their order at its end. */
+export const WaitingForAChoice: Story = {
+  args: { title: "Issue an API key", lede: undefined, eyebrow: undefined },
+  render: (args) => <WaitingForm {...args} />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "New API key" }));
+    const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog", { name: "Issue an API key" });
+    const note = within(dialog).getByText("Choose at least one permission.");
+    const cancel = within(dialog).getByRole("button", { name: "Cancel" });
+    const issue = within(dialog).getByRole("button", { name: "Issue key" });
+    if (window.innerWidth > 600) {
+      await expect(note.getBoundingClientRect().right).toBeLessThanOrEqual(cancel.getBoundingClientRect().left);
+      await expect(cancel.getBoundingClientRect().right).toBeLessThanOrEqual(issue.getBoundingClientRect().left);
+    }
+  },
+};
+
+function FromACell(args: Args) {
+  const [open, setOpen] = useState(false);
+  return (
+    <DataTable caption="Keys">
+      <TableHead>
+        <TableColumn>Name</TableColumn>
+        <TableColumn align="end">Actions</TableColumn>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>Ticket sync</TableCell>
+          <TableCell align="end">
+            <Button size="sm" variant="secondary" onClick={() => setOpen(true)}>
+              Replace
+            </Button>
+            <Dialog {...args} open={open} onClose={() => setOpen(false)}>
+              <p>You get a new key with the same name and permissions.</p>
+            </Dialog>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </DataTable>
+  );
+}
+
+/** Opened from an end-aligned cell, the dialog still reads from the start. */
+export const OpenedFromACell: Story = {
+  args: { title: "Replace “Ticket sync”", lede: undefined, eyebrow: undefined },
+  render: (args) => <FromACell {...args} />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "Replace" }));
+    const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog", {
+      name: "Replace “Ticket sync”",
+    });
+    await expect(getComputedStyle(within(dialog).getByText(/new key/)).textAlign).toBe("start");
+  },
+};

@@ -14,6 +14,9 @@ import {
 } from "./PageHeader";
 import { Highlight } from "../../../text/Highlight";
 import { Page } from "../Page";
+import { Panel } from "../Panel";
+import { Grid } from "../../arrange/Grid";
+import { wordBreaks } from "../../../../../.storybook/tests/wordBreaks";
 import { StatusPill } from "../../../status/StatusPill";
 
 const meta = {
@@ -151,8 +154,8 @@ export const Narrow: Story = {
 };
 
 /**
- * The display tier the brand pages use: 34px up to 56, measured to 16ch,
- * over an 18px lede. It carries no bottom margin, because the stack
+ * The display tier the brand pages use: 34px up to 56 with the width of
+ * its head, measured to 16ch, over an 18px lede. It carries no bottom margin, because the stack
  * around it owns a brand page's rhythm.
  */
 export const Brand: Story = {
@@ -166,6 +169,43 @@ export const Brand: Story = {
       <PageHeaderTitle>Provable AI for regulated decisions.</PageHeaderTitle>
     </PageHeader>
   ),
+};
+
+/**
+ * German in half a page: the title is sized by its own head, not by the
+ * window, and a word longer than the measure hyphenates in the language
+ * `lang` names ("Sicherheits-produkte") instead of breaking without a
+ * hyphen. `--di-brand-title-size` sets the size.
+ */
+export const BrandGermanHalfColumn: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div lang="de">
+      <Grid min="420px" gap={24}>
+        <PageHeader
+          tier="brand"
+          eyebrow="Plattform"
+          lede="Jede Antwort ist an ihre Quelle gebunden, und jede Quelle trägt einen Zeitstempel."
+        >
+          <PageHeaderTitle>Entscheidungen über Sicherheitsprodukte</PageHeaderTitle>
+        </PageHeader>
+        <Panel title="Was wir prüfen" heading={2}>
+          <p>Herkunft, Zeitpunkt und Begründung jeder Aussage, bevor sie eine Entscheidung trägt.</p>
+        </Panel>
+      </Grid>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const title = within(canvasElement).getByRole("heading", { level: 1 });
+    await expect(getComputedStyle(title).hyphens).toBe("auto");
+    await expect(parseFloat(getComputedStyle(title).fontSize)).toBeLessThan(56);
+    await expect(title.scrollWidth).toBeLessThanOrEqual(title.clientWidth);
+    const syllables: Record<string, number[]> = { Sicherheitsprodukte: [6, 11, 14], Entscheidungen: [3, 8, 11] };
+    for (const [word, allowed] of Object.entries(syllables)) {
+      for (const at of wordBreaks(title, word)) await expect(allowed).toContain(at);
+    }
+  },
 };
 
 /**
@@ -222,7 +262,7 @@ export const Tiers: Story = {
  * record’s state under its name, its key facts, and its primary actions.
  */
 export const Detail: Story = {
-  args: { eyebrow: "", lede: "" },
+  args: { eyebrow: "Production", lede: "" },
   render: (args) => (
     <PageHeader {...args}>
       <PageHeaderCrumbs>
@@ -251,6 +291,7 @@ export const Detail: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("heading", { level: 1, name: "Head office" })).toBeVisible();
     await expect(canvas.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+    await expect(canvas.queryByText("Production")).toBeNull();
   },
 };
 

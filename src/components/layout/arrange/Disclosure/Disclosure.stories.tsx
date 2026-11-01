@@ -4,6 +4,8 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Checkbox } from "../../../forms/choice/Checkbox";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../tables/DataTable";
 import { SeverityMark, type Severity } from "../../../status/SeverityMark";
+import { Page } from "../../page/Page";
+import { PageHeader, PageHeaderTitle } from "../../page/PageHeader";
 import { Panel } from "../../page/Panel";
 import { Stack } from "../Stack";
 import { Disclosure, DisclosureDetail, DisclosureGroup, DisclosureLead, DisclosureMeta } from "./Disclosure";
@@ -34,9 +36,10 @@ const meta = {
   title: "Layout/Arrange/Disclosure",
   component: Disclosure,
   tags: ["layer:block", "autodocs"],
-  args: { toggle: "head", title: "Lateral Movement" },
+  args: { toggle: "head", tier: "console", title: "Lateral Movement" },
   argTypes: {
     toggle: { control: "radio", options: ["head", "chevron"] },
+    tier: { control: "radio", options: ["console", "brand"] },
     children: { control: false },
   },
 } satisfies Meta<typeof Disclosure>;
@@ -239,4 +242,56 @@ export const LongTitles: Story = {
       }}
     />
   ),
+};
+
+const questions = [
+  {
+    id: "faq-data",
+    title: "Where is our data processed?",
+    answer: "In the region your organization chose at sign-up. Nothing leaves it, and every export is on record.",
+  },
+  {
+    id: "faq-offline",
+    title: "Does an on-premises install work offline?",
+    answer: "Yes. The licence and the sign-in ship with the installer, so the install never calls home.",
+  },
+  {
+    id: "faq-sources",
+    title: "Which sources can we connect?",
+    answer: "Any SIEM that exports syslog, CEF or a webhook, and the common cloud audit logs.",
+  },
+];
+
+/**
+ * `tier="brand"`: a brand page's questions and answers. The question is set
+ * at 18px for a reader scanning down the page and the answer at 16px; the
+ * sizes are `--di-brand-disclosure-title-size` and
+ * `--di-brand-disclosure-body-size`.
+ */
+export const BrandQuestions: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Page width="form">
+      <Stack gap={48}>
+        <PageHeader level={2} tier="brand" eyebrow="Questions">
+          <PageHeaderTitle>What teams ask before they start.</PageHeaderTitle>
+        </PageHeader>
+        <DisclosureGroup label="Frequently asked questions" single>
+          {questions.map((q, i) => (
+            <Disclosure key={q.id} id={q.id} tier="brand" toggle="head" title={q.title} defaultOpen={i === 0}>
+              <p>{q.answer}</p>
+            </Disclosure>
+          ))}
+        </DisclosureGroup>
+      </Stack>
+    </Page>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const question = canvas.getByText("Where is our data processed?");
+    await expect(getComputedStyle(question).fontSize).toBe("18px");
+    await expect(getComputedStyle(canvas.getByText(/In the region/)).fontSize).toBe("16px");
+    await userEvent.click(canvas.getByRole("button", { name: /Which sources/ }));
+    await expect(canvas.getByRole("region", { name: "Which sources can we connect?" })).toBeVisible();
+  },
 };
