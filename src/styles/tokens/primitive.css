@@ -41,12 +41,12 @@
      * deeper than the ground, the surfaces lift from it, the plane floats
      * highest; the glow is the hero zone, a clear step above a surface.
      */
-    --di-night-chrome: #071733;
-    --di-night-ground: #0a1f44;
-    --di-night-surface: #0f2a57;
-    --di-night-inset: #081838;
-    --di-night-plane: #133068;
-    --di-night-glow: #1a3a78;
+    --di-night-chrome: #0a1f44;
+    --di-night-ground: #0d1a30;
+    --di-night-surface: #14243f;
+    --di-night-inset: #1c2e4d;
+    --di-night-plane: #1a2c4b;
+    --di-night-glow: #22386a;
     --di-night-ink: #f2f0e6;
     --di-night-muted: #c9d2e6;
     --di-night-subtle: #a8b6d2;

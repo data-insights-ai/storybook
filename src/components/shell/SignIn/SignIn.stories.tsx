@@ -243,7 +243,12 @@ export const AfterDark: Story = {
     await Promise.all(button.getAnimations().map((animation) => animation.finished.catch(() => undefined)));
     const fill = getComputedStyle(button).backgroundColor;
     await expect(fill).not.toBe(getComputedStyle(canvasElement.querySelector(".di-login")!).backgroundColor);
-    await expect(getComputedStyle(canvasElement.querySelector(".di-login")!).backgroundColor).toBe("rgb(10, 31, 68)");
+    const ground = document.createElement("div");
+    ground.style.background = "var(--di-bg-page)";
+    canvasElement.querySelector(".di-login")!.append(ground);
+    const page = getComputedStyle(ground).backgroundColor;
+    ground.remove();
+    await expect(getComputedStyle(canvasElement.querySelector(".di-login")!).backgroundColor).toBe(page);
   },
 };
 
