@@ -75,6 +75,27 @@ export const Folded: Story = {
   },
 };
 
+/** A router's link component renders each ancestor's `<a>`, so going up the path needs no page load. */
+export const WithRouterLinks: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  args: {
+    items: [
+      // eslint-disable-next-line jsx-a11y/anchor-has-content -- the crumb renders its label into the router's anchor
+      { label: "Example studio", render: <a href="#/workspace" data-router="link" /> },
+      // eslint-disable-next-line jsx-a11y/anchor-has-content -- the crumb renders its label into the router's anchor
+      { label: "Sources", render: <a href="#/sources" data-router="link" /> },
+      { label: "feed.example.io" },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement.querySelector("nav")!);
+    const sources = canvas.getByRole("link", { name: "Sources" });
+    await expect(sources).toHaveAttribute("data-router", "link");
+    await expect(sources).toHaveClass("di-breadcrumb-link");
+    await expect(getComputedStyle(sources).textDecorationLine).toBe("underline");
+  },
+};
+
 /** Without links, where the trail states a position but does not navigate: no underline. */
 export const Static: Story = {
   args: {

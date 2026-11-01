@@ -1,4 +1,5 @@
 import { Children, createContext, isValidElement, useContext, useEffect, useRef, type ReactNode } from "react";
+import { useRender } from "@base-ui/react/use-render";
 import { cx } from "../../../internal/cx";
 import "./Flyout.css";
 
@@ -119,13 +120,15 @@ export function FlyoutItems({
  * One entry: what happened, and when. An unread entry carries a dot in the
  * left column and a semibold title; a read one is regular. The time sits
  * in its own column at the right, so the times line up. With `href` the
- * entry is a link to its record, with `onSelect` a button.
+ * entry is a link to its record, with `render` a router's link to it
+ * (`<Link to="/cases/0148" />`), with `onSelect` a button.
  */
 export function FlyoutItem({
   title,
   time,
   unread = false,
   href,
+  render,
   onSelect,
 }: {
   title: string;
@@ -133,6 +136,8 @@ export function FlyoutItem({
   time: string;
   unread?: boolean;
   href?: string;
+  /** A router's link element; it renders the `<a>` and receives the entry's look and content. */
+  render?: useRender.RenderProp;
   onSelect?: () => void;
 }) {
   const unreadLabel = useContext(Unread);
@@ -149,9 +154,12 @@ export function FlyoutItem({
     </>
   );
   const className = cx("di-flyout-item", "di-row", unread && "is-unread");
+  const routed = useRender({ render: render ?? <span />, props: { className, children: content } });
   return (
     <li>
-      {href !== undefined ? (
+      {render !== undefined ? (
+        routed
+      ) : href !== undefined ? (
         <a className={className} href={href}>
           {content}
         </a>
