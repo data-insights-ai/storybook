@@ -50,6 +50,13 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.14
+
+0.14 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.14.0` and check the brand pages:
+
+- `MenuItem` takes `href`, or `render={<Link to="/de" />}` for a router's link, the way `Button` does: a menu of places (languages, workspaces) holds real links that open in a new tab. `onSelect` is optional on a link item. A local wrapper that made a menu item navigate can go.
+- The brand titles climb faster with the width of their head (`0.5rem + 8cqi` for a page title, `1rem + 4cqi` for a section title, same bounds), so a title in a half-width column no longer sits at its minimum. An app that overrode `--di-brand-title-size` or `--di-brand-section-title-size` to the same values can drop the override.
+
 ## Upgrade to 0.13.2
 
 0.13.2 needs no code change. A folded `Disclosure` no longer lengthens the page: an absolutely placed descendant, such as the screen-reader status of a `CopyValue`, is now clipped with the rest of the body.

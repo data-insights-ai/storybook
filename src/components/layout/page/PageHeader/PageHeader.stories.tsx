@@ -175,7 +175,8 @@ export const Brand: Story = {
  * German in half a page: the title is sized by its own head, not by the
  * window, and a word longer than the measure hyphenates in the language
  * `lang` names ("Sicherheits-produkte") instead of breaking without a
- * hyphen. `--di-brand-title-size` sets the size.
+ * hyphen. `--di-brand-title-size` sets the size; in half a page it stands
+ * clear of its minimum.
  */
 export const BrandGermanHalfColumn: Story = {
   globals: { viewport: { value: "desk", isRotated: false } },
@@ -199,7 +200,9 @@ export const BrandGermanHalfColumn: Story = {
   play: async ({ canvasElement }) => {
     const title = within(canvasElement).getByRole("heading", { level: 1 });
     await expect(getComputedStyle(title).hyphens).toBe("auto");
-    await expect(parseFloat(getComputedStyle(title).fontSize)).toBeLessThan(56);
+    const size = parseFloat(getComputedStyle(title).fontSize);
+    await expect(size).toBeLessThanOrEqual(56);
+    await expect(size).toBeGreaterThan(34);
     await expect(title.scrollWidth).toBeLessThanOrEqual(title.clientWidth);
     const syllables: Record<string, number[]> = { Sicherheitsprodukte: [6, 11, 14], Entscheidungen: [3, 8, 11] };
     for (const [word, allowed] of Object.entries(syllables)) {

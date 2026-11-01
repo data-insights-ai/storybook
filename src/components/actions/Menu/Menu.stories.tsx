@@ -213,6 +213,63 @@ export const TabExit: Story = {
   },
 };
 
+/**
+ * Items that go somewhere are links: each language is an address the browser
+ * can open in a new tab, and Space follows it as Enter does.
+ */
+export const LinkItems: Story = {
+  decorators: [onPanel("Language")],
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return (
+      <Menu
+        {...args}
+        open={open}
+        onOpenChange={setOpen}
+        label="Language"
+        align="start"
+        trigger={(props) => <Button {...props}>Language</Button>}
+      >
+        <MenuItem checked={true} href="#en" onSelect={() => setOpen(false)}>
+          English
+        </MenuItem>
+        <MenuItem checked={false} href="#de" onSelect={() => setOpen(false)}>
+          Deutsch
+        </MenuItem>
+        <MenuItem checked={false} disabled={true} href="#es">
+          Español
+        </MenuItem>
+      </Menu>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: "Language" }));
+    const english = canvas.getByRole("menuitemradio", { name: "English", hidden: true });
+    const german = canvas.getByRole("menuitemradio", { name: "Deutsch", hidden: true });
+    await expect(english).toHaveFocus();
+    await expect(english).toHaveAttribute("href", "#en");
+    await expect(german).toHaveAttribute("href", "#de");
+    const spanish = canvas.getByRole("menuitemradio", { name: "Español", hidden: true });
+    await expect(spanish).not.toHaveAttribute("href");
+    await expect(spanish).toHaveAttribute("aria-disabled", "true");
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(german).toHaveFocus();
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(english).toHaveFocus();
+    // Followed for real, the address would navigate the test frame away.
+    const followed = fn();
+    german.addEventListener("click", (event) => {
+      event.preventDefault();
+      followed();
+    });
+    await userEvent.keyboard("{ArrowDown}");
+    await userEvent.keyboard(" ");
+    await expect(followed).toHaveBeenCalledOnce();
+    await waitFor(() => expect(canvas.queryByRole("menu", { hidden: true })).toBeNull());
+  },
+};
+
 /** Choice state belongs to the caller, while groups name each choice set. */
 export const GroupedChoices: Story = {
   decorators: [onPanel("Workspace")],

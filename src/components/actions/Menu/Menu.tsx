@@ -9,8 +9,10 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
+import type { useRender } from "@base-ui/react/use-render";
 import { Check } from "lucide-react";
 import { cx } from "../../../internal/cx";
+import { renderInto } from "../../../internal/renderInto";
 import { SealMark } from "../../status/SealValue";
 import { fixedOrigin, menuBounds, placeMenu, type MenuDirection } from "./menuPlacement";
 import "./Menu.css";
@@ -103,9 +105,9 @@ export function Menu({
 
   const items = useCallback(
     () =>
-      Array.from(
-        list.current?.querySelectorAll<HTMLButtonElement>('[role="menuitem"], [role="menuitemradio"]') ?? [],
-      ).filter((item) => !item.disabled),
+      Array.from(list.current?.querySelectorAll<HTMLElement>('[role="menuitem"], [role="menuitemradio"]') ?? []).filter(
+        (item) => !item.matches(":disabled, [aria-disabled=true]"),
+      ),
     [],
   );
 
@@ -142,7 +144,7 @@ export function Menu({
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     const all = items();
-    const at = all.indexOf(document.activeElement as HTMLButtonElement);
+    const at = all.indexOf(document.activeElement as HTMLElement);
     if (event.key === "Escape") {
       event.preventDefault();
       close();
@@ -219,21 +221,7 @@ export function Menu({
   );
 }
 
-/**
- * One action in a `Menu`, chosen with a click or Enter. `tone="danger"` marks
- * a destructive one; `inferred` puts the hollow ring before an item a model
- * proposed. Give one item of a labelled group `checked` to make the group a
- * set of mutually exclusive choices.
- */
-export function MenuItem({
-  onSelect,
-  tone = "neutral",
-  inferred = false,
-  checked,
-  disabled = false,
-  children,
-}: {
-  onSelect: () => void;
+type ItemCommon = {
   tone?: "neutral" | "danger";
   /** A model proposed this one, so it carries the hollow ring. */
   inferred?: boolean;
@@ -241,17 +229,33 @@ export function MenuItem({
   checked?: boolean;
   disabled?: boolean;
   children: ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      role={checked === undefined ? "menuitem" : "menuitemradio"}
-      aria-checked={checked}
-      disabled={disabled}
-      tabIndex={-1}
-      className={cx("di-option", "di-menu-item", tone === "danger" && "is-danger")}
-      onClick={onSelect}
-    >
+};
+type ActionItem = ItemCommon & { onSelect: () => void; href?: never; render?: never };
+type LinkItem = ItemCommon & { href: string; onSelect?: () => void; render?: never };
+type RoutedItem = ItemCommon & { render: useRender.RenderProp; onSelect?: () => void; href?: never };
+
+/**
+ * One action in a `Menu`, chosen with a click or Enter. `tone="danger"` marks
+ * a destructive one; `inferred` puts the hollow ring before an item a model
+ * proposed. Give one item of a labelled group `checked` to make the group a
+ * set of mutually exclusive choices.
+ *
+ * **Links:** `href` makes the item an `<a>`, and `render={<Link to="/de" />}`
+ * hands it to a router's link, the way `Button` does, so a menu of places
+ * (languages, workspaces) holds real links that open in a new tab. Space
+ * follows the link as Enter does; `onSelect` still runs, to close the menu.
+ */
+export function MenuItem(props: ActionItem | LinkItem | RoutedItem) {
+  const { onSelect, tone = "neutral", inferred = false, checked, disabled = false, children, render, href } = props;
+  const own = {
+    role: checked === undefined ? "menuitem" : "menuitemradio",
+    "aria-checked": checked,
+    tabIndex: -1,
+    className: cx("di-option", "di-menu-item", tone === "danger" && "is-danger"),
+  };
+  const chosen = { ...own, onClick: onSelect };
+  const content = (
+    <>
       {checked === undefined ? null : (
         <span className="di-menu-choice-mark" aria-hidden>
           {checked ? <Check /> : null}
@@ -259,7 +263,33 @@ export function MenuItem({
       )}
       {inferred ? <SealMark state="inferred" size={6} /> : null}
       {children}
-    </button>
+    </>
+  );
+  if (render === undefined && href === undefined) {
+    return (
+      <button type="button" {...chosen} disabled={disabled}>
+        {content}
+      </button>
+    );
+  }
+  // An anchor has no `disabled`: a disabled link item drops its address, as a blocked `Button` link does.
+  if (disabled) {
+    return (
+      <a {...own} aria-disabled="true">
+        {content}
+      </a>
+    );
+  }
+  const follow = (event: KeyboardEvent<HTMLAnchorElement>) => {
+    if (event.key !== " ") return;
+    event.preventDefault();
+    event.currentTarget.click();
+  };
+  if (render !== undefined) return renderInto(render, { ...chosen, onKeyDown: follow, children: content });
+  return (
+    <a {...chosen} href={href} onKeyDown={follow}>
+      {content}
+    </a>
   );
 }
 

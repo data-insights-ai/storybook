@@ -55,11 +55,15 @@
 
   /* The row is the shared option (`.di-option`). A chosen one says so with its check, not a
    * tint that would read as the highlight. */
+  a.di-menu-item {
+    text-decoration: none;
+  }
+
   .di-menu-item.is-danger {
     color: var(--di-status-danger-fg);
   }
 
-  .di-menu-item.is-danger:hover:not(:disabled) {
+  .di-menu-item.is-danger:hover:not(:disabled, [aria-disabled="true"]) {
     background: var(--di-status-danger-bg);
   }
 

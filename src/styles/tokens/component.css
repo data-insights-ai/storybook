@@ -64,10 +64,11 @@
      * The brand tier (`tier="brand"`): the display steps and the reading
      * sizes of a marketing page. The titles are measured against their own
      * head (cqi), not the window, so a title in half a page is set for half
-     * a page.
+     * a page. Half a page is the common head, so the slope is steep enough
+     * to lift a title there clear of its minimum.
      */
-    --di-brand-title-size: clamp(var(--di-font-size-800), 1rem + 3.4cqi, var(--di-font-size-1000));
-    --di-brand-section-title-size: clamp(var(--di-font-size-700), 1rem + 1.6cqi, var(--di-font-size-800));
+    --di-brand-title-size: clamp(var(--di-font-size-800), 0.5rem + 8cqi, var(--di-font-size-1000));
+    --di-brand-section-title-size: clamp(var(--di-font-size-700), 1rem + 4cqi, var(--di-font-size-800));
     --di-brand-lede-size: var(--di-font-size-550);
     --di-brand-quote-size: clamp(var(--di-font-size-700), 1rem + 3cqi, var(--di-font-size-900));
     --di-brand-disclosure-title-size: var(--di-font-size-550);
