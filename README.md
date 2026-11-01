@@ -64,7 +64,10 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 - **A secret shown once.** `SecretReveal` shows a new API key or enrollment token: why to copy it now, the whole value left to right in a box of its own, and a "Copy key" button that confirms. Use it in place of a `Notice` over a `CopyValue`.
 - **Notifications.** `FlyoutItem detail` adds a line under the title for where and by whom ("Production · Alex Admin"); unread entries keep their dot, so no unread badge is needed.
 - **Breadcrumbs take the eyebrow's place.** A `PageHeader` with `PageHeaderCrumbs` no longer draws its `eyebrow`: a detail page names where it belongs once, in one line.
-- **Switches.** A switch in `layout="row"` stays within a reading width (`--di-switch-row-width`, 36rem) of its label instead of the far edge of a wide form.
+- **Switches.** A switch in `layout="row"` stays within a reading width (`--di-switch-row-width`, 36rem) of its label instead of the far edge of a wide form. A single switch in a form keeps the default `inline` layout, control first; `row` is for a column of settings.
+- **Toolbars.** The search field shrinks before a filter wraps to a second row, and stops growing at 28rem.
+- **Danger zone.** A `Panel tone="danger"` with `heading={2}` is named at a `DetailSection` title's size, so it reads as one more section of the page; its edge marks it.
+- **More on a phone.** A tap on the bar's "More" before its popover has loaded opens it once loaded instead of being lost.
 
 ## Upgrade to 0.12
 
