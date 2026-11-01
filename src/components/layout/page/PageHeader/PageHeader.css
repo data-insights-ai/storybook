@@ -225,14 +225,14 @@
 
   .di-page-head-brand .di-page-title {
     max-width: 16ch;
-    font-size: clamp(var(--di-font-size-800), 6vw, var(--di-font-size-1000));
+    font-size: var(--di-brand-title-size);
     line-height: 1.02;
   }
 
   .di-page-head-brand .di-lede {
     margin-top: var(--di-gap-16);
     max-width: 58ch;
-    font-size: var(--di-font-size-550);
+    font-size: var(--di-brand-lede-size);
     line-height: 1.55;
   }
 
@@ -246,7 +246,7 @@
 
   .di-page-head-brand h2.di-page-title {
     max-width: 22ch;
-    font-size: clamp(var(--di-font-size-700), 3vw, var(--di-font-size-800));
+    font-size: var(--di-brand-section-title-size);
     line-height: 1.02;
   }
 }

@@ -17,9 +17,16 @@ import "./FactList.css";
  * `pairs` is a short list beside a figure: the term at the start, the
  * value at the end of the line. `stacked` is the basis of a proposal:
  * a mono label above each value, one under the other.
+ *
+ * `tier="brand"` sets any layout to be read on a brand page: values at
+ * 16px (`--di-brand-fact-value-size`), a label beside them at 14px
+ * (`--di-brand-fact-label-size`), a caption above them at 12px
+ * (`--di-brand-fact-caption-size`). The grid's statements are
+ * `--di-brand-fact-statement-size` in either tier.
  */
 export function FactList({
   layout = "rows",
+  tier = "console",
   children,
 }: {
   /**
@@ -30,9 +37,11 @@ export function FactList({
    * `stacked` sets each label above its value, one fact under the other.
    */
   layout?: "rows" | "grid" | "columns" | "inline" | "pairs" | "stacked";
+  /** `console` is a screen. `brand` is a brand page, where the facts are read rather than scanned. */
+  tier?: "console" | "brand";
   children: ReactNode;
 }) {
-  return <dl className={cx("di-facts", `di-facts-${layout}`)}>{children}</dl>;
+  return <dl className={cx("di-facts", `di-facts-${layout}`, tier === "brand" && "di-facts-brand")}>{children}</dl>;
 }
 
 /**

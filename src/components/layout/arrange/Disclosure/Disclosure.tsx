@@ -34,10 +34,16 @@ type Level = 2 | 3 | 4 | 5 | 6;
  *
  * Controlled with `open` and `onOpenChange`, or left to itself with
  * `defaultOpen`. Several go in a `DisclosureGroup`.
+ *
+ * `tier="brand"` is a brand page's question and answer (an FAQ): the title
+ * at 18px (`--di-brand-disclosure-title-size`) over a 16px answer
+ * (`--di-brand-disclosure-body-size`). The console title is
+ * `--di-disclosure-title-size`.
  */
 export function Disclosure({
   id,
   toggle = "chevron",
+  tier = "console",
   title,
   headingLevel = 3,
   open,
@@ -51,6 +57,8 @@ export function Disclosure({
   id?: string;
   /** `head`: the whole head is the button. `chevron`: a separate toggle, so the lead can hold a control. */
   toggle?: "head" | "chevron";
+  /** `console` is a screen. `brand` is a brand page's question and answer, set to be read. */
+  tier?: "console" | "brand";
   /** The group's name. Needed with `toggle="head"`; with `chevron` a `DisclosureLead` may stand in for it. */
   title?: string;
   /** The level the title takes in the page's outline. */
@@ -113,7 +121,10 @@ export function Disclosure({
     );
 
   return (
-    <section className={cx("di-disclosure", isOpen && "is-open", className)} data-toggle={toggle}>
+    <section
+      className={cx("di-disclosure", tier === "brand" && "di-disclosure-brand", isOpen && "is-open", className)}
+      data-toggle={toggle}
+    >
       {toggle === "head" ? (
         <Heading className="di-disclosure-heading">
           <button

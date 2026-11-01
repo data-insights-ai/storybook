@@ -380,7 +380,7 @@
     top: var(--di-space-8);
     z-index: 2;
     min-width: var(--di-timeline-readout-min);
-    max-width: min(var(--di-timeline-readout-max), 70vw);
+    max-width: min(var(--di-timeline-readout-max), 70cqi);
     padding: var(--di-space-8) var(--di-space-12);
     border: 1px solid var(--di-border-strong);
     border-radius: var(--di-radius-surface);
