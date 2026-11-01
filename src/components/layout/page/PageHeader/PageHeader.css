@@ -186,7 +186,7 @@
     }
   }
 
-  /* The console tier: a 28px name in the display face over a 14px lede. Like the brand tier it carries
+  /* The console tier: a 28–34px name in the display face over a 16px lede. Like the brand tier it carries
      no bottom margin; the page or Stack around it owns the rhythm. */
   .di-page-head-console .di-page-title {
     max-width: var(--di-page-title-measure);

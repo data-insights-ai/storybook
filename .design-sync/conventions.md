@@ -101,7 +101,7 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 
 | Need | Tokens |
 | --- | --- |
-| Surfaces | Depth is a step in tone: `--di-bg-chrome` (the sidebar, a step below), `--di-bg-page` (the ground), `--di-bg-surface` (a panel, a table, a list pane), `--di-bg-subtle` (inset), `--di-bg-strip`, `--di-bg-plane` (what floats, the selected row) |
+| Surfaces | Depth is a step in tone: `--di-bg-chrome` (bands and the app bar, a step below), `--di-sidebar-bg` (ivory, a step above the ground; near black after dark), `--di-bg-page` (the ground), `--di-bg-surface` (a panel, a table, a list pane), `--di-bg-subtle` (inset), `--di-bg-strip`, `--di-bg-plane` (what floats, the selected row) |
 | Ink | `--di-text`, `--di-text-muted`, `--di-text-subtle`, `--di-text-disabled`, `--di-text-on-strong`, `--di-text-on-seal` (ink on the filled seal) |
 | Lines | `--di-rule`, `--di-rule-hairline`, `--di-border`, `--di-border-strong` |
 | Space | `--di-space-2 4 6 8 12 16 24 32 48 64 96` — named by value, so `--di-space-12` is 12px |
@@ -109,7 +109,7 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | Type | `--di-font-display`, `--di-font-ui`, `--di-font-code`, `--di-font-size-100` … `-1000`, `--di-weight-regular/medium/semibold/bold` |
 | Status | `--di-status-{ok,warn,danger,recorded,neutral}-{bg,fg,border,dot}` |
 | The one thing | `--di-one`, `--di-one-edge`, `--di-one-ink` (navy in daylight, gold after dark) |
-| Selection | `--di-select`, `--di-focus`, `--di-sidebar-focus` (navy-700, `#A9CBF3` after dark), `--di-focus-ring-on-strong`, `--di-inverse-focus`, `--di-bg-selected` (the pale tint) |
+| Selection | `--di-select`, `--di-focus`, `--di-sidebar-focus` (navy-700, `#A9CBF3` after dark), `--di-sidebar-mark` (the sidebar's current page, gold), `--di-focus-ring-on-strong`, `--di-inverse-focus`, `--di-bg-selected` (the pale tint) |
 | Severity | `--di-severity-{critical,high,medium,low,info}` |
 | Record marks | `--di-mark`, `--di-mark-ring`, `--di-mark-surface`, `--di-mark-ink` (neutral; gold inside `data-brand`); `--di-seal` only in a brand moment |
 | Marked match | `--di-highlight-tint`, `--di-highlight-ink`, `--di-highlight-weight` (`Highlight`) |
@@ -124,7 +124,7 @@ Rules that make output look native rather than approximate:
 - **Depth is a step in tone, not a line.** A table sits on a surface without a frame of its own.
 - **Navy selects; `Highlight` marks a match by tint and weight.** Selection, focus and a compared series (`--di-chart-compare`, a lighter navy) are the navy family; `Highlight` is the pale selection tint and medium weight, never an edge. None of them is a status, so none is a `tone`, and none fills a button.
 - **Gold marks the one thing in a view** — the first attention item, a verdict, the one value of a chart. In daylight it is an edge, a mark, or the small gold pill with navy words that names the one item (`emphasisLabel`) — **never gold text and never a gold wash under prose**; after dark gold text is allowed (`--di-one-ink`). The seal is the same gold and so a **brand moment only** — sign-in, the brand mark, empty and onboarding states, licence and certificate seals; never in an operational view beside the one thing, and `Button variant="seal"` is never an operational action. The record marks (`SealValue`, the inferred ring, a done step) are neutral in an operational view and turn gold only inside `data-brand`. Keep the word beside any mark.
-- **Selection and focus are the navy family**: navy-700 in daylight, `#A9CBF3` after dark. Never ring focus in gold. Never remove a focus indicator.
+- **Selection and focus are the navy family**: navy-700 in daylight, `#A9CBF3` after dark. The one exception is the sidebar's current page, marked by a gold edge (`--di-sidebar-mark`). Never ring focus in gold. Never remove a focus indicator.
 - **Warn is its own amber**, so it never reads as the gold. Severity after dark runs orange for medium for the same reason.
 - **Figures and machine values are mono and literal.** Timestamps are 24-hour UTC with the `Z` (`09:12:04Z`, `2026-09-18T09:12:04Z`); ordinals are zero-padded two digits (`01`, `02`). Figures are tabular.
 - **Three families.** `--di-font-display` (Space Grotesk) is the page's name, a figure, a section head. `--di-font-ui` (IBM Plex Sans, 14px body) is prose. `--di-font-code` (IBM Plex Mono) is anything a machine wrote, and the capital label above a value.
@@ -170,7 +170,7 @@ use, and nothing else.
 | --- | --- | --- | --- | --- | --- |
 | Display | `--di-font-size-1000` | Space Grotesk | 56px | 700 | Brand page title |
 | Title | `--di-font-size-800` | Space Grotesk | 34px | 700 | Brand page section |
-| Page | `--di-font-size-700` | Space Grotesk | 28px | 700 | `PageHeader`: the page's name; `Figure` value |
+| Page | `--di-page-title-size` (`-700` to `-800`) | Space Grotesk | 28–34px | 700 | `PageHeader`: the page's name; `Figure` value |
 | Section | `--di-font-size-600` | Space Grotesk | 20px | 700 | `PageHeader level={2}`, the attention heading |
 | Brand lede | `--di-font-size-550` | IBM Plex Sans | 18px | 400 | `PageHeader tier="brand"` lede |
 | Block | `--di-font-size-500` | IBM Plex Sans | 16px | 600 | A panel's or an attention item's title |
