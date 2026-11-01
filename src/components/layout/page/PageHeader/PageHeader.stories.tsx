@@ -262,7 +262,7 @@ export const Tiers: Story = {
  * record’s state under its name, its key facts, and its primary actions.
  */
 export const Detail: Story = {
-  args: { eyebrow: "", lede: "" },
+  args: { eyebrow: "Production", lede: "" },
   render: (args) => (
     <PageHeader {...args}>
       <PageHeaderCrumbs>
@@ -291,6 +291,7 @@ export const Detail: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("heading", { level: 1, name: "Head office" })).toBeVisible();
     await expect(canvas.getByRole("navigation", { name: "Breadcrumb" })).toBeVisible();
+    await expect(canvas.queryByText("Production")).toBeNull();
   },
 };
 

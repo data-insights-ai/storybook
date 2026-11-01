@@ -63,6 +63,7 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 - **Dialogs.** A dialog opened from an end-aligned table cell or toolbar reads from the start again. `DialogFooter note` says at the footer's start why the action waits ("Choose at least one permission"); put no text between the buttons.
 - **A secret shown once.** `SecretReveal` shows a new API key or enrollment token: why to copy it now, the whole value left to right in a box of its own, and a "Copy key" button that confirms. Use it in place of a `Notice` over a `CopyValue`.
 - **Notifications.** `FlyoutItem detail` adds a line under the title for where and by whom ("Production · Alex Admin"); unread entries keep their dot, so no unread badge is needed.
+- **Breadcrumbs take the eyebrow's place.** A `PageHeader` with `PageHeaderCrumbs` no longer draws its `eyebrow`: a detail page names where it belongs once, in one line.
 - **Switches.** A switch in `layout="row"` stays within a reading width (`--di-switch-row-width`, 36rem) of its label instead of the far edge of a wide form.
 
 ## Upgrade to 0.12

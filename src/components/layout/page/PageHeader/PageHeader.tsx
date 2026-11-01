@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from "react";
+import { Children, createContext, isValidElement, useContext, type ReactNode } from "react";
 import { cx } from "../../../../internal/cx";
 import { Eyebrow } from "../../../text/Eyebrow";
 import { MetaLine } from "../../../text/MetaLine";
@@ -19,8 +19,8 @@ import "./PageHeader.css";
  * `brand` is the display tier of a brand page, measured to 16ch (22ch at
  * level 2) over an 18px lede.
  *
- * Anatomy: `PageHeaderCrumbs` (the way back to a record's list), the
- * `eyebrow`, `PageHeaderTitle` with `PageHeaderStatus` beside it,
+ * Anatomy: `PageHeaderCrumbs` (the way back to a record's list, in the
+ * eyebrow's place: with crumbs the eyebrow is not drawn), the `eyebrow`, `PageHeaderTitle` with `PageHeaderStatus` beside it,
  * `PageHeaderMeta`, the `lede`, `PageHeaderFacts` (a record's key facts),
  * and `PageHeaderAside` at the right (a list or record page's one primary
  * action; an overview has none). The frame places every slot with grid
@@ -50,11 +50,16 @@ export function PageHeader({
   children: ReactNode;
 }) {
   const Frame = level === 1 ? "header" : "div";
+  // The way back names where the page belongs, so it takes the eyebrow's line.
+  let crumbs = false;
+  Children.forEach(children, (child) => {
+    if (isValidElement(child) && child.type === PageHeaderCrumbs) crumbs = true;
+  });
   return (
     <HeadingLevel.Provider value={level}>
       <Frame className={cx("di-page-head", `di-page-head-${tier}`, level === 2 && "di-page-head-section")}>
         <div className="di-page-grid">
-          {eyebrow ? (
+          {eyebrow && !crumbs ? (
             <Eyebrow variant="plain" className="di-page-eyebrow">
               {eyebrow}
             </Eyebrow>
@@ -86,7 +91,7 @@ export function PageHeaderAside({ children }: { children: ReactNode }) {
   return <div className="di-page-aside">{children}</div>;
 }
 
-/** Above the eyebrow: a `Breadcrumb` back to the list a detail page belongs to. */
+/** In the eyebrow's place: a `Breadcrumb` back to the list a detail page belongs to. */
 export function PageHeaderCrumbs({ children }: { children: ReactNode }) {
   return <div className="di-page-crumbs">{children}</div>;
 }
