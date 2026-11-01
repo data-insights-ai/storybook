@@ -22,6 +22,8 @@
     --di-paper-surface: #ffffff;
     --di-paper-inset: #ece5d6;
     --di-paper-plane: #ffffff;
+    /* The navigation: the logo's gold as a light wash. */
+    --di-paper-honey: #f1e3bd;
 
     /* Navy is the ink and the action in daylight, and the ground after dark. */
     --di-navy-950: #061631;
@@ -45,6 +47,7 @@
     --di-night-ground: #0d1a30;
     --di-night-surface: #14243f;
     --di-night-inset: #1c2e4d;
+    --di-night-deep: #081221;
     --di-night-plane: #1a2c4b;
     --di-night-glow: #22386a;
     --di-night-ink: #f2f0e6;

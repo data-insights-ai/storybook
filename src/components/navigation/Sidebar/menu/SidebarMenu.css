@@ -21,6 +21,7 @@
   .di-sb-button {
     --di-row-hover-bg: color-mix(in srgb, var(--di-sidebar-fg) 6%, transparent);
     --di-row-current-bg: var(--di-sidebar-active);
+    --di-select: var(--di-sidebar-mark);
     position: relative;
     display: flex;
     align-items: center;

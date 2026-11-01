@@ -42,6 +42,7 @@ function lightness(hex: string) {
 /* Each pair is one zone drawn on the other. */
 const pairs = {
   light: [
+    ["--di-sidebar-bg", "--di-bg-page"],
     ["--di-bg-chrome", "--di-bg-page"],
     ["--di-bg-page", "--di-bg-surface"],
     ["--di-bg-strip", "--di-bg-page"],
@@ -51,6 +52,7 @@ const pairs = {
     ["--di-bg-readonly", "--di-bg-surface"],
   ],
   dark: [
+    ["--di-sidebar-bg", "--di-bg-page"],
     ["--di-bg-chrome", "--di-bg-page"],
     ["--di-bg-page", "--di-bg-surface"],
     ["--di-bg-strip", "--di-bg-page"],
