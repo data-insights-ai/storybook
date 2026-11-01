@@ -54,6 +54,12 @@
     line-height: var(--di-leading-tight);
   }
 
+  /* The danger zone is one more section beside a page's detail sections, so it is named at their size: its edge marks it, not its title. */
+  .di-panel.is-danger h2.di-panel-title {
+    font-size: var(--di-block-title-size);
+    line-height: var(--di-leading-snug);
+  }
+
   .di-panel-status {
     display: inline-flex;
     flex: none;
