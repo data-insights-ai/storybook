@@ -157,12 +157,12 @@
 
     --di-index-col: 38px;
 
-    /* The navigation carries the brand gold as a wash; the current page is marked by a gold edge (4.9:1 on the wash). */
-    --di-sidebar-bg: var(--di-paper-honey);
-    --di-sidebar-raised: var(--di-gold-50);
+    /* The navigation is ivory, a step above the ground; the brand gold marks the current page (5.4:1 on its tint). */
+    --di-sidebar-bg: var(--di-paper-ivory);
+    --di-sidebar-raised: var(--di-gold-100);
     --di-sidebar-fg: var(--di-navy-900);
     --di-sidebar-muted: var(--di-navy-500);
-    --di-sidebar-active: var(--di-gold-50);
+    --di-sidebar-active: var(--di-gold-100);
     --di-sidebar-edge: rgba(122, 92, 14, 0.22);
     --di-sidebar-mark: var(--di-gold-700);
     --di-sidebar-focus: var(--di-navy-700);
