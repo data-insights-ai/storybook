@@ -20,19 +20,30 @@ const chromium = () => ({
   instances: [{ browser: "chromium" as const }],
 });
 
+type Check = "focus" | "contrast" | "surfaces";
+
+const checkFiles: Record<Check, string[]> = {
+  focus: ["./.storybook/tests/focus/vitest.setup.ts"],
+  contrast: ["./.storybook/tests/contrast/vitest.setup.ts"],
+  surfaces: ["./.storybook/tests/surfaces/spacing.setup.ts", "./.storybook/tests/surfaces/vitest.setup.ts"],
+};
+
 /**
- * Every story runs once per theme, again at phone width (390px) in both, and in compact density (light, desk and
- * phone), so the axe check (`a11y: { test: "error" }`) sees the dark remap as well, and
- * `.storybook/tests/contrast` measures every visible text, and every chart mark it lists, where it is painted.
- * `initialGlobals` pins the toolbar global for the whole project; a story's own `globals` still win.
+ * A test matrix: each check runs in the passes where it can find something. Colour (contrast, axe) runs light and dark;
+ * layout (surfaces) runs desk, phone and compact; the focus walk runs desk and phone, where layouts collide differently.
+ * A pass in dark clears the root theme before each story and checks it is dark after (vitest.dark.setup.ts).
+ * `initialGlobals` pins the toolbar globals for the whole project; a story's own `globals` still win.
  * https://storybook.js.org/docs/writing-tests/integrations/vitest-addon
  */
 function stories(
   name: string,
-  theme: "light" | "dark",
-  setupFiles: string[] = [],
-  viewport?: "phone",
-  density: "comfortable" | "compact" = "comfortable",
+  pass: {
+    theme: "light" | "dark";
+    viewport?: "phone";
+    density?: "comfortable" | "compact";
+    checks: Check[];
+    axe: boolean;
+  },
 ): TestProjectInlineConfiguration {
   return {
     extends: true,
@@ -40,9 +51,10 @@ function stories(
       storybookTest({
         configDir: path.join(dirname, ".storybook"),
         initialGlobals: {
-          theme,
-          density,
-          ...(viewport ? { viewport: { value: viewport, isRotated: false } } : {}),
+          theme: pass.theme,
+          density: pass.density ?? "comfortable",
+          ...(pass.viewport ? { viewport: { value: pass.viewport, isRotated: false } } : {}),
+          ...(pass.axe ? {} : { a11y: { manual: true } }),
         },
       }),
     ],
@@ -51,12 +63,10 @@ function stories(
       // FOCUS_REPORT=1 prints the focus-ring findings per story instead of failing on them.
       provide: { focusReport: process.env.FOCUS_REPORT === "1" },
       setupFiles: [
-        "./.storybook/tests/focus/vitest.setup.ts",
+        ...(pass.checks.includes("focus") ? checkFiles.focus : []),
         "./.storybook/tests/vitest.pointer.setup.ts",
-        "./.storybook/tests/surfaces/spacing.setup.ts",
-        "./.storybook/tests/contrast/vitest.setup.ts",
-        "./.storybook/tests/surfaces/vitest.setup.ts",
-        ...setupFiles,
+        ...pass.checks.filter((check) => check !== "focus").flatMap((check) => checkFiles[check]),
+        ...(pass.theme === "dark" ? ["./.storybook/tests/vitest.dark.setup.ts"] : []),
       ],
       browser: { ...chromium(), commands: { parkPointer } },
     },
@@ -96,12 +106,15 @@ export default defineConfig({
           browser: chromium(),
         },
       },
-      stories("storybook", "light"),
-      stories("storybook-dark", "dark", ["./.storybook/tests/vitest.dark.setup.ts"]),
-      stories("storybook-phone", "light", [], "phone"),
-      stories("storybook-phone-dark", "dark", ["./.storybook/tests/vitest.dark.setup.ts"], "phone"),
-      stories("storybook-compact", "light", [], undefined, "compact"),
-      stories("storybook-compact-phone", "light", [], "phone", "compact"),
+      stories("storybook", { theme: "light", checks: ["focus", "contrast", "surfaces"], axe: true }),
+      stories("storybook-dark", { theme: "dark", checks: ["contrast"], axe: true }),
+      stories("storybook-phone", {
+        theme: "light",
+        viewport: "phone",
+        checks: ["focus", "contrast", "surfaces"],
+        axe: true,
+      }),
+      stories("storybook-compact", { theme: "light", density: "compact", checks: ["surfaces"], axe: false }),
     ],
   },
 });

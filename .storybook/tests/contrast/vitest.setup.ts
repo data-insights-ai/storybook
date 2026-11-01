@@ -3,9 +3,18 @@ import { markContrast } from "./markContrast";
 import { visibleContrast } from "./visibleContrast";
 
 afterEach(async () => {
-  // A colour still easing in (a theme just applied, a hover leaving) is measured where it lands.
-  const easing = document.getAnimations().filter((animation) => animation instanceof CSSTransition);
-  await Promise.all(easing.map((animation) => animation.finished.catch(() => undefined)));
+  // A colour still easing in (a theme just applied, a hover leaving, a popup fading in) is measured where it lands.
+  // One that ends can start the next (a delayed label fades in after the content arrived), so wait until none runs.
+  for (let round = 0; round < 5; round++) {
+    const easing = document
+      .getAnimations()
+      .filter(
+        (animation) =>
+          animation.playState === "running" && animation.effect?.getComputedTiming().iterations !== Infinity,
+      );
+    if (easing.length === 0) break;
+    await Promise.all(easing.map((animation) => animation.finished.catch(() => undefined)));
+  }
   const findings = await visibleContrast(document.body);
   const lines = findings.map(
     (f) =>
