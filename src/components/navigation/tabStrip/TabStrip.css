@@ -6,6 +6,8 @@
    */
   .di-tabs {
     display: flex;
+    /* In a page that fills the window it keeps its height; it scrolls sideways, never shut. */
+    min-height: fit-content;
     gap: var(--di-space-2);
     min-width: 0;
     overflow-x: auto;
