@@ -2,7 +2,7 @@
 
 This repository is the component workbench for the datAInsights brand. It is not a product. Stories, chrome, and sample copy do not name a product, a suite, or a codename. Patterns under `src/screens` show whole screens a product can be assembled from.
 
-A designer reviews work in Storybook (`pnpm storybook`, port 4500). Change what Storybook shows. Leave the installable package and the licence intact unless a release was asked for.
+A designer reviews work in Storybook (`pnpm storybook`, port 4500). Change what Storybook shows. Leave the installable package and the licence intact unless a release was asked for. A release is the version bump and its tag `vX.Y.Z` pushed to GitHub; the `publish` job in `.github/workflows/ci.yml` publishes the package. Never publish from a machine.
 
 ## Composing a product screen
 
