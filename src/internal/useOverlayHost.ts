@@ -1,6 +1,6 @@
 import { useCallback, useLayoutEffect, useState, type RefObject } from "react";
 
-type OverlayHost = { theme?: string; container?: HTMLElement };
+export type OverlayHost = { theme?: string; container?: HTMLElement };
 
 // Portals must retain a nested theme and stay inside a native modal's inert
 // boundary. This bridges presentation only; the headless library still owns the popup.

@@ -1,10 +1,11 @@
-import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { Popover } from "@base-ui/react/popover";
+import { lazy, Suspense, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { Ellipsis } from "lucide-react";
 import { takeSlot } from "../../../internal/slots";
 import { useOverlayHost } from "../../../internal/useOverlayHost";
 import { Button } from "../../actions/Button";
 import "./AppShellBar.css";
+
+const AppShellBarMore = lazy(() => import("./AppShellBarMore"));
 
 /**
  * The bar over the page, one row at every width.
@@ -85,34 +86,25 @@ export function AppShellBarEnd({ moreLabel, children }: { moreLabel: string; chi
     </div>
   ) : (
     <div ref={anchor} className="di-top-fold">
-      <Popover.Root
-        open={open}
-        onOpenChange={(next) => {
-          if (next) update();
-          setOpen(next);
-        }}
+      <Suspense
+        fallback={
+          <Button variant="ghost" size="sm" iconOnly aria-label={moreLabel}>
+            <Ellipsis aria-hidden />
+          </Button>
+        }
       >
-        <Popover.Trigger
-          render={
-            <Button variant="ghost" size="sm" iconOnly aria-label={moreLabel}>
-              <Ellipsis aria-hidden />
-            </Button>
-          }
-        />
-        <Popover.Portal container={host.container}>
-          <Popover.Positioner
-            data-theme={host.theme}
-            side="bottom"
-            align="end"
-            sideOffset={4}
-            className="di-topbar-more-positioner"
-          >
-            <Popover.Popup className="di-topbar-more" aria-label={moreLabel}>
-              {items}
-            </Popover.Popup>
-          </Popover.Positioner>
-        </Popover.Portal>
-      </Popover.Root>
+        <AppShellBarMore
+          moreLabel={moreLabel}
+          open={open}
+          onOpenChange={(next) => {
+            if (next) update();
+            setOpen(next);
+          }}
+          host={host}
+        >
+          {items}
+        </AppShellBarMore>
+      </Suspense>
     </div>
   );
 

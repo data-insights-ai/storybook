@@ -103,6 +103,41 @@ try {
     process.exit(1);
   }
   console.log(`tree-shake ok, Sidebar bundle ${sidebar.length} bytes without the drawer and rail tooltips`);
+
+  writeFileSync(entry, `export { AppShellBar, AppShellBarEnd } from "@data-insights-ai/ui";\n`);
+  await build({
+    configFile: false,
+    root,
+    logLevel: "silent",
+    resolve: { alias: { "@data-insights-ai/ui": path.resolve("dist/lib/index.js") } },
+    build: {
+      outDir: path.join(root, "bar"),
+      emptyOutDir: true,
+      minify: false,
+      modulePreload: false,
+      lib: { entry, formats: ["es"], fileName: "app" },
+      rollupOptions: {
+        external(id) {
+          return (
+            id.endsWith(".css") ||
+            id === "react" ||
+            id === "react-dom" ||
+            id.startsWith("react/") ||
+            id === "lucide-react"
+          );
+        },
+      },
+    },
+  });
+  const bar = readFileSync(
+    filesUnder(path.join(root, "bar")).find((file) => path.basename(file).startsWith("app.")),
+    "utf8",
+  );
+  if (bar.includes("PopoverPositioner")) {
+    console.error("the app bar loads its overflow popover up front");
+    process.exit(1);
+  }
+  console.log(`tree-shake ok, AppShellBar bundle ${bar.length} bytes without the overflow popover`);
 } finally {
   rmSync(root, { recursive: true, force: true });
 }

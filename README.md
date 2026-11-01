@@ -58,6 +58,7 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 - **Page head.** The page name scales with the head from 28 px on a phone to 34 px on a desk; the lede is 16 px. Leave a little more room above the fold on a phone.
 - **Panels.** A `Panel` with `heading={2}` is a section of the page and names itself at 20 px; other panel titles stay at 16 px.
 - **CopyValue.** A value of several lines (a command, a configuration) keeps its lines and indent and wraps at spaces; a one-line value still wraps only at address boundaries.
+- **App bar (0.12.1).** The overflow menu of `AppShellBarEnd` loads when the end folds, not with the first page; a product that raised its first-page budget for the popover can lower it again.
 
 ## Upgrade to 0.11
 

@@ -175,9 +175,13 @@ function at(width: number, words: Words, folds: boolean): Story {
       await expect(canvasElement.ownerDocument.defaultView!.innerWidth).toBe(width);
       await oneRow(canvasElement, words);
       const canvas = within(canvasElement);
-      const more = canvas.queryByRole("button", { name: words.more });
-      await expect(more !== null).toBe(folds);
-      if (!more) return;
+      await expect(canvas.queryByRole("button", { name: words.more }) !== null).toBe(folds);
+      if (!folds) return;
+      const more = await waitFor(() => {
+        const loaded = canvas.getByRole("button", { name: words.more });
+        expect(loaded).toHaveAttribute("aria-expanded", "false");
+        return loaded;
+      });
       const bell = canvas.getByRole("button", { name: `${words.notifications}, ${words.unread}` });
       await expect(bell.getBoundingClientRect().left).toBeGreaterThan(more.getBoundingClientRect().right);
       const body = within(canvasElement.ownerDocument.body);
