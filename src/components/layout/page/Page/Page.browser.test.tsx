@@ -2,6 +2,7 @@ import { afterEach, describe, expect, test } from "vitest";
 import { page } from "vitest/browser";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
+import { useState } from "react";
 import "../../../../styles/styles.css";
 import { AppShellContent } from "../../../shell/AppShellContent";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../tables/DataTable";
@@ -163,6 +164,35 @@ describe("large screens", () => {
     const table = box(host.querySelector(".di-table"));
     const sheet = box(host.querySelector(".di-dialog-docked"));
     expect(Math.round(sheet.top)).toBe(Math.round(table.top));
+  });
+
+  test("at 1920px a second press on the button that opened a docked sheet closes it", async () => {
+    await page.viewport(1920, 1080);
+    function Views() {
+      const [open, setOpen] = useState(false);
+      return (
+        <AppShellContent>
+          <Page>
+            <button type="button" className="opener" onClick={() => setOpen(true)}>
+              Views
+            </button>
+            <section className="section">Assets</section>
+            <Dialog open={open} onClose={() => setOpen(false)} title="Saved views" closeLabel="Close">
+              <section>None yet</section>
+            </Dialog>
+          </Page>
+        </AppShellContent>
+      );
+    }
+    const host = show(<Views />);
+    const opener = host.querySelector<HTMLButtonElement>(".opener")!;
+    opener.focus();
+    flushSync(() => opener.click());
+    expect(host.querySelector(".di-dialog-docked")).not.toBeNull();
+    expect(opener.getAttribute("aria-expanded")).toBe("true");
+    flushSync(() => opener.click());
+    expect(host.querySelector(".di-dialog-docked")).toBeNull();
+    expect(opener.hasAttribute("aria-expanded")).toBe(false);
   });
 
   test("at 1920px on a list the side column starts level with the table, below its filters", async () => {

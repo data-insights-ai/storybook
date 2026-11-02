@@ -158,6 +158,26 @@ function DockedDialog(props: DialogProps & { side: HTMLElement }) {
     };
   }, [open]);
 
+  // The page beside stays usable, so its opener is a toggle: a second press closes instead of opening again.
+  useEffect(() => {
+    const target = opener.current;
+    if (!open || !target) return;
+    const expanded = target.getAttribute("aria-expanded");
+    target.setAttribute("aria-expanded", "true");
+    const press = (event: MouseEvent) => {
+      if (!(event.target instanceof Node) || !target.contains(event.target)) return;
+      event.preventDefault();
+      event.stopPropagation();
+      onClose();
+    };
+    document.addEventListener("click", press, true);
+    return () => {
+      document.removeEventListener("click", press, true);
+      if (expanded === null) target.removeAttribute("aria-expanded");
+      else target.setAttribute("aria-expanded", expanded);
+    };
+  }, [open, onClose]);
+
   // Esc from the page beside it; inside the dialog its own handler answers first, also in a field.
   useShortcut(open ? "Escape" : false, onClose);
 
