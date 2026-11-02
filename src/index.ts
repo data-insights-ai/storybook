@@ -153,6 +153,8 @@ export {
   ToolbarStatus,
 } from "./components/actions/Toolbar";
 export type { ToolbarProps, ToolbarRole } from "./components/actions/Toolbar";
+export { FilterBar, FilterBarEnd, FilterBarItem, FilterBarSheet } from "./components/actions/FilterBar";
+export type { FilterBarItemProps, FilterBarProps, FilterPlace } from "./components/actions/FilterBar";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/actions/Menu";
 export { NewEntries } from "./components/tables/NewEntries";
 export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./components/feedback/Notice";

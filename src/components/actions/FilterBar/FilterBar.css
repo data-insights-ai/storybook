@@ -1,0 +1,35 @@
+@layer components {
+  /* One row at every width: what does not fit folds into the sheet instead of wrapping. */
+  .di-filter-bar {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: var(--di-gap-8);
+    min-width: 0;
+    min-height: var(--di-control-h-md);
+  }
+
+  .di-filter-bar > * {
+    flex: none;
+  }
+
+  .di-filter-bar-item[data-grow="true"] {
+    flex: 1 1 0;
+    min-width: var(--di-filter-bar-grow-min);
+  }
+
+  .di-filter-bar-item[data-grow="true"] > * {
+    width: 100%;
+  }
+
+  .di-filter-bar-end {
+    display: flex;
+    align-items: center;
+    gap: var(--di-gap-8);
+    margin-inline-start: auto;
+  }
+
+  .di-filter-bar-field > * {
+    width: 100%;
+  }
+}
