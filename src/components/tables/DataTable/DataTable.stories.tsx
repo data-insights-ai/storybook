@@ -15,6 +15,7 @@ import {
   TableFooter,
   TableColumn,
   TableEmpty,
+  TableGroupRow,
   TableHead,
   TableIndex,
   TableRow,
@@ -513,6 +514,73 @@ export const NoRows: Story = {
       else await expect(Math.abs(out.right - text(last).right)).toBeLessThanOrEqual(1);
     }
     await expect(canvasElement.querySelector(".di-table-foot")).toBeNull();
+  },
+};
+
+const seenGroups = [
+  {
+    label: "Last 24 hours",
+    rows: [
+      { ordinal: "01", host: "edge-gw-01", seen: "12 min ago" },
+      { ordinal: "02", host: "dc-ldap-02", seen: "3 h ago" },
+    ],
+  },
+  {
+    label: "Last 30 days",
+    rows: [
+      { ordinal: "03", host: "build-runner-07", seen: "11 days ago" },
+      { ordinal: "04", host: "print-03", seen: "26 days ago" },
+    ],
+  },
+  { label: "Never seen", rows: [{ ordinal: "05", host: "lab-scanner", seen: "never" }] },
+];
+
+/**
+ * Rows ordered by when they were last seen, grouped by span: a
+ * `TableGroupRow` heads each run. A span with no rows has no group row
+ * (nothing was seen in the last 7 days but before today). The label starts
+ * on the first data column's line, past the ordinals.
+ */
+export const Grouped: Story = {
+  args: { caption: "Hosts by last seen" },
+  render: (args) => (
+    <DataTable {...args}>
+      <TableHead>
+        <TableColumn index={true}>Ordinal</TableColumn>
+        <TableColumn>Host</TableColumn>
+        <TableColumn align="end">Last seen</TableColumn>
+      </TableHead>
+      <TableBody>
+        {seenGroups.flatMap((group) => [
+          <TableGroupRow key={group.label} label={group.label} />,
+          ...group.rows.map((row) => (
+            <TableRow key={row.ordinal}>
+              <TableIndex>{row.ordinal}</TableIndex>
+              <TableCell>{row.host}</TableCell>
+              <TableCell align="end" mono={true}>
+                {row.seen}
+              </TableCell>
+            </TableRow>
+          )),
+        ])}
+      </TableBody>
+    </DataTable>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const heads = canvas.getAllByRole("rowheader");
+    await expect(heads.map((th) => th.textContent)).toEqual(["Last 24 hours", "Last 30 days", "Never seen"]);
+    await expect(heads[0]).toHaveAttribute("scope", "rowgroup");
+    const host = canvasElement.querySelectorAll("thead th")[1];
+    const label = heads[0].querySelector(".di-table-group-label")!;
+    const text = (el: Element) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      return range.getBoundingClientRect();
+    };
+    if (getComputedStyle(host).position !== "absolute") {
+      await expect(Math.abs(text(label).left - text(host).left)).toBeLessThanOrEqual(1);
+    }
   },
 };
 
