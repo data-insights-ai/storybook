@@ -77,6 +77,9 @@
     --di-brand-fact-caption-size: var(--di-font-size-300);
     --di-brand-fact-value-size: var(--di-font-size-500);
     --di-brand-fact-statement-size: var(--di-font-size-600);
+    /* A named point on a brand page: its heading follows the list's column, from 18px on a phone to 20px. */
+    --di-brand-point-title-size: clamp(var(--di-font-size-550), 0.75rem + 1.5cqi, var(--di-font-size-600));
+    --di-brand-point-body-size: var(--di-font-size-500);
 
     --di-field-bg: var(--di-bg-surface);
     --di-field-border: var(--di-border-input);
@@ -230,6 +233,8 @@
     --di-facts-grid-min: 360px;
     --di-facts-grid-cell-h: 108px;
     --di-facts-column-min: 200px;
+    /* Text blocks: the narrowest a named point gets before the list wraps. */
+    --di-points-min: 240px;
     /* Tables: the narrowest the row's name and a filling column get before the grid scrolls instead. */
     --di-table-label-min: 160px;
     /* Marks: severity steps, the icon specimen grid. */

@@ -49,7 +49,7 @@ The Storybook sidebar is grouped by the question a developer asks, one group per
 - `Tables/`: many rows to scan, sort and filter: `DataTable`, `InfiniteTable`, `NewEntries`.
 - `Records/`: one record or a short list of them: `RecordCard`, `FactList`, `ProposalPanel`, `AttentionList`, `IconTile`.
 - `Figures/`: a number: `Figure`, `FigureRow`, `Sparkline`.
-- `Text/`: how text is set: `Eyebrow`, `MetaLine`, `TextLink`, `Kbd`, `Highlight`, `Icon`, and the blocks `CodeBlock`, `PullQuote`, `TickRule`.
+- `Text/`: how text is set: `Eyebrow`, `MetaLine`, `TextLink`, `Kbd`, `Highlight`, `Icon`, and the blocks `CodeBlock`, `PointList`, `PullQuote`, `TickRule`.
 - `Status/`: the state of a thing, inline: `StatusPill`, `SeverityMark`, `SealValue`, `Badge`, `Tag` (`mono` for a filter, a version or a hash), `LevelMeter`.
 - `Feedback/`: what happened or is happening: `Notice` (`variant` banner, line), `EmptyState`, `Toast`, `Loading` (`shape` inline, app, list, detail, form, table), `Progress`, `RouteProgress`, `Delayed`.
 - `Charts/`: data on a scale: `Chart`, `TrendChart`, `Seismograph`, `Distribution`, `CoverageMatrix`; a dashboard figure is a `Panel` with a `Figure` and the chart, in a `Grid`.
@@ -88,6 +88,7 @@ Every example shows a component where it lives: content (a fact list, a figure, 
 | A record read beside the decisions about it | `Split` | |
 | A record's detail page, edited section by section | `DetailSection` | |
 | A term and its value | `FactList` (`layout="pairs"` for a short list) | |
+| Named points on a brand page: a heading over a paragraph, side by side | `PointList` | hand-built cards, `FactList` |
 | A status | `StatusPill` | a coloured word, or colour alone |
 | A recorded or inferred value | `SealValue` | a gold word |
 
@@ -337,12 +338,16 @@ carry a `tier`, and `brand` is the other value.
   `--di-brand-lede-size`, `--di-brand-quote-size`,
   `--di-brand-disclosure-title-size`, `--di-brand-disclosure-body-size`,
   `--di-brand-fact-label-size`, `--di-brand-fact-caption-size`,
-  `--di-brand-fact-value-size`, `--di-brand-fact-statement-size`; the console
+  `--di-brand-fact-value-size`, `--di-brand-fact-statement-size`,
+  `--di-brand-point-title-size`, `--di-brand-point-body-size`; the console
   has `--di-page-title-size`, `--di-disclosure-title-size`,
   `--di-figure-hero-size`.
 - **`Stack gap={48}`, `{64}`, `{96}`** is that rhythm. 48 separates the parts of
   a page, 64 and 96 separate the parts from each other. A console screen stops at
   48.
+- **`PointList`** for a band of named points (trust tiles, what a release
+  carries): a heading over a paragraph each, at the `heading` level the page's
+  outline asks for; the heading runs 18 to 20px with the list's column.
 - **`FactList layout="grid"`** for a band of terms; **`PullQuote`** for the page's
   one sentence of rhetoric (no attribution — a pull quote with a byline is a
   testimonial); and **`Grid`** for a two-column band.

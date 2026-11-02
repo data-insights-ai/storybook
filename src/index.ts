@@ -177,6 +177,7 @@ export { RouteProgress } from "./components/feedback/RouteProgress";
 export { Delayed } from "./components/feedback/Delayed";
 export { Loading } from "./components/feedback/Loading";
 export type { LoadingShape } from "./components/feedback/Loading";
+export { Point, PointList } from "./components/text/blocks/PointList";
 export { PullQuote } from "./components/text/blocks/PullQuote";
 export { QuantityField } from "./components/forms/text/QuantityField";
 export {
