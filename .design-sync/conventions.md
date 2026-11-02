@@ -44,7 +44,7 @@ A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` ho
 The Storybook sidebar is grouped by the question a developer asks, one group per job:
 
 - `Foundations/`: the brand and the tokens, shown (Start here, Color, Type, Space and shape, Our look, Logo). No component lives here.
-- `Actions/`: let someone do something: `Button` (with `badge` for a count), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `Menu`, `CopyValue`.
+- `Actions/`: let someone do something: `Button` (with `badge` for a count), `FilterBar` (the filters above a list on one row, folding into a sheet), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `Menu`, `CopyValue`.
 - `Forms/`: let someone enter or choose: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `ChoiceGroup`, `Switch`, `Checkbox`, the date fields and `CreateFlow`.
 - `Tables/`: many rows to scan, sort and filter: `DataTable`, `InfiniteTable`, `NewEntries`.
 - `Records/`: one record or a short list of them: `RecordCard`, `FactList`, `ProposalPanel`, `AttentionList`, `IconTile`.
@@ -81,6 +81,7 @@ Every example shows a component where it lives: content (a fact list, a figure, 
 | An irreversible action | `ConfirmDialog` | a modal for anything reversible |
 | A panel dropping from a topbar control | `Flyout` | |
 | Views of one record | `Tabs` | `TabNav`, whose tabs are places with their own URL |
+| The search and filters above a list or a chart | `FilterBar`: `FilterBarItem`s that fold into the Filters sheet as the bar narrows, the sheet holding every filter | a `Toolbar` that wraps onto a second row |
 | A row's actions | `Menu` or `Toolbar variant="row"` | buttons repeated in every row |
 | A message that stays on the page | `Notice` | `Toast`, the receipt of an action that already ran |
 | Nothing to show yet | `EmptyState` in the panel | an empty table, a `Notice` |

@@ -112,7 +112,7 @@ Every component lives in `src/components`, under the folder of its Storybook gro
 
 | Folder | Holds |
 | --- | --- |
-| `actions/` | Button (primary, secondary, ghost, link, danger, seal, inferred; `badge`; `href` or `render` for a link), Toolbar (list toolbar, selection bar, unsaved changes, form end, row actions, one-line form), Menu, CopyValue |
+| `actions/` | Button (primary, secondary, ghost, link, danger, seal, inferred; `badge`; `href` or `render` for a link), Toolbar (list toolbar, selection bar, unsaved changes, form end, row actions, one-line form), FilterBar (the filters above a list on one row; what does not fit folds into its sheet), Menu, CopyValue |
 | `forms/` | `field/` Field (the frame), FieldLabel, FieldHint, FieldConfidence (a field’s `confidence`); `text/` TextField, TextArea, SearchField, QuantityField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup (`appearance` list, segments, toggles, cards), Switch; `select/` Select, ComboBox, MultiComboBox (`freeEntry` for typed entries); `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker; CreateFlow |
 | `tables/` | DataTable, InfiniteTable, NewEntries |
 | `records/` | RecordCard (`layout` card or row), FactList, ProposalPanel, AttentionList, IconTile |

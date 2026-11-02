@@ -186,6 +186,8 @@
     --di-listbox-max-h: 320px;
     /* A filter above a list on a phone shares its row down to this width before it wraps. */
     --di-toolbar-filter-min: 96px;
+    /* The search in a filter bar gives up width down to this before a filter folds. */
+    --di-filter-bar-grow-min: 160px;
     /* An entry in a token field sits inside the field's frame, so it follows the field's height. */
     --di-token-h: calc(var(--di-field-height) - 2 * var(--di-space-4) - 2px);
     --di-token-remove: calc(var(--di-token-h) - var(--di-space-4));

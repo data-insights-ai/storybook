@@ -50,6 +50,25 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.16
+
+0.16 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.16.0` and move the filter rows over:
+
+- **Filter bar.** `FilterBar` keeps the search and filters above a list on one row at every width. As the bar's own width shrinks, its items fold one by one into the sheet behind the Filters trigger (the lowest `priority` first, among equals the last written) and come back as it grows; those left keep their order, and below 480px of bar only the kept items (the search), the trigger and `FilterBarEnd` stay. Each `FilterBarItem` draws its control for the bar or the sheet from the page's own state, so a filter set inline is still set in the sheet, and while it is folded the trigger counts it. `sheet="complete"` (the default) shows every item in the sheet; `FilterBarSheet` holds fields only the sheet has, counted in `count`. Everything applies as it changes, in the bar and in the sheet (a typed field after about 300ms, as the search); Done only closes, `onClear` clears, and the page keeps no draft. `countLabel` gives the count in words ("2 set"), which the trigger adds to its name. Only direct `FilterBarItem` children are items; the bar needs a parent that can shrink (`min-width: 0` in a flex row). A `Toolbar role="search"` that wrapped, or a "More filters" button with its own `Dialog`, can switch:
+
+  ```tsx
+  <FilterBar label="Filter cases" filtersLabel="Filters" countLabel={(n) => `${n} set`}
+    closeLabel="Close" doneLabel="Done" clearLabel="Clear all" onClear={clear}>
+    <FilterBarItem name="search" keep grow>
+      {(place) => <SearchField id={place === "bar" ? "q" : "q-sheet"} size="sm" label="Search" value={q} onChange={…} />}
+    </FilterBarItem>
+    <FilterBarItem name="severity" active={severity !== ""}>
+      {(place) => <Select id={`severity-${place}`} label="Severity" hideLabel={place === "bar"} …>…</Select>}
+    </FilterBarItem>
+    <FilterBarEnd><Menu …/></FilterBarEnd>
+  </FilterBar>
+  ```
+
 ## Upgrade to 0.15
 
 0.15 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.15.0` and check the brand pages:
