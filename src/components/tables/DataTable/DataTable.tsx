@@ -29,7 +29,8 @@ import "./DataTable.css";
  * **Anatomy:** `Toolbar` (optional) · `TableHead` with one
  * `TableColumn` per column · `TableBody` with `TableRow`s of
  * `TableIndex` and `TableCell`s (`CellLead`, `CellIcon`, `CellStack`
- * inside), or `TableEmpty` when nothing matches · `TableFooter`
+ * inside), a `TableGroupRow` heading each run of rows that share a value,
+ * or `TableEmpty` when nothing matches · `TableFooter`
  * (count, pages).
  *
  * **States:** empty (`TableEmpty` keeps the head; the footer goes, it would only count nothing), the
@@ -492,6 +493,42 @@ export function TableSpacer({ height, ref }: { height: number; ref?: Ref<HTMLTab
   return (
     <tr ref={ref} className={cx("di-table-spacer", height <= 0 && "is-empty")} aria-hidden style={style}>
       <td colSpan={1000} />
+    </tr>
+  );
+}
+
+/**
+ * Heads a run of rows that share a value: seen in the last 24 hours, the
+ * last 7 days, earlier. One row across every column in the head's band
+ * and label, starting on the first data column's line, past the index
+ * column. Group by the order the rows are in, so each group is one run;
+ * a group with no rows gets no group row. The label stays at the inline
+ * start while the grid scrolls sideways.
+ */
+export function TableGroupRow({
+  label,
+  rowIndex,
+  ref,
+}: {
+  label: string;
+  /** As on `TableRow`: the row's place in the whole list when only part of it is rendered. */
+  rowIndex?: number;
+  ref?: Ref<HTMLTableRowElement>;
+}) {
+  const indexColumn = useContext(IndexColumnContext);
+  const cell = useRole("cell");
+  return (
+    <tr
+      ref={ref}
+      role={useRole("row")}
+      data-index={rowIndex}
+      aria-rowindex={rowIndex === undefined ? undefined : rowIndex + 2}
+      className="di-table-group"
+    >
+      {indexColumn ? <td role={cell} className="di-table-index" /> : null}
+      <th scope="rowgroup" role={useRole("rowheader")} colSpan={1000}>
+        <span className="di-table-group-label">{label}</span>
+      </th>
     </tr>
   );
 }

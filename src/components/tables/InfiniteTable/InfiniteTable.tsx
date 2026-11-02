@@ -1,4 +1,10 @@
-import { useVirtualizer, useWindowVirtualizer, type VirtualItem } from "@tanstack/react-virtual";
+import {
+  defaultRangeExtractor,
+  useVirtualizer,
+  useWindowVirtualizer,
+  type Range,
+  type VirtualItem,
+} from "@tanstack/react-virtual";
 import {
   Children,
   isValidElement,
@@ -12,9 +18,10 @@ import {
   type RefObject,
 } from "react";
 import { Toolbar } from "../../actions/Toolbar";
-import { DataTable, TableBody, TableFooter, TableSpacer } from "../DataTable";
+import { DataTable, TableBody, TableFooter, TableGroupRow, TableSpacer } from "../DataTable";
 import { NewEntries } from "../NewEntries";
 import { Loading } from "../../feedback/Loading";
+import { useHeldHead } from "./heldHead";
 import "./InfiniteTable.css";
 
 /** What a row needs to be measured and placed: spread it onto its `TableRow`. */
@@ -58,7 +65,8 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * **Where it scrolls:** when the register is the page (an audit log, a
  * source's events) the page scrolls, not the table, and the head stays in
  * view under the app bar (`--di-sticky-top`) and under a sticky
- * `Toolbar` above it. When the register is one block among others (in
+ * `Toolbar` above it, also while a grid wider than the page scrolls
+ * sideways; with `groupOf`, the row of the group in view stays under it. When the register is one block among others (in
  * a `Panel`, beside a record, in a `Dialog`) give it `maxRows`: it then
  * scrolls in a frame about that many rows tall, its head held at the
  * frame's top and its count under it, so the page around it stays short.
@@ -81,6 +89,7 @@ export function InfiniteTable({
   narrow = "scroll",
   layout = "measured",
   maxRows,
+  groupOf,
   children,
 }: {
   caption: string;
@@ -113,6 +122,11 @@ export function InfiniteTable({
   layout?: "auto" | "measured";
   /** Scrolls in a frame about this many rows tall instead of with the page. Leave it out when the register is the page. */
   maxRows?: number;
+  /**
+   * The label of the group the row at this index belongs to. A `TableGroupRow` heads each run of rows with one
+   * label, so the rows come in the order they are grouped by, and a group with no rows loaded has no row.
+   */
+  groupOf?: (index: number) => string;
   /** `Toolbar` and `TableHead`. */
   children: ReactNode;
 }) {
@@ -124,15 +138,17 @@ export function InfiniteTable({
   const keys = Array.from({ length: count }, (_, i) => rowKey(i));
   const held = useHeld(keys, order === "newest-first", top, start, frame);
   const shown = count - held.count;
+  const entries = entriesOf(held.count, count, keys, groupOf);
 
   const sized = useRef<Map<unknown, number>>(undefined);
   const mean = useRef<Mean>({ of: 0, size: 0 });
   const common = {
-    count: shown,
+    count: entries.length,
     estimateSize: () => meanSize(sized.current, mean.current) ?? estimateRowHeight ?? fallbackRowHeight,
     overscan: 12,
     scrollMargin: start,
-    getItemKey: (index: number) => keys[index + held.count],
+    getItemKey: (index: number) => entries[index].key,
+    rangeExtractor: groupOf ? (range: Range) => withOpenGroup(range, entries) : defaultRangeExtractor,
     initialMeasurementsCache: memoryKey ? measured.get(memoryKey) : undefined,
   };
   // Both hooks run every render, as hooks must; the one that does not fit the register stays disabled.
@@ -154,6 +170,7 @@ export function InfiniteTable({
     [memoryKey, virtualizer],
   );
   const end = useNearEnd({ hasMore, loadingMore, loaded: count, onLoadMore, frame });
+  useHeldHead(host, !framed);
 
   const toolbar: ReactNode[] = [];
   const head: ReactNode[] = [];
@@ -161,20 +178,35 @@ export function InfiniteTable({
     if (isValidElement(child) && child.type === Toolbar) toolbar.push(child);
     else head.push(child);
   });
-  const rows = virtualizer.getVirtualItems();
-  const { before, after } = gaps(rows, virtualizer.getTotalSize(), start);
+  const items = virtualizer.getVirtualItems();
+  const pinned = detached(items);
+  const { before, after } = gaps(pinned ? items.slice(1) : items, virtualizer.getTotalSize(), start);
 
   return (
     <div ref={host} className={framed ? "di-infinite is-framed" : "di-infinite"}>
       {held.count > 0 ? <NewEntries label={newEntriesLabel(held.count)} onShow={held.show} /> : null}
-      <DataTable caption={caption} rowCount={shown} indexed={indexed} narrow={narrow} layout={layout} maxRows={maxRows}>
+      <DataTable
+        caption={caption}
+        rowCount={entries.length}
+        indexed={indexed}
+        narrow={narrow}
+        layout={layout}
+        maxRows={maxRows}
+      >
         {toolbar}
         {head}
         <TableBody>
-          <TableSpacer ref={top} height={before} />
-          {rows.map((r) =>
-            renderRow(r.index + held.count, { key: String(r.key), rowIndex: r.index, ref: virtualizer.measureElement }),
-          )}
+          {/* The open group's row, far above the rendered ones, takes its height from the space before them. */}
+          <TableSpacer ref={top} height={before - (pinned?.size ?? 0)} />
+          {items.map((r) => {
+            const entry = entries[r.index];
+            const place = { key: String(r.key), rowIndex: r.index, ref: virtualizer.measureElement };
+            return entry.group === undefined ? (
+              renderRow(entry.row, place)
+            ) : (
+              <TableGroupRow key={place.key} label={entry.group} rowIndex={place.rowIndex} ref={place.ref} />
+            );
+          })}
           {/* A frame clips what is past its edge, so the end is watched inside it: the spacer after the rows. */}
           <TableSpacer height={after} ref={framed ? end : undefined} />
         </TableBody>
@@ -200,6 +232,49 @@ function meanSize(sizes: Map<unknown, number> | undefined, mean: Mean) {
     mean.size = sum / sizes.size;
   }
   return mean.size;
+}
+
+/*
+ * What the virtualizer places: the rows shown, each run of one group headed by its group row. A group row is
+ * keyed by its label and how often that label has started a run, so it keeps its key while rows arrive above.
+ */
+type Entry = { key: string; row: number; group?: string };
+function entriesOf(
+  from: number,
+  count: number,
+  keys: string[],
+  groupOf: ((index: number) => string) | undefined,
+): Entry[] {
+  const entries: Entry[] = [];
+  const runs = new Map<string, number>();
+  let last: string | undefined;
+  for (let row = from; row < count; row++) {
+    const group = groupOf?.(row);
+    if (group !== undefined && group !== last) {
+      const run = runs.get(group) ?? 0;
+      runs.set(group, run + 1);
+      entries.push({ key: `group:${run}:${group}`, row, group });
+    }
+    last = group;
+    entries.push({ key: keys[row], row });
+  }
+  return entries;
+}
+
+/*
+ * The group row of the group the view starts in is rendered with the rows on screen, however far above them it is,
+ * so it can stay under the head while the reader is in its group.
+ */
+function withOpenGroup(range: Range, entries: Entry[]) {
+  const indexes = defaultRangeExtractor(range);
+  let open = Math.min(range.startIndex, entries.length - 1);
+  while (open >= 0 && entries[open].group === undefined) open--;
+  return open < 0 || indexes.includes(open) ? indexes : [open, ...indexes];
+}
+
+/* The open group's row when it is rendered apart from the rows after it. */
+function detached(items: VirtualItem[]) {
+  return items.length > 1 && items[1].index > items[0].index + 1 ? items[0] : undefined;
 }
 
 function gaps(rows: VirtualItem[], total: number, start: number) {

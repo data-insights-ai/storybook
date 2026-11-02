@@ -279,3 +279,218 @@ export const WindowedPage: StoryObj = {
     await expectAtRest(table, { top: 0, bottom: window.innerHeight });
   },
 };
+
+type Host = { id: string; name: string; seen: string; hoursAgo: number };
+
+/* Hosts by when they were last seen, newest first: none in the last 7 days but before today. */
+const hosts: Host[] = Array.from({ length: 120 }, (_, i) => {
+  const hoursAgo = i < 12 ? i * 2 : i < 60 ? 24 * 8 + i * 6 : 24 * 40 + i * 24;
+  return { id: `h${i}`, name: `host-${String(i).padStart(3, "0")}`, seen: `${hoursAgo} h ago`, hoursAgo };
+});
+
+const seenGroup = (h: Host) =>
+  h.hoursAgo < 24
+    ? "Last 24 hours"
+    : h.hoursAgo < 24 * 7
+      ? "Last 7 days"
+      : h.hoursAgo < 24 * 30
+        ? "Last 30 days"
+        : "Older";
+
+function GroupedRegister() {
+  const [loaded, setLoaded] = useState(40);
+  const [loading, setLoading] = useState(false);
+  const more = useCallback(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoaded((n) => Math.min(n + 40, hosts.length));
+      setLoading(false);
+    }, 200);
+  }, []);
+  const shown = hosts.slice(0, loaded);
+  return (
+    <InfiniteTable
+      caption="Hosts"
+      count={shown.length}
+      rowKey={(i) => shown[i].id}
+      groupOf={(i) => seenGroup(shown[i])}
+      hasMore={loaded < hosts.length}
+      loadingMore={loading}
+      onLoadMore={more}
+      newEntriesLabel={(n) => `${n} new entries`}
+      footerLabel={(n, more) => (more ? `${n} loaded, more follow as you scroll` : `All ${n} hosts`)}
+      loadingLabel="Loading more"
+      renderRow={(i, { key, ...place }) => (
+        <TableRow key={key} {...place}>
+          <TableCell pinned>{shown[i].name}</TableCell>
+          <TableCell mono label="Last seen">
+            {shown[i].seen}
+          </TableCell>
+        </TableRow>
+      )}
+    >
+      <TableHead>
+        <TableColumn width="fill">Host</TableColumn>
+        <TableColumn>Last seen</TableColumn>
+      </TableHead>
+    </InfiniteTable>
+  );
+}
+
+/**
+ * Rows in the order of a value the reader thinks in spans (last seen) are
+ * grouped by it: `groupOf` names each row's group and a group row heads each
+ * run. A span with no rows gets no group row; here no host was last seen
+ * between a day and a week ago. The footer counts hosts, not group rows.
+ */
+export const Grouped: StoryObj = {
+  render: () => <GroupedRegister />,
+  play: async ({ canvasElement }) => {
+    const table = within(canvasElement).getByRole<HTMLTableElement>("table", { name: "Hosts" });
+    await waitFor(() => expect(table.querySelectorAll("tr.di-table-group").length).toBeGreaterThan(1));
+    const labels = [...table.querySelectorAll("tr.di-table-group")].map((row) => row.textContent);
+    await expect(labels.slice(0, 2)).toEqual(["Last 24 hours", "Last 30 days"]);
+    await expect(table).toHaveAttribute("aria-rowcount", String(40 + 2 + 1));
+    await expect(within(canvasElement).getByText("40 loaded, more follow as you scroll")).toBeInTheDocument();
+  },
+};
+
+/* Three long spans, every host loaded: a group runs far past the screen. */
+const manyHosts: Host[] = Array.from({ length: 300 }, (_, i) => {
+  const hoursAgo = i < 100 ? i / 5 : i < 200 ? 24 * 8 + i : 24 * 40 + i * 24;
+  return { id: `m${i}`, name: `host-${String(i).padStart(3, "0")}`, seen: `${Math.round(hoursAgo)} h ago`, hoursAgo };
+});
+
+const wideColumns = ["Owner", "Business unit", "Tags", "Reported by", "Operating system", "Network"];
+
+function LongGroupedRegister({ maxRows, wide = false }: { maxRows?: number; wide?: boolean }) {
+  return (
+    <InfiniteTable
+      caption="Hosts"
+      count={manyHosts.length}
+      rowKey={(i) => manyHosts[i].id}
+      groupOf={(i) => seenGroup(manyHosts[i])}
+      hasMore={false}
+      loadingMore={false}
+      onLoadMore={() => {}}
+      newEntriesLabel={(n) => `${n} new entries`}
+      footerLabel={(n) => `All ${n} hosts`}
+      loadingLabel="Loading more"
+      maxRows={maxRows}
+      renderRow={(i, { key, ...place }) => (
+        <TableRow key={key} {...place}>
+          <TableCell pinned>{manyHosts[i].name}</TableCell>
+          <TableCell mono label="Last seen">
+            {manyHosts[i].seen}
+          </TableCell>
+          {wide
+            ? wideColumns.map((column) => (
+                <TableCell key={column} label={column}>
+                  {`${column} of ${manyHosts[i].name}, written out at length`}
+                </TableCell>
+              ))
+            : null}
+        </TableRow>
+      )}
+    >
+      <TableHead>
+        <TableColumn width="fill">Host</TableColumn>
+        <TableColumn>Last seen</TableColumn>
+        {wide ? wideColumns.map((column) => <TableColumn key={column}>{column}</TableColumn>) : null}
+      </TableHead>
+    </InfiniteTable>
+  );
+}
+
+/* The group row the view is in: rendered although its place is far above, and held right under the head. */
+async function expectGroupHeld(table: HTMLTableElement, label: string, line = stickyLine(table)) {
+  await settle();
+  await settle();
+  const group = [...table.querySelectorAll("tr.di-table-group")].find((row) => row.textContent === label);
+  await expect(group).toBeDefined();
+  const head = table.tHead!;
+  if (getComputedStyle(head).position !== "sticky" && !head.classList.contains("is-held")) return;
+  // A head held by hand has the group row tuck 2px under its edge.
+  const under = head.getBoundingClientRect().bottom - (head.classList.contains("is-held") ? 2 : 0);
+  await expect(Math.abs(group!.getBoundingClientRect().top - under)).toBeLessThanOrEqual(1);
+  await expect(Math.abs(head.getBoundingClientRect().top - line)).toBeLessThanOrEqual(1);
+}
+
+/* The line under the app bar and a sticky toolbar, as the register resolves it. */
+function stickyLine(table: HTMLElement) {
+  return parseFloat(getComputedStyle(table.closest(".di-infinite")!).scrollMarginTop) || 0;
+}
+
+/* Scrolls the page until the row of host n is in the middle of the window. */
+async function scrollToHost(table: HTMLTableElement, n: number) {
+  const rowOf = () => [...table.querySelectorAll("tr")].find((r) => r.textContent?.startsWith(`host-${n}`));
+  for (let tries = 0; tries < 20 && !rowOf(); tries++) {
+    window.scrollBy(0, innerHeight / 2);
+    window.dispatchEvent(new Event("scroll"));
+    await settle();
+  }
+  window.scrollBy(0, rowOf()!.getBoundingClientRect().top - innerHeight / 2);
+  window.dispatchEvent(new Event("scroll"));
+}
+
+/**
+ * Deep in a long group its row stays under the head, so the reader always
+ * sees which span the rows on screen belong to; the next group's row takes
+ * its place when it arrives. Where the head scrolls with the page (a
+ * narrow frame), the group row scrolls with it.
+ */
+export const GroupedHeld: StoryObj = {
+  name: "Grouped, the group stays named",
+  render: () => <LongGroupedRegister />,
+  play: async ({ canvasElement }) => {
+    const table = within(canvasElement).getByRole<HTMLTableElement>("table", { name: "Hosts" });
+    await waitFor(() => expect(table.tBodies[0].rows.length).toBeGreaterThan(2));
+    await scrollToHost(table, 160);
+    await expectGroupHeld(table, "Last 30 days");
+    window.scrollTo(0, 0);
+    await expectAtRest(table, { top: 0, bottom: window.innerHeight });
+  },
+};
+
+/** The same in a frame: the group row stays under the frame's head. */
+export const GroupedHeldInFrame: StoryObj = {
+  name: "Grouped, in a frame",
+  render: () => (
+    <Panel title="Hosts by last seen">
+      <LongGroupedRegister maxRows={10} />
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    const table = within(canvasElement).getByRole<HTMLTableElement>("table", { name: "Hosts" });
+    const frame = table.closest<HTMLElement>(".di-table-scroll")!;
+    await waitFor(() => expect(table.tBodies[0].rows.length).toBeGreaterThan(2));
+    frame.scrollTop = frame.scrollHeight * 0.5;
+    await expectGroupHeld(table, "Last 30 days", frame.getBoundingClientRect().top);
+    frame.scrollTop = 0;
+  },
+};
+
+/**
+ * A grid wider than the page scrolls sideways in its own frame, and its
+ * head and the open group's row still stay under the app bar while the page
+ * scrolls. Back at the top, nothing is held.
+ */
+export const GroupedHeldWide: StoryObj = {
+  name: "Grouped, wider than the page",
+  render: () => <LongGroupedRegister wide />,
+  play: async ({ canvasElement }) => {
+    const table = within(canvasElement).getByRole<HTMLTableElement>("table", { name: "Hosts" });
+    await waitFor(() => expect(table.tBodies[0].rows.length).toBeGreaterThan(2));
+    if (getComputedStyle(table).display === "table") {
+      await waitFor(() => expect(table.closest(".di-table-wrap")).toHaveClass("is-overflowing"));
+    }
+    await scrollToHost(table, 160);
+    await expectGroupHeld(table, "Last 30 days");
+    await scrollToHost(table, 250);
+    await expectGroupHeld(table, "Older");
+    window.scrollTo(0, 0);
+    await settle();
+    await expect(table.querySelectorAll(".is-held")).toHaveLength(0);
+    await expectAtRest(table, { top: 0, bottom: window.innerHeight });
+  },
+};

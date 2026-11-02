@@ -71,6 +71,7 @@ export {
   TableIndex,
   TableRow,
   TableEmpty,
+  TableGroupRow,
 } from "./components/tables/DataTable";
 export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/page/DetailSection";
 export {

@@ -256,6 +256,31 @@
     color: var(--di-text-muted);
   }
 
+  /*
+   * A group row is a band of the head inside the body: its ground, its
+   * label, its rule. The label holds the inline start while the grid
+   * scrolls sideways, so the group stays named over any column.
+   */
+  .di-table tbody tr.di-table-group > :is(th, td) {
+    border-top: 1px solid var(--di-table-rule);
+    border-bottom: 1px solid var(--di-table-rule);
+    background: var(--di-table-head-bg);
+  }
+
+  .di-table tbody tr.di-table-group:first-child > :is(th, td),
+  .di-table tbody tr.di-table-spacer.is-empty + tr.di-table-group > :is(th, td) {
+    border-top: 0;
+  }
+
+  .di-table tbody tr.di-table-group:hover > :is(th, td) {
+    background: var(--di-table-head-bg);
+  }
+
+  .di-table-group-label {
+    position: sticky;
+    inset-inline-start: var(--di-table-edge);
+  }
+
   .di-table tbody tr.is-selectable {
     cursor: pointer;
   }
@@ -272,6 +297,8 @@
    */
   .di-table-wrap {
     --di-table-pin-bg: var(--di-surface-bg, var(--di-bg-surface));
+    /* The head's row and its rule: where a group row sticks under a held head. */
+    --di-table-head-h: calc(var(--di-table-row-height) + 1px);
   }
 
   .di-table-wrap.is-overflowing .di-table :is(th, td):is(.is-pinned, .di-table-index) {
@@ -395,6 +422,13 @@
 
   .di-table-wrap.is-framed .di-table tbody :is(td.is-pinned, .di-table-index) {
     z-index: 0;
+  }
+
+  /* The group the reader is in stays named under the head until the next group's row takes its place. */
+  .di-table-wrap.is-framed .di-table tbody tr.di-table-group {
+    position: sticky;
+    top: var(--di-table-head-h);
+    z-index: 1;
   }
 
   .di-table-foot {
@@ -610,6 +644,25 @@
     .di-table-wrap.is-stackable tbody tr:hover,
     .di-table-wrap.is-stackable tbody tr:hover td {
       background: var(--di-row-hover-bg);
+    }
+
+    /* Stacked, a group row heads the cards under it in the head's band. */
+    .di-table-wrap.is-stackable tbody tr.di-table-group {
+      padding-block: var(--di-gap-8);
+      background: var(--di-table-head-bg);
+    }
+
+    .di-table-wrap.is-stackable tbody tr.di-table-group .di-table-index {
+      display: none;
+    }
+
+    .di-table-wrap.is-stackable tbody tr.di-table-group th {
+      border: 0;
+      background: none;
+    }
+
+    .di-table-wrap.is-stackable tbody tr.di-table-group:hover {
+      background: var(--di-table-head-bg);
     }
 
     .di-table-wrap.is-stackable tbody tr:is(.di-table-spacer, .di-table-empty):hover,
