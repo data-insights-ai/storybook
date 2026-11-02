@@ -50,6 +50,18 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.15
+
+0.15 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.15.0` and check the brand pages:
+
+- **Named points.** `PointList` sets a band of named points on a brand page, such as trust tiles or what a release carries: each `Point` is a heading (`title`) over a paragraph (the child), side by side down to one column on a phone, and a short last row shares the width. `heading` sets the level every name takes (`2`, `3` by default, or `4`), so the page outline stays right. The heading runs 18 to 20px with the width of the list (`--di-brand-point-title-size`), the paragraph is 16px (`--di-brand-point-body-size`), and the points wrap at `--di-points-min` (240px). A page that built these from its own `div`s, headings and grid can switch:
+
+  ```tsx
+  <PointList heading={3}>
+    <Point title="Works offline">The licence and sign-in ship with the installer.</Point>
+  </PointList>
+  ```
+
 ## Upgrade to 0.14.1
 
 0.14.1 needs no code change.
