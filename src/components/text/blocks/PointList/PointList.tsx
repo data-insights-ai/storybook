@@ -49,7 +49,7 @@ export function PointList({
   );
 }
 
-/** One named point: its name in a few words, the paragraph that says it as the child. */
+/** One named point: its name in a few words, the paragraph that says it as the child (inline content: text and links). */
 export function Point({ title, children }: { title: string; children: ReactNode }) {
   const Title = `h${useContext(PointHeading)}` as "h2" | "h3" | "h4";
   return (

@@ -1,4 +1,4 @@
-`blocks/` CodeBlock, PointList, PullQuote, TickRule |# datAInsights Storybook
+# datAInsights Storybook
 
 This repository is the component workbench for the datAInsights brand. It is not a product. Stories, chrome, and sample copy do not name a product, a suite, or a codename. Patterns under `src/screens` show whole screens a product can be assembled from.
 
@@ -117,7 +117,7 @@ Every component lives in `src/components`, under the folder of its Storybook gro
 | `tables/` | DataTable, InfiniteTable, NewEntries |
 | `records/` | RecordCard (`layout` card or row), FactList, ProposalPanel, AttentionList, IconTile |
 | `figures/` | Figure, FigureRow, Sparkline |
-| `text/` | Eyebrow, MetaLine, TextLink, Kbd, Highlight, Icon (with the `IconSet` gallery the docs show); `blocks/` CodeBlock, PullQuote, TickRule |
+| `text/` | Eyebrow, MetaLine, TextLink, Kbd, Highlight, Icon (with the `IconSet` gallery the docs show); `blocks/` CodeBlock, PointList, PullQuote, TickRule |
 | `status/` | StatusPill, SeverityMark, SealValue, Badge, Tag (`mono`, `pressed`, `onRemove`, `inferred`), LevelMeter (the one track and fill for a meter, a quota, a breakdown row and a field's confidence) |
 | `feedback/` | Notice (`variant` banner, line), EmptyState, Toast, Loading (`shape` inline, app, list, detail, form, table), Progress, RouteProgress, Delayed |
 | `charts/` | Chart, TrendChart, Seismograph, Distribution (its rows are `LevelMeter`s), CoverageMatrix |

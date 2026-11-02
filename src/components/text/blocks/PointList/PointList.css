@@ -42,5 +42,6 @@
     text-wrap: pretty;
     overflow-wrap: break-word;
     hyphens: auto;
+    max-width: 65ch;
   }
 }
