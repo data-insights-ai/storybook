@@ -166,32 +166,101 @@ describe("large screens", () => {
     expect(Math.round(sheet.top)).toBe(Math.round(table.top));
   });
 
-  test("at 1920px a second press on the button that opened a docked sheet closes it", async () => {
+  function ViewsPage({ size }: { size?: "md" | "lg" }) {
+    const [open, setOpen] = useState(false);
+    return (
+      <AppShellContent>
+        <Page>
+          <button type="button" className="opener" onClick={() => setOpen(true)}>
+            Views
+          </button>
+          <section className="section">Assets</section>
+          <Dialog open={open} onClose={() => setOpen(false)} title="Saved views" closeLabel="Close" size={size}>
+            <section>None yet</section>
+          </Dialog>
+        </Page>
+      </AppShellContent>
+    );
+  }
+
+  function RecordsPage() {
+    const [shown, setShown] = useState<string | null>(null);
+    return (
+      <AppShellContent>
+        <Page>
+          <input className="search" aria-label="Search" />
+          <DataTable caption="Assets">
+            <TableHead>
+              <TableColumn>Name</TableColumn>
+            </TableHead>
+            <TableBody>
+              {["a", "b"].map((id) => (
+                <TableRow key={id} onSelect={() => setShown(id)}>
+                  <TableCell>{id}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </DataTable>
+          <Dialog open={shown !== null} onClose={() => setShown(null)} title={`Record ${shown}`} closeLabel="Close">
+            <section>Facts</section>
+          </Dialog>
+        </Page>
+      </AppShellContent>
+    );
+  }
+
+  const press = (el: Element) => flushSync(() => (el as HTMLElement).click());
+  const docked = (host: HTMLElement) => host.querySelector(".di-dialog-docked");
+
+  test("at 1920px a second press on the button that opened a docked sheet closes it, also when the press gave no focus", async () => {
     await page.viewport(1920, 1080);
-    function Views() {
-      const [open, setOpen] = useState(false);
-      return (
-        <AppShellContent>
-          <Page>
-            <button type="button" className="opener" onClick={() => setOpen(true)}>
-              Views
-            </button>
-            <section className="section">Assets</section>
-            <Dialog open={open} onClose={() => setOpen(false)} title="Saved views" closeLabel="Close">
-              <section>None yet</section>
-            </Dialog>
-          </Page>
-        </AppShellContent>
-      );
-    }
-    const host = show(<Views />);
-    const opener = host.querySelector<HTMLButtonElement>(".opener")!;
-    opener.focus();
-    flushSync(() => opener.click());
-    expect(host.querySelector(".di-dialog-docked")).not.toBeNull();
+    const host = show(<ViewsPage />);
+    const opener = host.querySelector(".opener")!;
+    press(opener);
+    expect(docked(host)).not.toBeNull();
     expect(opener.getAttribute("aria-expanded")).toBe("true");
-    flushSync(() => opener.click());
-    expect(host.querySelector(".di-dialog-docked")).toBeNull();
+    press(opener);
+    expect(docked(host)).toBeNull();
+    expect(opener.hasAttribute("aria-expanded")).toBe(false);
+    press(opener);
+    expect(docked(host)).not.toBeNull();
+  });
+
+  test("at 1920px a row opened while the search had focus leaves the search alone, and its second press closes the record", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<RecordsPage />);
+    const search = host.querySelector<HTMLInputElement>(".search")!;
+    search.focus();
+    const [a] = host.querySelectorAll("tr.is-selectable");
+    press(a);
+    expect(docked(host)?.textContent).toContain("Record a");
+    press(search);
+    expect(docked(host)).not.toBeNull();
+    expect(search.hasAttribute("aria-expanded")).toBe(false);
+    press(a);
+    expect(docked(host)).toBeNull();
+  });
+
+  test("at 1920px rows A, B, then A again show A's record", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<RecordsPage />);
+    const [a, b] = host.querySelectorAll("tr.is-selectable");
+    press(a);
+    press(b);
+    expect(docked(host)?.textContent).toContain("Record b");
+    press(a);
+    expect(docked(host)?.textContent).toContain("Record a");
+    press(a);
+    expect(docked(host)).toBeNull();
+  });
+
+  test("at 1920px a sheet too wide to dock stays modal and leaves its opener alone", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<ViewsPage size="lg" />);
+    const opener = host.querySelector(".opener")!;
+    press(opener);
+    expect(docked(host)).toBeNull();
+    expect(host.querySelector<HTMLDialogElement>("dialog.di-dialog")!.open).toBe(true);
     expect(opener.hasAttribute("aria-expanded")).toBe(false);
   });
 

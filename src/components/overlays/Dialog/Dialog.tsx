@@ -69,7 +69,9 @@ export type DialogProps = {
  * with none, to the title (never the close button), and is trapped; the
  * page behind is inert; Escape closes, and so does a press on the scrim
  * beside a `side` or `bottom` dialog; focus returns to what opened it.
- * Docked, the page is not inert, but focus lands and returns the same way.
+ * Docked, the page is not inert, but focus lands and returns the same way,
+ * and what was pressed to open it closes it on a second press (it carries
+ * `aria-expanded` meanwhile); another row of the same list shows its record.
  */
 export function Dialog(props: DialogProps) {
   const side = useContext(PageSide);
@@ -128,20 +130,47 @@ function ModalDialog(props: DialogProps) {
   );
 }
 
+const pressable = 'button, a[href], [role="button"], summary, tr.is-selectable';
+const pressedOf = (target: EventTarget | null) =>
+  target instanceof Element ? target.closest<HTMLElement>(pressable) : null;
+const listOf = (el: HTMLElement) => el.closest("table, ul, ol, [role=grid], [role=list]");
+
+// What was pressed, not what has focus: Safari focuses no button on a click, and a row never takes focus.
+let lastPress: { el: HTMLElement; at: number } | null = null;
+if (typeof document !== "undefined") {
+  document.addEventListener(
+    "click",
+    (event) => {
+      const el = pressedOf(event.target);
+      lastPress = el ? { el, at: performance.now() } : null;
+    },
+    true,
+  );
+}
+function takePress() {
+  const press = lastPress;
+  lastPress = null;
+  return press && performance.now() - press.at < 1000 ? press.el : null;
+}
+
 function DockedDialog(props: DialogProps & { side: HTMLElement }) {
   const { open, onClose, side } = props;
   const ref = useRef<HTMLElement>(null);
   const titleId = useId();
   const opener = useRef<HTMLElement | null>(null);
+  const toggle = useRef<HTMLElement | null>(null);
+  const close = useRef(onClose);
   const shown = useRef(false);
   // Read before any other effect, before the dialog takes focus, as the modal one does.
   useInsertionEffect(() => {
+    close.current = onClose;
     if (open && !shown.current) {
+      toggle.current = takePress();
       const active = document.activeElement;
-      if (active instanceof HTMLElement && active !== document.body) opener.current = active;
+      opener.current = toggle.current ?? (active instanceof HTMLElement && active !== document.body ? active : null);
     }
     shown.current = open;
-  }, [open]);
+  }, [open, onClose]);
 
   useEffect(() => {
     if (!open) return;
@@ -158,25 +187,36 @@ function DockedDialog(props: DialogProps & { side: HTMLElement }) {
     };
   }, [open]);
 
-  // The page beside stays usable, so its opener is a toggle: a second press closes instead of opening again.
+  // The page beside stays usable, so what was pressed to open it is a toggle: a second press closes
+  // instead of opening again. Another row of the same list takes the toggle over, as it shows its record.
   useEffect(() => {
-    const target = opener.current;
-    if (!open || !target) return;
-    const expanded = target.getAttribute("aria-expanded");
-    target.setAttribute("aria-expanded", "true");
+    if (!open) return;
+    let marked: HTMLElement | null = null;
+    const arm = (el: HTMLElement | null) => {
+      marked?.removeAttribute("aria-expanded");
+      marked = el && el.tagName !== "TR" && !el.hasAttribute("aria-expanded") ? el : null;
+      marked?.setAttribute("aria-expanded", "true");
+      toggle.current = el;
+    };
+    arm(toggle.current);
     const press = (event: MouseEvent) => {
-      if (!(event.target instanceof Node) || !target.contains(event.target)) return;
-      event.preventDefault();
-      event.stopPropagation();
-      onClose();
+      const el = pressedOf(event.target);
+      if (!el || ref.current?.contains(el)) return;
+      if (el === toggle.current) {
+        event.preventDefault();
+        event.stopPropagation();
+        close.current();
+      } else if (toggle.current && listOf(el) !== null && listOf(el) === listOf(toggle.current)) {
+        opener.current = el;
+        arm(el);
+      }
     };
     document.addEventListener("click", press, true);
     return () => {
       document.removeEventListener("click", press, true);
-      if (expanded === null) target.removeAttribute("aria-expanded");
-      else target.setAttribute("aria-expanded", expanded);
+      arm(null);
     };
-  }, [open, onClose]);
+  }, [open]);
 
   // Esc from the page beside it; inside the dialog its own handler answers first, also in a field.
   useShortcut(open ? "Escape" : false, onClose);
