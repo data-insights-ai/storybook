@@ -15,9 +15,9 @@ const meta = {
   args: {
     label: "Filter cases",
     filtersLabel: "Filters",
-    countLabel: (n: number) => `Filters, ${n} set`,
+    countLabel: (n: number) => `${n} set`,
     closeLabel: "Close",
-    doneLabel: "Show results",
+    doneLabel: "Done",
     clearLabel: "Clear all",
     count: 0,
     role: "search",
@@ -55,9 +55,19 @@ export const AboveAList: Story = {
     await expect(sheet.getByLabelText("Severity")).toBeVisible();
     await expect(sheet.getByLabelText("Owner")).toBeVisible();
     await expect(sheet.getByRole("group", { name: "Show" })).toBeVisible();
+    // Live: the field applies as it is typed, Done only closes, clear clears.
     await userEvent.type(sheet.getByLabelText("Tag"), "phishing");
-    await userEvent.click(sheet.getByRole("button", { name: "Show results" }));
+    await userEvent.selectOptions(sheet.getByLabelText("Severity"), "high");
+    await expect(within(bar).getByLabelText("Severity")).toHaveValue("high");
+    await userEvent.click(sheet.getByRole("button", { name: "Done" }));
     await waitFor(() => expect(canvas.getByRole("button", { name: "Filters, 1 set" })).toHaveFocus());
+    await userEvent.click(canvas.getByRole("button", { name: "Filters, 1 set" }));
+    const again = within(await within(document.body).findByRole("dialog", { name: "Filters" }));
+    await expect(again.getByLabelText("Tag")).toHaveValue("phishing");
+    await userEvent.click(again.getByRole("button", { name: "Clear all" }));
+    await expect(again.getByLabelText("Tag")).toHaveValue("");
+    await expect(within(bar).getByLabelText("Severity")).toHaveValue("");
+    await userEvent.keyboard("{Escape}");
   },
 };
 
@@ -200,5 +210,54 @@ export const SheetFields: Story = {
     const sheet = within(await within(document.body).findByRole("dialog", { name: "Filters" }));
     await expect(sheet.getByLabelText("Tag")).toHaveValue("phishing");
     await expect(sheet.queryByLabelText("Search")).toBeNull();
+  },
+};
+
+/** With no fields of its own the trigger goes once everything is back, and focus moves to the control that returned. */
+export const FocusWhenReturning: Story = {
+  globals: { viewport: { value: "desk" } },
+  args: { sheet: "overflow" },
+  render: (args) => (
+    <Page>
+      <div data-testid="frame">
+        <FilterBar {...args}>
+          <FilterBarItem name="search" keep grow>
+            {(place) => (
+              <SearchField id={place === "sheet" ? "back-search-sheet" : "back-search"} size="sm" label="Search" />
+            )}
+          </FilterBarItem>
+          <FilterBarItem name="period">
+            {(place) => (
+              <Select
+                id={place === "sheet" ? "back-period-sheet" : "back-period"}
+                label="Period"
+                hideLabel={place === "bar"}
+              >
+                <option>Last 7 days</option>
+              </Select>
+            )}
+          </FilterBarItem>
+        </FilterBar>
+      </div>
+    </Page>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    if (window.innerWidth <= 600) return;
+    const frame = canvas.getByTestId("frame");
+    frame.style.width = "400px";
+    const trigger = await canvas.findByRole("button", { name: "Filters" });
+    trigger.focus();
+    frame.style.width = "";
+    await waitFor(() => expect(canvas.getByLabelText("Period")).toHaveFocus());
+    await expect(canvas.queryByRole("button", { name: "Filters" })).toBeNull();
+    // The trigger goes while the sheet is open: closing it returns focus to the bar's first control.
+    frame.style.width = "400px";
+    await userEvent.click(await canvas.findByRole("button", { name: "Filters" }));
+    const sheet = within(await within(document.body).findByRole("dialog", { name: "Filters" }));
+    frame.style.width = "";
+    await waitFor(() => expect(canvas.queryByRole("button", { name: "Filters" })).toBeNull());
+    await userEvent.click(sheet.getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(canvas.getByLabelText("Search")).toHaveFocus());
   },
 };

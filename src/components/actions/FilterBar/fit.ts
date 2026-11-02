@@ -38,16 +38,15 @@ export function fit(input: FitInput): string[] {
   const order = foldOrder(input.items);
   const written = (names: Set<string>) => input.items.filter((item) => names.has(item.name)).map((item) => item.name);
   if (input.phone) return written(new Set(order.map((item) => item.name)));
-  const before = new Set(input.folded);
-  let shown = 0;
-  while (shown < order.length && before.has(order[shown].name)) shown++;
+  const before = input.folded.filter((name) => order.some((item) => item.name === name));
   for (let count = 0; count <= order.length; count++) {
     const folded = new Set(order.slice(0, count).map((item) => item.name));
     const parts = input.items.filter((item) => !folded.has(item.name)).map((item) => item.width);
     if (input.triggerAlways || count > 0) parts.push(input.trigger);
     if (input.end > 0) parts.push(input.end);
     const need = parts.reduce((sum, width) => sum + width, 0) + input.gap * Math.max(parts.length - 1, 0);
-    const room = count < shown ? input.room - input.slack : input.room;
+    const restores = before.some((name) => !folded.has(name));
+    const room = restores ? input.room - input.slack : input.room;
     if (need <= room) return written(folded);
   }
   return written(new Set(order.map((item) => item.name)));

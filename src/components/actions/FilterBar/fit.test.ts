@@ -61,6 +61,18 @@ describe("fit", () => {
     expect(fit({ ...base, room: edge + 16, folded: ["period", "quick"] })).toEqual(["quick"]);
   });
 
+  it("keeps the slack when what folded before is not where the fold order starts", () => {
+    const ranked = items.map((item) => (item.name === "quick" ? { ...item, priority: 2 } : item));
+    expect(fit({ ...base, items: ranked, room: all + 8, folded: ["quick"] })).toEqual(["period"]);
+    expect(fit({ ...base, items: ranked, room: all + 16, folded: ["quick"] })).toEqual([]);
+  });
+
+  it("folds everything but the kept items on a phone, also with fields of its own", () => {
+    expect(fit({ ...base, phone: true, triggerAlways: true })).toEqual(["scope", "period", "quick"]);
+    const kept = items.map((item) => ({ ...item, keep: true }));
+    expect(fit({ ...base, items: kept, phone: true, triggerAlways: true })).toEqual([]);
+  });
+
   it("treats an item not yet measured as fitting, so it renders and is measured", () => {
     const fresh = [...items.slice(0, 3), { name: "new", width: 0, keep: false, priority: 0 }];
     expect(fit({ ...base, items: fresh, room: 160 + 190 + 220 + 32 + 32 })).toEqual([]);

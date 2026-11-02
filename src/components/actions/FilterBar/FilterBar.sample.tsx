@@ -21,25 +21,19 @@ export function CaseFilterBar({
   sheet?: FilterBarProps["sheet"];
 }) {
   const [criteria, setCriteria] = useState(initial);
-  const [draftTag, setDraftTag] = useState(initial.tag);
   const [menu, setMenu] = useState(false);
   const set = (patch: Partial<Criteria>) => setCriteria((current) => ({ ...current, ...patch }));
   return (
     <FilterBar
       label="Filter cases"
       filtersLabel="Filters"
-      countLabel={(n) => `Filters, ${n} set`}
+      countLabel={(n) => `${n} set`}
       closeLabel="Close"
-      doneLabel="Show results"
+      doneLabel="Done"
       clearLabel="Clear all"
       count={criteria.tag ? 1 : 0}
       sheet={sheet}
-      onOpen={() => setDraftTag(criteria.tag)}
-      onApply={() => set({ tag: draftTag })}
-      onClear={() => {
-        setCriteria({ q: "", severity: "", owner: "", view: "", tag: "" });
-        setDraftTag("");
-      }}
+      onClear={() => setCriteria({ q: "", severity: "", owner: "", view: "", tag: "" })}
     >
       <FilterBarItem name="search" keep grow>
         {(place) => (
@@ -101,7 +95,12 @@ export function CaseFilterBar({
         )}
       </FilterBarItem>
       <FilterBarSheet>
-        <TextField id="case-tag" label="Tag" value={draftTag} onChange={(event) => setDraftTag(event.target.value)} />
+        <TextField
+          id="case-tag"
+          label="Tag"
+          value={criteria.tag}
+          onChange={(event) => set({ tag: event.target.value })}
+        />
       </FilterBarSheet>
       <FilterBarEnd>
         <Menu

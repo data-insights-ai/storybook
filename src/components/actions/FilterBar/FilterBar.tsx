@@ -1,10 +1,19 @@
-import { Children, isValidElement, useLayoutEffect, useRef, useState, type ReactElement, type ReactNode } from "react";
+import {
+  Children,
+  isValidElement,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import { SlidersHorizontal } from "lucide-react";
 import { cx } from "../../../internal/cx";
 import { takeSlot } from "../../../internal/slots";
 import { Dialog, DialogFooter } from "../../overlays/Dialog";
 import { Stack } from "../../layout/arrange/Stack";
-import { Badge } from "../../status/Badge";
 import { Button } from "../Button";
 import { fit, phoneWidth, restoreSlack } from "./fit";
 import "./FilterBar.css";
@@ -39,11 +48,11 @@ export type FilterBarProps = {
   role?: "search" | "group";
   /** The trigger and the sheet's title: "Filters". */
   filtersLabel: string;
-  /** The trigger's name with a count, such as "Filters, 2 set". */
+  /** The count in words, added to the trigger's name: "2 set" makes "Filters, 2 set". */
   countLabel: (count: number) => string;
   /** The sheet's close button. */
   closeLabel: string;
-  /** The sheet's one action: "Done", "Show results". */
+  /** The sheet's one action, which only closes it: "Done". */
   doneLabel: string;
   /** The sheet's reset, shown with `onClear`: "Clear all". */
   clearLabel?: string;
@@ -54,13 +63,14 @@ export type FilterBarProps = {
    * changes the whole filter; `overflow` draws only the folded ones.
    */
   sheet?: "complete" | "overflow";
-  /** Before the sheet opens: copy the page's state into a draft for its own fields. */
-  onOpen?: () => void;
-  /** The done action: apply that draft. Items apply as they change and need nothing here. */
-  onApply?: () => void;
+  /** Clears every filter of the bar, inline and in the sheet. */
   onClear?: () => void;
   className?: string;
-  /** `FilterBarItem`s in the order they read, an optional `FilterBarSheet` and `FilterBarEnd`. */
+  /**
+   * `FilterBarItem`s in the order they read, an optional `FilterBarSheet`
+   * and `FilterBarEnd`. Only direct `FilterBarItem` children are items: one
+   * inside a fragment or a wrapper component is not seen.
+   */
   children: ReactNode;
 };
 
@@ -84,6 +94,8 @@ export function FilterBarEnd({ children }: { children: ReactNode }) {
 
 type Layout = { folded: string[]; phone: boolean };
 
+const focusable = ":is(input, select, button, a[href], textarea)";
+
 const sameLayout = (a: Layout, b: Layout) =>
   a.phone === b.phone && a.folded.length === b.folded.length && a.folded.every((name, i) => name === b.folded[i]);
 
@@ -103,15 +115,23 @@ const sameLayout = (a: Layout, b: Layout) =>
  * sheet from the page's state, so there is one source of truth), the
  * trigger with the count of set filters that are not in view, then
  * `FilterBarEnd`. The sheet is a side `Dialog`: the items, then
- * `FilterBarSheet`, then done and clear.
+ * `FilterBarSheet`, then clear and done.
+ *
+ * **Applying:** everything applies as it changes, in the bar and in the
+ * sheet alike; a typed field waits about 300ms after the last key, as the
+ * search does. Done only closes the sheet, clear clears. The page keeps no
+ * draft.
  *
  * **Behaviour:** the widths are measured in the bar, before the first paint
- * and whenever the bar or an item changes size; a folded item returns only
- * with 16px to spare, so a bar on the edge does not flicker. When the
- * focused control folds, focus moves to the trigger.
+ * and in the frame after the bar or an item changes size; a folded item
+ * returns only with 16px to spare, so a bar on the edge does not flicker,
+ * and it is measured at the width it last had in the bar. The bar shrinks
+ * with its parent, so in a flex row its parent needs `min-width: 0`. When
+ * the focused control folds, focus moves to the trigger; when the trigger
+ * goes, to the control that came back.
  *
- * **Accessibility:** a `search` landmark (or a `group`) named by `label`. The sheet is
- * modal, so a reader meets one copy of a control at a time.
+ * **Accessibility:** a `search` landmark (or a `group`) named by `label`.
+ * The sheet is modal, so a reader meets one copy of a control at a time.
  */
 export function FilterBar({
   label,
@@ -123,8 +143,6 @@ export function FilterBar({
   clearLabel,
   count = 0,
   sheet = "complete",
-  onOpen,
-  onApply,
   onClear,
   className,
   children,
@@ -135,20 +153,23 @@ export function FilterBar({
   const items = Children.toArray(rest).filter(
     (child): child is ReactElement<FilterBarItemProps> => isValidElement(child) && child.type === FilterBarItem,
   );
+  if (process.env.NODE_ENV !== "production" && items.length < Children.toArray(rest).length)
+    console.warn("FilterBar: only direct FilterBarItem, FilterBarSheet and FilterBarEnd children are drawn.");
   const hasFields = fields.length > 0;
   const bar = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLDivElement>(null);
   const widths = useRef(new Map<string, number>());
   const triggerWidth = useRef(0);
-  const refocus = useRef<"trigger" | "bar" | null>(null);
+  const refocus = useRef<{ to: "trigger" } | { to: "item"; name: string } | null>(null);
   const [layout, setLayout] = useState<Layout>({ folded: [], phone: false });
   const [open, setOpen] = useState(false);
   const latest = useRef({ items, hasFields, layout });
   useLayoutEffect(() => {
     latest.current = { items, hasFields, layout };
   });
+  const names = items.map(({ props }) => `${props.name}:${props.keep ? 1 : 0}:${props.priority ?? 0}`).join("|");
 
-  const measure = () => {
+  const measure = useCallback(() => {
     const element = bar.current;
     if (!element) return;
     const style = getComputedStyle(element);
@@ -184,43 +205,64 @@ export function FilterBar({
     const next = { folded, phone };
     if (sameLayout(layout, next)) return;
     const active = document.activeElement;
-    const leaving = folded.some((name) =>
-      element.querySelector(`:scope > [data-filter-item="${CSS.escape(name)}"]`)?.contains(active),
-    );
-    if (leaving) refocus.current = "trigger";
-    else if (trigger.current?.contains(active) && !folded.length && !hasFields) refocus.current = "bar";
+    const cellOf = (name: string) => element.querySelector(`:scope > [data-filter-item="${CSS.escape(name)}"]`);
+    const back = layout.folded.filter((name) => !folded.includes(name));
+    if (folded.some((name) => cellOf(name)?.contains(active))) refocus.current = { to: "trigger" };
+    else if (trigger.current?.contains(active) && !folded.length && !hasFields && back.length)
+      refocus.current = { to: "item", name: back[0] };
     setLayout(next);
-  };
+  }, []);
 
+  // One observer for the bar's life; what it watches follows the items.
+  const observer = useRef<ResizeObserver | null>(null);
   useLayoutEffect(() => {
-    const element = bar.current;
-    if (!element) return;
-    if (refocus.current === "trigger") trigger.current?.querySelector("button")?.focus();
-    if (refocus.current === "bar")
-      element.querySelector<HTMLElement>("[data-filter-item] :is(input, select, button, a[href], textarea)")?.focus();
-    refocus.current = null;
-    measure();
-    // Measured in the next frame, not inside the callback: a fold changes heights the page's own observers watch.
     let frame = 0;
-    const observer = new ResizeObserver(() => {
+    // Measured in the next frame, not inside the callback: a fold changes heights the page's own observers watch.
+    const watcher = new ResizeObserver(() => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(measure);
     });
-    observer.observe(element);
-    for (const child of element.children) observer.observe(child);
+    observer.current = watcher;
     return () => {
-      observer.disconnect();
+      watcher.disconnect();
       cancelAnimationFrame(frame);
+      observer.current = null;
     };
-  });
+  }, [measure]);
+
+  useLayoutEffect(() => {
+    const element = bar.current;
+    const watcher = observer.current;
+    if (!element || !watcher) return;
+    const target = refocus.current;
+    refocus.current = null;
+    if (target?.to === "trigger") trigger.current?.querySelector("button")?.focus();
+    if (target?.to === "item")
+      element
+        .querySelector(`:scope > [data-filter-item="${CSS.escape(target.name)}"]`)
+        ?.querySelector<HTMLElement>(focusable)
+        ?.focus();
+    watcher.disconnect();
+    watcher.observe(element);
+    for (const child of element.children) watcher.observe(child);
+    measure();
+  }, [measure, names, hasFields, layout]);
 
   const folded = new Set(layout.folded);
   const shown = items.filter(({ props }) => !folded.has(props.name));
   const inSheet = sheet === "complete" ? items : items.filter(({ props }) => folded.has(props.name));
   const total = count + items.filter(({ props }) => props.active && folded.has(props.name)).length;
   const needed = hasFields || folded.size > 0;
-  const name = total ? countLabel(total) : filtersLabel;
   const close = () => setOpen(false);
+  const wasOpen = useRef(false);
+  // After the dialog's own effect: without a trigger to return to, focus goes back to the bar rather than to the page.
+  useEffect(() => {
+    const active = document.activeElement;
+    const lost = !active || active === document.body || active.closest("dialog:not([open])") !== null;
+    if (wasOpen.current && !open && !trigger.current && lost)
+      bar.current?.querySelector<HTMLElement>(`[data-filter-item] ${focusable}`)?.focus();
+    wasOpen.current = open;
+  }, [open]);
 
   return (
     <>
@@ -241,18 +283,16 @@ export function FilterBar({
               variant="secondary"
               size="sm"
               iconOnly={layout.phone}
-              aria-label={name}
-              title={layout.phone ? name : undefined}
+              aria-label={filtersLabel}
+              title={layout.phone ? filtersLabel : undefined}
+              badge={total}
+              badgeLabel={total ? countLabel(total) : undefined}
               aria-haspopup="dialog"
               aria-expanded={open}
-              onClick={() => {
-                onOpen?.();
-                setOpen(true);
-              }}
+              onClick={() => setOpen(true)}
             >
               <SlidersHorizontal aria-hidden />
               {layout.phone ? null : filtersLabel}
-              {total ? <Badge tone="neutral">{String(total)}</Badge> : null}
             </Button>
           </div>
         ) : null}
@@ -266,7 +306,6 @@ export function FilterBar({
         size="sm"
         onSubmit={(event) => {
           event.preventDefault();
-          onApply?.();
           close();
         }}
       >
