@@ -153,8 +153,11 @@ export function FilterBar({
   const items = Children.toArray(rest).filter(
     (child): child is ReactElement<FilterBarItemProps> => isValidElement(child) && child.type === FilterBarItem,
   );
-  if (process.env.NODE_ENV !== "production" && items.length < Children.toArray(rest).length)
-    console.warn("FilterBar: only direct FilterBarItem, FilterBarSheet and FilterBarEnd children are drawn.");
+  const dropped = items.length < Children.toArray(rest).length;
+  useEffect(() => {
+    if (dropped && typeof process !== "undefined" && process.env.NODE_ENV !== "production")
+      console.warn("FilterBar: only direct FilterBarItem, FilterBarSheet and FilterBarEnd children are drawn.");
+  }, [dropped]);
   const hasFields = fields.length > 0;
   const bar = useRef<HTMLDivElement>(null);
   const trigger = useRef<HTMLDivElement>(null);
