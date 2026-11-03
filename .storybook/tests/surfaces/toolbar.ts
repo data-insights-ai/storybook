@@ -1,13 +1,13 @@
 import { describe, shown } from "./paint";
 
 /**
- * A toolbar or a filter bar is one height: a search, a select and the
- * buttons beside them share the field's height, so the row reads as one
- * line of controls. A row of small buttons alone (a table row's actions)
- * is one height too.
+ * A toolbar or a filter bar is one height: a search, a select, a filter
+ * tag and the buttons beside them share the field's height, so the row
+ * reads as one line of controls. A row of small buttons alone (a table
+ * row's actions) is one height too.
  */
 const BAR = ".di-toolbar, .di-filter-bar";
-const CONTROL = ".di-search, input.di-control, select.di-control, .di-btn:not(.di-btn-link)";
+const CONTROL = ".di-search, input.di-control, select.di-control, .di-btn:not(.di-btn-link), .di-tag.is-control";
 const ELSEWHERE = ".di-toolbar-note, dialog, [popover], .di-menu";
 
 // A button a field draws inside itself (a file picker's Choose) is part of that field, not one of the row's controls.

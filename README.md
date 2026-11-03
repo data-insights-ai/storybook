@@ -50,6 +50,10 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.19.1
+
+0.19.1 needs no code change. A `Tag` that acts (`onClick` or `onRemove`) in a toolbar or filter bar is as tall as the fields beside it and keeps its one line; an icon in a tag sits on the line of its words instead of above them.
+
 ## Upgrade to 0.19
 
 0.19 needs one code change: `SearchField` no longer takes `size`. A search is as tall as every other field, so drop `size="sm"`.
