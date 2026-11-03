@@ -318,7 +318,13 @@
     }
   }
 
+  /* Locked like a Dialog's page: the page keeps the width its scrollbar took. */
+  :root:has(.di-date-range-scrim),
   body:has(.di-date-range-scrim) {
     overflow: hidden;
+  }
+
+  :root:has(.di-date-range-scrim) {
+    padding-inline-end: var(--di-scrollbar-gap, 0px);
   }
 }

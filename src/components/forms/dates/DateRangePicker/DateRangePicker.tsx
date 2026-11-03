@@ -15,6 +15,7 @@ import {
 import { Dialog } from "@base-ui/react/dialog";
 import { Popover } from "@base-ui/react/popover";
 import { cx } from "../../../../internal/cx";
+import { keepScrollbarGap } from "../../../../internal/scrollbarGap";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { Button } from "../../../actions/Button";
 import { Checkbox } from "../../choice/Checkbox";
@@ -352,6 +353,7 @@ export function DateRangePicker({
 
   const openChange = (next: boolean) => {
     if (next) {
+      if (narrow) keepScrollbarGap();
       update();
       const open = allowOpenEnd && !value.preset && !!value.from && !value.to;
       const start = draftOf(value, timeZone, open);
