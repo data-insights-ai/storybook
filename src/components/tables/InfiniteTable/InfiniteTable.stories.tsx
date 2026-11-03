@@ -448,6 +448,33 @@ function stickyLine(table: HTMLElement) {
   return parseFloat(getComputedStyle(table.closest(".di-infinite")!).scrollMarginTop) || 0;
 }
 
+/*
+ * Scrolled sideways, the measured columns clip what lies past them, so the
+ * shade beside the pinned name is the frame's: it runs past the held head
+ * and every row, and lies over the head that is moved down to stay in view.
+ */
+async function expectStartShadeOverHeld(table: HTMLTableElement) {
+  const frame = table.closest<HTMLElement>(".di-table-scroll")!;
+  const rtl = getComputedStyle(frame).direction === "rtl";
+  frame.scrollLeft = rtl ? -frame.scrollWidth : frame.scrollWidth;
+  const shade = await waitFor(() => {
+    const found = table.closest(".di-table-view")!.querySelector<HTMLElement>(".di-table-start-shade");
+    expect(found).not.toBeNull();
+    return found!;
+  });
+  const box = shade.getBoundingClientRect();
+  const view = shade.parentElement!.getBoundingClientRect();
+  await expect(Math.abs(box.top - view.top)).toBeLessThan(1);
+  await expect(Math.abs(box.bottom - view.bottom)).toBeLessThan(1);
+  const passing = table.tHead!.querySelector("th:not(.is-pinned, .di-table-index)")!;
+  await expect(Number(getComputedStyle(shade).zIndex)).toBeGreaterThanOrEqual(
+    Number(getComputedStyle(passing).zIndex) || 0,
+  );
+  await expect(box.top).toBeLessThanOrEqual(passing.getBoundingClientRect().top + 1);
+  frame.scrollLeft = 0;
+  await waitFor(() => expect(shade.isConnected).toBe(false));
+}
+
 /* Scrolls the page until the row of host n is in the middle of the window. */
 async function scrollToHost(table: HTMLTableElement, n: number) {
   const rowOf = () => [...table.querySelectorAll("tr")].find((r) => r.textContent?.startsWith(`host-${n}`));
@@ -513,6 +540,7 @@ export const GroupedHeldWide: StoryObj = {
     }
     await scrollToHost(table, 160);
     await expectGroupHeld(table, "Last 30 days");
+    if (getComputedStyle(table).display === "table") await expectStartShadeOverHeld(table);
     await scrollToHost(table, 250);
     await expectGroupHeld(table, "Older");
     window.scrollTo(0, 0);
