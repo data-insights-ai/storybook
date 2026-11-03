@@ -17,6 +17,7 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
+import { Button } from "../../actions/Button";
 import { Toolbar } from "../../actions/Toolbar";
 import { DataTable, TableBody, TableFooter, TableGroupRow, TableSpacer } from "../DataTable";
 import { NewEntries } from "../NewEntries";
@@ -42,8 +43,8 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * bar while rows are held back.
  *
  * **States:** loading more (the footer's inline `Loading`), all loaded
- * (`footerLabel` with `hasMore` false), entries held back
- * (`order="newest-first"`).
+ * (`footerLabel` with `hasMore` false), a page that did not arrive (the
+ * footer's `retryLabel` button), entries held back (`order="newest-first"`).
  *
  * **Accessibility:** `aria-rowcount` gives the whole size and each row
  * its `aria-rowindex`, so a screen reader hears where it is although
@@ -57,7 +58,11 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  *
  * The table holds no data. The caller says how many rows are loaded, names
  * each by `rowKey`, renders one `TableRow` per index with `renderRow`, and
- * fetches when `onLoadMore` is called. Rows not rendered are held by space as
+ * fetches when `onLoadMore` is called. A fetch that ends (`loadingMore` back
+ * to false) without a row more while `hasMore` holds is a page that did not
+ * arrive: the table asks no more until the reader presses `retryLabel` or
+ * `count`, `hasMore` or `memoryKey` change, so a failing server is not
+ * asked again and again. Rows not rendered are held by space as
  * tall as the rendered rows measure, so the scroll height follows the
  * density and the fonts instead of a fixed guess. Its `Toolbar` and `TableHead`
  * are children, as in `DataTable`.
@@ -83,6 +88,7 @@ export function InfiniteTable({
   newEntriesLabel,
   footerLabel,
   loadingLabel,
+  retryLabel,
   memoryKey,
   estimateRowHeight,
   indexed = false,
@@ -112,6 +118,8 @@ export function InfiniteTable({
   footerLabel: (shown: number, hasMore: boolean) => string;
   /** Said while the next page loads. */
   loadingLabel: string;
+  /** The footer's button after a page did not arrive, e.g. "Try again"; it asks for the page once more. */
+  retryLabel: string;
   /** Names the register, so its measured rows are kept when it is shown again (back from a detail page). */
   memoryKey?: string;
   /** The height of a row not yet rendered, until the first rows are measured; after that, their mean. */
@@ -169,7 +177,7 @@ export function InfiniteTable({
     },
     [memoryKey, virtualizer],
   );
-  const end = useNearEnd({ hasMore, loadingMore, loaded: count, onLoadMore, frame });
+  const end = useNearEnd({ hasMore, loadingMore, loaded: count, onLoadMore, frame, memoryKey });
   useHeldHead(host, !framed);
 
   const toolbar: ReactNode[] = [];
@@ -208,12 +216,17 @@ export function InfiniteTable({
             );
           })}
           {/* A frame clips what is past its edge, so the end is watched inside it: the spacer after the rows. */}
-          <TableSpacer height={after} ref={framed ? end : undefined} />
+          <TableSpacer height={after} ref={framed ? end.target : undefined} />
         </TableBody>
         <TableFooter>
-          <span ref={framed ? undefined : end}>
+          <span ref={framed ? undefined : end.target}>
             {loadingMore ? <Loading shape="inline" label={loadingLabel} delay={0} /> : footerLabel(shown, hasMore)}
           </span>
+          {end.stalled && !loadingMore ? (
+            <Button variant="secondary" size="sm" onClick={end.retry}>
+              {retryLabel}
+            </Button>
+          ) : null}
         </TableFooter>
       </DataTable>
     </div>
@@ -331,12 +344,14 @@ function useNearEnd({
   loaded,
   onLoadMore,
   frame,
+  memoryKey,
 }: {
   hasMore: boolean;
   loadingMore: boolean;
   loaded: number;
   onLoadMore: () => void;
   frame: HTMLElement | null;
+  memoryKey: string | undefined;
 }) {
   const [target, setTarget] = useState<Element | null>(null);
   const [near, setNear] = useState(false);
@@ -353,12 +368,36 @@ function useNearEnd({
     observer.observe(target);
     return () => observer.disconnect();
   }, [target, frame]);
+  /* The register as it was when a page was asked for, and when one did not arrive: a stall holds while nothing changed. */
+  const asked = useRef<number | null>(null);
+  const [stall, setStall] = useState<Stall | null>(null);
+  const stalled =
+    stall !== null && stall.loaded === loaded && stall.hasMore === hasMore && stall.memoryKey === memoryKey;
   // An observer reports changes only; a short page can leave the end in reach, so each page checks again.
   useEffect(() => {
-    if (near && hasMore && !loadingMore) load.current();
-  }, [near, hasMore, loadingMore, loaded]);
-  return setTarget;
+    if (loadingMore) return;
+    if (asked.current !== null) {
+      const arrived = loaded > asked.current;
+      asked.current = null;
+      if (!arrived && hasMore) {
+        setStall({ loaded, hasMore, memoryKey });
+        return;
+      }
+    }
+    if (near && hasMore && !stalled) {
+      asked.current = loaded;
+      load.current();
+    }
+  }, [near, hasMore, loadingMore, loaded, stalled, memoryKey]);
+  const retry = () => {
+    asked.current = loaded;
+    setStall(null);
+    load.current();
+  };
+  return { target: setTarget, stalled, retry };
 }
+
+type Stall = { loaded: number; hasMore: boolean; memoryKey: string | undefined };
 
 /* The sticky app bar's room, from `--di-sticky-top`: the register's top counts as seen below it. */
 function stickyTop(el: Element | null) {

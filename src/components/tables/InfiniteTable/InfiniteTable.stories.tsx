@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
-import { expect, waitFor, within } from "storybook/test";
+import { useCallback, useRef, useState } from "react";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { TableCell, TableColumn, TableHead, TableRow } from "../DataTable";
 import { InfiniteTable } from "./InfiniteTable";
 import { StatusPill } from "../../status/StatusPill";
@@ -23,13 +23,19 @@ const entry = (n: number): Entry => ({
   ok: n % 7 !== 0,
 });
 
-/* A server in miniature: pages of 40, a short delay, 200 entries in all. */
-function useEntries() {
-  const [entries, setEntries] = useState(() => Array.from({ length: 40 }, (_, i) => entry(200 - i)));
+/* A server in miniature: pages of 40, a short delay, 200 entries in all; `failing` answers the first page asked for with an error after a short first page. */
+function useEntries(failing = false) {
+  const failures = useRef(failing ? 1 : 0);
+  const [entries, setEntries] = useState(() => Array.from({ length: failing ? 8 : 40 }, (_, i) => entry(200 - i)));
   const [loading, setLoading] = useState(false);
   const more = useCallback(() => {
     setLoading(true);
     setTimeout(() => {
+      if (failures.current > 0) {
+        failures.current--;
+        setLoading(false);
+        return;
+      }
       setEntries((all) =>
         [...all, ...Array.from({ length: 40 }, (_, i) => entry(200 - all.length - i))].filter(
           (e) => Number(e.id.slice(1)) > 0,
@@ -41,8 +47,8 @@ function useEntries() {
   return { entries, loading, more, hasMore: entries.length < 200 };
 }
 
-function Register() {
-  const { entries, loading, more, hasMore } = useEntries();
+function Register({ failing = false }: { failing?: boolean }) {
+  const { entries, loading, more, hasMore } = useEntries(failing);
   return (
     <InfiniteTable
       caption="Collector runs"
@@ -55,6 +61,7 @@ function Register() {
       newEntriesLabel={(n) => `${n} new entries`}
       footerLabel={(shown, more) => (more ? `${shown} loaded, more follow as you scroll` : `All ${shown} entries`)}
       loadingLabel="Loading more"
+      retryLabel="Try again"
       renderRow={(i, { key, ...place }) => (
         <TableRow key={key} {...place}>
           <TableCell mono>{entries[i].at}</TableCell>
@@ -83,6 +90,22 @@ export const GrowsAsYouScroll: StoryObj = {
   },
 };
 
+/**
+ * The next page did not arrive: the server answered with an error. The table
+ * asks no more on its own, so a failing server is not asked again and again,
+ * and the footer offers to try once more.
+ */
+export const APageFails: StoryObj = {
+  render: () => <Register failing />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const retry = await canvas.findByRole("button", { name: "Try again" }, { timeout: 3000 });
+    await userEvent.click(retry);
+    const table = canvas.getByRole("table", { name: "Collector runs" });
+    await waitFor(() => expect(Number(table.getAttribute("aria-rowcount"))).toBeGreaterThanOrEqual(49));
+  },
+};
+
 const wide = (n: number): Entry => ({
   ...entry(n),
   what:
@@ -107,6 +130,7 @@ function LongRegister() {
       newEntriesLabel={(n) => `${n} new entries`}
       footerLabel={(shown) => `All ${shown} entries`}
       loadingLabel="Loading more"
+      retryLabel="Try again"
       renderRow={(i, { key, ...place }) => (
         <TableRow key={key} {...place}>
           <TableCell mono>{entries[i].at}</TableCell>
@@ -165,6 +189,7 @@ function Windowed1000({ maxRows }: { maxRows?: number }) {
       newEntriesLabel={(n) => `${n} new entries`}
       footerLabel={(shown) => `All ${shown.toLocaleString("en")} entries`}
       loadingLabel="Loading more"
+      retryLabel="Try again"
       maxRows={maxRows}
       renderRow={(i, { key, ...place }) => (
         <TableRow key={key} {...place}>
@@ -320,6 +345,7 @@ function GroupedRegister() {
       newEntriesLabel={(n) => `${n} new entries`}
       footerLabel={(n, more) => (more ? `${n} loaded, more follow as you scroll` : `All ${n} hosts`)}
       loadingLabel="Loading more"
+      retryLabel="Try again"
       renderRow={(i, { key, ...place }) => (
         <TableRow key={key} {...place}>
           <TableCell pinned>{shown[i].name}</TableCell>
@@ -376,6 +402,7 @@ function LongGroupedRegister({ maxRows, wide = false }: { maxRows?: number; wide
       newEntriesLabel={(n) => `${n} new entries`}
       footerLabel={(n) => `All ${n} hosts`}
       loadingLabel="Loading more"
+      retryLabel="Try again"
       maxRows={maxRows}
       renderRow={(i, { key, ...place }) => (
         <TableRow key={key} {...place}>

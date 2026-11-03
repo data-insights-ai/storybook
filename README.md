@@ -52,7 +52,15 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 
 ## Upgrade to 0.18
 
-0.18 adds API and needs no code change. A side `Dialog` docked in a page's side column now closes when what opened it is pressed again (a button, a link, a selectable row), and that button or link carries `aria-expanded` meanwhile; another row of the same list still shows its record. An opener that set `aria-expanded` itself keeps its own value.
+0.18 needs one code change: every `InfiniteTable` takes `retryLabel`, the words of the footer's button after a page did not arrive.
+
+```tsx
+<InfiniteTable loadingLabel={t("table.loadingMore")} retryLabel={t("table.retry")} … />
+```
+
+A fetch that ends (`loadingMore` back to false) without a row more while `hasMore` holds counts as a page that did not arrive: the table no longer calls `onLoadMore` again on its own until the reader presses that button or `count`, `hasMore` or `memoryKey` change, so a failing server is not asked in a loop.
+
+A side `Dialog` docked in a page's side column now closes when what opened it is pressed again (a button, a link, a selectable row), and that button or link carries `aria-expanded` meanwhile; another row of the same list still shows its record. An opener that set `aria-expanded` itself keeps its own value.
 
 ## Upgrade to 0.16
 
