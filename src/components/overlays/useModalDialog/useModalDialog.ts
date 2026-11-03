@@ -1,4 +1,5 @@
 import { useEffect, useInsertionEffect, useRef, type RefObject } from "react";
+import { keepScrollbarGap } from "../../../internal/scrollbarGap";
 import { focusFirstField } from "../../../internal/shortcutKeys";
 
 /**
@@ -29,6 +30,7 @@ export function useModalDialog(ref: RefObject<HTMLDialogElement | null>, open: b
     const dialog = ref.current;
     if (!dialog) return;
     if (open && !dialog.open) {
+      keepScrollbarGap();
       dialog.showModal();
       const marked = dialog.querySelector<HTMLElement>("[data-autofocus]");
       if (marked) marked.focus({ preventScroll: true });

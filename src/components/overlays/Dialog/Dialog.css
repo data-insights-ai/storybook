@@ -134,10 +134,15 @@
     }
   }
 
-  /* The page behind holds still: the dialog is the only thing that scrolls. */
+  /* The page behind holds still: the dialog is the only thing that scrolls.
+     The page keeps the width its scrollbar took, so nothing behind moves. */
   :root:has(.di-dialog[open]),
   body:has(.di-dialog[open]) {
     overflow: hidden;
+  }
+
+  :root:has(.di-dialog[open]) {
+    padding-inline-end: var(--di-scrollbar-gap, 0px);
   }
 
   .di-dialog-frame {
