@@ -137,7 +137,7 @@ export function DataTable({
   const framed = maxRows !== undefined;
   const stack = narrow === "stack";
   const scroll = useRef<HTMLDivElement>(null);
-  const { overflowing, moreStart, moreEnd, through, offsets } = useFrame(scroll, stack);
+  const { overflowing, moreStart, moreEnd, through, offsets, pinEnd } = useFrame(scroll, stack);
   const widths = useMeasuredColumns(scroll, layout === "measured");
   return (
     <div
@@ -194,6 +194,13 @@ export function DataTable({
             </StackContext.Provider>
           </table>
         </div>
+        {moreStart ? (
+          <span
+            className="di-table-start-shade"
+            aria-hidden="true"
+            style={{ "--di-table-pin-end": `${pinEnd}px` } as CSSProperties}
+          />
+        ) : null}
       </div>
       {empty ? null : foot}
     </div>

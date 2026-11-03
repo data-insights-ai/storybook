@@ -828,11 +828,25 @@ export const ScrollingSideways: Story = {
         ? select.left - name.getBoundingClientRect().right
         : name.getBoundingClientRect().left - select.right;
       await expect(Math.abs(meet)).toBeLessThan(1);
+      await expectStartShade(wrap, name);
       frame.scrollLeft = 0;
       await waitFor(() => expect(wrap).not.toHaveClass("is-more-start"));
     }
   },
 };
+
+/* The start shade falls from the pinned name's edge and runs the frame's full height, its head and every row. */
+async function expectStartShade(wrap: HTMLElement, name: HTMLElement) {
+  const shade = wrap.querySelector(".di-table-start-shade");
+  await expect(shade).not.toBeNull();
+  const box = shade!.getBoundingClientRect();
+  const view = wrap.querySelector(".di-table-view")!.getBoundingClientRect();
+  const edge = name.getBoundingClientRect();
+  const rtl = getComputedStyle(wrap).direction === "rtl";
+  await expect(Math.abs(rtl ? edge.left - box.right : box.left - edge.right)).toBeLessThan(1);
+  await expect(Math.abs(box.top - view.top)).toBeLessThan(1);
+  await expect(Math.abs(box.bottom - view.bottom)).toBeLessThan(1);
+}
 
 /** A price with what the quantity buys and its total, one line each, so a narrow frame never cuts them. */
 export const CellLines: Story = {

@@ -332,7 +332,7 @@
       inset 0 0 0 100vmax var(--di-row-current-bg);
   }
 
-  /* The pinned edge: a rule while the grid scrolls, and a shade past it once columns are hidden under it. */
+  /* The pinned edge: a rule while the grid scrolls. */
   .di-table-wrap.is-overflowing .di-table .is-pin-last::after {
     content: "";
     position: absolute;
@@ -343,32 +343,39 @@
     pointer-events: none;
   }
 
-  .di-table-wrap.is-more-start .di-table .is-pin-last::before {
-    content: "";
+  /*
+   * A shade on each side of the frame while columns are hidden there: at the
+   * start it falls from the pinned columns' edge (`--di-table-pin-end`,
+   * measured). Drawn by the frame, not by a cell, which a measured column
+   * clips, and over a held head; the frame keeps its layers to itself, so
+   * the shades stay under a sticky toolbar.
+   */
+  .di-table-view {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .di-table-start-shade,
+  .di-table-wrap.is-more-end .di-table-view::after {
     position: absolute;
     inset-block: 0;
-    inset-inline-start: 100%;
+    z-index: 3;
     inline-size: var(--di-table-shade);
-    background: linear-gradient(to right, var(--di-table-shade-color), transparent);
     pointer-events: none;
   }
 
-  /* The other side: a shade over the frame's inline end while columns are hidden there. */
-  .di-table-view {
-    position: relative;
+  .di-table-start-shade {
+    inset-inline-start: var(--di-table-pin-end, 0);
+    background: linear-gradient(to right, var(--di-table-shade-color), transparent);
   }
 
   .di-table-wrap.is-more-end .di-table-view::after {
     content: "";
-    position: absolute;
-    inset-block: 0;
     inset-inline-end: 0;
-    inline-size: var(--di-table-shade);
     background: linear-gradient(to left, var(--di-table-shade-color), transparent);
-    pointer-events: none;
   }
 
-  .di-table-wrap:dir(rtl) .di-table .is-pin-last::before {
+  .di-table-wrap:dir(rtl) .di-table-start-shade {
     background: linear-gradient(to left, var(--di-table-shade-color), transparent);
   }
 

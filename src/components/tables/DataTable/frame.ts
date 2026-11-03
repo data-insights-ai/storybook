@@ -10,15 +10,18 @@ export type FrameState = {
   through: number;
   /** Where each pinned column sticks, from the inline start, measured once the grid scrolls. */
   offsets?: number[];
+  /** Where the pinned columns end, from the inline start: the edge the start shade falls from. */
+  pinEnd: number;
 };
 
-const AT_REST: FrameState = { overflowing: false, moreStart: false, moreEnd: false, through: -1 };
+const AT_REST: FrameState = { overflowing: false, moreStart: false, moreEnd: false, through: -1, pinEnd: 0 };
 
 const same = (a: FrameState, b: FrameState) =>
   a.overflowing === b.overflowing &&
   a.moreStart === b.moreStart &&
   a.moreEnd === b.moreEnd &&
   a.through === b.through &&
+  a.pinEnd === b.pinEnd &&
   (a.offsets ?? []).join() === (b.offsets ?? []).join();
 
 /*
@@ -55,12 +58,14 @@ export function useFrame(frame: { current: HTMLDivElement | null }, stack: boole
           offsets.push(offsets[i - 1] + head[i - 1].getBoundingClientRect().width);
         }
       }
+      const pinEnd = overflowing ? edgeAfter(head, through) : 0;
       const next = {
         overflowing,
         moreStart: overflowing && at > 1,
         moreEnd: overflowing && at < max - 1,
         through,
         offsets,
+        pinEnd,
       };
       setState((prev) => (same(prev, next) ? prev : next));
     };
@@ -75,6 +80,10 @@ export function useFrame(frame: { current: HTMLDivElement | null }, stack: boole
     };
   }, [frame, stack]);
   return state;
+}
+
+function edgeAfter(head: HTMLTableCellElement[], through: number) {
+  return head.slice(0, through + 1).reduce((end, cell) => end + cell.getBoundingClientRect().width, 0);
 }
 
 function nameColumn(head: HTMLTableCellElement[], stack: boolean) {
