@@ -594,14 +594,12 @@ export const RowAcrossColumns: Story = {
   render: (args) => (
     <DataTable {...args}>
       <TableHead>
-        <TableColumn>Host</TableColumn>
-        <TableColumn width="fill">Role</TableColumn>
+        <TableColumn width="fill">Host</TableColumn>
         <TableColumn align="end">Last seen</TableColumn>
       </TableHead>
       <TableBody>
         <TableRow>
           <TableCell>edge-gw-01</TableCell>
-          <TableCell>Gateway</TableCell>
           <TableCell align="end" mono={true}>
             12 min ago
           </TableCell>
@@ -614,7 +612,6 @@ export const RowAcrossColumns: Story = {
         </TableRow>
         <TableRow>
           <TableCell>lab-scanner</TableCell>
-          <TableCell>Scanner</TableCell>
           <TableCell align="end" mono={true}>
             41 days ago
           </TableCell>
