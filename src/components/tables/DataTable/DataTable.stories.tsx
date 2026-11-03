@@ -496,6 +496,7 @@ export const NoRows: Story = {
   play: async ({ canvasElement }) => {
     const message = within(canvasElement).getByText("No source matches the current filter.");
     const cell = message.closest("td")!;
+    await expect(within(canvasElement).getByRole("status")).toBe(message);
     await expect(cell).toHaveAttribute("colspan", "1000");
     await expect(message.getBoundingClientRect().width).toBeGreaterThan(160);
     const text = (el: Element) => {

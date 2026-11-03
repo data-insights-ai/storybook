@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useRef, useState } from "react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { TableCell, TableColumn, TableHead, TableRow } from "../DataTable";
+import { TableCell, TableColumn, TableEmpty, TableHead, TableRow } from "../DataTable";
+import { Button } from "../../actions/Button";
 import { InfiniteTable } from "./InfiniteTable";
 import { StatusPill } from "../../status/StatusPill";
 import { Panel } from "../../layout/page/Panel";
@@ -547,5 +548,64 @@ export const GroupedHeldWide: StoryObj = {
     await settle();
     await expect(table.querySelectorAll(".is-held")).toHaveLength(0);
     await expectAtRest(table, { top: 0, bottom: window.innerHeight });
+  },
+};
+
+/**
+ * A filter that matches nothing: the head stays, the body is its `TableEmpty`
+ * child with its one way out, and the footer goes, since "0 loaded" only
+ * repeats it. The message is a `status`, so the empty list is announced.
+ * Clearing the filter brings the rows back in the same table.
+ */
+export const NothingMatches: StoryObj = {
+  render: function Render() {
+    const [filtered, setFiltered] = useState(true);
+    const rows = filtered ? [] : Array.from({ length: 12 }, (_, i) => entry(12 - i));
+    return (
+      <InfiniteTable
+        caption="Collector runs"
+        count={rows.length}
+        rowKey={(i) => rows[i].id}
+        hasMore={false}
+        loadingMore={false}
+        onLoadMore={() => {}}
+        newEntriesLabel={(n) => `${n} new entries`}
+        footerLabel={(shown) => `All ${shown} entries`}
+        loadingLabel="Loading more"
+        retryLabel="Try again"
+        renderRow={(i, { key, ...place }) => (
+          <TableRow key={key} {...place}>
+            <TableCell mono>{rows[i].at}</TableCell>
+            <TableCell>{rows[i].what}</TableCell>
+            <TableCell align="end">
+              <StatusPill tone={rows[i].ok ? "ok" : "danger"}>{rows[i].ok ? "Done" : "Failed"}</StatusPill>
+            </TableCell>
+          </TableRow>
+        )}
+      >
+        <TableHead>
+          <TableColumn>When</TableColumn>
+          <TableColumn width="fill">What happened</TableColumn>
+          <TableColumn align="end">Result</TableColumn>
+        </TableHead>
+        <TableEmpty message="No run matches the current filter.">
+          <Button variant="ghost" onClick={() => setFiltered(false)}>
+            Clear filters
+          </Button>
+        </TableEmpty>
+      </InfiniteTable>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const table = canvas.getByRole("table", { name: "Collector runs" });
+    await expect(within(table).getAllByRole("columnheader")).toHaveLength(3);
+    const status = within(table).getByRole("status");
+    await expect(status).toHaveTextContent("No run matches the current filter.");
+    await expect(status.closest("td")).not.toBeNull();
+    await expect(canvasElement.querySelector(".di-table-foot")).toBeNull();
+    await userEvent.click(canvas.getByRole("button", { name: "Clear filters" }));
+    await waitFor(() => expect(within(table).queryByRole("status")).toBeNull());
+    await expect(await canvas.findByText("All 12 entries")).toBeTruthy();
   },
 };
