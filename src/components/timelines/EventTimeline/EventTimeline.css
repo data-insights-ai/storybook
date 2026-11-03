@@ -181,6 +181,20 @@
     stroke: var(--di-chart-baseline);
   }
 
+  /* A stretch left out: shaded behind the marks, its rules cut by two slashes. */
+  .di-timeline-break-band {
+    fill: var(--di-chart-band);
+  }
+
+  .di-timeline-break path {
+    fill: none;
+  }
+
+  .di-timeline-break-mark {
+    stroke: var(--di-chart-baseline);
+    stroke-width: 1.5;
+  }
+
   .di-timeline-tick-label {
     text-anchor: middle;
   }

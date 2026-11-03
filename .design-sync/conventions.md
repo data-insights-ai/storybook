@@ -53,7 +53,7 @@ The Storybook sidebar is grouped by the question a developer asks, one group per
 - `Status/`: the state of a thing, inline: `StatusPill`, `SeverityMark`, `SealValue`, `Badge`, `Tag` (`mono` for a filter, a version or a hash), `LevelMeter`.
 - `Feedback/`: what happened or is happening: `Notice` (`variant` banner, line), `EmptyState`, `Toast`, `Loading` (`shape` inline, app, list, detail, form, table), `Progress`, `RouteProgress`, `Delayed`.
 - `Charts/`: data on a scale: `Chart`, `TrendChart`, `Seismograph`, `Distribution`, `CoverageMatrix`; a dashboard figure is a `Panel` with a `Figure` and the chart, in a `Grid`.
-- `Timelines/`: events and periods over time: `EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`.
+- `Timelines/`: events and periods over time: `EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`. `EventTimeline` folds a long quiet stretch into a break on its axis (`axis="broken"`, the default); `continuous` keeps time at one rate.
 - `Layout/`: how a page is arranged: `Page`, `PageHeader` (`level={2}` for a section), `Panel` (`surface="hero"`, `tone="danger"`), `DetailSection`, and `Stack`, `Grid`, `Split`, `Disclosure`.
 - `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Pagination`, `Steps`, `CommandBar`.
 - `Overlays/`: what opens over the page: `Dialog` (`placement` side, center, bottom), `ConfirmDialog`, `ShortcutHelp`, `Flyout`, `Tooltip`.
