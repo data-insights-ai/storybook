@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test } from "vitest";
-import { page } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import { useState } from "react";
@@ -251,6 +251,51 @@ describe("large screens", () => {
     press(a);
     expect(docked(host)?.textContent).toContain("Record a");
     press(a);
+    expect(docked(host)).toBeNull();
+  });
+
+  test("at 1920px Enter and Space on the button that opened a docked sheet close it", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<ViewsPage />);
+    const opener = host.querySelector<HTMLButtonElement>(".opener")!;
+    opener.focus();
+    await userEvent.keyboard("{Enter}");
+    await expect.poll(() => docked(host)).not.toBeNull();
+    opener.focus();
+    await userEvent.keyboard("{Enter}");
+    await expect.poll(() => docked(host)).toBeNull();
+    opener.focus();
+    await userEvent.keyboard(" ");
+    await expect.poll(() => docked(host)).not.toBeNull();
+    opener.focus();
+    await userEvent.keyboard(" ");
+    await expect.poll(() => docked(host)).toBeNull();
+  });
+
+  test("at 1920px a sheet mounted only while open closes on a second press too", async () => {
+    await page.viewport(1920, 1080);
+    function Mounted() {
+      const [open, setOpen] = useState(false);
+      return (
+        <AppShellContent>
+          <Page>
+            <button type="button" className="opener" onClick={() => setOpen(true)}>
+              Views
+            </button>
+            {open ? (
+              <Dialog open onClose={() => setOpen(false)} title="Saved views" closeLabel="Close">
+                <section>None yet</section>
+              </Dialog>
+            ) : null}
+          </Page>
+        </AppShellContent>
+      );
+    }
+    const host = show(<Mounted />);
+    const opener = host.querySelector(".opener")!;
+    press(opener);
+    expect(docked(host)).not.toBeNull();
+    press(opener);
     expect(docked(host)).toBeNull();
   });
 

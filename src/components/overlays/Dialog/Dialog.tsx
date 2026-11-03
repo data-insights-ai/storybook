@@ -13,6 +13,7 @@ import { createPortal } from "react-dom";
 import { OctagonAlert, X } from "lucide-react";
 import { PageSide } from "../../layout/page/pageSide";
 import { cx } from "../../../internal/cx";
+import { pressedOf, takePress } from "../../../internal/lastPress";
 import { focusFirstField } from "../../../internal/shortcutKeys";
 import { surfaceClass } from "../../../internal/surface";
 import { Eyebrow } from "../../text/Eyebrow";
@@ -130,28 +131,7 @@ function ModalDialog(props: DialogProps) {
   );
 }
 
-const pressable = 'button, a[href], [role="button"], summary, tr.is-selectable';
-const pressedOf = (target: EventTarget | null) =>
-  target instanceof Element ? target.closest<HTMLElement>(pressable) : null;
 const listOf = (el: HTMLElement) => el.closest("table, ul, ol, [role=grid], [role=list]");
-
-// What was pressed, not what has focus: Safari focuses no button on a click, and a row never takes focus.
-let lastPress: { el: HTMLElement; at: number } | null = null;
-if (typeof document !== "undefined") {
-  document.addEventListener(
-    "click",
-    (event) => {
-      const el = pressedOf(event.target);
-      lastPress = el ? { el, at: performance.now() } : null;
-    },
-    true,
-  );
-}
-function takePress() {
-  const press = lastPress;
-  lastPress = null;
-  return press && performance.now() - press.at < 1000 ? press.el : null;
-}
 
 function DockedDialog(props: DialogProps & { side: HTMLElement }) {
   const { open, onClose, side } = props;
