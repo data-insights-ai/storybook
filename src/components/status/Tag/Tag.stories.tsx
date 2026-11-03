@@ -88,9 +88,7 @@ function FilterRow({ onRemove, onClick }: { onRemove?: () => void; onClick?: () 
         </Tag>
       </TagList>
       <ToolbarEnd>
-        <Button variant="secondary" size="sm">
-          Clear filters
-        </Button>
+        <Button variant="secondary">Clear filters</Button>
       </ToolbarEnd>
     </Toolbar>
   );

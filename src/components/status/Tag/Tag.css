@@ -38,6 +38,16 @@
   }
 
   /*
+   * In a toolbar or a filter bar it is one more control of the row, as tall as the field beside it, and keeps its
+   * one line: the search gives up room first.
+   */
+  :is(.di-toolbar:not(.is-row), .di-filter-bar) .di-tag.is-control {
+    flex-shrink: 0;
+    min-height: var(--di-field-height);
+    padding-inline: var(--di-gap-8);
+  }
+
+  /*
    * A tag never lets its text out. A name wider than its place wraps
    * inside the frame, at a space first and inside a word only when the word
    * alone is wider: a role or a group is read whole, never cut.
@@ -50,6 +60,7 @@
   }
 
   .di-tag-name > svg {
+    display: inline-block;
     width: var(--di-icon-sm);
     height: var(--di-icon-sm);
     margin-inline-end: var(--di-gap-4);

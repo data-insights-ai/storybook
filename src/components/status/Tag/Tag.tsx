@@ -14,8 +14,9 @@ import "./Tag.css";
  * A tag can act. With `onClick` it is a button (a filter on offer, or one
  * to toggle with `pressed`); with `onRemove` it carries its own remove
  * button, named by `removeLabel`, because "Remove" alone does not say which
- * one. `pressed` draws the selection fill. `inferred` marks a tag a model
- * proposed with the hollow ring.
+ * one. In a toolbar or a filter bar a tag that acts is as tall as the
+ * field beside it. `pressed` draws the selection fill. `inferred` marks a
+ * tag a model proposed with the hollow ring.
  *
  * For a machine state use `StatusPill`; for a count on a control, `Badge`.
  */
