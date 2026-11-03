@@ -4,7 +4,7 @@ import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import { useState } from "react";
 import "../../../styles/styles.css";
-import { TableCell, TableColumn, TableHead, TableRow } from "../DataTable";
+import { TableCell, TableColumn, TableEmpty, TableHead, TableRow } from "../DataTable";
 import { InfiniteTable } from "./InfiniteTable";
 
 let root: Root | undefined;
@@ -142,4 +142,49 @@ test("a stall ends when the rows change from outside", async () => {
   await settle();
   expect(calls.n).toBe(2);
   expect(retry(host)).toBeDefined();
+});
+
+test("the empty body shows only once no row is loaded and none is left to load", async () => {
+  const host = document.createElement("div");
+  document.body.append(host);
+  root = createRoot(host);
+  const show = (state: { count: number; hasMore: boolean; loadingMore: boolean }) =>
+    flushSync(() =>
+      root!.render(
+        <InfiniteTable
+          caption="Assets"
+          {...state}
+          rowKey={(i) => `a-${i}`}
+          renderRow={(i, place) => (
+            <TableRow key={place.key} rowIndex={place.rowIndex} ref={place.ref}>
+              <TableCell>host-{i}</TableCell>
+            </TableRow>
+          )}
+          onLoadMore={() => {}}
+          newEntriesLabel={() => ""}
+          footerLabel={(n) => `${n} loaded`}
+          loadingLabel="Loading"
+          retryLabel=""
+          order="sorted"
+        >
+          <TableHead>
+            <TableColumn width="fill">Name</TableColumn>
+          </TableHead>
+          <TableEmpty message="No asset matches." />
+        </InfiniteTable>,
+      ),
+    );
+  const empty = () => document.querySelector(".di-table-empty");
+  const foot = () => document.querySelector(".di-table-foot");
+  show({ count: 0, hasMore: false, loadingMore: true });
+  expect(empty()).toBeNull();
+  show({ count: 0, hasMore: true, loadingMore: false });
+  expect(empty()).toBeNull();
+  show({ count: 0, hasMore: false, loadingMore: false });
+  expect(empty()?.querySelector('[role="status"]')?.textContent).toBe("No asset matches.");
+  expect(foot()).toBeNull();
+  show({ count: 3, hasMore: false, loadingMore: false });
+  await frame();
+  expect(empty()).toBeNull();
+  expect(foot()?.textContent).toBe("3 loaded");
 });

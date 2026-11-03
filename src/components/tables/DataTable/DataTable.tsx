@@ -559,7 +559,12 @@ export function TableIndex({ children }: { children: ReactNode }) {
  * reader sees which list is empty, and the message starts on the first
  * data column's line, past the index column; the footer goes, since a count
  * of nothing repeats the message. Where the list has never held anything,
- * show an `EmptyState` instead of the table.
+ * show an `EmptyState` instead of the table. In an `InfiniteTable` it is a child
+ * beside the `TableHead`, shown once no row is loaded and none is left.
+ *
+ * **Accessibility:** the message is a `status`, as an `EmptyState` is, so a
+ * filter that empties the list is announced. The role sits on the message
+ * inside the cell; the row and the cell keep the table's own roles.
  */
 export function TableEmpty({ message, children }: { message: string; children?: ReactNode }) {
   const indexColumn = useContext(IndexColumnContext);
@@ -569,7 +574,9 @@ export function TableEmpty({ message, children }: { message: string; children?: 
       {indexColumn ? <td role={cell} className="di-table-index" /> : null}
       <td role={cell} colSpan={allColumns}>
         <span className="di-table-empty-body">
-          <span className="di-table-empty-message">{message}</span>
+          <span className="di-table-empty-message" role="status">
+            {message}
+          </span>
           {children}
         </span>
       </td>

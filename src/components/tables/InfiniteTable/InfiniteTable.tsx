@@ -19,7 +19,7 @@ import {
 } from "react";
 import { Button } from "../../actions/Button";
 import { Toolbar } from "../../actions/Toolbar";
-import { DataTable, TableBody, TableFooter, TableGroupRow, TableSpacer } from "../DataTable";
+import { DataTable, TableBody, TableEmpty, TableFooter, TableGroupRow, TableSpacer } from "../DataTable";
 import { NewEntries } from "../NewEntries";
 import { Loading } from "../../feedback/Loading";
 import { useHeldHead } from "./heldHead";
@@ -37,14 +37,17 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * that fits on a few pages (`DataTable` with `Pagination`), nor where
  * the reader must reach a known page by number.
  *
- * **Anatomy:** `Toolbar` and `TableHead` as children, then the
+ * **Anatomy:** `Toolbar` and `TableHead` as children (and a `TableEmpty`
+ * for a filter that matches nothing), then the
  * rendered rows between two spacers, then a footer that counts the rows
  * or says the next page is loading; `NewEntries` floats under the app
  * bar while rows are held back.
  *
  * **States:** loading more (the footer's inline `Loading`), all loaded
  * (`footerLabel` with `hasMore` false), a page that did not arrive (the
- * footer's `retryLabel` button), entries held back (`order="newest-first"`).
+ * footer's `retryLabel` button), entries held back (`order="newest-first"`),
+ * nothing matches (a `TableEmpty` child: the body under the head, without
+ * the footer, once no row is loaded and none is left to load).
  *
  * **Accessibility:** `aria-rowcount` gives the whole size and each row
  * its `aria-rowindex`, so a screen reader hears where it is although
@@ -135,7 +138,10 @@ export function InfiniteTable({
    * label, so the rows come in the order they are grouped by, and a group with no rows loaded has no row.
    */
   groupOf?: (index: number) => string;
-  /** `Toolbar` and `TableHead`. */
+  /**
+   * `Toolbar`, `TableHead` and an optional `TableEmpty`: the body when no row is loaded and none is left to load,
+   * which says why, with its one way out; the footer goes with it.
+   */
   children: ReactNode;
 }) {
   const host = useRef<HTMLDivElement>(null);
@@ -182,13 +188,16 @@ export function InfiniteTable({
 
   const toolbar: ReactNode[] = [];
   const head: ReactNode[] = [];
+  const empty: ReactNode[] = [];
   Children.forEach(children, (child) => {
     if (isValidElement(child) && child.type === Toolbar) toolbar.push(child);
+    else if (isValidElement(child) && child.type === TableEmpty) empty.push(child);
     else head.push(child);
   });
   const items = virtualizer.getVirtualItems();
   const pinned = detached(items);
   const { before, after } = gaps(pinned ? items.slice(1) : items, virtualizer.getTotalSize(), start);
+  const nothing = empty.length > 0 && count === 0 && !hasMore && !loadingMore;
 
   return (
     <div ref={host} className={framed ? "di-infinite is-framed" : "di-infinite"}>
@@ -204,6 +213,7 @@ export function InfiniteTable({
         {toolbar}
         {head}
         <TableBody>
+          {nothing ? empty : null}
           {/* The open group's row, far above the rendered ones, takes its height from the space before them. */}
           <TableSpacer ref={top} height={before - (pinned?.size ?? 0)} />
           {items.map((r) => {
@@ -218,16 +228,18 @@ export function InfiniteTable({
           {/* A frame clips what is past its edge, so the end is watched inside it: the spacer after the rows. */}
           <TableSpacer height={after} ref={framed ? end.target : undefined} />
         </TableBody>
-        <TableFooter>
-          <span ref={framed ? undefined : end.target}>
-            {loadingMore ? <Loading shape="inline" label={loadingLabel} delay={0} /> : footerLabel(shown, hasMore)}
-          </span>
-          {end.stalled && !loadingMore ? (
-            <Button variant="secondary" size="sm" onClick={end.retry}>
-              {retryLabel}
-            </Button>
-          ) : null}
-        </TableFooter>
+        {nothing ? null : (
+          <TableFooter>
+            <span ref={framed ? undefined : end.target}>
+              {loadingMore ? <Loading shape="inline" label={loadingLabel} delay={0} /> : footerLabel(shown, hasMore)}
+            </span>
+            {end.stalled && !loadingMore ? (
+              <Button variant="secondary" size="sm" onClick={end.retry}>
+                {retryLabel}
+              </Button>
+            ) : null}
+          </TableFooter>
+        )}
       </DataTable>
     </div>
   );
