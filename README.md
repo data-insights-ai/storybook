@@ -50,6 +50,10 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.19.2
+
+0.19.2 needs no code change. The sidebar's current page is a selection like every other: the pale selection tint with the navy edge (`#A9CBF3` after dark) instead of gold, and the sidebar trigger's hover is the warm inset tone. Gold is left to the one thing in the view. An app that set `--di-sidebar-active` or `--di-sidebar-mark` itself keeps its own values.
+
 ## Upgrade to 0.19.1
 
 0.19.1 needs no code change. A `Tag` that acts (`onClick` or `onRemove`) in a toolbar or filter bar is as tall as the fields beside it and keeps its one line; an icon in a tag sits on the line of its words instead of above them.

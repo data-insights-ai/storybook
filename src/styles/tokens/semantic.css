@@ -157,14 +157,14 @@
 
     --di-index-col: 38px;
 
-    /* The navigation is ivory, a step above the ground; the brand gold marks the current page (5.4:1 on its tint). */
+    /* The navigation is ivory, a step above the ground; its current page is a selection like any other, so gold stays with the one thing in the view. */
     --di-sidebar-bg: var(--di-paper-ivory);
-    --di-sidebar-raised: var(--di-gold-100);
+    --di-sidebar-raised: var(--di-paper-inset);
     --di-sidebar-fg: var(--di-navy-900);
     --di-sidebar-muted: var(--di-navy-500);
-    --di-sidebar-active: var(--di-gold-100);
+    --di-sidebar-active: var(--di-bg-selected);
     --di-sidebar-edge: rgba(122, 92, 14, 0.22);
-    --di-sidebar-mark: var(--di-gold-700);
+    --di-sidebar-mark: var(--di-select);
     --di-sidebar-focus: var(--di-navy-700);
 
     --di-status-ok-fg: var(--di-ok-800);
@@ -328,9 +328,9 @@
     --di-sidebar-raised: var(--di-night-surface);
     --di-sidebar-fg: var(--di-night-ink);
     --di-sidebar-muted: var(--di-night-subtle);
-    --di-sidebar-active: var(--di-night-surface);
+    --di-sidebar-active: var(--di-bg-selected);
     --di-sidebar-edge: rgba(168, 182, 210, 0.12);
-    --di-sidebar-mark: var(--di-gold-400);
+    --di-sidebar-mark: var(--di-select);
     --di-sidebar-focus: var(--di-cornflower-200);
 
     --di-status-ok-fg: var(--di-ok-200);
