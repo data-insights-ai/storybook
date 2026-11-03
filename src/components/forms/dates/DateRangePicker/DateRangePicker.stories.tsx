@@ -192,7 +192,7 @@ export const InToolbar: Story = {
     const [value, setValue] = useState<DateRangeValue>({ preset: "30d" });
     return (
       <Toolbar label="Filter the entries" role="search">
-        <SearchField id="entries-search" label="Search entries" size="sm" />
+        <SearchField id="entries-search" label="Search entries" />
         <Select id="entries-status" label="Status" hideLabel mono={false} defaultValue="">
           <option value="">Status: all</option>
           <option value="ok">Delivered</option>

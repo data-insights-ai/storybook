@@ -50,6 +50,12 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.19
+
+0.19 needs one code change: `SearchField` no longer takes `size`. A search is as tall as every other field, so drop `size="sm"`.
+
+A toolbar or filter bar is one height. The Filters trigger of a `FilterBar` and the buttons of `ToolbarSelection` are `md` now, the height of the fields beside them. Buttons an app puts in a toolbar beside a field or a search are `md` too: drop their `size="sm"`. `sm` stays for a row of buttons alone, such as a table row's actions.
+
 ## Upgrade to 0.18
 
 0.18 needs one code change: every `InfiniteTable` takes `retryLabel`, the words of the footer's button after a page did not arrive.
@@ -76,7 +82,7 @@ A side `Dialog` docked in a page's side column now closes when what opened it is
   <FilterBar label="Filter cases" filtersLabel="Filters" countLabel={(n) => `${n} set`}
     closeLabel="Close" doneLabel="Done" clearLabel="Clear all" onClear={clear}>
     <FilterBarItem name="search" keep grow>
-      {(place) => <SearchField id={place === "bar" ? "q" : "q-sheet"} size="sm" label="Search" value={q} onChange={…} />}
+      {(place) => <SearchField id={place === "bar" ? "q" : "q-sheet"} label="Search" value={q} onChange={…} />}
     </FilterBarItem>
     <FilterBarItem name="severity" active={severity !== ""}>
       {(place) => <Select id={`severity-${place}`} label="Severity" hideLabel={place === "bar"} …>…</Select>}

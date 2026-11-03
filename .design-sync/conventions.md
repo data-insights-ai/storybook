@@ -210,7 +210,9 @@ the surface holding it is 12px, so the field reads as set *into* the sheet rathe
 than floating on it. Only a pill is fully round, and only because it is a mark.
 
 **Control height** — md (32px) is the standard and covers every form control
-unless told otherwise. sm (28) is a toolbar control, a chip. lg (36) is a lone
+unless told otherwise. sm (28) is a chip, or a row of buttons alone (a table row's actions).
+A toolbar or filter bar is one height: beside a field or a search every control
+is md, since a field has no smaller size. lg (36) is a lone
 primary action, the command bar, the tab strip. 40 is a table row.
 
 **Density** — the person chooses comfortable (the default, the values above) or

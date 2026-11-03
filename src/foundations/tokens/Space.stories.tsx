@@ -57,6 +57,9 @@ function DensityPanel({ density }: { density: "comfortable" | "compact" }) {
         <Stack gap={16}>
           <Toolbar fillFirst>
             <TextField id={`space-${density}`} label="Collector" placeholder="edge-gw-01" />
+            <Button variant="secondary">Add</Button>
+          </Toolbar>
+          <div className="di-space-sizes">
             <Button size="sm" variant="secondary">
               Small
             </Button>
@@ -64,7 +67,7 @@ function DensityPanel({ density }: { density: "comfortable" | "compact" }) {
             <Button size="lg">
               <Plus /> Large
             </Button>
-          </Toolbar>
+          </div>
           <MetaLine
             items={[
               `field ${values["--di-control-h-md"] ?? ""}`,

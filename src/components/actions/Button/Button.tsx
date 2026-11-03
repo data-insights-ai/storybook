@@ -32,7 +32,7 @@ type Common = {
    * disabled control.
    */
   variant?: Variant;
-  /** `sm` in a row or a toolbar of small controls, `md` the standard, `lg` a sign-in or a brand page. */
+  /** `sm` in a row of buttons alone (a table row's actions), `md` the standard and beside any field, `lg` a sign-in or a brand page. */
   size?: Size;
   /** A square control: a filter, a pagination arrow, a kebab. */
   iconOnly?: boolean;

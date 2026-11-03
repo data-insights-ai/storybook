@@ -289,7 +289,7 @@ function SourceFacts({ source, words }: { source: Source; words: Words }) {
 function registerToolbar(words: Words, menu: boolean, setMenu: (open: boolean) => void) {
   return (
     <Toolbar label={words.filterLabel} role="search">
-      <SearchField id="register-search" label={words.search} placeholder={words.placeholder} size="sm" />
+      <SearchField id="register-search" label={words.search} placeholder={words.placeholder} />
       <Tag mono pressed onRemove={() => undefined} removeLabel={words.removeFilter}>
         {words.workspaceFilter}
       </Tag>
@@ -303,7 +303,7 @@ function registerToolbar(words: Words, menu: boolean, setMenu: (open: boolean) =
           onOpenChange={setMenu}
           label={words.actions}
           trigger={(props) => (
-            <Button {...props} variant="secondary" size="sm" iconOnly={true} aria-label={words.actions}>
+            <Button {...props} variant="secondary" iconOnly={true} aria-label={words.actions}>
               <MoreVertical aria-hidden />
             </Button>
           )}

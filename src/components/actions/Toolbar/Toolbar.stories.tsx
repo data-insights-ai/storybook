@@ -130,7 +130,7 @@ function MembersSelection({
               align="end"
               label={w.setRole}
               trigger={(props) => (
-                <Button {...props} variant="secondary" size="sm">
+                <Button {...props} variant="secondary">
                   {w.setRole}
                   <ChevronDown aria-hidden />
                 </Button>
@@ -139,7 +139,7 @@ function MembersSelection({
               <MenuItem onSelect={() => setMenu(false)}>Administrator</MenuItem>
               <MenuItem onSelect={() => setMenu(false)}>Member</MenuItem>
             </Menu>
-            <ToolbarAction variant="danger" size="sm" icon={<UserMinus aria-hidden />} label={w.remove} />
+            <ToolbarAction variant="danger" icon={<UserMinus aria-hidden />} label={w.remove} />
           </ToolbarEnd>
         </Toolbar>
       ) : (

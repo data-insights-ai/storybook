@@ -79,8 +79,10 @@ export type ToolbarProps = {
  *   Fields and their button share the control row, so a button lines up with
  *   the input and an error line under a field does not move it.
  *
- * **Content:** buttons in a toolbar are `sm` beside other `sm` controls and
- * `md` beside fields; one primary at most, the action asked for.
+ * **Content:** a toolbar is one height. Beside a field or a search every
+ * button is `md`, the field's height (a field has no smaller size); `sm` is
+ * for a row of buttons alone, such as a table row's actions. One primary at
+ * most, the action asked for.
  *
  * **Accessibility:** a `group` (or `search`, `region`) named by `label`.
  * Every control is its own tab stop: it is not an ARIA `toolbar`, which

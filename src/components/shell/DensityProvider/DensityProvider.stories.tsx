@@ -54,7 +54,7 @@ function Sample({ initial }: { initial: Density }) {
           </PanelActions>
           <DataTable caption="Connected sources" indexed={false}>
             <Toolbar label="Filter the sources" role="search">
-              <SearchField id="density-search" label="Search the sources" placeholder="host or kind" size="sm" />
+              <SearchField id="density-search" label="Search the sources" placeholder="host or kind" />
             </Toolbar>
             <TableHead>
               <TableColumn>Host</TableColumn>

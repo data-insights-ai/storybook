@@ -12,7 +12,6 @@ const meta = {
     label: "Search the register",
     placeholder: "Host, hash or operator",
     shortcut: "/",
-    size: "md",
     disabled: false,
     readOnly: false,
     required: false,
@@ -22,7 +21,6 @@ const meta = {
     label: { control: "text" },
     placeholder: { control: "text" },
     shortcut: { control: "text" },
-    size: { control: "radio", options: ["sm", "md"] },
     disabled: { control: "boolean" },
     readOnly: { control: "boolean" },
     required: { control: "boolean" },
@@ -56,11 +54,6 @@ export const Default: Story = {
 /** A search inside a picker or a sheet, not the page’s own: it shows no key, since only the page’s search answers `/`. */
 export const WithoutShortcut: Story = {
   args: { shortcut: "", placeholder: "Filter members" },
-};
-
-/** Beside small buttons in a toolbar. */
-export const Small: Story = {
-  args: { size: "sm" },
 };
 
 export const WithValue: Story = {

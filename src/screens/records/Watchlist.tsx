@@ -117,7 +117,6 @@ function Watched() {
               id="watchlist-search"
               label="Search the watchlist"
               placeholder="Name, domain or address"
-              size="sm"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />

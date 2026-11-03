@@ -39,7 +39,6 @@ export function CaseFilterBar({
         {(place) => (
           <SearchField
             id={idFor("case-search", place)}
-            size="sm"
             label="Search cases"
             value={criteria.q}
             onChange={(event) => set({ q: event.target.value })}
@@ -109,7 +108,7 @@ export function CaseFilterBar({
           label="More actions"
           align="end"
           trigger={(props) => (
-            <Button variant="secondary" size="sm" iconOnly aria-label="More actions" {...props}>
+            <Button variant="secondary" iconOnly aria-label="More actions" {...props}>
               <Ellipsis aria-hidden />
             </Button>
           )}

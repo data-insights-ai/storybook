@@ -82,3 +82,11 @@
     grid-template-columns: 5rem minmax(0, 1fr);
   }
 }
+
+/* The three button sizes side by side: a toolbar holds one of them, so this is not a toolbar. */
+.di-space-sizes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--di-gap-8);
+}

@@ -117,7 +117,7 @@ export const WithToolbar: Story = {
   render: (args) => (
     <DataTable {...args}>
       <Toolbar label="Filter sources" role="search">
-        <SearchField id="table-search" label="Search sources" placeholder="host or hash" size="sm" />
+        <SearchField id="table-search" label="Search sources" placeholder="host or hash" />
         <Tag mono pressed onRemove={() => undefined} removeLabel="Remove the state filter">
           state: running
         </Tag>
