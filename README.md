@@ -60,6 +60,8 @@ The components work under a Content-Security-Policy without `'unsafe-inline'` st
 
 A fetch that ends (`loadingMore` back to false) without a row more while `hasMore` holds counts as a page that did not arrive: the table no longer calls `onLoadMore` again on its own until the reader presses that button or `count`, `hasMore` or `memoryKey` change, so a failing server is not asked in a loop.
 
+`TableCell` takes `colSpan`: a number of columns, or `"all"` for every column to the row's end, so a separator row is one `<TableRow><TableCell colSpan="all">`. A cell across columns wraps its words instead of widening the grid.
+
 A side `Dialog` docked in a page's side column now closes when what opened it is pressed again (a button, a link, a selectable row), and that button or link carries `aria-expanded` meanwhile; another row of the same list still shows its record. An opener that set `aria-expanded` itself keeps its own value.
 
 ## Upgrade to 0.16

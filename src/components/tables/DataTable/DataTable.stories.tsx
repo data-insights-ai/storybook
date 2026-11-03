@@ -584,6 +584,51 @@ export const Grouped: Story = {
   },
 };
 
+/**
+ * A separator row between two runs of rows: one `TableCell colSpan="all"`
+ * runs across every column, and its words wrap inside the grid instead of
+ * widening it.
+ */
+export const RowAcrossColumns: Story = {
+  args: { caption: "Hosts by last seen", indexed: false },
+  render: (args) => (
+    <DataTable {...args}>
+      <TableHead>
+        <TableColumn>Host</TableColumn>
+        <TableColumn width="fill">Role</TableColumn>
+        <TableColumn align="end">Last seen</TableColumn>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>edge-gw-01</TableCell>
+          <TableCell>Gateway</TableCell>
+          <TableCell align="end" mono={true}>
+            12 min ago
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell colSpan="all">
+            Not seen for 30 days or more: these hosts are kept on record until someone retires them or they report
+            again.
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>lab-scanner</TableCell>
+          <TableCell>Scanner</TableCell>
+          <TableCell align="end" mono={true}>
+            41 days ago
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </DataTable>
+  ),
+  play: async ({ canvasElement }) => {
+    const across = canvasElement.querySelector<HTMLTableCellElement>("td.is-spanning")!;
+    const row = across.closest("tr")!.getBoundingClientRect();
+    await expect(Math.abs(across.getBoundingClientRect().width - row.width)).toBeLessThanOrEqual(1);
+  },
+};
+
 export const InlineSelect: Story = {
   name: "Inline select (role per row)",
   render: (args) => (

@@ -482,6 +482,9 @@ export function TableRow({
   );
 }
 
+/* Larger than any column count; a browser clamps a span to the columns there are. */
+const allColumns = 1000;
+
 /**
  * Stands in for the rows a virtualized register does not render, above or
  * below the ones on screen, so the scroll height stays that of the whole
@@ -492,7 +495,7 @@ export function TableSpacer({ height, ref }: { height: number; ref?: Ref<HTMLTab
   const style = { "--di-table-spacer": `${Math.max(0, height)}px` } as CSSProperties;
   return (
     <tr ref={ref} className={cx("di-table-spacer", height <= 0 && "is-empty")} aria-hidden style={style}>
-      <td colSpan={1000} />
+      <td colSpan={allColumns} />
     </tr>
   );
 }
@@ -526,7 +529,7 @@ export function TableGroupRow({
       className="di-table-group"
     >
       {indexColumn ? <td role={cell} className="di-table-index" /> : null}
-      <th scope="rowgroup" role={useRole("rowheader")} colSpan={1000}>
+      <th scope="rowgroup" role={useRole("rowheader")} colSpan={allColumns}>
         <span className="di-table-group-label">{label}</span>
       </th>
     </tr>
@@ -557,7 +560,7 @@ export function TableEmpty({ message, children }: { message: string; children?: 
   return (
     <tr role={useRole("row")} className="di-table-empty">
       {indexColumn ? <td role={cell} className="di-table-index" /> : null}
-      <td role={cell} colSpan={1000}>
+      <td role={cell} colSpan={allColumns}>
         <span className="di-table-empty-body">
           <span className="di-table-empty-message">{message}</span>
           {children}
@@ -571,7 +574,8 @@ export function TableEmpty({ message, children }: { message: string; children?: 
  * One value in a `TableRow`. `align="end"` for figures, `mono` for
  * identifiers, timestamps and measured values. `label` names the value when a
  * narrow table stacks its rows as cards, and `pinned` keeps it at the left
- * edge with its column.
+ * edge with its column. `colSpan` runs it across columns: `"all"` to the
+ * row's end, for a separator row between runs of rows.
  */
 export function TableCell({
   children,
@@ -579,6 +583,7 @@ export function TableCell({
   mono = false,
   label,
   pinned = false,
+  colSpan,
 }: {
   children: ReactNode;
   align?: "start" | "end";
@@ -592,6 +597,8 @@ export function TableCell({
   label?: string;
   /** Stays at the inline-start edge while the grid scrolls sideways; its `TableColumn` pins the whole column. */
   pinned?: boolean;
+  /** How many columns the cell takes, from its own; `"all"` takes every column to the row's end. */
+  colSpan?: number | "all";
 }) {
   const measured = useContext(MeasuredContext);
   const fill = useContext(FillColumnContext);
@@ -602,8 +609,10 @@ export function TableCell({
     <td
       role={useRole("cell")}
       data-label={label}
+      colSpan={colSpan === "all" ? allColumns : colSpan}
       className={cx(
         align === "end" && "is-end",
+        colSpan !== undefined && "is-spanning",
         mono && "di-mono",
         pin.className,
         label && "is-labelled",

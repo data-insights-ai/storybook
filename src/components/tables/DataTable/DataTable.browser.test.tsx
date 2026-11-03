@@ -150,3 +150,55 @@ test("a row's disclosure is a column the arrows keep", async () => {
   await userEvent.keyboard("{ArrowDown}");
   expect(document.activeElement?.textContent).toBe("Change to C-2");
 });
+
+function renderSpans(width: string, layout: "auto" | "measured") {
+  const host = document.createElement("div");
+  host.style.width = width;
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Hosts" indexed={false} layout={layout}>
+        <TableHead>
+          <TableColumn>Host</TableColumn>
+          <TableColumn width="fill">Role</TableColumn>
+          <TableColumn>Seen</TableColumn>
+          <TableColumn>Owner</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>edge-gw-01</TableCell>
+            <TableCell>Gateway</TableCell>
+            <TableCell>today</TableCell>
+            <TableCell>Nora Feld</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell colSpan="all">{"Not seen for 30 days or more ".repeat(8)}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>lab-scanner</TableCell>
+            <TableCell colSpan={2}>Scanner, retired</TableCell>
+            <TableCell>Nora Feld</TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  return host;
+}
+
+for (const layout of ["auto", "measured"] as const) {
+  test(`a cell spans the columns it is given, and "all" every column, without widening the grid (${layout})`, () => {
+    const host = renderSpans("600px", layout);
+    const [first, separator, last] = Array.from(host.querySelectorAll("tbody tr"));
+    const across = separator.querySelector("td")!;
+    expect(separator.querySelectorAll("td").length).toBe(1);
+    expect(Math.abs(across.getBoundingClientRect().width - first.getBoundingClientRect().width)).toBeLessThanOrEqual(1);
+    const heads = host.querySelectorAll("thead th");
+    const two = last.querySelectorAll("td")[1];
+    expect(Math.round(two.getBoundingClientRect().left)).toBe(Math.round(heads[1].getBoundingClientRect().left));
+    expect(Math.round(two.getBoundingClientRect().right)).toBe(Math.round(heads[2].getBoundingClientRect().right));
+    const frame = host.querySelector(".di-table-scroll")!;
+    expect(frame.scrollWidth).toBeLessThanOrEqual(frame.clientWidth + 1);
+  });
+}
