@@ -171,9 +171,7 @@ export const OverflowOnly: Story = {
           )}
         </FilterBarItem>
         <FilterBarEnd>
-          <Button variant="secondary" size="sm">
-            Export
-          </Button>
+          <Button variant="secondary">Export</Button>
         </FilterBarEnd>
       </FilterBar>
     </Page>
@@ -194,9 +192,7 @@ export const SheetFields: Story = {
     <Page>
       <FilterBar {...args}>
         <FilterBarItem name="search" keep grow>
-          {(place) => (
-            <SearchField id={place === "sheet" ? "tag-search-sheet" : "tag-search"} size="sm" label="Search" />
-          )}
+          {(place) => <SearchField id={place === "sheet" ? "tag-search-sheet" : "tag-search"} label="Search" />}
         </FilterBarItem>
         <FilterBarSheet>
           <TextField id="tag-field" label="Tag" defaultValue="phishing" />
@@ -222,9 +218,7 @@ export const FocusWhenReturning: Story = {
       <div data-testid="frame">
         <FilterBar {...args}>
           <FilterBarItem name="search" keep grow>
-            {(place) => (
-              <SearchField id={place === "sheet" ? "back-search-sheet" : "back-search"} size="sm" label="Search" />
-            )}
+            {(place) => <SearchField id={place === "sheet" ? "back-search-sheet" : "back-search"} label="Search" />}
           </FilterBarItem>
           <FilterBarItem name="period">
             {(place) => (

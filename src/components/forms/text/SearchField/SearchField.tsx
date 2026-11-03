@@ -10,13 +10,13 @@ import "./SearchField.css";
  * One field that narrows the register. `/` focuses it from anywhere on the
  * page (the first visible one answers); the key sits inside the control
  * because that is where the operator looks for it. Any other `shortcut`
- * is decoration only, bound by the caller.
+ * is decoration only, bound by the caller. It is as tall as every other
+ * field, so a toolbar of a search, selects and buttons is one height.
  */
 export function SearchField({
   id = "search",
   label,
   shortcut = "/",
-  size = "md",
   className,
   disabled = false,
   readOnly = false,
@@ -28,8 +28,6 @@ export function SearchField({
   label: string;
   /** Shown at the trailing edge; `/` also binds it. Empty means none. */
   shortcut?: string;
-  /** `sm` beside small buttons in a toolbar; density scales both sizes. */
-  size?: "sm" | "md";
   disabled?: boolean;
   readOnly?: boolean;
   required?: boolean;
@@ -38,7 +36,7 @@ export function SearchField({
   const slash = shortcut === "/" && !disabled;
   useShortcutKeys(slash);
   return (
-    <div className={cx("di-search", size === "sm" && "is-small", className)}>
+    <div className={cx("di-search", className)}>
       <label className="di-sr" htmlFor={id}>
         {label}
       </label>

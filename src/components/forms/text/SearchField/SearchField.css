@@ -11,10 +11,6 @@
     transition: border-color var(--di-duration) var(--di-ease);
   }
 
-  .di-search.is-small {
-    height: var(--di-control-h-sm);
-  }
-
   .di-search:hover:not(:has(:disabled)) {
     border-color: var(--di-field-border-hover);
   }
@@ -76,11 +72,6 @@
   }
 
   @media (pointer: coarse) {
-    .di-search,
-    .di-search.is-small {
-      height: var(--di-field-height);
-    }
-
     .di-search-input {
       font-size: var(--di-font-size-500);
     }

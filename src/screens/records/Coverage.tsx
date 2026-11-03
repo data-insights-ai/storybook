@@ -51,7 +51,6 @@ export function CoverageScreen({ state = "ready" }: { state?: CoverageState }) {
         id="coverage-search"
         label="Search tables"
         placeholder="Table or source"
-        size="sm"
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
@@ -63,7 +62,7 @@ export function CoverageScreen({ state = "ready" }: { state?: CoverageState }) {
         <Tag onClick={() => setOnlyGaps(true)}>Not arriving</Tag>
       )}
       <ToolbarEnd>
-        <Button variant="secondary" size="sm">
+        <Button variant="secondary">
           <Download aria-hidden />
           Export
         </Button>

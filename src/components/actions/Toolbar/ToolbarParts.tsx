@@ -102,14 +102,14 @@ export function ToolbarSelection({
   }, []);
   const selectAll =
     selectAllLabel !== "" && onSelectAll ? (
-      <Button variant="ghost" size="sm" onClick={onSelectAll}>
+      <Button variant="ghost" onClick={onSelectAll}>
         {selectAllLabel}
       </Button>
     ) : null;
   return phone ? (
     <>
       <Tooltip label={clearLabel}>
-        <Button variant="ghost" size="sm" iconOnly aria-label={clearLabel} onClick={onClear}>
+        <Button variant="ghost" iconOnly aria-label={clearLabel} onClick={onClear}>
           <X aria-hidden />
         </Button>
       </Tooltip>
@@ -118,7 +118,7 @@ export function ToolbarSelection({
   ) : (
     <>
       {selectAll}
-      <Button variant="ghost" size="sm" onClick={onClear}>
+      <Button variant="ghost" onClick={onClear}>
         {clearLabel}
       </Button>
     </>

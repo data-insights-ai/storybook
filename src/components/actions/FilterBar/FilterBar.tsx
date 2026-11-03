@@ -284,7 +284,6 @@ export function FilterBar({
           <div ref={trigger} className="di-filter-bar-trigger">
             <Button
               variant="secondary"
-              size="sm"
               iconOnly={layout.phone}
               aria-label={filtersLabel}
               title={layout.phone ? filtersLabel : undefined}
