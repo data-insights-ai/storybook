@@ -62,6 +62,8 @@ A fetch that ends (`loadingMore` back to false) without a row more while `hasMor
 
 `TableCell` takes `colSpan`: a number of columns, or `"all"` for every column to the row's end, so a separator row is one `<TableRow><TableCell colSpan="all">`. A cell across columns wraps its words instead of widening the grid.
 
+`EventTimeline` breaks its axis by default: a stretch with no bar, event or marker that would take more than a quarter of the plot is drawn as a break a few pixels wide (shaded, the axis and the midline cut by two slashes), in the view and the overview; the time either side keeps one rate. Pass `axis="continuous"` to keep time at one rate throughout.
+
 A side `Dialog` docked in a page's side column now closes when what opened it is pressed again (a button, a link, a selectable row), and that button or link carries `aria-expanded` meanwhile; another row of the same list still shows its record. An opener that set `aria-expanded` itself keeps its own value.
 
 ## Upgrade to 0.16

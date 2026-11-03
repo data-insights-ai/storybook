@@ -21,14 +21,14 @@ import { Events, nearestEvent, reachOf } from "./marks/Events";
 import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";
 import { MARK_BAND, markerRows, Markers } from "./marks/Markers";
 import { gutterOf, SCORE_H, scaleValues, ScoreTrack, valueAt } from "./marks/ScoreTrack";
-import { AXIS_H, TimeAxis } from "./marks/TimeAxis";
+import { AXIS_H, AxisLine, TimeAxis } from "./marks/TimeAxis";
 import { totalOf, Waveform } from "./marks/Waveform";
 import { Controls } from "./navigation/Controls";
 import { Overview } from "./navigation/Overview";
 import { useGestures } from "./navigation/useGestures";
 import type { TimelineNavigation } from "./navigation/useTimelineView";
-import { clockFormats, ticksFor } from "../scale";
-import { scaleOf, zoomAround } from "../scale";
+import { activityOf, brokenScaleOf, clockFormats, gapsBetween, ticksAcross } from "../scale";
+import { zoomAround, type Span } from "../scale";
 import type {
   TimelineBar,
   TimelineEvent,
@@ -55,6 +55,7 @@ const TONE_COLOR: Record<TimelineTone, string> = {
 const NO_BARS: TimelineBar[] = [];
 const NO_LANES: TimelineLane[] = [];
 const NO_MARKERS: TimelineMarker[] = [];
+const NO_GAPS: Span[] = [];
 
 const ReadoutPlace = createContext<{ x: number; plot: number } | null>(null);
 
@@ -74,6 +75,12 @@ const ReadoutPlace = createContext<{ x: number; plot: number } | null>(null);
  * Children are two optional slots, picked by type because the readout has
  * to sit inside the plot it follows: `EventTimelineMeta` beside the title,
  * and `EventTimelineReadout` for what is under the pointer.
+ *
+ * A long stretch with nothing in it does not fill the plot: `axis="broken"`
+ * (the default) draws it a few pixels wide, the axis and the midline cut by
+ * two slashes and the stretch shaded, in the view and in the overview alike.
+ * The stretches either side keep one rate, so their bars stay comparable;
+ * `continuous` keeps every hour as wide as every other.
  *
  * Drawn here rather than with `Chart`: Recharts zooms by index, not by
  * time, and cannot pan, pinch or redraw at the rate a gesture asks for.
@@ -100,6 +107,7 @@ export function EventTimeline({
   lanesLabel = "",
   markers = NO_MARKERS,
   score,
+  axis = "broken",
   activeEventId,
   onHoverChange,
   onEventPick,
@@ -130,6 +138,8 @@ export function EventTimeline({
   lanesLabel?: string;
   markers?: TimelineMarker[];
   score?: TimelineScore;
+  /** `broken` folds long empty stretches into a break; `continuous` draws time at one rate throughout. */
+  axis?: "broken" | "continuous";
   activeEventId?: string;
   onHoverChange?: (target: TimelineTarget | null) => void;
   onEventPick?: (event: TimelineEvent) => void;
@@ -146,10 +156,27 @@ export function EventTimeline({
   const plotPx = Math.max(0, framePx - gutter);
   useEffect(() => measure(plotPx), [plotPx, measure]);
 
-  const scale = useMemo(() => scaleOf(view, plotPx), [view, plotPx]);
-  const markRows = useMemo(() => markerRows(markers, scaleOf(bounds, plotPx), plotPx), [markers, bounds, plotPx]);
+  const gaps = useMemo(
+    () =>
+      axis === "broken"
+        ? gapsBetween(
+            activityOf(
+              bars,
+              overviewBars,
+              [...(events ?? []), ...markers].map((m) => m.at),
+            ),
+          )
+        : NO_GAPS,
+    [axis, bars, overviewBars, events, markers],
+  );
+  const scale = useMemo(() => brokenScaleOf(view, plotPx, gaps), [view, plotPx, gaps]);
+  const whole = useMemo(() => brokenScaleOf(bounds, plotPx, gaps), [bounds, plotPx, gaps]);
+  const markRows = useMemo(() => markerRows(markers, whole, plotPx), [markers, whole, plotPx]);
   const clock = useMemo(() => clockFormats(locale, timeZone), [locale, timeZone]);
-  const ticks = useMemo(() => ticksFor(view, plotPx, clock.offsetOf), [view, plotPx, clock]);
+  const ticks = useMemo(
+    () => ticksAcross(view, plotPx, scale.breaks, clock.offsetOf),
+    [view, plotPx, scale.breaks, clock],
+  );
   const peak = useMemo(() => Math.max(0, ...bars.map(totalOf)), [bars]);
   const cells = useMemo(() => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events)])), [lanes, events]);
   const counts = new Map(
@@ -174,6 +201,7 @@ export function EventTimeline({
     view,
     bounds,
     plotPx,
+    scaleOf: (span) => brokenScaleOf(span, plotPx, gaps),
     onView: change,
     onPick: pick,
   });
@@ -243,7 +271,7 @@ export function EventTimeline({
       <div className="di-timeline-frame" ref={frame}>
         {plotPx > 0 ? (
           <>
-            <Overview bars={overviewBars} bounds={bounds} view={view} plotPx={plotPx} onView={change} />
+            <Overview bars={overviewBars} scale={whole} bounds={bounds} view={view} plotPx={plotPx} onView={change} />
             <div
               ref={stageRef}
               className="di-timeline-stage"
@@ -257,7 +285,23 @@ export function EventTimeline({
               {/* Under the loading veil the plot is stale and inactive, so it is inert. */}
               <div inert={loading} className="di-timeline-canvas">
                 <svg width={framePx} height={axisTop + AXIS_H} className="di-timeline-svg" aria-hidden>
-                  <TimeAxis ticks={ticks} label={clock.tick} scale={scale} plotPx={plotPx} top={axisTop} />
+                  {scale.breaks.map((b) => (
+                    <rect
+                      key={b.start}
+                      x={b.from}
+                      width={b.to - b.from}
+                      height={axisTop}
+                      className="di-timeline-break-band"
+                    />
+                  ))}
+                  <TimeAxis
+                    ticks={ticks}
+                    label={clock.tick}
+                    scale={scale}
+                    plotPx={plotPx}
+                    top={axisTop}
+                    breaks={scale.breaks}
+                  />
                   {score ? (
                     <ScoreTrack
                       score={score}
@@ -267,7 +311,7 @@ export function EventTimeline({
                       format={(v) => number.format(v)}
                     />
                   ) : null}
-                  <line x1={0} x2={plotPx} y1={mid} y2={mid} className="di-timeline-axisline" />
+                  <AxisLine y={mid} plotPx={plotPx} breaks={scale.breaks} className="di-timeline-axisline" />
                   {events ? (
                     <Events events={events} scale={scale} plotPx={plotPx} mid={mid} half={half} />
                   ) : (

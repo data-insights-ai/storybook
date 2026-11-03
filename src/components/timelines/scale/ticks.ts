@@ -1,4 +1,5 @@
 import { textWidth } from "./labels";
+import { segmentsOf, type AxisBreak } from "./breaks";
 import { widthOf, type Span } from "./viewport";
 
 const SECOND = 1000;
@@ -83,4 +84,10 @@ export function clockFormats(locale: string, timeZone: string) {
     tick: (tick: Tick) => (tick.kind === "day" ? day : tick.kind === "second" ? clock : time).format(tick.at),
     offsetOf: zoneOffset(timeZone),
   };
+}
+
+/** Ticks on a broken axis: each stretch between breaks at the one rate they share, none inside a break. */
+export function ticksAcross(span: Span, plotPx: number, breaks: AxisBreak[], offsetOf: (ms: number) => number): Tick[] {
+  if (breaks.length === 0) return ticksFor(span, plotPx, offsetOf);
+  return segmentsOf(span, plotPx, breaks).flatMap((segment) => ticksFor(segment, segment.px, offsetOf));
 }

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { BAR_PX, bucketFor, eventsReadable } from "./resolution";
 import { placeLabels, spaceOut } from "./labels";
-import { ticksFor, zoneOffset } from "./ticks";
+import { ticksAcross, ticksFor, zoneOffset } from "./ticks";
+import { activityOf, BREAK_PX, brokenScaleOf, drawnWidth, gapsBetween } from "./breaks";
 import { clampSpan, MIN_SPAN, panBy, scaleOf, widthOf, zoomAround } from "./viewport";
 
 const bounds = { start: 0, end: 100_000 };
@@ -81,5 +82,74 @@ describe("labels", () => {
 
   it("keeps items at least the distance apart", () => {
     expect(spaceOut([{ x: 0 }, { x: 5 }, { x: 12 }], 10).map((i) => i.x)).toEqual([0, 12]);
+  });
+});
+
+describe("broken axis", () => {
+  const HOUR = 3_600_000;
+  const DAY = 24 * HOUR;
+  const bar = (start: number, end: number, neutral = 1) => ({ start, end, neutral, warn: 0, danger: 0 });
+
+  it("finds the quiet stretches between activity, not before the first or after the last", () => {
+    expect(
+      gapsBetween([
+        { start: 10, end: 20 },
+        { start: 15, end: 30 },
+        { start: 50, end: 50 },
+        { start: 90, end: 95 },
+      ]),
+    ).toEqual([
+      { start: 30, end: 50 },
+      { start: 50, end: 90 },
+    ]);
+  });
+
+  it("takes the view's bars where they reach and the overview's beyond them", () => {
+    const active = activityOf([bar(100, 110), bar(110, 120, 0)], [bar(0, 200), bar(200, 400, 0)], [500]);
+    expect(active).toEqual([
+      expect.objectContaining({ start: 100, end: 110 }),
+      { start: 0, end: 100 },
+      { start: 110, end: 200 },
+      { start: 500, end: 500 },
+    ]);
+  });
+
+  it("draws a stretch as it is up to a quarter of the plot and as a break from three tenths, with no jump between", () => {
+    expect(drawnWidth(100, 1000)).toBe(100);
+    expect(drawnWidth(250, 1000)).toBe(250);
+    expect(drawnWidth(300, 1000)).toBe(BREAK_PX);
+    expect(drawnWidth(900, 1000)).toBe(BREAK_PX);
+    const steps = Array.from({ length: 101 }, (_, i) => drawnWidth(240 + i * 0.7, 1000));
+    expect(Math.max(...steps.slice(1).map((d, i) => Math.abs(d - steps[i])))).toBeLessThan(4);
+  });
+
+  it("folds a long quiet stretch into a break and keeps one rate either side", () => {
+    const view = { start: 0, end: 4 * DAY };
+    const quiet = { start: 6 * HOUR, end: 3 * DAY + 18 * HOUR };
+    const scale = brokenScaleOf(view, 1000, [quiet]);
+    expect(scale.breaks).toHaveLength(1);
+    const [b] = scale.breaks;
+    expect(b.to - b.from).toBe(BREAK_PX);
+    expect(scale.x(quiet.start)).toBeCloseTo(b.from);
+    expect(scale.x(quiet.end)).toBeCloseTo(b.to);
+    expect(scale.x(view.end)).toBeCloseTo(1000);
+    expect(scale.x(HOUR) - scale.x(0)).toBeCloseTo(scale.x(view.end) - scale.x(view.end - HOUR));
+    for (const ms of [HOUR, quiet.start + DAY, view.end - HOUR]) expect(scale.at(scale.x(ms))).toBeCloseTo(ms, 3);
+  });
+
+  it("leaves a short quiet stretch, and a view that is nearly all quiet, at one rate", () => {
+    expect(brokenScaleOf({ start: 0, end: 100 }, 1000, [{ start: 40, end: 50 }]).breaks).toEqual([]);
+    expect(brokenScaleOf({ start: 0, end: 100 }, 1000, [{ start: -10, end: 99 }]).breaks).toEqual([]);
+  });
+
+  it("puts ticks on each side of a break and none inside it", () => {
+    const view = { start: 0, end: 4 * DAY };
+    const quiet = { start: 6 * HOUR, end: 3 * DAY + 18 * HOUR };
+    const scale = brokenScaleOf(view, 1000, [quiet]);
+    const ticks = ticksAcross(view, 1000, scale.breaks, () => 0);
+    expect(ticks.some((t) => t.at < quiet.start)).toBe(true);
+    expect(ticks.some((t) => t.at > quiet.end)).toBe(true);
+    expect(ticks.filter((t) => t.at > quiet.start && t.at < quiet.end)).toEqual([]);
+    expect(ticks.length).toBeGreaterThan(ticksFor(view, 1000, () => 0).length / 2);
   });
 });

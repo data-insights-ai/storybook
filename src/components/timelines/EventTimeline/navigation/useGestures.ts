@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 
-import { clampSpan, panBy, scaleOf, widthOf, zoomAround, type Span } from "../../scale";
+import { clampSpan, panBy, widthOf, zoomAround, type Scale, type Span } from "../../scale";
 
 // A finger has to travel this far, and more sideways than down, before it pans instead of scrolling.
 const TOUCH_SLOP = 8;
@@ -20,6 +20,8 @@ type Options = {
   view: Span;
   bounds: Span;
   plotPx: number;
+  /** The plot's scale for a view, broken where its axis is. */
+  scaleOf: (view: Span) => Scale;
   onView: ViewChange;
   onPick: (px: number) => void;
 };
@@ -46,7 +48,7 @@ export function useGestures<T extends HTMLElement>(options: Options) {
     }
     const left = () => element.getBoundingClientRect().left;
     const onWheel = (event: WheelEvent) => {
-      const { view, bounds, plotPx, onView } = latest.current;
+      const { view, bounds, plotPx, scaleOf, onView } = latest.current;
       const zoom = event.ctrlKey || event.metaKey;
       const sideways = event.shiftKey
         ? event.deltaY
@@ -59,7 +61,7 @@ export function useGestures<T extends HTMLElement>(options: Options) {
       event.preventDefault();
       const record = event.timeStamp - lastWheel.current > GESTURE_GAP;
       lastWheel.current = event.timeStamp;
-      const scale = scaleOf(view, plotPx);
+      const scale = scaleOf(view);
       if (zoom) {
         const factor = Math.min(2, Math.max(0.5, Math.exp(event.deltaY * 0.01)));
         onView(zoomAround(view, scale.at(event.clientX - left()), factor, bounds), record);
@@ -80,7 +82,7 @@ export function useGestures<T extends HTMLElement>(options: Options) {
     pointers.current.set(event.pointerId, x);
     if (pointers.current.size === 2) {
       const [[a, xa], [b, xb]] = [...pointers.current];
-      const scale = scaleOf(latest.current.view, latest.current.plotPx);
+      const scale = latest.current.scaleOf(latest.current.view);
       gesture.current = { kind: "pinch", ids: [a, b], times: [scale.at(xa), scale.at(xb)] };
       latest.current.onView(latest.current.view, true);
       setBrush(null);
@@ -103,7 +105,7 @@ export function useGestures<T extends HTMLElement>(options: Options) {
       return;
     }
     pointers.current.set(event.pointerId, x);
-    const { view, bounds, plotPx, onView } = latest.current;
+    const { view, bounds, plotPx, scaleOf, onView } = latest.current;
     const g = gesture.current;
     if (g?.kind === "press") {
       const dx = Math.abs(x - g.x);
@@ -117,7 +119,9 @@ export function useGestures<T extends HTMLElement>(options: Options) {
     } else if (g?.kind === "brush") {
       setBrush({ from: g.from, to: Math.min(plotPx, Math.max(0, x)) });
     } else if (g?.kind === "pan") {
-      onView(panBy(view, ((g.last - x) * widthOf(view)) / plotPx, bounds), false);
+      // Through the view's own scale, so the instant under the finger stays under it, also across a break.
+      const scale = scaleOf(view);
+      onView(panBy(view, scale.at(g.last) - scale.at(x), bounds), false);
       gesture.current = { kind: "pan", last: x };
     } else if (g?.kind === "pinch") {
       // The two instants under the fingers stay under them, wherever the fingers go.
@@ -144,12 +148,12 @@ export function useGestures<T extends HTMLElement>(options: Options) {
     if (cancelled) {
       return;
     }
-    const { view, plotPx, onView, onPick } = latest.current;
+    const { view, plotPx, scaleOf, onView, onPick } = latest.current;
     if (g?.kind === "brush") {
       const lo = Math.min(g.from, xOf(event.clientX));
       const hi = Math.max(g.from, xOf(event.clientX));
       if (hi - lo >= 4) {
-        const scale = scaleOf(view, plotPx);
+        const scale = scaleOf(view);
         onView({ start: scale.at(Math.max(0, lo)), end: scale.at(Math.min(plotPx, hi)) }, true);
       }
     } else if (g?.kind === "press") {
@@ -158,8 +162,8 @@ export function useGestures<T extends HTMLElement>(options: Options) {
   };
 
   const onDoubleClick = (event: { clientX: number }) => {
-    const { view, bounds, plotPx, onView } = latest.current;
-    onView(zoomAround(view, scaleOf(view, plotPx).at(xOf(event.clientX)), 2, bounds), true);
+    const { view, bounds, scaleOf, onView } = latest.current;
+    onView(zoomAround(view, scaleOf(view).at(xOf(event.clientX)), 2, bounds), true);
   };
 
   const onKeyDown = (event: KeyboardEvent<T>) => {

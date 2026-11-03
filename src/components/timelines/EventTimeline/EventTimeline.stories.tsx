@@ -70,6 +70,8 @@ const formatsOf = (locale: string) => ({
 const ACTIVITY = activity(NOW);
 const RHYTHM = rhythm(NOW);
 const SPARSE = sparse(NOW);
+/* Two half-days of health checks with five quiet days between them. */
+const QUIET = [...rhythm(NOW - 6 * 24 * HOUR).map((e) => ({ ...e, id: `before-${e.id}` })), ...RHYTHM];
 
 /** A score that climbs with the critical events, recorded once an hour. */
 function scoreOf(events: SampleEvent[], bounds: TimelineSpan, words: (typeof WORDS)["en"]): TimelineScore {
@@ -309,6 +311,25 @@ export const FewEvents: Story = {
       { keys: "[/MouseLeft]", target: stage, coords },
     ]);
     await expect(args.onEventPick).toHaveBeenCalledOnce();
+  },
+};
+
+/**
+ * Two busy half-days five days apart. The quiet days between them take a
+ * break's width instead of most of the plot, here and in the overview: the
+ * axis and the midline are cut by two slashes, and the ticks either side
+ * keep one rate, so both half-days read at the same scale.
+ * `axis="continuous"` keeps every hour as wide as every other.
+ */
+export const QuietStretches: Story = {
+  render: (args) => <Sample {...args} sample={QUIET} sampleLanes={[{ id: "health", label: "Health checks" }]} />,
+  play: async ({ canvasElement }) => {
+    await within(canvasElement).findByRole("group", { name: "Event sequence" });
+    await waitFor(() => expect(canvasElement.querySelector(".di-timeline-stage .di-timeline-break")).not.toBeNull());
+    const svg = canvasElement.querySelector(".di-timeline-stage svg")!.getBoundingClientRect();
+    const band = canvasElement.querySelector(".di-timeline-stage .di-timeline-break-band")!.getBoundingClientRect();
+    await expect(band.width).toBeLessThan(svg.width / 10);
+    await expect(canvasElement.querySelector(".di-timeline-overview .di-timeline-break")).not.toBeNull();
   },
 };
 

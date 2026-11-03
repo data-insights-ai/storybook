@@ -1,3 +1,4 @@
+export * from "./breaks";
 export * from "./labels";
 export * from "./resolution";
 export * from "./ticks";
