@@ -1,4 +1,5 @@
-import { Children, isValidElement, useLayoutEffect, useState, type ReactNode } from "react";
+import { Children, isValidElement, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
+import { watchPresses } from "../../../../internal/lastPress";
 import { PageSide } from "../pageSide";
 import "./Page.css";
 
@@ -37,6 +38,7 @@ export function Page({
   const framed = width === "list" || width === "detail";
   const wide = useWideFrame(page);
   useContentTop(page, body, wide);
+  useEffect(watchPresses, []);
   if (!framed) {
     return (
       <div className="di-page" data-width={width}>

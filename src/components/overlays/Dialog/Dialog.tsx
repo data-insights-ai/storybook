@@ -13,6 +13,7 @@ import { createPortal } from "react-dom";
 import { OctagonAlert, X } from "lucide-react";
 import { PageSide } from "../../layout/page/pageSide";
 import { cx } from "../../../internal/cx";
+import { pressedOf, takePress } from "../../../internal/lastPress";
 import { focusFirstField } from "../../../internal/shortcutKeys";
 import { surfaceClass } from "../../../internal/surface";
 import { Eyebrow } from "../../text/Eyebrow";
@@ -69,7 +70,9 @@ export type DialogProps = {
  * with none, to the title (never the close button), and is trapped; the
  * page behind is inert; Escape closes, and so does a press on the scrim
  * beside a `side` or `bottom` dialog; focus returns to what opened it.
- * Docked, the page is not inert, but focus lands and returns the same way.
+ * Docked, the page is not inert, but focus lands and returns the same way,
+ * and what was pressed to open it closes it on a second press (it carries
+ * `aria-expanded` meanwhile); another row of the same list shows its record.
  */
 export function Dialog(props: DialogProps) {
   const side = useContext(PageSide);
@@ -128,20 +131,26 @@ function ModalDialog(props: DialogProps) {
   );
 }
 
+const listOf = (el: HTMLElement) => el.closest("table, ul, ol, [role=grid], [role=list]");
+
 function DockedDialog(props: DialogProps & { side: HTMLElement }) {
   const { open, onClose, side } = props;
   const ref = useRef<HTMLElement>(null);
   const titleId = useId();
   const opener = useRef<HTMLElement | null>(null);
+  const toggle = useRef<HTMLElement | null>(null);
+  const close = useRef(onClose);
   const shown = useRef(false);
   // Read before any other effect, before the dialog takes focus, as the modal one does.
   useInsertionEffect(() => {
+    close.current = onClose;
     if (open && !shown.current) {
+      toggle.current = takePress();
       const active = document.activeElement;
-      if (active instanceof HTMLElement && active !== document.body) opener.current = active;
+      opener.current = toggle.current ?? (active instanceof HTMLElement && active !== document.body ? active : null);
     }
     shown.current = open;
-  }, [open]);
+  }, [open, onClose]);
 
   useEffect(() => {
     if (!open) return;
@@ -155,6 +164,37 @@ function DockedDialog(props: DialogProps & { side: HTMLElement }) {
       const active = document.activeElement;
       const lost = !active || active === document.body || (panel !== null && panel.contains(active));
       if (target?.isConnected && lost) target.focus({ preventScroll: true });
+    };
+  }, [open]);
+
+  // The page beside stays usable, so what was pressed to open it is a toggle: a second press closes
+  // instead of opening again. Another row of the same list takes the toggle over, as it shows its record.
+  useEffect(() => {
+    if (!open) return;
+    let marked: HTMLElement | null = null;
+    const arm = (el: HTMLElement | null) => {
+      marked?.removeAttribute("aria-expanded");
+      marked = el && el.tagName !== "TR" && !el.hasAttribute("aria-expanded") ? el : null;
+      marked?.setAttribute("aria-expanded", "true");
+      toggle.current = el;
+    };
+    arm(toggle.current);
+    const press = (event: MouseEvent) => {
+      const el = pressedOf(event.target);
+      if (!el || ref.current?.contains(el)) return;
+      if (el === toggle.current) {
+        event.preventDefault();
+        event.stopPropagation();
+        close.current();
+      } else if (toggle.current && listOf(el) !== null && listOf(el) === listOf(toggle.current)) {
+        opener.current = el;
+        arm(el);
+      }
+    };
+    document.addEventListener("click", press, true);
+    return () => {
+      document.removeEventListener("click", press, true);
+      arm(null);
     };
   }, [open]);
 

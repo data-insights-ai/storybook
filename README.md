@@ -50,6 +50,10 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.18
+
+0.18 adds API and needs no code change. A side `Dialog` docked in a page's side column now closes when what opened it is pressed again (a button, a link, a selectable row), and that button or link carries `aria-expanded` meanwhile; another row of the same list still shows its record. An opener that set `aria-expanded` itself keeps its own value.
+
 ## Upgrade to 0.16
 
 0.16 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.16.0` and move the filter rows over:
