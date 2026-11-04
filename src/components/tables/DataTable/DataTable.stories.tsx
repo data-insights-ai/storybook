@@ -704,6 +704,69 @@ export const Stacked: Story = {
 };
 
 /**
+ * A stacked row with a selection box: the box, the icon, the name's first line
+ * and a pill share one middle, also when the name wraps or the pill takes the
+ * next line. A labelled cell with no value takes no line at all, and a long
+ * identifier or status breaks inside the card.
+ */
+export const StackedWithSelection: Story = {
+  args: { caption: "Devices", indexed: false, narrow: "stack" },
+  render: (args) => (
+    <div style={{ maxWidth: 360 }}>
+      <DataTable {...args}>
+        <TableHead>
+          <TableColumn>
+            <span className="di-sr">Select</span>
+          </TableColumn>
+          <TableColumn pinned>Name</TableColumn>
+          <TableColumn>Status</TableColumn>
+          <TableColumn>Owner</TableColumn>
+        </TableHead>
+        <TableBody>
+          {[
+            { name: "ws-01.example.com", licensed: false, status: "Running", owner: "Nora Feld" },
+            { name: "ws-finance-014.corp.example.com", licensed: true, status: "Running", owner: "" },
+            {
+              name: "a-device-with-a-name-longer-than-the-card-that-holds-it.corp.example.com",
+              licensed: true,
+              status: "Reading files, 39% of 306.2 MB, with the rest following within the hour",
+              owner: "",
+            },
+          ].map((d) => (
+            <TableRow key={d.name}>
+              <TableCell>
+                <Checkbox id={`stacked-${d.name}`} label={`Select ${d.name}`} hideLabel />
+              </TableCell>
+              <TableCell pinned>
+                <CellLead>
+                  <CellIcon>
+                    <Server aria-hidden />
+                  </CellIcon>
+                  <TextLink href="#">{d.name}</TextLink>
+                  {d.licensed && (
+                    <StatusPill tone="recorded" dot={false}>
+                      Licensed
+                    </StatusPill>
+                  )}
+                </CellLead>
+              </TableCell>
+              <TableCell label="Status">
+                <StatusPill tone="neutral">{d.status}</StatusPill>
+              </TableCell>
+              <TableCell label="Owner">{d.owner || null}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </DataTable>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const frame = canvasElement.querySelector(".di-table-scroll")!;
+    await expect(frame.scrollWidth).toBeLessThanOrEqual(frame.clientWidth);
+  },
+};
+
+/**
  * An inventory with more columns than a laptop shows. The name is `pinned`:
  * it stays at the left edge while the others scroll under it. Stacked on a
  * phone, every labelled cell is one line of the card with its column's name.

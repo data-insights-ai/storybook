@@ -192,8 +192,10 @@
    * nothing inside is focusable or read; opening shows it at once. Reduced
    * motion drops the transition with every other one (base.css).
    */
+  /* The column keeps to the disclosure, or a long value inside would widen the page even while folded. */
   .di-disclosure-fold {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 0fr;
     visibility: hidden;
     transition:

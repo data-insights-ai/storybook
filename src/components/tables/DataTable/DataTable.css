@@ -122,6 +122,16 @@
     white-space: nowrap;
   }
 
+  /* A long status in a filling column wraps with the column, so it never holds the grid wide. */
+  .di-table td.is-fill .di-badge {
+    max-width: 100%;
+    height: auto;
+    min-height: var(--di-pill-height);
+    padding-block: var(--di-gap-2);
+    line-height: var(--di-leading-snug);
+    white-space: normal;
+  }
+
   /*
    * Once the grid scrolls sideways anyway, a value keeps its line: a name or
    * an owner broken over two lines beside a column cut off at the frame
@@ -490,6 +500,28 @@
     min-width: 0;
   }
 
+  /*
+   * A tag beside the name shares its line while it fits, and otherwise takes
+   * the next one on the name's edge. It arrives with its own data, so a measured
+   * column may not have counted it; squeezed, it would stand letter by letter.
+   */
+  .di-cell-lead:has(> .di-tag) {
+    position: relative;
+    flex-wrap: wrap;
+    gap: var(--di-gap-4) var(--di-gap-8);
+  }
+
+  .di-cell-lead:has(> .di-tag):has(> .di-cell-icon) {
+    min-height: var(--di-icon-xl);
+    padding-inline-start: calc(var(--di-icon-xl) + var(--di-gap-8));
+  }
+
+  .di-cell-lead:has(> .di-tag) > .di-cell-icon {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+  }
+
   .di-cell-icon {
     display: flex;
     align-items: center;
@@ -568,17 +600,25 @@
     /*
      * Beside a filling column every cell keeps its line; stacked, every cell
      * wraps again (as specific as that rule, so it wins), and an identifier
-     * longer than the card breaks rather than being cut.
+     * or a pill longer than the card breaks rather than being cut.
      */
     .di-table-wrap.is-stackable .di-table tbody td {
+      overflow-wrap: anywhere;
       white-space: normal;
     }
 
-    .di-table-wrap.is-stackable td.di-mono {
-      overflow-wrap: anywhere;
+    .di-table-wrap.is-stackable tbody td .di-badge {
+      max-width: 100%;
+      height: auto;
+      min-height: var(--di-pill-height);
+      padding-block: var(--di-gap-2);
+      line-height: var(--di-leading-snug);
+      white-space: normal;
     }
 
-    .di-table-wrap.is-stackable td:empty {
+    /* A cell with nothing to say takes no line, its column's name included. */
+    .di-table-wrap.is-stackable td:empty,
+    .di-table-wrap.is-stackable td.is-labelled:empty {
       display: none;
     }
 
@@ -588,9 +628,43 @@
       box-shadow: none;
     }
 
-    /* The row's name heads the card on a line of its own. */
+    /*
+     * The row's name heads the card on a line of its own. That first line has
+     * one height whatever stands on it, so the selection box, the icon, the
+     * name's first line, a pill and the actions centre on the same middle,
+     * also when the name wraps under it.
+     */
     .di-table-wrap.is-stackable td.is-pin-last {
       flex-basis: 100%;
+      line-height: var(--di-table-stack-line);
+    }
+
+    .di-table-wrap.is-stackable td.is-pin-last .di-cell-primary {
+      line-height: var(--di-table-stack-line);
+    }
+
+    /* A pill and the words beside it share the line while they fit; neither squeezes the other into a column. */
+    .di-table-wrap.is-stackable .di-cell-lead {
+      flex-wrap: wrap;
+      line-height: var(--di-table-stack-line);
+    }
+
+    /*
+     * The icon keeps the first line and the words run on beside it, so a name
+     * keeps its width and a pill that does not fit takes the next line, on the
+     * name's edge, instead of breaking the name.
+     */
+    .di-table-wrap.is-stackable .di-cell-lead:has(> .di-cell-icon) {
+      position: relative;
+      gap: var(--di-gap-4) var(--di-gap-8);
+      min-height: var(--di-table-stack-line);
+      padding-inline-start: calc(var(--di-icon-xl) + var(--di-gap-8));
+    }
+
+    .di-table-wrap.is-stackable .di-cell-lead > .di-cell-icon {
+      position: absolute;
+      inset-block-start: calc((var(--di-table-stack-line) - var(--di-icon-xl)) / 2);
+      inset-inline-start: 0;
     }
 
     /*
@@ -606,11 +680,15 @@
       position: absolute;
       inset-block-start: var(--di-space-12);
       inset-inline-start: var(--di-table-edge);
+      display: flex;
+      align-items: center;
+      height: var(--di-table-stack-line);
     }
 
     /*
      * A row's actions (its last cell, unlabelled, at the end) close the head
-     * line beside the name, never a line of their own under the card.
+     * line beside the name, never a line of their own under the card. A button
+     * taller than the line stands out of it evenly, on the line's middle.
      */
     .di-table-wrap.is-stackable tr:has(> td.is-end:last-child:not(.is-labelled)) > td.is-labelled {
       order: 1;
@@ -621,6 +699,10 @@
     }
 
     .di-table-wrap.is-stackable tr > td.is-end:last-child:not(.is-labelled) {
+      display: flex;
+      align-self: flex-start;
+      align-items: center;
+      height: var(--di-table-stack-line);
       margin-inline-start: auto;
     }
 
@@ -689,6 +771,7 @@
       display: flex;
       justify-content: flex-start;
       padding-top: var(--di-space-12) !important;
+      line-height: var(--di-table-stack-line);
       background: none;
     }
 
