@@ -47,7 +47,9 @@ export function useFrame(frame: { current: HTMLDivElement | null }, stack: boole
     if (!el || !table || typeof ResizeObserver === "undefined") return;
     const measure = () => {
       const max = el.scrollWidth - el.clientWidth;
-      const overflowing = table.scrollWidth > el.clientWidth + 1;
+      // Stacked rows have no columns to scroll to; calling them overflowing would keep their cells on one line, and so overflowing.
+      const stacked = stack && getComputedStyle(table).display !== "table";
+      const overflowing = !stacked && table.scrollWidth > el.clientWidth + 1;
       const at = Math.abs(el.scrollLeft);
       const head = Array.from(table.tHead?.rows[0]?.cells ?? []);
       const through = nameColumn(head, stack);

@@ -3,7 +3,10 @@ import { userEvent } from "vitest/browser";
 import { createRoot, type Root } from "react-dom/client";
 import { flushSync } from "react-dom";
 import "../../../styles/styles.css";
-import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "./DataTable";
+import { Checkbox } from "../../forms/choice/Checkbox";
+import { StatusPill } from "../../status/StatusPill";
+import { Tag } from "../../status/Tag";
+import { CellIcon, CellLead, DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "./DataTable";
 
 let root: Root | undefined;
 
@@ -115,6 +118,261 @@ test("a stacked row names its cells with the same label as the head", () => {
   expect(label.content).toContain("Seen");
   expect(label.textTransform).toBe("none");
   expect(label.fontFamily).toContain("IBM Plex Sans");
+});
+
+test.each([
+  ["a name on one line", "ws-01.example.com", "480px"],
+  ["a name that wraps", "workstation-finance-014-with-a-long-name.corp.example.com", "320px"],
+  ["a name beside a pill that takes the next line", "ws-fin-014.corp.example.com", "340px"],
+])("a stacked row's first line centres its box, icon, name and action on one middle: %s", (_, name, width) => {
+  const host = document.createElement("div");
+  host.style.width = width;
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Assets" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn>
+            <span className="di-sr">Select</span>
+          </TableColumn>
+          <TableColumn pinned>Name</TableColumn>
+          <TableColumn>Seen</TableColumn>
+          <TableColumn align="end">Actions</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>
+              <Checkbox id="select-asset" label={`Select ${name}`} hideLabel />
+            </TableCell>
+            <TableCell pinned>
+              <CellLead>
+                <CellIcon>
+                  <svg aria-hidden />
+                </CellIcon>
+                <a href="#asset">{name}</a>
+                <span className="pill">licensed</span>
+              </CellLead>
+            </TableCell>
+            <TableCell label="Seen">today</TableCell>
+            <TableCell align="end">
+              <button type="button" className="action">
+                More
+              </button>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  const middle = (rect: DOMRect) => rect.top + rect.height / 2;
+  const box = document.querySelector(".di-choice-box")!.getBoundingClientRect();
+  const icon = document.querySelector(".di-cell-icon")!.getBoundingClientRect();
+  const action = document.querySelector(".action")!.getBoundingClientRect();
+  const range = document.createRange();
+  range.selectNodeContents(document.querySelector(".di-cell-lead a")!);
+  const firstLine = range.getClientRects()[0];
+
+  expect(Math.abs(middle(box) - middle(icon))).toBeLessThanOrEqual(1);
+  expect(Math.abs(middle(firstLine) - middle(icon))).toBeLessThanOrEqual(1);
+  expect(Math.abs(middle(action) - middle(icon))).toBeLessThanOrEqual(1);
+
+  const text = range.getBoundingClientRect();
+  const pill = document.querySelector(".pill")!.getBoundingClientRect();
+  expect(text.left).toBeGreaterThanOrEqual(icon.right);
+  expect(document.querySelector(".di-table-scroll")!.scrollWidth).toBeLessThanOrEqual(
+    document.querySelector(".di-table-scroll")!.clientWidth,
+  );
+  if (pill.top >= firstLine.bottom) {
+    expect(Math.abs(pill.left - text.left)).toBeLessThanOrEqual(1);
+  }
+});
+
+const frames = () => new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
+
+function renderLongStatus(host: HTMLElement) {
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Sites" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn width="fill">Name</TableColumn>
+          <TableColumn>Status</TableColumn>
+          <TableColumn>Owner</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Vienna</TableCell>
+            <TableCell label="Status">
+              <StatusPill tone="danger">
+                A status long enough to hold the grid wider than a phone, sharing its line with a detail that also wants
+                to stay on it
+              </StatusPill>
+            </TableCell>
+            <TableCell label="Owner">{null}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>averyveryveryveryveryveryveryveryveryveryverylongidentifierwithoutabreak.example.com</TableCell>
+            <TableCell label="Status">Fine</TableCell>
+            <TableCell label="Owner">Nora Feld</TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+}
+
+test("a stacked row stays inside its frame after a wide grid narrowed, as when a phone turns", async () => {
+  const host = document.createElement("div");
+  host.style.width = "700px";
+  document.body.append(host);
+  renderLongStatus(host);
+  await frames();
+  const wrap = document.querySelector(".di-table-wrap")!;
+  expect(wrap.classList.contains("is-overflowing")).toBe(true);
+
+  host.style.width = "360px";
+  await frames();
+  await frames();
+  const frame = document.querySelector(".di-table-scroll")!;
+  expect(wrap.classList.contains("is-overflowing")).toBe(false);
+  expect(frame.scrollWidth).toBeLessThanOrEqual(frame.clientWidth);
+});
+
+test("a stacked table loaded on a phone breaks a long pill and identifier inside the card", async () => {
+  const host = document.createElement("div");
+  host.style.width = "320px";
+  document.body.append(host);
+  renderLongStatus(host);
+  await frames();
+  const wrap = document.querySelector(".di-table-wrap")!;
+  const frame = document.querySelector(".di-table-scroll")!;
+  expect(wrap.classList.contains("is-overflowing")).toBe(false);
+  expect(frame.scrollWidth).toBeLessThanOrEqual(frame.clientWidth);
+  const pill = document.querySelector(".di-badge")!.getBoundingClientRect();
+  expect(pill.right).toBeLessThanOrEqual(frame.getBoundingClientRect().right);
+});
+
+test("a stacked pill beside words keeps its width, and the words take the next line", () => {
+  const host = document.createElement("div");
+  host.style.width = "320px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Sites" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn pinned>Name</TableColumn>
+          <TableColumn>Status</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell pinned>Vienna</TableCell>
+            <TableCell label="Status">
+              <CellLead>
+                <StatusPill tone="danger">needs attention</StatusPill>
+                <span>3 sources failing, 1 notification channel failing, 1 export target failing</span>
+              </CellLead>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  const pill = document.querySelector<HTMLElement>(".di-badge")!;
+  const words = document.querySelector<HTMLElement>(".di-cell-lead > span:not(.di-badge)")!;
+  expect(pill.getBoundingClientRect().height).toBeLessThan(30);
+  expect(words.getBoundingClientRect().top).toBeGreaterThanOrEqual(pill.getBoundingClientRect().bottom);
+});
+
+test("a tag beside a name in a measured grid takes the next line instead of narrowing letter by letter", async () => {
+  const host = document.createElement("div");
+  host.style.width = "420px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Sources" indexed={false} layout="measured">
+        <TableHead>
+          <TableColumn pinned>Name</TableColumn>
+          <TableColumn width="fill">Status</TableColumn>
+          <TableColumn>Through</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell pinned>
+              <CellLead>
+                <CellIcon>
+                  <svg aria-hidden />
+                </CellIcon>
+                <a href="#source">Branch office export, 19–21 Aug</a>
+                <Tag detail="silent">Linz branch</Tag>
+              </CellLead>
+            </TableCell>
+            <TableCell>Collecting</TableCell>
+            <TableCell>an hour ago, or a little more than that</TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  await frames();
+  await frames();
+  const tag = document.querySelector<HTMLElement>(".di-tag")!;
+  expect(tag.getBoundingClientRect().height).toBeLessThan(40);
+  expect(tag.getBoundingClientRect().width).toBeGreaterThan(80);
+  expect(tag.getBoundingClientRect().right).toBeLessThanOrEqual(tag.closest("td")!.getBoundingClientRect().right);
+  const name = document.querySelector(".di-cell-lead a")!.getBoundingClientRect();
+  expect(name.height).toBeLessThan(30);
+  if (tag.getBoundingClientRect().top >= name.bottom) {
+    expect(Math.abs(tag.getBoundingClientRect().left - name.left)).toBeLessThanOrEqual(1);
+  }
+});
+
+test("a stacked row leaves out a labelled cell with no value, its label too", () => {
+  const host = document.createElement("div");
+  host.style.width = "320px";
+  document.body.append(host);
+  renderLongStatus(host);
+  const [empty, filled] = Array.from(document.querySelectorAll<HTMLElement>('td[data-label="Owner"]'));
+  expect(getComputedStyle(empty).display).toBe("none");
+  expect(getComputedStyle(filled).display).not.toBe("none");
+});
+
+test("a long status in a filling column wraps instead of holding the grid wide", async () => {
+  const host = document.createElement("div");
+  host.style.width = "700px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Sources" indexed={false}>
+        <TableHead>
+          <TableColumn pinned>Name</TableColumn>
+          <TableColumn width="fill">Status</TableColumn>
+          <TableColumn>Through</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell pinned>Branch office export</TableCell>
+            <TableCell>
+              <StatusPill>
+                Analysed · 812,440 records · finished Oct 22, 2026, 11:56 PM and kept for as long as the retention says
+                it should be kept
+              </StatusPill>
+            </TableCell>
+            <TableCell>an hour ago</TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  await frames();
+  const frame = document.querySelector(".di-table-scroll")!;
+  expect(frame.scrollWidth).toBeLessThanOrEqual(frame.clientWidth);
+  const pill = document.querySelector<HTMLElement>(".di-badge")!;
+  expect(pill.scrollWidth).toBeLessThanOrEqual(pill.clientWidth);
+  expect(document.querySelector<HTMLElement>("td.is-pinned")!.getBoundingClientRect().height).toBeGreaterThan(0);
 });
 
 test("a row's disclosure is a column the arrows keep", async () => {
