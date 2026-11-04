@@ -699,11 +699,14 @@
     }
 
     .di-table-wrap.is-stackable tr > td.is-end:last-child:not(.is-labelled) {
+      margin-inline-start: auto;
+    }
+
+    .di-table-wrap.is-stackable tr > td.is-end:last-child:not(.is-labelled):has(button, a.di-btn) {
       display: flex;
       align-self: flex-start;
       align-items: center;
       height: var(--di-table-stack-line);
-      margin-inline-start: auto;
     }
 
     /*
