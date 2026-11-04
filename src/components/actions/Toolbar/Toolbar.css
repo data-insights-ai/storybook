@@ -27,9 +27,12 @@
     color: var(--di-text);
   }
 
-  /* The note takes a line of its own under the controls. */
-  .di-toolbar-note {
+  /* The note takes a line of its own under the controls; outside a toolbar 100% would be its column's height. */
+  .di-toolbar > .di-toolbar-note {
     flex-basis: 100%;
+  }
+
+  .di-toolbar-note {
     margin: 0;
     font-size: var(--di-font-size-300);
     line-height: var(--di-leading-snug);

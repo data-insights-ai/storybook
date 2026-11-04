@@ -84,6 +84,20 @@ export const WithNote: Story = {
   },
 };
 
+/** Over a list with no toolbar: as tall as its text, so it takes no height from what shares its column. */
+export const NoteWithoutToolbar: Story = {
+  render: () => (
+    <Page>
+      <ToolbarNote>People invited to this workspace who have not signed in yet.</ToolbarNote>
+      <MembersTable />
+    </Page>
+  ),
+  play: async ({ canvasElement }) => {
+    const note = canvasElement.querySelector(".di-toolbar-note")!;
+    await expect(getComputedStyle(note).flexBasis).toBe("auto");
+  },
+};
+
 function MembersFilterFields() {
   return (
     <Select id="tb-invite-state" label="State" hideLabel mono={false} defaultValue="">
