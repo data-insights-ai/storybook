@@ -6,7 +6,17 @@ import "../../../styles/styles.css";
 import { Checkbox } from "../../forms/choice/Checkbox";
 import { StatusPill } from "../../status/StatusPill";
 import { Tag } from "../../status/Tag";
-import { CellIcon, CellLead, DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "./DataTable";
+import {
+  CellIcon,
+  CellLead,
+  CellStack,
+  DataTable,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHead,
+  TableRow,
+} from "./DataTable";
 
 let root: Root | undefined;
 
@@ -327,6 +337,42 @@ test("a tag beside a name in a measured grid takes the next line instead of narr
   if (tag.getBoundingClientRect().top >= name.bottom) {
     expect(Math.abs(tag.getBoundingClientRect().left - name.left)).toBeLessThanOrEqual(1);
   }
+});
+
+test("a stacked end cell with lines of its own keeps its height; only actions stand on the first line", async () => {
+  const host = document.createElement("div");
+  host.style.width = "320px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Offers" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn width="fill">Offer</TableColumn>
+          <TableColumn align="end">Price</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>
+              <CellStack primary="Register retention" secondary="Yearly · 25 seats per unit" />
+            </TableCell>
+            <TableCell align="end" mono>
+              <CellStack
+                primary="€9,900.00 per year"
+                secondary={["100 × 25 = 2,500 seats", "Total €990,000.00 per year"]}
+              />
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  await frames();
+  const frame = document.querySelector(".di-table-scroll")!;
+  const cell = document.querySelector<HTMLElement>("td.is-end")!;
+  expect(cell.scrollHeight).toBeLessThanOrEqual(cell.clientHeight);
+  expect(frame.scrollHeight).toBeLessThanOrEqual(frame.clientHeight);
+  expect(frame.scrollWidth).toBeLessThanOrEqual(frame.clientWidth);
 });
 
 test("a stacked row leaves out a labelled cell with no value, its label too", () => {
