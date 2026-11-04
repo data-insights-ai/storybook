@@ -5,11 +5,13 @@
     gap: var(--di-gap-8);
   }
 
+  /* A long count takes the next line rather than squeezing the label to one letter a line. */
   .di-progress-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: var(--di-gap-12);
+    gap: var(--di-gap-2) var(--di-gap-12);
   }
 
   .di-progress-label {
@@ -19,7 +21,8 @@
   }
 
   .di-progress-count {
-    flex: none;
+    flex: 0 1 auto;
+    min-width: 0;
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-300);
     font-variant-numeric: tabular-nums;

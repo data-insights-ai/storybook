@@ -616,6 +616,12 @@
       white-space: normal;
     }
 
+    /* A card has the height a grid row lacks: its tags wrap and read whole. */
+    .di-table-wrap.is-stackable .di-tag-list.is-compact {
+      flex-wrap: wrap;
+      overflow: visible;
+    }
+
     /* A cell with nothing to say takes no line, its column's name included. */
     .di-table-wrap.is-stackable td:empty,
     .di-table-wrap.is-stackable td.is-labelled:empty {

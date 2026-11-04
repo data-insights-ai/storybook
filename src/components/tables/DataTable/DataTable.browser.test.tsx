@@ -5,7 +5,7 @@ import { flushSync } from "react-dom";
 import "../../../styles/styles.css";
 import { Checkbox } from "../../forms/choice/Checkbox";
 import { StatusPill } from "../../status/StatusPill";
-import { Tag } from "../../status/Tag";
+import { Tag, TagList } from "../../status/Tag";
 import {
   CellIcon,
   CellLead,
@@ -372,6 +372,41 @@ test("a stacked end cell with lines of its own keeps its height; only actions st
   const cell = document.querySelector<HTMLElement>("td.is-end")!;
   expect(cell.scrollHeight).toBeLessThanOrEqual(cell.clientHeight);
   expect(frame.scrollHeight).toBeLessThanOrEqual(frame.clientHeight);
+  expect(frame.scrollWidth).toBeLessThanOrEqual(frame.clientWidth);
+});
+
+test("a stacked row's compact tag list wraps, so two tags both read whole on a phone", async () => {
+  const host = document.createElement("div");
+  host.style.width = "358px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Access" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn>Who</TableColumn>
+          <TableColumn width="fill">Access</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Nora Feld</TableCell>
+            <TableCell>
+              <TagList max={2}>
+                <Tag detail="Production">Analyst</Tag>
+                <Tag detail="Second branch">Incident responder</Tag>
+              </TagList>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  await frames();
+  await frames();
+  const parts = [...document.querySelectorAll<HTMLElement>(".di-tag-name, .di-tag-detail")];
+  expect(parts).toHaveLength(4);
+  for (const part of parts) expect(part.scrollWidth).toBeLessThanOrEqual(part.clientWidth);
+  const frame = document.querySelector(".di-table-scroll")!;
   expect(frame.scrollWidth).toBeLessThanOrEqual(frame.clientWidth);
 });
 
