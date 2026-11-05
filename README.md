@@ -50,6 +50,10 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.20.5
+
+0.20.5 needs no code change. A page's side column fits the window from wherever it stands, so a long docked `Dialog` opens with its title and actions in view, its body scrolls, and it adds no scroll to a short page. The column ends 32px above the window's edge instead of 16px, the same as the page's end padding. In a very short window it keeps 320px, its own width, and the page scrolls to show the rest.
+
 ## Upgrade to 0.20.4
 
 0.20.4 needs no code change. A table row changes its fill under the pointer only when it has `onSelect`, because only then does a click on the row do something. A row that should keep the hover needs `onSelect`.

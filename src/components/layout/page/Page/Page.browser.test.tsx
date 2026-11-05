@@ -7,7 +7,7 @@ import "../../../../styles/styles.css";
 import { AppShellContent } from "../../../shell/AppShellContent";
 import { DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../../tables/DataTable";
 import { Toolbar } from "../../../actions/Toolbar";
-import { Dialog } from "../../../overlays/Dialog";
+import { Dialog, DialogFooter } from "../../../overlays/Dialog";
 import { Page, PageAside } from "./Page";
 import { PageHeader, PageHeaderTitle } from "../PageHeader";
 import { Grid } from "../../arrange/Grid";
@@ -340,6 +340,86 @@ describe("large screens", () => {
     const table = box(host.querySelector(".di-table-wrap"));
     const sheet = box(host.querySelector(".di-dialog-docked"));
     expect(Math.round(sheet.top)).toBe(Math.round(table.top));
+  });
+
+  function LongSheetPage({ rows, opened = true }: { rows: number; opened?: boolean }) {
+    const [open, setOpen] = useState(opened);
+    return (
+      <AppShellContent>
+        <Page>
+          <PageHeader lede="Who may call the public API.">
+            <PageHeaderTitle>API keys</PageHeaderTitle>
+          </PageHeader>
+          <button type="button" className="opener" onClick={() => setOpen(true)}>
+            New key
+          </button>
+          <div className="list" style={{ height: rows * 48 }} />
+          <Dialog open={open} onClose={() => setOpen(false)} title="Issue a key" closeLabel="Close">
+            <div style={{ minHeight: 3000 }}>Permissions</div>
+            <DialogFooter>
+              <button type="submit" className="submit">
+                Issue
+              </button>
+            </DialogFooter>
+          </Dialog>
+        </Page>
+      </AppShellContent>
+    );
+  }
+
+  const frame = () => new Promise((resolve) => requestAnimationFrame(resolve));
+  const pageRoom = () => document.documentElement.scrollHeight - window.innerHeight;
+
+  test("at 1920px a long docked sheet fits the window where it opens: its actions in view, its body scrolling, no scroll added to the page", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<LongSheetPage rows={2} />);
+    await frame();
+    const sheet = box(docked(host));
+    expect(sheet.top).toBeGreaterThan(100);
+    expect(Math.round(sheet.bottom)).toBe(1080 - 32);
+    expect(box(host.querySelector(".submit")).bottom).toBeLessThanOrEqual(1080);
+    const body = host.querySelector(".di-dialog-body")!;
+    expect(body.scrollHeight).toBeGreaterThan(body.clientHeight);
+    expect(pageRoom()).toBeLessThanOrEqual(0);
+  });
+
+  test("at 1920px a long docked sheet grows as the page scrolls it up, its end staying put", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<LongSheetPage rows={100} />);
+    await frame();
+    const opened = box(docked(host));
+    window.scrollTo(0, 40);
+    await frame();
+    await frame();
+    const risen = box(docked(host));
+    expect(Math.round(risen.top)).toBe(Math.round(opened.top) - 40);
+    expect(Math.round(risen.bottom)).toBe(1080 - 32);
+    window.scrollTo(0, 2000);
+    await frame();
+    await frame();
+    const stuck = box(docked(host));
+    expect(Math.round(stuck.top)).toBe(16);
+    expect(Math.round(stuck.bottom)).toBe(1080 - 32);
+  });
+
+  test("at 1920px a docked sheet opening counts what moved the page since it was laid out", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<LongSheetPage rows={2} opened={false} />);
+    await frame();
+    const banner = document.createElement("div");
+    banner.style.height = "100px";
+    document.body.prepend(banner);
+    press(host.querySelector(".opener")!);
+    await frame();
+    expect(Math.round(box(docked(host)).bottom)).toBe(1080 - 32);
+  });
+
+  test("in a very short window a long docked sheet stays as tall as it is wide, and the page scrolls to it", async () => {
+    await page.viewport(1920, 400);
+    const host = show(<LongSheetPage rows={2} />);
+    await frame();
+    expect(Math.round(box(docked(host)).height)).toBe(320);
+    expect(pageRoom()).toBeGreaterThan(0);
   });
 
   test("at 1920px a wide sheet still covers the page: a table does not fit the column", async () => {

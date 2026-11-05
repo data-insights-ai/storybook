@@ -68,14 +68,20 @@
 
   /* Level with the list (or, without one, the content), not with the
      header and filters above it; Page measures that line. Scrolled, it sticks
-     with the table's head, under the app bar and the list's toolbar. */
+     with the table's head, under the app bar and the list's toolbar.
+     From wherever it stands it ends a page's end padding above the window's
+     edge, so it adds no scroll to a short page. In a very short window it
+     stays as tall as it is wide, and the page scrolls to show the rest. */
   .di-page[data-frame="side"] > .di-page-side {
+    --di-page-side-stuck: calc(var(--di-sticky-top) + var(--di-page-side-stick, var(--di-space-16)));
     grid-area: side;
     margin-top: var(--di-page-content-top, 0);
     position: sticky;
-    top: calc(var(--di-sticky-top) + var(--di-page-side-stick, var(--di-space-16)));
-    max-height: calc(
-      100dvh - var(--di-sticky-top) - var(--di-page-side-stick, var(--di-space-16)) - var(--di-space-16)
+    top: var(--di-page-side-stuck);
+    max-height: max(
+      var(--di-rail-width),
+      100dvh - max(var(--di-page-side-stuck), var(--di-page-body-top, 0px) + var(--di-page-content-top, 0px)) -
+        var(--di-space-32)
     );
     overflow-y: auto;
     gap: var(--di-space-24);

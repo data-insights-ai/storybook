@@ -38,6 +38,7 @@ export function Page({
   const framed = width === "list" || width === "detail";
   const wide = useWideFrame(page);
   useContentTop(page, body, wide);
+  useBodyTop(body, side, wide);
   useEffect(watchPresses, []);
   if (!framed) {
     return (
@@ -144,6 +145,35 @@ function useContentTop(page: HTMLElement | null, body: HTMLElement | null, wide:
       page.style.removeProperty("--di-page-side-stick");
     };
   }, [page, body, wide]);
+}
+
+/*
+ * Where the page's content stands in the window right now, for the side
+ * column's height: it starts far down the window and rises to where it
+ * sticks, and its end stays above the window's edge the whole way. Set on the
+ * column alone, so a scroll restyles the column and not the page. A sheet
+ * opening measures again, for whatever moved the page since the last scroll.
+ */
+function useBodyTop(body: HTMLElement | null, side: HTMLElement | null, wide: boolean) {
+  useLayoutEffect(() => {
+    if (!body || !side || !wide) return;
+    const measure = () =>
+      side.style.setProperty("--di-page-body-top", `${Math.ceil(body.getBoundingClientRect().top)}px`);
+    const onScroll = (event: Event) => {
+      if (event.target instanceof Node && event.target.contains(body)) measure();
+    };
+    measure();
+    const opened = new MutationObserver(measure);
+    opened.observe(side, { childList: true });
+    window.addEventListener("scroll", onScroll, { capture: true, passive: true });
+    window.addEventListener("resize", measure);
+    return () => {
+      opened.disconnect();
+      window.removeEventListener("scroll", onScroll, { capture: true });
+      window.removeEventListener("resize", measure);
+      side.style.removeProperty("--di-page-body-top");
+    };
+  }, [body, side, wide]);
 }
 
 /** The list a toolbar filters: the first table after it, or the block that follows it while there is none. */
