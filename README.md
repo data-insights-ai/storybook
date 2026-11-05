@@ -50,6 +50,10 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.20.4
+
+0.20.4 needs no code change. A table row changes its fill under the pointer only when it has `onSelect`, because only then does a click on the row do something. A row that should keep the hover needs `onSelect`.
+
 ## Upgrade to 0.19.2
 
 0.19.2 needs no code change. The sidebar's current page is a selection like every other: the pale selection tint with the navy edge (`#A9CBF3` after dark) instead of gold, and the sidebar trigger's hover is the warm inset tone. Gold is left to the one thing in the view. An app that set `--di-sidebar-active` or `--di-sidebar-mark` itself keeps its own values.

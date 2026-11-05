@@ -224,7 +224,8 @@
     border-bottom: 0;
   }
 
-  .di-table tbody tr:not(.di-row-current):hover td {
+  /* Only a row a click does something on answers the pointer. */
+  .di-table tbody tr.is-selectable:not(.di-row-current):hover td {
     background: var(--di-row-hover-bg);
   }
 
@@ -248,10 +249,6 @@
   .di-table tbody tr.di-table-empty td {
     padding-block: var(--di-space-24);
     white-space: normal;
-  }
-
-  .di-table tbody tr.di-table-empty:hover td {
-    background: none;
   }
 
   .di-table-empty-body {
@@ -280,10 +277,6 @@
   .di-table tbody tr.di-table-group:first-child > :is(th, td),
   .di-table tbody tr.di-table-spacer.is-empty + tr.di-table-group > :is(th, td) {
     border-top: 0;
-  }
-
-  .di-table tbody tr.di-table-group:hover > :is(th, td) {
-    background: var(--di-table-head-bg);
   }
 
   .di-table-group-label {
@@ -327,7 +320,11 @@
     background: var(--di-table-head-bg);
   }
 
-  .di-table-wrap.is-overflowing .di-table tbody tr:hover > :is(.is-pinned, .di-table-index) {
+  .di-table-wrap.is-overflowing
+    .di-table
+    tbody
+    tr.is-selectable:not(.di-row-current):hover
+    > :is(.is-pinned, .di-table-index) {
     box-shadow: inset 0 0 0 100vmax var(--di-row-hover-bg);
   }
 
@@ -739,8 +736,8 @@
       white-space: normal;
     }
 
-    .di-table-wrap.is-stackable tbody tr:hover,
-    .di-table-wrap.is-stackable tbody tr:hover td {
+    .di-table-wrap.is-stackable tbody tr.is-selectable:not(.di-row-current):hover,
+    .di-table-wrap.is-stackable tbody tr.is-selectable:not(.di-row-current):hover td {
       background: var(--di-row-hover-bg);
     }
 
@@ -756,15 +753,6 @@
 
     .di-table-wrap.is-stackable tbody tr.di-table-group th {
       border: 0;
-      background: none;
-    }
-
-    .di-table-wrap.is-stackable tbody tr.di-table-group:hover {
-      background: var(--di-table-head-bg);
-    }
-
-    .di-table-wrap.is-stackable tbody tr:is(.di-table-spacer, .di-table-empty):hover,
-    .di-table-wrap.is-stackable tbody tr.di-table-empty:hover td {
       background: none;
     }
 

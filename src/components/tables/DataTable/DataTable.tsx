@@ -439,7 +439,8 @@ export function TableBody({ children }: { children: ReactNode }) {
 /**
  * `active` marks the row an open drawer or detail pane is showing.
  *
- * `onSelect` makes the whole row the pointer target for that pane. A row is
+ * `onSelect` makes the whole row the pointer target for that pane, and only
+ * such a row changes its fill under the pointer. A row is
  * not a control a keyboard can reach, so the row still carries one — a
  * `TextLink plain` on its identifier — that selects it too; the row only
  * widens where a pointer can press. Up and Down move between the rows'

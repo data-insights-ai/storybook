@@ -131,6 +131,49 @@ test("a stacked row names its cells with the same label as the head", () => {
 });
 
 test.each([
+  ["on a wide grid", "800px"],
+  ["stacked", "360px"],
+])("only a row a click does something on changes its fill under the pointer, %s", async (_, width) => {
+  const host = document.createElement("div");
+  host.style.width = width;
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Records" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn>Record</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow onSelect={() => {}}>
+            <TableCell>Opens a pane</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Only reads</TableCell>
+          </TableRow>
+          <TableRow active onSelect={() => {}}>
+            <TableCell>Its pane is open</TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  const [selectable, plain, current] = Array.from(document.querySelectorAll("tbody td"));
+  const fillUnderPointer = async (cell: Element) => {
+    const before = getComputedStyle(cell).backgroundColor;
+    await userEvent.hover(cell);
+    return { before, after: getComputedStyle(cell).backgroundColor };
+  };
+
+  const onSelectable = await fillUnderPointer(selectable);
+  expect(onSelectable.after).not.toBe(onSelectable.before);
+  const onPlain = await fillUnderPointer(plain);
+  expect(onPlain.after).toBe(onPlain.before);
+  const onCurrent = await fillUnderPointer(current);
+  expect(onCurrent.after).toBe(onCurrent.before);
+});
+
+test.each([
   ["a name on one line", "ws-01.example.com", "480px"],
   ["a name that wraps", "workstation-finance-014-with-a-long-name.corp.example.com", "320px"],
   ["a name beside a pill that takes the next line", "ws-fin-014.corp.example.com", "340px"],
