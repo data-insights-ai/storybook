@@ -311,6 +311,15 @@
     font-size: var(--di-font-size-300);
   }
 
+  .di-dialog-footer-actions {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--di-gap-8);
+  }
+
   @media (max-width: 600px) {
     .di-dialog {
       --di-dialog-inset: var(--di-inset-group);
@@ -320,6 +329,10 @@
     .di-dialog-footer {
       flex-direction: column-reverse;
       align-items: stretch;
+    }
+
+    .di-dialog-footer-actions {
+      display: contents;
     }
 
     .di-dialog-footer-note {

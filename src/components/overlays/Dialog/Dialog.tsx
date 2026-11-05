@@ -84,13 +84,14 @@ export function Dialog(props: DialogProps) {
 /**
  * The dialog's actions, pinned to its bottom edge: Cancel, then the one that
  * commits. `note` says at the start why the action waits, such as "Choose at
- * least one permission".
+ * least one permission"; where it does not fit beside them it takes the row
+ * above, and the actions stay together.
  */
 export function DialogFooter({ children, note }: { children: ReactNode; note?: ReactNode }) {
   return (
     <div className="di-dialog-footer">
       {note ? <p className="di-dialog-footer-note">{note}</p> : null}
-      {children}
+      <div className="di-dialog-footer-actions">{children}</div>
     </div>
   );
 }

@@ -50,6 +50,10 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.20.6
+
+0.20.6 needs no code change. A `DialogFooter`'s actions stay together in one row. Its `note` takes the row above them where it does not fit beside them, as in a page's side column. The actions now sit in `.di-dialog-footer-actions`, so a selector for a direct child of `.di-dialog-footer` no longer finds them.
+
 ## Upgrade to 0.20.5
 
 0.20.5 needs no code change. A page's side column fits the window from wherever it stands, so a long docked `Dialog` opens with its title and actions in view, its body scrolls, and it adds no scroll to a short page. The column ends 32px above the window's edge instead of 16px, the same as the page's end padding. In a very short window it keeps 320px, its own width, and the page scrolls to show the rest.

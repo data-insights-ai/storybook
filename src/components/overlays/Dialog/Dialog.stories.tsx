@@ -477,6 +477,25 @@ export const WaitingForAChoice: Story = {
   },
 };
 
+/** At a page's side column the reason takes the row above; the actions stay together on theirs. */
+export const WaitingAtTheSideColumnsWidth: Story = {
+  args: { title: "Issue an API key", lede: undefined, eyebrow: undefined },
+  render: (args) => <WaitingForm {...args} />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "New API key" }));
+    const dialog = await within(canvasElement.ownerDocument.body).findByRole("dialog", { name: "Issue an API key" });
+    dialog.style.setProperty("--di-dialog-width", "var(--di-rail-width)");
+    const note = within(dialog).getByText("Choose at least one permission.");
+    const cancel = within(dialog).getByRole("button", { name: "Cancel" });
+    const issue = within(dialog).getByRole("button", { name: "Issue key" });
+    if (window.innerWidth > 600) {
+      await expect(issue.getBoundingClientRect().top).toBe(cancel.getBoundingClientRect().top);
+      await expect(cancel.getBoundingClientRect().right).toBeLessThanOrEqual(issue.getBoundingClientRect().left);
+      await expect(note.getBoundingClientRect().bottom).toBeLessThanOrEqual(cancel.getBoundingClientRect().top);
+    }
+  },
+};
+
 function FromACell(args: Args) {
   const [open, setOpen] = useState(false);
   return (

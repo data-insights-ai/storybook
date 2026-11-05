@@ -530,6 +530,7 @@
     "di-dialog-close",
     "di-dialog-docked",
     "di-dialog-footer",
+    "di-dialog-footer-actions",
     "di-dialog-footer-note",
     "di-dialog-form",
     "di-dialog-frame",
