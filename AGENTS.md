@@ -157,7 +157,7 @@ What a component may hold is a second axis, and it is a tag on its story meta, n
 - `layer:block` — **it holds something**: it composes other components, or it exposes a slot for them. Panel, DataTable, Notice, Toast, Dialog, Menu, Tabs, RecordCard, SignIn.
 - `layer:pattern` — a whole arrangement: Sidebar, ShortcutHelp, ThemeProvider and the arrangement components.
 
-There are no deprecated exports. A rename, a merge or a removal takes the old name out in the same version, with no alias, wrapper or ignored prop left behind, and adds old → new with a code example and the product files to change to that version's migration guide (`MIGRATION-0.11.md`).
+There are no deprecated exports. A rename, a merge or a removal takes the old name out in the same version, with no alias, wrapper or ignored prop left behind, and adds old → new with a code example to that version's migration guide (`MIGRATION-0.11.md`). The guide names no consumer, product, repository or file of a consumer: this repository is public.
 
 The test is one question: **can another component go inside it?** `Sparkline` takes numbers and a label — nothing else fits, so it is a primitive. `Figure` looks just as small, but its `children` holds a `FigureNote` or a `Sparkline`, so it is a block. `Pagination` and `Loading` are bulky and still primitives: you place them into a frame, they frame nothing. Size is not the axis; what can be put inside is.
 

@@ -176,7 +176,7 @@ A side `Dialog` docked in a page's side column now closes when what opened it is
 
 ## Upgrade to 0.11
 
-0.11 merges many components into fewer and removes the old names and props outright: there are no aliases, wrappers or ignored props to fall back on. [MIGRATION-0.11.md](MIGRATION-0.11.md) lists each change as old → new with a short example, grouped by component, and the files in each product that change. The Storybook sidebar is regrouped into those fourteen groups, so story links change; imports from the package do not.
+0.11 merges many components into fewer and removes the old names and props outright: there are no aliases, wrappers or ignored props to fall back on. [MIGRATION-0.11.md](MIGRATION-0.11.md) lists each change as old → new with a short example, grouped by component. The Storybook sidebar is regrouped into those fourteen groups, so story links change; imports from the package do not.
 
 ## Context and repeated views
 
