@@ -76,6 +76,7 @@
     --di-page-side-stuck: calc(var(--di-sticky-top) + var(--di-page-side-stick, var(--di-space-16)));
     grid-area: side;
     margin-top: var(--di-page-content-top, 0);
+    scroll-margin-bottom: var(--di-space-32);
     position: sticky;
     top: var(--di-page-side-stuck);
     max-height: max(

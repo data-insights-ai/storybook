@@ -1,6 +1,6 @@
 import { Children, isValidElement, useEffect, useLayoutEffect, useState, type ReactNode } from "react";
 import { watchPresses } from "../../../../internal/lastPress";
-import { PageSide } from "../pageSide";
+import { PageSide, SIDE_LIST } from "../pageSide";
 import "./Page.css";
 
 /**
@@ -13,7 +13,8 @@ import "./Page.css";
  *   takes the rest, so a table never runs across the whole window. The
  *   column holds the record's `PageAside` and every side `Dialog` the page opens
  *   (a row's detail, a create or edit form); otherwise it stays empty. It
- *   starts level with the content, below the header and the page's tabs.
+ *   starts level with the content, below the header and the page's tabs,
+ *   or level with the table a dialog in it was opened from.
  *   Narrower, the content takes the whole width and the dialog covers it.
  * - `full` is an overview or dashboard: the whole frame, no side column.
  * - `form` is a create flow read down one column (`--di-measure-form`).
@@ -37,7 +38,7 @@ export function Page({
   const [side, setSide] = useState<HTMLDivElement | null>(null);
   const framed = width === "list" || width === "detail";
   const wide = useWideFrame(page);
-  useContentTop(page, body, wide);
+  useContentTop(page, body, side, wide);
   useBodyTop(body, side, wide);
   useEffect(watchPresses, []);
   if (!framed) {
@@ -101,19 +102,25 @@ function useWideFrame(page: HTMLElement | null) {
  * tabs, which may be drawn by a component of the product's own (a tabbed
  * page), so they are found in the page rather than among its children.
  *
+ * A sheet opened from another table, further down a page of several, takes
+ * the column to that table, and the page scrolls just enough to show it. A
+ * record's aside keeps the column where it is: it belongs to the record.
+ *
  * Only elements that never stick are measured, so the result holds while
  * the page scrolls. Once it scrolls, the column sticks where the table's
  * head does: under the app bar and the toolbar.
  */
 const ABOVE_CONTENT = ".di-page-head, .di-tabs";
 
-function useContentTop(page: HTMLElement | null, body: HTMLElement | null, wide: boolean) {
+function useContentTop(page: HTMLElement | null, body: HTMLElement | null, side: HTMLElement | null, wide: boolean) {
   useLayoutEffect(() => {
-    if (!page || !body || !wide) return;
+    if (!page || !body || !side || !wide) return;
     const measure = () => {
       const origin = body.getBoundingClientRect().top;
       const toolbar = body.querySelector<HTMLElement>(".di-toolbar.is-list");
-      const list = toolbar ? listAfter(body, toolbar) : null;
+      const toolbarList = toolbar ? listAfter(body, toolbar) : null;
+      const sheetList = side.querySelector(".di-page-companion") ? null : body.querySelector(`[${SIDE_LIST}]`);
+      const list = sheetList ?? toolbarList;
       let top: number;
       if (list) {
         top = list.getBoundingClientRect().top - origin;
@@ -129,22 +136,28 @@ function useContentTop(page: HTMLElement | null, body: HTMLElement | null, wide:
           : 0;
       }
       page.style.setProperty("--di-page-content-top", `${Math.round(top)}px`);
-      if (list && toolbar?.dataset.sticky === "top") {
+      if (list && list === toolbarList && toolbar?.dataset.sticky === "top") {
         page.style.setProperty("--di-page-side-stick", `${toolbar.offsetHeight}px`);
       } else {
         page.style.removeProperty("--di-page-side-stick");
       }
+      return list !== toolbarList;
     };
     measure();
-    const observer = new ResizeObserver(measure);
+    const observer = new ResizeObserver(() => measure());
     observer.observe(body);
     for (const el of body.querySelectorAll(`:scope > :is(${ABOVE_CONTENT}), .di-toolbar.is-list`)) observer.observe(el);
+    const opened = new MutationObserver(() => {
+      if (measure()) side.scrollIntoView({ block: "nearest" });
+    });
+    opened.observe(side, { childList: true });
     return () => {
       observer.disconnect();
+      opened.disconnect();
       page.style.removeProperty("--di-page-content-top");
       page.style.removeProperty("--di-page-side-stick");
     };
-  }, [page, body, wide]);
+  }, [page, body, side, wide]);
 }
 
 /*

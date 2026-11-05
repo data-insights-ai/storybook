@@ -5,13 +5,14 @@ import {
   useEffect,
   useId,
   useInsertionEffect,
+  useLayoutEffect,
   useRef,
   type FormEvent,
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
 import { OctagonAlert, X } from "lucide-react";
-import { PageSide } from "../../layout/page/pageSide";
+import { PageSide, SIDE_LIST } from "../../layout/page/pageSide";
 import { cx } from "../../../internal/cx";
 import { pressedOf, takePress } from "../../../internal/lastPress";
 import { focusFirstField } from "../../../internal/shortcutKeys";
@@ -73,6 +74,7 @@ export type DialogProps = {
  * Docked, the page is not inert, but focus lands and returns the same way,
  * and what was pressed to open it closes it on a second press (it carries
  * `aria-expanded` meanwhile); another row of the same list shows its record.
+ * Opened from a row of a table, it stands level with that table.
  */
 export function Dialog(props: DialogProps) {
   const side = useContext(PageSide);
@@ -152,6 +154,13 @@ function DockedDialog(props: DialogProps & { side: HTMLElement }) {
     }
     shown.current = open;
   }, [open, onClose]);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    const list = toggle.current?.closest(".di-table-wrap");
+    list?.setAttribute(SIDE_LIST, "");
+    return () => list?.removeAttribute(SIDE_LIST);
+  }, [open]);
 
   useEffect(() => {
     if (!open) return;

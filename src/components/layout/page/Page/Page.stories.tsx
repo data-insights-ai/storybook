@@ -170,6 +170,47 @@ function ListWithSheet() {
  * docks there, while Up, Down and Enter keep walking the rows; narrower, the
  * list takes the whole width and the sheet covers it.
  */
+function TwoListsWithSheet() {
+  const [open, setOpen] = useState<string>();
+  const table = (caption: string, rows: typeof sites) => (
+    <DataTable caption={caption}>
+      <TableHead>
+        <TableColumn width="fill">{caption}</TableColumn>
+        <TableColumn>Last seen</TableColumn>
+      </TableHead>
+      <TableBody>
+        {rows.map((site) => (
+          <TableRow key={site.id} active={open === site.name} onSelect={() => setOpen(site.name)}>
+            <TableCell>
+              <TextLink plain onClick={() => setOpen(site.name)}>
+                {site.name}
+              </TextLink>
+            </TableCell>
+            <TableCell mono>{site.seen}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </DataTable>
+  );
+  return (
+    <Page width="list">
+      <PageHeader lede="A sheet stands level with the table it was opened from.">
+        <PageHeaderTitle>Sites and relays</PageHeaderTitle>
+      </PageHeader>
+      {table("Sites", sites.slice(0, 2))}
+      {table("Relays", sites.slice(2))}
+      <Dialog open={open !== undefined} onClose={() => setOpen(undefined)} title={open ?? ""} closeLabel="Close">
+        <p>Collector 4.2</p>
+      </Dialog>
+    </Page>
+  );
+}
+
+export const WithSheetBesideItsTable: Story = {
+  args: { width: "list" },
+  render: () => <TwoListsWithSheet />,
+};
+
 export const WithSheet: Story = {
   args: { width: "list" },
   render: () => <ListWithSheet />,

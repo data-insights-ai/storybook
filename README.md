@@ -50,6 +50,10 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
+## Upgrade to 0.20.7
+
+0.20.7 needs no code change. A docked `Dialog` opened from a row stands level with that row's table, and the page scrolls just enough to show it when the table is further down. A page with one list looks as before. A record's `PageAside` keeps the column where it is.
+
 ## Upgrade to 0.20.6
 
 0.20.6 needs no code change. A `DialogFooter`'s actions stay together in one row. Its `note` takes the row above them where it does not fit beside them, as in a page's side column. The actions now sit in `.di-dialog-footer-actions`, so a selector for a direct child of `.di-dialog-footer` no longer finds them.

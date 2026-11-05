@@ -241,6 +241,107 @@ describe("large screens", () => {
     expect(docked(host)).toBeNull();
   });
 
+  function TwoListsPage({ between = 0, aside = false }: { between?: number; aside?: boolean }) {
+    const [open, setOpen] = useState<string>();
+    const table = (name: string) => (
+      <DataTable caption={name}>
+        <TableHead>
+          <TableColumn>Name</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow onSelect={() => setOpen(name)}>
+            <TableCell>{name}</TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>
+    );
+    return (
+      <AppShellContent>
+        <Page>
+          <PageHeader>
+            <PageHeaderTitle>Sources</PageHeaderTitle>
+          </PageHeader>
+          <Toolbar label="Filter providers" role="search" sticky="top">
+            <button type="button">Views</button>
+          </Toolbar>
+          {table("Providers")}
+          <div style={{ height: between }} />
+          {table("Feeds")}
+          <Dialog open={open !== undefined} onClose={() => setOpen(undefined)} title={open ?? ""} closeLabel="Close">
+            <section>Facts</section>
+          </Dialog>
+          {aside && (
+            <PageAside label="Triage">
+              <section className="aside">Triage</section>
+            </PageAside>
+          )}
+        </Page>
+      </AppShellContent>
+    );
+  }
+
+  const settled = () => new Promise((resolve) => requestAnimationFrame(resolve));
+
+  test("at 1920px a sheet stands level with the table it was opened from, on a page of two", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<TwoListsPage />);
+    await settled();
+    const [providers, feeds] = host.querySelectorAll(".di-table-wrap");
+    const [a, b] = host.querySelectorAll("tr.is-selectable");
+    press(b);
+    await settled();
+    expect(Math.round(box(docked(host)).top)).toBe(Math.round(box(feeds).top));
+    press(b);
+    await settled();
+    expect(docked(host)).toBeNull();
+    press(a);
+    await settled();
+    expect(Math.round(box(docked(host)).top)).toBe(Math.round(box(providers).top));
+  });
+
+  test("at 1920px a sheet opened from a table further down keeps its place in the window, not under a toolbar it does not belong to", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<TwoListsPage />);
+    await settled();
+    const [a, b] = host.querySelectorAll("tr.is-selectable");
+    const frame = host.querySelector<HTMLElement>(".di-page")!;
+    press(a);
+    await settled();
+    expect(frame.style.getPropertyValue("--di-page-side-stick")).not.toBe("");
+    press(a);
+    press(b);
+    await settled();
+    expect(frame.style.getPropertyValue("--di-page-side-stick")).toBe("");
+  });
+
+  test("at 1920px a sheet opened from a table below the window scrolls into view, and one above it leaves the page where it is", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<TwoListsPage between={2000} />);
+    await settled();
+    const [a, b] = host.querySelectorAll("tr.is-selectable");
+    press(a);
+    await settled();
+    expect(window.scrollY).toBe(0);
+    press(a);
+    press(b);
+    await settled();
+    const sheet = box(docked(host));
+    expect(window.scrollY).toBeGreaterThan(0);
+    expect(sheet.top).toBeGreaterThanOrEqual(0);
+    expect(sheet.bottom).toBeLessThanOrEqual(window.innerHeight);
+  });
+
+  test("at 1920px a record's aside keeps the column where it is, whichever table a sheet opened from", async () => {
+    await page.viewport(1920, 1080);
+    const host = show(<TwoListsPage aside />);
+    await settled();
+    const before = Math.round(box(host.querySelector(".aside")).top);
+    const [, b] = host.querySelectorAll("tr.is-selectable");
+    press(b);
+    await settled();
+    expect(Math.round(box(host.querySelector(".aside")).top)).toBe(before);
+  });
+
   test("at 1920px rows A, B, then A again show A's record", async () => {
     await page.viewport(1920, 1080);
     const host = show(<RecordsPage />);
