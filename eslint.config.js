@@ -3,7 +3,18 @@ import reactHooks from "eslint-plugin-react-hooks";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", "storybook-static", "coverage", ".worktrees", ".design-sync", "node_modules"] },
+  {
+    ignores: [
+      "dist",
+      "storybook-static",
+      "coverage",
+      ".worktrees",
+      ".design-sync",
+      ".ds-sync",
+      "ds-bundle",
+      "node_modules",
+    ],
+  },
   {
     files: ["**/*.{ts,tsx,js,mjs,cjs}"],
     extends: [tseslint.configs.recommended],

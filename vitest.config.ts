@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig, type TestProjectInlineConfiguration } from "vitest/config";
@@ -11,6 +12,15 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const parkPointer: BrowserCommand<[]> = async ({ page }) => {
   await page.mouse.move(-1, -1);
 };
+
+/*
+ * Vitest gives every browser project its own Chromium with a page per core, all at once. A machine short of memory sets
+ * TEST_PAGES in its gitignored .env.local: one project runs at a time, on that many pages.
+ */
+const localEnv = path.join(dirname, ".env.local");
+if (existsSync(localEnv)) process.loadEnvFile(localEnv);
+const pages = Number(process.env.TEST_PAGES);
+const paced = (order: number) => (pages > 0 ? { maxWorkers: pages, sequence: { groupOrder: order } } : {});
 
 // A fresh object per project: Vitest names the instances after the project that owns them.
 const chromium = () => ({
@@ -37,6 +47,7 @@ const checkFiles: Record<Check, string[]> = {
  */
 function stories(
   name: string,
+  order: number,
   pass: {
     theme: "light" | "dark";
     viewport?: "phone";
@@ -60,6 +71,7 @@ function stories(
     ],
     test: {
       name,
+      ...paced(order),
       // FOCUS_REPORT=1 prints the focus-ring findings per story instead of failing on them.
       provide: { focusReport: process.env.FOCUS_REPORT === "1" },
       setupFiles: [
@@ -93,6 +105,7 @@ export default defineConfig({
       {
         test: {
           name: "unit",
+          ...paced(0),
           include: ["src/**/*.test.ts"],
           environment: "node",
           // zones.test.ts reads the token sheets as text; unprocessed CSS would arrive empty.
@@ -102,19 +115,20 @@ export default defineConfig({
       {
         test: {
           name: "layout",
+          ...paced(1),
           include: ["src/**/*.browser.test.tsx", ".storybook/**/*.browser.test.ts"],
           browser: chromium(),
         },
       },
-      stories("storybook", { theme: "light", checks: ["focus", "contrast", "surfaces"], axe: true }),
-      stories("storybook-dark", { theme: "dark", checks: ["contrast"], axe: true }),
-      stories("storybook-phone", {
+      stories("storybook", 2, { theme: "light", checks: ["focus", "contrast", "surfaces"], axe: true }),
+      stories("storybook-dark", 3, { theme: "dark", checks: ["contrast"], axe: true }),
+      stories("storybook-phone", 4, {
         theme: "light",
         viewport: "phone",
         checks: ["focus", "contrast", "surfaces"],
         axe: true,
       }),
-      stories("storybook-compact", { theme: "light", density: "compact", checks: ["surfaces"], axe: false }),
+      stories("storybook-compact", 5, { theme: "light", density: "compact", checks: ["surfaces"], axe: false }),
     ],
   },
 });
