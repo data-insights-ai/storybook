@@ -1,2 +1,6 @@
 allowBuilds:
   esbuild: true
+overrides:
+  # ESLint's minimatch 10 has a glob DoS (GHSA-g3hv-75wg-m249); 11.0.1 fixes
+  # it and keeps the Minimatch class and minimatch() that ESLint calls.
+  "minimatch@10": 11.0.1
