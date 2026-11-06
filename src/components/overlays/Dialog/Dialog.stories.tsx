@@ -375,10 +375,10 @@ function AccessFormDialog(args: Args) {
 
 async function expectSelectToKeepTheColumn(body: HTMLElement) {
   const select = await within(body).findByLabelText<HTMLSelectElement>("Access");
-  const nameWidth = within(body).getByLabelText("Name").getBoundingClientRect().width;
-  await expect(select.getBoundingClientRect().width).toBe(nameWidth);
+  const nameWidth = within(body).getByLabelText("Name").offsetWidth;
+  await expect(select.offsetWidth).toBe(nameWidth);
   await userEvent.selectOptions(select, "events");
-  await expect(select.getBoundingClientRect().width).toBe(nameWidth);
+  await expect(select.offsetWidth).toBe(nameWidth);
 }
 
 /** A select in a dialog's form spans the column like the fields around it, whichever option is picked. */
