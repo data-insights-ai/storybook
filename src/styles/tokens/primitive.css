@@ -172,7 +172,7 @@
     --di-tracking-label: 0.1em;
     --di-tracking-eyebrow: 0.12em;
 
-    /* Moderate, not round: 4px micro, 6px control, 8px inset, 12px surface. */
+    /* Moderate, not round: 4px micro, 8px control and inset, 12px surface. */
     --di-radius-s: 4px;
     --di-radius-m: 6px;
     --di-radius-l: 8px;

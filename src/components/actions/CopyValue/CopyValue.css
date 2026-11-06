@@ -31,7 +31,8 @@
     height: var(--di-copy-button-size);
     padding: 0;
     border: 0;
-    border-radius: var(--di-radius-control);
+    /* A line-high button inside text: the control radius would round it almost to a circle. */
+    border-radius: var(--di-radius-micro);
     background: transparent;
     color: var(--di-text-subtle);
     cursor: pointer;

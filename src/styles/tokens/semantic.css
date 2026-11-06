@@ -207,7 +207,7 @@
     --di-font-ui: var(--di-font-sans);
     --di-font-code: var(--di-font-mono);
 
-    --di-radius-control: var(--di-radius-m);
+    --di-radius-control: var(--di-radius-l);
     --di-radius-micro: var(--di-radius-s);
     --di-radius-inset: var(--di-radius-l);
     --di-radius-surface: var(--di-radius-xl);

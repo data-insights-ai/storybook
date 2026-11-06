@@ -17,8 +17,8 @@ const space = [
 ];
 
 const radius = [
-  { token: "--di-radius-micro", name: "Field, tag, tooltip" },
-  { token: "--di-radius-control", name: "Button, menu" },
+  { token: "--di-radius-micro", name: "Tag, tooltip, day" },
+  { token: "--di-radius-control", name: "Button, field, menu" },
   { token: "--di-radius-inset", name: "Inset group, code" },
   { token: "--di-radius-surface", name: "Panel, dialog" },
 ];
