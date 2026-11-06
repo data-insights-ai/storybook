@@ -250,7 +250,7 @@ export const IconOnly: Story = {
  */
 export const Loading: Story = {
   decorators: [onPanel("Register entry")],
-  args: { loading: true, children: "Sealing" },
+  args: { loading: true, children: "Sealing", onKeyDown: fn(), onPointerDown: fn(), onMouseDown: fn() },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole("button", { name: "Sealing" });
@@ -258,7 +258,11 @@ export const Loading: Story = {
     await expect(button).toHaveAttribute("aria-disabled", "true");
     await expect(button).not.toHaveAttribute("disabled");
     await userEvent.click(button);
+    await userEvent.keyboard("{Enter} ");
     await expect(args.onClick).not.toHaveBeenCalled();
+    await expect(args.onKeyDown).not.toHaveBeenCalled();
+    await expect(args.onPointerDown).not.toHaveBeenCalled();
+    await expect(args.onMouseDown).not.toHaveBeenCalled();
     await expect(button).toHaveFocus();
   },
 };

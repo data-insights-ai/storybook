@@ -37,9 +37,10 @@ type Common = {
   /** A square control: a filter, a pagination arrow, a kebab. */
   iconOnly?: boolean;
   /**
-   * Swaps the icon for a spinner and blocks the press. The button stays
-   * focusable (`aria-disabled`, not `disabled`), so a person who pressed it
-   * keeps their place while it works and a screen reader hears it busy.
+   * Swaps the icon for a spinner and blocks the press: `onClick` and the key,
+   * pointer and mouse press handlers do not run. The button stays focusable
+   * (`aria-disabled`, not `disabled`), so a person who pressed it keeps
+   * their place while it works and a screen reader hears it busy.
    */
   loading?: boolean;
   disabled?: boolean;
@@ -77,6 +78,19 @@ const drawn = (badge: number | string | undefined) => {
   return typeof badge === "number" && badge > 99 ? "99+" : String(badge);
 };
 
+/*
+ * What a native `disabled` would hold back from a busy button besides the
+ * click, which it swallows itself.
+ */
+const unpressed: Partial<ButtonHTMLAttributes<HTMLButtonElement>> = {
+  onKeyDown: undefined,
+  onKeyUp: undefined,
+  onPointerDown: undefined,
+  onPointerUp: undefined,
+  onMouseDown: undefined,
+  onMouseUp: undefined,
+};
+
 /**
  * Navy acts, paper waits. Solid navy is the only filled control in a
  * view, so there is never a question which button commits. After dark
@@ -103,7 +117,8 @@ const drawn = (badge: number | string | undefined) => {
  *
  * **Accessibility:** a `<button>`, or an `<a>` with `href` or `render`;
  * `loading` sets `aria-busy` and `aria-disabled` and keeps the focus where
- * it was, its press (and a form's submit through it) does nothing; `disabled`
+ * it was, its press (its click, key, pointer and mouse handlers, and a form's
+ * submit through it) does nothing; `disabled`
  * is native and leaves the tab order; `shortcut` sets `aria-keyshortcuts`. On a
  * touch screen every button, a small one and a link too, has a hit area of
  * at least 40px.
@@ -199,6 +214,7 @@ export function Button(props: ButtonProps | LinkProps | RenderProps) {
   return (
     <button
       {...buttonRest}
+      {...(busy ? unpressed : undefined)}
       {...own}
       type={type}
       disabled={disabled}
