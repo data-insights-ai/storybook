@@ -250,7 +250,16 @@ export const IconOnly: Story = {
  */
 export const Loading: Story = {
   decorators: [onPanel("Register entry")],
-  args: { loading: true, children: "Sealing", onKeyDown: fn(), onPointerDown: fn(), onMouseDown: fn() },
+  args: {
+    loading: true,
+    children: "Sealing",
+    onKeyDown: fn(),
+    onPointerDown: fn(),
+    onMouseDown: fn(),
+    onDoubleClick: fn(),
+    onTouchStart: fn(),
+    onTouchEnd: fn(),
+  },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole("button", { name: "Sealing" });
@@ -258,11 +267,17 @@ export const Loading: Story = {
     await expect(button).toHaveAttribute("aria-disabled", "true");
     await expect(button).not.toHaveAttribute("disabled");
     await userEvent.click(button);
+    await userEvent.dblClick(button);
+    button.dispatchEvent(new TouchEvent("touchstart", { bubbles: true }));
+    button.dispatchEvent(new TouchEvent("touchend", { bubbles: true }));
     await userEvent.keyboard("{Enter} ");
     await expect(args.onClick).not.toHaveBeenCalled();
     await expect(args.onKeyDown).not.toHaveBeenCalled();
     await expect(args.onPointerDown).not.toHaveBeenCalled();
     await expect(args.onMouseDown).not.toHaveBeenCalled();
+    await expect(args.onDoubleClick).not.toHaveBeenCalled();
+    await expect(args.onTouchStart).not.toHaveBeenCalled();
+    await expect(args.onTouchEnd).not.toHaveBeenCalled();
     await expect(button).toHaveFocus();
   },
 };

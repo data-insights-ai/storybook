@@ -38,7 +38,7 @@ type Common = {
   iconOnly?: boolean;
   /**
    * Swaps the icon for a spinner and blocks the press: `onClick` and the key,
-   * pointer and mouse press handlers do not run. The button stays focusable
+   * pointer, mouse, double-click and touch press handlers do not run. The button stays focusable
    * (`aria-disabled`, not `disabled`), so a person who pressed it keeps
    * their place while it works and a screen reader hears it busy.
    */
@@ -89,6 +89,9 @@ const unpressed: Partial<ButtonHTMLAttributes<HTMLButtonElement>> = {
   onPointerUp: undefined,
   onMouseDown: undefined,
   onMouseUp: undefined,
+  onDoubleClick: undefined,
+  onTouchStart: undefined,
+  onTouchEnd: undefined,
 };
 
 /**
@@ -117,7 +120,8 @@ const unpressed: Partial<ButtonHTMLAttributes<HTMLButtonElement>> = {
  *
  * **Accessibility:** a `<button>`, or an `<a>` with `href` or `render`;
  * `loading` sets `aria-busy` and `aria-disabled` and keeps the focus where
- * it was, its press (its click, key, pointer and mouse handlers, and a form's
+ * it was, its press (its click, double-click, key, pointer, mouse and touch
+ * handlers, and a form's
  * submit through it) does nothing; `disabled`
  * is native and leaves the tab order; `shortcut` sets `aria-keyshortcuts`. On a
  * touch screen every button, a small one and a link too, has a hit area of
