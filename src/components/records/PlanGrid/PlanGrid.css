@@ -3,13 +3,29 @@
     container: di-plan / inline-size;
   }
 
+  /* The columns a row holds are counted from the cards drawn: four at most, fewer with fewer plans. */
   .di-plan-grid {
+    --di-plan-wide: 4;
+    --di-plan-half: 2;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: var(--di-gap-16);
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  .di-plan-grid:has(> li:last-child:nth-child(1)) {
+    --di-plan-wide: 1;
+    --di-plan-half: 1;
+  }
+
+  .di-plan-grid:has(> li:last-child:nth-child(2)) {
+    --di-plan-wide: 2;
+  }
+
+  .di-plan-grid:has(> li:last-child:nth-child(3)) {
+    --di-plan-wide: 3;
   }
 
   @container di-plan (min-width: 34rem) {

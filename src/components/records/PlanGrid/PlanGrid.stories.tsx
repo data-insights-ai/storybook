@@ -58,7 +58,9 @@ export const Plans: Story = {
         <PlanFeature>Saved searches</PlanFeature>
         <PlanFeature>Daily digest</PlanFeature>
         <PlanAction>
-          <Button disabled>Coming soon</Button>
+          <Button disabled aria-label="Free: Coming soon">
+            Coming soon
+          </Button>
         </PlanAction>
       </PlanCard>
       <PlanCard
@@ -72,7 +74,9 @@ export const Plans: Story = {
       >
         <PlanFeature>Webhooks</PlanFeature>
         <PlanAction>
-          <Button disabled>Coming soon</Button>
+          <Button disabled aria-label="Team: Coming soon">
+            Coming soon
+          </Button>
         </PlanAction>
       </PlanCard>
       <PlanCard
@@ -92,7 +96,9 @@ export const Plans: Story = {
           </Badge>
         </PlanFeature>
         <PlanAction>
-          <Button disabled>Coming soon</Button>
+          <Button disabled aria-label="Business: Coming soon">
+            Coming soon
+          </Button>
         </PlanAction>
       </PlanCard>
     </PlanGrid>
@@ -101,6 +107,7 @@ export const Plans: Story = {
     const canvas = within(canvasElement);
     const cards = canvas.getAllByRole("listitem").filter((li) => li.classList.contains("di-plan-card"));
     await expect(cards).toHaveLength(4);
+    await expect(canvas.getByRole("button", { name: "Team: Coming soon" })).toBeDisabled();
     // Cards that share a row of the grid share their price and action lines.
     const rows = new Map<number, HTMLElement[]>();
     for (const card of cards) {
@@ -113,6 +120,32 @@ export const Plans: Story = {
         await expect(new Set(tops).size).toBe(1);
       }
     }
+  },
+};
+
+/** Three plans written through a map and Fragments: their slots are drawn, and the row takes three columns. */
+export const InFragments: Story = {
+  render: (args) => (
+    <PlanGrid {...args}>
+      {["Free", "Team", "Business"].map((name) => (
+        <PlanCard key={name} heading={2} name={name} price="€0">
+          <>
+            <PlanFeature>Webhooks</PlanFeature>
+            <PlanAction>
+              <Button>Choose {name}</Button>
+            </PlanAction>
+          </>
+        </PlanCard>
+      ))}
+    </PlanGrid>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getAllByText("Webhooks")).toHaveLength(3);
+    await expect(canvas.getByRole("button", { name: "Choose Team" })).toBeVisible();
+    const cards = [...canvasElement.querySelectorAll(".di-plan-card")];
+    const lefts = new Set(cards.map((card) => Math.round(card.getBoundingClientRect().left)));
+    await expect(lefts.size).toBe(canvasElement.clientWidth >= 960 ? 3 : canvasElement.clientWidth >= 544 ? 2 : 1);
   },
 };
 

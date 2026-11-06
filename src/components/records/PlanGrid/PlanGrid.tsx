@@ -1,5 +1,6 @@
-import { Children, isValidElement, useId, type CSSProperties, type ReactNode } from "react";
+import { isValidElement, useEffect, useId, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
+import { unwrapped } from "../../../internal/slots";
 import { surfaceClass } from "../../../internal/surface";
 import "./PlanGrid.css";
 
@@ -11,21 +12,16 @@ import "./PlanGrid.css";
  * or the action of another. Each card's action sits in the last row, at the
  * same height in every card.
  *
- * Up to four columns (fewer with fewer plans), two on a half-wide block,
- * one on a phone; the columns follow the width of the block, not the
- * window's, and never force it wider.
+ * Up to four columns (fewer with fewer plans, counted from the cards the
+ * list draws), two on a half-wide block, one on a phone; the columns follow
+ * the width of the block, not the window's, and never force it wider.
  *
  * Accessibility: a list named by `label`, one item per plan.
  */
 export function PlanGrid({ label, children }: { label: string; children: ReactNode }) {
-  const count = Children.toArray(children).length;
-  const columns = {
-    "--di-plan-wide": Math.max(1, Math.min(count, 4)),
-    "--di-plan-half": Math.max(1, Math.min(count, 2)),
-  } as CSSProperties;
   return (
     <div className="di-plan-frame">
-      <ul className="di-plan-grid" aria-label={label} style={columns}>
+      <ul className="di-plan-grid" aria-label={label}>
         {children}
       </ul>
     </div>
@@ -37,9 +33,10 @@ export function PlanGrid({ label, children }: { label: string; children: ReactNo
  * ("€9"), `period` what it is for ("a month"), `billing` the one line on how
  * it is billed or what a year costs. `details` are the plan's facts (seats,
  * what an extra seat costs); `note` is a small footnote, a limit or a
- * condition. Its slots, written as children in any order: a `PlanStatus`
- * beside the name, a `PlanFeature` for each thing the plan adds (under
- * `featuresLabel`) and one `PlanAction` at the foot.
+ * condition. Its slots, written as children in any order (also inside
+ * Fragments): a `PlanStatus` beside the name, a `PlanFeature` for each
+ * thing the plan adds (under `featuresLabel`) and one `PlanAction` at the
+ * foot. Anything else is not drawn, and a development build warns.
  *
  * Only the name is bold; the price is set large in the display face, at
  * regular weight.
@@ -70,12 +67,17 @@ export function PlanCard({
   const id = useId();
   const Heading = `h${heading}` as const;
   const slot = { status: [], features: [], action: [] } as Record<string, ReactNode[]>;
-  Children.forEach(children, (child) => {
-    if (!isValidElement(child)) return;
-    if (child.type === PlanStatus) slot.status.push(child);
-    else if (child.type === PlanFeature) slot.features.push(child);
-    else if (child.type === PlanAction) slot.action.push(child);
-  });
+  let dropped = false;
+  for (const child of unwrapped(children)) {
+    if (isValidElement(child) && child.type === PlanStatus) slot.status.push(child);
+    else if (isValidElement(child) && child.type === PlanFeature) slot.features.push(child);
+    else if (isValidElement(child) && child.type === PlanAction) slot.action.push(child);
+    else if (child !== null && child !== undefined && typeof child !== "boolean" && child !== "") dropped = true;
+  }
+  useEffect(() => {
+    if (dropped && typeof process !== "undefined" && process.env.NODE_ENV !== "production")
+      console.warn(`PlanCard "${name}": only PlanStatus, PlanFeature and PlanAction children are drawn.`);
+  }, [dropped, name]);
   return (
     <li className={cx(surfaceClass(), "di-plan-card")} aria-labelledby={id}>
       <div className="di-plan-head">
@@ -93,8 +95,9 @@ export function PlanCard({
         <div className="di-plan-details" />
       ) : (
         <ul className="di-plan-details">
-          {details.map((detail) => (
-            <li key={detail}>{detail}</li>
+          {details.map((detail, i) => (
+            // A detail may repeat another's words; its place keeps the key apart.
+            <li key={`${i}:${detail}`}>{detail}</li>
           ))}
         </ul>
       )}
@@ -122,7 +125,12 @@ export function PlanFeature({ children }: { children: ReactNode }) {
   return <li>{children}</li>;
 }
 
-/** The plan's one action: a `Button`, disabled for a plan that cannot be had yet. */
+/**
+ * The plan's one action: a `Button`, disabled for a plan that cannot be had
+ * yet. Several cards say the same words ("Subscribe", "Coming soon"), so the
+ * button's name carries the plan: `aria-label="Team: Coming soon"`, the
+ * visible words included.
+ */
 export function PlanAction({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
