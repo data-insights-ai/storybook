@@ -235,6 +235,8 @@ export { DensityProvider, densityChoices, useDensity } from "./components/shell/
 export type { Density } from "./components/shell/DensityProvider";
 export type { ResolvedTheme, ThemeChoice } from "./components/shell/ThemeProvider";
 export { SkipLink } from "./components/shell/SkipLink";
+export { BrandLogo } from "./components/shell/BrandLogo";
+export type { BrandLogoShape, BrandLogoSize } from "./components/shell/BrandLogo";
 export { SignIn, SignInVersion } from "./components/shell/SignIn";
 export { Sparkline } from "./components/figures/Sparkline";
 export {

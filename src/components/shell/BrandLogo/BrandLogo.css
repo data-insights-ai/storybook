@@ -1,0 +1,38 @@
+@layer components {
+  .di-brand-logo {
+    display: inline-flex;
+    line-height: 0;
+  }
+
+  .di-brand-logo img {
+    display: block;
+    width: auto;
+  }
+
+  .di-brand-logo-md img {
+    height: var(--di-space-32);
+  }
+
+  /* The hero mark fills its column up to a measure, so it scales with the block, not the window. */
+  .di-brand-logo-hero {
+    width: 100%;
+    max-width: 20rem;
+  }
+
+  .di-brand-logo-hero img {
+    width: 100%;
+    height: auto;
+  }
+
+  .di-brand-logo .di-brand-logo-night {
+    display: none;
+  }
+
+  [data-theme="dark"] .di-brand-logo .di-brand-logo-day {
+    display: none;
+  }
+
+  [data-theme="dark"] .di-brand-logo .di-brand-logo-night {
+    display: block;
+  }
+}
