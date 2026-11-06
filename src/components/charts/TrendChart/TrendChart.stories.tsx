@@ -25,7 +25,7 @@ const balance = days.map((at, i) => ({
   balance: i < 20 ? 300 - i * 6 : null,
   forecast: i >= 19 ? 186 - (i - 19) * 6 : null,
 }));
-const usage = days.map((at, i) => ({ at, soc: 20 + ((i * 7) % 13), reports: 4 + ((i * 3) % 5) }));
+const usage = days.map((at, i) => ({ at, monitoring: 20 + ((i * 7) % 13), reports: 4 + ((i * 3) % 5) }));
 const seats = days.map((at, i) => ({ at, used: Math.min(5, 2 + Math.floor(i / 8)), capacity: 5 }));
 
 /* Every tick and marker label lies inside the chart's own box: none is cut at either edge. */
@@ -187,7 +187,7 @@ export const Dashboard: Story = {
               label="Usage per product by day"
               data={usage}
               series={[
-                { key: "soc", label: "AI SOC", kind: "bar", stack: "u" },
+                { key: "monitoring", label: "Monitoring", kind: "bar", stack: "u" },
                 { key: "reports", label: "Reports", kind: "bar", stack: "u", tone: "compare" },
               ]}
               formatX={short}
@@ -348,7 +348,7 @@ export const German: Story = {
           label="Verbrauch pro Produkt und Tag"
           data={usage}
           series={[
-            { key: "soc", label: "KI-gestütztes Sicherheitszentrum", kind: "bar", stack: "u" },
+            { key: "monitoring", label: "Überwachung aller Standorte", kind: "bar", stack: "u" },
             { key: "reports", label: "Berichte und Auswertungen", kind: "bar", stack: "u", tone: "compare" },
           ]}
           formatX={kurz}

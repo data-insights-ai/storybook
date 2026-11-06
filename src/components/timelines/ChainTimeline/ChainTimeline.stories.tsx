@@ -103,7 +103,7 @@ export const Selected: Story = {
   },
 };
 
-/** A chain the AI SOC withdrew: its last step is marked as such. */
+/** A chain the analysis withdrew: its last step is marked as such. */
 export const Withdrawn: Story = {
   args: {
     label: "Exclusion chain on one device, withdrawn after five minutes",

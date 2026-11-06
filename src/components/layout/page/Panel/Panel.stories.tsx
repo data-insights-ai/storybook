@@ -62,7 +62,7 @@ const balance = days.map((at, i) => ({ at, balance: 300 - i * 4 }));
 const seats = days.map((at, i) => ({ at, used: Math.min(5, 2 + Math.floor(i / 8)) }));
 const short = (iso: string) =>
   new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
-const usage = days.map((at, i) => ({ at, soc: 20 + ((i * 7) % 13), reports: 4 + ((i * 3) % 5) }));
+const usage = days.map((at, i) => ({ at, monitoring: 20 + ((i * 7) % 13), reports: 4 + ((i * 3) % 5) }));
 
 /* The inset of the surface, measured: the same above the first line as below the last. */
 async function sameInset(canvasElement: HTMLElement) {
@@ -360,7 +360,7 @@ export const Dashboard: Story = {
             label="Usage per product by day"
             data={usage}
             series={[
-              { key: "soc", label: "AI SOC", kind: "bar", stack: "u" },
+              { key: "monitoring", label: "Monitoring", kind: "bar", stack: "u" },
               { key: "reports", label: "Reports", kind: "bar", stack: "u", tone: "compare" },
             ]}
             formatX={short}
