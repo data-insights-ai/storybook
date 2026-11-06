@@ -1,4 +1,4 @@
-import { Children, isValidElement, type ElementType, type ReactNode } from "react";
+import { Children, Fragment, isValidElement, type ElementType, type ReactNode } from "react";
 
 /**
  * Splits `children` into the elements of `type` and the rest, so a frame can
@@ -12,4 +12,18 @@ export function takeSlot(children: ReactNode, type: ElementType): [ReactNode[], 
     else rest.push(child);
   });
   return [slot, rest];
+}
+
+/**
+ * The children with every Fragment opened, at any depth, so slots written
+ * inside `<>…</>` (or a list returned from a map) are found like direct ones.
+ */
+export function unwrapped(children: ReactNode): ReactNode[] {
+  const out: ReactNode[] = [];
+  Children.forEach(children, (child) => {
+    if (isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment)
+      out.push(...unwrapped(child.props.children));
+    else out.push(child);
+  });
+  return out;
 }
