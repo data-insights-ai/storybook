@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Bell, Check, Plus, Trash2 } from "lucide-react";
+import { useState } from "react";
 import { expect, fn, userEvent, within } from "storybook/test";
 import { AppShellBar, AppShellBarEnd, AppShellBarKeep } from "../../shell/AppShellBar";
 import { TextField } from "../../forms/text/TextField";
@@ -243,17 +244,64 @@ export const IconOnly: Story = {
   },
 };
 
-/** Busy and unpressable. `aria-busy` says so without a second label. */
+/**
+ * Busy and unpressable. `aria-busy` says so without a second label; it
+ * stays focusable, so the person who pressed it keeps their place.
+ */
 export const Loading: Story = {
   decorators: [onPanel("Register entry")],
   args: { loading: true, children: "Sealing" },
-  play: async ({ canvasElement }) => {
+  play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole("button", { name: "Sealing" });
-    await expect(button).toBeDisabled();
     await expect(button).toHaveAttribute("aria-busy", "true");
+    await expect(button).toHaveAttribute("aria-disabled", "true");
+    await expect(button).not.toHaveAttribute("disabled");
+    await userEvent.click(button);
+    await expect(args.onClick).not.toHaveBeenCalled();
+    await expect(button).toHaveFocus();
   },
 };
+
+function SubmitWhileBusy({ onSubmit }: { onSubmit: () => void }) {
+  const [busy, setBusy] = useState(false);
+  return (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit();
+        setBusy(true);
+      }}
+      style={{ display: "grid", gap: "var(--di-gap-8)", maxWidth: 360 }}
+    >
+      <TextField id="entry-name" label="Entry name" defaultValue="Night shift handover" />
+      <Button type="submit" loading={busy}>
+        {busy ? "Saving" : "Save"}
+      </Button>
+    </form>
+  );
+}
+
+/**
+ * A form's submit button turns busy where it was pressed: the focus stays on
+ * it, and neither a second press nor Enter in a field submits again.
+ */
+export const LoadingKeepsFocus: Story = {
+  decorators: [onPanel("Register entry")],
+  render: () => <SubmitWhileBusy onSubmit={submitted} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    submitted.mockClear();
+    await userEvent.click(canvas.getByRole("button", { name: "Save" }));
+    const busy = await canvas.findByRole("button", { name: "Saving" });
+    await expect(busy).toHaveFocus();
+    await userEvent.click(busy);
+    await userEvent.type(canvas.getByLabelText("Entry name"), "{Enter}");
+    await expect(submitted).toHaveBeenCalledTimes(1);
+  },
+};
+
+const submitted = fn();
 
 export const Disabled: Story = {
   decorators: [onPanel("Licence")],

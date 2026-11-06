@@ -36,7 +36,11 @@ type Common = {
   size?: Size;
   /** A square control: a filter, a pagination arrow, a kebab. */
   iconOnly?: boolean;
-  /** Swaps the icon for a spinner and blocks the press. */
+  /**
+   * Swaps the icon for a spinner and blocks the press. The button stays
+   * focusable (`aria-disabled`, not `disabled`), so a person who pressed it
+   * keeps their place while it works and a screen reader hears it busy.
+   */
   loading?: boolean;
   disabled?: boolean;
   /**
@@ -98,7 +102,9 @@ const drawn = (badge: number | string | undefined) => {
  * address in either case.
  *
  * **Accessibility:** a `<button>`, or an `<a>` with `href` or `render`;
- * `loading` sets `aria-busy`; `shortcut` sets `aria-keyshortcuts`. On a
+ * `loading` sets `aria-busy` and `aria-disabled` and keeps the focus where
+ * it was, its press (and a form's submit through it) does nothing; `disabled`
+ * is native and leaves the tab order; `shortcut` sets `aria-keyshortcuts`. On a
  * touch screen every button, a small one and a link too, has a hit area of
  * at least 40px.
  */
@@ -183,9 +189,22 @@ export function Button(props: ButtonProps | LinkProps | RenderProps) {
     );
   }
 
-  const { type = "button", ...buttonRest } = rest as ButtonHTMLAttributes<HTMLButtonElement>;
+  const { type = "button", onClick, ...buttonRest } = rest as ButtonHTMLAttributes<HTMLButtonElement>;
+  /*
+   * A native `disabled` would drop the focus to the page the moment the
+   * press starts the work; a busy button keeps it and swallows the press
+   * instead, including the click a form's implicit submit sends it.
+   */
+  const busy = loading && !disabled;
   return (
-    <button {...buttonRest} {...own} type={type} disabled={blocked}>
+    <button
+      {...buttonRest}
+      {...own}
+      type={type}
+      disabled={disabled}
+      aria-disabled={busy || undefined}
+      onClick={busy ? (event) => event.preventDefault() : onClick}
+    >
       {content}
     </button>
   );
