@@ -160,14 +160,14 @@ export const groups: Group[] = [
       <PeriodTimeline
         label="Licences"
         rows={[
-          { id: "soc", label: "SOC", spans: [{ start: "2026-01-01", end: "2026-12-31", tone: "ok" }] },
+          { id: "monitoring", label: "Monitoring", spans: [{ start: "2026-01-01", end: "2026-12-31", tone: "ok" }] },
           { id: "api", label: "API", spans: [{ start: "2026-03-01", end: "2026-11-15", tone: "warn" }] },
         ]}
         marker={{ at: "2026-10-31", label: "Today" }}
         formatDate={(iso) =>
           new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" })
         }
-        summary="SOC runs to the end of the year; the API licence ends in two weeks."
+        summary="Monitoring runs to the end of the year; the API licence ends in two weeks."
       />
     ),
   },
