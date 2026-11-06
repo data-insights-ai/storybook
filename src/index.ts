@@ -138,6 +138,7 @@ export {
 } from "./components/layout/page/PageHeader";
 export { Highlight } from "./components/text/Highlight";
 export { Icon } from "./components/text/Icon";
+export { PlanAction, PlanCard, PlanFeature, PlanGrid, PlanStatus } from "./components/records/PlanGrid";
 export { IconTile } from "./components/records/IconTile";
 export { InfiniteTable } from "./components/tables/InfiniteTable";
 export type { InfiniteRowPlace } from "./components/tables/InfiniteTable";

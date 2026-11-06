@@ -1,0 +1,141 @@
+@layer components {
+  .di-plan-frame {
+    container: di-plan / inline-size;
+  }
+
+  .di-plan-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--di-gap-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @container di-plan (min-width: 34rem) {
+    .di-plan-grid {
+      grid-template-columns: repeat(var(--di-plan-half), minmax(0, 1fr));
+    }
+  }
+
+  @container di-plan (min-width: 60rem) {
+    .di-plan-grid {
+      grid-template-columns: repeat(var(--di-plan-wide), minmax(0, 1fr));
+    }
+  }
+
+  /*
+   * Seven rows shared with the cards beside it (subgrid): the tallest
+   * card's content sets each row, so prices, billing lines and actions sit
+   * on one line across the row of cards. An empty slot takes no room.
+   */
+  .di-plan-card {
+    display: grid;
+    grid-row: span 7;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    min-width: 0;
+  }
+
+  .di-plan-card > * {
+    min-width: 0;
+    margin: 0;
+  }
+
+  .di-plan-card > * + *:not(:empty) {
+    margin-top: var(--di-gap-12);
+  }
+
+  .di-plan-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-4) var(--di-gap-8);
+  }
+
+  .di-plan-name {
+    margin: 0;
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-plan-price {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-gap-4) var(--di-gap-8);
+    align-self: end;
+  }
+
+  .di-plan-amount {
+    font-family: var(--di-heading-family);
+    font-size: var(--di-font-size-800);
+    font-weight: var(--di-weight-regular);
+    line-height: var(--di-leading-tight);
+    font-variant-numeric: tabular-nums;
+    color: var(--di-text);
+  }
+
+  .di-plan-period,
+  .di-plan-billing,
+  .di-plan-features-label {
+    font-size: var(--di-font-size-200);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  .di-plan-details,
+  .di-plan-feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+
+  .di-plan-feature-list > li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-4) var(--di-gap-8);
+  }
+
+  .di-plan-feature-list > li::before {
+    content: "";
+    flex: none;
+    width: var(--di-gap-6);
+    height: var(--di-gap-6);
+    border-radius: 50%;
+    background: var(--di-text-muted);
+  }
+
+  .di-plan-features {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-6);
+  }
+
+  .di-plan-note {
+    align-self: end;
+    font-size: var(--di-font-size-100);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+
+  .di-plan-action {
+    display: flex;
+    flex-direction: column;
+    align-self: end;
+  }
+
+  .di-plan-card > .di-plan-action:not(:empty) {
+    margin-top: var(--di-gap-16);
+  }
+}
