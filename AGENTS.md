@@ -115,7 +115,7 @@ Every component lives in `src/components`, under the folder of its Storybook gro
 | `actions/` | Button (primary, secondary, ghost, link, danger, seal, inferred; `badge`; `href` or `render` for a link), Toolbar (list toolbar, selection bar, unsaved changes, form end, row actions, one-line form), FilterBar (the filters above a list on one row; what does not fit folds into its sheet), Menu, CopyValue |
 | `forms/` | `field/` Field (the frame), FieldLabel, FieldHint, FieldConfidence (a field’s `confidence`); `text/` TextField, TextArea, SearchField, QuantityField, FileField; `choice/` Choice (the frame), Checkbox, Radio, ChoiceGroup (`appearance` list, segments, toggles, cards), Switch; `select/` Select, ComboBox, MultiComboBox (`freeEntry` for typed entries); `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker; CreateFlow |
 | `tables/` | DataTable, InfiniteTable, NewEntries |
-| `records/` | RecordCard (`layout` card or row), FactList, ProposalPanel, AttentionList, IconTile |
+| `records/` | RecordCard (`layout` card or row), FactList, ProposalPanel, AttentionList, IconTile, PlanGrid (with PlanCard: a row of plans whose prices and actions line up) |
 | `figures/` | Figure, FigureRow, Sparkline |
 | `text/` | Eyebrow, MetaLine, TextLink, Kbd, Highlight, Icon (with the `IconSet` gallery the docs show); `blocks/` CodeBlock, PointList, PullQuote, TickRule |
 | `status/` | StatusPill, SeverityMark, SealValue, Badge, Tag (`mono`, `pressed`, `onRemove`, `inferred`), LevelMeter (the one track and fill for a meter, a quota, a breakdown row and a field's confidence) |
@@ -135,7 +135,7 @@ The story `title` decides where a component lands in the sidebar, and it is grou
 - `Actions/` — let someone do something: Button, Toolbar, Menu, CopyValue.
 - `Forms/` — let someone enter or choose: labelled controls in `Field/`, `Text/`, `Choice/`, `Select/` and `Dates/`, and CreateFlow.
 - `Tables/` — many rows to scan, sort and filter: DataTable, InfiniteTable, NewEntries.
-- `Records/` — one record or a short list of them: RecordCard, FactList, ProposalPanel, AttentionList, IconTile.
+- `Records/` — one record or a short list of them: RecordCard, FactList, ProposalPanel, AttentionList, IconTile, PlanGrid.
 - `Figures/` — a number: Figure, FigureRow, Sparkline.
 - `Text/` — how text is set: Eyebrow, MetaLine, TextLink, Kbd, Highlight, Icon; `Blocks/` CodeBlock, PointList, PullQuote, TickRule.
 - `Status/` — the state of a thing, inline: StatusPill, SeverityMark, SealValue, Badge, Tag, LevelMeter.
