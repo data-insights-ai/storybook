@@ -125,6 +125,8 @@ export const Form: Story = {
     const email = canvas.getByLabelText("Billing email").getBoundingClientRect().width;
     const seats = canvas.getByLabelText("Seats").getBoundingClientRect().width;
     await expect(email).toBeGreaterThan(seats * 2);
+    const role = canvas.getByLabelText("Default role for new members").getBoundingClientRect().width;
+    await expect(role).toBeLessThan(email);
   },
 };
 

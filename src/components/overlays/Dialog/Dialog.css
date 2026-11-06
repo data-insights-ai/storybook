@@ -296,6 +296,11 @@
     color: var(--di-text-muted);
   }
 
+  /* A dialog's form is the whole of its column: a select lines up with the fields around it and keeps its width on every pick. */
+  .di-dialog-body :is(.di-stack-form, .di-field-stack) > .di-field:has(select) {
+    width: auto;
+  }
+
   .di-dialog-footer {
     display: flex;
     flex-wrap: wrap;

@@ -40,10 +40,12 @@
         appearance: base-select;
       }
 
-      /* The closed control shows its choice on one line; the list shows it whole. */
+      /* The closed control shows its choice on one line, stopping short of the caret; the list shows it whole. */
       .di-select-control {
         align-items: center;
-        overflow: hidden;
+        min-width: 0;
+        overflow: clip;
+        overflow-clip-margin: content-box;
         white-space: nowrap;
       }
 

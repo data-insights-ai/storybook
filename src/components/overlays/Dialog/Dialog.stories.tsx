@@ -6,7 +6,9 @@ import { Fact, FactList } from "../../records/FactList";
 import { CellStack, DataTable, TableBody, TableCell, TableColumn, TableHead, TableRow } from "../../tables/DataTable";
 import { ChoiceGroup } from "../../forms/choice/ChoiceGroup";
 import { Radio } from "../../forms/choice/Radio";
+import { Select } from "../../forms/select/Select";
 import { TextField } from "../../forms/text/TextField";
+import { Stack } from "../../layout/arrange/Stack";
 import { Page } from "../../layout/page/Page";
 import { Panel } from "../../layout/page/Panel";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
@@ -287,7 +289,7 @@ const sources = [
   { name: "Branch office", host: "10.40.1.3" },
 ];
 
-function DockedPage(args: Args) {
+function DockedPage({ children, ...args }: Args) {
   const [open, setOpen] = useState<string | null>(null);
   return (
     <Page width="list">
@@ -319,10 +321,12 @@ function DockedPage(args: Args) {
         </TableBody>
       </DataTable>
       <Dialog {...args} open={open !== null} title={open ?? ""} onClose={() => setOpen(null)}>
-        <FactList layout="columns">
-          <Fact label="Host">{sources.find((s) => s.name === open)?.host}</Fact>
-          <Fact label="State">Collecting</Fact>
-        </FactList>
+        {children ?? (
+          <FactList layout="columns">
+            <Fact label="Host">{sources.find((s) => s.name === open)?.host}</Fact>
+            <Fact label="State">Collecting</Fact>
+          </FactList>
+        )}
       </Dialog>
     </Page>
   );
@@ -342,6 +346,59 @@ export const DockedInAPage: Story = {
     await userEvent.click(link);
     const heading = await within(canvasElement.ownerDocument.body).findByRole("heading", { name: "North hub" });
     await waitFor(() => expect(heading).toHaveFocus());
+  },
+};
+
+function AccessForm() {
+  return (
+    <Stack variant="form">
+      <TextField id="access-name" label="Name" defaultValue="North hub" />
+      <Select id="access-level" label="Access" defaultValue="viewer">
+        <option value="viewer">Viewer</option>
+        <option value="events">Read every collected event in this workspace and export it</option>
+      </Select>
+    </Stack>
+  );
+}
+
+function AccessFormDialog(args: Args) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Panel title="North hub" heading={2}>
+      <Button onClick={() => setOpen(true)}>Edit access</Button>
+      <Dialog {...args} open={open} onClose={() => setOpen(false)}>
+        <AccessForm />
+      </Dialog>
+    </Panel>
+  );
+}
+
+async function expectSelectToKeepTheColumn(body: HTMLElement) {
+  const select = await within(body).findByLabelText<HTMLSelectElement>("Access");
+  const nameWidth = within(body).getByLabelText("Name").getBoundingClientRect().width;
+  await expect(select.getBoundingClientRect().width).toBe(nameWidth);
+  await userEvent.selectOptions(select, "events");
+  await expect(select.getBoundingClientRect().width).toBe(nameWidth);
+}
+
+/** A select in a dialog's form spans the column like the fields around it, whichever option is picked. */
+export const ASelectInAForm: Story = {
+  args: { title: "Edit access", lede: undefined, eyebrow: undefined },
+  render: (args) => <AccessFormDialog {...args} />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("button", { name: "Edit access" }));
+    await expectSelectToKeepTheColumn(canvasElement.ownerDocument.body);
+  },
+};
+
+/** The same in the side column: docked, the form is as narrow as the rail. */
+export const ASelectInADockedForm: Story = {
+  args: { lede: undefined, eyebrow: undefined, children: <AccessForm /> },
+  parameters: { layout: "fullscreen" },
+  render: (args) => <DockedPage {...args} />,
+  play: async ({ canvasElement }) => {
+    await userEvent.click(within(canvasElement).getByRole("link", { name: "North hub" }));
+    await expectSelectToKeepTheColumn(canvasElement.ownerDocument.body);
   },
 };
 

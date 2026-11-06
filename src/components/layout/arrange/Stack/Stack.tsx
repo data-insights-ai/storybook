@@ -15,9 +15,10 @@ import "./Stack.css";
  *
  * `variant="form"` is a form read down one column: fields `--di-rhythm-field`
  * apart and sized by what they take — text, an email address or a URL
- * spans the column, a select is as wide as its options, a number is short.
- * The column stops at `--di-measure-form`, so a field never runs the width
- * of a table. Its buttons follow as the last child. `gap` does not apply.
+ * spans the column, a select is as wide as its options (in a `Dialog` it spans
+ * the column too), a number is short. The column stops at `--di-measure-form`,
+ * so a field never runs the width of a table. Its buttons follow as the last
+ * child. `gap` does not apply.
  */
 export function Stack({
   gap = 16,
