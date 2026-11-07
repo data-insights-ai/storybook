@@ -11,14 +11,37 @@
  * were hand-set, eleven components bound to a primitive token, and the
  * brand pages drew themselves in two colours the palette does not hold.
  *
- * Run: pnpm lint:tokens
+ * Run: pnpm lint:tokens (this library's src)
+ *      di-lint-tokens <dir>... (a product's stylesheets)
+ *
+ * A product's stylesheets get the rules that hold anywhere (space, radius,
+ * type, colour, layer, focus ring) and one of their own: a product sets no
+ * `--di-*` property except the slots in component.css, which exist so a
+ * screen can tune them. Re-pointing a role or inventing a name in the
+ * system's namespace forks the system where nobody can see it.
  */
-import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { join, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const ROOT = new URL("..", import.meta.url).pathname;
-const SRC = join(ROOT, "src");
+const PACKAGE = fileURLToPath(new URL("..", import.meta.url));
+const targets = process.argv.slice(2).filter((a, i, all) => !a.startsWith("--") && all[i - 1] !== "--rule");
+const product = targets.length > 0;
+const ROOT = product ? process.cwd() : PACKAGE;
+const DIRS = product ? targets.map((t) => resolve(t)) : [join(PACKAGE, "src")];
+for (const dir of DIRS) {
+  if (!existsSync(dir)) {
+    console.error(`di-lint-tokens: ${relative(process.cwd(), dir) || dir} does not exist`);
+    process.exit(2);
+  }
+}
 
+/* The slots a product may set: every custom property component.css declares. */
+const SLOTS = new Set(
+  [...readFileSync(join(PACKAGE, "src/styles/tokens/component.css"), "utf8").matchAll(/^\s*(--di-[\w-]+)\s*:/gm)].map(
+    (m) => m[1],
+  ),
+);
 const SPACE = [2, 4, 6, 8, 12, 16, 24, 32, 48, 64, 96];
 const SPACE_PROPS = /\b(gap|row-gap|column-gap|padding|margin)(-(top|right|bottom|left|inline|block)(-(start|end))?)?$/;
 
@@ -42,13 +65,16 @@ const SIZE_FREE =
   /^(border(-[a-z]+)*|outline(-[a-z]+)?|stroke(-[a-z]+)?|text-underline-offset|text-decoration-thickness|transition|animation)$/;
 
 const files = [];
-(function walk(dir) {
+const SKIP = new Set(["node_modules", "dist", ".worktrees", "test-results"]);
+function walk(dir) {
   for (const name of readdirSync(dir)) {
+    if (SKIP.has(name)) continue;
     const full = join(dir, name);
     if (statSync(full).isDirectory()) walk(full);
-    else if (/\.(css|tsx)$/.test(full)) files.push(full);
+    else if ((product ? /\.css$/ : /\.(css|tsx)$/).test(full)) files.push(full);
   }
-})(SRC);
+}
+DIRS.forEach(walk);
 
 /*
  * An exception has to say why. `di-lint-allow <rule>: <reason>` on the line
@@ -66,7 +92,7 @@ function allowed(lines, i, rule) {
   for (let k = i; k >= Math.max(0, i - 40); k--) {
     const m = lines[k].match(/di-lint-allow\s+([\w, ]+):/);
     if (m && m[1].split(/[,\s]+/).includes(rule)) return true;
-    if (k < i && /^\s*\.di-|^\s*}/.test(lines[k])) break;
+    if (k < i && (product ? /\{\s*$|^\s*}/ : /^\s*\.di-|^\s*}/).test(lines[k])) break;
   }
   return false;
 }
@@ -78,9 +104,9 @@ for (const file of files) {
   const text = readFileSync(file, "utf8");
   const lines = text.split("\n");
   const isCss = file.endsWith(".css");
-  const isTokens = TOKEN_FILES.test(file);
+  const isTokens = !product && TOKEN_FILES.test(file);
   const isStory = /\.stories\.tsx$/.test(file);
-  const isComponent = /\/components\//.test(file);
+  const isComponent = !product && /\/components\//.test(file);
   const fileAllows = (rule) => allowedFile(text, rule);
 
   let property = null;
@@ -173,7 +199,7 @@ for (const file of files) {
 
       /* 2. Radius comes from the ramp. */
       const rad = code.match(/^\s*border-radius\s*:\s*([^;]+);/);
-      if (rad && !/var\(|50%|^0$/.test(rad[1].trim()) && /\d+px/.test(rad[1])) {
+      if (rad && !/var\(|50%|^0$/.test(rad[1].trim()) && /\d(px|r?em)\b/.test(rad[1])) {
         add(
           file,
           line,
@@ -183,8 +209,8 @@ for (const file of files) {
       }
 
       /* 3. Type comes from the scale. */
-      const size = code.match(/^\s*font-size\s*:\s*(\d+)px/);
-      if (size) add(file, line, "type", `font-size: ${size[1]}px is raw. Use a --di-font-size-* step.`);
+      const size = code.match(/^\s*font-size\s*:\s*(\d*\.?\d+(?:px|r?em))\b/);
+      if (size) add(file, line, "type", `font-size: ${size[1]} is raw. Use a --di-font-size-* step.`);
 
       /* 4. Colour is a token, never a literal. A hex is correct in daylight
        *    and wrong on the night sheet, because the token flips and it
@@ -211,6 +237,19 @@ for (const file of files) {
           `${prim[0]} is a primitive used directly. Bind to a semantic role, or define a local --di-* from it if this surface re-points its own roles.`,
         );
       }
+    }
+
+    /* 9. A product tunes the slots component.css declares and sets no other
+     *    `--di-*` property: re-pointing a role or inventing a name forks the
+     *    system where Storybook cannot show it. */
+    const own = product && isCss && code.match(/^\s*(--di-[\w-]+)\s*:/);
+    if (own && !SLOTS.has(own[1]) && !fileAllows("token") && !allowed(lines, i, "token")) {
+      add(
+        file,
+        line,
+        "token",
+        `${own[1]} is not a slot a product may set. Use the design system's tokens as they are, or add the token to the design system.`,
+      );
     }
 
     /* 6. The API rule: only ever text is a string prop; anything that can
