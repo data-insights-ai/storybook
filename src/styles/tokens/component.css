@@ -59,6 +59,8 @@
     --di-figure-hero-size: clamp(var(--di-font-size-900), 2rem + 2cqi, var(--di-font-size-1000));
     /* A group's name in a Disclosure: a step under the title of the surface that holds it. */
     --di-disclosure-title-size: var(--di-font-size-400);
+    /* The step from a Disclosure's head to its body, the group's inset by default. A page whose groups hold prose gives it more room. */
+    --di-disclosure-gap: var(--di-inset-group);
 
     /*
      * The brand tier (`tier="brand"`): the display steps and the reading

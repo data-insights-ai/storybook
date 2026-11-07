@@ -119,6 +119,22 @@ export const Medium: Story = { args: { height: "md" } };
 
 export const Night: Story = { globals: { theme: "dark" } };
 
+/** A product's signature chart on its hero: `data-brand` on the region draws the priority trace in the seal's gold. */
+export const Brand: Story = {
+  render: (args) => (
+    <div data-brand>
+      <Panel surface="hero" title="Records per day" heading={2}>
+        <Seismograph {...args} />
+      </Panel>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const hero = within(canvasElement).getByRole("region", { name: "Records per day" });
+    const style = getComputedStyle(hero);
+    await expect(style.getPropertyValue("--di-chart-series")).toBe(style.getPropertyValue("--di-seal-ink"));
+  },
+};
+
 export const Phone: Story = {
   globals: { viewport: { value: "phone", isRotated: false } },
   play: async ({ canvasElement }) => daysClearTheLowerTrace(canvasElement),

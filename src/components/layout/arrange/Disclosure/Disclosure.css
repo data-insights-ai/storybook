@@ -8,7 +8,6 @@
    */
   .di-disclosure {
     --di-disclosure-inset: var(--di-inset-group);
-    --di-disclosure-gap: var(--di-disclosure-inset);
     position: relative;
     isolation: isolate;
     padding: var(--di-disclosure-inset);

@@ -50,137 +50,19 @@ Import the stylesheet once. It carries the tokens, the base rules, and the woff2
 
 The components work under a Content-Security-Policy without `'unsafe-inline'` styles: they set colours through element styles, never style elements. Of Base UI only ScrollArea, Select, Tabs and Slider add a style element, and the package uses none of them.
 
-## Upgrade to 0.20.7
+## Changes between releases
 
-0.20.7 needs no code change. A docked `Dialog` opened from a row stands level with that row's table, and the page scrolls just enough to show it when the table is further down. A page with one list looks as before. A record's `PageAside` keeps the column where it is.
+[CHANGELOG.md](CHANGELOG.md) says what each release changes and what a product has to do to take it.
 
-## Upgrade to 0.20.6
+## Check a product's stylesheets
 
-0.20.6 needs no code change. A `DialogFooter`'s actions stay together in one row. Its `note` takes the row above them where it does not fit beside them, as in a page's side column. The actions now sit in `.di-dialog-footer-actions`, so a selector for a direct child of `.di-dialog-footer` no longer finds them.
+The package ships the token lint the library itself is held to. Run it over the product's own CSS, in its lint target:
 
-## Upgrade to 0.20.5
-
-0.20.5 needs no code change. A page's side column fits the window from wherever it stands, so a long docked `Dialog` opens with its title and actions in view, its body scrolls, and it adds no scroll to a short page. The column ends 32px above the window's edge instead of 16px, the same as the page's end padding. In a very short window it keeps 320px, its own width, and the page scrolls to show the rest.
-
-## Upgrade to 0.20.4
-
-0.20.4 needs no code change. A table row changes its fill under the pointer only when it has `onSelect`, because only then does a click on the row do something. A row that should keep the hover needs `onSelect`.
-
-## Upgrade to 0.19.2
-
-0.19.2 needs no code change. The sidebar's current page is a selection like every other: the pale selection tint with the navy edge (`#A9CBF3` after dark) instead of gold, and the sidebar trigger's hover is the warm inset tone. Gold is left to the one thing in the view. An app that set `--di-sidebar-active` or `--di-sidebar-mark` itself keeps its own values.
-
-## Upgrade to 0.19.1
-
-0.19.1 needs no code change. A `Tag` that acts (`onClick` or `onRemove`) in a toolbar or filter bar is as tall as the fields beside it and keeps its one line; an icon in a tag sits on the line of its words instead of above them.
-
-## Upgrade to 0.19
-
-0.19 needs one code change: `SearchField` no longer takes `size`. A search is as tall as every other field, so drop `size="sm"`.
-
-A toolbar or filter bar is one height. The Filters trigger of a `FilterBar` and the buttons of `ToolbarSelection` are `md` now, the height of the fields beside them. Buttons an app puts in a toolbar beside a field or a search are `md` too: drop their `size="sm"`. `sm` stays for a row of buttons alone, such as a table row's actions.
-
-## Upgrade to 0.18
-
-0.18 needs one code change: every `InfiniteTable` takes `retryLabel`, the words of the footer's button after a page did not arrive.
-
-```tsx
-<InfiniteTable loadingLabel={t("table.loadingMore")} retryLabel={t("table.retry")} … />
+```bash
+pnpm exec di-lint-tokens src
 ```
 
-A fetch that ends (`loadingMore` back to false) without a row more while `hasMore` holds counts as a page that did not arrive: the table no longer calls `onLoadMore` again on its own until the reader presses that button or `count`, `hasMore` or `memoryKey` change, so a failing server is not asked in a loop.
-
-`TableCell` takes `colSpan`: a number of columns, or `"all"` for every column to the row's end, so a separator row is one `<TableRow><TableCell colSpan="all">`. A cell across columns wraps its words instead of widening the grid.
-
-`EventTimeline` breaks its axis by default: a stretch with no bar, event or marker that would take more than a quarter of the plot is drawn as a break a few pixels wide (shaded, the axis and the midline cut by two slashes), in the view and the overview; the time either side keeps one rate. Pass `axis="continuous"` to keep time at one rate throughout.
-
-A side `Dialog` docked in a page's side column now closes when what opened it is pressed again (a button, a link, a selectable row), and that button or link carries `aria-expanded` meanwhile; another row of the same list still shows its record. An opener that set `aria-expanded` itself keeps its own value.
-
-## Upgrade to 0.16
-
-0.16 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.16.0` and move the filter rows over:
-
-- **Filter bar.** `FilterBar` keeps the search and filters above a list on one row at every width. As the bar's own width shrinks, its items fold one by one into the sheet behind the Filters trigger (the lowest `priority` first, among equals the last written) and come back as it grows; those left keep their order, and below 480px of bar only the kept items (the search), the trigger and `FilterBarEnd` stay. Each `FilterBarItem` draws its control for the bar or the sheet from the page's own state, so a filter set inline is still set in the sheet, and while it is folded the trigger counts it. `sheet="complete"` (the default) shows every item in the sheet; `FilterBarSheet` holds fields only the sheet has, counted in `count`. Everything applies as it changes, in the bar and in the sheet (a typed field after about 300ms, as the search); Done only closes, `onClear` clears, and the page keeps no draft. `countLabel` gives the count in words ("2 set"), which the trigger adds to its name. Only direct `FilterBarItem` children are items; the bar needs a parent that can shrink (`min-width: 0` in a flex row). A `Toolbar role="search"` that wrapped, or a "More filters" button with its own `Dialog`, can switch:
-
-  ```tsx
-  <FilterBar label="Filter cases" filtersLabel="Filters" countLabel={(n) => `${n} set`}
-    closeLabel="Close" doneLabel="Done" clearLabel="Clear all" onClear={clear}>
-    <FilterBarItem name="search" keep grow>
-      {(place) => <SearchField id={place === "bar" ? "q" : "q-sheet"} label="Search" value={q} onChange={…} />}
-    </FilterBarItem>
-    <FilterBarItem name="severity" active={severity !== ""}>
-      {(place) => <Select id={`severity-${place}`} label="Severity" hideLabel={place === "bar"} …>…</Select>}
-    </FilterBarItem>
-    <FilterBarEnd><Menu …/></FilterBarEnd>
-  </FilterBar>
-  ```
-
-## Upgrade to 0.15
-
-0.15 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.15.0` and check the brand pages:
-
-- **Named points.** `PointList` sets a band of named points on a brand page, such as trust tiles or what a release carries: each `Point` is a heading (`title`) over a paragraph (the child), side by side down to one column on a phone, and a short last row shares the width. `heading` sets the level every name takes (`2`, `3` by default, or `4`), so the page outline stays right. The heading runs 18 to 20px with the width of the list (`--di-brand-point-title-size`), the paragraph is 16px (`--di-brand-point-body-size`), and the points wrap at `--di-points-min` (240px). A page that built these from its own `div`s, headings and grid can switch:
-
-  ```tsx
-  <PointList heading={3}>
-    <Point title="Works offline">The licence and sign-in ship with the installer.</Point>
-  </PointList>
-  ```
-
-## Upgrade to 0.14.1
-
-0.14.1 needs no code change.
-
-- `Grid fill` lets a short last row share the width: five cards in three columns end in two wider ones instead of an empty cell. A `Panel wide` still takes a row to itself.
-- A `Toolbar` in a table cell keeps its actions on one line, so "Open" and the row's "…" no longer break under each other when another column fills the table.
-
-## Upgrade to 0.14
-
-0.14 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.14.0` and check the brand pages:
-
-- `MenuItem` takes `href`, or `render={<Link to="/de" />}` for a router's link, the way `Button` does: a menu of places (languages, workspaces) holds real links that open in a new tab. `onSelect` is optional on a link item. A local wrapper that made a menu item navigate can go.
-- The brand titles climb faster with the width of their head (`0.5rem + 8cqi` for a page title, `1rem + 4cqi` for a section title, same bounds), so a title in a half-width column no longer sits at its minimum. An app that overrode `--di-brand-title-size` or `--di-brand-section-title-size` to the same values can drop the override.
-
-## Upgrade to 0.13.2
-
-0.13.2 needs no code change. A folded `Disclosure` no longer lengthens the page: an absolutely placed descendant, such as the screen-reader status of a `CopyValue`, is now clipped with the rest of the body.
-
-## Upgrade to 0.13.1
-
-0.13.1 declares what the components already need: React 19 or newer (`react` and `react-dom` `>=19`). Components take `ref` as a prop, which React 18 ignores, so on React 18 a menu or popover never found its trigger. An app on React 18 upgrades React first; no code change is needed after that.
-
-## Upgrade to 0.13
-
-0.13 adds API and needs no code change; bump `@data-insights-ai/ui` to `0.13.0` and check the brand pages:
-
-- **Button links through a router.** `Button` takes `render`, as `TextLink` does: `<Button render={<Link to="/pricing" />} variant="secondary">See pricing</Button>` navigates without a page load. A blocked link (`disabled` or `loading`) is an `<a>` without an address, as with `href`. `Breadcrumb` items and `FlyoutItem` take the same `render`.
-- **Brand tier for questions and facts.** `Disclosure tier="brand"` sets a question at 18 px over a 16 px answer, for an FAQ. `FactList tier="brand"` sets any layout to be read: values at 16 px, a label beside them at 14 px, a caption above them at 12 px. A page that restyled `.di-disclosure-title` or replaced `FactList` with its own `<dl>` can switch back.
-- **Brand titles follow their column.** The brand title (`PageHeader tier="brand"`), its section title, `PullQuote` and the hero `Figure` are sized by the width of the block they stand in, not the window's: a title in half a page is set for half a page. `PullQuote` takes the full width of its column.
-- **Long words hyphenate.** Every heading hyphenates words of twelve letters or more in the language its `lang` names ("Sicherheits-produkte") instead of breaking them without a hyphen. Set `lang` on the document or the section.
-- **Size variables.** Tune a size by its variable, never by restyling a class: `--di-brand-title-size`, `--di-brand-section-title-size`, `--di-brand-lede-size`, `--di-brand-quote-size`, `--di-figure-hero-size`, `--di-disclosure-title-size`, `--di-brand-disclosure-title-size`, `--di-brand-disclosure-body-size`, `--di-brand-fact-label-size`, `--di-brand-fact-caption-size`, `--di-brand-fact-value-size` and `--di-brand-fact-statement-size`. Set one on the element that holds the block, or on `:root`.
-- **Phones.** Above a page title the breadcrumb shows the way back to the parent ("← Watchlists"), not the current page again. Side, centre and bottom dialogs follow the visible part of the window, so an on-screen keyboard no longer slides a sheet off the page behind it, and the page behind no longer scrolls in Safari. A date input keeps the width it is given.
-- **Dialogs.** A dialog opened from an end-aligned table cell or toolbar reads from the start again. `DialogFooter note` says at the footer's start why the action waits ("Choose at least one permission"); put no text between the buttons.
-- **A secret shown once.** `SecretReveal` shows a new API key or enrollment token: why to copy it now, the whole value left to right in a box of its own, and a "Copy key" button that confirms. Use it in place of a `Notice` over a `CopyValue`.
-- **Notifications.** `FlyoutItem detail` adds a line under the title for where and by whom ("Production · Alex Admin"); unread entries keep their dot, so no unread badge is needed.
-- **Breadcrumbs take the eyebrow's place.** A `PageHeader` with `PageHeaderCrumbs` no longer draws its `eyebrow`: a detail page names where it belongs once, in one line.
-- **Switches.** A switch in `layout="row"` stays within a reading width (`--di-switch-row-width`, 36rem) of its label instead of the far edge of a wide form. A single switch in a form keeps the default `inline` layout, control first; `row` is for a column of settings.
-- **Toolbars.** The search field shrinks before a filter wraps to a second row, and stops growing at 28rem.
-- **Danger zone.** A `Panel tone="danger"` with `heading={2}` is named at a `DetailSection` title's size, so it reads as one more section of the page; its edge marks it.
-- **More on a phone.** A tap on the bar's "More" before its popover has loaded opens it once loaded instead of being lost.
-
-## Upgrade to 0.12
-
-0.12 needs no code change; bump `@data-insights-ai/ui` to `0.12.0` and check the screens:
-
-- **Sidebar.** Ivory `#fbf8f1` in daylight, a step lighter than the page; near black `#081221` after dark, a step deeper. The current page is marked by a gold edge (`--di-sidebar-mark`: gold 700 in daylight, gold 400 after dark).
-- **Page head.** The page name scales with the head from 28 px on a phone to 34 px on a desk; the lede is 16 px. Leave a little more room above the fold on a phone.
-- **Panels.** A `Panel` with `heading={2}` is a section of the page and names itself at 20 px; other panel titles stay at 16 px.
-- **CopyValue.** A value of several lines (a command, a configuration) keeps its lines and indent and wraps at spaces; a one-line value still wraps only at address boundaries.
-- **App bar (0.12.1).** The overflow menu of `AppShellBarEnd` loads when the end folds, not with the first page; a product that raised its first-page budget for the popover can lower it again.
-
-## Upgrade to 0.11
-
-0.11 merges many components into fewer and removes the old names and props outright: there are no aliases, wrappers or ignored props to fall back on. [MIGRATION-0.11.md](MIGRATION-0.11.md) lists each change as old → new with a short example, grouped by component. The Storybook sidebar is regrouped into those fourteen groups, so story links change; imports from the package do not.
+It fails on spacing off the `--di-space-*` ramp, a hand-set radius, a raw font size, a hex colour, a primitive token used directly (`--di-navy-900`, `--di-font-mono`), an outline off the focus-ring model, and any `--di-*` property the product sets other than the slots in `component.css` (sizes a page may tune, such as `--di-page-title-size` and `--di-disclosure-gap`, and the per-component slots). A token a product needs belongs in the design system. An exception says why, in a comment the lint reads: `/* di-lint-allow colour: <reason> */` inside the block, or `di-lint-allow-file <rule>: <reason>` at the top of the file.
 
 ## Context and repeated views
 

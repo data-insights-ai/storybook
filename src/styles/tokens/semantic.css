@@ -383,8 +383,9 @@
   }
 
   /*
-   * A brand moment — sign-in, onboarding, a licence or certificate seal —
-   * maps the record mark back to the seal's gold. Repeated on a themed
+   * A brand moment — sign-in, onboarding, a licence or certificate seal, a
+   * product's signature chart — maps the record mark and the chart's
+   * series back to the seal's gold. Repeated on a themed
    * region inside it, which would otherwise redeclare the neutral mark.
    * `data-brand="false"` opts a region out. A portal (a tooltip, a menu, a
    * popover) renders outside the region and so draws the neutral mark.
@@ -392,6 +393,7 @@
   [data-brand]:not([data-brand="false"]),
   [data-brand]:not([data-brand="false"]) [data-theme] {
     --di-mark: var(--di-seal);
+    --di-chart-series: var(--di-seal-ink);
     --di-mark-ring: var(--di-ai-ring);
     --di-mark-surface: var(--di-ai-surface);
     --di-mark-border: var(--di-seal-border);
