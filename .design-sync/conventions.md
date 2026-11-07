@@ -113,7 +113,7 @@ There is no utility-class system. Style your own layout glue with `var(--di-*)`;
 | The one thing | `--di-one`, `--di-one-edge`, `--di-one-ink` (navy in daylight, gold after dark) |
 | Selection | `--di-select`, `--di-focus`, `--di-sidebar-focus` (navy-700, `#A9CBF3` after dark), `--di-sidebar-mark` (the sidebar's current page, gold), `--di-focus-ring-on-strong`, `--di-inverse-focus`, `--di-bg-selected` (the pale tint) |
 | Severity | `--di-severity-{critical,high,medium,low,info}` |
-| Record marks | `--di-mark`, `--di-mark-ring`, `--di-mark-surface`, `--di-mark-ink` (neutral; gold inside `data-brand`, which also draws `--di-chart-series` in the seal's gold for a product's signature chart); `--di-seal` only in a brand moment |
+| Record marks | `--di-mark`, `--di-mark-ring`, `--di-mark-surface`, `--di-mark-ink` (neutral; gold inside `data-brand`, which also draws `--di-chart-series` in the seal's gold and `--di-chart-highlight` in the text's ink for a product's signature chart); `--di-seal` only in a brand moment |
 | Marked match | `--di-highlight-tint`, `--di-highlight-ink`, `--di-highlight-weight` (`Highlight`) |
 | Motion | `--di-duration` (120ms), `--di-duration-slow` (200ms), `--di-ease` |
 | Control height | `--di-control-h-sm` (28), `--di-control-h-md` (32, the standard), `--di-control-h-lg` (36), `--di-row-h` (40); compact 24 / 28 / 32 / 32 |

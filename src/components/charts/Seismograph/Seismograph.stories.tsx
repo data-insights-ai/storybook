@@ -24,6 +24,19 @@ async function daysClearTheLowerTrace(canvasElement: HTMLElement) {
   }
 }
 
+/** WCAG contrast of two opaque `rgb()` colours. */
+function contrast(a: string, b: string) {
+  const luminance = (colour: string) => {
+    const [r, g, b] = (colour.match(/[\d.]+/g) ?? []).slice(0, 3).map((v) => {
+      const c = Number(v) / 255;
+      return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
 const day = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 
 const meta = {
@@ -119,8 +132,9 @@ export const Medium: Story = { args: { height: "md" } };
 
 export const Night: Story = { globals: { theme: "dark" } };
 
-/** A product's signature chart on its hero: `data-brand` on the region draws the priority trace in the seal's gold. */
+/** A product's signature chart on its hero: `data-brand` on the region draws the priority trace in the seal's gold and the selected day in the text's ink. */
 export const Brand: Story = {
+  args: { selectedAt: "2026-10-02" },
   render: (args) => (
     <div data-brand>
       <Panel surface="hero" title="Records per day" heading={2}>
@@ -132,6 +146,13 @@ export const Brand: Story = {
     const hero = within(canvasElement).getByRole("region", { name: "Records per day" });
     const style = getComputedStyle(hero);
     await expect(style.getPropertyValue("--di-chart-series")).toBe(style.getPropertyValue("--di-seal-ink"));
+    const highlight = style.getPropertyValue("--di-chart-highlight");
+    await expect(highlight).toBe(style.getPropertyValue("--di-text"));
+    for (const series of ["--di-chart-series", "--di-chart-compare", "--di-chart-muted-strong"]) {
+      await expect(highlight).not.toBe(style.getPropertyValue(series));
+    }
+    const thumb = canvasElement.querySelector(".di-seismograph-thumb")!;
+    await expect(contrast(getComputedStyle(thumb).backgroundColor, style.backgroundColor)).toBeGreaterThanOrEqual(3);
   },
 };
 
