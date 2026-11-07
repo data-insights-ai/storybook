@@ -60,10 +60,12 @@ export function CompletingTextArea({
   className?: string;
 }) {
   const ref = useRef<HTMLTextAreaElement>(null);
-  const [open, setOpen] = useState<Completion>();
+  // A completion holds for the text and caret it was made for; a moved caret or
+  // a value set from outside drops it, so Enter and Tab never splice elsewhere.
+  const [open, setOpen] = useState<{ completion: Completion; text: string; caret: number }>();
   const [active, setActive] = useState(0);
   const listId = `${id}-suggestions`;
-  const shown = open && open.items.length > 0 ? open : undefined;
+  const shown = open && open.text === value && open.completion.items.length > 0 ? open.completion : undefined;
 
   const take = (choice: string) => {
     if (!shown) return;
@@ -111,10 +113,14 @@ export function CompletingTextArea({
         aria-describedby={hint === "" ? undefined : `${id}-hint`}
         onChange={(e) => {
           onValueChange(e.target.value);
-          setOpen(suggest(e.target.value, e.target.selectionStart));
+          const completion = suggest(e.target.value, e.target.selectionStart);
+          setOpen(completion && { completion, text: e.target.value, caret: e.target.selectionStart });
           setActive(0);
         }}
         onKeyDown={onKeyDown}
+        onSelect={(e) => {
+          if (open && e.currentTarget.selectionStart !== open.caret) setOpen(undefined);
+        }}
         onBlur={() => setOpen(undefined)}
       />
       {shown ? (
@@ -122,7 +128,7 @@ export function CompletingTextArea({
           <ul id={listId} role="listbox" aria-label={suggestionsLabel} className="di-completing-list">
             {shown.items.map((item, i) => (
               <li
-                key={item.value}
+                key={`${item.value} ${item.meta ?? ""}`}
                 id={`${listId}-${i}`}
                 role="option"
                 aria-selected={i === active}

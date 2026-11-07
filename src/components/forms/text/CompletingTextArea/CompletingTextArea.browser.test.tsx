@@ -59,3 +59,17 @@ test("arrows move the highlight, Tab takes it, Escape closes, and focus stays in
   expect(host.querySelector("[role=listbox]")).toBeNull();
   expect(field.hasAttribute("aria-activedescendant")).toBe(false);
 });
+
+test("a moved caret drops the list, so Enter makes a new line instead of taking a completion", async () => {
+  const host = document.createElement("div");
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() => root!.render(<Field />));
+  const field = host.querySelector("textarea")!;
+  await userEvent.click(field);
+  await userEvent.keyboard("a ev");
+  expect(host.querySelector("[role=listbox]")).not.toBeNull();
+  await userEvent.keyboard("{ArrowLeft}{Enter}");
+  expect(field.value).toBe("a e\nv");
+  expect(host.querySelector("[role=listbox]")).toBeNull();
+});
