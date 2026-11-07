@@ -1,0 +1,40 @@
+@layer components {
+  /* The list opens under the text, over what follows, as wide as the field. */
+  .di-completing {
+    position: relative;
+  }
+
+  .di-completing-popover {
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    right: 0;
+    left: 0;
+    max-height: var(--di-listbox-max-h);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--di-gap-4);
+    border: 1px solid var(--di-border-strong);
+    border-radius: var(--di-radius-control);
+    background: var(--di-bg-surface);
+    color: var(--di-text);
+    box-shadow: var(--di-shadow-plane);
+  }
+
+  .di-completing-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* The keyboard's highlight keeps a focus ring, as in a ComboBox. */
+  .di-completing-option[data-highlighted] {
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
+  .di-completing-option .di-option-meta {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+}
