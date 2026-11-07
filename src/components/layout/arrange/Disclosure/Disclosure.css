@@ -248,9 +248,9 @@
     min-width: 0;
   }
 
-  /* On a phone the meta goes under the title rather than squeezing it. */
+  /* On a phone the meta goes under the title rather than squeezing it, with either toggle. */
   @media (max-width: 600px) {
-    button.di-disclosure-head {
+    .di-disclosure-head {
       flex-wrap: wrap;
     }
 
@@ -258,7 +258,11 @@
       flex-basis: calc(100% - var(--di-icon-md) - var(--di-gap-12));
     }
 
-    button.di-disclosure-head > .di-disclosure-meta {
+    div.di-disclosure-head > :is(.di-disclosure-lead, .di-disclosure-heading, .di-disclosure-titles) {
+      flex-basis: 0;
+    }
+
+    .di-disclosure-head > .di-disclosure-meta {
       order: 3;
       justify-content: flex-start;
       flex: 1 1 100%;
