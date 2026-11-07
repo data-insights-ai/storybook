@@ -51,6 +51,8 @@ export type {
   ResolvedDateRange,
 } from "./components/forms/dates/dateRange";
 export type { FieldConfidenceReading } from "./components/forms/field/FieldConfidence";
+export { CompletingTextArea } from "./components/forms/text/CompletingTextArea";
+export type { Completion } from "./components/forms/text/CompletingTextArea";
 export { ConfirmDialog } from "./components/overlays/ConfirmDialog";
 export { CopyValue } from "./components/actions/CopyValue";
 export { SecretReveal } from "./components/actions/SecretReveal";
