@@ -36,6 +36,7 @@ function Expression(props: { hint?: string; hintTone?: "neutral" | "error" }) {
       onValueChange={setValue}
       suggest={suggest}
       suggestionsLabel="Event fields"
+      suggestionsCount={(n) => `${n} suggestions`}
       {...props}
     />
   );
@@ -65,6 +66,7 @@ const args = {
   onValueChange: () => {},
   suggest,
   suggestionsLabel: "Event fields",
+  suggestionsCount: (n: number) => `${n} suggestions`,
 };
 
 export const Completing: StoryObj<typeof meta> = {

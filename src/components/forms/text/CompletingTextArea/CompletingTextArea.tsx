@@ -28,6 +28,7 @@ export function CompletingTextArea({
   onValueChange,
   suggest,
   suggestionsLabel,
+  suggestionsCount,
   hint = "",
   hintTone = "neutral",
   labelTrack = "record",
@@ -47,6 +48,8 @@ export function CompletingTextArea({
   suggest: (text: string, caret: number) => Completion | undefined;
   /** The list's accessible name. */
   suggestionsLabel: string;
+  /** Announced when the list opens or changes, e.g. "3 suggestions"; the text stays a textbox, so screen readers learn of the list from this. */
+  suggestionsCount: (count: number) => string;
   hint?: string;
   hintTone?: HintTone;
   labelTrack?: LabelTrack;
@@ -146,6 +149,9 @@ export function CompletingTextArea({
           </ul>
         </div>
       ) : null}
+      <span className="di-sr" role="status" aria-live="polite">
+        {shown ? suggestionsCount(shown.items.length) : ""}
+      </span>
       <FieldHint id={`${id}-hint`} tone={hintTone}>
         {hint}
       </FieldHint>

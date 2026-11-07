@@ -37,6 +37,7 @@ function Field() {
       onValueChange={setValue}
       suggest={suggest}
       suggestionsLabel="Fields"
+      suggestionsCount={(n) => `${n} fields`}
     />
   );
 }
@@ -51,6 +52,7 @@ test("arrows move the highlight, Tab takes it, Escape closes, and focus stays in
   await userEvent.keyboard("a ev");
   expect(host.querySelector("[role=listbox]")).not.toBeNull();
   expect(field.getAttribute("aria-activedescendant")).toBe("x-suggestions-0");
+  expect(host.querySelector("[role=status]")?.textContent).toBe("2 fields");
   await userEvent.keyboard("{ArrowDown}{Tab}");
   expect(field.value).toBe("a evidence");
   expect(document.activeElement).toBe(field);
