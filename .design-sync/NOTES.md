@@ -1,7 +1,7 @@
 # design-sync notes
 
 Repo: datAInsights Storybook, public — https://github.com/data-insights-ai/storybook
-Target project: "datAInsights Register" (`50fa49a6-04d7-435a-8d5c-567ff7cc04e7`)
+Target project: "datAInsights Register"; its id is `projectId` in `config.json`.
 Package: `@data-insights-ai/ui`. pnpm (`pnpm@12.5.1`, node >=22.12.0),
 `pnpm i --frozen-lockfile`.
 
@@ -356,7 +356,7 @@ exists.
 ## Guidance split
 
 `AGENTS.md` is for agents working in the repo; `.design-sync/conventions.md` is
-for the design agent. Same split as `~/code/frontend-template`. Note that
+for the design agent. Same split as the frontend-template repo. Note that
 repo's **"don't invent components"** rule lives only in its `CLAUDE.md`, so its
 design agent is never told — a gap that matters more here, because the
 claude.ai/design agent *cannot* create a component and will improvise markup
@@ -461,7 +461,7 @@ means the native binary pnpm 12 installs via a build script was skipped, leaving
 ENOEXEC (-8) when a program spawns that path directly. Idempotent fix:
 
 ```sh
-P=~/Library/pnpm/.tools/pnpm/12.5.1/node_modules/pnpm
+P="$PNPM_HOME"/.tools/pnpm/12.5.1/node_modules/pnpm
 node $P/bin/pnpm.mjs --version   # fetches the @pnpm/exe.<target> package
 node $P/install.js               # relinks the native binary over the placeholder
 ```
