@@ -210,36 +210,31 @@
   }
 
   /*
-   * The close button is drawn as its icon, on the title's line, so the
-   * head keeps one inset; its hit area is a box around it, the control's
-   * height, and 40px on a touch screen.
+   * The close button is its whole hit area, the control's height (40px on
+   * a touch screen), around an icon on the title's line: negative margins
+   * lay it out as one line of the head and keep the icon on the inset. Its
+   * reach past the icon stops a control's clearance short of the edge.
    */
   .di-dialog-close {
     --di-dialog-close-hit: var(--di-control-h-md);
-    position: relative;
+    --di-dialog-close-reach: calc((var(--di-dialog-close-hit) - var(--di-icon-md)) / 2);
+    --di-dialog-close-end: min(var(--di-dialog-close-reach), var(--di-dialog-inset) - var(--di-gap-12));
     display: inline-flex;
     flex: none;
     align-items: center;
     justify-content: center;
+    box-sizing: content-box;
     width: var(--di-icon-md);
-    height: var(--di-icon-md);
-    padding: 0;
+    height: var(--di-dialog-close-hit);
+    margin-block: calc((1lh - var(--di-dialog-close-hit)) / 2);
+    margin-inline: calc(-1 * var(--di-dialog-close-reach)) calc(-1 * var(--di-dialog-close-end));
+    padding: 0 var(--di-dialog-close-end) 0 var(--di-dialog-close-reach);
     border: 0;
-    border-radius: var(--di-radius-micro);
+    border-radius: var(--di-radius-control);
     background: transparent;
     color: var(--di-text-muted);
+    font: inherit;
     cursor: pointer;
-  }
-
-  .di-dialog-close::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: var(--di-dialog-close-hit);
-    height: var(--di-dialog-close-hit);
-    border-radius: var(--di-radius-control);
-    translate: -50% -50%;
     transition: background-color var(--di-duration) var(--di-ease);
   }
 
@@ -250,25 +245,17 @@
   }
 
   .di-dialog-close:hover {
+    background: var(--di-row-hover-bg);
     color: var(--di-text);
   }
 
-  .di-dialog-close:hover::before {
-    background: var(--di-row-hover-bg);
-  }
-
+  /* The button reaches to the head inset; its ring is drawn inside it, where the plane cannot clip it. */
   .di-dialog-close:focus-visible {
-    outline: none;
-  }
-
-  /* The hit box reaches to the head inset; its ring is drawn inside it, where the plane cannot clip it. */
-  .di-dialog-close:focus-visible::before {
     outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
     outline-offset: var(--di-focus-ring-inset);
   }
 
   .di-dialog-close > svg {
-    position: relative;
     width: var(--di-icon-md);
     height: var(--di-icon-md);
   }
