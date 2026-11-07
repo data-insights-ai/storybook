@@ -228,7 +228,8 @@
     height: var(--di-dialog-close-hit);
     margin-block: calc((1lh - var(--di-dialog-close-hit)) / 2);
     margin-inline: calc(-1 * var(--di-dialog-close-reach)) calc(-1 * var(--di-dialog-close-end));
-    padding: 0 var(--di-dialog-close-end) 0 var(--di-dialog-close-reach);
+    padding-block: 0;
+    padding-inline: var(--di-dialog-close-reach) var(--di-dialog-close-end);
     border: 0;
     border-radius: var(--di-radius-control);
     background: transparent;
