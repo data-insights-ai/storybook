@@ -20,7 +20,7 @@
  * screen can tune them. Re-pointing a role or inventing a name in the
  * system's namespace forks the system where nobody can see it.
  */
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -29,6 +29,12 @@ const targets = process.argv.slice(2).filter((a, i, all) => !a.startsWith("--") 
 const product = targets.length > 0;
 const ROOT = product ? process.cwd() : PACKAGE;
 const DIRS = product ? targets.map((t) => resolve(t)) : [join(PACKAGE, "src")];
+for (const dir of DIRS) {
+  if (!existsSync(dir)) {
+    console.error(`di-lint-tokens: ${relative(process.cwd(), dir) || dir} does not exist`);
+    process.exit(2);
+  }
+}
 
 /* The slots a product may set: every custom property component.css declares. */
 const SLOTS = new Set(

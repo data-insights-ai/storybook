@@ -385,7 +385,9 @@
   /*
    * A brand moment — sign-in, onboarding, a licence or certificate seal, a
    * product's signature chart — maps the record mark and the chart's
-   * series back to the seal's gold. Repeated on a themed
+   * series back to the seal's gold. After dark that series and
+   * --di-chart-highlight are the same gold, so a chart there marks its
+   * selection by form (the dashed line and thumb), not by colour. Repeated on a themed
    * region inside it, which would otherwise redeclare the neutral mark.
    * `data-brand="false"` opts a region out. A portal (a tooltip, a menu, a
    * popover) renders outside the region and so draws the neutral mark.
