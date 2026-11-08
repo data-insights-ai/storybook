@@ -22,13 +22,14 @@ import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";
 import { MARK_BAND, markerRows, Markers } from "./marks/Markers";
 import { gutterOf, SCORE_H, scaleValues, ScoreTrack, valueAt } from "./marks/ScoreTrack";
 import { AXIS_H, AxisLine, TimeAxis } from "./marks/TimeAxis";
-import { totalOf, Waveform } from "./marks/Waveform";
+import { Waveform } from "./marks/Waveform";
 import { Controls } from "./navigation/Controls";
 import { Overview } from "./navigation/Overview";
 import { useGestures } from "./navigation/useGestures";
 import type { TimelineNavigation } from "./navigation/useTimelineView";
 import { activityOf, brokenScaleOf, clockFormats, gapsBetween, ticksAcross } from "../scale";
 import { zoomAround, type Span } from "../scale";
+import { barAt, declaredBars, drawnSeries, seriesColor, seriesOrder, totalOf } from "../series";
 import type {
   TimelineBar,
   TimelineEvent,
@@ -36,8 +37,8 @@ import type {
   TimelineLane,
   TimelineMarker,
   TimelineScore,
+  TimelineSeries,
   TimelineTarget,
-  TimelineTone,
 } from "../types";
 import { useWidth } from "../../../internal/useWidth";
 import "./EventTimeline.css";
@@ -46,12 +47,6 @@ const WAVE_H = 136;
 const GAP = 8;
 const PICK_PX = 10;
 const READOUT_GAP = 12;
-const TONES: TimelineTone[] = ["danger", "warn", "neutral"];
-const TONE_COLOR: Record<TimelineTone, string> = {
-  danger: "var(--di-chart-danger)",
-  warn: "var(--di-chart-warn)",
-  neutral: "var(--di-chart-routine)",
-};
 const NO_BARS: TimelineBar[] = [];
 const NO_LANES: TimelineLane[] = [];
 const NO_MARKERS: TimelineMarker[] = [];
@@ -61,9 +56,10 @@ const ReadoutPlace = createContext<{ x: number; plot: number } | null>(null);
 
 /**
  * Many events on one clock, from weeks down to the millisecond: bars that
- * fold the events into buckets, mirrored and ringed by tone with the
- * severest at the core, and the events themselves once they are far enough
- * apart. Lanes split them by kind underneath, folded until the reader opens
+ * fold the events into buckets, mirrored and ringed by series in the order
+ * `series` declares them, the first at the core, and the events themselves,
+ * one line each, once they are far enough apart. A series is a kind, not a
+ * rank: its colour is a categorical step and implies no severity. Lanes split them by kind underneath, folded until the reader opens
  * them, since the bars already tell the shape; markers carry what happened
  * to the record, and an optional score runs above on the same clock.
  *
@@ -95,14 +91,14 @@ export function EventTimeline({
   zoomOutLabel,
   backLabel,
   wholeLabel,
-  toneLabels,
+  series: declared,
   scaleNote,
   locale,
   timeZone,
   loading,
-  bars = NO_BARS,
-  overviewBars = NO_BARS,
-  events,
+  bars: givenBars = NO_BARS,
+  overviewBars: givenOverview = NO_BARS,
+  events: given,
   lanes = NO_LANES,
   lanesLabel = "",
   markers = NO_MARKERS,
@@ -124,7 +120,8 @@ export function EventTimeline({
   zoomOutLabel: string;
   backLabel: string;
   wholeLabel: string;
-  toneLabels: Record<TimelineTone, string>;
+  /** The kinds of event the bars and lines tell apart, in the order they are stacked and listed in the key. */
+  series: TimelineSeries[];
   /** What a bar's or a line's height means at the current zoom. */
   scaleNote: string;
   locale: string;
@@ -147,6 +144,12 @@ export function EventTimeline({
   children?: ReactNode;
 }) {
   const id = useId();
+  const series = useMemo(() => drawnSeries(declared, "EventTimeline"), [declared]);
+  const order = useMemo(() => seriesOrder(series), [series]);
+  // What is not drawn is not picked, hovered or counted either.
+  const events = useMemo(() => given?.filter((e) => order.has(e.series)), [given, order]);
+  const bars = useMemo(() => declaredBars(givenBars, order), [givenBars, order]);
+  const overviewBars = useMemo(() => declaredBars(givenOverview, order), [givenOverview, order]);
   const [lanesOpen, setLanesOpen] = useState(false);
   const [frame, framePx] = useWidth<HTMLDivElement>();
   const { view, bounds, change, measure } = navigation;
@@ -178,7 +181,11 @@ export function EventTimeline({
     [view, plotPx, scale.breaks, clock],
   );
   const peak = useMemo(() => Math.max(0, ...bars.map(totalOf)), [bars]);
-  const cells = useMemo(() => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events)])), [lanes, events]);
+
+  const cells = useMemo(
+    () => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events, order)])),
+    [lanes, events, order],
+  );
   const counts = new Map(
     lanes.map((lane) => {
       const count = countIn(cells.get(lane.id) ?? [], view);
@@ -193,7 +200,7 @@ export function EventTimeline({
       if (hit) {
         onEventPick?.(hit);
       }
-    } else if (bars.some((b) => b.start <= at && at < b.end)) {
+    } else if (barAt(givenBars, at, order)) {
       change(zoomAround(view, at, 0.25, bounds), true);
     }
   };
@@ -217,9 +224,9 @@ export function EventTimeline({
       const event = nearestEvent(events, scale, hoverPx, PICK_PX);
       return event ? { ...scored, kind: "event", event } : { ...scored, kind: "gap" };
     }
-    const bar = bars.find((b) => b.start <= at && at < b.end);
+    const bar = barAt(givenBars, at, order);
     return bar ? { ...scored, kind: "bar", bar } : { ...scored, kind: "gap" };
-  }, [hoverPx, gestures.brush, loading, scale, score, events, bars]);
+  }, [hoverPx, gestures.brush, loading, scale, score, events, givenBars, order]);
 
   // Reported when what is under the pointer changes, not on every render that rebuilds it.
   const hoverKey = !target
@@ -271,7 +278,15 @@ export function EventTimeline({
       <div className="di-timeline-frame" ref={frame}>
         {plotPx > 0 ? (
           <>
-            <Overview bars={overviewBars} scale={whole} bounds={bounds} view={view} plotPx={plotPx} onView={change} />
+            <Overview
+              bars={overviewBars}
+              series={series}
+              scale={whole}
+              bounds={bounds}
+              view={view}
+              plotPx={plotPx}
+              onView={change}
+            />
             <div
               ref={stageRef}
               className="di-timeline-stage"
@@ -313,15 +328,23 @@ export function EventTimeline({
                   ) : null}
                   <AxisLine y={mid} plotPx={plotPx} breaks={scale.breaks} className="di-timeline-axisline" />
                   {events ? (
-                    <Events events={events} scale={scale} plotPx={plotPx} mid={mid} half={half} />
+                    <Events events={events} series={series} scale={scale} plotPx={plotPx} mid={mid} half={half} />
                   ) : (
                     <g transform={`translate(0 ${waveTop})`}>
-                      <Waveform bars={bars} scale={scale} plotPx={plotPx} mid={WAVE_H / 2} half={half} peak={peak} />
+                      <Waveform
+                        bars={bars}
+                        series={series}
+                        scale={scale}
+                        plotPx={plotPx}
+                        mid={WAVE_H / 2}
+                        half={half}
+                        peak={peak}
+                      />
                     </g>
                   )}
                   {highlighted?.map((e) => {
                     const x = scale.x(e.at);
-                    const reach = reachOf(e, half);
+                    const reach = reachOf(half);
                     return (
                       <line
                         key={e.id}
@@ -329,7 +352,8 @@ export function EventTimeline({
                         x2={x}
                         y1={mid - reach}
                         y2={mid + reach}
-                        className={`di-timeline-active is-${e.tone}`}
+                        className="di-timeline-active"
+                        style={{ stroke: seriesColor(order.get(e.series)!) }}
                       />
                     );
                   })}
@@ -382,7 +406,15 @@ export function EventTimeline({
               <div className="di-timeline-lanes-inner">
                 {plotPx > 0 ? (
                   <svg width={plotPx} height={lanes.length * LANE_H} className="di-timeline-svg" aria-hidden>
-                    <Lanes lanes={lanes} cells={cells} counts={counts} scale={scale} plotPx={plotPx} top={0} />
+                    <Lanes
+                      lanes={lanes}
+                      cells={cells}
+                      order={order}
+                      counts={counts}
+                      scale={scale}
+                      plotPx={plotPx}
+                      top={0}
+                    />
                     {hoverPx !== null && !gestures.brush ? (
                       <line
                         x1={hoverPx}
@@ -401,7 +433,7 @@ export function EventTimeline({
       </div>
 
       <ChartKey
-        entries={TONES.map((tone) => ({ key: tone, label: toneLabels[tone], color: TONE_COLOR[tone] }))}
+        entries={series.map(({ id, label: name }, i) => ({ key: id, label: name, color: seriesColor(i) }))}
         note={scaleNote}
       />
       <ul id={`${id}-hint`} className="di-timeline-help">

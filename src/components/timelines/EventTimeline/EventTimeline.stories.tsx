@@ -13,6 +13,7 @@ import {
   activity,
   activityLanes,
   rhythm,
+  sampleSeries,
   sparse,
   type SampleEvent,
 } from "../timeline.sample";
@@ -22,23 +23,28 @@ const HOUR = 3_600_000;
 
 const WORDS = {
   en: {
-    lines: "Each line is one event; its length is its magnitude.",
+    lines: "Each line is one event, in the colour of its kind.",
     bars: (s: number) =>
       `Each bar holds the events of ${s} s. Its height grows with the square root of the count, so a single event stays visible next to hundreds.`,
     events: (n: string) => `${n} events`,
-    tones: (critical: string, warning: string, routine: string) =>
-      `${critical} critical · ${warning} warning · ${routine} routine`,
+    series: sampleSeries,
     score: "Severity score",
     ago: "24 h ago",
     markers: ["opened", "under review", "confirmed"],
   },
   de: {
-    lines: "Jede Linie ist ein Ereignis; ihre Länge ist seine Stärke.",
+    lines: "Jede Linie ist ein Ereignis, in der Farbe seiner Art.",
     bars: (s: number) =>
       `Jeder Balken fasst die Ereignisse von ${s} s zusammen. Seine Höhe wächst mit der Quadratwurzel der Anzahl, so bleibt ein einzelnes Ereignis neben Hunderten sichtbar.`,
     events: (n: string) => `${n} Ereignisse`,
-    tones: (critical: string, warning: string, routine: string) =>
-      `${critical} kritisch · ${warning} Warnung · ${routine} Routine`,
+    series: [
+      { id: "reading", label: "Messwert" },
+      { id: "change", label: "Änderung" },
+      { id: "check", label: "Prüfung" },
+      { id: "retry", label: "Wiederholung" },
+      { id: "transfer", label: "Übertragung" },
+      { id: "correction", label: "Korrektur" },
+    ],
     score: "Schweregrad",
     ago: "vor 24 Std.",
     markers: ["eröffnet", "in Prüfung", "bestätigt"],
@@ -73,14 +79,14 @@ const SPARSE = sparse(NOW);
 /* Two half-days of health checks with five quiet days between them. */
 const QUIET = [...rhythm(NOW - 6 * 24 * HOUR).map((e) => ({ ...e, id: `before-${e.id}` })), ...RHYTHM];
 
-/** A score that climbs with the critical events, recorded once an hour. */
+/** A score that climbs with the events, recorded once an hour. */
 function scoreOf(events: SampleEvent[], bounds: TimelineSpan, words: (typeof WORDS)["en"]): TimelineScore {
   const points: TimelineScore["points"] = [];
   let i = 0;
   let weight = 0;
   for (let at = Math.ceil(bounds.start / HOUR) * HOUR; at <= bounds.end; at += HOUR) {
     while (i < events.length && events[i].at < at) {
-      weight += events[i].tone === "danger" ? 1 : events[i].tone === "warn" ? 0.4 : 0.1;
+      weight += 0.6;
       i += 1;
     }
     points.push({ at, value: Math.round(12 + 86 * (1 - Math.exp(-weight / 90))) });
@@ -168,11 +174,10 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
           <>
             <div className="di-mono">{clock.format(hovered.bar.start)}</div>
             <div>
-              {words.tones(
-                count.format(hovered.bar.danger),
-                count.format(hovered.bar.warn),
-                count.format(hovered.bar.neutral),
-              )}
+              {words.series
+                .filter(({ id }) => hovered.bar.counts[id])
+                .map(({ id, label }) => `${count.format(hovered.bar.counts[id])} ${label}`)
+                .join(" · ")}
             </div>
           </>
         ) : null}
@@ -205,7 +210,7 @@ const meta = {
     backLabel: "Back to the previous view",
     wholeLabel: "Show everything",
     lanesLabel: "Stages",
-    toneLabels: { danger: "critical", warn: "warning", neutral: "routine" },
+    series: sampleSeries,
     scaleNote: "",
     locale: "en",
     timeZone: "UTC",
@@ -228,6 +233,7 @@ const meta = {
     lanes: { control: false },
     markers: { control: false },
     score: { control: false },
+    series: { control: false },
     children: { control: false },
   },
 } satisfies Meta<typeof EventTimeline>;
@@ -354,7 +360,7 @@ export const German: Story = {
     backLabel: "Zurück zur vorigen Ansicht",
     wholeLabel: "Alles zeigen",
     lanesLabel: "Phasen der Verarbeitung",
-    toneLabels: { danger: "kritisch", warn: "Warnung", neutral: "Routine" },
+    series: WORDS.de.series,
     locale: "de",
   },
   render: (args) => (

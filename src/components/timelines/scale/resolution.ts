@@ -1,4 +1,5 @@
-import type { Bar } from "../types";
+import { totalOf } from "../series";
+import type { TimelineBar } from "../types";
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -42,4 +43,4 @@ export function bucketFor(spanMs: number, plotPx: number): number {
 }
 
 /** Whether the events behind these bars are far enough apart to be drawn one by one. */
-export const eventsReadable = (bars: Bar[]) => bars.every((b) => b.neutral + b.warn + b.danger <= READABLE_PER_BAR);
+export const eventsReadable = (bars: TimelineBar[]) => bars.every((b) => totalOf(b) <= READABLE_PER_BAR);

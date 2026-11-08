@@ -1,4 +1,4 @@
-import type { TimelineBar, TimelineCell, TimelineEvent, TimelineLane, TimelineSpan, TimelineTone } from "./types";
+import type { TimelineBar, TimelineCell, TimelineEvent, TimelineLane, TimelineSeries, TimelineSpan } from "./types";
 import { boundsAround } from "./scale";
 
 /*
@@ -11,12 +11,22 @@ const HOUR = 3_600_000;
 
 export type SampleEvent = TimelineEvent & { text: string };
 
+/** The kinds of the invented events, one for each categorical step. */
+export const sampleSeries: TimelineSeries[] = [
+  { id: "reading", label: "Reading" },
+  { id: "change", label: "Change" },
+  { id: "check", label: "Check" },
+  { id: "retry", label: "Retry" },
+  { id: "transfer", label: "Transfer" },
+  { id: "correction", label: "Correction" },
+];
+
 type Phase = {
   lane: string;
   count: number;
   startH: number;
   durationH: number;
-  tones: [TimelineTone, number][];
+  series: [string, number][];
   text: (i: number) => string;
   rhythm?: { bursts: number; spreadS: number } | { everyS: number; jitterS: number };
 };
@@ -50,14 +60,12 @@ function generate(start: number, phases: Phase[], seed: number): SampleEvent[] {
                 waves[Math.floor(rnd() * waves.length)] - Math.log(1 - rnd()) * rhythm.spreadS * 1000,
               )
             : from + Math.pow(rnd(), 1.6) * span;
-      let roll = rnd() * phase.tones.reduce((n, [, w]) => n + w, 0);
-      const tone = phase.tones.find(([, w]) => (roll -= w) <= 0)?.[0] ?? "neutral";
-      const base = tone === "danger" ? 0.65 : tone === "warn" ? 0.4 : 0.15;
+      let roll = rnd() * phase.series.reduce((n, [, w]) => n + w, 0);
+      const series = phase.series.find(([, w]) => (roll -= w) <= 0)?.[0] ?? phase.series[0][0];
       events.push({
         id: `${phase.lane}-${i}`,
         at: Math.round(at),
-        magnitude: base + rnd() * 0.3,
-        tone,
+        series,
         lane: phase.lane,
         text: phase.text(i),
       });
@@ -86,9 +94,9 @@ export function activity(end: number): SampleEvent[] {
         count: 14,
         startH: 0,
         durationH: 9,
-        tones: [
-          ["warn", 3],
-          ["danger", 1],
+        series: [
+          ["change", 3],
+          ["correction", 1],
         ],
         text: () => "Setting changed outside the change window",
       },
@@ -97,9 +105,9 @@ export function activity(end: number): SampleEvent[] {
         count: 60,
         startH: 8,
         durationH: 6,
-        tones: [
-          ["neutral", 3],
-          ["warn", 2],
+        series: [
+          ["reading", 3],
+          ["retry", 2],
         ],
         text: (i) => `Late batch from source-${i % 5}`,
       },
@@ -108,9 +116,9 @@ export function activity(end: number): SampleEvent[] {
         count: 18,
         startH: 14,
         durationH: 3,
-        tones: [
-          ["danger", 3],
-          ["warn", 1],
+        series: [
+          ["check", 3],
+          ["correction", 1],
         ],
         text: () => "Row count outside the expected range",
       },
@@ -119,9 +127,9 @@ export function activity(end: number): SampleEvent[] {
         count: 160,
         startH: 20,
         durationH: 30,
-        tones: [
-          ["danger", 3],
-          ["warn", 1],
+        series: [
+          ["transfer", 3],
+          ["reading", 1],
         ],
         text: (i) => `Replica behind on ${node(i)}`,
       },
@@ -131,9 +139,9 @@ export function activity(end: number): SampleEvent[] {
         startH: 40,
         durationH: 0.3,
         rhythm: { bursts: 3, spreadS: 45 },
-        tones: [
-          ["danger", 5],
-          ["warn", 2],
+        series: [
+          ["retry", 5],
+          ["transfer", 2],
         ],
         text: (i) => `Retry on ${node(i)}, one of dozens within seconds`,
       },
@@ -143,7 +151,7 @@ export function activity(end: number): SampleEvent[] {
         startH: 66,
         durationH: 0.4,
         rhythm: { bursts: 5, spreadS: 20 },
-        tones: [["danger", 3]],
+        series: [["transfer", 3]],
         text: () => "Export chunk rejected by the receiving end",
       },
     ],
@@ -162,9 +170,9 @@ export function rhythm(end: number): SampleEvent[] {
         startH: 0,
         durationH: 12,
         rhythm: { everyS: 60, jitterS: 2 },
-        tones: [
-          ["neutral", 6],
-          ["warn", 1],
+        series: [
+          ["check", 6],
+          ["retry", 1],
         ],
         text: () => "Health check from the same client, every minute",
       },
@@ -183,10 +191,10 @@ export function sparse(end: number): SampleEvent[] {
         count: 9,
         startH: 0,
         durationH: 30,
-        tones: [
-          ["neutral", 2],
-          ["warn", 1],
-          ["danger", 1],
+        series: [
+          ["correction", 2],
+          ["change", 1],
+          ["reading", 1],
         ],
         text: () => "Manual correction to a record",
       },
@@ -205,15 +213,14 @@ export function foldBars(events: SampleEvent[], span: TimelineSpan, bucketMs: nu
   for (const e of events) {
     if (e.at < from || e.at >= span.end) continue;
     const start = Math.floor(e.at / bucketMs) * bucketMs;
-    const bar = bars.get(start) ?? { start, end: start + bucketMs, neutral: 0, warn: 0, danger: 0 };
-    bar[e.tone] += 1;
+    const bar = bars.get(start) ?? { start, end: start + bucketMs, counts: {} };
+    bar.counts[e.series] = (bar.counts[e.series] ?? 0) + 1;
     bars.set(start, bar);
   }
   return [...bars.values()].sort((a, b) => a.start - b.start);
 }
 
-const rank: Record<TimelineTone, number> = { neutral: 0, warn: 1, danger: 2 };
-
+/** Each lane's cells for a window, each cell in the series most of its events are in. */
 export function foldLanes(
   lanes: TimelineLane[],
   events: SampleEvent[],
@@ -221,15 +228,18 @@ export function foldLanes(
   bucketMs: number,
 ): TimelineLane[] {
   return lanes.map((lane) => {
-    const cells = new Map<number, TimelineCell>();
+    const buckets = new Map<number, Map<string, number>>();
     for (const e of events) {
       if (e.lane !== lane.id || e.at < span.start || e.at >= span.end) continue;
       const start = Math.floor(e.at / bucketMs) * bucketMs;
-      const cell = cells.get(start) ?? { start, end: start + bucketMs, count: 0, tone: e.tone };
-      cell.count += 1;
-      if (rank[e.tone] > rank[cell.tone]) cell.tone = e.tone;
-      cells.set(start, cell);
+      const bucket = buckets.get(start) ?? new Map<string, number>();
+      bucket.set(e.series, (bucket.get(e.series) ?? 0) + 1);
+      buckets.set(start, bucket);
     }
-    return { ...lane, cells: [...cells.values()] };
+    const cells = [...buckets].map(([start, bucket]): TimelineCell => {
+      const [series] = [...bucket].reduce((most, entry) => (entry[1] > most[1] ? entry : most));
+      return { start, end: start + bucketMs, count: [...bucket.values()].reduce((n, c) => n + c, 0), series };
+    });
+    return { ...lane, cells };
   });
 }

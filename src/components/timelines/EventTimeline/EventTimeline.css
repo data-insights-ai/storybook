@@ -101,19 +101,6 @@
     overflow: visible;
   }
 
-  /* The ordered scale of the chart tokens, so red means the same here as in every chart. */
-  .di-timeline-fill.is-neutral {
-    fill: var(--di-chart-routine);
-  }
-
-  .di-timeline-fill.is-warn {
-    fill: var(--di-chart-warn);
-  }
-
-  .di-timeline-fill.is-danger {
-    fill: var(--di-chart-danger);
-  }
-
   .di-timeline-events {
     animation: di-timeline-arrive var(--di-duration-slow) var(--di-ease);
   }
@@ -127,36 +114,6 @@
   .di-timeline-stem {
     fill: none;
     stroke-width: 1.25px;
-  }
-
-  .di-timeline-event.is-neutral .di-timeline-stem {
-    stroke: var(--di-chart-routine);
-  }
-
-  .di-timeline-active.is-neutral {
-    stroke: var(--di-chart-series);
-  }
-
-  .di-timeline-event.is-warn .di-timeline-stem,
-  .di-timeline-active.is-warn {
-    stroke: var(--di-chart-warn);
-  }
-
-  .di-timeline-event.is-danger .di-timeline-stem,
-  .di-timeline-active.is-danger {
-    stroke: var(--di-chart-danger);
-  }
-
-  .di-timeline-event.is-neutral .di-timeline-tip {
-    fill: var(--di-chart-routine);
-  }
-
-  .di-timeline-event.is-warn .di-timeline-tip {
-    fill: var(--di-chart-warn);
-  }
-
-  .di-timeline-event.is-danger .di-timeline-tip {
-    fill: var(--di-chart-danger);
   }
 
   .di-timeline-active {

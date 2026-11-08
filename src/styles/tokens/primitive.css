@@ -125,6 +125,24 @@
     --di-severity-info-night: #7f8fb0;
 
     /*
+     * Kinds without an order, one step per series of a chart, each 3:1 on the
+     * surface and the inset of its theme. No red, orange or gold, so no kind
+     * reads as a severity or as the one thing.
+     */
+    --di-category-1-day: #135298;
+    --di-category-2-day: #707110;
+    --di-category-3-day: #9f61ad;
+    --di-category-4-day: #1c9273;
+    --di-category-5-day: #7144df;
+    --di-category-6-day: #a00b69;
+    --di-category-1-night: #4996f5;
+    --di-category-2-night: #868604;
+    --di-category-3-night: #b37ebf;
+    --di-category-4-night: #11ae89;
+    --di-category-5-night: #8264e7;
+    --di-category-6-night: #cd4290;
+
+    /*
      * Three families. Space Grotesk, the wordmark's face, is the display:
      * a page's name, a figure, a section head. IBM Plex Sans is what a
      * person reads; IBM Plex Mono what a machine wrote, and the labels above

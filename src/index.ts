@@ -115,9 +115,9 @@ export type {
   TimelineLane,
   TimelineMarker,
   TimelineScore,
+  TimelineSeries,
   TimelineSpan,
   TimelineTarget,
-  TimelineTone,
 } from "./components/timelines/types";
 export {
   ProposalActions,

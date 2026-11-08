@@ -42,7 +42,7 @@ describe("resolution", () => {
   });
 
   it("draws events one by one only while no bar is crowded", () => {
-    const bar = (danger: number) => ({ start: 0, end: 1, neutral: 0, warn: 0, danger });
+    const bar = (count: number) => ({ start: 0, end: 1, counts: { a: count - 1, b: 1 } });
     expect(eventsReadable([bar(2), bar(4)])).toBe(true);
     expect(eventsReadable([bar(2), bar(9)])).toBe(false);
   });
@@ -88,7 +88,7 @@ describe("labels", () => {
 describe("broken axis", () => {
   const HOUR = 3_600_000;
   const DAY = 24 * HOUR;
-  const bar = (start: number, end: number, neutral = 1) => ({ start, end, neutral, warn: 0, danger: 0 });
+  const bar = (start: number, end: number, count = 1) => ({ start, end, counts: { a: count } });
 
   it("finds the quiet stretches between activity, not before the first or after the last", () => {
     expect(

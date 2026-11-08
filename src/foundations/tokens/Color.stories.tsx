@@ -87,6 +87,12 @@ const roles: Role[] = [
       { token: "--di-chart-routine", name: "Routine" },
       { token: "--di-chart-warn", name: "Past medium" },
       { token: "--di-chart-danger", name: "Past critical" },
+      { token: "--di-chart-category-1", name: "Kind 1" },
+      { token: "--di-chart-category-2", name: "Kind 2" },
+      { token: "--di-chart-category-3", name: "Kind 3" },
+      { token: "--di-chart-category-4", name: "Kind 4" },
+      { token: "--di-chart-category-5", name: "Kind 5" },
+      { token: "--di-chart-category-6", name: "Kind 6" },
     ],
   },
 ];
