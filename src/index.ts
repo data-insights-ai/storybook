@@ -34,14 +34,19 @@ export type { MultiComboBoxOption } from "./components/forms/select/MultiComboBo
 export { DateField, defaultDateFieldLabels } from "./components/forms/dates/DateField";
 export type { DateFieldLabels } from "./components/forms/dates/DateField";
 export { DateRangePicker, defaultDateRangeLabels } from "./components/forms/dates/DateRangePicker";
+export { RangeFilter } from "./components/forms/dates/RangeFilter";
 export type { DateRangeLabels } from "./components/forms/dates/DateRangePicker";
 export { emptySegmentLabels } from "./components/forms/dates/segments";
 export {
+  anyTime,
   dateRangePresets,
   isDateRangeSet,
   parseDateRange,
+  periodOf,
+  periodSearch,
   resolveDateRange,
   serializeDateRange,
+  usePeriod,
   weekStartName,
 } from "./components/forms/dates/dateRange";
 export type {
@@ -123,6 +128,10 @@ export {
   ProposalQuestion,
 } from "./components/records/ProposalPanel";
 export { Fact, FactList } from "./components/records/FactList";
+export { ResourcePath } from "./components/records/ResourcePath";
+export type { ResourceSegment } from "./components/records/ResourcePath";
+export { TechnicalDetails } from "./components/records/TechnicalDetails";
+export type { TechnicalValue } from "./components/records/TechnicalDetails";
 export { Flyout, FlyoutFooter, FlyoutItem, FlyoutItems, FlyoutTrigger } from "./components/overlays/Flyout";
 export type { LabelTrack } from "./components/forms/field/Field";
 export { FieldHint } from "./components/forms/field/FieldHint";
@@ -143,6 +152,8 @@ export { Icon } from "./components/text/Icon";
 export { PlanAction, PlanCard, PlanFeature, PlanGrid, PlanStatus } from "./components/records/PlanGrid";
 export { IconTile } from "./components/records/IconTile";
 export { InfiniteTable } from "./components/tables/InfiniteTable";
+export { CursorTable, CursorTableEmpty, CursorTableFailed } from "./components/tables/CursorTable";
+export type { CursorTableLabels, CursorTableList } from "./components/tables/CursorTable";
 export type { InfiniteRowPlace } from "./components/tables/InfiniteTable";
 export { LevelMeter, LevelMeterLegend, LevelMeterScale } from "./components/status/LevelMeter";
 export type { LevelBands, LevelTone } from "./components/status/LevelMeter";
@@ -159,9 +170,16 @@ export {
 export type { ToolbarProps, ToolbarRole } from "./components/actions/Toolbar";
 export { FilterBar, FilterBarEnd, FilterBarItem, FilterBarSheet } from "./components/actions/FilterBar";
 export type { FilterBarItemProps, FilterBarProps, FilterPlace } from "./components/actions/FilterBar";
+export { FilterTags } from "./components/actions/FilterTags";
+export { FilterSelect } from "./components/forms/select/FilterSelect";
 export { Menu, MenuDivider, MenuGroup, MenuItem } from "./components/actions/Menu";
 export { NewEntries } from "./components/tables/NewEntries";
 export { Notice, NoticeAction, NoticeBody, NoticeIcon, NoticeText, NoticeTitle } from "./components/feedback/Notice";
+export { LoadError } from "./components/feedback/recovery/LoadError";
+export type { LoadErrorLabels } from "./components/feedback/recovery/LoadError";
+export { PageFailure } from "./components/feedback/recovery/PageFailure";
+export { RouteBoundary } from "./components/feedback/recovery/RouteBoundary";
+export { StaleNotice } from "./components/feedback/recovery/StaleNotice";
 export type { NoticeTone, NoticeVariant } from "./components/feedback/Notice";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
 export { Page, PageAside } from "./components/layout/page/Page";
@@ -263,6 +281,8 @@ export { TextField } from "./components/forms/text/TextField";
 export { TextLink } from "./components/text/TextLink";
 export { TimeField } from "./components/forms/dates/TimeField";
 export { Toast, ToastAction, ToastRegion } from "./components/feedback/Toast";
+export { dismissToast, toast, Toasts } from "./components/feedback/Toast/Toasts";
+export type { ToastMessage } from "./components/feedback/Toast/Toasts";
 export { Tooltip } from "./components/overlays/Tooltip";
 export { TooltipTarget } from "./components/overlays/TooltipTarget";
 export { AttentionItem, AttentionList } from "./components/records/AttentionList";
