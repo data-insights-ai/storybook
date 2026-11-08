@@ -1,4 +1,5 @@
-import { describe, groundOf, hasEdge, opaque, shown } from "./paint";
+import { describe, groundOf, hasEdge, opaque } from "./paint";
+import { shown } from "../../../src/checks/surfaces";
 
 /**
  * Edge clearance: text or a control never sits closer than the surface

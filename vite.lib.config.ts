@@ -20,9 +20,8 @@ export default defineConfig({
     modulePreload: false,
     sourcemap: false,
     lib: {
-      entry: path.join(dirname, "src/index.ts"),
+      entry: { index: path.join(dirname, "src/index.ts"), "checks/index": path.join(dirname, "src/checks/index.ts") },
       formats: ["es"],
-      fileName: "index",
     },
     rollupOptions: {
       external(id) {

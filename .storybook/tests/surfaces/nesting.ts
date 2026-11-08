@@ -1,4 +1,5 @@
-import { describe, groundOf, hasEdge, shown } from "./paint";
+import { describe, groundOf, hasEdge } from "./paint";
+import { shown } from "../../../src/checks/surfaces";
 
 /**
  * Never a surface on the same surface: a box that draws a border or a

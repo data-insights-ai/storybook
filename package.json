@@ -17,6 +17,10 @@
       "types": "./dist/lib/index.d.ts",
       "import": "./dist/lib/index.js"
     },
+    "./checks": {
+      "types": "./dist/lib/checks/index.d.ts",
+      "import": "./dist/lib/checks/index.js"
+    },
     "./styles.css": "./dist/lib/styles.css"
   },
   "files": [

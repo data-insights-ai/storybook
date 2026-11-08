@@ -64,6 +64,18 @@ pnpm exec di-lint-tokens src
 
 It fails on spacing off the `--di-space-*` ramp, a hand-set radius, a raw font size, a hex colour, a primitive token used directly (`--di-navy-900`, `--di-font-mono`), an outline off the focus-ring model, and any `--di-*` property the product sets other than the slots in `component.css` (sizes a page may tune, such as `--di-page-title-size` and `--di-disclosure-gap`, and the per-component slots). A token a product needs belongs in the design system. An exception says why, in a comment the lint reads: `/* di-lint-allow colour: <reason> */` inside the block, or `di-lint-allow-file <rule>: <reason>` at the top of the file.
 
+## Check a product's pages
+
+Content on a page stands on a surface: a `Panel` or another `di-surface` block, a table's surface, a strip `FigureRow`, a `Notice variant="line"`, a dialog or what floats above the page. Only the page's frame stands on the bare ground: its head, breadcrumb, tabs, toolbars, filter bar, steps, brand points, the attention heading, and the page's footer, the `footer` that ends `main` (legal links, attribution). A note anywhere else is a `Notice variant="line"` or sits on a surface. The rule ships as `@data-insights-ai/ui/checks`, which imports no component or stylesheet, for a product's browser test to run on every route:
+
+```ts
+import { surfaceScript } from "@data-insights-ai/ui/checks";
+
+expect(await page.evaluate<string[]>(surfaceScript())).toEqual([]);
+```
+
+Each finding is the element's tag, first class and label. `surfaceScript()` is the rule as source for the page to run; `surfaceScript(rule)` takes another root or other lists, from `SURFACES` and `GROUND`.
+
 ## Context and repeated views
 
 Place persistent context controls (an organization or workspace switcher) in the `SidebarHeader`, as a `SidebarMenuButton` that opens a `Menu`. They come before navigation in both visual and keyboard order. The application owns selection state and authorization.
