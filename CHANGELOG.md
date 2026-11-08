@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.27.0
+
+- `@data-insights-ai/ui/checks`: the on-a-surface rule for a product's pages, as a script a browser test runs in its page (`page.evaluate(surfaceScript())`), with `SURFACES` and `GROUND`. Content stands on a surface (a strip `FigureRow` is one); only the page's frame stands on the bare ground, and the page's footer is the `footer` that ends `main`. A footer anywhere else, and a footer `FigureRow` on the ground, are findings. The entry imports no component or stylesheet. See the README, "Check a product's pages".
+- Upgrade: replace the product's own copy of the rule with `surfaceScript()`; move a note that stands in a `footer` inside the page into a `Notice variant="line"` or the page's footer.
+
 ## 0.26.0
 
 - `LoadError` counts down a wait of a minute or less and names the time a longer one ends (an hourly or daily allowance), in `locale`. Upgrade: `LoadErrorLabels.retryAfter` takes the seconds only; add `retryAt(time)`, and pass `locale`.
