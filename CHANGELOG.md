@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.28.0
+
+- `EventTimeline` and `TimelineSummary` draw categorical series, not severity tones. The caller declares `series: TimelineSeries[]` (`{ id, label }`, at most six); stacking and the key follow that order, and series i is drawn in `--di-chart-category-(i + 1)` (new tokens, light and dark, none red, orange or gold). `TimelineBar` counts per series id (`counts`), `TimelineEvent` and `TimelineCell` name their `series`, and every event's line has one length. `TimelineEpisode` carries `counts` and stretches per series; a summary row names its series in an inline `ChartKey` instead of a severity mark. What is not declared is not drawn, picked or counted, and a bar target is the caller's own bar; a bucket with nothing drawn is a `gap`. `ChartKey` takes `inline`.
+- Upgrade: replace `toneLabels` with `series`; build bars as `{ start, end, counts }`, events and cells with `series` instead of `tone` (drop `magnitude`); drop `tone` and `toneLabel` from `TimelineSummaryEpisode`; read episode counts from `counts`; `TimelineTone` and the `--di-tsummary-severity` slot are gone.
+
 ## 0.27.0
 
 - `@data-insights-ai/ui/checks`: the on-a-surface rule for a product's pages, as a script a browser test runs in its page (`page.evaluate(surfaceScript())`), with `SURFACES` and `GROUND`. Content stands on a surface (a strip `FigureRow` is one); only the page's frame stands on the bare ground, and the page's footer is the `footer` that ends `main`. A footer anywhere else, and a footer `FigureRow` on the ground, are findings. The entry imports no component or stylesheet. See the README, "Check a product's pages".
