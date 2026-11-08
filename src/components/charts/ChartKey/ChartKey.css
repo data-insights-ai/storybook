@@ -19,6 +19,13 @@
     list-style: none;
   }
 
+  .di-chart-key.is-inline {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-4) var(--di-gap-16);
+  }
+
   .di-chart-key-entry {
     display: inline-flex;
     align-items: center;

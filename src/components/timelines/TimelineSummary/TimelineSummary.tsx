@@ -1,9 +1,10 @@
 import { Children, createContext, isValidElement, useContext, useId, useMemo, useState, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { ChartKey } from "../../charts/ChartKey";
-import { seriesColor, seriesOrder } from "../series";
+import { declaredCounts, drawnSeries, seriesColor, seriesOrder, totalOf } from "../series";
 import type { TimelineMarker, TimelineSeries, TimelineSpan } from "../types";
 import { useWidth } from "../../../internal/useWidth";
+import { bandsOf } from "./bands";
 import type { TimelineEpisode } from "./episodes";
 import "./TimelineSummary.css";
 
@@ -58,7 +59,7 @@ export function TimelineSummary({
   episodes,
   markers = [],
   active = null,
-  series,
+  series: declared,
   markerLabel,
   scaleNote,
   locale,
@@ -92,6 +93,7 @@ export function TimelineSummary({
   const id = useId();
   const [strip, width] = useWidth<HTMLDivElement>();
   const [hovered, hover] = useState<number | null>(null);
+  const series = useMemo(() => drawnSeries(declared, "TimelineSummary"), [declared]);
   const edge = useMemo(
     () =>
       new Intl.DateTimeFormat(locale, {
@@ -111,45 +113,30 @@ export function TimelineSummary({
   const blocks = useMemo(() => {
     const spanMs = Math.max(1, bounds.end - bounds.start);
     // Per minute and at least one, so a burst inside a single bucket is not infinitely steep.
-    const rateOf = (e: TimelineEpisode) => e.total / Math.max(MINUTE, e.end - e.start);
-    const peak = Math.max(Number.MIN_VALUE, ...episodes.map(rateOf));
     const order = seriesOrder(series);
+    // Only what is drawn sets a block's height.
+    const drawnTotal = (e: TimelineEpisode) => totalOf({ counts: declaredCounts(e.counts, order) });
+    const rateOf = (e: TimelineEpisode) => drawnTotal(e) / Math.max(MINUTE, e.end - e.start);
+    const peak = Math.max(Number.MIN_VALUE, ...episodes.map(rateOf));
     let lastLabel = -Infinity;
     const drawn = [];
     for (const [i, episode] of episodes.entries()) {
       const w = Math.max(MIN_PX, ((episode.end - episode.start) / spanMs) * width);
       const left = Math.min(Math.max(0, ((episode.start - bounds.start) / spanMs) * width), width - w);
       const centre = left + w / 2;
-      const empty = episode.total === 0;
+      const empty = drawnTotal(episode) === 0;
       const labelled = !empty && centre - lastLabel >= LABEL_PX;
       if (labelled) {
         lastLabel = centre;
       }
       const height = LOW_PX + (HIGH_PX - LOW_PX) * Math.sqrt(rateOf(episode) / peak);
-      const duration = Math.max(1, episode.end - episode.start);
-      const held = series.flatMap((s, index) => (episode.counts[s.id] ? [index] : []));
       drawn.push({
         left,
         width: w,
         height,
         empty,
         labelled,
-        stretches: episode.stretches.flatMap((s) => {
-          const index = order.get(s.series);
-          const band = index === undefined ? -1 : held.indexOf(index);
-          return index === undefined || band < 0
-            ? []
-            : [
-                {
-                  key: `${s.series}-${s.start}`,
-                  color: seriesColor(index),
-                  left: `${((s.start - episode.start) / duration) * 100}%`,
-                  width: `${((s.end - s.start) / duration) * 100}%`,
-                  bottom: `${(band / held.length) * 100}%`,
-                  height: `${100 / held.length}%`,
-                },
-              ];
-        }),
+        stretches: bandsOf(episode, series),
         key: `${episode.start}-${i}`,
       });
     }
@@ -288,7 +275,7 @@ export function TimelineSummaryEpisode({
     <>
       <span className="di-ordinal di-tsummary-index">{ordinal(episode)}</span>
       <span className="di-tsummary-row-title">{title}</span>
-      {held.length > 0 ? <ChartKey entries={held} className="di-tsummary-series" /> : null}
+      {held.length > 0 ? <ChartKey inline entries={held} className="di-tsummary-series" /> : null}
       {children}
     </>
   );

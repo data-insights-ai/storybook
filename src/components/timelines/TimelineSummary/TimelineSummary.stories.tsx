@@ -197,7 +197,7 @@ const rowSeries = (canvasElement: HTMLElement) =>
     [...row.querySelectorAll(".di-tsummary-series .di-chart-key-entry")].map((entry) => entry.textContent),
   );
 
-/** Waits for the strip, then checks every episode row with events names its series in the declared order and no record change names any. */
+/** Waits for the strip, then checks every episode row with events names its series in the declared order, in phrasing content, and no record change names any. */
 async function seriesNamed(canvasElement: HTMLElement, series: TimelineSeries[]) {
   await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
   const rows = rowSeries(canvasElement);
@@ -207,6 +207,8 @@ async function seriesNamed(canvasElement: HTMLElement, series: TimelineSeries[])
     await expect(named).toEqual(labels.filter((l) => named.includes(l)));
   }
   await expect(canvasElement.querySelector(".di-tsummary-note .di-tsummary-series")).toBeNull();
+  // A pickable row is a button, which holds phrasing content only.
+  await expect(canvasElement.querySelector("button.di-tsummary-row :is(div, ul, ol, li, p)")).toBeNull();
 }
 
 const meta = {

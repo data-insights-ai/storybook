@@ -29,7 +29,7 @@ import { useGestures } from "./navigation/useGestures";
 import type { TimelineNavigation } from "./navigation/useTimelineView";
 import { activityOf, brokenScaleOf, clockFormats, gapsBetween, ticksAcross } from "../scale";
 import { zoomAround, type Span } from "../scale";
-import { seriesColor, seriesOrder, totalOf } from "../series";
+import { declaredBars, drawnSeries, seriesColor, seriesOrder, totalOf } from "../series";
 import type {
   TimelineBar,
   TimelineEvent,
@@ -91,14 +91,14 @@ export function EventTimeline({
   zoomOutLabel,
   backLabel,
   wholeLabel,
-  series,
+  series: declared,
   scaleNote,
   locale,
   timeZone,
   loading,
-  bars = NO_BARS,
-  overviewBars = NO_BARS,
-  events,
+  bars: givenBars = NO_BARS,
+  overviewBars: givenOverview = NO_BARS,
+  events: given,
   lanes = NO_LANES,
   lanesLabel = "",
   markers = NO_MARKERS,
@@ -144,6 +144,12 @@ export function EventTimeline({
   children?: ReactNode;
 }) {
   const id = useId();
+  const series = useMemo(() => drawnSeries(declared, "EventTimeline"), [declared]);
+  const order = useMemo(() => seriesOrder(series), [series]);
+  // What is not drawn is not picked, hovered or counted either.
+  const events = useMemo(() => given?.filter((e) => order.has(e.series)), [given, order]);
+  const bars = useMemo(() => declaredBars(givenBars, order), [givenBars, order]);
+  const overviewBars = useMemo(() => declaredBars(givenOverview, order), [givenOverview, order]);
   const [lanesOpen, setLanesOpen] = useState(false);
   const [frame, framePx] = useWidth<HTMLDivElement>();
   const { view, bounds, change, measure } = navigation;
@@ -175,7 +181,7 @@ export function EventTimeline({
     [view, plotPx, scale.breaks, clock],
   );
   const peak = useMemo(() => Math.max(0, ...bars.map(totalOf)), [bars]);
-  const order = useMemo(() => seriesOrder(series), [series]);
+
   const cells = useMemo(() => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events)])), [lanes, events]);
   const counts = new Map(
     lanes.map((lane) => {
@@ -344,7 +350,7 @@ export function EventTimeline({
                         y1={mid - reach}
                         y2={mid + reach}
                         className="di-timeline-active"
-                        style={{ stroke: seriesColor(order.get(e.series) ?? 0) }}
+                        style={{ stroke: seriesColor(order.get(e.series)!) }}
                       />
                     );
                   })}

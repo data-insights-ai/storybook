@@ -8,8 +8,9 @@ export type TimelineSpan = Span;
  * One kind of event the timeline tells apart: a kind, not a rank, so the
  * colours imply no severity. A timeline declares its series in order; that
  * order stacks the bars and lists the key, and series `i` is drawn in
- * `--di-chart-category-(i + 1)`. Six steps exist: fold a seventh and
- * further kinds into one before passing them.
+ * `--di-chart-category-(i + 1)`. Every series id a bar, event or cell
+ * uses is declared; an event of another is not drawn. Six steps exist: fold
+ * a seventh and further kinds into one before passing them.
  */
 export type TimelineSeries = { id: string; label: string };
 
