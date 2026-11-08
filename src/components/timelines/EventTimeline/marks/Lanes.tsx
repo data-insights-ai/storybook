@@ -1,6 +1,7 @@
 import { memo } from "react";
 import type { Scale, Span } from "../../scale";
-import type { TimelineCell, TimelineEvent, TimelineLane, TimelineTone } from "../../types";
+import { seriesColor } from "../../series";
+import type { TimelineCell, TimelineEvent, TimelineLane } from "../../types";
 
 export const LANE_H = 34;
 const LABEL_Y = 8;
@@ -9,7 +10,6 @@ const CELL_H = 10;
 const LOW_H = 4;
 const MIN_CELL = 2;
 const SHADES = 4;
-const TONES: TimelineTone[] = ["neutral", "warn", "danger"];
 
 const half = (n: number) => Math.round(n * 2) / 2;
 
@@ -18,32 +18,32 @@ export function cellsOf(lane: TimelineLane, events: TimelineEvent[] | undefined)
   if (!events) {
     return lane.cells ?? [];
   }
-  return events.filter((e) => e.lane === lane.id).map((e) => ({ start: e.at, end: e.at, count: 1, tone: e.tone }));
+  return events.filter((e) => e.lane === lane.id).map((e) => ({ start: e.at, end: e.at, count: 1, series: e.series }));
 }
 
 export const countIn = (cells: TimelineCell[], view: Span) =>
   cells.reduce((n, c) => (c.end >= view.start && c.start < view.end ? n + c.count : n), 0);
 
-// A cell takes the tone of its severest event at full strength, so one critical event still reads as critical,
-// and stands taller where the lane was busier.
-function lanePaths(cells: TimelineCell[], scale: Scale, plotPx: number, y: number) {
+// A cell keeps its series' colour at full strength and stands taller where the lane was busier.
+function lanePaths(cells: TimelineCell[], order: Map<string, number>, scale: Scale, plotPx: number, y: number) {
   const peak = Math.max(1, ...cells.map((c) => c.count));
-  const paths = new Map<string, { tone: TimelineTone; shade: number; d: string }>();
+  const paths = new Map<string, { index: number; shade: number; d: string }>();
   for (const cell of cells) {
+    const index = order.get(cell.series);
     const x0 = scale.x(cell.start);
     const x1 = Math.max(x0 + MIN_CELL, scale.x(cell.end));
-    if (x1 < 0 || x0 > plotPx) {
+    if (index === undefined || x1 < 0 || x0 > plotPx) {
       continue;
     }
     const shade = Math.max(1, Math.ceil(Math.sqrt(cell.count / peak) * SHADES));
-    const key = `${cell.tone}-${shade}`;
-    const path = paths.get(key) ?? { tone: cell.tone, shade, d: "" };
+    const key = `${index}-${shade}`;
+    const path = paths.get(key) ?? { index, shade, d: "" };
     paths.set(key, path);
     const w = half(x1 - x0);
     const h = LOW_H + ((CELL_H - LOW_H) * (shade - 1)) / (SHADES - 1);
     path.d += `M${half(x0)} ${y + CELL_H - h}h${w}v${h}h${-w}z`;
   }
-  return [...paths.values()].sort((a, b) => TONES.indexOf(a.tone) - TONES.indexOf(b.tone) || a.shade - b.shade);
+  return [...paths.values()].sort((a, b) => a.index - b.index || a.shade - b.shade);
 }
 
 // One row per lane in the caller's order, so the order lanes started in reads as a staircase.
@@ -51,6 +51,7 @@ function lanePaths(cells: TimelineCell[], scale: Scale, plotPx: number, y: numbe
 export const Lanes = memo(function Lanes({
   lanes,
   cells,
+  order,
   counts,
   scale,
   plotPx,
@@ -58,6 +59,8 @@ export const Lanes = memo(function Lanes({
 }: {
   lanes: TimelineLane[];
   cells: Map<string, TimelineCell[]>;
+  /** Each series id with its place in the declared order. */
+  order: Map<string, number>;
   counts: Map<string, string>;
   scale: Scale;
   plotPx: number;
@@ -72,8 +75,13 @@ export const Lanes = memo(function Lanes({
         return (
           <g key={lane.id}>
             <rect x={0} y={y} width={plotPx} height={CELL_H} className="di-timeline-lane-track" />
-            {lanePaths(cells.get(lane.id) ?? [], scale, plotPx, y).map((p) => (
-              <path key={`${p.tone}-${p.shade}`} d={p.d} className={`di-timeline-fill is-${p.tone}`} />
+            {lanePaths(cells.get(lane.id) ?? [], order, scale, plotPx, y).map((p) => (
+              <path
+                key={`${p.index}-${p.shade}`}
+                d={p.d}
+                className="di-timeline-fill"
+                style={{ fill: seriesColor(p.index) }}
+              />
             ))}
             <text
               x={0}

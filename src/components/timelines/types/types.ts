@@ -5,29 +5,27 @@ export type Span = { start: number; end: number };
 export type TimelineSpan = Span;
 
 /**
- * The ordered scale the chart tokens carry (`--di-chart-series`, `-warn`,
- * `-danger`). A product folds its own severities into these three.
+ * One kind of event the timeline tells apart: a kind, not a rank, so the
+ * colours imply no severity. A timeline declares its series in order; that
+ * order stacks the bars and lists the key, and series `i` is drawn in
+ * `--di-chart-category-(i + 1)`. Six steps exist: fold a seventh and
+ * further kinds into one before passing them.
  */
-export type TimelineTone = "neutral" | "warn" | "danger";
+export type TimelineSeries = { id: string; label: string };
 
-/** How many events of each tone fell into one bucket. */
-export type TimelineBar = Span & Record<TimelineTone, number>;
+/** How many events of each series, by its id, fell into one bucket. */
+export type TimelineBar = Span & { counts: Record<string, number> };
 
-/**
- * One event, drawn on its own once the view is close enough. `magnitude`
- * runs 0–1 and sets the length of its line; `lane` names the lane it is
- * also marked in.
- */
+/** One event, drawn on its own once the view is close enough; `lane` names the lane it is also marked in. */
 export type TimelineEvent = {
   id: string;
   at: number;
-  magnitude: number;
-  tone: TimelineTone;
+  series: string;
   lane?: string;
 };
 
-/** A lane's activity in one bucket, in the tone of its severest event. */
-export type TimelineCell = Span & { count: number; tone: TimelineTone };
+/** A lane's activity in one bucket, drawn in the series the caller names for it. */
+export type TimelineCell = Span & { count: number; series: string };
 
 /** One row under the bars. Without `cells` it is filled from the events of its id. */
 export type TimelineLane = { id: string; label: string; cells?: TimelineCell[] };
@@ -61,5 +59,3 @@ export type TimelineInstruction = { keys: string[]; label: string; pointer?: "fi
 export type TimelineTarget = { at: number; score?: number } & (
   { kind: "bar"; bar: TimelineBar } | { kind: "event"; event: TimelineEvent } | { kind: "gap" }
 );
-
-export type Bar = TimelineBar;

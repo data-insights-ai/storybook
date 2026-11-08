@@ -107,6 +107,13 @@
     --di-chart-compare: var(--di-navy-400);
     /* Routine marks on a timeline: the series ink mixed into the surface, not an opacity, so it keeps 3:1 there and on a track. Declared per theme, so it resolves against that theme's surface. */
     --di-chart-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
+    /* One step per series that has no order (`TimelineSeries`), in the order the series are declared. */
+    --di-chart-category-1: var(--di-category-1-day);
+    --di-chart-category-2: var(--di-category-2-day);
+    --di-chart-category-3: var(--di-category-3-day);
+    --di-chart-category-4: var(--di-category-4-day);
+    --di-chart-category-5: var(--di-category-5-day);
+    --di-chart-category-6: var(--di-category-6-day);
 
     /*
      * A marked match in text (`Highlight`) is selection, not a status: the
@@ -293,6 +300,12 @@
     --di-chart-danger: var(--di-severity-critical-night);
     --di-chart-compare: var(--di-navy-300);
     --di-chart-routine: color-mix(in srgb, var(--di-chart-series) 55%, var(--di-bg-surface));
+    --di-chart-category-1: var(--di-category-1-night);
+    --di-chart-category-2: var(--di-category-2-night);
+    --di-chart-category-3: var(--di-category-3-night);
+    --di-chart-category-4: var(--di-category-4-night);
+    --di-chart-category-5: var(--di-category-5-night);
+    --di-chart-category-6: var(--di-category-6-night);
 
     --di-highlight-ink: var(--di-text);
     --di-highlight-tint: var(--di-bg-selected);

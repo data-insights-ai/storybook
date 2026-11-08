@@ -1,35 +1,27 @@
-import type { TimelineBar, TimelineLane, TimelineSpan, TimelineTone } from "../types";
+import { totalOf } from "../series";
+import type { TimelineBar, TimelineLane, TimelineSpan } from "../types";
 
 /**
  * One stretch of activity: a `burst` stands well above the rest, a
  * `steady` stretch is the activity between bursts. It carries the bars it
- * folds counted by tone, and the lanes active in it in the order they were
- * given.
+ * folds counted by series id, and the lanes active in it in the order they
+ * were given.
  */
-export type TimelineEpisode = TimelineSpan &
-  Record<TimelineTone, number> & {
-    kind: "burst" | "steady";
-    total: number;
-    /** The severest tone it holds. */
-    tone: TimelineTone;
-    /** Where inside it events fell, each stretch in its severest tone; the rest of it was quiet. */
-    stretches: (TimelineSpan & { tone: TimelineTone })[];
-    lanes: { id: string; label: string; count: number; tone: TimelineTone }[];
-  };
-
-const RANK: Record<TimelineTone, number> = { neutral: 0, warn: 1, danger: 2 };
-const severest = (a: TimelineTone, b: TimelineTone) => (RANK[b] > RANK[a] ? b : a);
-const totalOf = (b: TimelineBar) => b.neutral + b.warn + b.danger;
+export type TimelineEpisode = TimelineSpan & {
+  kind: "burst" | "steady";
+  counts: Record<string, number>;
+  total: number;
+  /** Where inside it events of each series fell, one stretch per run of touching bars; the rest of it was quiet. */
+  stretches: (TimelineSpan & { series: string })[];
+  lanes: { id: string; label: string; count: number }[];
+};
 
 // A lull shorter than this is a pause inside one episode, not the end of it.
 const QUIET_BUCKETS = 2;
 const QUIET_SHARE = 1 / 50;
 // A bar bursts when it is far above the usual bar and not lost next to the busiest one.
-// Severe events weigh more, so a burst of them stands out sooner.
 const BURST_OVER_MEDIAN = 4;
 const BURST_SHARE = 1 / 20;
-const WEIGHT: Record<TimelineTone, number> = { neutral: 1, warn: 2, danger: 4 };
-const weightOf = (b: TimelineBar) => b.neutral * WEIGHT.neutral + b.warn * WEIGHT.warn + b.danger * WEIGHT.danger;
 // A steady stretch this small is noise between two episodes, not one of its own.
 const STEADY_MIN_SHARE = 1 / 50;
 
@@ -50,14 +42,14 @@ export function episodesOf(bars: TimelineBar[], lanes: TimelineLane[] = [], max 
   if (!first || !last) {
     return [];
   }
-  const weights = sorted.map(weightOf).sort((a, b) => a - b);
-  const median = weights[Math.floor(weights.length / 2)];
-  const threshold = Math.max(median * BURST_OVER_MEDIAN, weights[weights.length - 1] * BURST_SHARE);
+  const totals = sorted.map(totalOf).sort((a, b) => a - b);
+  const median = totals[Math.floor(totals.length / 2)];
+  const threshold = Math.max(median * BURST_OVER_MEDIAN, totals[totals.length - 1] * BURST_SHARE);
   const bucket = Math.min(...sorted.map((b) => b.end - b.start));
   const quiet = Math.max(QUIET_BUCKETS * bucket, (last.end - first.start) * QUIET_SHARE);
 
   const bursts: TimelineSpan[] = [];
-  for (const bar of sorted.filter((b) => weightOf(b) >= threshold)) {
+  for (const bar of sorted.filter((b) => totalOf(b) >= threshold)) {
     const open = bursts.at(-1);
     if (open && bar.start - open.end < quiet) {
       open.end = Math.max(open.end, bar.end);
@@ -121,7 +113,7 @@ export function episodesOf(bars: TimelineBar[], lanes: TimelineLane[] = [], max 
 
 /**
  * The same episodes, counted again from other bars of the same record,
- * such as only its severe events. Their spans, kinds and order stay, so an
+ * such as only the events of one series. Their spans, kinds and order stay, so an
  * episode keeps its number whichever set is shown; one the bars do not
  * reach keeps its place with nothing in it.
  */
@@ -147,46 +139,39 @@ function episodeOf(
   run: TimelineBar[],
   lanes: TimelineLane[],
 ): TimelineEpisode {
-  const counts = { neutral: 0, warn: 0, danger: 0 };
-  for (const bar of run) {
-    counts.neutral += bar.neutral;
-    counts.warn += bar.warn;
-    counts.danger += bar.danger;
-  }
-  const tone: TimelineTone = counts.danger ? "danger" : counts.warn ? "warn" : "neutral";
-  const active = lanes.flatMap((lane) => {
-    const cells = (lane.cells ?? []).filter((c) => c.start < span.end && c.end > span.start);
-    if (cells.length === 0) {
-      return [];
-    }
-    return [
-      {
-        id: lane.id,
-        label: lane.label,
-        count: cells.reduce((n, c) => n + c.count, 0),
-        tone: cells.reduce<TimelineTone>((t, c) => severest(t, c.tone), "neutral"),
-      },
-    ];
-  });
+  const counts: Record<string, number> = {};
+  const open = new Map<string, TimelineSpan & { series: string }>();
   const stretches: TimelineEpisode["stretches"] = [];
   for (const bar of run) {
-    const tone: TimelineTone = bar.danger ? "danger" : bar.warn ? "warn" : "neutral";
-    const open = stretches.at(-1);
-    // Touching bars of one tone are one stretch; any gap, however short, shows.
-    if (open && open.tone === tone && bar.start <= open.end) {
-      open.end = Math.max(open.end, bar.end);
-    } else {
-      stretches.push({ start: bar.start, end: bar.end, tone });
+    for (const [series, count] of Object.entries(bar.counts)) {
+      if (count <= 0) {
+        continue;
+      }
+      counts[series] = (counts[series] ?? 0) + count;
+      const stretch = open.get(series);
+      // Touching bars of one series are one stretch; any gap, however short, shows.
+      if (stretch && bar.start <= stretch.end) {
+        stretch.end = Math.max(stretch.end, bar.end);
+      } else {
+        const next = { start: bar.start, end: bar.end, series };
+        open.set(series, next);
+        stretches.push(next);
+      }
     }
   }
+  const active = lanes.flatMap((lane) => {
+    const cells = (lane.cells ?? []).filter((c) => c.start < span.end && c.end > span.start);
+    return cells.length === 0
+      ? []
+      : [{ id: lane.id, label: lane.label, count: cells.reduce((n, c) => n + c.count, 0) }];
+  });
   return {
     start: span.start,
     end: span.end,
     kind,
+    counts,
+    total: totalOf({ counts }),
     stretches,
-    ...counts,
-    total: counts.neutral + counts.warn + counts.danger,
-    tone,
     lanes: active,
   };
 }

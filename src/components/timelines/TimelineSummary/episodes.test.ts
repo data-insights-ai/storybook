@@ -3,19 +3,16 @@ import type { TimelineBar, TimelineLane } from "../types";
 import { episodesIn, episodesOf } from "./episodes";
 
 const MIN = 60_000;
-const bar = (minute: number, counts: Partial<TimelineBar> = {}): TimelineBar => ({
+const bar = (minute: number, counts: Record<string, number> = { a: 1 }): TimelineBar => ({
   start: minute * MIN,
   end: (minute + 1) * MIN,
-  neutral: 1,
-  warn: 0,
-  danger: 0,
-  ...counts,
+  counts,
 });
 
 describe("episodesOf", () => {
   it("has no episode without activity", () => {
     expect(episodesOf([])).toEqual([]);
-    expect(episodesOf([bar(0, { neutral: 0 })])).toEqual([]);
+    expect(episodesOf([bar(0, { a: 0 })])).toEqual([]);
   });
 
   it("splits at a quiet gap and keeps a short pause inside one episode", () => {
@@ -37,7 +34,7 @@ describe("episodesOf", () => {
     const steady = Array.from({ length: 200 }, (_, m) => m)
       .filter((m) => m !== 20 && m !== 150)
       .map((m) => bar(m));
-    const bursts = [bar(20, { neutral: 0, danger: 40 }), bar(150, { neutral: 0, danger: 30 })];
+    const bursts = [bar(20, { b: 40 }), bar(150, { b: 30 })];
     const episodes = episodesOf([...steady, ...bursts]);
     expect(episodes.map((e) => [e.start / MIN, e.end / MIN, e.kind])).toEqual([
       [0, 20, "steady"],
@@ -46,7 +43,7 @@ describe("episodesOf", () => {
       [150, 151, "burst"],
       [151, 200, "steady"],
     ]);
-    expect(episodes[1]).toMatchObject({ danger: 40, total: 40 });
+    expect(episodes[1]).toMatchObject({ counts: { b: 40 }, total: 40 });
   });
 
   it("calls even activity steady, and leaves out a steady stretch too small to matter", () => {
@@ -61,32 +58,32 @@ describe("episodesOf", () => {
     });
   });
 
-  it("takes the severest tone it holds", () => {
-    const [episode] = episodesOf([bar(0), bar(1, { warn: 3 }), bar(2, { danger: 1 })]);
-    expect(episode).toMatchObject({
-      neutral: 3,
-      warn: 3,
-      danger: 1,
-      total: 7,
-      tone: "danger",
-    });
+  it("counts what it holds per series", () => {
+    const [episode] = episodesOf([bar(0, { a: 2 }), bar(1, { a: 1, b: 1 }), bar(2, { c: 2 })]);
+    expect(episode).toMatchObject({ counts: { a: 3, b: 1, c: 2 }, total: 6 });
   });
 
-  it("marks each stretch inside it in its severest tone and leaves the quiet out", () => {
+  it("weighs every series alike when it looks for a burst", () => {
+    const steady = Array.from({ length: 50 }, (_, m) => bar(m));
+    const episodes = episodesOf([...steady.slice(0, 25), bar(25, { a: 1, b: 2 }), ...steady.slice(26)]);
+    expect(episodes.map((e) => e.kind)).toEqual(["steady"]);
+  });
+
+  it("marks where each series fell inside it and leaves the quiet out", () => {
     const [episode] = episodesOf([
       bar(0),
-      bar(1, { danger: 2 }),
-      bar(2, { danger: 1 }),
+      bar(1, { a: 1, b: 2 }),
+      bar(2, { b: 1 }),
       bar(3),
-      bar(4, { warn: 1 }),
-      bar(6, { danger: 1 }),
+      bar(4, { c: 1 }),
+      bar(6, { b: 1 }),
     ]);
-    expect(episode.stretches.map((s) => [s.start / MIN, s.end / MIN, s.tone])).toEqual([
-      [0, 1, "neutral"],
-      [1, 3, "danger"],
-      [3, 4, "neutral"],
-      [4, 5, "warn"],
-      [6, 7, "danger"],
+    expect(episode.stretches.map((s) => [s.start / MIN, s.end / MIN, s.series])).toEqual([
+      [0, 2, "a"],
+      [1, 3, "b"],
+      [3, 4, "a"],
+      [4, 5, "c"],
+      [6, 7, "b"],
     ]);
   });
 
@@ -95,35 +92,35 @@ describe("episodesOf", () => {
       {
         id: "a",
         label: "Access",
-        cells: [{ start: 0, end: MIN, count: 2, tone: "warn" }],
+        cells: [{ start: 0, end: MIN, count: 2, series: "a" }],
       },
       {
         id: "b",
         label: "Movement",
         cells: [
-          { start: MIN, end: 2 * MIN, count: 1, tone: "danger" },
-          { start: 100 * MIN, end: 101 * MIN, count: 4, tone: "neutral" },
+          { start: MIN, end: 2 * MIN, count: 1, series: "b" },
+          { start: 100 * MIN, end: 101 * MIN, count: 4, series: "a" },
         ],
       },
       { id: "c", label: "Unused", cells: [] },
     ];
     const episodes = episodesOf([bar(0), bar(1), bar(100)], lanes);
     expect(episodes[0].lanes).toEqual([
-      { id: "a", label: "Access", count: 2, tone: "warn" },
-      { id: "b", label: "Movement", count: 1, tone: "danger" },
+      { id: "a", label: "Access", count: 2 },
+      { id: "b", label: "Movement", count: 1 },
     ]);
-    expect(episodes[1].lanes).toEqual([{ id: "b", label: "Movement", count: 4, tone: "neutral" }]);
+    expect(episodes[1].lanes).toEqual([{ id: "b", label: "Movement", count: 4 }]);
   });
 });
 
 describe("episodesIn", () => {
   it("counts the same episodes again from a filtered set and keeps their places", () => {
-    const all = [bar(0), bar(1, { danger: 2 }), bar(100), bar(200, { warn: 1 })];
+    const all = [bar(0), bar(1, { b: 2 }), bar(100), bar(200, { c: 1 })];
     const episodes = episodesOf(all);
-    const severe = all.filter((b) => b.danger > 0).map((b) => ({ ...b, neutral: 0, warn: 0 }));
-    const again = episodesIn(episodes, severe);
+    const onlyB = all.filter((b) => b.counts.b).map((b) => ({ ...b, counts: { b: b.counts.b } }));
+    const again = episodesIn(episodes, onlyB);
     expect(again.map((e) => [e.start, e.end, e.kind])).toEqual(episodes.map((e) => [e.start, e.end, e.kind]));
     expect(again.map((e) => e.total)).toEqual([2, 0, 0]);
-    expect(again[0].stretches.map((s) => s.tone)).toEqual(["danger"]);
+    expect(again[0].stretches.map((s) => s.series)).toEqual(["b"]);
   });
 });

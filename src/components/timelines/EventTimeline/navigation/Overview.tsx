@@ -1,9 +1,10 @@
 import { useMemo, useRef, type PointerEvent } from "react";
 
 import { AxisLine } from "../marks/TimeAxis";
-import { totalOf, Waveform } from "../marks/Waveform";
+import { Waveform } from "../marks/Waveform";
 import { clampSpan, MIN_SPAN, panBy, type BrokenScale, type Span } from "../../scale";
-import type { TimelineBar } from "../../types";
+import { totalOf } from "../../series";
+import type { TimelineBar, TimelineSeries } from "../../types";
 import type { ViewChange } from "./useGestures";
 
 export const OVERVIEW_H = 36;
@@ -16,6 +17,7 @@ type Drag = { mode: "move" | "start" | "end" | "new"; x: number; view: Span; mov
 // The whole record, always: where the view sits in it, and a handle to move it by.
 export function Overview({
   bars,
+  series,
   scale,
   bounds,
   view,
@@ -23,6 +25,7 @@ export function Overview({
   onView,
 }: {
   bars: TimelineBar[];
+  series: TimelineSeries[];
   /** `bounds` across the strip, broken where the plot's axis is. */
   scale: BrokenScale;
   bounds: Span;
@@ -110,7 +113,7 @@ export function Overview({
         <rect key={b.start} x={b.from} width={b.to - b.from} height={OVERVIEW_H} className="di-timeline-break-band" />
       ))}
       <AxisLine y={mid} plotPx={plotPx} breaks={scale.breaks} className="di-timeline-axisline" />
-      <Waveform bars={bars} scale={scale} plotPx={plotPx} mid={mid} half={mid - 3} peak={peak} />
+      <Waveform bars={bars} series={series} scale={scale} plotPx={plotPx} mid={mid} half={mid - 3} peak={peak} />
       <rect width={left} height={OVERVIEW_H} className="di-timeline-overview-shade" />
       <rect x={right} width={Math.max(0, plotPx - right)} height={OVERVIEW_H} className="di-timeline-overview-shade" />
       {/* The view is the clear part of the strip, the rest lies under a veil; the handles mark its ends. */}

@@ -1,8 +1,8 @@
 import { Children, createContext, isValidElement, useContext, useId, useMemo, useState, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
-import { SeverityMark, type Severity } from "../../status/SeverityMark";
 import { ChartKey } from "../../charts/ChartKey";
-import type { TimelineMarker, TimelineSpan, TimelineTone } from "../types";
+import { seriesColor, seriesOrder } from "../series";
+import type { TimelineMarker, TimelineSeries, TimelineSpan } from "../types";
 import { useWidth } from "../../../internal/useWidth";
 import type { TimelineEpisode } from "./episodes";
 import "./TimelineSummary.css";
@@ -12,17 +12,12 @@ const LABEL_PX = 24;
 const LOW_PX = 10;
 const HIGH_PX = 28;
 const MINUTE = 60_000;
-const TONES: TimelineTone[] = ["danger", "warn", "neutral"];
-const TONE_COLOR: Record<TimelineTone, string> = {
-  danger: "var(--di-chart-danger)",
-  warn: "var(--di-chart-warn)",
-  neutral: "var(--di-chart-routine)",
-};
-const SEVERITY: Record<TimelineTone, Severity> = { danger: "critical", warn: "medium", neutral: "info" };
 
 const ordinal = (i: number) => String(i + 1).padStart(2, "0");
 
 type Place = {
+  series: TimelineSeries[];
+  episodes: TimelineEpisode[];
   active: number | null;
   hovered: number | null;
   hover: (episode: number | null) => void;
@@ -42,10 +37,12 @@ const SummaryPlace = createContext<Place | null>(null);
  * count the same episodes again in a filtered set. An episode with nothing
  * in it keeps its ordinal and is not drawn. A block's height grows with the
  * square root of its rate, so a burst stands tall and the steady activity
- * between bursts lies low. It is filled in each tone only where events of
- * that tone fell; where it was quiet only its base line shows, so a long
- * stretch with one severe hour does not read as a severe day. The legend
- * under the strip says this in the caller's words.
+ * between bursts lies low. Each series it holds takes an equal band of it,
+ * stacked in the declared order from the base, filled only where events of
+ * that series fell; where it was quiet only its base line shows, so a long
+ * stretch with one busy hour does not read as a busy day. A series is a
+ * kind, not a rank, so its colour implies no severity. The legend under the
+ * strip says this in the caller's words.
  * The strip is a picture for the pointer, read as `label`; the rows are
  * the way through it for the keyboard and a screen reader.
  *
@@ -61,7 +58,7 @@ export function TimelineSummary({
   episodes,
   markers = [],
   active = null,
-  toneLabels,
+  series,
   markerLabel,
   scaleNote,
   locale,
@@ -79,8 +76,8 @@ export function TimelineSummary({
   markers?: TimelineMarker[];
   /** The position in `episodes` of the one the caller narrowed to. */
   active?: number | null;
-  /** The legend's word for each tone a block is coloured in. */
-  toneLabels: Record<TimelineTone, string>;
+  /** The kinds a block is coloured in, in the order they are stacked and listed in the legend. */
+  series: TimelineSeries[];
   /** What a flag under the strip stands for, in the legend once there are markers. */
   markerLabel: string;
   /** What a block's height means. */
@@ -109,13 +106,14 @@ export function TimelineSummary({
   );
 
   const pick = onEpisodePick ? (episode: number) => onEpisodePick(episode === active ? null : episode) : undefined;
-  const place: Place = { active, hovered, hover, pick };
+  const place: Place = { series, episodes, active, hovered, hover, pick };
 
   const blocks = useMemo(() => {
     const spanMs = Math.max(1, bounds.end - bounds.start);
     // Per minute and at least one, so a burst inside a single bucket is not infinitely steep.
     const rateOf = (e: TimelineEpisode) => e.total / Math.max(MINUTE, e.end - e.start);
     const peak = Math.max(Number.MIN_VALUE, ...episodes.map(rateOf));
+    const order = seriesOrder(series);
     let lastLabel = -Infinity;
     const drawn = [];
     for (const [i, episode] of episodes.entries()) {
@@ -129,22 +127,34 @@ export function TimelineSummary({
       }
       const height = LOW_PX + (HIGH_PX - LOW_PX) * Math.sqrt(rateOf(episode) / peak);
       const duration = Math.max(1, episode.end - episode.start);
+      const held = series.flatMap((s, index) => (episode.counts[s.id] ? [index] : []));
       drawn.push({
         left,
         width: w,
         height,
         empty,
         labelled,
-        stretches: episode.stretches.map((s) => ({
-          tone: s.tone,
-          left: `${((s.start - episode.start) / duration) * 100}%`,
-          width: `${((s.end - s.start) / duration) * 100}%`,
-        })),
+        stretches: episode.stretches.flatMap((s) => {
+          const index = order.get(s.series);
+          const band = index === undefined ? -1 : held.indexOf(index);
+          return index === undefined || band < 0
+            ? []
+            : [
+                {
+                  key: `${s.series}-${s.start}`,
+                  color: seriesColor(index),
+                  left: `${((s.start - episode.start) / duration) * 100}%`,
+                  width: `${((s.end - s.start) / duration) * 100}%`,
+                  bottom: `${(band / held.length) * 100}%`,
+                  height: `${100 / held.length}%`,
+                },
+              ];
+        }),
         key: `${episode.start}-${i}`,
       });
     }
     return drawn;
-  }, [episodes, bounds, width]);
+  }, [episodes, series, bounds, width]);
 
   const slots = Children.toArray(children).filter(isValidElement);
   const meta = slots.find((c) => c.type === TimelineSummaryMeta);
@@ -183,9 +193,15 @@ export function TimelineSummary({
                     <span className="di-tsummary-block-fill" style={{ height: block.height }}>
                       {block.stretches.map((stretch) => (
                         <span
-                          key={stretch.left}
-                          className={`di-tsummary-stretch is-${stretch.tone}`}
-                          style={{ left: stretch.left, width: stretch.width }}
+                          key={stretch.key}
+                          className="di-tsummary-stretch"
+                          style={{
+                            left: stretch.left,
+                            width: stretch.width,
+                            bottom: stretch.bottom,
+                            height: stretch.height,
+                            background: stretch.color,
+                          }}
                         />
                       ))}
                     </span>
@@ -214,7 +230,7 @@ export function TimelineSummary({
         <ChartKey
           hidden
           entries={[
-            ...TONES.map((tone) => ({ key: tone, label: toneLabels[tone], color: TONE_COLOR[tone] })),
+            ...series.map(({ id: key, label: name }, i) => ({ key, label: name, color: seriesColor(i) })),
             ...(markers.length > 0 ? [{ key: "marker", label: markerLabel, swatch: "flag" as const }] : []),
           ]}
           note={scaleNote}
@@ -240,29 +256,28 @@ export function TimelineSummaryMeta({ children }: { children: ReactNode }) {
 }
 
 /**
- * One episode as a row: its ordinal, what it was in a line of prose, its
- * severest tone as a `SeverityMark` in a column of its own (in every row,
- * so a row without one is never mistaken for unrated), and the slots
- * `TimelineSummaryTime` and `TimelineSummaryDetail`. A button when the
- * summary takes a pick.
+ * One episode as a row: its ordinal, what it was in a line of prose, the
+ * series it holds as a key at its end, in the colours of its block, and the
+ * slots `TimelineSummaryTime` and `TimelineSummaryDetail`. A button when
+ * the summary takes a pick.
  */
 export function TimelineSummaryEpisode({
   episode,
-  tone,
-  toneLabel,
   title,
   children,
 }: {
   /** Its position in the summary's `episodes`, so the row and its block light up together. */
   episode: number;
-  tone: TimelineTone;
-  toneLabel: string;
   title: string;
   /** `TimelineSummaryTime` and `TimelineSummaryDetail`. */
   children?: ReactNode;
 }) {
   const place = useContext(SummaryPlace);
   const active = place?.active === episode;
+  const counts = place?.episodes[episode]?.counts ?? {};
+  const held = (place?.series ?? []).flatMap(({ id, label }, i) =>
+    counts[id] ? [{ key: id, label, color: seriesColor(i) }] : [],
+  );
   const className = cx(
     "di-row",
     "di-tsummary-row",
@@ -272,10 +287,8 @@ export function TimelineSummaryEpisode({
   const body = (
     <>
       <span className="di-ordinal di-tsummary-index">{ordinal(episode)}</span>
-      <span className="di-tsummary-tone">
-        <SeverityMark level={SEVERITY[tone]} label={toneLabel} />
-      </span>
       <span className="di-tsummary-row-title">{title}</span>
+      {held.length > 0 ? <ChartKey entries={held} className="di-tsummary-series" /> : null}
       {children}
     </>
   );

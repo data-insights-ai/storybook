@@ -1,3 +1,5 @@
+import { totalOf } from "../series";
+import type { TimelineBar } from "../types";
 import { scaleOf, widthOf, type Scale, type Span } from "./viewport";
 
 /** How wide a long empty stretch is drawn: the break that stands in for it. */
@@ -110,14 +112,12 @@ export function segmentsOf(span: Span, px: number, breaks: AxisBreak[]): (Span &
   return segments.filter((s) => s.end > s.start && s.px > 0);
 }
 
-type Counted = Span & { neutral: number; warn: number; danger: number };
-
 /**
  * Where something happened: a bar with events, an event, a marker. The view's `bars` are finer than the
  * overview's, so where they reach they speak for that stretch and the overview's buckets only for the rest.
  */
-export function activityOf(bars: Counted[], overviewBars: Counted[], instants: number[]): Span[] {
-  const busy = (b: Counted) => b.neutral + b.warn + b.danger > 0;
+export function activityOf(bars: TimelineBar[], overviewBars: TimelineBar[], instants: number[]): Span[] {
+  const busy = (b: TimelineBar) => totalOf(b) > 0;
   const fine = bars.filter(busy);
   const reach = fine.length
     ? { start: Math.min(...fine.map((b) => b.start)), end: Math.max(...fine.map((b) => b.end)) }

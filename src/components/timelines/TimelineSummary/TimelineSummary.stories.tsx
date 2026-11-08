@@ -12,21 +12,29 @@ import {
   TimelineSummaryMeta,
   TimelineSummaryTime,
 } from "./TimelineSummary";
-import type { TimelineLane, TimelineMarker, TimelineTone } from "../types";
-import { boundsOf, foldBars, foldLanes, activity, activityLanes, rhythm, type SampleEvent } from "../timeline.sample";
+import type { TimelineLane, TimelineMarker, TimelineSeries } from "../types";
+import {
+  boundsOf,
+  foldBars,
+  foldLanes,
+  activity,
+  activityLanes,
+  rhythm,
+  sampleSeries,
+  type SampleEvent,
+} from "../timeline.sample";
 
 const NOW = Date.UTC(2026, 9, 12, 10, 0, 0);
 const HOUR = 3_600_000;
 const STRIP_PX = 600;
 
 type Words = {
-  tone: Record<TimelineTone, string>;
+  series: TimelineSeries[];
   unclassified: string;
   more: (n: number) => string;
   burst: string;
   steady: string;
   events: (n: string) => string;
-  critical: (n: string) => string;
   episodes: (n: number) => string;
   holding: (episodes: string, events: string, over: string) => string;
   minutes: (n: number) => string;
@@ -35,26 +43,31 @@ type Words = {
 
 const WORDS: Record<string, Words> = {
   en: {
-    tone: { danger: "critical", warn: "warning", neutral: "routine" },
+    series: sampleSeries,
     unclassified: "Unclassified activity",
     more: (n) => `and ${n} more`,
     burst: "Burst",
     steady: "Ongoing activity",
     events: (n) => `${n} events`,
-    critical: (n) => `${n} critical`,
     episodes: (n) => (n === 1 ? "1 episode" : `${n} episodes`),
     holding: (episodes, events, over) => `${episodes} holding ${events} events over ${over}`,
     minutes: (n) => `${n} min`,
     hours: (n) => `${n} h`,
   },
   de: {
-    tone: { danger: "kritisch", warn: "Warnung", neutral: "Routine" },
+    series: [
+      { id: "reading", label: "Messwert" },
+      { id: "change", label: "Änderung" },
+      { id: "check", label: "Prüfung" },
+      { id: "retry", label: "Wiederholung" },
+      { id: "transfer", label: "Übertragung" },
+      { id: "correction", label: "Korrektur" },
+    ],
     unclassified: "Nicht zugeordnete Aktivität",
     more: (n) => `und ${n} weitere`,
     burst: "Ausbruch",
     steady: "Laufende Aktivität",
     events: (n) => `${n} Ereignisse`,
-    critical: (n) => `${n} kritisch`,
     episodes: (n) => (n === 1 ? "1 Abschnitt" : `${n} Abschnitte`),
     holding: (episodes, events, over) => `${episodes} mit ${events} Ereignissen über ${over}`,
     minutes: (n) => `${n} Min.`,
@@ -71,10 +84,8 @@ const formatsOf = (locale: string) => ({
 });
 type Formats = ReturnType<typeof formatsOf>;
 
-const TONE = WORDS.en.tone;
-
 const ACTIVITY = activity(NOW);
-const isCritical = (event: SampleEvent) => event.tone === "danger";
+const isRetry = (event: SampleEvent) => event.series === "retry";
 const RHYTHM = rhythm(NOW);
 
 function duration(ms: number, { words }: Formats) {
@@ -158,20 +169,13 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
       </TimelineSummaryMeta>
       {rows.map((row) =>
         "episode" in row ? (
-          <TimelineSummaryEpisode
-            key={`e${row.at}`}
-            episode={row.i}
-            tone={row.episode.tone}
-            toneLabel={words.tone[row.episode.tone]}
-            title={whatHappened(row.episode, formats)}
-          >
+          <TimelineSummaryEpisode key={`e${row.at}`} episode={row.i} title={whatHappened(row.episode, formats)}>
             <TimelineSummaryTime>{when(row.episode, formats)}</TimelineSummaryTime>
             <TimelineSummaryDetail>
               {[
                 row.episode.kind === "burst" ? words.burst : words.steady,
                 words.events(count.format(row.episode.total)),
                 duration(row.episode.end - row.episode.start, formats),
-                ...(row.episode.danger ? [words.critical(count.format(row.episode.danger))] : []),
               ].join(" · ")}
             </TimelineSummaryDetail>
           </TimelineSummaryEpisode>
@@ -187,21 +191,22 @@ function Sample({ sample, sampleLanes, sampleMarkers = [], sampleFocus, onEpisod
   );
 }
 
-/** Waits for the strip, then checks every episode row carries its mark at one x and no record change has one. */
-async function marksInOneColumn(canvasElement: HTMLElement) {
-  await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
-  const rows = [...canvasElement.querySelectorAll(".di-tsummary-row")];
-  await expect(rows.length).toBeGreaterThan(0);
-  const lefts = new Set(
-    rows.map((row) => {
-      const mark = row.querySelector(".di-tsummary-tone .di-sev");
-      return mark ? Math.round(mark.getBoundingClientRect().left) : NaN;
-    }),
+/** The series named in each episode row's key, in the order the row lists them. */
+const rowSeries = (canvasElement: HTMLElement) =>
+  [...canvasElement.querySelectorAll(".di-tsummary-row")].map((row) =>
+    [...row.querySelectorAll(".di-tsummary-series .di-chart-key-entry")].map((entry) => entry.textContent),
   );
-  await expect([...lefts].some(Number.isNaN)).toBe(false);
-  await expect(lefts.size).toBe(1);
-  await expect(canvasElement.querySelector(".di-tsummary-head .di-sev")).toBeNull();
-  await expect(canvasElement.querySelector(".di-tsummary-note .di-sev")).toBeNull();
+
+/** Waits for the strip, then checks every episode row with events names its series in the declared order and no record change names any. */
+async function seriesNamed(canvasElement: HTMLElement, series: TimelineSeries[]) {
+  await waitFor(() => expect(canvasElement.querySelector(".di-tsummary-block")).not.toBeNull());
+  const rows = rowSeries(canvasElement);
+  await expect(rows.length).toBeGreaterThan(0);
+  const labels = series.map((s) => s.label);
+  for (const named of rows.filter((r) => r.length > 0)) {
+    await expect(named).toEqual(labels.filter((l) => named.includes(l)));
+  }
+  await expect(canvasElement.querySelector(".di-tsummary-note .di-tsummary-series")).toBeNull();
 }
 
 const meta = {
@@ -214,16 +219,16 @@ const meta = {
     listLabel: "Episodes and record changes, oldest first",
     bounds: { start: 0, end: 0 },
     episodes: [],
-    toneLabels: TONE,
+    series: sampleSeries,
     markerLabel: "change to the record",
     scaleNote:
-      "A taller block held more events per minute. Each colour shows where events of that tone fell; where only the base line runs, it was quiet.",
+      "A taller block held more events per minute. Each colour shows where events of that kind fell; where only the base line runs, it was quiet.",
     locale: "en",
     timeZone: "UTC",
     onEpisodePick: fn(),
   },
   // The strip lays its blocks out once it knows its width; the checks after a story measure the drawn strip.
-  play: async ({ canvasElement }) => marksInOneColumn(canvasElement),
+  play: async ({ args, canvasElement }) => seriesNamed(canvasElement, args.series),
   decorators: [
     (Story) => (
       <Panel>
@@ -236,7 +241,7 @@ const meta = {
     episodes: { control: false },
     markers: { control: false },
     active: { control: false },
-    toneLabels: { control: false },
+    series: { control: false },
     children: { control: false },
   },
 } satisfies Meta<typeof TimelineSummary>;
@@ -270,7 +275,7 @@ export const Default: Story = {
     const list = await canvas.findByRole("list", {
       name: "Episodes and record changes, oldest first",
     });
-    await marksInOneColumn(canvasElement);
+    await seriesNamed(canvasElement, args.series);
     const [first] = within(list).getAllByRole("button");
     await expect(first).toHaveAttribute("aria-pressed", "false");
     await userEvent.click(first);
@@ -284,13 +289,13 @@ export const Default: Story = {
 };
 
 /**
- * The same three days with only the critical events: what a reader narrows
- * to when they want the worst part alone. The episodes are the ones
- * found in all events, counted again, so each keeps its number; one with
- * no critical event is left out and its number skipped.
+ * The same three days with only the retries: what a reader narrows to when
+ * they want one kind alone. The episodes are the ones found in all events,
+ * counted again, so each keeps its number; one with no retry is left out
+ * and its number skipped.
  */
-export const CriticalOnly: Story = {
-  render: (args) => <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} sampleFocus={isCritical} />,
+export const OneSeries: Story = {
+  render: (args) => <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} sampleFocus={isRetry} />,
 };
 
 /** A health check every minute for twelve hours never goes quiet, so it is one episode. */
@@ -302,15 +307,15 @@ const inIntakeOrExport = (event: SampleEvent) => event.lane === "intake" || even
 
 /**
  * The same three days narrowed to two stages, Intake and Export: their
- * episodes differ in tone, and each row carries its own mark in the same
- * end column as in every other summary.
+ * episodes hold different series, and each row names the ones it holds in
+ * the colours of its block.
  */
-export const MixedSeverity: Story = {
+export const MixedSeries: Story = {
   render: (args) => <Sample {...args} sample={ACTIVITY} sampleLanes={activityLanes} sampleFocus={inIntakeOrExport} />,
-  play: async ({ canvasElement }) => {
-    await marksInOneColumn(canvasElement);
-    const words = [...canvasElement.querySelectorAll(".di-tsummary-row .di-sev-label")].map((w) => w.textContent);
-    await expect(new Set(words).size).toBeGreaterThan(1);
+  play: async ({ args, canvasElement }) => {
+    await seriesNamed(canvasElement, args.series);
+    const held = rowSeries(canvasElement).map((named) => named.join("+"));
+    await expect(new Set(held).size).toBeGreaterThan(1);
   },
 };
 
@@ -322,16 +327,16 @@ const GERMAN_LANES: TimelineLane[] = [
   { id: "export", label: "Export an Empfängersysteme" },
 ];
 
-/** Long German lane names and meta: the rows wrap between words, every row keeps its severity in the end column. */
+/** Long German lane names and meta: the rows wrap between words, every row keeps its series at its end. */
 export const German: Story = {
   args: {
     title: "Was geschah",
     label: "Aktivitätsabschnitte über den ganzen Datensatz, jeder als Block auf einem Streifen",
     listLabel: "Abschnitte und Änderungen am Datensatz, älteste zuerst",
-    toneLabels: WORDS.de.tone,
+    series: WORDS.de.series,
     markerLabel: "Änderung am Datensatz",
     scaleNote:
-      "Ein höherer Block enthielt mehr Ereignisse pro Minute. Jede Farbe zeigt, wo Ereignisse dieser Stufe fielen; wo nur die Grundlinie läuft, war es ruhig.",
+      "Ein höherer Block enthielt mehr Ereignisse pro Minute. Jede Farbe zeigt, wo Ereignisse dieser Art fielen; wo nur die Grundlinie läuft, war es ruhig.",
     locale: "de",
   },
   render: (args) => (

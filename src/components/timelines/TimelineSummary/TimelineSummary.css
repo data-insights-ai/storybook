@@ -76,9 +76,10 @@
   }
 
   /*
-   * A block stands on its base line across the whole episode and is filled
-   * in each tone only where events of it fell; where it was quiet, only the
-   * base shows. Every colour is full strength, so 3:1 holds on the surface.
+   * A block stands on its base line across the whole episode; each series
+   * it holds takes a band of it and is filled only where events of that
+   * series fell; where it was quiet, only the base shows. Every colour is
+   * full strength, so 3:1 holds on the surface.
    */
   .di-tsummary-block-fill {
     position: relative;
@@ -89,25 +90,11 @@
     transition: box-shadow var(--di-duration) ease-out;
   }
 
-  /* A sliver of the surface parts two stretches that meet, so neither runs into the other. */
+  /* A sliver of the surface parts two stretches that meet, beside or above each other, so neither runs into the other. */
   .di-tsummary-stretch {
     position: absolute;
-    top: 0;
-    bottom: 0;
     min-width: var(--di-space-2);
-    box-shadow: inset 1px 0 0 var(--di-bg-surface);
-  }
-
-  .di-tsummary-stretch.is-neutral {
-    background: var(--di-chart-routine);
-  }
-
-  .di-tsummary-stretch.is-warn {
-    background: var(--di-chart-warn);
-  }
-
-  .di-tsummary-stretch.is-danger {
-    background: var(--di-chart-danger);
+    box-shadow: inset 1px 1px 0 var(--di-bg-surface);
   }
 
   .di-tsummary-block.is-hovered .di-tsummary-block-fill {
@@ -167,12 +154,12 @@
     border-bottom: 1px solid var(--di-rule);
   }
 
-  /* Every episode carries its severity in an end column of one width, so the marks line up down the list. */
+  /* The series an episode holds close the title's line, in the colours of its block. */
   .di-tsummary-row {
     display: grid;
-    grid-template-columns: var(--di-index-col) auto minmax(0, 1fr) var(--di-tsummary-severity);
+    grid-template-columns: var(--di-index-col) auto minmax(0, 1fr) auto;
     grid-template-areas:
-      "index title title tone"
+      "index title title series"
       "index time detail detail";
     align-items: baseline;
     gap: var(--di-space-2) var(--di-gap-12);
@@ -214,9 +201,9 @@
     font-weight: var(--di-weight-medium);
   }
 
-  .di-tsummary-tone {
-    grid-area: tone;
-    justify-self: start;
+  .di-tsummary-series {
+    grid-area: series;
+    justify-self: end;
   }
 
   .di-tsummary-time {
@@ -234,13 +221,13 @@
     color: var(--di-text-muted);
   }
 
-  /* On a narrow frame every part of a row takes its own line, the tone under the title. */
+  /* On a narrow frame every part of a row takes its own line, the series under the title. */
   @container (max-width: 480px) {
     .di-tsummary-row {
       grid-template-columns: var(--di-index-col) minmax(0, 1fr);
       grid-template-areas:
         "index title"
-        "index tone"
+        "index series"
         "index time"
         "index detail";
     }
@@ -249,6 +236,10 @@
     .di-tsummary-row .di-tsummary-time {
       white-space: normal;
       text-wrap: balance;
+    }
+
+    .di-tsummary-row .di-tsummary-series {
+      justify-self: start;
     }
   }
 
