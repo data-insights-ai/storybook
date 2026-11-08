@@ -6,6 +6,7 @@ import { LoadError } from "./LoadError";
 const labels = {
   retry: "Try again",
   retryAfter: (seconds: number) => `You can try again in ${seconds} s.`,
+  retryAt: (time: string) => `You can try again from ${time}.`,
   copyReference: "Copy the reference",
   copied: "Copied",
 };
@@ -48,5 +49,21 @@ export const RateLimited: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { name: "Try again" })).toBeDisabled();
     await expect(canvas.getByRole("status")).toHaveTextContent(/try again in \d+ s/);
+  },
+};
+
+/** A longer wait (an hourly allowance) names the time it ends instead of counting seconds. */
+export const LongWait: Story = {
+  args: {
+    title: "Too many requests",
+    body: "This organization used its requests for the hour.",
+    reference: undefined,
+    retryAt: new Date(Date.now() + 45 * 60_000),
+    locale: "en-GB",
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole("status")).toHaveTextContent(/You can try again from .*\d{2}:\d{2}\./);
+    await expect(canvas.getByRole("button", { name: "Try again" })).toBeDisabled();
   },
 };
