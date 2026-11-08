@@ -17,7 +17,7 @@ const listeners = new Set<() => void>();
 let current: Shown | undefined;
 let next = 1;
 let timer: ReturnType<typeof setTimeout> | undefined;
-let held = false;
+let heldId: number | undefined;
 
 function emit() {
   for (const listener of listeners) listener();
@@ -25,7 +25,7 @@ function emit() {
 
 function schedule() {
   clearTimeout(timer);
-  timer = current && !held ? setTimeout(dismissToast, visibleMs) : undefined;
+  timer = current && heldId !== current.id ? setTimeout(dismissToast, visibleMs) : undefined;
 }
 
 /**
@@ -34,21 +34,26 @@ function schedule() {
  */
 export function toast(message: ToastMessage) {
   current = { ...message, id: next++ };
+  heldId = undefined;
   schedule();
   emit();
 }
 
 export function dismissToast() {
   current = undefined;
+  heldId = undefined;
   schedule();
   emit();
 }
 
-/** While the reader points at or focuses the receipt it stays (WCAG 2.2.1). */
-export function holdToast(hold: boolean) {
-  held = hold;
+/** While the reader points at or focuses receipt `id` it stays (WCAG 2.2.1); a word about an older receipt changes nothing. */
+export function holdToast(id: number, hold: boolean) {
+  if (current?.id !== id) return;
+  heldId = hold ? id : undefined;
   schedule();
 }
+
+export const currentToast = (): Shown | undefined => current;
 
 export function useCurrentToast(): Shown | undefined {
   return useSyncExternalStore(
@@ -56,7 +61,7 @@ export function useCurrentToast(): Shown | undefined {
       listeners.add(listener);
       return () => listeners.delete(listener);
     },
-    () => current,
+    currentToast,
     () => undefined,
   );
 }

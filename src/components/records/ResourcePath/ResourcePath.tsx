@@ -21,7 +21,7 @@ export function ResourcePath({
   renderLink?: (segment: ResourceSegment & { href: string }) => ReactElement;
 }) {
   return (
-    <span className="di-resource-path">
+    <span>
       {segments.map((segment, i) => (
         <Fragment key={`${i}:${segment.label}`}>
           {i > 0 ? <span aria-hidden> › </span> : null}

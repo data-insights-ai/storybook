@@ -13,11 +13,11 @@ export function Toasts({ dismissLabel }: { dismissLabel: string }) {
     <ToastRegion>
       {message ? (
         <div
-          onPointerEnter={() => holdToast(true)}
-          onPointerLeave={() => holdToast(false)}
-          onFocus={() => holdToast(true)}
+          onPointerEnter={() => holdToast(message.id, true)}
+          onPointerLeave={() => holdToast(message.id, false)}
+          onFocus={() => holdToast(message.id, true)}
           onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) holdToast(false);
+            if (!event.currentTarget.contains(event.relatedTarget)) holdToast(message.id, false);
           }}
         >
           <Toast
@@ -27,7 +27,7 @@ export function Toasts({ dismissLabel }: { dismissLabel: string }) {
             auditId={message.auditId}
             dismissLabel={dismissLabel}
             onDismiss={() => {
-              holdToast(false);
+              holdToast(message.id, false);
               dismissToast();
             }}
           >
@@ -38,7 +38,7 @@ export function Toasts({ dismissLabel }: { dismissLabel: string }) {
                   variant="secondary"
                   onClick={() => {
                     message.action?.onClick();
-                    holdToast(false);
+                    holdToast(message.id, false);
                     dismissToast();
                   }}
                 >

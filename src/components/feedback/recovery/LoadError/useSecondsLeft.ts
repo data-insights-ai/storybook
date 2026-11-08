@@ -1,16 +1,23 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
-const secondsUntil = (at: Date | undefined, now: number) =>
-  at ? Math.max(0, Math.ceil((at.getTime() - now) / 1000)) : 0;
+const second = () => Math.floor(Date.now() / 1000);
 
-/** Seconds until `at`, counting down once a second, 0 once it has passed. */
+const everySecond = (onTick: () => void) => {
+  const timer = setInterval(onTick, 1000);
+  return () => clearInterval(timer);
+};
+
+const never = () => () => undefined;
+
+export const secondsLeft = (at: Date | undefined, nowSecond: number) =>
+  at ? Math.max(0, Math.ceil(at.getTime() / 1000) - nowSecond) : 0;
+
+/**
+ * Seconds until `at`, counting down once a second, 0 once it has passed.
+ * The clock is read on every render, so an `at` that arrives later is
+ * measured from now.
+ */
 export function useSecondsLeft(at: Date | undefined): number {
-  const [now, setNow] = useState(() => Date.now());
-  const left = secondsUntil(at, now);
-  useEffect(() => {
-    if (left === 0) return;
-    const timer = setTimeout(() => setNow(Date.now()), 1000);
-    return () => clearTimeout(timer);
-  }, [left, now]);
-  return left;
+  const now = useSyncExternalStore(at ? everySecond : never, second, second);
+  return secondsLeft(at, now);
 }

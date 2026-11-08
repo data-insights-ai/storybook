@@ -37,7 +37,7 @@ export function CursorTableFailed({ children }: { children: ReactNode }) {
 /**
  * An `InfiniteTable` fed by a cursor list, with the states around it: a
  * skeleton while the first page loads, `CursorTableFailed` in place of a
- * list that could not be read (not an empty one), `CursorTableEmpty` on a
+ * list that could not be read (never the empty state), `CursorTableEmpty` on a
  * surface when the list never held a row. While a filter or a search is
  * set, pass a `TableEmpty` child: a list it empties keeps the table and its
  * head, with that line in its body.
@@ -92,8 +92,8 @@ export function CursorTable<T>({
   const failed = slot(CursorTableFailed);
   const table = parts.filter((child) => child !== empty && child !== failed);
   const entries = (rows: readonly T[]) => (isEntry ? rows.filter(isEntry).length : rows.length);
-  if (list.isError && items.length === 0 && failed) {
-    return failed;
+  if (list.isError && items.length === 0) {
+    return failed ?? null;
   }
   if (list.isPending) {
     return <Loading shape="table" label={labels.loading} rows={6} />;
