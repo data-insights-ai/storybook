@@ -37,3 +37,7 @@ export function declaredCounts(counts: Record<string, number>, order: Map<string
 /** The bars with only the series in `order` counted. */
 export const declaredBars = (bars: TimelineBar[], order: Map<string, number>): TimelineBar[] =>
   bars.map((bar) => ({ ...bar, counts: declaredCounts(bar.counts, order) }));
+
+/** The caller's own bar at `at` that counts a series in `order`, so a target can be compared by identity. */
+export const barAt = (bars: TimelineBar[], at: number, order: Map<string, number>): TimelineBar | undefined =>
+  bars.find((b) => b.start <= at && at < b.end && Object.entries(b.counts).some(([id, n]) => n > 0 && order.has(id)));

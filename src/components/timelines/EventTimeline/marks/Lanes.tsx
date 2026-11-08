@@ -13,10 +13,14 @@ const SHADES = 4;
 
 const half = (n: number) => Math.round(n * 2) / 2;
 
-/** A lane's cells: its own, or one per event once the events are drawn one by one. */
-export function cellsOf(lane: TimelineLane, events: TimelineEvent[] | undefined): TimelineCell[] {
+/** A lane's cells of the series in `order`: its own, or one per event once the events are drawn one by one. */
+export function cellsOf(
+  lane: TimelineLane,
+  events: TimelineEvent[] | undefined,
+  order: Map<string, number>,
+): TimelineCell[] {
   if (!events) {
-    return lane.cells ?? [];
+    return (lane.cells ?? []).filter((c) => order.has(c.series));
   }
   return events.filter((e) => e.lane === lane.id).map((e) => ({ start: e.at, end: e.at, count: 1, series: e.series }));
 }

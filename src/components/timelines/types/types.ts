@@ -56,7 +56,7 @@ export type TimelineScore = {
  */
 export type TimelineInstruction = { keys: string[]; label: string; pointer?: "fine" | "coarse" };
 
-/** What sits under the pointer, for the caller's readout. */
+/** What sits under the pointer, for the caller's readout: a bar is the caller's own object, one that counts a drawn series; where nothing is drawn it is a gap. */
 export type TimelineTarget = { at: number; score?: number } & (
   { kind: "bar"; bar: TimelineBar } | { kind: "event"; event: TimelineEvent } | { kind: "gap" }
 );

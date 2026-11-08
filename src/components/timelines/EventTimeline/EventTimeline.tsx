@@ -29,7 +29,7 @@ import { useGestures } from "./navigation/useGestures";
 import type { TimelineNavigation } from "./navigation/useTimelineView";
 import { activityOf, brokenScaleOf, clockFormats, gapsBetween, ticksAcross } from "../scale";
 import { zoomAround, type Span } from "../scale";
-import { declaredBars, drawnSeries, seriesColor, seriesOrder, totalOf } from "../series";
+import { barAt, declaredBars, drawnSeries, seriesColor, seriesOrder, totalOf } from "../series";
 import type {
   TimelineBar,
   TimelineEvent,
@@ -182,7 +182,10 @@ export function EventTimeline({
   );
   const peak = useMemo(() => Math.max(0, ...bars.map(totalOf)), [bars]);
 
-  const cells = useMemo(() => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events)])), [lanes, events]);
+  const cells = useMemo(
+    () => new Map(lanes.map((lane) => [lane.id, cellsOf(lane, events, order)])),
+    [lanes, events, order],
+  );
   const counts = new Map(
     lanes.map((lane) => {
       const count = countIn(cells.get(lane.id) ?? [], view);
@@ -197,7 +200,7 @@ export function EventTimeline({
       if (hit) {
         onEventPick?.(hit);
       }
-    } else if (bars.some((b) => b.start <= at && at < b.end)) {
+    } else if (barAt(givenBars, at, order)) {
       change(zoomAround(view, at, 0.25, bounds), true);
     }
   };
@@ -221,9 +224,9 @@ export function EventTimeline({
       const event = nearestEvent(events, scale, hoverPx, PICK_PX);
       return event ? { ...scored, kind: "event", event } : { ...scored, kind: "gap" };
     }
-    const bar = bars.find((b) => b.start <= at && at < b.end);
+    const bar = barAt(givenBars, at, order);
     return bar ? { ...scored, kind: "bar", bar } : { ...scored, kind: "gap" };
-  }, [hoverPx, gestures.brush, loading, scale, score, events, bars]);
+  }, [hoverPx, gestures.brush, loading, scale, score, events, givenBars, order]);
 
   // Reported when what is under the pointer changes, not on every render that rebuilds it.
   const hoverKey = !target
