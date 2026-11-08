@@ -1,18 +1,4 @@
-/** What the surface checks share: what is shown, and which box paints a surface. */
-
-export function shown(el: Element): boolean {
-  if (!(el instanceof HTMLElement || el instanceof SVGElement)) return false;
-  if (el.closest(".di-sr, [hidden], [inert], [aria-hidden='true']")) return false;
-  const details = el.closest("details:not([open])");
-  if (details && !el.closest("summary")) return false;
-  const rect = el.getBoundingClientRect();
-  if (rect.width < 2 || rect.height < 2) return false;
-  for (let node: Element | null = el; node; node = node.parentElement) {
-    const style = getComputedStyle(node);
-    if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0) return false;
-  }
-  return true;
-}
+/** What the surface checks share: which box paints a surface. What is shown is `shown` in `src/checks/surfaces.ts`. */
 
 export function opaque(color: string): boolean {
   const alpha = color.match(/rgba?\([^)]*?,\s*([\d.]+)\)$/);

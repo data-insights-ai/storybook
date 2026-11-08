@@ -69,13 +69,12 @@ It fails on spacing off the `--di-space-*` ramp, a hand-set radius, a raw font s
 Content on a page stands on a surface: a `Panel` or another `di-surface` block, a table's surface, a strip `FigureRow`, a `Notice variant="line"`, a dialog or what floats above the page. Only the page's frame stands on the bare ground: its head, breadcrumb, tabs, toolbars, filter bar, steps, brand points, the attention heading, and the page's footer, the `footer` that ends `main` (legal links, attribution). A note anywhere else is a `Notice variant="line"` or sits on a surface. The rule ships as `@data-insights-ai/ui/checks`, which imports no component or stylesheet, for a product's browser test to run on every route:
 
 ```ts
-import { GROUND, SURFACES, surfaceFindings } from "@data-insights-ai/ui/checks";
+import { surfaceScript } from "@data-insights-ai/ui/checks";
 
-const findings = await page.evaluate(surfaceFindings, { root: "main", surfaces: SURFACES, ground: GROUND });
-expect(findings).toEqual([]);
+expect(await page.evaluate<string[]>(surfaceScript())).toEqual([]);
 ```
 
-Each finding is the element's tag, first class and label. `surfaceFindings` references nothing outside its own body, so `page.evaluate` can send it to the page.
+Each finding is the element's tag, first class and label. `surfaceScript()` is the rule as source for the page to run; `surfaceScript(rule)` takes another root or other lists, from `SURFACES` and `GROUND`.
 
 ## Context and repeated views
 

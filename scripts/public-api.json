@@ -351,7 +351,7 @@
     "GROUND",
     "SURFACES",
     "SurfaceRule",
-    "surfaceFindings"
+    "surfaceScript"
   ],
   "classes": [
     "di-attention",

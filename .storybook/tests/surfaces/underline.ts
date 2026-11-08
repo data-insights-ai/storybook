@@ -1,4 +1,5 @@
-import { describe, shown } from "./paint";
+import { describe } from "./paint";
+import { shown } from "../../../src/checks/surfaces";
 
 /**
  * Underline means clickable. Text drawn with an underline — a text

@@ -1,4 +1,5 @@
-import { describe, shown } from "./paint";
+import { describe } from "./paint";
+import { shown } from "../../../src/checks/surfaces";
 
 /**
  * A toolbar or a filter bar is one height: a search, a select, a filter

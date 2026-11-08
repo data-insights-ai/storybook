@@ -1,5 +1,5 @@
 import { afterEach, expect } from "vitest";
-import { SURFACES, surfaceFindings } from "../../../src/checks";
+import { SURFACES, surfaceFindings } from "../../../src/checks/surfaces";
 import { clearanceFindings, tableEdgeFindings } from "./clearance";
 import { nestingFindings } from "./nesting";
 import { outlineFindings } from "./outline";
