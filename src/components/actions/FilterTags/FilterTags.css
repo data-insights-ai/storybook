@@ -1,0 +1,16 @@
+@layer components {
+  .di-filter-tags {
+    display: flex;
+    align-items: center;
+    gap: var(--di-space-6);
+  }
+
+  .di-filter-tags-field {
+    display: grid;
+    gap: var(--di-space-8);
+  }
+
+  .di-filter-tags-field .di-filter-tags {
+    flex-wrap: wrap;
+  }
+}

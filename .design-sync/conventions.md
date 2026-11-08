@@ -44,14 +44,14 @@ A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` ho
 The Storybook sidebar is grouped by the question a developer asks, one group per job:
 
 - `Foundations/`: the brand and the tokens, shown (Start here, Color, Type, Space and shape, Our look, Logo). No component lives here.
-- `Actions/`: let someone do something: `Button` (with `badge` for a count), `FilterBar` (the filters above a list on one row, folding into a sheet), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `Menu`, `CopyValue`.
-- `Forms/`: let someone enter or choose: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select`, `ComboBox`, `ChoiceGroup`, `Switch`, `Checkbox`, the date fields and `CreateFlow`.
-- `Tables/`: many rows to scan, sort and filter: `DataTable`, `InfiniteTable`, `NewEntries`.
-- `Records/`: one record or a short list of them: `RecordCard`, `FactList`, `ProposalPanel`, `AttentionList`, `IconTile`.
+- `Actions/`: let someone do something: `Button` (with `badge` for a count), `FilterBar` (the filters above a list on one row, folding into a sheet; `FilterTags` for toggle tags in it), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `Menu`, `CopyValue`.
+- `Forms/`: let someone enter or choose: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select` (`FilterSelect` in a filter bar), `ComboBox`, `ChoiceGroup`, `Switch`, `Checkbox`, the date fields (`RangeFilter`, a list's period in its filter bar) and `CreateFlow`.
+- `Tables/`: many rows to scan, sort and filter: `DataTable`, `InfiniteTable`, `CursorTable` (an `InfiniteTable` fed by a server cursor, with its loading, empty, no-match and failed states), `NewEntries`.
+- `Records/`: one record or a short list of them: `RecordCard`, `FactList`, `ProposalPanel`, `AttentionList`, `IconTile`, `ResourcePath` (where a record lives, in prose), `TechnicalDetails` (raw identifiers to copy).
 - `Figures/`: a number: `Figure`, `FigureRow`, `Sparkline`.
 - `Text/`: how text is set: `Eyebrow`, `MetaLine`, `TextLink`, `Kbd`, `Highlight`, `Icon`, and the blocks `CodeBlock`, `PointList`, `PullQuote`, `TickRule`.
 - `Status/`: the state of a thing, inline: `StatusPill`, `SeverityMark`, `SealValue`, `Badge`, `Tag` (`mono` for a filter, a version or a hash), `LevelMeter`.
-- `Feedback/`: what happened or is happening: `Notice` (`variant` banner, line), `EmptyState`, `Toast`, `Loading` (`shape` inline, app, list, detail, form, table), `Progress`, `RouteProgress`, `Delayed`.
+- `Feedback/`: what happened or is happening: `Notice` (`variant` banner, line), `EmptyState`, `Toast` (`toast()` and `Toasts` show receipts from anywhere), `Loading` (`shape` inline, app, list, detail, form, table), `Progress`, `RouteProgress`, `Delayed`, and the ways back: `LoadError` (a list or page that could not be read, with try again and a reference), `RouteBoundary` with `PageFailure`, `StaleNotice` (a list behind the server).
 - `Charts/`: data on a scale: `Chart`, `TrendChart`, `Seismograph`, `Distribution`, `CoverageMatrix`; a dashboard figure is a `Panel` with a `Figure` and the chart, in a `Grid`.
 - `Timelines/`: events and periods over time: `EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`. `EventTimeline` folds a long quiet stretch into a break on its axis (`axis="broken"`, the default); `continuous` keeps time at one rate.
 - `Layout/`: how a page is arranged: `Page`, `PageHeader` (`level={2}` for a section), `Panel` (`surface="hero"`, `tone="danger"`), `DetailSection`, and `Stack`, `Grid`, `Split`, `Disclosure`.

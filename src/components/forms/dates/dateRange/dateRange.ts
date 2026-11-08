@@ -111,3 +111,31 @@ export function parseTypedDate(text: string): CalendarDate | null {
     return null;
   }
 }
+
+/** The search value that keeps "any time" chosen when a list's default is a period. */
+export const anyTime = "all";
+
+/**
+ * A list's period from its search: `range=all` is any time chosen on
+ * purpose, nothing set is the list's `fallback` (a chart always shows a
+ * period), anything else reads as `parseDateRange` does.
+ */
+export function periodOf(
+  search: Record<string, unknown> | URLSearchParams,
+  fallback: DateRangeValue = {},
+): DateRangeValue {
+  const get = (key: string): unknown => (search instanceof URLSearchParams ? search.get(key) : search[key]);
+  if (get("range") === anyTime) return {};
+  if (!["range", "from", "to"].some((key) => get(key) !== undefined && get(key) !== null && get(key) !== ""))
+    return fallback;
+  return parseDateRange(search);
+}
+
+/** The search for a chosen period; any time is kept as `range=all` when the list's default is a period. */
+export function periodSearch(
+  value: DateRangeValue,
+  fallback: DateRangeValue = {},
+): Omit<DateRangeSearch, "range"> & { range?: DateRangePreset | typeof anyTime } {
+  const search = serializeDateRange(value);
+  return !isDateRangeSet(value) && isDateRangeSet(fallback) ? { ...search, range: anyTime } : search;
+}
