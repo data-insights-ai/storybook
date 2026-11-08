@@ -1,5 +1,5 @@
 import { afterEach, expect } from "vitest";
-import { canvasFindings } from "./canvas";
+import { SURFACES, surfaceFindings } from "../../../src/checks";
 import { clearanceFindings, tableEdgeFindings } from "./clearance";
 import { nestingFindings } from "./nesting";
 import { outlineFindings } from "./outline";
@@ -10,11 +10,15 @@ import { scrollerFindings, widthFindings } from "./width";
 // The Foundations pages are documents, not components on a surface.
 const documents = /\/src\/foundations\//;
 
+// A story canvas holds no page frame: a page and the shell's content box count as surfaces, and nothing is ground.
+const canvas = { root: "body", surfaces: `${SURFACES}, .di-page, .di-content` };
+
 afterEach(() => {
   if (!documents.test(expect.getState().testPath ?? ""))
-    expect(canvasFindings(document.body), "content stands on the surface it lives on, not on the bare canvas").toEqual(
-      [],
-    );
+    expect(
+      surfaceFindings(canvas).slice(0, 5),
+      "content stands on the surface it lives on, not on the bare canvas",
+    ).toEqual([]);
   expect(underlineFindings(document.body), "underline means clickable").toEqual([]);
   expect(trailFindings(document.body), "a trailing arrow only at a block's edge").toEqual([]);
   expect(nestingFindings(document.body), "a surface on the same surface").toEqual([]);

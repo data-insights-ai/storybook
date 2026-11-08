@@ -347,6 +347,12 @@
     "useTimelineView",
     "weekStartName"
   ],
+  "checks": [
+    "GROUND",
+    "SURFACES",
+    "SurfaceRule",
+    "surfaceFindings"
+  ],
   "classes": [
     "di-attention",
     "di-attention-action",

@@ -4,11 +4,12 @@ import ts from "typescript";
 
 /*
  * The package's public surface is what a product imports from the entry and
- * the class names it may style or query. Both are kept in public-api.json;
+ * from `checks`, and the class names it may style or query. Both are kept in public-api.json;
  * a change to either has to be written there on purpose (--write).
  */
 const snapshot = path.join("scripts", "public-api.json");
 const entry = path.join("dist", "lib", "index.d.ts");
+const checks = path.join("dist", "lib", "checks", "index.d.ts");
 
 function exportsOf(file) {
   const program = ts.createProgram([file], { skipLibCheck: true, noEmit: true });
@@ -36,7 +37,7 @@ function classesOf(dir) {
   return [...found].sort();
 }
 
-const current = { exports: exportsOf(entry), classes: classesOf(path.join("dist", "lib")) };
+const current = { exports: exportsOf(entry), checks: exportsOf(checks), classes: classesOf(path.join("dist", "lib")) };
 
 if (process.argv.includes("--write")) {
   writeFileSync(snapshot, JSON.stringify(current, null, 2) + "\n");
@@ -46,7 +47,7 @@ if (process.argv.includes("--write")) {
 
 const recorded = JSON.parse(readFileSync(snapshot, "utf8"));
 let failed = false;
-for (const key of ["exports", "classes"]) {
+for (const key of ["exports", "checks", "classes"]) {
   const before = new Set(recorded[key]);
   const after = new Set(current[key]);
   const gone = recorded[key].filter((name) => !after.has(name));
