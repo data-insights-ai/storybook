@@ -57,7 +57,13 @@ function Keys({ source, filter = "" }: { source: CursorTableList<Key>; filter?: 
         <LoadError
           body="The keys could not be read."
           onRetry={() => undefined}
-          labels={{ retry: "Try again", retryAfter: (s) => `In ${s} s`, copyReference: "Copy", copied: "Copied" }}
+          labels={{
+            retry: "Try again",
+            retryAfter: (s) => `In ${s} s`,
+            retryAt: (time) => `From ${time}`,
+            copyReference: "Copy",
+            copied: "Copied",
+          }}
         />
       </CursorTableFailed>
     </CursorTable>

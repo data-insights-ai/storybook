@@ -2,6 +2,10 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.26.0
+
+- `LoadError` counts down a wait of a minute or less and names the time a longer one ends (an hourly or daily allowance), in `locale`. Upgrade: `LoadErrorLabels.retryAfter` takes the seconds only; add `retryAt(time)`, and pass `locale`.
+
 ## 0.25.0
 
 The list and feedback pieces the products each drew themselves, combined from all of them:
