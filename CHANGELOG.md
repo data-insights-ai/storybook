@@ -5,6 +5,7 @@ Each release, newest first: what changed and what a product has to do to take it
 ## 0.31.0
 
 - `ClampText` (new): a passage held to 2–6 lines (`lines`) with a "Show more" link-styled button (`moreLabel`, `lessLabel`) that opens it in place; the button is there only when the text runs past the lines, measured again on resize.
+- A `RecordCard` card whose head ends in `RecordActions` stacks its mark, name and actions in one column below 400px of card, so buttons no longer squeeze the title to a sliver on a phone. Rows keep their layout.
 - Upgrade: nothing to change.
 
 ## 0.30.0
