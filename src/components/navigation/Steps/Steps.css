@@ -119,6 +119,18 @@
     font-weight: var(--di-weight-medium);
   }
 
+  /* Where the process stopped: a cross on the critical status ground, never the current fill, and its name in the status ink. */
+  .di-step-bullet.is-failed {
+    border-color: var(--di-status-danger-dot);
+    background: var(--di-status-danger-bg);
+    color: var(--di-status-danger-fg);
+  }
+
+  .di-step-label.is-failed {
+    color: var(--di-status-danger-fg);
+    font-weight: var(--di-weight-medium);
+  }
+
   /* Inline: the steps start at the content's edge, each name on one line
      beside its bullet, joined by a short line that gives way first. */
   .di-steps[data-layout="inline"] {

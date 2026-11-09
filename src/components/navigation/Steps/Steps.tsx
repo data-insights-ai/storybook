@@ -1,11 +1,11 @@
 import { Children, createContext, isValidElement, useContext, type ReactElement, type ReactNode } from "react";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { cx } from "../../../internal/cx";
 import { takeSlot } from "../../../internal/slots";
 import { surfaceClass } from "../../../internal/surface";
 import "./Steps.css";
 
-export type StepState = "done" | "current" | "upcoming";
+export type StepState = "done" | "current" | "upcoming" | "failed";
 export type StepsVariant = "progress" | "cards" | "list";
 
 export type StepTone = "warn";
@@ -13,9 +13,12 @@ export type StepTone = "warn";
 type StepsConfig = {
   variant: StepsVariant;
   heading: 2 | 3 | 4;
-  stateLabels?: { done: string; current: string; upcoming: string };
+  stateLabels?: StepStateLabels;
   onStep?: (index: number) => void;
 };
+
+/** The words each state is read as; without `failed`, a failed step is read by its title alone, so name the failure there. */
+export type StepStateLabels = { done: string; current: string; upcoming: string; failed?: string };
 
 const Config = createContext<StepsConfig>({ variant: "list", heading: 3 });
 const Position = createContext(0);
@@ -48,8 +51,12 @@ const Position = createContext(0);
  * - `cards`: each step a surface in a row that wraps; the current one runs
  *   on navy.
  *
- * **States:** each `Step` is `done`, `current` or `upcoming`. In `progress`
- * every step has one; in `list` and `cards` it is optional and only
+ * **States:** each `Step` is `done`, `current`, `upcoming` or `failed`. In
+ * `progress` every step has one; a `failed` step is where the process
+ * stopped: a cross on the critical status ground instead of the current
+ * fill, and its title says so ("Failed while checking"). The line under a
+ * narrow track names the current step, else the failed one, else, once
+ * every step is done, the last; in `list` and `cards` it is optional and only
  * `current` changes the look. A step that lags or waits on something takes
  * `tone="warn"`: an amber edge, never the current step's fill, and its
  * words (a `StatusPill` in the footer) say why.
@@ -88,7 +95,7 @@ export function Steps({
   /** `cards` only: the level of each card's title. */
   heading?: 2 | 3 | 4;
   /** The word each state is announced as. Needed for `progress`. */
-  stateLabels?: { done: string; current: string; upcoming: string };
+  stateLabels?: StepStateLabels;
   /** `progress` only: the current step's position in words under a narrow track, e.g. "Step 3 of 4"; "3/4" when left out. */
   stepOf?: (position: number, total: number) => string;
   /** `progress` only: called with a done step's index when it is pressed. */
@@ -105,7 +112,7 @@ export function Steps({
   const all = Children.toArray(children).filter((child): child is ReactElement<{ state?: StepState; title?: string }> =>
     isValidElement<{ state?: StepState; title?: string }>(child),
   );
-  const at = variant === "progress" ? all.findIndex((child) => child.props.state === "current") : -1;
+  const at = variant === "progress" ? summarized(all.map((child) => child.props.state)) : -1;
   const now = at >= 0 ? all[at].props.title : undefined;
   return (
     <Config.Provider value={{ variant, heading, stateLabels, onStep }}>
@@ -129,6 +136,16 @@ export function Steps({
       </ol>
     </Config.Provider>
   );
+}
+
+// summarized is the step the line under a narrow track names: the current
+// one, else the failed one, else the last once every step is done.
+function summarized(states: (StepState | undefined)[]) {
+  const current = states.indexOf("current");
+  if (current >= 0) return current;
+  const failed = states.indexOf("failed");
+  if (failed >= 0) return failed;
+  return states.length > 0 && states.every((s) => s === "done") ? states.length - 1 : -1;
 }
 
 /**
@@ -161,10 +178,16 @@ export function Step({
     const inner = (
       <>
         <span className={cx("di-step-bullet", `is-${settled}`)} aria-hidden>
-          {settled === "done" ? <Check className="di-step-check" /> : <span className="di-ordinal">{shown}</span>}
+          {settled === "done" ? (
+            <Check className="di-step-check" />
+          ) : settled === "failed" ? (
+            <X className="di-step-check" />
+          ) : (
+            <span className="di-ordinal">{shown}</span>
+          )}
         </span>
         <span className={cx("di-step-label", `is-${settled}`)}>{title}</span>
-        {stateLabels ? <span className="di-sr">{stateLabels[settled]}</span> : null}
+        {stateLabels?.[settled] ? <span className="di-sr">{stateLabels[settled]}</span> : null}
       </>
     );
     return (

@@ -251,6 +251,7 @@
     "StepFooter",
     "StepIcon",
     "StepState",
+    "StepStateLabels",
     "StepTone",
     "Steps",
     "StepsVariant",
