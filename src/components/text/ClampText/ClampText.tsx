@@ -48,7 +48,13 @@ export function ClampText({
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(element);
-    return () => observer.disconnect();
+    // A web font that arrives later reflows the text without resizing the clamped box.
+    let live = true;
+    void document.fonts?.ready.then(() => live && measure());
+    return () => {
+      live = false;
+      observer.disconnect();
+    };
   }, [open, children]);
   return (
     <div className={cx("di-clamp", className)}>

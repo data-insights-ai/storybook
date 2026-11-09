@@ -18,12 +18,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Held to two lines; Show more opens it in place, Show less closes it. */
+/** Held to two lines in a narrow column; Show more opens it in place, Show less closes it. */
 export const Long: Story = {
   args: { lines: 2 },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 320 }}>
+        <Story />
+      </div>
+    ),
+  ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const more = canvas.getByRole("button", { name: "Show more" });
+    const more = await canvas.findByRole("button", { name: "Show more" });
     await expect(more).toHaveAttribute("aria-expanded", "false");
     const text = canvasElement.querySelector<HTMLElement>(".di-clamp-text")!;
     await expect(text.scrollHeight).toBeGreaterThan(text.clientHeight);
