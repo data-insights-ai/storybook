@@ -1,0 +1,24 @@
+@layer components {
+  .di-clamp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--di-gap-4);
+    min-width: 0;
+  }
+
+  .di-clamp-text {
+    margin: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  /* Cut at the given lines with an ellipsis; a reader still hears it whole. */
+  .di-clamp-text.is-clamped {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: var(--di-clamp-lines);
+    line-clamp: var(--di-clamp-lines);
+    overflow: hidden;
+  }
+}

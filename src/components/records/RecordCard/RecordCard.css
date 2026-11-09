@@ -203,6 +203,28 @@
     }
   }
 
+  /* A card whose head ends in actions: below 400px the mark, the name and the actions each take the full width, so the name keeps its line. */
+  @container (max-width: 400px) {
+    .di-record-card > .di-record-head:has(> .di-record-end .di-record-actions) {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "mark"
+        "name"
+        "end";
+      row-gap: var(--di-gap-8);
+    }
+
+    .di-record-card > .di-record-head:has(> .di-record-end .di-record-actions):not(:has(> .di-record-mark)) {
+      grid-template-areas:
+        "name"
+        "end";
+    }
+
+    .di-record-card > .di-record-head:has(> .di-record-end .di-record-actions) > .di-record-end {
+      justify-content: flex-start;
+    }
+  }
+
   /* A row with a control at its end needs more room before the control goes under the name. */
   @container (max-width: 400px) {
     .di-record-row > .di-record-head {
