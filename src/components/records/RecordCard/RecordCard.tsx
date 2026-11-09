@@ -18,12 +18,15 @@ import "./RecordCard.css";
  */
 export function RecordCard({
   title,
+  lang,
   heading = 2,
   layout = "card",
   className,
   children,
 }: {
   title: string;
+  /** The title's language when it is data in another language than the page: an English CVE title on a German page. */
+  lang?: string;
   /** The title's heading level in the page outline; `false` when the record is not a section (a row in a list). */
   heading?: 2 | 3 | false;
   layout?: "card" | "row";
@@ -58,7 +61,9 @@ export function RecordCard({
       <div className="di-record-head">
         {slot.mark}
         <div className="di-record-name">
-          <Title className="di-record-title">{title}</Title>
+          <Title className="di-record-title" lang={lang}>
+            {title}
+          </Title>
           {slot.under}
         </div>
         {slot.end.length > 0 ? <div className="di-record-end">{slot.end}</div> : null}

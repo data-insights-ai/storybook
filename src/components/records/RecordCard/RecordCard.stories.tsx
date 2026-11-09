@@ -8,6 +8,7 @@ import { Panel } from "../../layout/page/Panel";
 import { Icon } from "../../text/Icon";
 import { IconTile } from "../IconTile";
 import { StatusPill } from "../../status/StatusPill";
+import { Tag } from "../../status/Tag";
 import { TextLink } from "../../text/TextLink";
 import { Figure, FigureNote } from "../../figures/Figure";
 import { Sparkline } from "../../figures/Sparkline";
@@ -353,5 +354,24 @@ export const LongLabels: Story = {
   play: async ({ canvasElement }) => {
     const card = canvasElement.querySelector(".di-record")!;
     await expect(card.scrollWidth).toBeLessThanOrEqual(card.clientWidth + 1);
+  },
+};
+
+// A German page lists a CVE by its English title: the title says its own
+// language, so a screen reader reads it in English.
+export const DataTitle: Story = {
+  args: { title: "Example Firewall OS heap overflow in the SSL VPN portal", lang: "en" },
+  render: (args) => (
+    <div lang="de">
+      <RecordCard {...args}>
+        <Tag mono lang="en" title="Example Firewall OS heap overflow in the SSL VPN portal">
+          CVE-2026-900010
+        </Tag>
+      </RecordCard>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelector(".di-record-title")?.getAttribute("lang")).toBe("en");
+    await expect(canvasElement.querySelector(".di-tag")?.getAttribute("lang")).toBe("en");
   },
 };
