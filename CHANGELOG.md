@@ -2,6 +2,12 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.29.0
+
+- `Split` (`rail`, the default) puts the aside beside the main column by the split's own width, not the window's: once the main column keeps 40rem beside the 320px rail (about 984px of split). An app sidebar beside the split now counts, so a strip of tabs or a timeline in the main column is no longer squeezed between the two. Narrower, the aside follows the main column, or comes first with `asideFirst`. The rail split now stands in a frame (`.di-split-frame`, the container it is measured by), as the `list` split already did; `className` goes on that frame.
+- A stacked `DataTable` card wraps the name and the scope of each tag in a compact `TagList` (`max`) inside the tag instead of cutting them; in a grid row they keep one line as before.
+- Upgrade: a product that styled a rail split through `className` or a selector on `.di-split` checks that it still applies to the frame or to the split inside it.
+
 ## 0.28.1
 
 - A `layout="measured"` table (`DataTable`, `InfiniteTable`, `CursorTable`) measures its columns again once it turns out to scroll sideways. A pill or tag beside a pinned filling name is no longer cut when the page opens at a width where the grid scrolls.
