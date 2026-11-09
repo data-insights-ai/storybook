@@ -138,7 +138,7 @@ export function DataTable({
   const stack = narrow === "stack";
   const scroll = useRef<HTMLDivElement>(null);
   const { overflowing, moreStart, moreEnd, through, offsets, pinEnd } = useFrame(scroll, stack);
-  const widths = useMeasuredColumns(scroll, layout === "measured");
+  const widths = useMeasuredColumns(scroll, layout === "measured", overflowing);
   return (
     <div
       className={cx(
@@ -293,10 +293,14 @@ function fillColumn(grid: ReactNode[]) {
  * The widths the head and the first rows settle on, locked until the frame
  * changes width: a column measured by content would otherwise widen and
  * narrow with the rows a virtualized register happens to render. Nothing is
- * measured while the rows are stacked, where there are no columns.
+ * measured while the rows are stacked, where there are no columns. Widths
+ * taken before the grid was known to scroll sideways are taken again once
+ * it is: a scrolling grid keeps the pinned name on one line, so a tag
+ * beside the name needs the width it wrapped into before.
  */
-function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: boolean) {
-  const [widths, setWidths] = useState<number[]>();
+function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: boolean, overflowing: boolean) {
+  const [measured, setMeasured] = useState<{ widths: number[]; overflowing: boolean }>();
+  const widths = measured?.overflowing === overflowing ? measured.widths : undefined;
   // eslint-disable-next-line react-hooks/exhaustive-deps -- measures after every render until the head and a first row exist; once set it stops
   useLayoutEffect(() => {
     const el = frame.current;
@@ -306,7 +310,7 @@ function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: 
     const row = table.tBodies[0]?.querySelector("tr:not(.di-table-spacer)");
     if (!heads || !row || getComputedStyle(table).display !== "table") return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- column widths are read from the laid-out table before paint
-    setWidths(Array.from(heads, (th) => th.getBoundingClientRect().width));
+    setMeasured({ widths: Array.from(heads, (th) => th.getBoundingClientRect().width), overflowing });
   });
   useLayoutEffect(() => {
     const el = frame.current;
@@ -315,7 +319,7 @@ function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: 
     const observer = new ResizeObserver(() => {
       if (Math.abs(el.clientWidth - width) > 1) {
         width = el.clientWidth;
-        setWidths(undefined);
+        setMeasured(undefined);
       }
     });
     observer.observe(el);

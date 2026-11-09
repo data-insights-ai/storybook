@@ -382,6 +382,52 @@ test("a tag beside a name in a measured grid takes the next line instead of narr
   }
 });
 
+test("a measured grid that turns out to scroll measures again, so the pill beside a pinned filling name is not cut", async () => {
+  const host = document.createElement("div");
+  host.style.width = "700px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Assets" indexed={false} layout="measured">
+        <TableHead>
+          <TableColumn pinned width="fill">
+            Name
+          </TableColumn>
+          <TableColumn>Workspace</TableColumn>
+          <TableColumn>Owner</TableColumn>
+          <TableColumn>Last seen</TableColumn>
+          <TableColumn>Last recorded by the AI SOC</TableColumn>
+        </TableHead>
+        <TableBody>
+          {["ws-fin-014", "srv-file-02", "lt-vie-211"].map((name) => (
+            <TableRow key={name}>
+              <TableCell pinned>
+                <CellLead>
+                  <a href={`#${name}`}>{name}.corp.example.com</a>
+                  <StatusPill tone="recorded" dot={false}>
+                    licensed
+                  </StatusPill>
+                </CellLead>
+              </TableCell>
+              <TableCell>Production</TableCell>
+              <TableCell>Facility services (external)</TableCell>
+              <TableCell>Nov 2, 2026, 1:35 AM</TableCell>
+              <TableCell>Seen again</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  await frames();
+  await frames();
+  expect(document.querySelector(".di-table-wrap")!.classList).toContain("is-overflowing");
+  for (const pill of document.querySelectorAll<HTMLElement>(".di-badge")) {
+    expect(pill.getBoundingClientRect().right).toBeLessThanOrEqual(pill.closest("td")!.getBoundingClientRect().right);
+  }
+});
+
 test("a stacked end cell with lines of its own keeps its height; only actions stand on the first line", async () => {
   const host = document.createElement("div");
   host.style.width = "320px";

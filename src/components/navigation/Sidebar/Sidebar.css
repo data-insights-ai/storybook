@@ -103,7 +103,8 @@
     font-weight: var(--di-mono-label-weight);
     letter-spacing: var(--di-mono-label-tracking);
     text-transform: uppercase;
-    white-space: nowrap;
+    /* A heading longer than the sidebar ("En todos los espacios de trabajo") takes a second line instead of being cut at the edge. */
+    text-wrap: balance;
     color: var(--di-sidebar-muted);
   }
 
