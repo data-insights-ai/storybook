@@ -24,6 +24,7 @@ export function Tag({
   children,
   detail = "",
   title,
+  lang,
   mono = false,
   pressed,
   onClick,
@@ -36,6 +37,13 @@ export function Tag({
   detail?: string;
   /** The full wording when the tag shows a short name, as a tooltip. */
   title?: string;
+  /**
+   * The language of the name and its title when they are data in another
+   * language than the page: a CVE id with its English title on a German page.
+   * A tag with `onRemove` says it on the name alone, so its remove label
+   * keeps the page's language.
+   */
+  lang?: string;
   /** The mono track: a version, a hash, a `key: value` filter. */
   mono?: boolean;
   /** Set: the tag narrows the view. With `onClick` it is announced as a pressed button. */
@@ -64,7 +72,9 @@ export function Tag({
   const name = (
     <>
       {inferred ? <SealMark state="inferred" /> : null}
-      <span className="di-tag-name">{children}</span>
+      <span className="di-tag-name" lang={onRemove ? lang : undefined}>
+        {children}
+      </span>
       {detail === "" ? null : <span className="di-tag-detail">{detail}</span>}
     </>
   );
@@ -76,13 +86,21 @@ export function Tag({
 
   if (onClick && !onRemove) {
     return (
-      <button ref={holdBox} type="button" className={classes} title={title} aria-pressed={pressed} onClick={onClick}>
+      <button
+        ref={holdBox}
+        type="button"
+        className={classes}
+        title={title}
+        lang={lang}
+        aria-pressed={pressed}
+        onClick={onClick}
+      >
         {name}
       </button>
     );
   }
   return (
-    <span ref={onClick ? undefined : holdBox} className={classes} title={title}>
+    <span ref={onClick ? undefined : holdBox} className={classes} title={title} lang={onRemove ? undefined : lang}>
       {onClick ? (
         <button ref={holdBox} type="button" className="di-tag-press" aria-pressed={pressed} onClick={onClick}>
           {name}

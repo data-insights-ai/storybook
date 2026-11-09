@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.32.0
+
+- `RecordCard` takes `lang` for its title and `Tag` takes `lang` for its name and title: data in another language than the page, such as an English CVE title on a German page, says its language, so a screen reader reads it in that language. A tag with `onRemove` says it on the name alone, so its remove label keeps the page's language.
+- Upgrade: nothing to change; pass `lang` where a record's title or a tag is source data.
+
 ## 0.31.1
 
 The first release of these changes; the v0.31.0 tag stopped at CI and was never published.
