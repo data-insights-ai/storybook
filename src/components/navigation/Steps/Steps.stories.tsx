@@ -275,7 +275,43 @@ export const LastStep: Story = {
 export const Complete: Story = {
   decorators: [onAPage],
   render: (args) => <Steps {...args}>{progress(4)}</Steps>,
-  play: async ({ canvasElement }) => statesWithoutColour(canvasElement),
+  play: async ({ canvasElement }) => {
+    await statesWithoutColour(canvasElement);
+    // Every step done: the line under a narrow track names the last.
+    await expect(canvasElement.querySelector(".di-steps-now")?.textContent).toBe("4/4Publish");
+  },
+};
+
+/**
+ * Where a process stopped: the failed step is a cross on the critical
+ * status ground, not the current fill, its title says what failed, and it
+ * is read as failed; the steps after it never began.
+ */
+export const Failed: Story = {
+  decorators: [onAPage],
+  args: {
+    label: "Draft progress",
+    stateLabels: { done: "Done", current: "Current step", upcoming: "Not started", failed: "Failed" },
+  },
+  render: (args) => (
+    <Steps {...args}>
+      <Step state="done" title="Queued" />
+      <Step state="done" title="Writing" />
+      <Step state="failed" title="Failed while checking sources" />
+      <Step state="upcoming" title="Ready" />
+    </Steps>
+  ),
+  play: async ({ canvasElement }) => {
+    const failed = canvasElement.querySelector<HTMLElement>(".di-step-bullet.is-failed")!;
+    await expect(failed.querySelector("svg")).not.toBeNull();
+    await expect(failed.textContent).toBe("");
+    await expect(canvasElement.querySelector("[aria-current]")).toBeNull();
+    await expect(getComputedStyle(failed).backgroundColor).not.toBe(
+      getComputedStyle(canvasElement.querySelector(".di-step-bullet.is-done")!).backgroundColor,
+    );
+    await expect(within(canvasElement).getByText("Failed", { selector: ".di-sr" })).toBeTruthy();
+    await expect(canvasElement.querySelector(".di-steps-now")?.textContent).toBe("3/4Failed while checking sources");
+  },
 };
 
 /** A completed step is a button that returns to it. */

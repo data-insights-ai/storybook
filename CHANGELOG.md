@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.30.0
+
+- `Step` takes `state="failed"`: where a process stopped, a cross on the critical status ground instead of the current fill, its name in the status ink, read as `stateLabels.failed` (new, optional; `StepStateLabels` is exported). The line under a narrow `progress` track names the current step, else the failed one, else the last once every step is done.
+- Upgrade: nothing to change; pass `failed` in `stateLabels` where a step can fail.
+
 ## 0.29.0
 
 - `Split` (`rail`, the default) puts the aside beside the main column by the split's own width, not the window's: once the main column keeps 40rem beside the 320px rail (about 984px of split). An app sidebar beside the split now counts, so a strip of tabs or a timeline in the main column is no longer squeezed between the two. Narrower, the aside follows the main column, or comes first with `asideFirst`. The rail split now stands in a frame (`.di-split-frame`, the container it is measured by), as the `list` split already did; `className` goes on that frame.
