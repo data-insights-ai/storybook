@@ -34,10 +34,11 @@ export function ClampText({
   moreLabel: string;
   lessLabel: string;
   className?: string;
+  /** The passage: text, or paragraphs and lists. */
   children: ReactNode;
 }) {
   const id = useId();
-  const text = useRef<HTMLParagraphElement>(null);
+  const text = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
   const [overflows, setOverflows] = useState(false);
   useLayoutEffect(() => {
@@ -51,14 +52,14 @@ export function ClampText({
   }, [open, children]);
   return (
     <div className={cx("di-clamp", className)}>
-      <p
+      <div
         ref={text}
         id={id}
         className={cx("di-clamp-text", !open && "is-clamped")}
         style={{ "--di-clamp-lines": lines } as CSSProperties}
       >
         {children}
-      </p>
+      </div>
       {overflows || open ? (
         <Button variant="link" size="sm" aria-expanded={open} aria-controls={id} onClick={() => setOpen(!open)}>
           {open ? lessLabel : moreLabel}
