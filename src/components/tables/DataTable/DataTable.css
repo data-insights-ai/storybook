@@ -619,6 +619,18 @@
       overflow: visible;
     }
 
+    /* Each tag too: a role or its scope wraps inside the frame instead of being cut, as outside a compact list. */
+    .di-table-wrap.is-stackable .di-tag-list.is-compact .di-tag {
+      flex-wrap: wrap;
+      overflow: visible;
+    }
+
+    .di-table-wrap.is-stackable .di-tag-list.is-compact :is(.di-tag-name, .di-tag-detail) {
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
+    }
+
     /* A cell with nothing to say takes no line, its column's name included. */
     .di-table-wrap.is-stackable td:empty,
     .di-table-wrap.is-stackable td.is-labelled:empty {

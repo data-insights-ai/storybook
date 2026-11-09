@@ -7,9 +7,11 @@ import "./Split.css";
  *
  * - `rail` (the default): a record read beside the decisions about it. The
  *   story in `SplitMain`, a narrower `SplitAside` that keeps the controls
- *   in view while the main column scrolls. Under 1024px the aside follows
- *   the main column; with `asideFirst` it comes first, for the decisions
- *   that must not be missed on a phone.
+ *   in view while the main column scrolls. The aside stands beside the main
+ *   column once the split leaves that column 40rem (about 984px of the
+ *   split's own width, so an open app sidebar counts). Narrower, the aside
+ *   follows the main column; with `asideFirst` it comes first, for the
+ *   decisions that must not be missed on a phone.
  * - `preview`: a form beside the live result of what it edits. From 1280px
  *   the aside is a wide column (two fifths) that stays in view while the
  *   form scrolls; narrower, the preview follows the form.
@@ -30,7 +32,7 @@ export function Split({
 }: {
   /** `rail` and `preview`: the aside comes first on a narrow screen. */
   asideFirst?: boolean;
-  /** `rail`: an aside at `--di-rail-width` from 1024px. `preview`: a wide aside from 1280px. `list`: a list beside its open record. */
+  /** `rail`: an aside at `--di-rail-width` once the main column keeps 40rem beside it. `preview`: a wide aside from 1280px. `list`: a list beside its open record. */
   variant?: "rail" | "preview" | "list";
   /** `list` only: which half a narrow screen shows. Both show from about 900px. */
   showing?: "list" | "detail";
@@ -58,9 +60,11 @@ export function Split({
         <div className="di-split is-list">{children}</div>
       </div>
     );
+  if (variant === "preview")
+    return <div className={cx("di-split is-preview", asideFirst && "is-aside-first", className)}>{children}</div>;
   return (
-    <div className={cx("di-split", variant === "preview" && "is-preview", asideFirst && "is-aside-first", className)}>
-      {children}
+    <div className={cx("di-split-frame", className)}>
+      <div className={cx("di-split", asideFirst && "is-aside-first")}>{children}</div>
     </div>
   );
 }

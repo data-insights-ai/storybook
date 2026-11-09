@@ -382,6 +382,42 @@ test("a tag beside a name in a measured grid takes the next line instead of narr
   }
 });
 
+test("a stacked card's compact tags wrap their name and scope inside the frame instead of cutting them", async () => {
+  const host = document.createElement("div");
+  host.style.width = "320px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Holders" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn>Subject</TableColumn>
+          <TableColumn width="fill">Access</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>CI pipeline</TableCell>
+            <TableCell>
+              <TagList max={2} moreLabel={(count) => `${count} more`}>
+                <Tag detail="Vienna branch office">Administrador del espacio de trabajo</Tag>
+                <Tag detail="Production">Lector</Tag>
+              </TagList>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  await frames();
+  await frames();
+  const card = document.querySelector("tbody tr")!.getBoundingClientRect();
+  for (const part of document.querySelectorAll<HTMLElement>(".di-tag-name, .di-tag-detail")) {
+    expect(part.checkVisibility()).toBe(true);
+    expect(part.scrollWidth).toBeLessThanOrEqual(part.clientWidth + 1);
+    expect(part.getBoundingClientRect().right).toBeLessThanOrEqual(card.right);
+  }
+});
+
 test("a measured grid that turns out to scroll measures again, so the pill beside a pinned filling name is not cut", async () => {
   const host = document.createElement("div");
   host.style.width = "700px";

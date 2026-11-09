@@ -1,4 +1,10 @@
 @layer components {
+  /* A rail or a list split stands in a frame: the container its columns are measured by. */
+  .di-split-frame {
+    container-type: inline-size;
+    min-width: 0;
+  }
+
   .di-split {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -24,7 +30,12 @@
     order: -1;
   }
 
-  @media (min-width: 1024px) {
+  /*
+   * The rail stands beside the main column once the main column keeps 40rem
+   * (a strip of tabs, a timeline): 40rem, the gap and the 320px rail. Read
+   * from the split's own frame, so an open app sidebar counts.
+   */
+  @container (width >= 61.5rem) {
     .di-split:not(.is-preview, .is-list) {
       grid-template-columns: minmax(0, 1fr) var(--di-rail-width);
     }
@@ -66,11 +77,6 @@
  * the window.
  */
 @layer components {
-  .di-split-frame {
-    container-type: inline-size;
-    min-width: 0;
-  }
-
   .di-split.is-list > .di-split-main {
     gap: var(--di-gap-24);
   }
