@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.31.0
+
+- `ClampText` (new): a passage held to 2–6 lines (`lines`) with a "Show more" link-styled button (`moreLabel`, `lessLabel`) that opens it in place; the button is there only when the text runs past the lines, measured again on resize.
+- Upgrade: nothing to change.
+
 ## 0.30.0
 
 - `Step` takes `state="failed"`: where a process stopped, a cross on the critical status ground instead of the current fill, its name in the status ink, read as `stateLabels.failed` (new, optional; `StepStateLabels` is exported). The line under a narrow `progress` track names the current step, else the failed one, else the last once every step is done.

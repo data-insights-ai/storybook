@@ -289,4 +289,5 @@ export { AttentionItem, AttentionList } from "./components/records/AttentionList
 export { Figure, FigureNote } from "./components/figures/Figure";
 export { FigureRow } from "./components/figures/FigureRow";
 export { MetaLine } from "./components/text/MetaLine";
+export { ClampText } from "./components/text/ClampText";
 export { SeverityMark, type Severity } from "./components/status/SeverityMark";
