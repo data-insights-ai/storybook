@@ -344,3 +344,67 @@ export const German: Story = {
     hintTone: "error",
   },
 };
+
+const records = [
+  { id: "CVE-2026-900000", title: "Example Widget gateway: code execution before sign-in", product: "Example Widget 4.0 to 4.2.0" },
+  { id: "CVE-2026-900001", title: "Example Resolver cache poisoning", product: "Example Resolver 9.18 to 9.18.27" },
+  { id: "CVE-2026-900002", title: "Example Widget console: stored cross-site scripting", product: "Example Widget 4.1" },
+];
+
+/**
+ * Records searched on a server: the caller finds the matches for what was
+ * typed, a line under each tells them apart, and a chosen record keeps its
+ * entry when the next search no longer returns it.
+ */
+export const Searched: Story = {
+  args: {
+    id: "start-cves",
+    label: "CVEs",
+    toggleLabel: "Show matching CVEs",
+    emptyLabel: "No CVE matches.",
+    placeholder: "CVE ID or words",
+    hint: "",
+  },
+  render: function Render(args) {
+    const [values, setValues] = useState<string[]>([]);
+    const [query, setQuery] = useState("");
+    const q = query.trim().toLowerCase();
+    const found = q ? records.filter((r) => `${r.id} ${r.title}`.toLowerCase().includes(q)) : [];
+    return (
+      <div style={{ maxWidth: "560px" }}>
+        <MultiComboBox
+          {...args}
+          options={found.map((r) => ({
+            value: r.id,
+            label: r.id,
+            detail: (
+              <>
+                <span>{r.title}</span>
+                <span>{r.product}</span>
+              </>
+            ),
+          }))}
+          onQueryChange={setQuery}
+          values={values}
+          onChange={(next) => {
+            args.onChange(next);
+            setValues(next);
+          }}
+        />
+      </div>
+    );
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole("combobox", { name: "CVEs" });
+    await userEvent.type(input, "widget");
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(await page.findByRole("option", { name: /CVE-2026-900002/ }));
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002"]));
+    await userEvent.type(input, "resolver");
+    await userEvent.keyboard("{ArrowDown}{Enter}");
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002", "CVE-2026-900001"]));
+    await expect(canvas.getByText("CVE-2026-900002")).toBeInTheDocument();
+    await waitFor(() => expect(page.queryByText("No CVE matches.")).toBeNull());
+  },
+};

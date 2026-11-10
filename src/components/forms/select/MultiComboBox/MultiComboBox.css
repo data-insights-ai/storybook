@@ -184,4 +184,23 @@
     width: var(--di-icon-md);
     height: var(--di-icon-md);
   }
+
+  /* A searched option: its label, then lines that tell it apart, such as a title and its facts. */
+  .di-combobox-option:has(.di-multicombo-option-text) {
+    align-items: flex-start;
+  }
+
+  .di-multicombo-option-text {
+    display: grid;
+    flex: 1;
+    gap: var(--di-gap-2);
+    min-width: 0;
+  }
+
+  .di-multicombo-detail {
+    display: grid;
+    gap: var(--di-gap-4);
+    color: var(--di-text-muted);
+    font-size: var(--di-font-size-200);
+  }
 }
