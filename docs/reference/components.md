@@ -10,8 +10,8 @@ Every component lives in `src/components/<group>/`, one folder per Storybook gro
 | `Tables/` | many rows to scan, sort and filter | `tables/` | DataTable, InfiniteTable, NewEntries |
 | `Records/` | one record or a short list of them | `records/` | RecordCard, FactList, ProposalPanel, AttentionList, IconTile, PlanGrid |
 | `Figures/` | a number | `figures/` | Figure, FigureRow, Sparkline |
-| `Text/` | how text is set | `text/` | Eyebrow, MetaLine, TextLink, Kbd, Highlight, ClampText, Icon; `blocks/` CodeBlock, PointList, PullQuote, TickRule |
-| `Status/` | the state of a thing, inline | `status/` | StatusPill, SeverityMark, SealValue, Badge, Tag, LevelMeter |
+| `Text/` | how text is set | `text/` | Eyebrow, MetaLine, TextLink, Kbd, Highlight, ClampText, Icon; `blocks/` CodeBlock, PointList, PullQuote, TickRule, Prose, CiteMark, SourceList |
+| `Status/` | the state of a thing, inline | `status/` | StatusPill, SeverityMark, SealValue, Badge, Tag, LevelMeter, Verdict |
 | `Feedback/` | what happened or is happening | `feedback/` | Notice, EmptyState, Toast, Loading, Progress, RouteProgress, Delayed |
 | `Charts/` | data plotted on a scale | `charts/` | Chart, TrendChart, Seismograph, Distribution, CoverageMatrix |
 | `Timelines/` | events and periods over time | `timelines/` | ChainTimeline, EventTimeline, PeriodTimeline, TimelineSummary; `scale/`, `series/`, `types/` shared |

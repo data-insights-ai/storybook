@@ -1,0 +1,41 @@
+@layer components {
+  .di-prose {
+    max-width: 68ch;
+    font-size: var(--di-font-size-500);
+    line-height: var(--di-leading-body);
+    text-wrap: pretty;
+  }
+  .di-prose :is(p, ul, ol) {
+    margin: 0 0 var(--di-space-16);
+  }
+  .di-prose > :last-child,
+  .di-prose-lede > :last-child {
+    margin-block-end: 0;
+  }
+  .di-prose :is(ul, ol) {
+    display: grid;
+    gap: var(--di-space-8);
+    padding-inline-start: var(--di-space-24);
+  }
+  /* Sections stand apart by space alone, their heads in the display face. */
+  .di-prose :is(h2, h3) {
+    margin: var(--di-space-32) 0 var(--di-space-12);
+    font-family: var(--di-font-display);
+    font-size: var(--di-font-size-600);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
+    text-wrap: balance;
+  }
+  .di-prose > :is(h2, h3):first-child {
+    margin-block-start: 0;
+  }
+  .di-prose code {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-400);
+  }
+  .di-prose-lede {
+    margin-block-end: var(--di-space-24);
+    font-size: var(--di-font-size-550);
+    line-height: var(--di-leading-snug);
+  }
+}

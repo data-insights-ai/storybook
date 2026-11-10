@@ -63,6 +63,7 @@ export function AttentionItem({
   severity,
   severityLabel = "",
   title,
+  lang,
   reason,
   meta = "",
   emphasis = false,
@@ -76,6 +77,8 @@ export function AttentionItem({
   /** The severity as a word; required with `severity`. */
   severityLabel?: string;
   title: string;
+  /** The title's language, when it is source data in another language than the page. */
+  lang?: string;
   /** Why it needs the reader, in one sentence. */
   reason: string;
   /** Where it came from and since when: facts with " · " between them. */
@@ -110,7 +113,9 @@ export function AttentionItem({
             {rated ? <SeverityMark level={severity} label={severityLabel} /> : null}
           </div>
         ) : null}
-        <Title className="di-attention-title">{title}</Title>
+        <Title className="di-attention-title" lang={lang}>
+          {title}
+        </Title>
         <p className="di-attention-reason">{reason}</p>
         {meta ? <MetaLine items={meta} /> : null}
       </div>
