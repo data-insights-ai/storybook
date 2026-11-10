@@ -5,8 +5,7 @@ Target project: "datAInsights Register"; its id is `projectId` in `config.json`.
 Package: `@data-insights-ai/ui`. pnpm (`pnpm@12.5.1`, node >=22.12.0),
 `pnpm i --frozen-lockfile`.
 
-Read in order: **Load-bearing**, then **Tool limitations**, then **Stale by
-design**. The run log at the bottom is history, not instruction.
+Read in order: **Load-bearing**, then **Tool limitations**, then **Stale by design**.
 
 ## Load-bearing in `src` — remove any of these and the package breaks
 
@@ -125,59 +124,8 @@ wrapper (`StoryCanvas`), which is storybook a11y scaffolding and must **not**
 ship to designs. There is no provider to distill: theming is a CSS attribute,
 not React context.
 
-### Dark theme was root-only; both NightSheet stories were skipped for it
-
-**Fixed 2026-09-30.** Kept here because the reasoning is the reasoning for the
-whole token layer, and because the same failure will recur anywhere a token is
-declared at one scope and read at another.
-
-`Button/NightSheet` and `StatusPill/NightSheet` carried
-`globals: { theme: "dark" }`. With decorators unbundled (above) the global was
-dropped and both rendered in daylight — a navy primary fill where the point is
-that after dark the fill turns gold.
-
-A wrapper could not fix it, and the reason is the rule to remember: **a custom
-property is substituted on the element that DECLARES it.** `component.css`
-declared all 29 slots at `:root`, so `--di-button-primary-bg` resolved to navy
-there and inherited down as a literal colour; re-pointing `--di-fill-strong` on a
-descendant could never reach it. Measured at the time: the ground went dark
-(`rgb(7,18,41)`) while the primary button stayed navy and the secondary went
-near-white-on-near-white.
-
-**What changed.** Three selectors: `semantic.css`'s two theme blocks dropped the
-`:root` prefix, and `component.css` became `:root, [data-theme]`. Fourteen of the
-29 slots read a role the night sheet remaps, and those fourteen are read by seven
-stylesheets — Button, Card, DataTable, Field, SearchField, Panel and the table skeleton (now `Loading`).
-Everything else binds to semantic roles directly and already inherited correctly.
-
-A fourth change was needed and is the same bug one layer up: `base.css` sets
-`body { color: var(--di-text) }`, which resolves at `body`, so a region inherited
-the OUTER ink as a literal and its own `--di-text` was never read — navy prose on
-the night sheet, in 186 of 302 stories. `base.css` now carries
-`[data-theme] { color: var(--di-text) }`. Ink is not optional; the **surface** is
-left to the author, so a region can sit on page, surface or nothing.
-
-**Verified**, against the static Storybook build, not by reasoning:
-- All three whole-document cases (no attribute / `light` / `dark`) compute
-  identically before and after. The page-level contract did not move.
-- All 302 stories re-rendered inside a painted dark region: **1** element lost
-  contrast, a *disabled* control inside `SignIn`, and it computes identically
-  under `html[data-theme="dark"]` — pre-existing, not from this change. See Open.
-- Both NightSheet stories now render the region themselves and are **no longer
-  skipped**, so the compare oracle photographs the dark contract every sync
-  instead of prose asserting it.
-
-**A region is not the way to put a dark surface on a light page.** That is
-`--di-inverse-*` (AppShell, SignIn, the current `Steps` card, Toast, Tooltip) and `--di-sidebar-*`
-for the rail, and they mean something different: "a plane sitting on navy, in
-either theme" versus "the register after dark". `--di-inverse-bg` is navy in
-daylight and night-800 after dark; the night sheet's surface is neither. The
-three mechanisms do not overlap. `Toast.css` also keeps its local re-pointing,
-which now looks like the general case rather than a workaround.
-
 ### A story that themes through a global renders in daylight
 
-Same root cause as the NightSheet skips that were retired on 2026-09-30:
 `globals: { theme: "dark" }` only works through the Storybook decorator, and the
 decorator is not bundled. The preview renders such a story in daylight, so
 compare grades it `mismatch` for a reason that is not the component.
@@ -281,7 +229,7 @@ only one. Read the emitted `.d.ts` back; do not assume.
 ### Expected noise — do not chase
 
 - **The preview card page is white.** That is card chrome. A rendered *design*
-  gets `background: #F3F2EE` and IBM Plex Sans from `styles.css`'s import
+  gets the paper ground (`--di-paper-ground`) and IBM Plex Sans from `styles.css`'s import
   closure — measured. It is why every sheet shows paper on the storybook side
   and white on the preview side.
 - **Storybook's own static build cannot load the brand mark.** `Console/Chrome`
@@ -308,9 +256,9 @@ only one. Read the emitted `.d.ts` back; do not assume.
 - Known-triaged warnings: `[EXPORT_COLLISION] recharts … Tooltip`, and nothing
   else.
 
-## Stale by design — three hand-authored files that never regenerate
+## Stale by design — two hand-authored files that never regenerate
 
-Each has already gone stale at least once. Re-validate all three on any sync.
+Each has already gone stale at least once. Re-validate both on any sync.
 
 1. **`conventions.md`** — the design agent's header. The four specimen pages
    (Color, Type, Logo, Scale, Decisions) are rendered React, not markdown, so
@@ -319,28 +267,12 @@ Each has already gone stale at least once. Re-validate all three on any sync.
    `<ClearSpace />`, `<Cobrand />` and the specimen components reach a reader as
    bare tags, which is why the misuse rules and size minimums are copied in.
    Re-check against `guide/Specimens.tsx`, `guide/Guide.tsx`, `primitive.css` and
-   `base.css`.
-   *Caught stale twice:* 2026-09-25, a type table claiming Body 16px/weight 600
-   when `base.css` sets 13px and headings ship 700 — transcribed from a
-   `Type.stories.tsx` that was itself wrong. 2026-09-30, a code sample using
-   `--di-space-3` (a name the value-named ramp deleted) and `--di-font-mono` (a
-   primitive the same document forbids binding to), a space ramp missing 64 and
-   96, a type table missing `-550`, and no mention of the brand tier at all.
+   `base.css`, and against `docs/explanation/register.md`; the two drift together.
 2. **`cfg.dtsPropsFor.Button`** — a hand-written props body. If `Button`'s props
    change it goes stale silently, and the silence is the whole problem: nothing
    in the pipeline compares it to the real `.d.ts`.
 
 ## Open, outside the sync
-
-**`IconTile/Inverse` — fixed 2026-09-30, after four syncs carrying it.** The
-tokens were always right; `Icon.css` declared `color: var(--di-text)` on
-`.di-icon`, and an explicit declaration outranks an inherited one, so the tile's
-ivory ink never reached the glyph: navy on navy. The declaration is gone — an
-icon takes the ink of its ground, which is what `color` inheriting already does.
-Measured after: inverse 15.69:1, neutral 13.37:1.
-It also silently mis-drew the **`ok`** tile, whose glyph was navy rather than
-`--di-status-ok-fg`; that is now status green at 7.84:1. Two visible changes for
-the designer, both corrections.
 
 **`SignIn`'s daylight pin is incomplete — `--di-text-disabled` leaks.** A disabled
 control on the sign-in card takes the night sheet's disabled ink while the card
@@ -355,103 +287,10 @@ exists.
 
 ## Guidance split
 
-`AGENTS.md` is for agents working in the repo; `.design-sync/conventions.md` is
-for the design agent. Same split as the frontend-template repo. Note that
-repo's **"don't invent components"** rule lives only in its `CLAUDE.md`, so its
-design agent is never told — a gap that matters more here, because the
-claude.ai/design agent *cannot* create a component and will improvise markup
-that cannot ship.
-
-Not ported from frontend-template, if wanted later: mechanical enforcement
-(ESLint banning raw hex, a test failing when a component has no story, a Stop
-hook running lint/typecheck/test, CI refusing PRs that delete story files) and a
-definition-of-done checklist. This repo enforces less: `pnpm test` + axe,
-`lint:tokens`, and the treeshake check in `pnpm build`.
-
-## Run log
-
-**2026-09-23 — aborted mid-flight.** Left an un-anchored project (30 components,
-no `_ds_sync.json`) and empty `.ds-sync/` + `ds-bundle/` scaffolding, neither
-gitignored — added, since this repo is public and both hold build output.
-
-**2026-09-24 — first completed sync.** Re-adopted the aborted project rather than
-creating a fresh one, so this took the atomic upload path. The uploaded state
-predated `07bdc3c` ("slot-based component API"), so reconciliation deleted
-`SealValue` and the four components that moved from Blocks to Primitives.
-64 components, 261 stories: **239 match, 22 close, 0 mismatch.** Validate exited
-0, 64/64 previews clean. Uploaded 335 files, deleted 20 stale paths. Every
-`close` is a play-function story except `Progress/Counting`.
-Foundations shipped only after the designer caught that the first upload
-contained none — `guidelinesGlob` for the six MDX documents, hand-transcription
-for the four rendered specimen pages.
-
-**2026-09-25 — after a large API and token refactor.** Space scale renamed to
-value-named `--di-space-2 4 6 8 12 16 24 32 48` (156 values across 51 files).
-Nine string props became slots (`PanelMeta`, `RecordCount`, `SignInVersion` and
-six on components since merged into `Steps`, `ProposalPanel`, `RecordCard` and
-`Figure`), all verified `match`. `tone` narrowed to status only;
-`ai`→`inferred`, `gold`→`seal`, `info`/`default`→`neutral`, Sparkline
-`ink`→`series`. `--di-accent`, `--di-font-display`, `--di-font-body` deleted as
-duplicate names; `--di-inverse-*` roles added for surfaces on navy.
-`Chart`'s stories were rewritten to compose `Chart` directly rather than
-rendering `foundations/guide/BrandCharts`, so the library's own stories no longer
-depend on unexported foundations helpers; all four still graded `match`, which
-re-confirms `extraEntries`.
-`titleMap` gained `Scale: null` and `Decisions: null`. `conventions.md` gained
-the ramps, the refusals, the focus rule, "Compose, never invent" and "Exploring
-a variation"; its type table was found stale and fixed.
-
-**2026-09-29 — Button gained an anchor.** Two commits (`fc16840` StatusPill dot
-nudge, `6bdcc11` Button `href`), package `0.1.8`. The union-flattening bug and
-the default-cap-of-6 bug were both found here and are documented above.
-`Button/Primary` became `close` (its play function clicks). Verified the new base
-`text-decoration: none` does not kill `Ghost`'s gold underline. Canary picked
-Chart, Radio, Icon, Menu and TextField's confidence; all five confirmed. `reference_drift`
-explained: 355 → 357 entries from the two new stories.
-The `/design-sync` skill was not installed; the staged `.ds-sync/` scripts ran
-§7 end to end and `scriptsSha` still matched the anchor (`c0730d65e41fa758`), so
-no pipeline churn.
-
-**2026-09-30 — theme regions and two real bugs (not yet uploaded).** The token
-layers learned to re-resolve inside a `data-theme` region (see Tool limitations),
-which retired the `Button` and `StatusPill` overrides and let
-`Foundations/Color`'s "After dark" section render live tokens instead of six
-hand-copied hex literals. `IconTile/Inverse` was diagnosed and fixed after four
-syncs (see Open). Both NightSheet stories now render their own region and dropped
-`globals: { theme: "dark" }`, so they no longer depend on a decorator the preview
-harness cannot bundle. **Re-capture `Button`, `StatusPill`, `IconTile` and the
-seven slot-reading components** — Card, DataTable, Field, SearchField, Panel,
-the table skeleton, Button — on the next sync; `Icon.css` changed, which is a CSS-only
-change and therefore will NOT mark them `changed` (see above), so force it.
-
-**2026-10-16 — accents, slot headings, AppShell, v0.3.1.** First upload since
-2026-09-29, so it carries the 09-30 theme-region work and brand tier too.
-69 components: 44 carried forward, 19 changed, 6 new (`AppShell`, `ComboBox`,
-`Highlight`, `LevelMeter`, `PullQuote`, `TooltipTarget`), 1 removed (`Console`,
-replaced by the `AppShell` card — see titleMap). `--max-stories 18` (AppShell
-has 18). Every `close` is a play-function story; none is a styling delta.
-Spot-check canary (five record, loading and step stories) all confirmed
-against their recorded grades.
-New this run: `AppShell` needed `cardMode: "column"`, and the two
-global-themed Night stories were skipped (above). `conventions.md` was stale
-for the accent release — it still said "there is no accent colour" and pointed
-screens at `Console`; it now carries the poppy/cornflower rules, the heading
-slots, the `AppShell` slots, the chart status scale and the optional index
-column. Re-check it against `AGENTS.md`'s Brand section on every sync; the two
-drift together.
-The reflow stories (`ReflowSmall` … `ReflowTabletNight`) set a viewport global
-that neither side applies in capture, so both photograph at 900px. They grade
-`match` on what is shown, but the 320/390/768px reflow itself is verified by
-`pnpm test`, not by this sync.
-The 09-30 entry's re-capture list is done: Button, StatusPill, DataTable, Panel
-and TextField were recaptured as `changed`; IconTile, Card, SearchField and
-the table skeleton were carried forward by the diff (CSS-only change) and were
-spot-checked by hand with `compare.mjs --components … --spot-check-components …`.
-All confirmed — `IconTile/Inverse` now draws an ivory glyph on navy on both sides.
-The numbered-step story was the driver's canary on every run this session
-(`render_churn`, sources unchanged) and confirmed each time; if `Steps` keeps
-churning on the next sync, look for a nondeterministic input in its preview
-rather than re-grading.
+`AGENTS.md` and `docs/` are for agents working in the repo; `.design-sync/conventions.md`
+is for the design agent on claude.ai, which cannot read the repo. That agent also
+*cannot* create a component and will improvise markup that cannot ship, which is
+why "Compose, never invent" stands in `conventions.md` and not only in the docs.
 
 ## Appendix: pnpm 12.5.1 native binary
 

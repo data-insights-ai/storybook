@@ -13,9 +13,9 @@ import "./SignIn.css";
  * - **Not** inside the app frame; a session that expires there opens a
  *   `ConfirmDialog` or sends the person here.
  *
- * It follows the theme: in daylight the paper ground (`#F3F2EE`) with a
- * surface card and the navy button; after dark the navy ground
- * (`#0A1F44`) with a navy surface card and the paper-white button. The
+ * It follows the theme: in daylight the paper ground (`--di-bg-page`) with a
+ * surface card and the navy button; after dark the night ground (the same
+ * role, remapped) with a navy surface card and the paper-white button. The
  * text is IBM Plex Sans at 400, the title in the display face. The access
  * boundary is stated in plain words under the button, never in a tooltip.
  * Depth is a step in tone: no rules inside the card or under it.

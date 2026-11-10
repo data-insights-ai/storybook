@@ -3,7 +3,7 @@ import { Grid, Page, PageHeader, PageHeaderTitle, Panel, PanelNote, PanelStatus,
 import "./Doc.css";
 
 /*
- * A Foundations page shows; the written rules live in AGENTS.md and
+ * A Foundations page shows; the written rules live in docs/explanation/register.md and
  * .design-sync/conventions.md. A page is a heading, at most one line under
  * it, then sections of panels. No text stands on the canvas by itself.
  */
