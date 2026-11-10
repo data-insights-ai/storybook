@@ -156,7 +156,8 @@ export function MultiComboBox({
     visible ? setOpen(false) : shown.length > 0 || waiting || nothing ? show() : undefined,
   );
   const set = (next: string[]) => {
-    if (searched) setLabels(new Map([...labels, ...next.filter((v) => byValue.has(v)).map((v) => [v, labelOf(v)] as const)]));
+    if (searched)
+      setLabels(new Map([...labels, ...next.filter((v) => byValue.has(v)).map((v) => [v, labelOf(v)] as const)]));
     onChange(next);
     setQuery("");
   };
@@ -170,9 +171,18 @@ export function MultiComboBox({
         (event as KeyboardEvent<HTMLInputElement> & { preventBaseUIHandler?: () => void }).preventBaseUIHandler?.();
       }
     } else if (event.key === "Backspace" && query === "" && chosen.length > 0) set(chosen.slice(0, -1));
-    // Typed text with no option highlighted is a search, not the form's submission.
-    else if (event.key === "Enter" && query.trim() !== "" && !event.currentTarget.hasAttribute("aria-activedescendant"))
+    else if (event.key === "Enter" && query.trim() !== "") enter(event);
+  };
+  // Enter on typed text chooses from what answers that text, never from a list still left from
+  // the last search, and it is not the form's submission.
+  const enter = (event: KeyboardEvent<HTMLInputElement>) => {
+    const highlighted = event.currentTarget.hasAttribute("aria-activedescendant");
+    if (searched && (loading || (!highlighted && shown.length > 0))) {
       event.preventDefault();
+      (event as KeyboardEvent<HTMLInputElement> & { preventBaseUIHandler?: () => void }).preventBaseUIHandler?.();
+      const first = loading ? undefined : shown[0];
+      if (first !== undefined) set(chosen.includes(first) ? chosen.filter((v) => v !== first) : [...chosen, first]);
+    } else if (!highlighted) event.preventDefault();
   };
   // Leaving the field keeps what was typed as an entry; a press in the list is not leaving it.
   const blur = (event: FocusEvent<HTMLInputElement>) => {

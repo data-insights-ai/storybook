@@ -346,9 +346,24 @@ export const German: Story = {
 };
 
 const records = [
-  { id: "CVE-2026-900000", title: "Example Widget gateway: code execution before sign-in", product: "Example Widget 4.0 to 4.2.0", kev: true },
-  { id: "CVE-2026-900001", title: "Example Resolver cache poisoning", product: "Example Resolver 9.18 to 9.18.27", kev: false },
-  { id: "CVE-2026-900002", title: "Example Widget console: stored cross-site scripting", product: "Example Widget 4.1", kev: false },
+  {
+    id: "CVE-2026-900000",
+    title: "Example Widget gateway: code execution before sign-in",
+    product: "Example Widget 4.0 to 4.2.0",
+    kev: true,
+  },
+  {
+    id: "CVE-2026-900001",
+    title: "Example Resolver cache poisoning",
+    product: "Example Resolver 9.18 to 9.18.27",
+    kev: false,
+  },
+  {
+    id: "CVE-2026-900002",
+    title: "Example Widget console: stored cross-site scripting",
+    product: "Example Widget 4.1",
+    kev: false,
+  },
 ];
 
 /**
@@ -445,5 +460,19 @@ export const SearchedKeyboard: Story = {
     await page.findByRole("option", { name: /CVE-2026-900000/ });
     await userEvent.keyboard("{Enter}");
     await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002", "CVE-2026-900000"]));
+  },
+};
+
+/** While the search for the typed text still runs, Enter chooses nothing: the list may still answer the last search. */
+export const EnterWaitsForTheSearch: Story = {
+  args: { ...Searched.args, loading: true, loadingLabel: "Searching…" },
+  render: Searched.render,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.type(canvas.getByRole("combobox", { name: "CVEs" }), "widget");
+    await page.findByRole("option", { name: /CVE-2026-900000/ });
+    await userEvent.keyboard("{Enter}");
+    await expect(args.onChange).not.toHaveBeenCalled();
   },
 };
