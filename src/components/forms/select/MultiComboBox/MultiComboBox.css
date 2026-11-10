@@ -198,9 +198,14 @@
   }
 
   .di-multicombo-detail {
-    display: grid;
-    gap: var(--di-gap-4);
     color: var(--di-text-muted);
     font-size: var(--di-font-size-200);
+  }
+
+  .di-multicombo-marks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--di-gap-4);
+    padding-block-start: var(--di-gap-2);
   }
 }

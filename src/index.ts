@@ -30,7 +30,7 @@ export { CommandBar, CommandEmpty, CommandGroup, CommandRow } from "./components
 export { ComboBox } from "./components/forms/select/ComboBox";
 export type { ComboBoxSuggestion } from "./components/forms/select/ComboBox";
 export { MultiComboBox } from "./components/forms/select/MultiComboBox";
-export type { MultiComboBoxOption } from "./components/forms/select/MultiComboBox";
+export type { MultiComboBoxMark, MultiComboBoxOption } from "./components/forms/select/MultiComboBox";
 export { DateField, defaultDateFieldLabels } from "./components/forms/dates/DateField";
 export type { DateFieldLabels } from "./components/forms/dates/DateField";
 export { DateRangePicker, defaultDateRangeLabels } from "./components/forms/dates/DateRangePicker";

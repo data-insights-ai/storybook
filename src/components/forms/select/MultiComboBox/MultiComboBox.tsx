@@ -9,6 +9,7 @@ import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { useListToggle } from "../../../../internal/useListToggle";
 import { EntryList } from "./EntryList";
+import { StatusPill, type StatusTone } from "../../../status/StatusPill";
 import { useFreeEntry } from "./useFreeEntry";
 import "../../field/Field/Field.css";
 import "../ComboBox/ComboBox.css";
@@ -19,9 +20,13 @@ export type MultiComboBoxOption = {
   value: string;
   /** What the reader sees and searches by. */
   label: string;
-  /** Lines under the label in the list, such as a title and facts that tell options apart; read with the label. */
-  detail?: ReactNode;
+  /** Lines under the label in the list, such as a title and the facts that tell options apart; read with the label. */
+  detail?: readonly string[];
+  /** Short states after the lines, each a pill, such as "KEV" or "In review". */
+  marks?: readonly MultiComboBoxMark[];
 };
+
+export type MultiComboBoxMark = { label: string; tone?: StatusTone };
 
 const always = () => true;
 
@@ -165,6 +170,9 @@ export function MultiComboBox({
         (event as KeyboardEvent<HTMLInputElement> & { preventBaseUIHandler?: () => void }).preventBaseUIHandler?.();
       }
     } else if (event.key === "Backspace" && query === "" && chosen.length > 0) set(chosen.slice(0, -1));
+    // Typed text with no option highlighted is a search, not the form's submission.
+    else if (event.key === "Enter" && query.trim() !== "" && !event.currentTarget.hasAttribute("aria-activedescendant"))
+      event.preventDefault();
   };
   // Leaving the field keeps what was typed as an entry; a press in the list is not leaving it.
   const blur = (event: FocusEvent<HTMLInputElement>) => {
@@ -299,11 +307,8 @@ export function MultiComboBox({
                       <span className="di-multicombo-check" aria-hidden>
                         {chosen.includes(value) ? <Check /> : null}
                       </span>
-                      {byValue.get(value)?.detail ? (
-                        <span className="di-multicombo-option-text">
-                          <span className="di-option-label">{labelOf(value)}</span>
-                          <span className="di-multicombo-detail">{byValue.get(value)!.detail}</span>
-                        </span>
+                      {byValue.get(value)?.detail || byValue.get(value)?.marks ? (
+                        <OptionText option={byValue.get(value)!} />
                       ) : (
                         <span className="di-option-label">{labelOf(value)}</span>
                       )}
@@ -316,5 +321,29 @@ export function MultiComboBox({
         ) : null}
       </Combobox.Root>
     </div>
+  );
+}
+
+// OptionText is a searched option: its label, the lines that tell it
+// apart, and its marks.
+function OptionText({ option }: { option: MultiComboBoxOption }) {
+  return (
+    <span className="di-multicombo-option-text">
+      <span className="di-option-label">{option.label}</span>
+      {option.detail?.map((line, i) => (
+        <span key={i} className="di-multicombo-detail">
+          {line}
+        </span>
+      ))}
+      {option.marks?.length ? (
+        <span className="di-multicombo-marks">
+          {option.marks.map((m) => (
+            <StatusPill key={m.label} tone={m.tone}>
+              {m.label}
+            </StatusPill>
+          ))}
+        </span>
+      ) : null}
+    </span>
   );
 }

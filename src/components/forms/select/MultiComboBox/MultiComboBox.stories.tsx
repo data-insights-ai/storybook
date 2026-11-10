@@ -346,9 +346,9 @@ export const German: Story = {
 };
 
 const records = [
-  { id: "CVE-2026-900000", title: "Example Widget gateway: code execution before sign-in", product: "Example Widget 4.0 to 4.2.0" },
-  { id: "CVE-2026-900001", title: "Example Resolver cache poisoning", product: "Example Resolver 9.18 to 9.18.27" },
-  { id: "CVE-2026-900002", title: "Example Widget console: stored cross-site scripting", product: "Example Widget 4.1" },
+  { id: "CVE-2026-900000", title: "Example Widget gateway: code execution before sign-in", product: "Example Widget 4.0 to 4.2.0", kev: true },
+  { id: "CVE-2026-900001", title: "Example Resolver cache poisoning", product: "Example Resolver 9.18 to 9.18.27", kev: false },
+  { id: "CVE-2026-900002", title: "Example Widget console: stored cross-site scripting", product: "Example Widget 4.1", kev: false },
 ];
 
 /**
@@ -377,12 +377,8 @@ export const Searched: Story = {
           options={found.map((r) => ({
             value: r.id,
             label: r.id,
-            detail: (
-              <>
-                <span>{r.title}</span>
-                <span>{r.product}</span>
-              </>
-            ),
+            detail: [r.title, r.product],
+            marks: r.kev ? [{ label: "KEV", tone: "danger" as const }] : [],
           }))}
           onQueryChange={setQuery}
           values={values}
@@ -406,5 +402,29 @@ export const Searched: Story = {
     await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002", "CVE-2026-900001"]));
     await expect(canvas.getByText("CVE-2026-900002")).toBeInTheDocument();
     await waitFor(() => expect(page.queryByText("No CVE matches.")).toBeNull());
+  },
+};
+
+/** Enter on typed text with no option highlighted searches on; it never submits the form around the field. */
+export const EnterDoesNotSubmit: Story = {
+  args: Searched.args,
+  render: function Render(args) {
+    const [submitted, setSubmitted] = useState(0);
+    return (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setSubmitted(submitted + 1);
+        }}
+      >
+        {Searched.render!(args, {} as never)}
+        <output>Submitted {submitted}</output>
+      </form>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByRole("combobox", { name: "CVEs" }), "nothing like it{Enter}");
+    await expect(canvas.getByText("Submitted 0")).toBeInTheDocument();
   },
 };
