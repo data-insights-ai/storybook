@@ -9,6 +9,7 @@ import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { useListToggle } from "../../../../internal/useListToggle";
 import { EntryList } from "./EntryList";
+import { StatusPill, type StatusTone } from "../../../status/StatusPill";
 import { useFreeEntry } from "./useFreeEntry";
 import "../../field/Field/Field.css";
 import "../ComboBox/ComboBox.css";
@@ -19,7 +20,13 @@ export type MultiComboBoxOption = {
   value: string;
   /** What the reader sees and searches by. */
   label: string;
+  /** Lines under the label in the list, such as a title and the facts that tell options apart; read with the label. */
+  detail?: readonly string[];
+  /** Short states after the lines, each a pill, such as "KEV" or "In review". */
+  marks?: readonly MultiComboBoxMark[];
 };
+
+export type MultiComboBoxMark = { label: string; tone?: StatusTone };
 
 const always = () => true;
 
@@ -38,6 +45,12 @@ const always = () => true;
  * `options` are then suggestions and may be left out; without them the
  * field is a plain text input with no list, so a screen reader is not told
  * of a popup that never opens.
+ *
+ * With `onQueryChange` the caller finds the options for what was typed —
+ * records searched on a server: `options` are taken as already matched,
+ * `loading` says a search is under way, and a chosen value keeps its entry
+ * when the next search no longer returns it. Debounce the search in the
+ * caller; the field reports every keystroke.
  */
 export function MultiComboBox({
   id,
@@ -46,6 +59,9 @@ export function MultiComboBox({
   values,
   onChange,
   freeEntry = false,
+  onQueryChange,
+  loading = false,
+  loadingLabel = "",
   validate = always,
   invalidLabel = "",
   toggleLabel = "",
@@ -69,6 +85,12 @@ export function MultiComboBox({
   onChange: (values: string[]) => void;
   /** Typed text becomes entries of its own, not only picks from `options`. */
   freeEntry?: boolean;
+  /** The caller searches for the typed text and passes the matches as `options`. */
+  onQueryChange?: (query: string) => void;
+  /** With `onQueryChange`: a search for the typed text is under way. */
+  loading?: boolean;
+  /** Shown in the list while `loading` and nothing is listed yet, e.g. "Searching…". */
+  loadingLabel?: string;
   /** With `freeEntry`: whether one entry is acceptable. A rejected one stays, marked. */
   validate?: (value: string) => boolean;
   /** Read after an entry `validate` rejects, e.g. "not an email address". */
@@ -100,15 +122,27 @@ export function MultiComboBox({
   const control = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const popup = useRef<HTMLDivElement>(null);
-  const [query, setQuery] = useState("");
+  const [query, setTyped] = useState("");
+  const [labels, setLabels] = useState<ReadonlyMap<string, string>>(new Map());
+  const setQuery = (next: string) => {
+    setTyped(next);
+    onQueryChange?.(next);
+  };
   const [open, setOpen] = useState(false);
+  const searched = onQueryChange !== undefined;
   const byValue = new Map(options.map((o) => [o.value, o]));
-  const chosen = freeEntry ? [...values] : values.filter((v) => byValue.has(v));
-  const entries = chosen.map((value) => ({ value, label: byValue.get(value)?.label ?? value }));
-  const listed = options.length > 0 || !freeEntry;
-  const shown = options.filter((o) => contains(o.label, query.trim())).map((o) => o.value);
+  const labelOf = (value: string) => byValue.get(value)?.label ?? labels.get(value) ?? value;
+  const chosen = freeEntry || searched ? [...values] : values.filter((v) => byValue.has(v));
+  const entries = chosen.map((value) => ({ value, label: labelOf(value) }));
+  const listed = options.length > 0 || !freeEntry || searched;
+  const shown = searched
+    ? options.map((o) => o.value)
+    : options.filter((o) => contains(o.label, query.trim())).map((o) => o.value);
+  const waiting = searched && loading && shown.length === 0 && loadingLabel !== "";
+  // A search answers only typed text: before any, or while it runs, nothing is "no match".
+  const nothing = shown.length === 0 && Boolean(emptyLabel) && !(searched && (loading || query.trim() === ""));
   const invalid = hint !== "" && hintTone === "error";
-  const visible = listed && open && !disabled && (shown.length > 0 || Boolean(emptyLabel));
+  const visible = listed && open && !disabled && (shown.length > 0 || waiting || nothing);
   const { host, update } = useOverlayHost(root, visible);
   const free = useFreeEntry({ values: chosen, onChange, draft: query, setDraft: setQuery });
 
@@ -119,9 +153,11 @@ export function MultiComboBox({
   };
   // While nothing matches what was typed the toggle leaves the text alone and opens nothing, as in ComboBox.
   const toggle = useListToggle(input, () =>
-    visible ? setOpen(false) : shown.length > 0 || emptyLabel ? show() : undefined,
+    visible ? setOpen(false) : shown.length > 0 || waiting || nothing ? show() : undefined,
   );
   const set = (next: string[]) => {
+    if (searched)
+      setLabels(new Map([...labels, ...next.filter((v) => byValue.has(v)).map((v) => [v, labelOf(v)] as const)]));
     onChange(next);
     setQuery("");
   };
@@ -135,6 +171,18 @@ export function MultiComboBox({
         (event as KeyboardEvent<HTMLInputElement> & { preventBaseUIHandler?: () => void }).preventBaseUIHandler?.();
       }
     } else if (event.key === "Backspace" && query === "" && chosen.length > 0) set(chosen.slice(0, -1));
+    else if (event.key === "Enter" && query.trim() !== "") enter(event);
+  };
+  // Enter on typed text chooses from what answers that text, never from a list still left from
+  // the last search, and it is not the form's submission.
+  const enter = (event: KeyboardEvent<HTMLInputElement>) => {
+    const highlighted = event.currentTarget.hasAttribute("aria-activedescendant");
+    if (searched && (loading || (!highlighted && shown.length > 0))) {
+      event.preventDefault();
+      (event as KeyboardEvent<HTMLInputElement> & { preventBaseUIHandler?: () => void }).preventBaseUIHandler?.();
+      const first = loading ? undefined : shown[0];
+      if (first !== undefined) set(chosen.includes(first) ? chosen.filter((v) => v !== first) : [...chosen, first]);
+    } else if (!highlighted) event.preventDefault();
   };
   // Leaving the field keeps what was typed as an entry; a press in the list is not leaving it.
   const blur = (event: FocusEvent<HTMLInputElement>) => {
@@ -213,7 +261,7 @@ export function MultiComboBox({
       <Combobox.Root
         id={id}
         multiple
-        items={options.map((o) => o.value)}
+        items={[...new Set([...options.map((o) => o.value), ...chosen])]}
         filteredItems={shown}
         value={chosen}
         onValueChange={(next, details) => {
@@ -225,7 +273,9 @@ export function MultiComboBox({
         onInputValueChange={(next, details) => {
           if (details.reason === "input-change") setQuery(next);
         }}
-        itemToStringLabel={(value: string) => byValue.get(value)?.label ?? value}
+        itemToStringLabel={labelOf}
+        // A search answers anew each time: its first match is highlighted, never an index left from the last.
+        autoHighlight={searched}
         open={visible}
         onOpenChange={(next, details) => {
           if (details.reason === "item-press") return;
@@ -256,14 +306,24 @@ export function MultiComboBox({
               style={{ zIndex: 100 }}
             >
               <Combobox.Popup ref={popup} className="di-combobox-popover">
-                {shown.length === 0 && emptyLabel ? <p className="di-combobox-empty">{emptyLabel}</p> : null}
+                {waiting ? (
+                  <p className="di-combobox-empty" role="status">
+                    {loadingLabel}
+                  </p>
+                ) : nothing ? (
+                  <p className="di-combobox-empty">{emptyLabel}</p>
+                ) : null}
                 <Combobox.List className="di-combobox-list" aria-labelledby={`${id}-label`}>
                   {(value: string) => (
                     <Combobox.Item key={value} value={value} className="di-option di-combobox-option">
                       <span className="di-multicombo-check" aria-hidden>
                         {chosen.includes(value) ? <Check /> : null}
                       </span>
-                      <span className="di-option-label">{byValue.get(value)!.label}</span>
+                      {byValue.get(value)?.detail || byValue.get(value)?.marks ? (
+                        <OptionText option={byValue.get(value)!} />
+                      ) : (
+                        <span className="di-option-label">{labelOf(value)}</span>
+                      )}
                     </Combobox.Item>
                   )}
                 </Combobox.List>
@@ -273,5 +333,29 @@ export function MultiComboBox({
         ) : null}
       </Combobox.Root>
     </div>
+  );
+}
+
+// OptionText is a searched option: its label, the lines that tell it
+// apart, and its marks.
+function OptionText({ option }: { option: MultiComboBoxOption }) {
+  return (
+    <span className="di-multicombo-option-text">
+      <span className="di-option-label">{option.label}</span>
+      {option.detail?.map((line, i) => (
+        <span key={i} className="di-multicombo-detail">
+          {line}
+        </span>
+      ))}
+      {option.marks?.length ? (
+        <span className="di-multicombo-marks">
+          {option.marks.map((m) => (
+            <StatusPill key={m.label} tone={m.tone}>
+              {m.label}
+            </StatusPill>
+          ))}
+        </span>
+      ) : null}
+    </span>
   );
 }

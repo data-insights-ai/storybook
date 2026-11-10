@@ -344,3 +344,135 @@ export const German: Story = {
     hintTone: "error",
   },
 };
+
+const records = [
+  {
+    id: "CVE-2026-900000",
+    title: "Example Widget gateway: code execution before sign-in",
+    product: "Example Widget 4.0 to 4.2.0",
+    kev: true,
+  },
+  {
+    id: "CVE-2026-900001",
+    title: "Example Resolver cache poisoning",
+    product: "Example Resolver 9.18 to 9.18.27",
+    kev: false,
+  },
+  {
+    id: "CVE-2026-900002",
+    title: "Example Widget console: stored cross-site scripting",
+    product: "Example Widget 4.1",
+    kev: false,
+  },
+];
+
+/**
+ * Records searched on a server: the caller finds the matches for what was
+ * typed, a line under each tells them apart, and a chosen record keeps its
+ * entry when the next search no longer returns it.
+ */
+export const Searched: Story = {
+  args: {
+    id: "start-cves",
+    label: "CVEs",
+    toggleLabel: "Show matching CVEs",
+    emptyLabel: "No CVE matches.",
+    placeholder: "CVE ID or words",
+    hint: "",
+  },
+  render: function Render(args) {
+    const [values, setValues] = useState<string[]>([]);
+    const [query, setQuery] = useState("");
+    const q = query.trim().toLowerCase();
+    const found = q ? records.filter((r) => `${r.id} ${r.title}`.toLowerCase().includes(q)) : [];
+    return (
+      <div style={{ maxWidth: "560px" }}>
+        <MultiComboBox
+          {...args}
+          options={found.map((r) => ({
+            value: r.id,
+            label: r.id,
+            detail: [r.title, r.product],
+            marks: r.kev ? [{ label: "KEV", tone: "danger" as const }] : [],
+          }))}
+          onQueryChange={setQuery}
+          values={values}
+          onChange={(next) => {
+            args.onChange(next);
+            setValues(next);
+          }}
+        />
+      </div>
+    );
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole("combobox", { name: "CVEs" });
+    await userEvent.type(input, "widget");
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(await page.findByRole("option", { name: /CVE-2026-900002/ }));
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002"]));
+    await userEvent.type(input, "resolver");
+    await userEvent.keyboard("{ArrowDown}{Enter}");
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002", "CVE-2026-900001"]));
+    await expect(canvas.getByText("CVE-2026-900002")).toBeInTheDocument();
+    await waitFor(() => expect(page.queryByText("No CVE matches.")).toBeNull());
+  },
+};
+
+/** Enter on typed text with no option highlighted searches on; it never submits the form around the field. */
+export const EnterDoesNotSubmit: Story = {
+  args: Searched.args,
+  render: function Render(args) {
+    const [submitted, setSubmitted] = useState(0);
+    return (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setSubmitted(submitted + 1);
+        }}
+      >
+        {Searched.render!(args, {} as never)}
+        <output>Submitted {submitted}</output>
+      </form>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await userEvent.type(canvas.getByRole("combobox", { name: "CVEs" }), "nothing like it{Enter}");
+    await expect(canvas.getByText("Submitted 0")).toBeInTheDocument();
+  },
+};
+
+/** With the keyboard alone: each search highlights its first match, so Enter picks it, twice in a row. */
+export const SearchedKeyboard: Story = {
+  args: Searched.args,
+  render: Searched.render,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole("combobox", { name: "CVEs" });
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.type(input, "console");
+    await page.findByRole("option", { name: /CVE-2026-900002/ });
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002"]));
+    await userEvent.type(input, "widget");
+    await page.findByRole("option", { name: /CVE-2026-900000/ });
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002", "CVE-2026-900000"]));
+  },
+};
+
+/** While the search for the typed text still runs, Enter chooses nothing: the list may still answer the last search. */
+export const EnterWaitsForTheSearch: Story = {
+  args: { ...Searched.args, loading: true, loadingLabel: "Searching…" },
+  render: Searched.render,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.type(canvas.getByRole("combobox", { name: "CVEs" }), "widget");
+    await page.findByRole("option", { name: /CVE-2026-900000/ });
+    await userEvent.keyboard("{Enter}");
+    await expect(args.onChange).not.toHaveBeenCalled();
+  },
+};

@@ -2,6 +2,12 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.34.0
+
+- `MultiComboBox` searches on a server: with `onQueryChange` the caller finds the options for what was typed and passes them already matched, `loading` (with `loadingLabel`) says a search runs, and a chosen entry keeps its label across searches. Each search highlights its first match; Enter picks it, and Enter while `loading` picks nothing, so it never takes a row left from the last search. Enter on typed text never submits the form around the field.
+- `MultiComboBoxOption` takes `detail` (lines under the label, such as a title and a product) and `marks` (`MultiComboBoxMark`: status pills with `label` and `tone`); both types are exported.
+- Upgrade: nothing to change.
+
 ## 0.33.0
 
 - A `list` or `detail` `Page` keeps its side column only where the page itself is 1920px or wider (was 1280px). The column is held empty while nothing is in it, so on a narrower page it took 344px from a wide register for nothing, and a table got narrower as the window grew past the old threshold. Below 1920px of page a side `Dialog` covers the content as a sheet, as it already did on narrower pages, and a `PageAside` follows the sections.
