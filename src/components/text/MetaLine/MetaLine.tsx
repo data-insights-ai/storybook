@@ -1,4 +1,4 @@
-import { Children, useRef, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { useLineStarts } from "../../../internal/useLineStarts";
 import "./MetaLine.css";
@@ -21,9 +21,9 @@ import "./MetaLine.css";
  * **Content:** short facts, each a figure or a name with its unit; a string
  * is split at " · ". An item that holds a component, such as a
  * `TooltipTarget` for a name whose id a reader may need, is a
- * `MetaLineItem` child in place of `items`. The line breaks only between items, and the separator
- * before an item that starts a line is left out, at either alignment; an
- * item longer than the line wraps inside.
+ * `MetaLineItem` child in place of `items`. The line breaks only between
+ * items, and the separator before an item that starts a line is left out,
+ * at either alignment; an item longer than the line wraps inside.
  *
  * **Accessibility:** a list, so a screen reader hears the items apart
  * without the drawn separators.
@@ -34,18 +34,25 @@ export function MetaLine({
   align = "start",
   separator = "dot",
   className,
-}: {
-  /** The facts, in reading order: an array, or one string with " · " between them. */
-  items?: string | string[];
-  /** `MetaLineItem`s, in place of `items`, where an item holds a component. */
-  children?: ReactNode;
+}: (
+  | {
+      /** The facts, in reading order: an array, or one string with " · " between them. */
+      items: string | string[];
+      children?: never;
+    }
+  | {
+      items?: never;
+      /** `MetaLineItem`s, in place of `items`, where an item holds a component. */
+      children: ReactNode;
+    }
+) & {
   align?: "start" | "end";
   separator?: "dot" | "arrow";
   className?: string;
 }) {
   const list = typeof items === "string" ? items.split(" · ") : (items ?? []);
   const itemsRef = useRef<HTMLSpanElement>(null);
-  useLineStarts(itemsRef, list.join("\n") || Children.count(children));
+  useLineStarts(itemsRef, items === undefined ? children : list.join("\n"));
   return (
     <span className={cx("di-meta-line", align === "end" && "is-end", separator === "arrow" && "is-path", className)}>
       {/* A list, so a screen reader hears the items apart without the drawn separators. */}

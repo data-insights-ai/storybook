@@ -128,10 +128,14 @@ export const PromptNarrow: Story = {
     </div>
   ),
   play: async ({ canvasElement }) => {
-    for (const id of canvasElement.querySelectorAll<HTMLElement>(".di-copy-value span")) {
-      if (!id.textContent?.startsWith("CVE-")) continue;
-      await expect(id.getClientRects()).toHaveLength(1);
-    }
+    const ids = [...canvasElement.querySelectorAll<HTMLElement>(".di-copy-value span")].filter((span) =>
+      span.textContent?.startsWith("CVE-"),
+    );
+    await expect(ids).toHaveLength(2);
+    for (const id of ids) await expect(id.getClientRects()).toHaveLength(1);
+    // The column is narrow enough that an id meets a line end: the value is many lines.
+    const value = canvasElement.querySelector(".di-copy-value")!;
+    await expect(value.getClientRects()[0].height).toBeGreaterThan(8 * 16);
     await expect(canvasElement.querySelector(".di-copy-value")!.textContent).toContain("CVE-2026-900000.\n\nAffected");
   },
 };
