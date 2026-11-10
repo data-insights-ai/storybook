@@ -4,7 +4,9 @@
   .di-meta-line {
     --di-meta-gap: 1.5em;
     display: block;
-    overflow: hidden;
+    /* Clipped across for the items' pulled-back start, not down, so a
+       focused item's ring shows whole. */
+    overflow-x: clip;
     font-family: var(--di-meta-family);
     font-size: var(--di-meta-size);
     font-variant-numeric: tabular-nums;

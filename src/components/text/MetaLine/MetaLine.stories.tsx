@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { separatorsAtLineStart } from "../../../../.storybook/tests/lineStart";
+import { TooltipTarget } from "../../overlays/TooltipTarget";
 import { MetaLine } from "./MetaLine";
 import { onPanel } from "../../../../.storybook/onPanel";
 
@@ -118,5 +119,17 @@ export const German: Story = {
     const heights = new Set(items.map((item) => Math.round(item.getBoundingClientRect().height)));
     await expect(heights.size).toBe(1);
     await expect(separatorsAtLineStart(canvasElement)).toEqual([]);
+  },
+};
+
+/** A name whose id a reader may need is a `TooltipTarget` item: the id opens on hover and focus. */
+export const WithNode: Story = {
+  args: {
+    items: ["Rejected", <TooltipTarget key="who" text="Nora Feld" label="oidc|8f2c41" />, "12 Oct, 10:00"],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByText("Nora Feld")).toBeVisible();
+    await expect(canvas.getByText("Nora Feld")).toHaveAccessibleDescription("oidc|8f2c41");
   },
 };

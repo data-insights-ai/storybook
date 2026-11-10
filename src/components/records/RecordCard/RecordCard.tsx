@@ -120,8 +120,11 @@ export function RecordLines({ children }: { children: ReactNode }) {
   return <ul className="di-record-lines">{children}</ul>;
 }
 
-/** One line in a `RecordLines` list: the entry and a detail after it. */
-export function RecordLine({ primary, detail }: { primary: string; detail: string }) {
+/**
+ * One line in a `RecordLines` list: the entry and a detail after it. The
+ * detail may hold a node, such as a `TooltipTarget` for a name.
+ */
+export function RecordLine({ primary, detail }: { primary: string; detail: ReactNode }) {
   return (
     <li>
       <span className="di-record-line-primary">{primary}</span>

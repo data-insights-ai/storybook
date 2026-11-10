@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { useLineStarts } from "../../../internal/useLineStarts";
 import "./MetaLine.css";
@@ -19,7 +19,8 @@ import "./MetaLine.css";
  * items as a path: a host, the next host, where the data went.
  *
  * **Content:** short facts, each a figure or a name with its unit; a string
- * is split at " · ". The line breaks only between items, and the separator
+ * is split at " · ". An item may be a node, such as a `TooltipTarget` for a
+ * name whose id a reader may need. The line breaks only between items, and the separator
  * before an item that starts a line is left out, at either alignment; an
  * item longer than the line wraps inside.
  *
@@ -33,14 +34,15 @@ export function MetaLine({
   className,
 }: {
   /** The facts, in reading order: an array, or one string with " · " between them. */
-  items: string | string[];
+  items: string | ReactNode[];
   align?: "start" | "end";
   separator?: "dot" | "arrow";
   className?: string;
 }) {
   const list = typeof items === "string" ? items.split(" · ") : items;
   const itemsRef = useRef<HTMLSpanElement>(null);
-  useLineStarts(itemsRef, list.join("\n"));
+  // Text items key the re-measure; a node item is measured by the observer.
+  useLineStarts(itemsRef, list.map((item) => (typeof item === "string" ? item : "\u0000")).join("\n"));
   return (
     <span className={cx("di-meta-line", align === "end" && "is-end", separator === "arrow" && "is-path", className)}>
       {/* A list, so a screen reader hears the items apart without the drawn separators. */}
