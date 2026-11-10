@@ -20,8 +20,10 @@ export function useLineStarts(ref: RefObject<HTMLElement | null>, content: unkno
       }
     };
     mark();
+    // Each item too: an item can change width while the line keeps its height.
     const observer = new ResizeObserver(mark);
     observer.observe(box);
+    for (const child of Array.from(box.children)) observer.observe(child);
     const fonts = box.ownerDocument.fonts;
     fonts?.addEventListener("loadingdone", mark);
     return () => {

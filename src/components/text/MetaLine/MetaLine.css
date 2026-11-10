@@ -4,7 +4,6 @@
   .di-meta-line {
     --di-meta-gap: 1.5em;
     display: block;
-    overflow: hidden;
     font-family: var(--di-meta-family);
     font-size: var(--di-meta-size);
     font-variant-numeric: tabular-nums;
@@ -16,8 +15,9 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: var(--di-meta-justify, flex-start);
-    row-gap: var(--di-space-2);
-    margin-left: calc(-1 * var(--di-meta-gap));
+    /* The gap falls only between items on one line, so nothing hangs out
+       of the line to clip and a focused item's ring shows whole. */
+    gap: var(--di-space-2) var(--di-meta-gap);
   }
 
   .di-meta-line.is-end {
@@ -29,7 +29,6 @@
   .di-meta-line-item {
     position: relative;
     min-width: 0;
-    margin-left: var(--di-meta-gap);
     overflow-wrap: anywhere;
   }
 

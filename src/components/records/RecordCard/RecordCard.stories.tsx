@@ -83,9 +83,9 @@ export const Watchlist: Story = {
           <StatusPill tone="ok">running</StatusPill>
         </RecordStatus>
         <RecordLines>
-          <RecordLine primary="registry.example.org" detail="09:12:04Z" />
-          <RecordLine primary="mirror.example.net" detail="09:11:52Z" />
-          <RecordLine primary="index.example.dev" detail="09:09:38Z" />
+          <RecordLine primary="registry.example.org">09:12:04Z</RecordLine>
+          <RecordLine primary="mirror.example.net">09:11:52Z</RecordLine>
+          <RecordLine primary="index.example.dev">09:09:38Z</RecordLine>
         </RecordLines>
         <RecordFooter>
           <TextLink href="#registry">Open the register</TextLink>
@@ -98,8 +98,8 @@ export const Watchlist: Story = {
           <StatusPill tone="warn">1 paused</StatusPill>
         </RecordStatus>
         <RecordLines>
-          <RecordLine primary="feed.example.io" detail="paused 08:47Z" />
-          <RecordLine primary="news.example.com" detail="09:10:21Z" />
+          <RecordLine primary="feed.example.io">paused 08:47Z</RecordLine>
+          <RecordLine primary="news.example.com">09:10:21Z</RecordLine>
         </RecordLines>
         <RecordFooter>
           <TextLink href="#feeds">Open the register</TextLink>
@@ -112,7 +112,7 @@ export const Watchlist: Story = {
           <StatusPill tone="danger">failed</StatusPill>
         </RecordStatus>
         <RecordLines>
-          <RecordLine primary="archive.example.com" detail="failed 08:44Z" />
+          <RecordLine primary="archive.example.com">failed 08:44Z</RecordLine>
         </RecordLines>
         <RecordFooter>
           <TextLink href="#archive">Open the register</TextLink>

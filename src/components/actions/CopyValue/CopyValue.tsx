@@ -1,6 +1,6 @@
 import { Check, Copy } from "lucide-react";
 import { useEffect, useState } from "react";
-import { addressBreaks } from "../../../internal/addressBreaks";
+import { addressBreaks, spaceBreaks } from "../../../internal/addressBreaks";
 import { cx } from "../../../internal/cx";
 import "./CopyValue.css";
 
@@ -20,7 +20,8 @@ import "./CopyValue.css";
  * must. In a `FactList layout="columns"` a value longer than a column (a URL)
  * sits in a `Fact wide`, which takes the whole row; an id keeps its column.
  * A value of several lines (a command, a configuration) keeps its lines and
- * their indent, and wraps at spaces.
+ * their indent, and wraps only at spaces, so an id such as a CVE ID stays
+ * whole.
  *
  * **Accessibility:** the button is named by `copyLabel`; the copied word is
  * read from a polite live region. On a touch screen its hit area is 40px.
@@ -58,7 +59,7 @@ export function CopyValue({
   return (
     <span className={cx("di-copy", className)}>
       <span className={cx("di-copy-value", mono && "di-mono", lines && "is-lines")}>
-        {lines ? value : addressBreaks(value)}
+        {lines ? spaceBreaks(value) : addressBreaks(value)}
       </span>
       <button type="button" className="di-copy-button" aria-label={copyLabel} title={copyLabel} onClick={copy}>
         {copied ? <Check aria-hidden /> : <Copy aria-hidden />}

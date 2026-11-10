@@ -33,6 +33,24 @@ export function addressBreaks(value: string): ReactNode {
 }
 
 /**
+ * Text of several lines with a break opportunity only at its spaces: each
+ * word is kept whole, because a browser would otherwise also break after a
+ * hyphen (an id such as CVE-2026-1234). A run as long as a hash may break
+ * anywhere rather than overflow.
+ */
+export function spaceBreaks(value: string): ReactNode {
+  return value.split(/(\s+)/).map((part, i) =>
+    i % 2 || part === "" || part.length >= UNBROKEN ? (
+      part
+    ) : (
+      <span key={i} style={kept}>
+        {part}
+      </span>
+    ),
+  );
+}
+
+/**
  * Each string child of a value, broken at address boundaries, in a span of
  * its own: in a flex row each part would otherwise be an item. Icons and
  * other nodes pass through.
