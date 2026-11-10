@@ -428,3 +428,22 @@ export const EnterDoesNotSubmit: Story = {
     await expect(canvas.getByText("Submitted 0")).toBeInTheDocument();
   },
 };
+
+/** With the keyboard alone: each search highlights its first match, so Enter picks it, twice in a row. */
+export const SearchedKeyboard: Story = {
+  args: Searched.args,
+  render: Searched.render,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByRole("combobox", { name: "CVEs" });
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.type(input, "console");
+    await page.findByRole("option", { name: /CVE-2026-900002/ });
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002"]));
+    await userEvent.type(input, "widget");
+    await page.findByRole("option", { name: /CVE-2026-900000/ });
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith(["CVE-2026-900002", "CVE-2026-900000"]));
+  },
+};

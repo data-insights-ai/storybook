@@ -264,6 +264,8 @@ export function MultiComboBox({
           if (details.reason === "input-change") setQuery(next);
         }}
         itemToStringLabel={labelOf}
+        // A search answers anew each time: its first match is highlighted, never an index left from the last.
+        autoHighlight={searched}
         open={visible}
         onOpenChange={(next, details) => {
           if (details.reason === "item-press") return;
