@@ -2,6 +2,21 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.35.0
+
+- `MetaLineItem` (new): an item of a `MetaLine` that holds a component, such as a `TooltipTarget` for a name whose id a reader may need. A `MetaLine` takes either `items` or `MetaLineItem` children, never both.
+- `RecordLine` takes its detail as children, which may hold a component: `detail` → `children`.
+
+  ```tsx
+  <RecordLine primary="registry.example.org" detail="09:12:04Z" />
+  // becomes
+  <RecordLine primary="registry.example.org">09:12:04Z</RecordLine>
+  ```
+
+- `MetaLine` spaces its items by the gap and clips nothing, so a focused item's ring shows whole at a line's ends in every browser.
+- A `CopyValue` of several lines wraps only at its spaces, so an id such as `CVE-2026-1234` is never split at its hyphen; a run of 24 or more characters still breaks where it must.
+- Upgrade: replace `detail=` on each `RecordLine` with its children.
+
 ## 0.34.0
 
 - `MultiComboBox` searches on a server: with `onQueryChange` the caller finds the options for what was typed and passes them already matched, `loading` (with `loadingLabel`) says a search runs, and a chosen entry keeps its label across searches. Each search highlights its first match; Enter picks it, and Enter while `loading` picks nothing, so it never takes a row left from the last search. Enter on typed text never submits the form around the field.
