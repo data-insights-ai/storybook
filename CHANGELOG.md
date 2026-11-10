@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.33.0
+
+- A `list` or `detail` `Page` keeps its side column only where the page itself is 1920px or wider (was 1280px). The column is held empty while nothing is in it, so on a narrower page it took 344px from a wide register for nothing, and a table got narrower as the window grew past the old threshold. Below 1920px of page a side `Dialog` covers the content as a sheet, as it already did on narrower pages, and a `PageAside` follows the sections.
+- Upgrade: nothing to change. A product page whose side dialog should stay beside the content on a desktop checks it at a page of 1920px or more (2560px windows with an app sidebar).
+
 ## 0.32.0
 
 - `RecordCard` takes `lang` for its title and `Tag` takes `lang` for its name and title: data in another language than the page, such as an English CVE title on a German page, says its language, so a screen reader reads it in that language. A tag with `onRemove` says it on the name alone, so its remove label keeps the page's language.
