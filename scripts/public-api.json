@@ -134,6 +134,7 @@
     "MenuGroup",
     "MenuItem",
     "MetaLine",
+    "MetaLineItem",
     "MultiComboBox",
     "MultiComboBoxMark",
     "MultiComboBoxOption",

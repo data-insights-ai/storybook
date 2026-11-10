@@ -114,3 +114,24 @@ export const Command: Story = {
     await expect(getComputedStyle(value).whiteSpace).toBe("pre-wrap");
   },
 };
+
+/** A prompt of several lines in a narrow column: it wraps at spaces, and an id such as a CVE ID stays whole. */
+export const PromptNarrow: Story = {
+  args: {
+    value:
+      "Check whether the systems you can see are exposed to CVE-2026-900000.\n\nAffected, as the records state it:\n- CVE-2026-900000: Example Widget (4.0 to before 4.2.1)",
+    copyLabel: "Copy prompt",
+  },
+  render: (args) => (
+    <div style={{ width: "12rem" }}>
+      <CopyValue {...args} />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    for (const id of canvasElement.querySelectorAll<HTMLElement>(".di-copy-value span")) {
+      if (!id.textContent?.startsWith("CVE-")) continue;
+      await expect(id.getClientRects()).toHaveLength(1);
+    }
+    await expect(canvasElement.querySelector(".di-copy-value")!.textContent).toContain("CVE-2026-900000.\n\nAffected");
+  },
+};
