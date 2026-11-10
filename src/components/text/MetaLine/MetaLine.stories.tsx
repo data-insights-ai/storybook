@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, within } from "storybook/test";
 import { separatorsAtLineStart } from "../../../../.storybook/tests/lineStart";
 import { TooltipTarget } from "../../overlays/TooltipTarget";
-import { MetaLine } from "./MetaLine";
+import { MetaLine, MetaLineItem } from "./MetaLine";
 import { onPanel } from "../../../../.storybook/onPanel";
 
 const meta = {
@@ -122,11 +122,18 @@ export const German: Story = {
   },
 };
 
-/** A name whose id a reader may need is a `TooltipTarget` item: the id opens on hover and focus. */
-export const WithNode: Story = {
-  args: {
-    items: ["Rejected", <TooltipTarget key="who" text="Nora Feld" label="oidc|8f2c41" />, "12 Oct, 10:00"],
-  },
+/** An item holding a component is a `MetaLineItem`: a name whose id opens on hover and focus. */
+export const WithItems: Story = {
+  args: { items: undefined },
+  render: (args) => (
+    <MetaLine {...args}>
+      <MetaLineItem>Rejected</MetaLineItem>
+      <MetaLineItem>
+        <TooltipTarget text="Nora Feld" label="oidc|8f2c41" />
+      </MetaLineItem>
+      <MetaLineItem>12 Oct, 10:00</MetaLineItem>
+    </MetaLine>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText("Nora Feld")).toBeVisible();

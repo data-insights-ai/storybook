@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from "react";
+import { Children, useRef, type ReactNode } from "react";
 import { cx } from "../../../internal/cx";
 import { useLineStarts } from "../../../internal/useLineStarts";
 import "./MetaLine.css";
@@ -19,8 +19,9 @@ import "./MetaLine.css";
  * items as a path: a host, the next host, where the data went.
  *
  * **Content:** short facts, each a figure or a name with its unit; a string
- * is split at " · ". An item may be a node, such as a `TooltipTarget` for a
- * name whose id a reader may need. The line breaks only between items, and the separator
+ * is split at " · ". An item that holds a component, such as a
+ * `TooltipTarget` for a name whose id a reader may need, is a
+ * `MetaLineItem` child in place of `items`. The line breaks only between items, and the separator
  * before an item that starts a line is left out, at either alignment; an
  * item longer than the line wraps inside.
  *
@@ -29,30 +30,37 @@ import "./MetaLine.css";
  */
 export function MetaLine({
   items,
+  children,
   align = "start",
   separator = "dot",
   className,
 }: {
   /** The facts, in reading order: an array, or one string with " · " between them. */
-  items: string | ReactNode[];
+  items?: string | string[];
+  /** `MetaLineItem`s, in place of `items`, where an item holds a component. */
+  children?: ReactNode;
   align?: "start" | "end";
   separator?: "dot" | "arrow";
   className?: string;
 }) {
-  const list = typeof items === "string" ? items.split(" · ") : items;
+  const list = typeof items === "string" ? items.split(" · ") : (items ?? []);
   const itemsRef = useRef<HTMLSpanElement>(null);
-  // Text items key the re-measure; a node item is measured by the observer.
-  useLineStarts(itemsRef, list.map((item) => (typeof item === "string" ? item : "\u0000")).join("\n"));
+  useLineStarts(itemsRef, list.join("\n") || Children.count(children));
   return (
     <span className={cx("di-meta-line", align === "end" && "is-end", separator === "arrow" && "is-path", className)}>
       {/* A list, so a screen reader hears the items apart without the drawn separators. */}
       <span ref={itemsRef} className="di-meta-line-items" role="list">
-        {list.map((item, i) => (
-          <span key={i} className="di-meta-line-item" role="listitem">
-            {item}
-          </span>
-        ))}
+        {items === undefined ? children : list.map((item, i) => <MetaLineItem key={i}>{item}</MetaLineItem>)}
       </span>
+    </span>
+  );
+}
+
+/** One item of a `MetaLine`, for an item that holds a component. */
+export function MetaLineItem({ children }: { children: ReactNode }) {
+  return (
+    <span className="di-meta-line-item" role="listitem">
+      {children}
     </span>
   );
 }
