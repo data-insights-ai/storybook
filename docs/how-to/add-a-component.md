@@ -1,0 +1,21 @@
+# Add a component
+
+Read [The Register](../explanation/register.md) and [API rules](../explanation/api-rules.md) first; the checks below enforce both.
+
+1. **Decide whether it is new.** If an existing component can take the job through a variant or a slot, change that one. A rename, merge or removal takes the old name out in the same version, with no alias or wrapper, and goes into `CHANGELOG.md` as old → new with a code example.
+
+2. **Place it.** A component lives in `src/components/<group>/<Name>/` (or `<group>/<sub>/<Name>/` where the group has a sub-folder) with `<Name>.tsx`, `<Name>.css`, `<Name>.stories.tsx`, its tests and an `index.ts`. The group is the question a developer asks when looking for it ([Component groups](../reference/components.md)). A folder below `src/components` holds at most eight entries; a sub-folder is a natural family, never a layer. Another folder imports the component only through its `index.ts`. One module is one component: `pnpm build` emits a module per file, so two independent components in one file ship together. A sub-component that only exists inside its parent (`PanelFooter`, `TableCell`) stays in the parent's file.
+
+3. **Write the component.** Text is a `string` prop; anything that can hold a component is a slot (`<Parent><ParentSlot>`), placed by CSS grid areas so the caller may write the slots in any order. No prop typed `ReactNode` other than `children`, an option's `icon` or `Menu`'s `trigger`. A variant is one union prop. A link takes `href` and `render`. Native elements first; where a control needs roving focus or a popup, Base UI (`@base-ui/react`) and no other library. Give the exported function a doc comment: Storybook renders it as the docs page, so no inline code span runs over a line end.
+
+4. **Style it.** The CSS binds to semantic roles (`--di-text`, `--di-bg-surface`) or to slots in `src/styles/tokens/component.css`, never to a primitive, a hex, a raw size or a hand-set radius; sizes and insets use the density tokens. Spacing comes from `--di-space-*`, the focus ring from the focus-ring tokens. Draw with the shared blocks in `src/styles/primitives.css` (`surfaceClass()`, `.di-row`, `.di-option`, `.di-ordinal`); a pill is a `Badge`, a key a `Kbd`, a caption an `Eyebrow`. Motion is `--di-duration` or `--di-duration-slow` and nothing else.
+
+5. **Write the stories.** The story `title` is `<Group>/<Name>` (or `<Group>/<Sub>/<Name>`), mirrors the folder and ends in the meta `component`'s name. The meta carries `tags: ["autodocs", "layer:<tag>"]` with one layer tag: `primitive` (nothing can go inside), `form` (a labelled control), `block` (it holds something), `pattern` (a whole arrangement). Stories are in English. String props stay on `args` so Controls can change the copy; a slot is filled in `render` with `control: false`; every boolean and every select has its real default in `args`; event listeners stay `on…` callbacks. A content component (a figure, a tag, a chart, a button) is shown inside the surface it sits on in a product, usually a `Panel` (`.storybook/onPanel.tsx` is the decorator); only surfaces stand on the bare canvas. Anything with a transition gets a story that runs it. A story whose subject is the desktop arrangement pins `viewport: { value: "desk" }` and has a phone story beside it. Sample data only a story reads sits beside it as `*.sample.ts`.
+
+6. **Export it** from `src/index.ts`, with its types. An export with no story is in the package and invisible to the designer. Record the API change: `node scripts/check-api.mjs --write`.
+
+7. **Tell the design agent.** Add the component to `.design-sync/conventions.md` under its group (`scripts/lint-conventions.mjs` checks that every name there is exported and every group listed). A new `Foundations/` page or `Patterns/` screen also needs a `null` entry in `.design-sync/config.json`'s `titleMap`.
+
+8. **Run the gate.** `pnpm check`: format, ESLint, typecheck, every story in four passes, then `pnpm build` with `lint:structure`, `lint:tokens` and the API check ([Checks](../reference/checks.md)). All of them fail on any finding; a change that cannot pass changes the structure or the rule with a reason, never the check's input.
+
+9. **Record it** in `CHANGELOG.md` under the next version: what is new and what a product has to do.

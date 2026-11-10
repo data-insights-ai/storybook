@@ -1,5 +1,5 @@
 /**
- * The package's dependency direction (AGENTS.md, "Structure"): internal helpers under
+ * The package's dependency direction (docs/reference/checks.md, "Structure rules"): internal helpers under
  * components, components under screens and the Storybook chrome, and a component reached
  * from another folder only through its index.ts. `pnpm lint:structure` runs it and
  * fails on any violation.

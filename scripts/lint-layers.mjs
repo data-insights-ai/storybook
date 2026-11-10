@@ -3,7 +3,7 @@ import path from "node:path";
 import ts from "typescript";
 
 /*
- * The structure dependency-cruiser cannot see (AGENTS.md, "Structure"): every story
+ * The structure dependency-cruiser cannot see (docs/reference/checks.md, "Structure rules"): every story
  * meta carries one layer tag and no module imports a higher layer; a story file, its
  * folder and its meta component share one name, and its title mirrors its folder; a
  * module is one sidebar entry (its slots stay with it); every public component is
