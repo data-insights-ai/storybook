@@ -110,6 +110,8 @@ describe("large screens", () => {
       expect(columns(host)).toBeGreaterThanOrEqual(width >= 2560 ? 8 : 6);
     });
 
+    if (width - 2 * pad < 1920) continue;
+
     test(`at ${width}px a record's aside stands in the side column`, async () => {
       await page.viewport(width, 1080);
       const host = record();
@@ -128,19 +130,26 @@ describe("large screens", () => {
     });
   }
 
-  test("at 1920px an open row stands beside the list at the rail's width", async () => {
-    await page.viewport(1920, 1080);
+  test("the page's own width decides: a 1920px page keeps the side column, a 1919px page does not", async () => {
+    await page.viewport(1920 + 64, 1080);
+    expect(Math.round(box(list(3, false).querySelector(".di-table")).width)).toBe(1920 - 320 - 24);
+    await page.viewport(1919 + 64, 1080);
+    expect(Math.round(box(list(3, false).querySelector(".di-table")).width)).toBe(1919);
+  });
+
+  test("at 2560px an open row stands beside the list at the rail's width", async () => {
+    await page.viewport(2560, 1080);
     const host = list(3, true);
     const table = box(host.querySelector(".di-table"));
     const rail = box(host.querySelector(".di-dialog-docked"));
     expect(rail.width).toBe(320);
     expect(rail.left).toBeGreaterThan(table.right);
-    expect(Math.round(rail.right)).toBe(1920 - 32);
+    expect(Math.round(rail.right)).toBe(2560 - 48);
     expect(host.querySelector("dialog")).toBeNull();
   });
 
-  test("at 1920px the side column starts level with the content, below the header", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px the side column starts level with the content, below the header", async () => {
+    await page.viewport(2560, 1080);
     const host = show(
       <AppShellContent>
         <Page>
@@ -212,8 +221,8 @@ describe("large screens", () => {
   const press = (el: Element) => flushSync(() => (el as HTMLElement).click());
   const docked = (host: HTMLElement) => host.querySelector(".di-dialog-docked");
 
-  test("at 1920px a second press on the button that opened a docked sheet closes it, also when the press gave no focus", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a second press on the button that opened a docked sheet closes it, also when the press gave no focus", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<ViewsPage />);
     const opener = host.querySelector(".opener")!;
     press(opener);
@@ -226,8 +235,8 @@ describe("large screens", () => {
     expect(docked(host)).not.toBeNull();
   });
 
-  test("at 1920px a row opened while the search had focus leaves the search alone, and its second press closes the record", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a row opened while the search had focus leaves the search alone, and its second press closes the record", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<RecordsPage />);
     const search = host.querySelector<HTMLInputElement>(".search")!;
     search.focus();
@@ -282,8 +291,8 @@ describe("large screens", () => {
 
   const settled = () => new Promise((resolve) => requestAnimationFrame(resolve));
 
-  test("at 1920px a sheet stands level with the table it was opened from, on a page of two", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a sheet stands level with the table it was opened from, on a page of two", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<TwoListsPage />);
     await settled();
     const [providers, feeds] = host.querySelectorAll(".di-table-wrap");
@@ -299,8 +308,8 @@ describe("large screens", () => {
     expect(Math.round(box(docked(host)).top)).toBe(Math.round(box(providers).top));
   });
 
-  test("at 1920px a sheet opened from a table further down keeps its place in the window, not under a toolbar it does not belong to", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a sheet opened from a table further down keeps its place in the window, not under a toolbar it does not belong to", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<TwoListsPage />);
     await settled();
     const [a, b] = host.querySelectorAll("tr.is-selectable");
@@ -314,8 +323,8 @@ describe("large screens", () => {
     expect(frame.style.getPropertyValue("--di-page-side-stick")).toBe("");
   });
 
-  test("at 1920px a sheet opened from a table below the window scrolls into view, and one above it leaves the page where it is", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a sheet opened from a table below the window scrolls into view, and one above it leaves the page where it is", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<TwoListsPage between={2000} />);
     await settled();
     const [a, b] = host.querySelectorAll("tr.is-selectable");
@@ -331,8 +340,8 @@ describe("large screens", () => {
     expect(sheet.bottom).toBeLessThanOrEqual(window.innerHeight);
   });
 
-  test("at 1920px a record's aside keeps the column where it is, whichever table a sheet opened from", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a record's aside keeps the column where it is, whichever table a sheet opened from", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<TwoListsPage aside />);
     await settled();
     const before = Math.round(box(host.querySelector(".aside")).top);
@@ -342,8 +351,8 @@ describe("large screens", () => {
     expect(Math.round(box(host.querySelector(".aside")).top)).toBe(before);
   });
 
-  test("at 1920px rows A, B, then A again show A's record", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px rows A, B, then A again show A's record", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<RecordsPage />);
     const [a, b] = host.querySelectorAll("tr.is-selectable");
     press(a);
@@ -355,8 +364,8 @@ describe("large screens", () => {
     expect(docked(host)).toBeNull();
   });
 
-  test("at 1920px Enter and Space on the button that opened a docked sheet close it", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px Enter and Space on the button that opened a docked sheet close it", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<ViewsPage />);
     const opener = host.querySelector<HTMLButtonElement>(".opener")!;
     opener.focus();
@@ -373,8 +382,8 @@ describe("large screens", () => {
     await expect.poll(() => docked(host)).toBeNull();
   });
 
-  test("at 1920px a sheet mounted only while open closes on a second press too", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a sheet mounted only while open closes on a second press too", async () => {
+    await page.viewport(2560, 1080);
     function Mounted() {
       const [open, setOpen] = useState(false);
       return (
@@ -400,8 +409,8 @@ describe("large screens", () => {
     expect(docked(host)).toBeNull();
   });
 
-  test("at 1920px a sheet too wide to dock stays modal and leaves its opener alone", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a sheet too wide to dock stays modal and leaves its opener alone", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<ViewsPage size="lg" />);
     const opener = host.querySelector(".opener")!;
     press(opener);
@@ -410,8 +419,8 @@ describe("large screens", () => {
     expect(opener.hasAttribute("aria-expanded")).toBe(false);
   });
 
-  test("at 1920px on a list the side column starts level with the table, below its filters", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px on a list the side column starts level with the table, below its filters", async () => {
+    await page.viewport(2560, 1080);
     const host = show(
       <AppShellContent>
         <Page>
@@ -471,8 +480,8 @@ describe("large screens", () => {
   const frame = () => new Promise((resolve) => requestAnimationFrame(resolve));
   const pageRoom = () => document.documentElement.scrollHeight - window.innerHeight;
 
-  test("at 1920px a long docked sheet fits the window where it opens: its actions in view, its body scrolling, no scroll added to the page", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a long docked sheet fits the window where it opens: its actions in view, its body scrolling, no scroll added to the page", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<LongSheetPage rows={2} />);
     await frame();
     const sheet = box(docked(host));
@@ -484,8 +493,8 @@ describe("large screens", () => {
     expect(pageRoom()).toBeLessThanOrEqual(0);
   });
 
-  test("at 1920px a long docked sheet grows as the page scrolls it up, its end staying put", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a long docked sheet grows as the page scrolls it up, its end staying put", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<LongSheetPage rows={100} />);
     await frame();
     const opened = box(docked(host));
@@ -503,8 +512,8 @@ describe("large screens", () => {
     expect(Math.round(stuck.bottom)).toBe(1080 - 32);
   });
 
-  test("at 1920px a docked sheet opening counts what moved the page since it was laid out", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a docked sheet opening counts what moved the page since it was laid out", async () => {
+    await page.viewport(2560, 1080);
     const host = show(<LongSheetPage rows={2} opened={false} />);
     await frame();
     const banner = document.createElement("div");
@@ -516,15 +525,15 @@ describe("large screens", () => {
   });
 
   test("in a very short window a long docked sheet stays as tall as it is wide, and the page scrolls to it", async () => {
-    await page.viewport(1920, 400);
+    await page.viewport(2560, 400);
     const host = show(<LongSheetPage rows={2} />);
     await frame();
     expect(Math.round(box(docked(host)).height)).toBe(320);
     expect(pageRoom()).toBeGreaterThan(0);
   });
 
-  test("at 1920px a wide sheet still covers the page: a table does not fit the column", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a wide sheet still covers the page: a table does not fit the column", async () => {
+    await page.viewport(2560, 1080);
     const host = show(
       <AppShellContent>
         <Page>
@@ -551,8 +560,8 @@ describe("large screens", () => {
     expect(box(host.querySelector(".section")).width).toBe(2560 - 96);
   });
 
-  test("at 1920px a create flow's step is a panel whose cards fill it, while a lone field keeps the form measure", async () => {
-    await page.viewport(1920, 1080);
+  test("at 2560px a create flow's step is a panel whose cards fill it, while a lone field keeps the form measure", async () => {
+    await page.viewport(2560, 1080);
     const host = show(
       <AppShellContent>
         <Page width="detail">
@@ -583,7 +592,7 @@ describe("large screens", () => {
       </AppShellContent>,
     );
     const panel = box(host.querySelector(".di-create-flow-panel"));
-    expect(Math.round(panel.width)).toBe(1920 - 64 - 320 - 24);
+    expect(Math.round(panel.width)).toBe(2560 - 96 - 320 - 24);
     expect(new Set([...host.querySelectorAll(".di-choice-card")].map((c) => Math.round(box(c).top))).size).toBe(2);
     expect(box(host.querySelector(".di-field")).width).toBeLessThanOrEqual(800);
   });
@@ -607,6 +616,14 @@ describe("regressions below", () => {
   test("at 1280px a list takes the whole width: the page is too narrow for the side column", async () => {
     await page.viewport(1280, 900);
     expect(box(list(3, false).querySelector(".di-table")).width).toBe(1280 - 48);
+  });
+
+  test("at 1920px a list takes the whole width and an open row is a sheet over it", async () => {
+    await page.viewport(1920, 1080);
+    const host = list(3, true);
+    expect(host.querySelector(".di-dialog-docked")).toBeNull();
+    expect(host.querySelector<HTMLDialogElement>("dialog.di-dialog")!.open).toBe(true);
+    expect(box(host.querySelector(".di-table")).width).toBe(1920 - 64);
   });
 
   test("at 1024px an open row is a sheet over the list", async () => {

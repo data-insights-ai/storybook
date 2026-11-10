@@ -65,7 +65,7 @@ export const Detail: Story = {
 };
 
 /**
- * A record with what accompanies it. Where the page is 1280px or wider the
+ * A record with what accompanies it. Where the page is 1920px or wider the
  * aside stands in the side column (choose a large viewport); narrower, it
  * follows the sections.
  */
@@ -165,7 +165,7 @@ function ListWithSheet() {
 }
 
 /**
- * A list with the row it has open. Where the page is 1280px or wider (choose
+ * A list with the row it has open. Where the page is 1920px or wider (choose
  * a large viewport) the list keeps the side column free and the row's sheet
  * docks there, while Up, Down and Enter keep walking the rows; narrower, the
  * list takes the whole width and the sheet covers it.

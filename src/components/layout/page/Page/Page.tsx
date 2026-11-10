@@ -8,7 +8,7 @@ import "./Page.css";
  * rhythm. `width` is what the page holds:
  *
  * - `list` and `detail` (a list, a record or settings with sections) share
- *   one frame. Where the page is 1280px or wider it keeps a side column at
+ *   one frame. Where the page is 1920px or wider it keeps a side column at
  *   the triage rail's width (`--di-rail-width`) on the right and the content
  *   takes the rest, so a table never runs across the whole window. The
  *   column holds the record's `PageAside` and every side `Dialog` the page opens
@@ -74,11 +74,12 @@ export function Page({
 }
 
 /*
- * The page's own width decides, not the window's: a collapsed navigation
- * gives a laptop the room for the side column. From here the content keeps
- * about 940px beside it.
+ * The page's own width decides, not the window's: an open navigation takes
+ * its share first. The column is held empty while nothing is in it, so it
+ * comes only where the content keeps about 1580px beside it, room for a
+ * wide register; on a narrower page a side dialog covers the content.
  */
-const SIDE_COLUMN_FROM = 1280;
+const SIDE_COLUMN_FROM = 1920;
 
 function useWideFrame(page: HTMLElement | null) {
   const [wide, setWide] = useState(false);
