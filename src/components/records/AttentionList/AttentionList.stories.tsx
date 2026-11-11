@@ -124,7 +124,7 @@ export const OneDecision: Story = {
   ),
 };
 
-/** A title from source data in another language than the page says its language with `lang`. */
+/** A title from source data in another language than the page says its language with `lang`, and takes its direction from its own letters with `dir="auto"`. */
 export const SourceLanguage: Story = {
   args: { title: "1 Meldung braucht Sie" },
   render: (args) => (
@@ -135,6 +135,7 @@ export const SourceLanguage: Story = {
         emphasisLabel="Hier beginnen"
         title="Example Widget: unauthenticated remote code execution, exploited"
         lang="en"
+        dir="auto"
         reason="Ausnutzung wird für CVE-2026-1234 gemeldet."
         meta="CVE-2026-1234 · Aktualisiert 21.10.2026"
       >
@@ -143,7 +144,9 @@ export const SourceLanguage: Story = {
     </AttentionList>
   ),
   play: async ({ canvasElement }) => {
-    await expect(within(canvasElement).getByRole("heading", { level: 3 })).toHaveAttribute("lang", "en");
+    const title = within(canvasElement).getByRole("heading", { level: 3 });
+    await expect(title).toHaveAttribute("lang", "en");
+    await expect(title).toHaveAttribute("dir", "auto");
   },
 };
 
