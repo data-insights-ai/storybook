@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Bell, Boxes, Building2, Gauge, RefreshCw, Settings, ShieldAlert } from "lucide-react";
+import { Bell, Boxes, Building2, Gauge, RefreshCw, Search, Settings, ShieldAlert } from "lucide-react";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { StatusPill } from "../../status/StatusPill";
+import { Kbd } from "../../text/Kbd";
 import { Breadcrumb } from "../../navigation/Breadcrumb";
 import {
   Sidebar,
@@ -58,7 +59,15 @@ const german: Words = {
 const icons = { overview: <Gauge />, findings: <ShieldAlert />, sources: <Boxes />, settings: <Settings /> };
 
 /* The frame a product composes: the sidebar, the bar, the page. */
-function Frame({ words = english, keepOnly = false }: { words?: Words; keepOnly?: boolean }) {
+function Frame({
+  words = english,
+  keepOnly = false,
+  search = false,
+}: {
+  words?: Words;
+  keepOnly?: boolean;
+  search?: boolean;
+}) {
   return (
     <SidebarProvider skipLabel="Skip to content">
       <Sidebar label={words.sections} closeLabel={words.close}>
@@ -93,6 +102,13 @@ function Frame({ words = english, keepOnly = false }: { words?: Words; keepOnly?
             label="Breadcrumb"
             items={[{ label: words.workspace, href: "#/overview" }, { label: words.page }]}
           />
+          {search ? (
+            <Button variant="ghost" size="sm" aria-keyshortcuts="Meta+K Control+K">
+              <Search aria-hidden />
+              Search
+              <Kbd tone="onControl">⌘K</Kbd>
+            </Button>
+          ) : null}
           <AppShellBarEnd moreLabel={words.more}>
             {keepOnly ? null : (
               <>
@@ -256,4 +272,23 @@ export const KeepOnly: Story = {
 export const Reflow320: Story = {
   name: "Reflow (320)",
   ...at(320, english, true),
+};
+
+/** A search in the bar names its shortcut with a `Kbd` on a desk. */
+export const SearchHint: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  render: () => <Frame search />,
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelector(".di-topbar .di-kbd")).toBeVisible();
+  },
+};
+
+/** On a phone, with no keyboard to press it, the hint goes and the bar keeps its room. */
+export const SearchHintPhone: Story = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  render: () => <Frame search />,
+  play: async ({ canvasElement }) => {
+    await expect(canvasElement.querySelector(".di-topbar .di-kbd")).not.toBeVisible();
+    await expect(within(canvasElement).getByRole("button", { name: /Search/ })).toBeVisible();
+  },
 };

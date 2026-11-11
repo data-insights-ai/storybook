@@ -44,20 +44,20 @@ A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` ho
 The Storybook sidebar is grouped by the question a developer asks, one group per job:
 
 - `Foundations/`: the brand and the tokens, shown (Start here, Color, Type, Space and shape, Our look, Logo). No component lives here.
-- `Actions/`: let someone do something: `Button` (with `badge` for a count), `FilterBar` (the filters above a list on one row, folding into a sheet; `FilterTags` for toggle tags in it), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `Menu`, `CopyValue`.
+- `Actions/`: let someone do something: `Button` (with `badge` for a count), `FilterBar` (the filters above a list on one row, folding into a sheet; `FilterTags` for toggle tags in it), `Toolbar` (list toolbar, selection bar, unsaved changes, row actions), `Menu`, `CopyValue`, `LinkRow` (a few links side by side: a footer's pages, the legal pages).
 - `Forms/`: let someone enter or choose: `TextField`, `TextArea`, `SearchField`, `FileField`, `Select` (`FilterSelect` in a filter bar), `ComboBox`, `ChoiceGroup`, `Switch`, `Checkbox`, the date fields (`RangeFilter`, a list's period in its filter bar) and `CreateFlow`.
 - `Tables/`: many rows to scan, sort and filter: `DataTable`, `InfiniteTable`, `CursorTable` (an `InfiniteTable` fed by a server cursor, with its loading, empty, no-match and failed states), `NewEntries`.
 - `Records/`: one record or a short list of them: `RecordCard`, `FactList`, `ProposalPanel`, `AttentionList`, `IconTile`, `ResourcePath` (where a record lives, in prose), `TechnicalDetails` (raw identifiers to copy).
 - `Figures/`: a number: `Figure`, `FigureRow`, `Sparkline`.
-- `Text/`: how text is set: `Eyebrow`, `MetaLine`, `TextLink`, `Kbd`, `Highlight`, `Icon`, and the blocks `CodeBlock`, `PointList`, `PullQuote`, `TickRule`, `Prose` (running text for reading, with `ProseLede`), `CiteMark` and `SourceList` (numbered citations and the sources they lead to).
+- `Text/`: how text is set: `Eyebrow`, `MetaLine`, `TextLink`, `Kbd`, `Highlight`, `Icon`, and the blocks `CodeBlock`, `PointList`, `PullQuote`, `TickRule`, `Prose` (running text for reading, with `ProseLede`), `CiteMark` and `SourceList` (numbered citations and the sources they lead to), `DiffMark` (what a change removed and added, inline or as a block).
 - `Status/`: the state of a thing: inline, or a page's verdict: `StatusPill`, `SeverityMark`, `SealValue`, `Badge`, `Tag` (`mono` for a filter, a version or a hash), `LevelMeter`, and `Verdict`, a record page's state with its one sentence and summary (`VerdictStatus`, `VerdictLine`, `VerdictBody`).
 - `Feedback/`: what happened or is happening: `Notice` (`variant` banner, line), `EmptyState`, `Toast` (`toast()` and `Toasts` show receipts from anywhere), `Loading` (`shape` inline, app, list, detail, form, table), `Progress`, `RouteProgress`, `Delayed`, and the ways back: `LoadError` (a list or page that could not be read, with try again and a reference), `RouteBoundary` with `PageFailure`, `StaleNotice` (a list behind the server).
 - `Charts/`: data on a scale: `Chart`, `TrendChart`, `Seismograph`, `Distribution`, `CoverageMatrix`; a dashboard figure is a `Panel` with a `Figure` and the chart, in a `Grid`.
 - `Timelines/`: events and periods over time: `EventTimeline`, `TimelineSummary`, `ChainTimeline`, `PeriodTimeline`. `EventTimeline` folds a long quiet stretch into a break on its axis (`axis="broken"`, the default); `continuous` keeps time at one rate.
-- `Layout/`: how a page is arranged: `Page`, `PageHeader` (`level={2}` for a section), `Panel` (`surface="hero"`, `tone="danger"`), `DetailSection`, and `Stack`, `Grid`, `Split`, `Disclosure`.
+- `Layout/`: how a page is arranged: `Page`, `PageHeader` (`level={2}` for a section), `Panel` (`surface="hero"`, `tone="danger"`), `DetailSection`, `Section` (a titled part of a surface, no frame), and `Stack`, `Grid`, `Split`, `Disclosure`, `EntryList` (a short list on ruled rows: what each entry is, what qualifies it at the end).
 - `Navigation/`: how a person moves: `Sidebar`, `Breadcrumb`, `Tabs`, `TabNav`, `Pagination`, `Steps`, `CommandBar`.
 - `Overlays/`: what opens over the page: `Dialog` (`placement` side, center, bottom), `ConfirmDialog`, `ShortcutHelp`, `Flyout`, `Tooltip`.
-- `Shell/`: the frame of the app: `AppShellBar`, `AppShellContent`, `SignIn`, `SkipLink`, `ThemeProvider`, `DensityProvider`.
+- `Shell/`: the frame of the app: `AppShellBar`, `AppShellContent` (with `AppShellFooter`, what closes every page), `SignIn`, `SkipLink`, `ThemeProvider`, `DensityProvider`.
 - `Patterns/`: whole screens composed from the above, as examples. Not in this bundle.
 
 Every example shows a component where it lives: content (a fact list, a figure, a chart, a quote, a button, a field) sits inside the surface it belongs to in a product, usually a `Panel`, sometimes a `Dialog`, a table or a `RecordCard`. Only surfaces (`Page`, `Panel`, `Dialog`, `Flyout`, `Toast`, the shell parts, the overlays) stand on the page ground on their own. Compose a variation the same way.
@@ -88,6 +88,9 @@ Every example shows a component where it lives: content (a fact list, a figure, 
 | A label for a control without one | `Tooltip` | a tooltip holding a fact that is nowhere else |
 | A record read beside the decisions about it | `Split`, with what is read first (a verdict) in `SplitLead` | |
 | A record's detail page, edited section by section | `DetailSection` | |
+| A titled part of a panel or a sheet | `Section` | a bare heading styled by hand |
+| A short list of a record read row by row: products and versions, matching lists, references | `EntryList` | a table inside a panel, hand-ruled list items |
+| An old and a new value, words replaced, items added or removed | `DiffMark` | colour alone |
 | A term and its value | `FactList` (`layout="pairs"` for a short list) | |
 | Named points on a brand page: a heading over a paragraph, side by side | `PointList` | hand-built cards, `FactList` |
 | A status | `StatusPill` | a coloured word, or colour alone |

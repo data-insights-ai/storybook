@@ -173,3 +173,34 @@ export const TwoPlans: Story = {
     </PlanGrid>
   ),
 };
+
+/** The plan the page points to carries the gold edge and says why beside its name; each plan says who it is for. */
+export const Recommended: Story = {
+  render: (args) => (
+    <PlanGrid {...args}>
+      <PlanCard heading={2} name="Solo" lead="For one person" price="€9" period="a month">
+        <PlanAction>
+          <Button variant="secondary">Choose Solo</Button>
+        </PlanAction>
+      </PlanCard>
+      <PlanCard heading={2} name="Team" lead="For a team, with webhooks" price="€49" period="a month" emphasis>
+        <PlanStatus>
+          <Badge tone="neutral" track="prose">
+            Recommended
+          </Badge>
+        </PlanStatus>
+        <PlanAction>
+          <Button>Choose Team</Button>
+        </PlanAction>
+      </PlanCard>
+    </PlanGrid>
+  ),
+  play: async ({ canvasElement }) => {
+    const cards = canvasElement.querySelectorAll(".di-plan-card");
+    await expect(cards[1]).toHaveClass("di-surface-edge-one");
+    await expect(cards[0]).not.toHaveClass("di-surface-edge-one");
+    const [first, second] = [...cards].map((card) => card.getBoundingClientRect());
+    const prices = [...canvasElement.querySelectorAll(".di-plan-price")].map((p) => p.getBoundingClientRect().top);
+    if (Math.abs(first.top - second.top) < 2) await expect(Math.abs(prices[0] - prices[1])).toBeLessThan(2);
+  },
+};

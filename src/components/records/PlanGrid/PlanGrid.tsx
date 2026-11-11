@@ -6,7 +6,7 @@ import "./PlanGrid.css";
 
 /**
  * The plans of one offer side by side, each a `PlanCard`. Every card has the
- * same rows — name, price, billing line, details, features, note, action —
+ * same rows — name, lead, price, billing line, details, features, note, action —
  * and the grid lines them up across the cards of a row, so a badge, a
  * longer feature list or a missing line in one card never moves the price
  * or the action of another. Each card's action sits in the last row, at the
@@ -29,7 +29,8 @@ export function PlanGrid({ label, children }: { label: string; children: ReactNo
 }
 
 /**
- * One plan in a `PlanGrid`. `price` is the amount as the reader pays it
+ * One plan in a `PlanGrid`. `lead` is who the plan is for, one line under
+ * its name. `price` is the amount as the reader pays it
  * ("€9"), `period` what it is for ("a month"), `billing` the one line on how
  * it is billed or what a year costs. `details` are the plan's facts (seats,
  * what an extra seat costs); `note` is a small footnote, a limit or a
@@ -40,27 +41,36 @@ export function PlanGrid({ label, children }: { label: string; children: ReactNo
  *
  * Only the name is bold; the price is set large in the display face, at
  * regular weight.
+ *
+ * `emphasis` gives the gold edge to the one plan the page points a reader
+ * to; name why in a `PlanStatus` beside its name ("Recommended").
  */
 export function PlanCard({
   name,
   heading = 3,
+  lead,
   price,
   period,
   billing,
   details = [],
   featuresLabel,
   note,
+  emphasis = false,
   children,
 }: {
   name: string;
   /** The name's level in the page outline. */
   heading?: 2 | 3 | 4;
+  /** Who the plan is for, under its name. */
+  lead?: string;
   price: string;
   period?: string;
   billing?: string;
   details?: string[];
   featuresLabel?: string;
   note?: string;
+  /** The one plan the page points a reader to: the gold edge. */
+  emphasis?: boolean;
   /** At most one `PlanStatus` and one `PlanAction`, and the `PlanFeature`s. */
   children?: ReactNode;
 }) {
@@ -79,13 +89,14 @@ export function PlanCard({
       console.warn(`PlanCard "${name}": only PlanStatus, PlanFeature and PlanAction children are drawn.`);
   }, [dropped, name]);
   return (
-    <li className={cx(surfaceClass(), "di-plan-card")} aria-labelledby={id}>
+    <li className={cx(surfaceClass({ edge: emphasis ? "one" : "none" }), "di-plan-card")} aria-labelledby={id}>
       <div className="di-plan-head">
         <Heading id={id} className="di-plan-name">
           {name}
         </Heading>
         {slot.status}
       </div>
+      <p className="di-plan-lead">{lead}</p>
       <p className="di-plan-price">
         <span className="di-plan-amount">{price}</span>
         {period === undefined ? null : <span className="di-plan-period">{period}</span>}

@@ -100,3 +100,12 @@
     }
   }
 }
+
+@layer components {
+  /* A phone has no keyboard to press it with, and the bar no room to spare: a key hint in the bar goes. */
+  @media (max-width: 600px) {
+    .di-topbar .di-kbd {
+      display: none;
+    }
+  }
+}
