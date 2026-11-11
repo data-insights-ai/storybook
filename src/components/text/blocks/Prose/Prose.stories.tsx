@@ -65,6 +65,9 @@ export const Default: Story = {
     await expect(canvasElement.querySelector("#src-1")).toBeTruthy();
     const body = canvasElement.querySelector(".di-prose p:not(.di-prose-lede p)")!;
     await expect(getComputedStyle(body).fontSize).toBe("16px");
+    const lede = getComputedStyle(canvasElement.querySelector(".di-prose-lede")!);
+    await expect(lede.fontSize).toBe("18px");
+    await expect(getComputedStyle(canvasElement.querySelector(".di-prose")!).maxWidth).not.toBe("none");
     await expect(getComputedStyle(canvas.getByText("Am I affected?")).fontFamily).toContain(
       getComputedStyle(document.documentElement)
         .getPropertyValue("--di-font-display")

@@ -9,7 +9,8 @@
     margin: 0 0 var(--di-space-16);
   }
   .di-prose > :last-child,
-  .di-prose-lede > :last-child {
+  .di-prose-lede > :last-child,
+  .di-prose :is(li, blockquote) > :last-child {
     margin-block-end: 0;
   }
   .di-prose :is(ul, ol) {

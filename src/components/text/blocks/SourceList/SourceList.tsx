@@ -10,7 +10,12 @@ import "./SourceList.css";
  * shows its number in full tone.
  */
 export function SourceList({ children }: { children: ReactNode }) {
-  return <ol className="di-source-list">{children}</ol>;
+  return (
+    // role="list": Safari drops the list role from an <ol> whose markers are styled away, and the number is aria-hidden.
+    <ol className="di-source-list" role="list">
+      {children}
+    </ol>
+  );
 }
 
 /**

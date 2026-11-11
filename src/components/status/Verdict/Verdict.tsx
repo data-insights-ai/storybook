@@ -17,8 +17,21 @@ import "./Verdict.css";
  * **Content:** the sentence is built from facts, not written: what is known
  * ("Exploited since 20 Oct 2026.") and the one action ("Update to 4.2.1.").
  */
-export function Verdict({ emphasis = false, children }: { emphasis?: boolean; children: ReactNode }) {
-  return <section className={surfaceClass({ edge: emphasis ? "one" : "none" }) + " di-verdict"}>{children}</section>;
+export function Verdict({
+  emphasis = false,
+  label,
+  children,
+}: {
+  emphasis?: boolean;
+  /** Names the verdict for assistive technology, which then lists it as a region. */
+  label?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className={surfaceClass({ edge: emphasis ? "one" : "none" }) + " di-verdict"} aria-label={label}>
+      {children}
+    </section>
+  );
 }
 
 /** The state, as a `StatusPill`. */

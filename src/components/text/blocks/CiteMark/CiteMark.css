@@ -13,6 +13,6 @@
   .di-cite-mark:focus-visible {
     color: var(--di-text);
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-underline-offset: 3px;
   }
 }

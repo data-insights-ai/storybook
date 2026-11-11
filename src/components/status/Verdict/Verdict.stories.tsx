@@ -7,10 +7,10 @@ const meta = {
   title: "Status/Verdict",
   component: Verdict,
   tags: ["layer:block", "autodocs"],
-  args: { emphasis: true, children: null },
+  args: { emphasis: false, children: null },
   argTypes: { children: { control: false } },
   render: (args) => (
-    <Verdict emphasis={args.emphasis}>
+    <Verdict emphasis={args.emphasis} label={args.label}>
       <VerdictStatus>
         <StatusPill tone="danger">Needs attention</StatusPill>
       </VerdictStatus>
@@ -29,18 +29,21 @@ type Story = StoryObj<typeof meta>;
 
 /** The one thing on the page: the gold edge, the state, the sentence and the summary. */
 export const Default: Story = {
+  args: { emphasis: true, label: "Verdict" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(canvas.getByText("Needs attention")).toBeVisible();
-    await expect(canvasElement.querySelector(".di-verdict")).toHaveClass("di-surface-edge-one");
+    await expect(canvas.getByRole("region", { name: "Verdict" })).toHaveClass("di-surface-edge-one");
+    const pill = canvas.getByText("Needs attention");
+    await expect(pill).toBeVisible();
+    const status = canvasElement.querySelector(".di-verdict-status")!;
+    await expect(status.getBoundingClientRect().height).toBe(pill.getBoundingClientRect().height);
   },
 };
 
 /** For reference: no gold edge, the same order. */
 export const Reference: Story = {
-  args: { emphasis: false },
-  render: () => (
-    <Verdict>
+  render: (args) => (
+    <Verdict emphasis={args.emphasis}>
       <VerdictStatus>
         <StatusPill tone="neutral">Reference</StatusPill>
       </VerdictStatus>

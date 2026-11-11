@@ -15,9 +15,7 @@ const meta = {
     <SourceList>
       <SourceEntry n={1} id="source-1">
         <span>CISA</span>
-        <TextLink href="https://www.cisa.gov/news-events/alerts/example-widget">
-          https://www.cisa.gov/news-events/alerts/example-widget
-        </TextLink>
+        <TextLink href="https://www.cisa.gov/">https://www.cisa.gov/</TextLink>
       </SourceEntry>
       <SourceEntry n={2} id="source-2">
         <TextLink plain href="#">

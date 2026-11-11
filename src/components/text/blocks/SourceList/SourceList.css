@@ -10,7 +10,7 @@
     display: grid;
     grid-template-columns: var(--di-space-24) minmax(0, 1fr);
     gap: var(--di-space-8);
-    scroll-margin-block-start: var(--di-space-96);
+    scroll-margin-block-start: calc(var(--di-sticky-top) + var(--di-space-16));
   }
   .di-source-n {
     font-family: var(--di-font-code);
