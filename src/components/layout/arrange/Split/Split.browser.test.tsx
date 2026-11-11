@@ -44,6 +44,8 @@ test("the rail stands beside the main column once the split itself leaves that c
 function renderLed(width: string) {
   const host = document.createElement("div");
   host.style.width = width;
+  // Below the sticky offset, so the rail stands where the grid puts it.
+  host.style.marginTop = "100px";
   document.body.append(host);
   root = createRoot(host);
   flushSync(() =>
@@ -70,7 +72,7 @@ test("a lead heads the main column and the rail stands beside both from the top"
   expect(lead.bottom).toBeLessThanOrEqual(main.top);
   expect(lead.left).toBe(main.left);
   expect(aside.left).toBeGreaterThanOrEqual(lead.right);
-  expect(aside.top).toBeLessThan(main.top);
+  expect(aside.top).toBe(lead.top);
 });
 
 test("on a narrow split the lead comes first, then an asideFirst rail, then the main column", () => {

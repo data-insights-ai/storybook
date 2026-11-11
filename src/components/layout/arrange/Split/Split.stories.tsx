@@ -113,25 +113,32 @@ const led = (
   </>
 );
 
-/**
- * A lead heads the main column and the rail stands beside both from the
- * top; on a phone the lead comes first, then the rail, then the main
- * column.
- */
+/** A lead heads the main column; the rail stands beside both from the top. */
 export const Lead: Story = {
   args: { asideFirst: true },
+  globals: { viewport: { value: "desk", isRotated: false } },
   render: (args) => <Split {...args}>{led}</Split>,
   play: async ({ canvasElement }) => {
     const box = (s: string) => canvasElement.querySelector(s)!.getBoundingClientRect();
     const [lead, main, aside] = [box(".di-split-lead"), box(".di-split-main"), box(".di-split-aside")];
     await expect(lead.bottom).toBeLessThanOrEqual(main.top);
-    if (aside.left >= lead.right) await expect(aside.top).toBeLessThan(main.top);
-    else await expect([lead.bottom <= aside.top, aside.bottom <= main.top]).toEqual([true, true]);
+    await expect(aside.left).toBeGreaterThanOrEqual(lead.right);
+    await expect(aside.top).toBeLessThan(main.top);
   },
 };
 
-/** On a phone: the lead, the rail, then the main column. */
-export const LeadPhone: Story = { ...Lead, globals: { viewport: { value: "phone" } } };
+/** On a phone the lead comes first, then the rail, then the main column. */
+export const LeadPhone: Story = {
+  args: { asideFirst: true },
+  globals: { viewport: { value: "phone" } },
+  render: (args) => <Split {...args}>{led}</Split>,
+  play: async ({ canvasElement }) => {
+    const box = (s: string) => canvasElement.querySelector(s)!.getBoundingClientRect();
+    const [lead, main, aside] = [box(".di-split-lead"), box(".di-split-main"), box(".di-split-aside")];
+    await expect(lead.bottom).toBeLessThanOrEqual(aside.top);
+    await expect(aside.bottom).toBeLessThanOrEqual(main.top);
+  },
+};
 
 /**
  * A form beside the live result of what it edits: from 1280px the preview is

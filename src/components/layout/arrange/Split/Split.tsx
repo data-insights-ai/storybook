@@ -39,7 +39,7 @@ export function Split({
   /** `list` only: which half a narrow screen shows. Both show from about 900px. */
   showing?: "list" | "detail";
   className?: string;
-  /** `rail`, `preview`: one `SplitMain` and one `SplitAside`. `list`: one `SplitList`, then one `SplitMain`. */
+  /** `rail`: an optional `SplitLead`, then one `SplitMain` and one `SplitAside`. `preview`: one `SplitMain` and one `SplitAside`. `list`: one `SplitList`, then one `SplitMain`. */
   children: ReactNode;
 }) {
   const root = useRef<HTMLDivElement>(null);

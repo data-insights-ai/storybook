@@ -30,7 +30,7 @@
     order: -1;
   }
 
-  .di-split-lead {
+  .di-split:not(.is-preview, .is-list) > .di-split-lead {
     order: -2;
     min-width: 0;
   }

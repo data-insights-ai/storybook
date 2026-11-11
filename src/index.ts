@@ -265,8 +265,8 @@ export { Sparkline } from "./components/figures/Sparkline";
 export {
   Split,
   SplitAside,
-  SplitLead,
   SplitBack,
+  SplitLead,
   SplitList,
   SplitListHead,
   SplitListItem,
