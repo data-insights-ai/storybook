@@ -9,8 +9,9 @@ Each release, newest first: what changed and what a product has to do to take it
 - `DiffMark` (new): what a change removed and added, struck through on the danger wash or set on the ok wash and named aloud by `label`; `sign` for a list item, `layout="block"` for a passage replaced whole.
 - `LinkRow` (new): a few links side by side that wrap as words do; `label` makes it a navigation landmark, `size="sm"` sets it in the hint size.
 - `AppShellFooter` (new): what closes every page inside `AppShellContent`, its `note` and a `LinkRow`.
-- `PlanCard` takes `lead` (who the plan is for, under its name) and `emphasis` (the gold edge of the plan a page points to).
+- `PlanCard` takes `lead` (who the plan is for, under its name) and `emphasis` (the gold edge of the plan a page points to); its price and period read with a space between them ("€9 a month").
 - A key hint (`Kbd`) in the `AppShellBar` is left out on a phone.
+- A `blockquote` in `Prose`, a passage quoted from a source, is set in by a hairline.
 - Upgrade: nothing to change.
 
 ## 0.38.0

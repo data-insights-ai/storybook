@@ -10,7 +10,8 @@ import "./Prose.css";
  *
  * **Anatomy:** 16px body at the body leading, measured to about 68
  * characters; an `h2` or `h3` in the display face with space above it and
- * no rule; lists with an indent; `code` in the code face. `ProseLede` is
+ * no rule; lists with an indent; a `blockquote`, a passage quoted from a
+ * source, set in by a hairline; `code` in the code face. `ProseLede` is
  * the opening paragraph at 18px.
  *
  * **Content:** paragraphs, headings, lists and inline code as children;

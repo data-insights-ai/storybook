@@ -99,7 +99,12 @@ export function PlanCard({
       <p className="di-plan-lead">{lead}</p>
       <p className="di-plan-price">
         <span className="di-plan-amount">{price}</span>
-        {period === undefined ? null : <span className="di-plan-period">{period}</span>}
+        {period === undefined ? null : (
+          <>
+            {/* Read as "€9 a month", not "€9a month": the gap draws the space, the text carries it. */}{" "}
+            <span className="di-plan-period">{period}</span>
+          </>
+        )}
       </p>
       <p className="di-plan-billing">{billing}</p>
       {details.length === 0 ? (

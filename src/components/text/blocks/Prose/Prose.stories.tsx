@@ -82,3 +82,21 @@ export const Default: Story = {
 export const Phone: Story = {
   parameters: { viewport: { value: "phone" } },
 };
+
+/** A passage quoted from a source sits in by a hairline, at the text's own size. */
+export const Quoted: Story = {
+  render: () => (
+    <Prose>
+      <p>The vendor's advisory names the flaw in its own words:</p>
+      <blockquote>
+        <p>An unauthenticated attacker can run code on the gateway through a crafted request.</p>
+      </blockquote>
+      <p>The record says the same and lists 4.2.1 as the fix.</p>
+    </Prose>
+  ),
+  play: async ({ canvasElement }) => {
+    const quote = getComputedStyle(canvasElement.querySelector("blockquote")!);
+    await expect(quote.borderInlineStartWidth).toBe("2px");
+    await expect(quote.marginInlineStart).toBe("0px");
+  },
+};

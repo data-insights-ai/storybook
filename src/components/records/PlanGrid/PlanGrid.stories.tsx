@@ -199,6 +199,7 @@ export const Recommended: Story = {
     const cards = canvasElement.querySelectorAll(".di-plan-card");
     await expect(cards[1]).toHaveClass("di-surface-edge-one");
     await expect(cards[0]).not.toHaveClass("di-surface-edge-one");
+    await expect(cards[1].querySelector(".di-plan-price")).toHaveTextContent("€49 a month");
     const [first, second] = [...cards].map((card) => card.getBoundingClientRect());
     const prices = [...canvasElement.querySelectorAll(".di-plan-price")].map((p) => p.getBoundingClientRect().top);
     if (Math.abs(first.top - second.top) < 2) await expect(Math.abs(prices[0] - prices[1])).toBeLessThan(2);

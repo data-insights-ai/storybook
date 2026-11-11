@@ -30,6 +30,13 @@
   .di-prose > :is(h2, h3):first-child {
     margin-block-start: 0;
   }
+  /* A passage quoted from a source: set in by a hairline down its start, at the text's own size. */
+  .di-prose blockquote {
+    margin: 0 0 var(--di-space-16);
+    padding-inline-start: var(--di-space-12);
+    border-inline-start: 2px solid var(--di-border);
+  }
+
   .di-prose code {
     font-family: var(--di-font-code);
     font-size: var(--di-font-size-400);
