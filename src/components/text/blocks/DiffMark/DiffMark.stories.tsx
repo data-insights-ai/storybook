@@ -71,5 +71,6 @@ export const Block: Story = {
     const removed = canvasElement.querySelector("del")!;
     await expect(getComputedStyle(removed).display).toBe("block");
     await expect(getComputedStyle(removed).textDecorationLine).toBe("none");
+    await expect(getComputedStyle(removed.querySelector("p")!).marginBlockEnd).toBe("0px");
   },
 };

@@ -24,7 +24,8 @@
     color: var(--di-text-muted);
   }
 
-  .di-diff-mark.is-block > :last-child {
+  /* The last paragraph, before the closing words for a screen reader. */
+  .di-diff-mark.is-block > :nth-last-child(2) {
     margin-block-end: 0;
   }
 
