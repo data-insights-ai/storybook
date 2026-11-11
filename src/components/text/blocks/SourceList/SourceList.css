@@ -1,0 +1,32 @@
+@layer components {
+  .di-source-list {
+    display: grid;
+    gap: var(--di-space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .di-source-entry {
+    display: grid;
+    grid-template-columns: var(--di-space-24) minmax(0, 1fr);
+    gap: var(--di-space-8);
+    scroll-margin-block-start: calc(var(--di-sticky-top) + var(--di-space-16));
+  }
+  .di-source-n {
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-body);
+    color: var(--di-text-muted);
+  }
+  .di-source-entry:target .di-source-n {
+    font-weight: var(--di-weight-semibold);
+    color: var(--di-text);
+  }
+  .di-source-body {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--di-space-12);
+    row-gap: var(--di-space-2);
+    overflow-wrap: anywhere;
+  }
+}

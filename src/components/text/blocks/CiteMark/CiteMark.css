@@ -1,0 +1,18 @@
+@layer components {
+  .di-cite-mark {
+    margin-inline-start: var(--di-space-2);
+    vertical-align: super;
+    font-family: var(--di-font-code);
+    font-size: var(--di-font-size-200);
+    font-weight: var(--di-weight-medium);
+    line-height: 1;
+    color: var(--di-text-muted);
+    text-decoration: none;
+  }
+  .di-cite-mark:hover,
+  .di-cite-mark:focus-visible {
+    color: var(--di-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}

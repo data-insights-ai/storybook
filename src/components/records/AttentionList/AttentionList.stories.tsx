@@ -124,6 +124,29 @@ export const OneDecision: Story = {
   ),
 };
 
+/** A title from source data in another language than the page says its language with `lang`. */
+export const SourceLanguage: Story = {
+  args: { title: "1 Meldung braucht Sie" },
+  render: (args) => (
+    <AttentionList {...args}>
+      <AttentionItem
+        rank="01"
+        emphasis
+        emphasisLabel="Hier beginnen"
+        title="Example Widget: unauthenticated remote code execution, exploited"
+        lang="en"
+        reason="Ausnutzung wird für CVE-2026-1234 gemeldet."
+        meta="CVE-2026-1234 · Aktualisiert 21.10.2026"
+      >
+        <Button>Meldung öffnen</Button>
+      </AttentionItem>
+    </AttentionList>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(within(canvasElement).getByRole("heading", { level: 3 })).toHaveAttribute("lang", "en");
+  },
+};
+
 /** Nothing is due: no empty list, one quiet line and what it rests on. */
 export const Clear: Story = {
   render: () => (

@@ -203,6 +203,9 @@ export { Loading } from "./components/feedback/Loading";
 export type { LoadingShape } from "./components/feedback/Loading";
 export { Point, PointList } from "./components/text/blocks/PointList";
 export { PullQuote } from "./components/text/blocks/PullQuote";
+export { Prose, ProseLede } from "./components/text/blocks/Prose";
+export { CiteMark } from "./components/text/blocks/CiteMark";
+export { SourceList, SourceEntry } from "./components/text/blocks/SourceList";
 export { QuantityField } from "./components/forms/text/QuantityField";
 export {
   RecordActions,
@@ -270,6 +273,7 @@ export {
   SplitMain,
 } from "./components/layout/arrange/Split";
 export { StatusPill } from "./components/status/StatusPill";
+export { Verdict, VerdictStatus, VerdictLine, VerdictBody } from "./components/status/Verdict";
 export { Step, StepFooter, StepIcon, Steps } from "./components/navigation/Steps";
 export type { StepState, StepStateLabels, StepsVariant, StepTone } from "./components/navigation/Steps";
 export { Switch } from "./components/forms/choice/Switch";
