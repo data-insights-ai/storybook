@@ -80,7 +80,7 @@ export function AttentionItem({
   title: string;
   /** The title's language, when it is source data in another language than the page. */
   lang?: string;
-  /** `auto` for a title someone else wrote, so it takes its direction from its own letters and a right-to-left run in it cannot reorder the text around it. */
+  /** `auto` for a title someone else wrote: it takes its direction and alignment from its own first letters. */
   dir?: "auto" | "ltr" | "rtl";
   /** Why it needs the reader, in one sentence. */
   reason: string;
