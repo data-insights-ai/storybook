@@ -28,7 +28,7 @@ Every visible string is a prop. Components ship with no baked-in language; a pro
 
 Controlled where the system is the source of truth: `Pagination` (the caller owns `page`), `Switch` (a `role="switch"` button that reports the state of the system and commits as it moves), `ThemeProvider` and `DensityProvider` (the person's preference on the server, never browser storage).
 
-Wherever a component draws a link, it takes `href` for a plain `<a>` and `render` for a router's link element (typed `useRender.RenderProp`), which renders the `<a>` with the component's look, name and props. A blocked `Button` link renders no router link, because the router's element would carry the address.
+Wherever a component draws a link, it takes `href` for a plain `<a>` and `render` for a router's link element (typed `useRender.RenderProp`), which renders the `<a>` with the component's look, name and props. A blocked `Button` link renders no router link, because the router's element would carry the address. `CiteMark` takes no `render`: its `href` is always a fragment on the same page, which the browser follows itself.
 
 ## Native first, then Base UI
 
