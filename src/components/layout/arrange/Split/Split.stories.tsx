@@ -11,7 +11,7 @@ import { Stack } from "../Stack";
 import { Page } from "../../page/Page";
 import { Panel } from "../../page/Panel";
 import { Select } from "../../../forms/select/Select";
-import { Split, SplitAside, SplitMain } from "./Split";
+import { Split, SplitAside, SplitLead, SplitMain } from "./Split";
 import { SplitBack, SplitList, SplitListHead, SplitListItem, SplitListItems } from "./SplitList";
 
 /**
@@ -24,7 +24,8 @@ import { SplitBack, SplitList, SplitListHead, SplitListItem, SplitListItems } fr
  *   `PageAside`), for a record opened from a table row (`Dialog`), or for
  *   columns of equal blocks (`Grid`).
  *
- * Anatomy: `SplitMain` and `SplitAside`; in a `list` split, `SplitList`
+ * Anatomy: `SplitMain` and `SplitAside`, with an optional `SplitLead`
+ * that heads the main column and stays first on a phone; in a `list` split, `SplitList`
  * (`SplitListHead`, `SplitListItems` of `SplitListItem`) and `SplitMain`
  * with a `label` and a `SplitBack`. States: on a narrow screen the rail
  * and the preview follow the main column (`asideFirst` puts the rail
@@ -89,6 +90,48 @@ export const Record: Story = {
 
 /** On a phone the decisions come first when they must not be missed. */
 export const AsideFirst: Story = { args: { asideFirst: true } };
+
+const led = (
+  <>
+    <SplitLead>
+      <Panel title="Verdict" padded>
+        <p>Exploited since 20 Oct 2026. Update to 4.2.1.</p>
+      </Panel>
+    </SplitLead>
+    <SplitMain>
+      <Panel title="What happened" padded>
+        <p>Example Widget gateways accept a crafted request that runs code before any sign-in.</p>
+      </Panel>
+    </SplitMain>
+    <SplitAside label="Facts">
+      <Panel title="Facts" padded>
+        <FactList layout="rows">
+          <Fact label="CVSS">9.8</Fact>
+        </FactList>
+      </Panel>
+    </SplitAside>
+  </>
+);
+
+/**
+ * A lead heads the main column and the rail stands beside both from the
+ * top; on a phone the lead comes first, then the rail, then the main
+ * column.
+ */
+export const Lead: Story = {
+  args: { asideFirst: true },
+  render: (args) => <Split {...args}>{led}</Split>,
+  play: async ({ canvasElement }) => {
+    const box = (s: string) => canvasElement.querySelector(s)!.getBoundingClientRect();
+    const [lead, main, aside] = [box(".di-split-lead"), box(".di-split-main"), box(".di-split-aside")];
+    await expect(lead.bottom).toBeLessThanOrEqual(main.top);
+    if (aside.left >= lead.right) await expect(aside.top).toBeLessThan(main.top);
+    else await expect([lead.bottom <= aside.top, aside.bottom <= main.top]).toEqual([true, true]);
+  },
+};
+
+/** On a phone: the lead, the rail, then the main column. */
+export const LeadPhone: Story = { ...Lead, globals: { viewport: { value: "phone" } } };
 
 /**
  * A form beside the live result of what it edits: from 1280px the preview is
