@@ -11,7 +11,9 @@ import "./Split.css";
  *   column once the split leaves that column 40rem (about 984px of the
  *   split's own width, so an open app sidebar counts). Narrower, the aside
  *   follows the main column; with `asideFirst` it comes first, for the
- *   decisions that must not be missed on a phone.
+ *   decisions that must not be missed on a phone. A `SplitLead` heads the
+ *   main column beside the rail and stays first on a phone, above even an
+ *   aside that comes first: a verdict read before the facts.
  * - `preview`: a form beside the live result of what it edits. From 1280px
  *   the aside is a wide column (two fifths) that stays in view while the
  *   form scrolls; narrower, the preview follows the form.
@@ -37,7 +39,7 @@ export function Split({
   /** `list` only: which half a narrow screen shows. Both show from about 900px. */
   showing?: "list" | "detail";
   className?: string;
-  /** `rail`, `preview`: one `SplitMain` and one `SplitAside`. `list`: one `SplitList`, then one `SplitMain`. */
+  /** `rail`: an optional `SplitLead`, then one `SplitMain` and one `SplitAside`. `preview`: one `SplitMain` and one `SplitAside`. `list`: one `SplitList`, then one `SplitMain`. */
   children: ReactNode;
 }) {
   const root = useRef<HTMLDivElement>(null);
@@ -81,6 +83,15 @@ export function SplitMain({ label, children }: { label?: string; children: React
       {children}
     </section>
   );
+}
+
+/**
+ * What the main column of a `rail` split opens with, placed before
+ * `SplitMain`: beside the rail at its top, and first of all on a phone,
+ * above an `asideFirst` rail.
+ */
+export function SplitLead({ children }: { children: ReactNode }) {
+  return <div className="di-split-lead">{children}</div>;
 }
 
 /** Sticks below the app bar while the main column scrolls. */

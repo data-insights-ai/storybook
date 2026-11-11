@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.38.0
+
+- `SplitLead` (new): what the main column of a `rail` split opens with. Beside the rail it heads the main column, the rail standing beside both from the top; on a phone it comes first, above an `asideFirst` rail.
+- Upgrade: nothing to change.
+
 ## 0.37.0
 
 - `AttentionItem` takes `dir` for its title: `auto` for a title someone else wrote.

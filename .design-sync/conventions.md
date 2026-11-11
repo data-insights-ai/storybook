@@ -86,7 +86,7 @@ Every example shows a component where it lives: content (a fact list, a figure, 
 | A message that stays on the page | `Notice` | `Toast`, the receipt of an action that already ran |
 | Nothing to show yet | `EmptyState` in the panel | an empty table, a `Notice` |
 | A label for a control without one | `Tooltip` | a tooltip holding a fact that is nowhere else |
-| A record read beside the decisions about it | `Split` | |
+| A record read beside the decisions about it | `Split`, with what is read first (a verdict) in `SplitLead` | |
 | A record's detail page, edited section by section | `DetailSection` | |
 | A term and its value | `FactList` (`layout="pairs"` for a short list) | |
 | Named points on a brand page: a heading over a paragraph, side by side | `PointList` | hand-built cards, `FactList` |

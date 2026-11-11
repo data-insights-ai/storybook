@@ -30,6 +30,11 @@
     order: -1;
   }
 
+  .di-split:not(.is-preview, .is-list) > .di-split-lead {
+    order: -2;
+    min-width: 0;
+  }
+
   /*
    * The rail stands beside the main column once the main column keeps 40rem
    * (a strip of tabs, a timeline): 40rem, the gap and the 320px rail. Read
@@ -42,6 +47,26 @@
 
     .di-split.is-aside-first:not(.is-preview, .is-list) .di-split-aside {
       order: 0;
+    }
+
+    /* The lead heads the main column; the rail stands beside both from the top. */
+    .di-split:not(.is-preview, .is-list):has(> .di-split-lead) {
+      grid-template-rows: auto 1fr;
+    }
+
+    .di-split:not(.is-preview, .is-list) > .di-split-lead {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .di-split:not(.is-preview, .is-list):has(> .di-split-lead) > .di-split-main {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .di-split:not(.is-preview, .is-list):has(> .di-split-lead) > .di-split-aside {
+      grid-column: 2;
+      grid-row: 1 / span 2;
     }
 
     .di-split:not(.is-preview, .is-list) > .di-split-aside {

@@ -266,6 +266,7 @@ export {
   Split,
   SplitAside,
   SplitBack,
+  SplitLead,
   SplitList,
   SplitListHead,
   SplitListItem,
