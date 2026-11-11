@@ -10,6 +10,10 @@ import "./CiteMark.css";
  * **Anatomy:** the number in the code face, raised and muted; nothing in
  * the sentence is underlined. Hover and focus underline the number.
  *
+ * **Link:** a plain `<a>` with no `render`: `href` is always a fragment
+ * on the same page (`#source-2`), which the browser follows itself, and a
+ * router's link would only get in its way.
+ *
  * **Accessibility:** `label` names the source ("Source 2: CISA"), because
  * a bare number says nothing read aloud.
  */

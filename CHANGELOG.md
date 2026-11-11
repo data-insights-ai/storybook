@@ -5,6 +5,7 @@ Each release, newest first: what changed and what a product has to do to take it
 ## 0.36.0
 
 - `Verdict` (new): a record page's state, its one sentence and its summary, before anything else on the page: `VerdictStatus`, `VerdictLine`, `VerdictBody`; `emphasis` gives it the gold edge, `label` names it as a region.
+- Two measure slots, `--di-measure-reading` (68ch: `Prose`, a `Verdict`'s summary) and `--di-measure-verdict` (40ch: a `Verdict`'s sentence).
 - `Prose` (new): running text for reading: 16px body to about 68 characters, section heads in the display face set apart by space; `ProseLede` opens it at 18px.
 - `CiteMark` (new): a numbered citation mark that links to its source.
 - `SourceList` (new): the numbered sources the marks lead to, one `SourceEntry` each.

@@ -155,6 +155,10 @@
        settings take the frame beside the side column (`Page`). */
     --di-measure-form: 720px;
     --di-measure-prose: 62ch;
+    /* An article read at length (Prose, a Verdict's summary), and a
+       Verdict's one sentence in the display face. */
+    --di-measure-reading: 68ch;
+    --di-measure-verdict: 40ch;
 
     /* The vertical rhythm of a console page: from the header to what
        follows, from a toolbar to the list it filters, between sections, and

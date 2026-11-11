@@ -12,7 +12,7 @@ import "./Verdict.css";
  *
  * **Anatomy:** a surface with the gold edge when it is the one thing that
  * matters (`emphasis`); `VerdictStatus` (a `StatusPill`), `VerdictLine`
- * (the sentence, measured to 40ch), then `VerdictBody`.
+ * (the sentence, to `--di-measure-verdict`), then `VerdictBody`.
  *
  * **Content:** the sentence is built from facts, not written: what is known
  * ("Exploited since 20 Oct 2026.") and the one action ("Update to 4.2.1.").

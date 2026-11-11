@@ -1,6 +1,6 @@
 @layer components {
   .di-prose {
-    max-width: 68ch;
+    max-width: var(--di-measure-reading);
     font-size: var(--di-font-size-500);
     line-height: var(--di-leading-body);
     text-wrap: pretty;
