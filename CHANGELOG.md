@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.37.0
+
+- `AttentionItem` takes `dir` for its title: `auto` for a title someone else wrote.
+- Upgrade: nothing to change.
+
 ## 0.36.0
 
 - `Verdict` (new): a record page's state, its one sentence and its summary, before anything else on the page: `VerdictStatus`, `VerdictLine`, `VerdictBody`; `emphasis` gives it the gold edge, `label` names it as a region.
