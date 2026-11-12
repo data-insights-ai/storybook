@@ -68,7 +68,7 @@ export const Contained: Story = {
   },
 };
 
-/** An `AppShellFooter` closes the page, wherever it is written: where the data comes from, then the links every page carries. */
+/** An `AppShellFooter`, a direct child, closes the page: where the data comes from, then the links every page carries. */
 export const WithFooter: Story = {
   render: (args) => (
     <AppShellContent {...args}>

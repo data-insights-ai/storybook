@@ -15,7 +15,7 @@ import "./AppShellContent.css";
  * use every column they are given, and `Page` keeps a record or a form at its
  * measure. `contained` stops widening at 1440px.
  *
- * An `AppShellFooter` closes every page, wherever it is written.
+ * An `AppShellFooter` among its direct children closes every page.
  */
 export function AppShellContent({ width = "full", children }: { width?: "contained" | "full"; children: ReactNode }) {
   const [footer, page] = takeSlot(children, AppShellFooter);
