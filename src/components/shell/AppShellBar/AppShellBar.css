@@ -99,4 +99,10 @@
       translate: 0 calc(-1 * var(--di-space-4));
     }
   }
+  /* A phone has no keyboard to press it with, and the bar no room to spare: a key hint in the bar goes. */
+  @media (max-width: 600px) {
+    .di-topbar .di-kbd {
+      display: none;
+    }
+  }
 }

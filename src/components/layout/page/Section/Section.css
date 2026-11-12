@@ -1,0 +1,19 @@
+@layer components {
+  .di-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-12);
+    min-width: 0;
+  }
+
+  /* A part's name: the display face and weight of a panel's title, so a part and a panel read alike. */
+  .di-section-title {
+    margin: 0;
+    overflow-wrap: break-word;
+    font-family: var(--di-heading-family);
+    font-size: var(--di-block-title-size);
+    font-weight: var(--di-weight-bold);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text);
+  }
+}

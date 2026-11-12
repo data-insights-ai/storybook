@@ -1,0 +1,22 @@
+@layer components {
+  .di-link-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-gap-4) var(--di-gap-16);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .di-link-row > li {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .di-link-row.is-sm {
+    font-size: var(--di-font-size-300);
+  }
+}

@@ -1,0 +1,44 @@
+@layer components {
+  .di-entries {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--di-rule-hairline);
+  }
+
+  /* The end keeps to the lead's line while both fit; then it drops under the lead rather than squeezing it. */
+  .di-entry {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--di-gap-4) var(--di-gap-12);
+    min-width: 0;
+    padding-block: var(--di-gap-8);
+    border-bottom: 1px solid var(--di-rule-hairline);
+    overflow-wrap: anywhere;
+  }
+
+  .di-entry-lead {
+    flex: 1 1 12rem;
+    min-width: 0;
+  }
+
+  .di-entry-end {
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: var(--di-font-size-300);
+    color: var(--di-text-muted);
+  }
+
+  .di-entry-detail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-4) var(--di-gap-6);
+    flex-basis: 100%;
+    min-width: 0;
+    font-size: var(--di-font-size-300);
+    line-height: var(--di-leading-snug);
+    color: var(--di-text-muted);
+  }
+}

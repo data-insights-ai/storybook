@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cx } from "../../../internal/cx";
+import { takeSlot } from "../../../internal/slots";
 import "./AppShellContent.css";
 
 /**
@@ -13,11 +14,30 @@ import "./AppShellContent.css";
  * `full` (the default) follows the window: lists, registers, dashboards and charts
  * use every column they are given, and `Page` keeps a record or a form at its
  * measure. `contained` stops widening at 1440px.
+ *
+ * An `AppShellFooter` among its direct children closes every page.
  */
 export function AppShellContent({ width = "full", children }: { width?: "contained" | "full"; children: ReactNode }) {
+  const [footer, page] = takeSlot(children, AppShellFooter);
   return (
     <main id="di-content" className={cx("di-content", width === "contained" && "is-contained")} tabIndex={-1}>
-      {children}
+      {page}
+      {footer}
     </main>
+  );
+}
+
+/**
+ * What closes every page of the app, under its content: `note` says where
+ * the data comes from or whose it is, the children are the links every page
+ * carries (a `LinkRow` with `size="sm"`). Set apart by space and one fine
+ * rule, in the hint size, so it never competes with the page.
+ */
+export function AppShellFooter({ note, children }: { note?: string; children?: ReactNode }) {
+  return (
+    <footer className="di-content-footer">
+      {note ? <p className="di-content-footer-note">{note}</p> : null}
+      {children}
+    </footer>
   );
 }

@@ -1,0 +1,44 @@
+@layer components {
+  .di-diff-mark.is-removed {
+    background: var(--di-status-danger-bg);
+    color: var(--di-status-danger-fg);
+    text-decoration: line-through;
+  }
+
+  .di-diff-mark.is-added {
+    background: var(--di-status-ok-bg);
+    color: var(--di-status-ok-fg);
+    text-decoration: none;
+  }
+
+  /* A passage replaced whole: its wash says which side it is, the words stay readable. */
+  .di-diff-mark.is-block {
+    display: block;
+    padding: var(--di-gap-4) var(--di-gap-8);
+    border-radius: var(--di-radius-inset);
+    color: var(--di-text);
+    text-decoration: none;
+  }
+
+  .di-diff-mark.is-block.is-removed {
+    color: var(--di-text-muted);
+  }
+
+  /* The last paragraph, before the closing words for a screen reader. */
+  .di-diff-mark.is-block > :nth-last-child(2) {
+    margin-block-end: 0;
+  }
+
+  .di-diff-line {
+    display: flex;
+    gap: var(--di-gap-6);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .di-diff-sign {
+    flex: none;
+    width: 1ch;
+    font-family: var(--di-font-code);
+  }
+}

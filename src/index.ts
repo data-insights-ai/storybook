@@ -1,5 +1,5 @@
 export { AppShellBar, AppShellBarEnd, AppShellBarKeep } from "./components/shell/AppShellBar";
-export { AppShellContent } from "./components/shell/AppShellContent";
+export { AppShellContent, AppShellFooter } from "./components/shell/AppShellContent";
 export { Badge } from "./components/status/Badge";
 export { Breadcrumb } from "./components/navigation/Breadcrumb";
 export { Button } from "./components/actions/Button";
@@ -60,6 +60,7 @@ export { CompletingTextArea } from "./components/forms/text/CompletingTextArea";
 export type { Completion } from "./components/forms/text/CompletingTextArea";
 export { ConfirmDialog } from "./components/overlays/ConfirmDialog";
 export { CopyValue } from "./components/actions/CopyValue";
+export { LinkRow } from "./components/actions/LinkRow";
 export { SecretReveal } from "./components/actions/SecretReveal";
 export { CreateFlow } from "./components/forms/CreateFlow";
 export { CoverageMatrix, CoverageMatrixLegend } from "./components/charts/CoverageMatrix";
@@ -81,6 +82,8 @@ export {
   TableGroupRow,
 } from "./components/tables/DataTable";
 export { DetailSection, DetailSectionActions, DetailSectionForm } from "./components/layout/page/DetailSection";
+export { DiffMark } from "./components/text/blocks/DiffMark";
+export { Entry, EntryDetail, EntryEnd, EntryList } from "./components/layout/arrange/EntryList";
 export {
   Disclosure,
   DisclosureDetail,
@@ -183,6 +186,7 @@ export { StaleNotice } from "./components/feedback/recovery/StaleNotice";
 export type { NoticeTone, NoticeVariant } from "./components/feedback/Notice";
 export { EmptyState, EmptyStateAction, EmptyStateIcon } from "./components/feedback/EmptyState";
 export { Page, PageAside } from "./components/layout/page/Page";
+export { Section } from "./components/layout/page/Section";
 export { Pagination } from "./components/navigation/Pagination";
 export {
   DangerAction,

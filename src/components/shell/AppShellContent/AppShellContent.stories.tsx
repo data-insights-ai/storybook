@@ -3,7 +3,9 @@ import { expect, within } from "storybook/test";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Figure } from "../../figures/Figure";
 import { FigureRow } from "../../figures/FigureRow";
-import { AppShellContent } from "./AppShellContent";
+import { LinkRow } from "../../actions/LinkRow";
+import { TextLink } from "../../text/TextLink";
+import { AppShellContent, AppShellFooter } from "./AppShellContent";
 
 const meta = {
   title: "Shell/AppShellContent",
@@ -63,5 +65,32 @@ export const Contained: Story = {
   ),
   play: async ({ canvasElement }) => {
     await expect(getComputedStyle(within(canvasElement).getByRole("main")).maxWidth).toBe("1440px");
+  },
+};
+
+/** An `AppShellFooter`, a direct child, closes the page: where the data comes from, then the links every page carries. */
+export const WithFooter: Story = {
+  render: (args) => (
+    <AppShellContent {...args}>
+      <AppShellFooter note="Built on public records; each source's licence is on the sources page.">
+        <LinkRow size="sm" label="Site">
+          <TextLink plain href="#">
+            Sources
+          </TextLink>
+          <TextLink plain href="#">
+            Terms of service
+          </TextLink>
+          <TextLink plain href="#">
+            Privacy policy
+          </TextLink>
+        </LinkRow>
+      </AppShellFooter>
+      <Overview />
+    </AppShellContent>
+  ),
+  play: async ({ canvasElement }) => {
+    const main = within(canvasElement).getByRole("main");
+    await expect(main.lastElementChild?.tagName).toBe("FOOTER");
+    await expect(within(main).getByRole("navigation", { name: "Site" })).toBeTruthy();
   },
 };

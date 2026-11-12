@@ -22,3 +22,20 @@
     outline: none;
   }
 }
+
+@layer components {
+  .di-content-footer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--di-gap-8);
+    margin-top: var(--di-space-24);
+    padding-top: var(--di-gap-16);
+    border-top: 1px solid var(--di-rule);
+    font-size: var(--di-font-size-200);
+    color: var(--di-text-muted);
+  }
+
+  .di-content-footer-note {
+    max-width: var(--di-measure-reading);
+  }
+}

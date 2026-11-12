@@ -2,6 +2,18 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.39.0
+
+- `Section` (new): a titled part of a panel, a sheet or a reading page, with no frame of its own; `heading` sets its level, `id` lets a link or a script move focus to its heading.
+- `EntryList` (new): a short list read row by row on ruled lines, each `Entry` with an `EntryEnd` at the line's end (`mono` for a machine value) and an `EntryDetail` under it.
+- `DiffMark` (new): what a change removed and added, struck through on the danger wash or set on the ok wash and named aloud by `label`; `sign` for a list item, `layout="block"` for a passage replaced whole.
+- `LinkRow` (new): a few links side by side that wrap as words do; `label` makes it a navigation landmark, `size="sm"` sets it in the hint size.
+- `AppShellFooter` (new): what closes every page inside `AppShellContent`, its `note` and a `LinkRow`.
+- `PlanCard` takes `lead` (who the plan is for, under its name) and `emphasis` (the gold edge of the plan a page points to); its price and period read with a space between them ("€9 a month").
+- A key hint (`Kbd`) in the `AppShellBar` is left out on a phone.
+- A `blockquote` in `Prose`, a passage quoted from a source, is set in by a hairline.
+- Upgrade: nothing to change.
+
 ## 0.38.0
 
 - `SplitLead` (new): what the main column of a `rail` split opens with. Beside the rail it heads the main column, the rail standing beside both from the top; on a phone it comes first, above an `asideFirst` rail.

@@ -5,17 +5,17 @@ Every component lives in `src/components/<group>/`, one folder per Storybook gro
 | Group | Question | Folder | Components |
 | --- | --- | --- | --- |
 | `Foundations/` | the brand | `src/foundations` | Start here, Color, Type, Space and shape, Our look, Logo. Doc pages; no package component |
-| `Actions/` | let someone do something | `actions/` | Button, Toolbar, FilterBar, Menu, CopyValue |
+| `Actions/` | let someone do something | `actions/` | Button, Toolbar, FilterBar, Menu, CopyValue, LinkRow |
 | `Forms/` | let someone enter or choose | `forms/` | `field/` Field, FieldLabel, FieldHint, FieldConfidence; `text/` TextField, TextArea, SearchField, QuantityField, FileField; `choice/` Choice, Checkbox, Radio, ChoiceGroup, Switch; `select/` Select, ComboBox, MultiComboBox; `dates/` dateRange, segments, calendar, DateField, TimeField, DateRangePicker; CreateFlow |
 | `Tables/` | many rows to scan, sort and filter | `tables/` | DataTable, InfiniteTable, NewEntries |
 | `Records/` | one record or a short list of them | `records/` | RecordCard, FactList, ProposalPanel, AttentionList, IconTile, PlanGrid |
 | `Figures/` | a number | `figures/` | Figure, FigureRow, Sparkline |
-| `Text/` | how text is set | `text/` | Eyebrow, MetaLine, TextLink, Kbd, Highlight, ClampText, Icon; `blocks/` CodeBlock, PointList, PullQuote, TickRule, Prose, CiteMark, SourceList |
+| `Text/` | how text is set | `text/` | Eyebrow, MetaLine, TextLink, Kbd, Highlight, ClampText, Icon; `blocks/` CodeBlock, PointList, PullQuote, TickRule, Prose, CiteMark, SourceList, DiffMark |
 | `Status/` | the state of a thing: inline, or a page's verdict | `status/` | StatusPill, SeverityMark, SealValue, Badge, Tag, LevelMeter, Verdict |
 | `Feedback/` | what happened or is happening | `feedback/` | Notice, EmptyState, Toast, Loading, Progress, RouteProgress, Delayed |
 | `Charts/` | data plotted on a scale | `charts/` | Chart, TrendChart, Seismograph, Distribution, CoverageMatrix |
 | `Timelines/` | events and periods over time | `timelines/` | ChainTimeline, EventTimeline, PeriodTimeline, TimelineSummary; `scale/`, `series/`, `types/` shared |
-| `Layout/` | arranging a page | `layout/` | `page/` Page, PageHeader, Panel, DetailSection, pageSide; `arrange/` Stack, Grid, Split, Disclosure |
+| `Layout/` | arranging a page | `layout/` | `page/` Page, PageHeader, Panel, DetailSection, Section, pageSide; `arrange/` Stack, Grid, Split, Disclosure, EntryList |
 | `Navigation/` | moving between places | `navigation/` | Sidebar (its parts in `menu/`, `frame/`, `state/`), Breadcrumb, Tabs, TabNav, tabStrip, Pagination, Steps, CommandBar |
 | `Overlays/` | above the page | `overlays/` | Dialog, ConfirmDialog, ShortcutHelp, Flyout, Tooltip, TooltipTarget; `useModalDialog/` |
 | `Shell/` | the product's frame | `shell/` | AppShellBar, AppShellContent, SignIn, SkipLink, ThemeProvider, DensityProvider |
