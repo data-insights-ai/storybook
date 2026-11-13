@@ -70,6 +70,7 @@ export function MultiComboBox({
   hint = "",
   hintTone = "neutral",
   labelTrack = "record",
+  hideLabel = false,
   placeholder,
   disabled = false,
   required = false,
@@ -108,6 +109,8 @@ export function MultiComboBox({
   hint?: string;
   hintTone?: HintTone;
   labelTrack?: LabelTrack;
+  /** The label is read, not shown: in a filter bar, where the placeholder names the field. */
+  hideLabel?: boolean;
   /** Shown while nothing is chosen. */
   placeholder?: string;
   disabled?: boolean;
@@ -239,7 +242,7 @@ export function MultiComboBox({
   if (!listed) {
     return (
       <div ref={root} className={cx("di-field", "di-multicombo", className)}>
-        <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} required={required} />
+        <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required} />
         {frame(
           <input
             ref={input}
@@ -284,7 +287,7 @@ export function MultiComboBox({
         }}
         disabled={disabled}
       >
-        <FieldLabel id={`${id}-label`} htmlFor={id} label={label} labelTrack={labelTrack} required={required} />
+        <FieldLabel id={`${id}-label`} htmlFor={id} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required} />
         {frame(
           <>
             <Combobox.Input ref={input} {...inputProps} aria-labelledby={`${id}-label`} onFocus={show} />
