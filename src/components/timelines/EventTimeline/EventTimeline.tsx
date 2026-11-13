@@ -474,9 +474,12 @@ export function EventTimelineReadout({ children }: { children: ReactNode }) {
   const place = useContext(ReadoutPlace);
   const box = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
+  // The content is a new element on every render, so this runs on every one; an unchanged width must not set state,
+  // or each pointer move renders it again until React stops it.
   useLayoutEffect(() => {
-    if (box.current) setWidth(box.current.offsetWidth);
-  }, [children, place?.plot]);
+    const measured = box.current?.offsetWidth;
+    if (measured !== undefined && measured !== width) setWidth(measured);
+  }, [children, place?.plot, width]);
   if (!place || !children) {
     return null;
   }
