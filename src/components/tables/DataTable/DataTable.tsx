@@ -379,8 +379,11 @@ export function TableColumn({
    * sideways. Without it the first column headed by a word stays.
    */
   pinned?: boolean;
-  /** `fill` hands this column whatever width the others leave — for a bar or a meter. */
-  width?: "auto" | "fill";
+  /**
+   * `fill` hands this column whatever width the others leave — for a bar or a meter. A length in rem fixes it, so
+   * a table whose rows change (one list, then another) keeps its columns in place.
+   */
+  width?: "auto" | "fill" | `${number}rem`;
   /** The empty head cell above the ordinal column. */
   index?: boolean;
   sort?: "none" | "ascending" | "descending";
@@ -414,7 +417,7 @@ export function TableColumn({
         width === "fill" && "is-fill",
         pin.className,
       )}
-      style={pin.style}
+      style={width === "auto" || width === "fill" ? pin.style : { ...pin.style, width }}
       aria-sort={sort === "none" ? undefined : sort}
       data-pinned={pinned || undefined}
     >
