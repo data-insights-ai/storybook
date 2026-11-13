@@ -32,7 +32,10 @@ const always = () => true;
 
 /**
  * Several values in one field. The chosen ones stand in the field as
- * entries; Backspace in the empty input takes the last one back.
+ * entries; Backspace in the empty input takes the last one back. The list
+ * opens from ArrowDown, from typing or from the toggle, never from focus
+ * alone: Tab only focuses the field, as in `ComboBox`, so a dialog that
+ * focuses it first shows its other fields, not the list over them.
  *
  * From a known set — members to notify, roles to grant — `options` is the
  * list: typing narrows it, it stays open so the reader can pick on, and a
@@ -70,6 +73,7 @@ export function MultiComboBox({
   hint = "",
   hintTone = "neutral",
   labelTrack = "record",
+  hideLabel = false,
   placeholder,
   disabled = false,
   required = false,
@@ -108,6 +112,8 @@ export function MultiComboBox({
   hint?: string;
   hintTone?: HintTone;
   labelTrack?: LabelTrack;
+  /** The label is read, not shown: in a filter bar, where the placeholder names the field. */
+  hideLabel?: boolean;
   /** Shown while nothing is chosen. */
   placeholder?: string;
   disabled?: boolean;
@@ -239,7 +245,7 @@ export function MultiComboBox({
   if (!listed) {
     return (
       <div ref={root} className={cx("di-field", "di-multicombo", className)}>
-        <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} required={required} />
+        <FieldLabel htmlFor={id} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required} />
         {frame(
           <input
             ref={input}
@@ -284,10 +290,17 @@ export function MultiComboBox({
         }}
         disabled={disabled}
       >
-        <FieldLabel id={`${id}-label`} htmlFor={id} label={label} labelTrack={labelTrack} required={required} />
+        <FieldLabel
+          id={`${id}-label`}
+          htmlFor={id}
+          label={label}
+          labelTrack={labelTrack}
+          hideLabel={hideLabel}
+          required={required}
+        />
         {frame(
           <>
-            <Combobox.Input ref={input} {...inputProps} aria-labelledby={`${id}-label`} onFocus={show} />
+            <Combobox.Input ref={input} {...inputProps} aria-labelledby={`${id}-label`} />
             <button {...toggle} className="di-multicombo-toggle" aria-label={toggleLabel} disabled={disabled}>
               <ChevronDown aria-hidden />
             </button>

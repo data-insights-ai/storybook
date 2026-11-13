@@ -231,99 +231,63 @@
     dominant-baseline: central;
   }
 
-  /* A lane is read like a row of a list: its name at the label step, the count beside it. */
-  .di-timeline-lane-label {
+  /* A lane is read like a row of a list: its name on the line above its track, the count beside it. */
+  .di-timeline-lane-names {
+    position: absolute;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+  }
+
+  .di-timeline-lane-name {
+    position: absolute;
+    left: 0;
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--di-gap-8);
+    height: var(--di-space-16);
+    padding: 0 var(--di-space-4);
+    margin-left: calc(-1 * var(--di-space-4));
+    border: 0;
+    border-radius: var(--di-radius-control);
+    background: transparent;
+    color: var(--di-text);
     font-family: var(--di-font-ui);
     font-size: var(--di-font-size-300);
     font-weight: var(--di-weight-medium);
-    dominant-baseline: central;
-    fill: var(--di-text);
+    line-height: var(--di-space-16);
+    white-space: nowrap;
+    pointer-events: auto;
   }
 
-  .di-timeline-lane-label.is-quiet {
-    fill: var(--di-text-disabled);
+  .di-timeline-lane-name.is-quiet {
+    color: var(--di-text-disabled);
+  }
+
+  button.di-timeline-lane-name {
+    cursor: pointer;
+  }
+
+  button.di-timeline-lane-name:hover {
+    background: var(--di-row-hover-bg);
+  }
+
+  button.di-timeline-lane-name[aria-pressed="true"] {
+    background: var(--di-choice-selected-bg);
+    box-shadow: inset 0 0 0 1px var(--di-choice-selected-edge);
+    color: var(--di-choice-selected-fg);
+  }
+
+  button.di-timeline-lane-name:focus-visible {
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-offset);
   }
 
   .di-timeline-lane-count {
     font-family: var(--di-font-code);
     font-weight: var(--di-weight-regular);
     font-variant-numeric: tabular-nums;
-    fill: var(--di-text-muted);
-  }
-
-  .di-timeline-lanes-block {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .di-timeline-lanes-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--di-gap-6);
-    height: var(--di-control-h-sm);
-    padding: 0 var(--di-space-8) 0 0;
-    border: 0;
-    border-radius: var(--di-radius-control);
-    background: transparent;
-    color: var(--di-text);
-    font: inherit;
-    font-size: var(--di-font-size-400);
-    font-weight: var(--di-weight-medium);
-    cursor: pointer;
-  }
-
-  .di-timeline-lanes-toggle:hover {
-    background: var(--di-row-hover-bg);
-  }
-
-  .di-timeline-lanes-toggle:focus-visible {
-    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
-    outline-offset: var(--di-focus-ring-offset);
-  }
-
-  /* Centred on the key swatch below it, so the chevron and the swatches share one edge. */
-  .di-timeline-lanes-chevron {
-    flex: none;
-    width: var(--di-icon-md);
-    height: var(--di-icon-md);
-    margin-left: calc((var(--di-chart-swatch) - var(--di-icon-md)) / 2);
     color: var(--di-text-muted);
-    transition: transform var(--di-duration) var(--di-ease);
-  }
-
-  .di-timeline-lanes-toggle[aria-expanded="true"] .di-timeline-lanes-chevron {
-    transform: rotate(90deg);
-  }
-
-  /* Folds by its own height, which a grid row can animate and height: auto cannot. */
-  .di-timeline-lanes-fold {
-    display: grid;
-    grid-template-rows: 0fr;
-    align-self: stretch;
-    transition: grid-template-rows var(--di-duration-slow) var(--di-ease);
-  }
-
-  .di-timeline-lanes-fold.is-open {
-    grid-template-rows: 1fr;
-  }
-
-  /* Folded, the lanes are hidden once the fold has closed, not only clipped: nothing measures or reaches them. */
-  .di-timeline-lanes-inner {
-    min-height: 0;
-    overflow: hidden;
-    visibility: hidden;
-    transition: visibility 0s linear var(--di-duration-slow);
-  }
-
-  .di-timeline-lanes-fold.is-open .di-timeline-lanes-inner {
-    visibility: visible;
-    transition-delay: 0s;
-  }
-
-  .di-timeline-lanes-inner > svg {
-    display: block;
-    margin-top: var(--di-gap-8);
   }
 
   .di-timeline-marker {
@@ -350,6 +314,8 @@
     position: absolute;
     top: var(--di-space-8);
     z-index: 2;
+    /* Its width must not depend on where it sits: measured, it sets its own left, so a width the edge squeezed would move it and squeeze it again. */
+    width: max-content;
     min-width: var(--di-timeline-readout-min);
     max-width: min(var(--di-timeline-readout-max), 70cqi);
     padding: var(--di-space-8) var(--di-space-12);
@@ -372,6 +338,15 @@
     background: color-mix(in srgb, var(--di-bg-surface) 60%, transparent);
   }
 
+  /* The key and the way to the keys and gestures share the line under the plot. */
+  .di-timeline-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-gap-8) var(--di-gap-16);
+  }
+
   /* How to move the view is the quiet footer of the block: smaller, a step back in tone, under a rule. */
   .di-timeline-help {
     display: flex;
@@ -383,6 +358,10 @@
     list-style: none;
     color: var(--di-text-subtle);
     font-size: var(--di-font-size-300);
+  }
+
+  .di-timeline-help[hidden] {
+    display: none;
   }
 
   @media (pointer: coarse) {

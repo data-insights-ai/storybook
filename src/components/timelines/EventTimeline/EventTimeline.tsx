@@ -4,6 +4,7 @@ import {
   Fragment,
   isValidElement,
   useContext,
+  startTransition,
   useEffect,
   useId,
   useLayoutEffect,
@@ -12,13 +13,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { ChevronRight } from "lucide-react";
-import { cx } from "../../../internal/cx";
+import { Keyboard } from "lucide-react";
+import { Button } from "../../actions/Button";
 import { Kbd } from "../../text/Kbd";
 import { Loading } from "../../feedback/Loading";
 import { ChartKey } from "../../charts/ChartKey";
 import { Events, nearestEvent, reachOf } from "./marks/Events";
-import { cellsOf, countIn, LANE_H, Lanes } from "./marks/Lanes";
+import { LaneNames } from "./marks/LaneNames";
+import { CELL_H, cellsOf, countIn, LANE_H, Lanes, TRACK_Y } from "./marks/Lanes";
 import { MARK_BAND, markerRows, Markers } from "./marks/Markers";
 import { gutterOf, SCORE_H, scaleValues, ScoreTrack, valueAt } from "./marks/ScoreTrack";
 import { AXIS_H, AxisLine, TimeAxis } from "./marks/TimeAxis";
@@ -59,8 +61,8 @@ const ReadoutPlace = createContext<{ x: number; plot: number } | null>(null);
  * fold the events into buckets, mirrored and ringed by series in the order
  * `series` declares them, the first at the core, and the events themselves,
  * one line each, once they are far enough apart. A series is a kind, not a
- * rank: its colour is a categorical step and implies no severity. Lanes split them by kind underneath, folded until the reader opens
- * them, since the bars already tell the shape; markers carry what happened
+ * rank: its colour is a categorical step and implies no severity. Lanes split them by kind underneath, open until the reader folds
+ * them; the instructions wait behind a key button; markers carry what happened
  * to the record, and an optional score runs above on the same clock.
  *
  * The caller owns the data and the view: `useTimelineView` holds the view,
@@ -91,6 +93,7 @@ export function EventTimeline({
   zoomOutLabel,
   backLabel,
   wholeLabel,
+  helpLabel,
   series: declared,
   scaleNote,
   locale,
@@ -100,7 +103,8 @@ export function EventTimeline({
   overviewBars: givenOverview = NO_BARS,
   events: given,
   lanes = NO_LANES,
-  lanesLabel = "",
+  activeLane,
+  onLanePick,
   markers = NO_MARKERS,
   score,
   axis = "broken",
@@ -120,6 +124,8 @@ export function EventTimeline({
   zoomOutLabel: string;
   backLabel: string;
   wholeLabel: string;
+  /** Names the button that shows the instructions; they stay folded until asked for. */
+  helpLabel: string;
   /** The kinds of event the bars and lines tell apart, in the order they are stacked and listed in the key. */
   series: TimelineSeries[];
   /** What a bar's or a line's height means at the current zoom. */
@@ -130,9 +136,12 @@ export function EventTimeline({
   bars?: TimelineBar[];
   overviewBars?: TimelineBar[];
   events?: TimelineEvent[];
+  /** Given, the plot is drawn as these rows, one per lane, instead of one row of everything. */
   lanes?: TimelineLane[];
-  /** What the lanes are, on the toggle that opens them, such as "Attack phases". */
-  lanesLabel?: string;
+  /** The lane the caller narrowed to, shown pressed. */
+  activeLane?: string;
+  /** Given, a lane's name is a button that names the lane, to narrow to it or let it go. */
+  onLanePick?: (laneId: string) => void;
   markers?: TimelineMarker[];
   score?: TimelineScore;
   /** `broken` folds long empty stretches into a break; `continuous` draws time at one rate throughout. */
@@ -150,7 +159,7 @@ export function EventTimeline({
   const events = useMemo(() => given?.filter((e) => order.has(e.series)), [given, order]);
   const bars = useMemo(() => declaredBars(givenBars, order), [givenBars, order]);
   const overviewBars = useMemo(() => declaredBars(givenOverview, order), [givenOverview, order]);
-  const [lanesOpen, setLanesOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [frame, framePx] = useWidth<HTMLDivElement>();
   const { view, bounds, change, measure } = navigation;
   const number = useMemo(() => new Intl.NumberFormat(locale), [locale]);
@@ -242,7 +251,9 @@ export function EventTimeline({
     report.current = onHoverChange;
     latest.current = target;
   });
-  useEffect(() => report.current?.(latest.current), [hoverKey]);
+  // A transition: in a gap the key changes on every pointer move, and an urgent report each time would chain the
+  // parent's render onto the next move until React stops it ("Maximum update depth exceeded").
+  useEffect(() => startTransition(() => report.current?.(latest.current)), [hoverKey]);
 
   const slots = Children.toArray(children).filter(isValidElement);
   const meta = slots.find((c) => c.type === EventTimelineMeta);
@@ -250,9 +261,12 @@ export function EventTimeline({
 
   const markTop = score ? SCORE_H + GAP : 0;
   const waveTop = markTop + markRows * MARK_BAND;
+  const laned = lanes.length > 0;
+  const plotH = laned ? lanes.length * LANE_H : WAVE_H;
   const mid = waveTop + WAVE_H / 2;
   const half = WAVE_H / 2 - 4;
-  const axisTop = waveTop + WAVE_H + GAP + 4;
+  const axisTop = waveTop + plotH + GAP + 4;
+  const laneOf = new Map(lanes.map((lane, i) => [lane.id, i]));
   const highlighted = events?.filter(
     (e) => e.id === activeEventId || (target?.kind === "event" && target.event.id === e.id),
   );
@@ -326,32 +340,42 @@ export function EventTimeline({
                       format={(v) => number.format(v)}
                     />
                   ) : null}
-                  <AxisLine y={mid} plotPx={plotPx} breaks={scale.breaks} className="di-timeline-axisline" />
-                  {events ? (
-                    <Events events={events} series={series} scale={scale} plotPx={plotPx} mid={mid} half={half} />
+                  {laned ? (
+                    <Lanes lanes={lanes} cells={cells} order={order} scale={scale} plotPx={plotPx} top={waveTop} />
                   ) : (
-                    <g transform={`translate(0 ${waveTop})`}>
-                      <Waveform
-                        bars={bars}
-                        series={series}
-                        scale={scale}
-                        plotPx={plotPx}
-                        mid={WAVE_H / 2}
-                        half={half}
-                        peak={peak}
-                      />
-                    </g>
+                    <>
+                      <AxisLine y={mid} plotPx={plotPx} breaks={scale.breaks} className="di-timeline-axisline" />
+                      {events ? (
+                        <Events events={events} series={series} scale={scale} plotPx={plotPx} mid={mid} half={half} />
+                      ) : (
+                        <g transform={`translate(0 ${waveTop})`}>
+                          <Waveform
+                            bars={bars}
+                            series={series}
+                            scale={scale}
+                            plotPx={plotPx}
+                            mid={WAVE_H / 2}
+                            half={half}
+                            peak={peak}
+                          />
+                        </g>
+                      )}
+                    </>
                   )}
                   {highlighted?.map((e) => {
                     const x = scale.x(e.at);
-                    const reach = reachOf(half);
+                    const row = laned && e.lane !== undefined ? laneOf.get(e.lane) : undefined;
+                    const [y1, y2] =
+                      row !== undefined
+                        ? [waveTop + row * LANE_H + TRACK_Y - 3, waveTop + row * LANE_H + TRACK_Y + CELL_H + 3]
+                        : [mid - reachOf(half), mid + reachOf(half)];
                     return (
                       <line
                         key={e.id}
                         x1={x}
                         x2={x}
-                        y1={mid - reach}
-                        y2={mid + reach}
+                        y1={y1}
+                        y2={y2}
                         className="di-timeline-active"
                         style={{ stroke: seriesColor(order.get(e.series)!) }}
                       />
@@ -379,6 +403,9 @@ export function EventTimeline({
                   ) : null}
                 </svg>
               </div>
+              {laned ? (
+                <LaneNames lanes={lanes} counts={counts} top={waveTop} active={activeLane} onPick={onLanePick} />
+              ) : null}
               {target && hoverPx !== null ? (
                 <ReadoutPlace.Provider value={{ x: hoverPx, plot: plotPx }}>{readout}</ReadoutPlace.Provider>
               ) : null}
@@ -390,53 +417,26 @@ export function EventTimeline({
             </div>
           </>
         ) : null}
-        {lanes.length > 0 ? (
-          <div className="di-timeline-lanes-block">
-            <button
-              type="button"
-              className="di-timeline-lanes-toggle"
-              aria-expanded={lanesOpen}
-              onClick={() => setLanesOpen((open) => !open)}
-            >
-              <ChevronRight className="di-timeline-lanes-chevron" aria-hidden />
-              {lanesLabel}
-            </button>
-            {/* Kept drawn while folded, so closing can run the same motion as opening. */}
-            <div className={cx("di-timeline-lanes-fold", lanesOpen && "is-open")}>
-              <div className="di-timeline-lanes-inner">
-                {plotPx > 0 ? (
-                  <svg width={plotPx} height={lanes.length * LANE_H} className="di-timeline-svg" aria-hidden>
-                    <Lanes
-                      lanes={lanes}
-                      cells={cells}
-                      order={order}
-                      counts={counts}
-                      scale={scale}
-                      plotPx={plotPx}
-                      top={0}
-                    />
-                    {hoverPx !== null && !gestures.brush ? (
-                      <line
-                        x1={hoverPx}
-                        x2={hoverPx}
-                        y1={0}
-                        y2={lanes.length * LANE_H}
-                        className="di-timeline-cursor"
-                      />
-                    ) : null}
-                  </svg>
-                ) : null}
-              </div>
-            </div>
-          </div>
-        ) : null}
       </div>
 
-      <ChartKey
-        entries={series.map(({ id, label: name }, i) => ({ key: id, label: name, color: seriesColor(i) }))}
-        note={scaleNote}
-      />
-      <ul id={`${id}-hint`} className="di-timeline-help">
+      <div className="di-timeline-foot">
+        <ChartKey
+          entries={series.map(({ id, label: name }, i) => ({ key: id, label: name, color: seriesColor(i) }))}
+          note={scaleNote}
+        />
+        <Button
+          variant="ghost"
+          size="sm"
+          aria-expanded={helpOpen}
+          aria-controls={`${id}-hint`}
+          onClick={() => setHelpOpen((open) => !open)}
+        >
+          <Keyboard aria-hidden />
+          {helpLabel}
+        </Button>
+      </div>
+      {/* Kept in the page while folded: it is the plot's description for a screen reader. */}
+      <ul id={`${id}-hint`} className="di-timeline-help" hidden={!helpOpen}>
         {instructions.map(({ keys, label: action, pointer }) => (
           <li key={`${action}-${pointer ?? "any"}`} className={pointer ? `is-${pointer}` : undefined}>
             <span className="di-timeline-keys">
@@ -477,9 +477,12 @@ export function EventTimelineReadout({ children }: { children: ReactNode }) {
   const place = useContext(ReadoutPlace);
   const box = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
+  // The content is a new element on every render, so this runs on every one; an unchanged width must not set state,
+  // or each pointer move renders it again until React stops it.
   useLayoutEffect(() => {
-    if (box.current) setWidth(box.current.offsetWidth);
-  }, [children, place?.plot]);
+    const measured = box.current?.offsetWidth;
+    if (measured !== undefined && measured !== width) setWidth(measured);
+  }, [children, place?.plot, width]);
   if (!place || !children) {
     return null;
   }

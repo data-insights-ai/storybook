@@ -2,6 +2,18 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.40.0
+
+- `EventTimeline`: given `lanes`, the lanes are the plot: one row per lane, with hover, brush, zoom and picking acting on the lanes themselves, instead of one row of everything with the lanes folded beneath it. A lane's name stands above its track; with `onLanePick` it is a button that narrows to the lane, pressed (`aria-pressed`) while `activeLane` names it. `lanesLabel` and the fold are gone.
+- `EventTimeline`: `helpLabel` (required) names the button that shows the keys and gestures; they stay folded until asked for, open from the line under the plot (`di-timeline-foot`) and remain the plot's description for a screen reader. The zoom controls keep their place.
+- `EventTimeline`: the class names follow: `di-timeline-foot`, `di-timeline-lane-name` and `di-timeline-lane-names` are new; `di-timeline-lane-label`, `di-timeline-lanes-block`, `di-timeline-lanes-chevron`, `di-timeline-lanes-fold`, `di-timeline-lanes-inner` and `di-timeline-lanes-toggle` are gone.
+- `EventTimeline`: the hover callback is reported in a transition, so moving over a gap no longer chains urgent renders; the readout keeps its own width at the stage's edge and sets it only when it changed, so placing it no longer squeezes and moves it without end.
+- `MultiComboBox`: `hideLabel` reads the label without showing it, so the field sits in a filter bar as `FilterSelect` does. Focus alone no longer opens the list, as in `ComboBox`: Tab only focuses the field; ArrowDown, typing or the toggle open it. A dialog that focuses it first shows its other fields rather than the list over them.
+- `TableColumn`: `width` takes a length in rem (`"9rem"`), which fixes the column, so a table whose rows change (one list, then another) keeps its columns in place.
+- `ChartKey`: an entry's swatch takes only its swatch fields (`swatch`, `color`, `icon`), not the whole entry with its key.
+- `DataTable`: a stacked row's selection box sits at the card's edge, not on its text edge.
+- Upgrade: an `EventTimeline` passes `helpLabel` and drops `lanesLabel`; to let a reader narrow to a lane, pass `onLanePick` and the `activeLane` it sets. Styles or tests that name the removed `di-timeline-lane*` classes move to the new ones. A test that expected a `MultiComboBox` list to open on focus presses ArrowDown or clicks the toggle.
+
 ## 0.39.0
 
 - `Section` (new): a titled part of a panel, a sheet or a reading page, with no frame of its own; `heading` sets its level, `id` lets a link or a script move focus to its heading.

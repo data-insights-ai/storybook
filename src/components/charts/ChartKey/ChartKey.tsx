@@ -41,7 +41,7 @@ export function ChartKey({
       <span className={cx("di-chart-key", "is-inline", className)} aria-hidden={hidden || undefined}>
         {entries.map((entry) => (
           <span key={entry.key} className="di-chart-key-entry">
-            <Swatch {...entry} />
+            <Swatch swatch={entry.swatch} color={entry.color} icon={entry.icon} />
             <span>{entry.label}</span>
           </span>
         ))}

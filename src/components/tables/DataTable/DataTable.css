@@ -691,7 +691,9 @@
       padding-inline-start: calc(var(--di-table-edge) + var(--di-choice-mark) + var(--di-gap-12));
     }
 
+    /* Placed at the edge itself: an index cell's own inset would push the box onto the text edge. */
     .di-table-wrap.is-stackable tbody tr > td:first-child:has(input[type="checkbox"]) {
+      padding-inline: 0 !important;
       position: absolute;
       inset-block-start: var(--di-space-12);
       inset-inline-start: var(--di-table-edge);

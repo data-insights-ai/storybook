@@ -120,6 +120,7 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
   const { words, clock, instant, count } = useMemo(() => formatsOf(args.locale), [args.locale]);
   const [selected, setSelected] = useState<TimelineSpan | null>(null);
   const [hovered, setHovered] = useState<TimelineTarget | null>(null);
+  const [activeLane, setActiveLane] = useState<string>();
   const navigation = useTimelineView({ bounds, selected, onSettle: setSelected });
   const { view, bucketMs, overviewBucketMs } = navigation;
 
@@ -146,6 +147,8 @@ function Sample({ sample, sampleLanes = [], withScore, withMarkers, ...args }: S
       overviewBars={overviewBars}
       events={events}
       lanes={lanes}
+      activeLane={activeLane}
+      onLanePick={(id) => setActiveLane((was) => (was === id ? undefined : id))}
       score={score}
       markers={
         withMarkers
@@ -209,7 +212,7 @@ const meta = {
     zoomOutLabel: "Zoom out",
     backLabel: "Back to the previous view",
     wholeLabel: "Show everything",
-    lanesLabel: "Stages",
+    helpLabel: "Keys and gestures",
     series: sampleSeries,
     scaleNote: "",
     locale: "en",
@@ -256,7 +259,7 @@ async function everyMarkerNamed(canvasElement: HTMLElement) {
 
 /**
  * Three days with a spray of hundreds of retries inside minutes. The score runs
- * above on the same clock; the lanes, opened under the plot, read as a
+ * above on the same clock; the plot is drawn as its lanes, read as a
  * staircase in the order the stages started.
  */
 export const Default: Story = {
@@ -271,13 +274,19 @@ export const Default: Story = {
     await waitFor(() => expect(back).toBeEnabled());
     await userEvent.click(back);
     await waitFor(() => expect(back).toBeDisabled());
-    const lanes = canvas.getByRole("button", { name: "Stages" });
-    await expect(lanes).toHaveAttribute("aria-expanded", "false");
-    const fold = canvasElement.querySelector(".di-timeline-lanes-inner");
-    await expect(fold?.getBoundingClientRect().height).toBe(0);
-    await userEvent.click(lanes);
-    await expect(lanes).toHaveAttribute("aria-expanded", "true");
-    await waitFor(() => expect(fold?.getBoundingClientRect().height).toBeGreaterThan(0));
+    const lane = canvas.getByRole("button", { name: /^Configuration/ });
+    await expect(lane).toHaveAttribute("aria-pressed", "false");
+    await userEvent.click(lane);
+    await expect(lane).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(lane);
+    await expect(lane).toHaveAttribute("aria-pressed", "false");
+    const help = canvas.getByRole("button", { name: "Keys and gestures" });
+    const hint = canvasElement.querySelector(".di-timeline-help");
+    await expect(hint).not.toBeVisible();
+    await userEvent.click(help);
+    await expect(help).toHaveAttribute("aria-expanded", "true");
+    await expect(hint).toBeVisible();
+    await userEvent.click(help);
     // A pointer click leaves no ring; the test's synthetic click would, so the story ends without focus.
     (document.activeElement as HTMLElement | null)?.blur();
   },
@@ -288,7 +297,7 @@ export const Default: Story = {
  * close up. Zooming in far enough turns the bars into the events themselves.
  */
 export const Resolving: Story = {
-  render: (args) => <Sample {...args} sample={RHYTHM} sampleLanes={[{ id: "health", label: "Health checks" }]} />,
+  render: (args) => <Sample {...args} sample={RHYTHM} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const stage = await canvas.findByRole("group", { name: "Event sequence" });
@@ -303,7 +312,7 @@ export const Resolving: Story = {
 
 /** Few enough to draw one by one from the start. Picking one hands it to the caller. */
 export const FewEvents: Story = {
-  render: (args) => <Sample {...args} sample={SPARSE} sampleLanes={[{ id: "notes", label: "Corrections" }]} />,
+  render: (args) => <Sample {...args} sample={SPARSE} />,
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
     const stage = await canvas.findByRole("group", { name: "Event sequence" });
@@ -328,7 +337,7 @@ export const FewEvents: Story = {
  * `axis="continuous"` keeps every hour as wide as every other.
  */
 export const QuietStretches: Story = {
-  render: (args) => <Sample {...args} sample={QUIET} sampleLanes={[{ id: "health", label: "Health checks" }]} />,
+  render: (args) => <Sample {...args} sample={QUIET} />,
   play: async ({ canvasElement }) => {
     await within(canvasElement).findByRole("group", { name: "Event sequence" });
     await waitFor(() => expect(canvasElement.querySelector(".di-timeline-stage .di-timeline-break")).not.toBeNull());
@@ -359,7 +368,7 @@ export const German: Story = {
     zoomOutLabel: "Verkleinern",
     backLabel: "Zurück zur vorigen Ansicht",
     wholeLabel: "Alles zeigen",
-    lanesLabel: "Phasen der Verarbeitung",
+    helpLabel: "Tasten und Gesten",
     series: WORDS.de.series,
     locale: "de",
   },
