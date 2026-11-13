@@ -4,9 +4,8 @@ import { seriesColor } from "../../series";
 import type { TimelineCell, TimelineEvent, TimelineLane } from "../../types";
 
 export const LANE_H = 34;
-const LABEL_Y = 8;
-const TRACK_Y = 18;
-const CELL_H = 10;
+export const TRACK_Y = 18;
+export const CELL_H = 10;
 const LOW_H = 4;
 const MIN_CELL = 2;
 const SHADES = 4;
@@ -51,12 +50,11 @@ function lanePaths(cells: TimelineCell[], order: Map<string, number>, scale: Sca
 }
 
 // One row per lane in the caller's order, so the order lanes started in reads as a staircase.
-// The name and its count sit on a line of their own, so no bar runs under the words.
+// The name and its count sit on a line of their own above the track, written by the caller as HTML so a name can act.
 export const Lanes = memo(function Lanes({
   lanes,
   cells,
   order,
-  counts,
   scale,
   plotPx,
   top,
@@ -65,7 +63,6 @@ export const Lanes = memo(function Lanes({
   cells: Map<string, TimelineCell[]>;
   /** Each series id with its place in the declared order. */
   order: Map<string, number>;
-  counts: Map<string, string>;
   scale: Scale;
   plotPx: number;
   top: number;
@@ -75,7 +72,6 @@ export const Lanes = memo(function Lanes({
       {lanes.map((lane, i) => {
         const row = i * LANE_H;
         const y = row + TRACK_Y;
-        const count = counts.get(lane.id);
         return (
           <g key={lane.id}>
             <rect x={0} y={y} width={plotPx} height={CELL_H} className="di-timeline-lane-track" />
@@ -87,18 +83,6 @@ export const Lanes = memo(function Lanes({
                 style={{ fill: seriesColor(p.index) }}
               />
             ))}
-            <text
-              x={0}
-              y={row + LABEL_Y}
-              className={count ? "di-timeline-lane-label" : "di-timeline-lane-label is-quiet"}
-            >
-              {lane.label}
-              {count ? (
-                <tspan dx={8} className="di-timeline-lane-count">
-                  {count}
-                </tspan>
-              ) : null}
-            </text>
           </g>
         );
       })}
