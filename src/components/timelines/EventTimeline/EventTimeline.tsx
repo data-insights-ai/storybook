@@ -4,6 +4,7 @@ import {
   Fragment,
   isValidElement,
   useContext,
+  startTransition,
   useEffect,
   useId,
   useLayoutEffect,
@@ -250,7 +251,9 @@ export function EventTimeline({
     report.current = onHoverChange;
     latest.current = target;
   });
-  useEffect(() => report.current?.(latest.current), [hoverKey]);
+  // A transition: in a gap the key changes on every pointer move, and an urgent report each time would chain the
+  // parent's render onto the next move until React stops it ("Maximum update depth exceeded").
+  useEffect(() => startTransition(() => report.current?.(latest.current)), [hoverKey]);
 
   const slots = Children.toArray(children).filter(isValidElement);
   const meta = slots.find((c) => c.type === EventTimelineMeta);
