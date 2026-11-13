@@ -287,10 +287,17 @@ export function MultiComboBox({
         }}
         disabled={disabled}
       >
-        <FieldLabel id={`${id}-label`} htmlFor={id} label={label} labelTrack={labelTrack} hideLabel={hideLabel} required={required} />
+        <FieldLabel
+          id={`${id}-label`}
+          htmlFor={id}
+          label={label}
+          labelTrack={labelTrack}
+          hideLabel={hideLabel}
+          required={required}
+        />
         {frame(
           <>
-            <Combobox.Input ref={input} {...inputProps} aria-labelledby={`${id}-label`} onFocus={show} />
+            <Combobox.Input ref={input} {...inputProps} aria-labelledby={`${id}-label`} />
             <button {...toggle} className="di-multicombo-toggle" aria-label={toggleLabel} disabled={disabled}>
               <ChevronDown aria-hidden />
             </button>
