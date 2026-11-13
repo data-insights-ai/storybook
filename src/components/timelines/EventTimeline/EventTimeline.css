@@ -314,6 +314,8 @@
     position: absolute;
     top: var(--di-space-8);
     z-index: 2;
+    /* Its width must not depend on where it sits: measured, it sets its own left, so a width the edge squeezed would move it and squeeze it again. */
+    width: max-content;
     min-width: var(--di-timeline-readout-min);
     max-width: min(var(--di-timeline-readout-max), 70cqi);
     padding: var(--di-space-8) var(--di-space-12);
