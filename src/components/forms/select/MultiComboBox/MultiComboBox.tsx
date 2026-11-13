@@ -32,7 +32,10 @@ const always = () => true;
 
 /**
  * Several values in one field. The chosen ones stand in the field as
- * entries; Backspace in the empty input takes the last one back.
+ * entries; Backspace in the empty input takes the last one back. The list
+ * opens from ArrowDown, from typing or from the toggle, never from focus
+ * alone: Tab only focuses the field, as in `ComboBox`, so a dialog that
+ * focuses it first shows its other fields, not the list over them.
  *
  * From a known set — members to notify, roles to grant — `options` is the
  * list: typing narrows it, it stays open so the reader can pick on, and a
