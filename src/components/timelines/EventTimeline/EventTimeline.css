@@ -336,6 +336,15 @@
     background: color-mix(in srgb, var(--di-bg-surface) 60%, transparent);
   }
 
+  /* The key and the way to the keys and gestures share the line under the plot. */
+  .di-timeline-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--di-gap-8) var(--di-gap-16);
+  }
+
   /* How to move the view is the quiet footer of the block: smaller, a step back in tone, under a rule. */
   .di-timeline-help {
     display: flex;

@@ -284,17 +284,6 @@ export function EventTimeline({
             whole: wholeLabel,
           }}
         />
-        <Button
-          variant="ghost"
-          size="sm"
-          iconOnly
-          aria-label={helpLabel}
-          aria-expanded={helpOpen}
-          aria-controls={`${id}-hint`}
-          onClick={() => setHelpOpen((open) => !open)}
-        >
-          <Keyboard aria-hidden />
-        </Button>
       </div>
 
       <div className="di-timeline-frame" ref={frame}>
@@ -427,10 +416,22 @@ export function EventTimeline({
         ) : null}
       </div>
 
-      <ChartKey
-        entries={series.map(({ id, label: name }, i) => ({ key: id, label: name, color: seriesColor(i) }))}
-        note={scaleNote}
-      />
+      <div className="di-timeline-foot">
+        <ChartKey
+          entries={series.map(({ id, label: name }, i) => ({ key: id, label: name, color: seriesColor(i) }))}
+          note={scaleNote}
+        />
+        <Button
+          variant="ghost"
+          size="sm"
+          aria-expanded={helpOpen}
+          aria-controls={`${id}-hint`}
+          onClick={() => setHelpOpen((open) => !open)}
+        >
+          <Keyboard aria-hidden />
+          {helpLabel}
+        </Button>
+      </div>
       {/* Kept in the page while folded: it is the plot's description for a screen reader. */}
       <ul id={`${id}-hint`} className="di-timeline-help" hidden={!helpOpen}>
         {instructions.map(({ keys, label: action, pointer }) => (
