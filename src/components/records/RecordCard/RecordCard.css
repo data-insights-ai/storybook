@@ -181,6 +181,89 @@
     margin-top: auto;
   }
 
+  /*
+   * A record that opens its page: the title is the link, and its box covers
+   * the record, so the whole record is the target. The tint and the ring are
+   * drawn on the record behind its content, as a row's hover is; the link
+   * itself draws neither, so the record shows one ring, not two.
+   */
+  .di-record.is-linked {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .di-record.is-linked::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    transition: background-color var(--di-duration) var(--di-ease);
+  }
+
+  .di-record-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .di-record-link:focus-visible {
+    outline: none;
+  }
+
+  /* Above whatever the record positions inside it (a detail line's items), so every point of it is the link. */
+  .di-record-link::after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+  }
+
+  /*
+   * A row has no surface of its own: its target reaches past its words into
+   * the panel's inset, as a menu row's does, so the tint never ends on a
+   * letter. Rows already keep a gap between them; the first and the last
+   * take the same room at their outer edge, without moving the list.
+   */
+  .di-record-row.is-linked::before,
+  .di-record-row .di-record-link::after {
+    inset: 0 calc(-1 * var(--di-gap-8));
+    border-radius: var(--di-radius-inset);
+  }
+
+  .di-record-row.is-linked:first-child {
+    margin-top: calc(-1 * var(--di-gap-8));
+    padding-top: var(--di-gap-8);
+  }
+
+  .di-record-row.is-linked:last-child {
+    margin-bottom: calc(-1 * var(--di-gap-8));
+    padding-bottom: var(--di-gap-8);
+  }
+
+  .di-record.is-linked:has(.di-record-link:hover)::before {
+    background: var(--di-row-hover-bg);
+  }
+
+  /* The ring is drawn inside the target, because a row touches the rows beside it. */
+  .di-record.is-linked:has(.di-record-link:focus-visible)::before {
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
+  /* The record's own controls keep their own press above the link's box. */
+  .di-record.is-linked :is(.di-record-actions, .di-record-insight-actions, .di-record-footer) {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* The chevron of a linked row: where the row goes, for a screen with no hover to show it. */
+  .di-record-go {
+    flex: none;
+    width: var(--di-icon-md);
+    height: var(--di-icon-md);
+    color: var(--di-text-muted);
+  }
+
   /* Narrow: the state and the actions move under the name, on its edge, so the name keeps its line. */
   @container (max-width: 288px) {
     .di-record-head {
@@ -203,9 +286,9 @@
     }
   }
 
-  /* A card whose head ends in actions: below 400px the mark, the name and the actions each take the full width, so the name keeps its line. */
+  /* A card whose head ends in a labelled action: below 400px the mark, the name and the actions each take the full width, so the name keeps its line. */
   @container (max-width: 400px) {
-    .di-record-card > .di-record-head:has(> .di-record-end .di-record-actions) {
+    .di-record-card > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)) {
       grid-template-columns: minmax(0, 1fr);
       grid-template-areas:
         "mark"
@@ -214,20 +297,21 @@
       row-gap: var(--di-gap-8);
     }
 
-    .di-record-card > .di-record-head:has(> .di-record-end .di-record-actions):not(:has(> .di-record-mark)) {
+    .di-record-card
+      > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)):not(:has(> .di-record-mark)) {
       grid-template-areas:
         "name"
         "end";
     }
 
-    .di-record-card > .di-record-head:has(> .di-record-end .di-record-actions) > .di-record-end {
+    .di-record-card > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)) > .di-record-end {
       justify-content: flex-start;
     }
   }
 
-  /* A row with a control at its end needs more room before the control goes under the name. */
+  /* A row that ends in a labelled action needs more room before the action goes under the name; a row that ends in a state alone keeps it on the line down to 288px. */
   @container (max-width: 400px) {
-    .di-record-row > .di-record-head {
+    .di-record-row > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)) {
       grid-template-columns: auto minmax(0, 1fr);
       grid-template-areas:
         "mark name"
@@ -235,15 +319,72 @@
       row-gap: var(--di-gap-8);
     }
 
-    .di-record-row > .di-record-head:not(:has(> .di-record-mark)) {
+    .di-record-row
+      > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)):not(:has(> .di-record-mark)) {
       grid-template-columns: minmax(0, 1fr);
       grid-template-areas:
         "name"
         "end";
     }
 
-    .di-record-row .di-record-end {
+    .di-record-row > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)) > .di-record-end {
       justify-content: flex-start;
+    }
+  }
+
+  /*
+   * A head that ends in icons only (a play button, a menu, the chevron of a
+   * linked row): below 400px the icon stays at the end, beside the name, so
+   * it never stands alone under the name; only the state goes under the
+   * name, on its edge.
+   */
+  @container (max-width: 400px) {
+    .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):not(
+        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon))
+      ) {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "mark name control";
+      row-gap: var(--di-gap-4);
+    }
+
+    .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):has(
+        > .di-record-end > .di-record-status
+      ):not(:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon))) {
+      grid-template-areas:
+        "mark name control"
+        ". state control";
+    }
+
+    .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):not(
+        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)),
+        :has(> .di-record-mark)
+      ) {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "name control";
+    }
+
+    .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):has(
+        > .di-record-end > .di-record-status
+      ):not(:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)), :has(> .di-record-mark)) {
+      grid-template-areas:
+        "name control"
+        "state control";
+    }
+
+    .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):not(
+        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon))
+      )
+      > .di-record-end {
+      display: contents;
+    }
+
+    .di-record-head > .di-record-end > .di-record-status {
+      grid-area: state;
+      justify-self: start;
+    }
+
+    .di-record-head > .di-record-end > :is(.di-record-actions, .di-record-go) {
+      grid-area: control;
     }
   }
 }

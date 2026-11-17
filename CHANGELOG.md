@@ -2,6 +2,13 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.41.0
+
+- `RecordCard` takes `href`, or a router's link in `render`, for a record that opens its own page: the title becomes the link and the whole record its target, tinted on hover and ringed on focus (`is-linked`, `di-record-link`). A linked row without `RecordActions` ends in a chevron (`di-record-go`), for a touch screen that has no hover to show it; controls in `RecordActions`, `RecordInsight` and `RecordFooter` keep their own press above the link.
+- `RecordCard` on a narrow record: a control that is only an icon (an `iconOnly` button, the chevron) stays at the end beside the name, and only the state goes under the name; before, below 400px it went under the name on a line of its own. A labelled action goes under the name as before. A row that ends in a state alone keeps it on the line down to 288px, as a card does; before, every row moved its end under the name below 400px.
+- `Steps variant="cards"`: when one card fills the line, each card is as tall as what it says instead of the stage height.
+- Upgrade: nothing to change. A list whose rows each carried an "Open" button can drop it for `href` or `render` on the row.
+
 ## 0.40.0
 
 - `EventTimeline`: given `lanes`, the lanes are the plot: one row per lane, with hover, brush, zoom and picking acting on the lanes themselves, instead of one row of everything with the lanes folded beneath it. A lane's name stands above its track; with `onLanePick` it is a button that narrows to the lane, pressed (`aria-pressed`) while `activeLane` names it. `lanesLabel` and the fold are gone.
