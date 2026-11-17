@@ -288,6 +288,7 @@
     display: grid;
     gap: var(--di-gap-8);
     grid-template-columns: repeat(auto-fit, minmax(min(var(--di-stage-min-width), 100%), 1fr));
+    container-type: inline-size;
   }
 
   .di-step-card {
@@ -297,6 +298,18 @@
     min-width: 0;
     min-height: var(--di-stage-min-height);
     padding: var(--di-inset-group);
+  }
+
+  /*
+   * One card to a line (narrower than two stage widths and the gap between
+   * them, 2 × --di-stage-min-width + --di-gap-8): each card is as tall as
+   * what it says. The stage height evens out cards side by side; stacked,
+   * it only leaves every card half empty.
+   */
+  @container (width < 308px) {
+    .di-step-card {
+      min-height: 0;
+    }
   }
 
   .di-step-card-head {

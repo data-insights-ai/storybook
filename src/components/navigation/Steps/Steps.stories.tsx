@@ -490,3 +490,57 @@ export const InlinePhone: Story = {
     await titleUnderTheTrack(canvasElement.querySelector<HTMLElement>(".di-steps")!);
   },
 };
+
+/**
+ * Cards in a column too narrow for two (a phone, a narrow panel): one card
+ * to a line, each as tall as what it says, so four steps are not four half
+ * empty tiles.
+ */
+export const CardsInOneColumn: Story = {
+  args: { variant: "cards", label: "Pipeline" },
+  render: (args) => (
+    <section aria-labelledby="steps-one-column" style={{ maxWidth: 280 }}>
+      <h2 id="steps-one-column" className="di-sr">
+        Pipeline
+      </h2>
+      <Steps {...args}>
+        <Step state="done" title="Connect">
+          A source is named and reached.
+          <StepIcon>
+            <Link2 aria-hidden />
+          </StepIcon>
+        </Step>
+        <Step state="current" title="Seal">
+          Every entry gets a hash and a timestamp.
+          <StepIcon>
+            <Stamp aria-hidden />
+          </StepIcon>
+          <StepFooter>
+            <StatusPill tone="ok">running</StatusPill>
+          </StepFooter>
+        </Step>
+        <Step state="upcoming" title="Publish">
+          The sealed extract can be cited.
+          <StepIcon>
+            <FileCheck2 aria-hidden />
+          </StepIcon>
+        </Step>
+      </Steps>
+    </section>
+  ),
+  play: async ({ canvasElement }) => {
+    const cards = [...canvasElement.querySelectorAll<HTMLElement>(".di-step-card")];
+    // One card to a line.
+    for (const card of cards) {
+      await expect(
+        Math.abs(card.getBoundingClientRect().left - cards[0].getBoundingClientRect().left),
+      ).toBeLessThanOrEqual(1);
+    }
+    // Each card ends where its content ends: no stage height held open under the last line.
+    for (const card of cards) {
+      const last = card.lastElementChild!.getBoundingClientRect();
+      const padding = parseFloat(getComputedStyle(card).paddingBottom);
+      await expect(card.getBoundingClientRect().bottom - last.bottom - padding).toBeLessThanOrEqual(1);
+    }
+  },
+};
