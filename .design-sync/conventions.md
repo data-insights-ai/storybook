@@ -83,6 +83,7 @@ Every example shows a component where it lives: content (a fact list, a figure, 
 | Views of one record | `Tabs` | `TabNav`, whose tabs are places with their own URL |
 | The search and filters above a list or a chart | `FilterBar`: `FilterBarItem`s that fold into the Filters sheet as the bar narrows, the sheet holding every filter | a `Toolbar` that wraps onto a second row |
 | A row's actions | `Menu` or `Toolbar variant="row"` | buttons repeated in every row |
+| Records in a list that each open their own page | `RecordCard layout="row"` with `href` or `render`: the whole row is the target, a chevron at its end | an "Open" button in every row |
 | A message that stays on the page | `Notice` | `Toast`, the receipt of an action that already ran |
 | Nothing to show yet | `EmptyState` in the panel | an empty table, a `Notice` |
 | A label for a control without one | `Tooltip` | a tooltip holding a fact that is nowhere else |

@@ -1,4 +1,6 @@
 import { Children, isValidElement, type ReactNode } from "react";
+import { useRender } from "@base-ui/react/use-render";
+import { ChevronRight } from "lucide-react";
 import { withAddressBreaks } from "../../../internal/addressBreaks";
 import { cx } from "../../../internal/cx";
 import { surfaceClass } from "../../../internal/surface";
@@ -15,15 +17,76 @@ import "./RecordCard.css";
  * component, so it is a slot. The mark, the state, the actions, the count
  * and the detail are placed in the head whatever order they are written
  * in; the body slots follow in the order written, the footer last.
+ *
+ * A record that opens its own page takes `href`, or a router's link in
+ * `render`: the title becomes the link and the whole record its target,
+ * tinted on hover and ringed on focus. A row without `RecordActions` ends
+ * in a chevron, because a touch screen has no hover to show it. Controls
+ * in `RecordActions`, `RecordInsight` and `RecordFooter` keep their own
+ * press above the link.
+ *
+ * On a narrow record the name keeps its line: the state moves under it,
+ * and so does a labelled action; a control that is only an icon (a play
+ * button, a menu, the chevron) stays at the record's end, beside the name.
  */
-export function RecordCard({
-  title,
-  lang,
-  heading = 2,
-  layout = "card",
-  className,
-  children,
-}: {
+export function RecordCard(props: RecordCardProps) {
+  const { title, lang, heading = 2, layout = "card", className, href, render, children } = props;
+  const slot = { mark: [], under: [], end: [], body: [], footer: [] } as Record<string, ReactNode[]>;
+  let hasActions = false;
+  Children.forEach(children, (child) => {
+    if (!isValidElement(child)) slot.body.push(child);
+    else if (child.type === RecordMark) slot.mark.push(child);
+    else if (child.type === RecordCount || child.type === RecordDetail) slot.under.push(child);
+    else if (child.type === RecordStatus || child.type === RecordActions) {
+      slot.end.push(child);
+      if (child.type === RecordActions) hasActions = true;
+    } else if (child.type === RecordFooter) slot.footer.push(child);
+    else slot.body.push(child);
+  });
+  const linked = href !== undefined || render !== undefined;
+  const routed = useRender({ render: render ?? <span />, props: { className: "di-record-link", children: title } });
+  const name = !linked ? (
+    title
+  ) : render !== undefined ? (
+    routed
+  ) : (
+    <a className="di-record-link" href={href}>
+      {title}
+    </a>
+  );
+  if (linked && layout === "row" && !hasActions) {
+    // The chevron is part of the link's target, not a control: it is not lifted above the link.
+    slot.end.push(<ChevronRight key="go" className="di-record-go" aria-hidden />);
+  }
+  const Title = heading === false ? "p" : (`h${heading}` as const);
+  const Root = layout === "card" ? "article" : "div";
+  return (
+    <Root
+      className={cx(
+        layout === "card" && surfaceClass({ padded: false }),
+        "di-record",
+        `di-record-${layout}`,
+        linked && "is-linked",
+        className,
+      )}
+    >
+      <div className="di-record-head">
+        {slot.mark}
+        <div className="di-record-name">
+          <Title className="di-record-title" lang={lang}>
+            {name}
+          </Title>
+          {slot.under}
+        </div>
+        {slot.end.length > 0 ? <div className="di-record-end">{slot.end}</div> : null}
+      </div>
+      {slot.body}
+      {slot.footer}
+    </Root>
+  );
+}
+
+type RecordCardCommon = {
   title: string;
   /** The title's language when it is data in another language than the page: an English CVE title on a German page. */
   lang?: string;
@@ -37,42 +100,18 @@ export function RecordCard({
    * `FactList`, `RecordInsight`. Foot: `RecordFooter`.
    */
   children?: ReactNode;
-}) {
-  const slot = { mark: [], under: [], end: [], body: [], footer: [] } as Record<string, ReactNode[]>;
-  Children.forEach(children, (child) => {
-    if (!isValidElement(child)) slot.body.push(child);
-    else if (child.type === RecordMark) slot.mark.push(child);
-    else if (child.type === RecordCount || child.type === RecordDetail) slot.under.push(child);
-    else if (child.type === RecordStatus || child.type === RecordActions) slot.end.push(child);
-    else if (child.type === RecordFooter) slot.footer.push(child);
-    else slot.body.push(child);
-  });
-  const Title = heading === false ? "p" : (`h${heading}` as const);
-  const Root = layout === "card" ? "article" : "div";
-  return (
-    <Root
-      className={cx(
-        layout === "card" && surfaceClass({ padded: false }),
-        "di-record",
-        `di-record-${layout}`,
-        className,
-      )}
-    >
-      <div className="di-record-head">
-        {slot.mark}
-        <div className="di-record-name">
-          <Title className="di-record-title" lang={lang}>
-            {title}
-          </Title>
-          {slot.under}
-        </div>
-        {slot.end.length > 0 ? <div className="di-record-end">{slot.end}</div> : null}
-      </div>
-      {slot.body}
-      {slot.footer}
-    </Root>
+};
+
+/**
+ * `href` opens the record's page in a plain `<a>`; a router's link goes in
+ * `render` and renders the `<a>` itself. A record takes one or neither.
+ */
+type RecordCardProps = RecordCardCommon &
+  (
+    | { href?: undefined; render?: undefined }
+    | { href: string; render?: never }
+    | { href?: never; render: useRender.RenderProp }
   );
-}
 
 /** The icon tile, avatar or seal at the start of the head. */
 export function RecordMark({ children }: { children: ReactNode }) {

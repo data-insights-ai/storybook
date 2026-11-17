@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactNode } from "react";
-import { Boxes, Eye, Laptop, Mail, MoreVertical, Smartphone, Webhook } from "lucide-react";
+import { Boxes, Eye, Laptop, Mail, MoreVertical, Play, Smartphone, Webhook } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Grid } from "../../layout/arrange/Grid";
@@ -40,10 +40,11 @@ const meta = {
           "**Purpose:** one record, read at a glance: what it is, its state, and what is on record against it.",
           "**When to use:** a few records side by side (sources, watched entities, channels), a measured value with what a model read into it, or a list of records as rows (sessions, devices). **When not to:** many rows to scan, sort or select are a `DataTable`; the facts of the one record a page is about are a `FactList` in a `Panel`; a proposal that asks for a decision is a `ProposalPanel`; a lone number is a `Figure`.",
           '**Anatomy:** the head (`RecordMark`, the title with `RecordCount` or `RecordDetail` under it, then `RecordStatus` and `RecordActions` at the end), the body in the order written (`RecordValue`, `RecordBody` with a `Figure` and a `Sparkline`, `RecordLines`, a `FactList layout="pairs"`, `RecordInsight` with `RecordBasis` and its actions), and `RecordFooter` last.',
-          '**Variants:** `layout="card"` stands on its own surface; `layout="row"` is one line of a list inside a `Panel`, without a surface. `heading` sets the title\'s level (2, 3) or `false` when the record is not a section of the page (a row, a channel in a grid).',
+          '**Variants:** `layout="card"` stands on its own surface; `layout="row"` is one line of a list inside a `Panel`, without a surface. `heading` sets the title\'s level (2, 3) or `false` when the record is not a section of the page (a row, a channel in a grid). A record that opens its own page takes `href` (or a router\'s link in `render`): the title is the link and the whole record the target, tinted on hover; a linked row without actions ends in a chevron.',
+          "**Narrow:** below 400px the name keeps its line. The state and a labelled action move under the name; a control that is only an icon (a play button, a menu, the chevron) stays at the record's end, beside the name.",
           "**States:** the state is a `StatusPill` in `RecordStatus` (running, paused, failed, this device). A record without an insight has no `RecordInsight`; a claim waiting for review keeps it, with the asked-for action first.",
           '**Content rules:** the title names the record (a host, a person, a device), not its kind. Under it one count or one detail line; a detail string breaks only between its " · " items, so a timestamp never splits. An insight is one or two sentences; its basis names the sources and the confidence. One primary action, the one the insight asks for; the others are secondary.',
-          "**Accessibility:** a card is an `article` named by its heading; a row is a `div` in the list it belongs to. The state is a word, never a colour alone. The sparkline names its shape in its label.",
+          "**Accessibility:** a card is an `article` named by its heading; a row is a `div` in the list it belongs to. The state is a word, never a colour alone. The sparkline names its shape in its label. A linked record is announced by its title as a link; the chevron is hidden from screen readers, and the record's own controls keep their own names and press.",
         ].join("\n\n"),
       },
     },
@@ -53,6 +54,8 @@ const meta = {
     title: { control: "text" },
     heading: { control: "radio", options: [2, 3, false] },
     layout: { control: "radio", options: ["card", "row"] },
+    href: { control: "text" },
+    render: { control: false },
     children: { control: false },
   },
 } satisfies Meta<typeof RecordCard>;
@@ -373,5 +376,111 @@ export const DataTitle: Story = {
   play: async ({ canvasElement }) => {
     await expect(canvasElement.querySelector(".di-record-title")?.getAttribute("lang")).toBe("en");
     await expect(canvasElement.querySelector(".di-tag")?.getAttribute("lang")).toBe("en");
+  },
+};
+
+/** Projects as rows that each open their page: the whole row is the target, a chevron at its end says so without hover. */
+export const LinkedRows: Story = {
+  render: () => (
+    <div style={{ maxWidth: 560 }}>
+      <Panel title="Projects" heading={2}>
+        <RecordCard title="Weekly digest" layout="row" heading={false} href="#weekly-digest">
+          {tile("Project", <Boxes aria-hidden />)}
+          <RecordDetail>4 editions · latest week 24</RecordDetail>
+          <RecordStatus>
+            <StatusPill tone="warn">1 awaiting</StatusPill>
+          </RecordStatus>
+        </RecordCard>
+        <RecordCard
+          title="Team updates"
+          layout="row"
+          heading={false}
+          // eslint-disable-next-line jsx-a11y/anchor-has-content -- the record renders its title into the router's anchor
+          render={<a href="#team-updates" />}
+        >
+          {tile("Project", <Boxes aria-hidden />)}
+          <RecordDetail>3 editions · latest week 23</RecordDetail>
+        </RecordCard>
+      </Panel>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // The title names the link, with href and with a router's element in render.
+    const first = canvas.getByRole("link", { name: "Weekly digest" });
+    await expect(first).toHaveAttribute("href", "#weekly-digest");
+    await expect(canvas.getByRole("link", { name: "Team updates" })).toHaveAttribute("href", "#team-updates");
+    // Any point of the row lands on its link: the detail, the state, the chevron.
+    for (const row of canvasElement.querySelectorAll(".di-record-row")) {
+      const link = row.querySelector(".di-record-link");
+      for (const part of row.querySelectorAll(".di-record-detail, .di-record-status, .di-record-go")) {
+        part.scrollIntoView({ block: "center" });
+        const box = part.getBoundingClientRect();
+        const hit = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+        await expect(hit?.closest(".di-record-link")).toBe(link);
+      }
+    }
+    // A linked row without actions ends in a chevron a screen reader does not read.
+    await expect(canvasElement.querySelectorAll(".di-record-go")).toHaveLength(2);
+    await expect(canvasElement.querySelector(".di-record-go")).toHaveAttribute("aria-hidden", "true");
+  },
+};
+
+/**
+ * On a phone the name keeps its line. A linked row keeps its chevron and a
+ * row keeps its play button at its end, beside the name, the state going
+ * under the name; a labelled action goes under the name with it.
+ */
+export const RowsOnAPhone: Story = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  render: () => (
+    <Panel title="Recently heard" heading={2}>
+      <RecordCard title="Weekly digest" layout="row" heading={false} href="#weekly-digest">
+        {tile("Project", <Boxes aria-hidden />)}
+        <RecordDetail>4 editions · latest week 24</RecordDetail>
+        <RecordStatus>
+          <StatusPill tone="warn">1 awaiting</StatusPill>
+        </RecordStatus>
+      </RecordCard>
+      <RecordCard title="Team updates" layout="row" heading={false}>
+        {tile("Project", <Boxes aria-hidden />)}
+        <RecordDetail>Week 23 · heard 2026-09-21</RecordDetail>
+        <RecordActions>
+          <Button variant="secondary" iconOnly={true} aria-label="Play">
+            <Play aria-hidden />
+          </Button>
+        </RecordActions>
+      </RecordCard>
+      <RecordCard title="iPhone · Graz" layout="row" heading={false}>
+        {tile("Phone", <Smartphone aria-hidden />)}
+        <RecordDetail>Last seen 2026-09-21T18:40:11Z</RecordDetail>
+        <RecordActions>
+          <Button variant="danger" size="sm">
+            End session
+          </Button>
+        </RecordActions>
+      </RecordCard>
+    </Panel>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(window.innerWidth).toBe(390);
+    const [linked, played, ended] = [...canvasElement.querySelectorAll<HTMLElement>(".di-record-row")];
+    const box = (row: HTMLElement, selector: string) => row.querySelector(selector)!.getBoundingClientRect();
+    const sameLine = (a: DOMRect, b: DOMRect) => a.top < b.bottom && b.top < a.bottom;
+    // An icon stays at the row's end, beside the name, never under it.
+    for (const [row, selector] of [
+      [linked, ".di-record-go"],
+      [played, ".di-btn"],
+    ] as const) {
+      await expect(sameLine(box(row, selector), box(row, ".di-record-name"))).toBe(true);
+      await expect(box(row, selector).left).toBeGreaterThanOrEqual(box(row, ".di-record-name").right);
+    }
+    // The state goes under the name, on its edge.
+    await expect(box(linked, ".di-record-status").top).toBeGreaterThanOrEqual(box(linked, ".di-record-title").bottom);
+    await expect(
+      Math.abs(box(linked, ".di-record-status").left - box(linked, ".di-record-title").left),
+    ).toBeLessThanOrEqual(1);
+    // A labelled action goes under the name, so the name keeps its line.
+    await expect(box(ended, ".di-btn").top).toBeGreaterThanOrEqual(box(ended, ".di-record-title").bottom);
   },
 };
