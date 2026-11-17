@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import type { ReactNode } from "react";
-import { Boxes, Eye, Laptop, Mail, MoreVertical, Play, Smartphone, Webhook } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { Boxes, Eye, Laptop, Mail, MoreHorizontal, MoreVertical, Play, Smartphone, Webhook } from "lucide-react";
 import { expect, within } from "storybook/test";
 import { Button } from "../../actions/Button";
+import { Menu, MenuItem } from "../../actions/Menu";
 import { Grid } from "../../layout/arrange/Grid";
 import { Panel } from "../../layout/page/Panel";
 import { Icon } from "../../text/Icon";
@@ -426,10 +427,33 @@ export const LinkedRows: Story = {
   },
 };
 
+/** A record's menu: a "⋯" button that opens its actions. */
+function RowMenu({ name }: { name: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Menu
+      open={open}
+      onOpenChange={setOpen}
+      label={`Actions for ${name}`}
+      align="end"
+      trigger={(props) => (
+        <Button {...props} variant="ghost" iconOnly={true} aria-label={`Actions for ${name}`}>
+          <MoreHorizontal aria-hidden />
+        </Button>
+      )}
+    >
+      <MenuItem onSelect={() => setOpen(false)}>Archive</MenuItem>
+      <MenuItem tone="danger" onSelect={() => setOpen(false)}>
+        Delete
+      </MenuItem>
+    </Menu>
+  );
+}
+
 /**
  * On a phone the name keeps its line. A linked row keeps its chevron and a
- * row keeps its play button at its end, beside the name, the state going
- * under the name; a labelled action goes under the name with it.
+ * row keeps its play button or its menu at its end, beside the name, the
+ * state going under the name; a labelled action goes under the name with it.
  */
 export const RowsOnAPhone: Story = {
   globals: { viewport: { value: "phone", isRotated: false } },
@@ -460,17 +484,28 @@ export const RowsOnAPhone: Story = {
           </Button>
         </RecordActions>
       </RecordCard>
+      <RecordCard title="Archive sources" layout="row" heading={false}>
+        {tile("Project", <Boxes aria-hidden />)}
+        <RecordDetail>487 entries · paused</RecordDetail>
+        <RecordStatus>
+          <StatusPill tone="warn">paused</StatusPill>
+        </RecordStatus>
+        <RecordActions>
+          <RowMenu name="Archive sources" />
+        </RecordActions>
+      </RecordCard>
     </Panel>
   ),
   play: async ({ canvasElement }) => {
     await expect(window.innerWidth).toBe(390);
-    const [linked, played, ended] = [...canvasElement.querySelectorAll<HTMLElement>(".di-record-row")];
+    const [linked, played, ended, menued] = [...canvasElement.querySelectorAll<HTMLElement>(".di-record-row")];
     const box = (row: HTMLElement, selector: string) => row.querySelector(selector)!.getBoundingClientRect();
     const sameLine = (a: DOMRect, b: DOMRect) => a.top < b.bottom && b.top < a.bottom;
     // An icon stays at the row's end, beside the name, never under it.
     for (const [row, selector] of [
       [linked, ".di-record-go"],
       [played, ".di-btn"],
+      [menued, ".di-menu-anchor"],
     ] as const) {
       await expect(sameLine(box(row, selector), box(row, ".di-record-name"))).toBe(true);
       await expect(box(row, selector).left).toBeGreaterThanOrEqual(box(row, ".di-record-name").right);

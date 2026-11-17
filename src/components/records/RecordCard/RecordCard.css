@@ -288,7 +288,7 @@
 
   /* A card whose head ends in a labelled action: below 400px the mark, the name and the actions each take the full width, so the name keeps its line. */
   @container (max-width: 400px) {
-    .di-record-card > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)) {
+    .di-record-card > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor)) {
       grid-template-columns: minmax(0, 1fr);
       grid-template-areas:
         "mark"
@@ -298,20 +298,24 @@
     }
 
     .di-record-card
-      > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)):not(:has(> .di-record-mark)) {
+      > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor)):not(
+        :has(> .di-record-mark)
+      ) {
       grid-template-areas:
         "name"
         "end";
     }
 
-    .di-record-card > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)) > .di-record-end {
+    .di-record-card
+      > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor))
+      > .di-record-end {
       justify-content: flex-start;
     }
   }
 
   /* A row that ends in a labelled action needs more room before the action goes under the name; a row that ends in a state alone keeps it on the line down to 288px. */
   @container (max-width: 400px) {
-    .di-record-row > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)) {
+    .di-record-row > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor)) {
       grid-template-columns: auto minmax(0, 1fr);
       grid-template-areas:
         "mark name"
@@ -320,14 +324,18 @@
     }
 
     .di-record-row
-      > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)):not(:has(> .di-record-mark)) {
+      > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor)):not(
+        :has(> .di-record-mark)
+      ) {
       grid-template-columns: minmax(0, 1fr);
       grid-template-areas:
         "name"
         "end";
     }
 
-    .di-record-row > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)) > .di-record-end {
+    .di-record-row
+      > .di-record-head:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor))
+      > .di-record-end {
       justify-content: flex-start;
     }
   }
@@ -340,7 +348,7 @@
    */
   @container (max-width: 400px) {
     .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):not(
-        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon))
+        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor))
       ) {
       grid-template-columns: auto minmax(0, 1fr) auto;
       grid-template-areas: "mark name control";
@@ -349,14 +357,14 @@
 
     .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):has(
         > .di-record-end > .di-record-status
-      ):not(:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon))) {
+      ):not(:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor))) {
       grid-template-areas:
         "mark name control"
         ". state control";
     }
 
     .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):not(
-        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)),
+        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor)),
         :has(> .di-record-mark)
       ) {
       grid-template-columns: minmax(0, 1fr) auto;
@@ -365,14 +373,17 @@
 
     .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):has(
         > .di-record-end > .di-record-status
-      ):not(:has(> .di-record-end > .di-record-actions > :not(.di-btn-icon)), :has(> .di-record-mark)) {
+      ):not(
+        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor)),
+        :has(> .di-record-mark)
+      ) {
       grid-template-areas:
         "name control"
         "state control";
     }
 
     .di-record-head:has(> .di-record-end > :is(.di-record-actions, .di-record-go)):not(
-        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon))
+        :has(> .di-record-end > .di-record-actions > :not(.di-btn-icon, .di-menu-anchor))
       )
       > .di-record-end {
       display: contents;
