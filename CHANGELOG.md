@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.41.1
+
+- `RecordCard`: a `Menu` at a record's end (its "⋯" trigger) stays beside the name on a narrow record, as an `iconOnly` button does; before, its anchor counted as a labelled action and went under the name.
+- Upgrade: nothing to change.
+
 ## 0.41.0
 
 - `RecordCard` takes `href`, or a router's link in `render`, for a record that opens its own page: the title becomes the link and the whole record its target, tinted on hover and ringed on focus (`is-linked`, `di-record-link`). A linked row without `RecordActions` ends in a chevron (`di-record-go`), for a touch screen that has no hover to show it; controls in `RecordActions`, `RecordInsight` and `RecordFooter` keep their own press above the link.
