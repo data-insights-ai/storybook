@@ -64,6 +64,25 @@
     gap: var(--di-gap-4);
   }
 
+  /* The name and its badge share a line; a name that fills it sends the badge under it. */
+  .di-record-title-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--di-gap-2) var(--di-gap-8);
+    min-width: 0;
+  }
+
+  .di-record-title-line > .di-record-title {
+    min-width: 0;
+  }
+
+  .di-record-badge {
+    display: flex;
+    flex: none;
+    align-items: center;
+  }
+
   /* The record's name is a heading in the display face, its one bold line. */
   .di-record-title {
     font-family: var(--di-heading-family);
