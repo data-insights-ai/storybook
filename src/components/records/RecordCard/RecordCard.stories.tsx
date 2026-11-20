@@ -8,6 +8,7 @@ import { Grid } from "../../layout/arrange/Grid";
 import { Panel } from "../../layout/page/Panel";
 import { Icon } from "../../text/Icon";
 import { IconTile } from "../IconTile";
+import { Badge } from "../../status/Badge";
 import { StatusPill } from "../../status/StatusPill";
 import { Tag } from "../../status/Tag";
 import { TextLink } from "../../text/TextLink";
@@ -16,6 +17,7 @@ import { Sparkline } from "../../figures/Sparkline";
 import { Fact, FactList } from "../FactList";
 import {
   RecordActions,
+  RecordBadge,
   RecordBasis,
   RecordBody,
   RecordCard,
@@ -40,10 +42,10 @@ const meta = {
         component: [
           "**Purpose:** one record, read at a glance: what it is, its state, and what is on record against it.",
           "**When to use:** a few records side by side (sources, watched entities, channels), a measured value with what a model read into it, or a list of records as rows (sessions, devices). **When not to:** many rows to scan, sort or select are a `DataTable`; the facts of the one record a page is about are a `FactList` in a `Panel`; a proposal that asks for a decision is a `ProposalPanel`; a lone number is a `Figure`.",
-          '**Anatomy:** the head (`RecordMark`, the title with `RecordCount` or `RecordDetail` under it, then `RecordStatus` and `RecordActions` at the end), the body in the order written (`RecordValue`, `RecordBody` with a `Figure` and a `Sparkline`, `RecordLines`, a `FactList layout="pairs"`, `RecordInsight` with `RecordBasis` and its actions), and `RecordFooter` last.',
+          '**Anatomy:** the head (`RecordMark`, the title with `RecordBadge` beside it and `RecordCount` or `RecordDetail` under it, then `RecordStatus` and `RecordActions` at the end), the body in the order written (`RecordValue`, `RecordBody` with a `Figure` and a `Sparkline`, `RecordLines`, a `FactList layout="pairs"`, `RecordInsight` with `RecordBasis` and its actions), and `RecordFooter` last.',
           '**Variants:** `layout="card"` stands on its own surface; `layout="row"` is one line of a list inside a `Panel`, without a surface. `heading` sets the title\'s level (2, 3) or `false` when the record is not a section of the page (a row, a channel in a grid). A record that opens its own page takes `href` (or a router\'s link in `render`): the title is the link and the whole record the target, tinted on hover; a linked row without actions ends in a chevron.',
           "**Narrow:** below 400px the name keeps its line. The state and a labelled action move under the name; a control that is only an icon (a play button, a menu, the chevron) stays at the record's end, beside the name.",
-          "**States:** the state is a `StatusPill` in `RecordStatus` (running, paused, failed, this device). A record without an insight has no `RecordInsight`; a claim waiting for review keeps it, with the asked-for action first.",
+          "**States:** the state is a `StatusPill` in `RecordStatus` (running, paused, failed, this device). A label for the reader rather than the record's state (new, beta) is a `Badge` in `RecordBadge`, beside the name. A record without an insight has no `RecordInsight`; a claim waiting for review keeps it, with the asked-for action first.",
           '**Content rules:** the title names the record (a host, a person, a device), not its kind. Under it one count or one detail line; a detail string breaks only between its " · " items, so a timestamp never splits. An insight is one or two sentences; its basis names the sources and the confidence. One primary action, the one the insight asks for; the others are secondary.',
           "**Accessibility:** a card is an `article` named by its heading; a row is a `div` in the list it belongs to. The state is a word, never a colour alone. The sparkline names its shape in its label. A linked record is announced by its title as a link; the chevron is hidden from screen readers, and the record's own controls keep their own names and press.",
         ].join("\n\n"),
@@ -276,6 +278,76 @@ export const Rows: Story = {
   },
 };
 
+/**
+ * A label for the reader beside the name: "new" on the episodes not heard
+ * yet, on the name's line, before the play button at the end. A name that
+ * fills the line sends its badge under it.
+ */
+export const WithBadge: Story = {
+  render: () => (
+    <div style={{ maxWidth: 560 }}>
+      <Panel title="Latest episodes" heading={2}>
+        <RecordCard title="Weekly digest" layout="row" heading={false}>
+          {tile("Project", <Boxes aria-hidden />)}
+          <RecordDetail>Week 24 · 2026-06-12</RecordDetail>
+          <RecordBadge>
+            <Badge tone="alert" track="prose">
+              new
+            </Badge>
+          </RecordBadge>
+          <RecordActions>
+            <Button iconOnly={true} aria-label="Play">
+              <Play aria-hidden />
+            </Button>
+          </RecordActions>
+        </RecordCard>
+        <RecordCard title="Team updates" layout="row" heading={false}>
+          {tile("Project", <Boxes aria-hidden />)}
+          <RecordDetail>Week 23 · 2026-06-05</RecordDetail>
+          <RecordActions>
+            <Button iconOnly={true} aria-label="Play">
+              <Play aria-hidden />
+            </Button>
+          </RecordActions>
+        </RecordCard>
+        <RecordCard
+          title="Quarterly review of the notification routing for the on-call rota"
+          layout="row"
+          heading={false}
+        >
+          {tile("Project", <Boxes aria-hidden />)}
+          <RecordDetail>Q2 · 2026-06-30</RecordDetail>
+          <RecordBadge>
+            <Badge tone="alert" track="prose">
+              new
+            </Badge>
+          </RecordBadge>
+          <RecordActions>
+            <Button iconOnly={true} aria-label="Play">
+              <Play aria-hidden />
+            </Button>
+          </RecordActions>
+        </RecordCard>
+      </Panel>
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    const [fresh, heard, long] = [...canvasElement.querySelectorAll<HTMLElement>(".di-record-row")];
+    const box = (row: HTMLElement, selector: string) => row.querySelector(selector)!.getBoundingClientRect();
+    const sameLine = (a: DOMRect, b: DOMRect) => a.top < b.bottom && b.top < a.bottom;
+    // The badge sits on the name's line, after the name, before the play button.
+    await expect(sameLine(box(fresh, ".di-record-badge"), box(fresh, ".di-record-title"))).toBe(true);
+    await expect(box(fresh, ".di-record-badge").left).toBeGreaterThan(box(fresh, ".di-record-title").right);
+    await expect(box(fresh, ".di-record-badge").right).toBeLessThan(box(fresh, ".di-btn").left);
+    // The detail stays under the name.
+    await expect(box(fresh, ".di-record-detail").top).toBeGreaterThanOrEqual(box(fresh, ".di-record-title").bottom);
+    // A record without a badge draws no line for it.
+    await expect(heard.querySelector(".di-record-title-line")).toBeNull();
+    // A name that fills the line sends its badge under it, never over the play button.
+    await expect(box(long, ".di-record-badge").right).toBeLessThan(box(long, ".di-btn").left);
+  },
+};
+
 /** Notification channels: the state, the address each resolves to, and the terms behind it. */
 export const Channels: Story = {
   render: () => (
@@ -469,6 +541,11 @@ export const RowsOnAPhone: Story = {
       <RecordCard title="Team updates" layout="row" heading={false}>
         {tile("Project", <Boxes aria-hidden />)}
         <RecordDetail>Week 23 · heard 2026-09-21</RecordDetail>
+        <RecordBadge>
+          <Badge tone="alert" track="prose">
+            new
+          </Badge>
+        </RecordBadge>
         <RecordActions>
           <Button variant="secondary" iconOnly={true} aria-label="Play">
             <Play aria-hidden />
@@ -510,6 +587,9 @@ export const RowsOnAPhone: Story = {
       await expect(sameLine(box(row, selector), box(row, ".di-record-name"))).toBe(true);
       await expect(box(row, selector).left).toBeGreaterThanOrEqual(box(row, ".di-record-name").right);
     }
+    // A badge stays beside the name, on its line, before the play button.
+    await expect(sameLine(box(played, ".di-record-badge"), box(played, ".di-record-title"))).toBe(true);
+    await expect(box(played, ".di-record-badge").right).toBeLessThan(box(played, ".di-btn").left);
     // The state goes under the name, on its edge.
     await expect(box(linked, ".di-record-status").top).toBeGreaterThanOrEqual(box(linked, ".di-record-title").bottom);
     await expect(

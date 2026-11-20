@@ -213,6 +213,7 @@ export { SourceList, SourceEntry } from "./components/text/blocks/SourceList";
 export { QuantityField } from "./components/forms/text/QuantityField";
 export {
   RecordActions,
+  RecordBadge,
   RecordBasis,
   RecordBody,
   RecordCard,

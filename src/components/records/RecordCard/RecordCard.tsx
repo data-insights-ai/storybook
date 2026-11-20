@@ -14,9 +14,10 @@ import "./RecordCard.css";
  * session, a member), without a surface of its own.
  *
  * `title` is read as text, so it is a prop. Everything else can hold a
- * component, so it is a slot. The mark, the state, the actions, the count
- * and the detail are placed in the head whatever order they are written
- * in; the body slots follow in the order written, the footer last.
+ * component, so it is a slot. The mark, the badge beside the name, the
+ * state, the actions, the count and the detail are placed in the head
+ * whatever order they are written in; the body slots follow in the order
+ * written, the footer last.
  *
  * A record that opens its own page takes `href`, or a router's link in
  * `render`: the title becomes the link and the whole record its target,
@@ -31,11 +32,12 @@ import "./RecordCard.css";
  */
 export function RecordCard(props: RecordCardProps) {
   const { title, lang, heading = 2, layout = "card", className, href, render, children } = props;
-  const slot = { mark: [], under: [], end: [], body: [], footer: [] } as Record<string, ReactNode[]>;
+  const slot = { mark: [], badge: [], under: [], end: [], body: [], footer: [] } as Record<string, ReactNode[]>;
   let hasActions = false;
   Children.forEach(children, (child) => {
     if (!isValidElement(child)) slot.body.push(child);
     else if (child.type === RecordMark) slot.mark.push(child);
+    else if (child.type === RecordBadge) slot.badge.push(child);
     else if (child.type === RecordCount || child.type === RecordDetail) slot.under.push(child);
     else if (child.type === RecordStatus || child.type === RecordActions) {
       slot.end.push(child);
@@ -59,6 +61,11 @@ export function RecordCard(props: RecordCardProps) {
     slot.end.push(<ChevronRight key="go" className="di-record-go" aria-hidden />);
   }
   const Title = heading === false ? "p" : (`h${heading}` as const);
+  const titled = (
+    <Title className="di-record-title" lang={lang}>
+      {name}
+    </Title>
+  );
   const Root = layout === "card" ? "article" : "div";
   return (
     <Root
@@ -73,9 +80,14 @@ export function RecordCard(props: RecordCardProps) {
       <div className="di-record-head">
         {slot.mark}
         <div className="di-record-name">
-          <Title className="di-record-title" lang={lang}>
-            {name}
-          </Title>
+          {slot.badge.length > 0 ? (
+            <div className="di-record-title-line">
+              {titled}
+              {slot.badge}
+            </div>
+          ) : (
+            titled
+          )}
           {slot.under}
         </div>
         {slot.end.length > 0 ? <div className="di-record-end">{slot.end}</div> : null}
@@ -95,8 +107,8 @@ type RecordCardCommon = {
   layout?: "card" | "row";
   className?: string;
   /**
-   * Head: `RecordMark`, `RecordStatus`, `RecordActions`, `RecordCount`,
-   * `RecordDetail`. Body: `RecordValue`, `RecordBody`, `RecordLines`, a
+   * Head: `RecordMark`, `RecordBadge`, `RecordStatus`, `RecordActions`,
+   * `RecordCount`, `RecordDetail`. Body: `RecordValue`, `RecordBody`, `RecordLines`, a
    * `FactList`, `RecordInsight`. Foot: `RecordFooter`.
    */
   children?: ReactNode;
@@ -116,6 +128,16 @@ type RecordCardProps = RecordCardCommon &
 /** The icon tile, avatar or seal at the start of the head. */
 export function RecordMark({ children }: { children: ReactNode }) {
   return <div className="di-record-mark">{children}</div>;
+}
+
+/**
+ * Beside the name, on its line: a short label for the reader, a `Badge`
+ * such as "new" on what they have not opened yet, or "beta". Not the
+ * record's state, which is `RecordStatus` at the end. When the name fills
+ * the line, the badge wraps under it.
+ */
+export function RecordBadge({ children }: { children: ReactNode }) {
+  return <div className="di-record-badge">{children}</div>;
 }
 
 /** The state pill at the end of the head: "running", "this device", "ai insight". */
