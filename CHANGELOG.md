@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.42.0
+
+- `RecordBadge` (new): a slot of `RecordCard` for a short label for the reader beside the name, on its line: a `Badge` such as "new" or "beta". The name and the badge share a line (`di-record-title-line`, `di-record-badge`); a name that fills it sends the badge under it, on a narrow record too. The record's state stays `RecordStatus` at the end.
+- Upgrade: nothing to change. A record that placed a label beside its name by restyling the head's classes can drop that for `RecordBadge`.
+
 ## 0.41.1
 
 - `RecordCard`: a `Menu` at a record's end (its "⋯" trigger) stays beside the name on a narrow record, as an `iconOnly` button does; before, its anchor counted as a labelled action and went under the name.
