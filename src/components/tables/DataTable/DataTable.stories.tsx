@@ -250,6 +250,52 @@ export const Unindexed: Story = {
 };
 
 /**
+ * `rowHeader` on the column whose value names each row: its body cells are
+ * `<th scope="row">`, so a screen reader says the row's name with every other
+ * cell. The cells look like the cells beside them, not like the column heads.
+ */
+export const RowHeaders: Story = {
+  args: { caption: "Collections", indexed: false },
+  render: (args) => (
+    <DataTable {...args}>
+      <TableHead>
+        <TableColumn rowHeader={true}>Collection</TableColumn>
+        <TableColumn align="end">Records</TableColumn>
+        <TableColumn align="end">Files stored</TableColumn>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell>Federal statutes</TableCell>
+          <TableCell align="end" mono={true}>
+            10 662
+          </TableCell>
+          <TableCell align="end" mono={true}>
+            10 640
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>Regional statutes</TableCell>
+          <TableCell align="end" mono={true}>
+            8 323
+          </TableCell>
+          <TableCell align="end" mono={true}>
+            8 323
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </DataTable>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const name = canvas.getByRole("rowheader", { name: "Federal statutes" });
+    await expect(name.tagName).toBe("TH");
+    await expect(name).toHaveAttribute("scope", "row");
+    await expect(canvas.getAllByRole("rowheader")).toHaveLength(2);
+    await expect(canvas.getByRole("cell", { name: "10 662" }).tagName).toBe("TD");
+  },
+};
+
+/**
  * `onSort` turns a header into the control that orders the rows. A sortable
  * column that is not the sorted one carries a quiet ↕, so it reads as a
  * control before it is pressed.

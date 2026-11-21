@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.43.0
+
+- `TableColumn`: `rowHeader` marks the column whose value names each row; its body cells render as `<th scope="row">` (role `rowheader` when the rows are stacked), so a screen reader says the row's name with every other cell. They look like the cells beside them. Works in `DataTable`, `InfiniteTable` and `CursorTable`.
+- Upgrade: nothing to change. A table whose first column names its rows can add `rowHeader` to that `TableColumn`.
+
 ## 0.42.0
 
 - `RecordBadge` (new): a slot of `RecordCard` for a short label for the reader beside the name, on its line: a `Badge` such as "new" or "beta". The name and the badge share a line (`di-record-title-line`, `di-record-badge`); a name that fills it sends the badge under it, on a narrow record too. The record's state stays `RecordStatus` at the end.

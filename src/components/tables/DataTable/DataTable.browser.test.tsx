@@ -103,6 +103,42 @@ test("beside a filling column every other cell keeps its line, while the filling
   expect(title.classList.contains("is-fill")).toBe(true);
 });
 
+test("a row header reads like the cells of its row, and a stacked one heads its card unlabelled", () => {
+  const host = document.createElement("div");
+  host.style.width = "360px";
+  document.body.append(host);
+  root = createRoot(host);
+  flushSync(() =>
+    root!.render(
+      <DataTable caption="Collections" indexed={false} narrow="stack">
+        <TableHead>
+          <TableColumn rowHeader={true}>Collection</TableColumn>
+          <TableColumn align="end">Records</TableColumn>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>Federal statutes</TableCell>
+            <TableCell align="end" label="Records">
+              12
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </DataTable>,
+    ),
+  );
+  const name = document.querySelector<HTMLTableCellElement>("tbody th")!;
+  const value = document.querySelector<HTMLElement>("tbody td")!;
+  expect(name.scope).toBe("row");
+  expect(name.getAttribute("role")).toBe("rowheader");
+  const head = getComputedStyle(name);
+  const cell = getComputedStyle(value);
+  expect(head.fontWeight).toBe(cell.fontWeight);
+  expect(head.textAlign).toBe("start");
+  expect(head.paddingInlineStart).toBe(cell.paddingInlineStart);
+  expect(head.borderBottomStyle).toBe(cell.borderBottomStyle);
+  expect(getComputedStyle(name, "::before").content).toBe("none");
+});
+
 test("a stacked row names its cells with the same label as the head", () => {
   const host = document.createElement("div");
   host.style.width = "360px";

@@ -86,7 +86,7 @@
       .di-table-wrap:not(.is-overflowing)
       .di-table
       tbody
-      :is(td.is-pinned, .di-table-index) {
+      :is(:is(td, :where(th[scope="row"])).is-pinned, .di-table-index) {
       z-index: 0;
     }
   }

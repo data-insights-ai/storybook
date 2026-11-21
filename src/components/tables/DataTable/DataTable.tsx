@@ -132,6 +132,7 @@ export function DataTable({
   });
 
   const fill = fillColumn(grid);
+  const rowHeader = rowHeaderColumn(grid);
   const indexColumn = hasIndexColumn(grid);
   const empty = holdsEmpty(grid);
   const framed = maxRows !== undefined;
@@ -187,7 +188,9 @@ export function DataTable({
               <MeasuredContext.Provider value={widths !== undefined}>
                 <IndexColumnContext.Provider value={indexColumn}>
                   <FillColumnContext.Provider value={fill}>
-                    <PinContext.Provider value={{ through, offsets }}>{grid}</PinContext.Provider>
+                    <RowHeaderColumnContext.Provider value={rowHeader}>
+                      <PinContext.Provider value={{ through, offsets }}>{grid}</PinContext.Provider>
+                    </RowHeaderColumnContext.Provider>
                   </FillColumnContext.Provider>
                 </IndexColumnContext.Provider>
               </MeasuredContext.Provider>
@@ -245,6 +248,8 @@ const StackContext = createContext(false);
 const MeasuredContext = createContext(false);
 /* Which column fills, and which column a cell is in: the filling column's cells wrap, every other cell keeps its line. */
 const FillColumnContext = createContext(-1);
+/* The column whose body cells name their row, from its `TableColumn rowHeader`; -1 for none. */
+const RowHeaderColumnContext = createContext(-1);
 const ColumnContext = createContext(-1);
 /* Whether the head opens with the index column, so a row that spans the grid can start on the first data column. */
 const IndexColumnContext = createContext(false);
@@ -286,6 +291,12 @@ function holdsEmpty(grid: ReactNode[]) {
 function fillColumn(grid: ReactNode[]) {
   return headColumns(grid).findIndex(
     (column) => isValidElement<{ width?: string }>(column) && column.props.width === "fill",
+  );
+}
+
+function rowHeaderColumn(grid: ReactNode[]) {
+  return headColumns(grid).findIndex(
+    (column) => isValidElement<{ rowHeader?: boolean }>(column) && column.props.rowHeader === true,
   );
 }
 
@@ -374,6 +385,11 @@ export function TableColumn({
 }: {
   children?: ReactNode;
   align?: "start" | "end";
+  /**
+   * The column whose value names each row: its body cells render as `<th scope="row">`, so a screen reader says
+   * the row's name with every other cell of the row. One column per table; the first one marked wins.
+   */
+  rowHeader?: boolean;
   /**
    * The row's name, which stays at the inline-start edge with every column before it while the grid scrolls
    * sideways. Without it the first column headed by a word stays.
@@ -625,11 +641,16 @@ export function TableCell({
   const measured = useContext(MeasuredContext);
   const fill = useContext(FillColumnContext);
   const column = useContext(ColumnContext);
+  const rowHeader = useContext(RowHeaderColumnContext);
   const fills = fill !== -1 && fill === column;
   const pin = usePin(pinned);
+  const heads = rowHeader !== -1 && rowHeader === column;
+  const Cell = heads ? "th" : "td";
+  const role = useRole(heads ? "rowheader" : "cell");
   return (
-    <td
-      role={useRole("cell")}
+    <Cell
+      scope={heads ? "row" : undefined}
+      role={role}
       data-label={label}
       colSpan={colSpan === "all" ? allColumns : colSpan}
       className={cx(
@@ -645,7 +666,7 @@ export function TableCell({
       onMouseEnter={measured ? revealCut : undefined}
     >
       {children}
-    </td>
+    </Cell>
   );
 }
 

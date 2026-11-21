@@ -85,7 +85,7 @@
    * quiet, at a row's height and with a cell's inset, so it reads as the
    * table's first row rather than a strip above it.
    */
-  .di-table th {
+  .di-table th:not(:where([scope="row"])) {
     height: var(--di-table-row-height);
     padding: var(--di-gap-8) var(--di-gap-12);
     border-bottom: 1px solid var(--di-border);
@@ -105,7 +105,7 @@
    * at its hyphen, so beside a filling column every other cell keeps its
    * line, while the filling column's own prose wraps inside it.
    */
-  .di-table th.is-fill {
+  .di-table th:not(:where([scope="row"])).is-fill {
     width: 100%;
   }
 
@@ -114,16 +114,16 @@
    * their longest word they break a name at its hyphen and stack a line of
    * words one per line. Narrower than that, the grid scrolls instead.
    */
-  .di-table th:is(.is-fill, .is-pin-last) {
+  .di-table th:not(:where([scope="row"])):is(.is-fill, .is-pin-last) {
     min-width: var(--di-table-label-min);
   }
 
-  .di-table:has(th.is-fill) :is(th, td):not(.is-fill, .is-spanning) {
+  .di-table:has(th:not(:where([scope="row"])).is-fill) :is(th, td):not(.is-fill, .is-spanning) {
     white-space: nowrap;
   }
 
   /* A long status in a filling column wraps with the column, so it never holds the grid wide. */
-  .di-table td.is-fill .di-badge {
+  .di-table :is(td, :where(th[scope="row"])).is-fill .di-badge {
     max-width: 100%;
     height: auto;
     min-height: var(--di-pill-height);
@@ -138,7 +138,10 @@
    * reads worse than one more column to scroll. A filling column's prose
    * still wraps inside it, unless it is the pinned name.
    */
-  .di-table-wrap.is-overflowing .di-table tbody td:is(:not(.is-fill, .is-spanning), .is-pinned) {
+  .di-table-wrap.is-overflowing
+    .di-table
+    tbody
+    :is(td, :where(th[scope="row"])):is(:not(.is-fill, .is-spanning), .is-pinned) {
     white-space: nowrap;
   }
 
@@ -147,13 +150,13 @@
     table-layout: fixed;
   }
 
-  .di-table.is-measured td {
+  .di-table.is-measured :is(td, :where(th[scope="row"])) {
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   /* A value with lines under it (a price, its total), and a cell across columns, wrap rather than being cut. */
-  .di-table.is-measured td:is(:has(.di-cell), .is-spanning) {
+  .di-table.is-measured :is(td, :where(th[scope="row"])):is(:has(.di-cell), .is-spanning) {
     overflow: visible;
     text-overflow: clip;
     white-space: normal;
@@ -164,7 +167,7 @@
     white-space: normal;
   }
 
-  .di-table th.is-sorted {
+  .di-table th:not(:where([scope="row"])).is-sorted {
     color: var(--di-text);
   }
 
@@ -196,12 +199,12 @@
   }
 
   /* A machine value is one token: a timestamp or an id broken over lines reads as two. */
-  .di-table td.di-mono {
+  .di-table :is(td, :where(th[scope="row"])).di-mono {
     white-space: nowrap;
   }
 
   /* A row's actions stay one line: "Open" and its "…" broken over two rows read as two rows. */
-  .di-table td > .di-toolbar {
+  .di-table :is(td, :where(th[scope="row"])) > .di-toolbar {
     flex-wrap: nowrap;
     justify-content: flex-end;
   }
@@ -211,7 +214,7 @@
    * value of two lines (a name and its description) stays clear of the
    * row's rules instead of touching them.
    */
-  .di-table td {
+  .di-table :is(td, :where(th[scope="row"])) {
     height: var(--di-table-row-height);
     padding: var(--di-gap-8) var(--di-gap-12);
     border-bottom: 1px solid var(--di-table-rule);
@@ -220,16 +223,22 @@
     vertical-align: middle;
   }
 
-  .di-table tbody tr:last-child td {
+  /* A row header names its row and reads like the cells beside it, not like the column heads. */
+  .di-table :where(th[scope="row"]) {
+    font-weight: inherit;
+    text-align: start;
+  }
+
+  .di-table tbody tr:last-child :is(td, :where(th[scope="row"])) {
     border-bottom: 0;
   }
 
   /* Only a row a click does something on answers the pointer. */
-  .di-table tbody tr.is-selectable:not(.di-row-current):hover td {
+  .di-table tbody tr.is-selectable:not(.di-row-current):hover :is(td, :where(th[scope="row"])) {
     background: var(--di-row-hover-bg);
   }
 
-  .di-table tbody tr.di-table-spacer td {
+  .di-table tbody tr.di-table-spacer :is(td, :where(th[scope="row"])) {
     height: var(--di-table-spacer);
     padding: 0;
     border: 0;
@@ -237,7 +246,7 @@
   }
 
   /* An empty spacer closing the body leaves the last rendered row the last one drawn. */
-  .di-table tbody tr:has(+ tr.di-table-spacer.is-empty:last-child) td {
+  .di-table tbody tr:has(+ tr.di-table-spacer.is-empty:last-child) :is(td, :where(th[scope="row"])) {
     border-bottom: 0;
   }
 
@@ -246,7 +255,7 @@
    * line. Its sides are a cell's, so the message starts on the first data
    * column's line and the way out ends on the last column's.
    */
-  .di-table tbody tr.di-table-empty td {
+  .di-table tbody tr.di-table-empty :is(td, :where(th[scope="row"])) {
     padding-block: var(--di-space-24);
     white-space: normal;
   }
@@ -315,7 +324,7 @@
     inset-inline-start: var(--di-table-pin-at, var(--di-index-col));
   }
 
-  .di-table-wrap.is-overflowing .di-table th:is(.is-pinned, .di-table-index) {
+  .di-table-wrap.is-overflowing .di-table th:not(:where([scope="row"])):is(.is-pinned, .di-table-index) {
     z-index: 2;
     background: var(--di-table-head-bg);
   }
@@ -434,7 +443,7 @@
     z-index: 2;
   }
 
-  .di-table-wrap.is-framed .di-table tbody :is(td.is-pinned, .di-table-index) {
+  .di-table-wrap.is-framed .di-table tbody :is(:is(td, :where(th[scope="row"])).is-pinned, .di-table-index) {
     z-index: 0;
   }
 
@@ -572,7 +581,7 @@
       border: 0;
     }
 
-    .di-table-wrap.is-stackable tbody tr.di-table-spacer td {
+    .di-table-wrap.is-stackable tbody tr.di-table-spacer :is(td, :where(th[scope="row"])) {
       display: none;
     }
 
@@ -599,12 +608,12 @@
      * wraps again (as specific as that rule, so it wins), and an identifier
      * or a pill longer than the card breaks rather than being cut.
      */
-    .di-table-wrap.is-stackable .di-table tbody td {
+    .di-table-wrap.is-stackable .di-table tbody :is(td, :where(th[scope="row"])) {
       overflow-wrap: anywhere;
       white-space: normal;
     }
 
-    .di-table-wrap.is-stackable tbody td .di-badge {
+    .di-table-wrap.is-stackable tbody :is(td, :where(th[scope="row"])) .di-badge {
       max-width: 100%;
       height: auto;
       min-height: var(--di-pill-height);
@@ -632,8 +641,8 @@
     }
 
     /* A cell with nothing to say takes no line, its column's name included. */
-    .di-table-wrap.is-stackable td:empty,
-    .di-table-wrap.is-stackable td.is-labelled:empty {
+    .di-table-wrap.is-stackable :is(td, :where(th[scope="row"])):empty,
+    .di-table-wrap.is-stackable :is(td, :where(th[scope="row"])).is-labelled:empty {
       display: none;
     }
 
@@ -649,12 +658,12 @@
      * name's first line, a pill and the actions centre on the same middle,
      * also when the name wraps under it.
      */
-    .di-table-wrap.is-stackable td.is-pin-last {
+    .di-table-wrap.is-stackable :is(td, :where(th[scope="row"])).is-pin-last {
       flex-basis: 100%;
       line-height: var(--di-table-stack-line);
     }
 
-    .di-table-wrap.is-stackable td.is-pin-last .di-cell-primary {
+    .di-table-wrap.is-stackable :is(td, :where(th[scope="row"])).is-pin-last .di-cell-primary {
       line-height: var(--di-table-stack-line);
     }
 
@@ -687,12 +696,12 @@
      * its own at the inline start, so the name and every labelled line share
      * one text edge after it.
      */
-    .di-table-wrap.is-stackable tbody tr:has(> td:first-child input[type="checkbox"]) {
+    .di-table-wrap.is-stackable tbody tr:has(> :is(td, :where(th[scope="row"])):first-child input[type="checkbox"]) {
       padding-inline-start: calc(var(--di-table-edge) + var(--di-choice-mark) + var(--di-gap-12));
     }
 
     /* Placed at the edge itself: an index cell's own inset would push the box onto the text edge. */
-    .di-table-wrap.is-stackable tbody tr > td:first-child:has(input[type="checkbox"]) {
+    .di-table-wrap.is-stackable tbody tr > :is(td, :where(th[scope="row"])):first-child:has(input[type="checkbox"]) {
       padding-inline: 0 !important;
       position: absolute;
       inset-block-start: var(--di-space-12);
@@ -707,19 +716,25 @@
      * line beside the name, never a line of their own under the card. A button
      * taller than the line stands out of it evenly, on the line's middle.
      */
-    .di-table-wrap.is-stackable tr:has(> td.is-end:last-child:not(.is-labelled)) > td.is-labelled {
+    .di-table-wrap.is-stackable
+      tr:has(> :is(td, :where(th[scope="row"])).is-end:last-child:not(.is-labelled))
+      > :is(td, :where(th[scope="row"])).is-labelled {
       order: 1;
     }
 
-    .di-table-wrap.is-stackable tr:has(> td.is-end:last-child:not(.is-labelled)) > td.is-pin-last {
+    .di-table-wrap.is-stackable
+      tr:has(> :is(td, :where(th[scope="row"])).is-end:last-child:not(.is-labelled))
+      > :is(td, :where(th[scope="row"])).is-pin-last {
       flex: 1 1 0;
     }
 
-    .di-table-wrap.is-stackable tr > td.is-end:last-child:not(.is-labelled) {
+    .di-table-wrap.is-stackable tr > :is(td, :where(th[scope="row"])).is-end:last-child:not(.is-labelled) {
       margin-inline-start: auto;
     }
 
-    .di-table-wrap.is-stackable tr > td.is-end:last-child:not(.is-labelled):has(button, a.di-btn) {
+    .di-table-wrap.is-stackable
+      tr
+      > :is(td, :where(th[scope="row"])).is-end:last-child:not(.is-labelled):has(button, a.di-btn) {
       display: flex;
       align-self: flex-start;
       align-items: center;
@@ -731,7 +746,7 @@
      * value, so a figure on a phone still says which figure it is. The name
      * is drawn, not read: a screen reader hears the column header already.
      */
-    .di-table-wrap.is-stackable td.is-labelled {
+    .di-table-wrap.is-stackable :is(td, :where(th[scope="row"])).is-labelled {
       display: grid;
       grid-template-columns: minmax(var(--di-fact-label-min), 38%) minmax(0, 1fr);
       gap: var(--di-gap-12);
@@ -741,7 +756,7 @@
       text-align: start;
     }
 
-    .di-table-wrap.is-stackable td.is-labelled::before {
+    .di-table-wrap.is-stackable :is(td, :where(th[scope="row"])).is-labelled::before {
       content: attr(data-label) / "";
       font-family: var(--di-label-family);
       font-size: var(--di-label-size);
@@ -751,7 +766,7 @@
     }
 
     .di-table-wrap.is-stackable tbody tr.is-selectable:not(.di-row-current):hover,
-    .di-table-wrap.is-stackable tbody tr.is-selectable:not(.di-row-current):hover td {
+    .di-table-wrap.is-stackable tbody tr.is-selectable:not(.di-row-current):hover :is(td, :where(th[scope="row"])) {
       background: var(--di-row-hover-bg);
     }
 
@@ -771,7 +786,7 @@
     }
 
     .di-table-wrap.is-stackable tbody tr.is-active,
-    .di-table-wrap.is-stackable tbody tr.is-active td {
+    .di-table-wrap.is-stackable tbody tr.is-active :is(td, :where(th[scope="row"])) {
       background: var(--di-bg-selected);
     }
 
