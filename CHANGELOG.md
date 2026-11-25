@@ -2,6 +2,19 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.44.0
+
+- `ToolbarAction`: takes `shortcut` and `title` as `Button` does, and `href` or `render` to be a link, so a list's create action that opens a page folds to its icon on a phone like any other toolbar action. New story: `Actions/Toolbar` → Create action.
+- `ChoiceGroup appearance="cards"`: an option's description shows whole; before, a card cut it after two lines.
+- `FactList layout="columns"`: fewer facts than fit in a row share its width (`auto-fit`); before, empty columns kept their room and a long value wrapped in a 200px column beside them.
+- Upgrade: nothing to change. A list toolbar whose actions are `Button`s with a label can write them as `ToolbarAction`, so the search keeps its room on a phone:
+
+  ```tsx
+  <ToolbarEnd>
+    <ToolbarAction variant="primary" icon={<Plus aria-hidden />} label="New key" render={<Link to="/keys/new" />} shortcut="n" />
+  </ToolbarEnd>
+  ```
+
 ## 0.43.0
 
 - `TableColumn`: `rowHeader` marks the column whose value names each row; its body cells render as `<th scope="row">` (role `rowheader` when the rows are stacked), so a screen reader says the row's name with every other cell. They look like the cells beside them. Works in `DataTable`, `InfiniteTable` and `CursorTable`.

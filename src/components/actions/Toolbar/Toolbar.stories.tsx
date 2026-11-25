@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ChevronDown, UserMinus } from "lucide-react";
+import { ChevronDown, Plus, UserMinus } from "lucide-react";
 import { useState } from "react";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { Button } from "../Button";
 import { Menu, MenuItem } from "../Menu";
 import { Select } from "../../forms/select/Select";
+import { SearchField } from "../../forms/text/SearchField";
 import { TextArea } from "../../forms/text/TextArea";
 import { TextField } from "../../forms/text/TextField";
 import { Stack } from "../../layout/arrange/Stack";
@@ -64,6 +65,37 @@ export const AboveAList: Story = {
     await expectTwoRows(bar);
     const exportButton = canvas.getByRole("button", { name: "Export CSV" });
     await expect(exportButton.classList.contains("di-btn-icon")).toBe(phone());
+  },
+};
+
+/**
+ * A list's create action that opens a page: `ToolbarAction` with `href` (or a
+ * router's link in `render`) and the page key `n`. On a phone it folds to its
+ * icon beside the search, so the search keeps the room to say what it finds.
+ */
+export const CreateAction: Story = {
+  render: () => (
+    <Page>
+      <Toolbar label="Filter service accounts" role="search">
+        <SearchField id="tb-create-search" label="Search service accounts" placeholder="Search service accounts" />
+        <ToolbarEnd>
+          <ToolbarAction
+            variant="primary"
+            icon={<Plus aria-hidden />}
+            label="New service account"
+            href="#new-service-account"
+            shortcut="n"
+          />
+        </ToolbarEnd>
+      </Toolbar>
+    </Page>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const action = canvas.getByRole("link", { name: "New service account" });
+    await expect(action).toHaveAttribute("aria-keyshortcuts", "n");
+    await expect(action.classList.contains("di-btn-icon")).toBe(phone());
+    await expect(toolbarRows(canvasElement.querySelector(".di-toolbar")!)).toHaveLength(1);
   },
 };
 

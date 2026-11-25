@@ -1,3 +1,4 @@
+import type { useRender } from "@base-ui/react/use-render";
 import { X } from "lucide-react";
 import { useEffect, useRef, type MouseEventHandler, type ReactNode } from "react";
 import { editable } from "../../../internal/useShortcut";
@@ -10,22 +11,7 @@ export function ToolbarEnd({ children }: { children: ReactNode }) {
   return <div className="di-toolbar-end">{children}</div>;
 }
 
-/**
- * An action in `ToolbarEnd` with a compact form: an icon and a label on a
- * wide screen; on a phone the icon alone, named by the label for a screen
- * reader and in a tooltip for the eye, so it fits beside the search and
- * the list toolbar keeps to two rows (the search with its actions, then the
- * filters).
- */
-export function ToolbarAction({
-  icon,
-  label,
-  variant = "secondary",
-  size = "md",
-  disabled,
-  loading,
-  onClick,
-}: {
+type ToolbarActionCommon = {
   /** The icon that stands for the action when the label folds away. */
   icon: ReactNode;
   /** The action in a word or three: "Export CSV". */
@@ -34,10 +20,36 @@ export function ToolbarAction({
   size?: "sm" | "md";
   disabled?: boolean;
   loading?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-}) {
+  /** The page key that presses it, as on `Button`: `n` for the list's create action. */
+  shortcut?: string;
+  /** More than the label says, on hover: why it is blocked. */
+  title?: string;
+};
+
+/**
+ * As on `Button`: no `href` is a `<button>` that acts, an `href` an `<a>`
+ * that navigates, and a router's link goes in `render`.
+ */
+type ToolbarActionProps = ToolbarActionCommon &
+  (
+    | { onClick?: MouseEventHandler<HTMLButtonElement>; href?: never; render?: never }
+    | { href: string; onClick?: never; render?: never }
+    | { render: useRender.RenderProp; onClick?: never; href?: never }
+  );
+
+/**
+ * An action in `ToolbarEnd` with a compact form: an icon and a label on a
+ * wide screen; on a phone the icon alone, named by the label for a screen
+ * reader and in a tooltip for the eye, so it fits beside the search and
+ * the list toolbar keeps to two rows (the search with its actions, then the
+ * filters). A create action that opens a page is the same action as one
+ * that opens a sheet: `href` or `render` makes it a link.
+ */
+export function ToolbarAction({ icon, label, variant = "secondary", size = "md", ...rest }: ToolbarActionProps) {
   const phone = useMedia("(max-width: 600px)");
-  const props = { variant, size, disabled, loading, onClick };
+  const { href, render, onClick, ...common } = rest;
+  const target = href !== undefined ? { href } : render !== undefined ? { render } : { onClick };
+  const props = { variant, size, ...common, ...target };
   return phone ? (
     <Tooltip label={label}>
       <Button {...props} iconOnly aria-label={label}>

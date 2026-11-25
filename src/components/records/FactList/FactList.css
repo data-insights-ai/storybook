@@ -99,10 +99,10 @@
     color: var(--di-text);
   }
 
-  /* A record’s facts in a section: label above value, columns as fit. */
+  /* A record’s facts in a section: label above value, columns as fit; fewer facts than columns share the row, so a long value is not held to a column beside empty ones. */
   .di-facts-columns {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--di-facts-column-min), 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--di-facts-column-min), 100%), 1fr));
     gap: var(--di-gap-16) var(--di-gap-24);
     margin: 0;
   }

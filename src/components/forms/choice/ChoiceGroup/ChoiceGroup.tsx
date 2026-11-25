@@ -12,7 +12,7 @@ export type ChoiceOption = {
   label: string;
   /** Read by a screen reader instead of a short label, such as "Monday" for "Mo". */
   name?: string;
-  /** One line under the label in a list or on a card; a card cuts it after two lines. */
+  /** One line under the label in a list or on a card; a card shows it whole, however many lines it takes. */
   description?: string;
   /** The rest of it, shown on hover and read by assistive technology. */
   more?: string;
