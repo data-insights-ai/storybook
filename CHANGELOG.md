@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.44.1
+
+- `DataTable layout="measured"` and `InfiniteTable`: a column locks to a whole pixel, rounded up; before, it locked to the fraction its head settled on, and where a platform draws text a fraction wider, the value that set the column (the widest status pill or name) showed an ellipsis though it fits. A grid that fits its frame takes the added pixels from its filling column, or else its widest, so it still fits; a grid that scrolls sideways grows by them.
+- Upgrade: nothing to change.
+
 ## 0.44.0
 
 - `ToolbarAction`: takes `shortcut` and `title` as `Button` does, and `href` or `render` to be a link, so a list's create action that opens a page folds to its icon on a phone like any other toolbar action. New story: `Actions/Toolbar` → Create action.

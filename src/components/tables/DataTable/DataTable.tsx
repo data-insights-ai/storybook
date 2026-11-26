@@ -13,6 +13,7 @@ import {
 } from "react";
 import { cx } from "../../../internal/cx";
 import { Toolbar } from "../../actions/Toolbar";
+import { wholeColumns } from "./columns/wholeColumns";
 import { useFrame } from "./frame";
 import "./DataTable.css";
 
@@ -320,8 +321,11 @@ function useMeasuredColumns(frame: { current: HTMLDivElement | null }, enabled: 
     const heads = table.tHead?.rows[0]?.cells;
     const row = table.tBodies[0]?.querySelector("tr:not(.di-table-spacer)");
     if (!heads || !row || getComputedStyle(table).display !== "table") return;
+    const cells = Array.from(heads);
+    const settled = cells.map((th) => th.getBoundingClientRect().width);
+    const fill = cells.findIndex((th) => th.classList.contains("is-fill"));
     // eslint-disable-next-line react-hooks/set-state-in-effect -- column widths are read from the laid-out table before paint
-    setMeasured({ widths: Array.from(heads, (th) => th.getBoundingClientRect().width), overflowing });
+    setMeasured({ widths: wholeColumns(settled, fill, overflowing), overflowing });
   });
   useLayoutEffect(() => {
     const el = frame.current;
