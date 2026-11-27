@@ -530,6 +530,7 @@ function AccountDialog() {
 
 function PersonFlyout() {
   const [open, setOpen] = useState(false);
+  const [actions, setActions] = useState(false);
   return (
     <Flyout id="person" title="Nora Feld" open={open} onOpenChange={setOpen}>
       <FlyoutTrigger>
@@ -540,6 +541,18 @@ function PersonFlyout() {
       <FlyoutItems label="Recent" unreadLabel="unread">
         <FlyoutItem title="Opened the March register" time="09:12" href="#register" />
       </FlyoutItems>
+      <Menu
+        open={actions}
+        onOpenChange={setActions}
+        label="Actions for Nora Feld"
+        trigger={(props) => (
+          <Button variant="secondary" size="sm" {...props}>
+            Actions
+          </Button>
+        )}
+      >
+        <MenuItem onSelect={() => setActions(false)}>Send a message</MenuItem>
+      </Menu>
     </Flyout>
   );
 }
@@ -607,6 +620,15 @@ export const DrawerLayers: Story = {
     await userEvent.click(person);
     const card = await body.findByRole("dialog", { name: "Nora Feld" });
     await waitFor(() => expect(card).toHaveFocus());
+    // A menu in the card: the first Escape closes the menu, the next the card.
+    const actions = within(card).getByRole("button", { name: "Actions" });
+    await userEvent.click(actions);
+    await waitFor(() => expect(body.getByRole("menu", { name: "Actions for Nora Feld" })).toBeVisible());
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(body.queryByRole("menu")).toBeNull());
+    await expect(card).toBeVisible();
+    await expect(actions).toHaveFocus();
+    await expect(drawer).toHaveAttribute("data-open");
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(body.queryByRole("dialog", { name: "Nora Feld" })).toBeNull());
     await expect(drawer).toHaveAttribute("data-open");

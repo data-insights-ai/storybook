@@ -16,7 +16,8 @@ import "./Flyout.css";
  * Not modal: the page stays usable. The panel is a labelled `dialog`
  * region that takes focus when it opens; Escape and a press outside close
  * it, and Escape returns focus to the trigger. That Escape closes only the
- * panel, not also a layer below it such as the sidebar's drawer.
+ * panel, not also a layer below it such as the sidebar's drawer; a menu,
+ * list or dialog open in or over the panel closes on its own Escape first.
  */
 export function Flyout({
   id,
@@ -53,9 +54,11 @@ export function Flyout({
     };
     // The Escape that closes the panel is used up: it is prevented, and taken
     // in the capture phase, before a layer below it (the drawer of a phone's
-    // sidebar, a docked dialog) hears it on the document or the window.
+    // sidebar, a docked dialog) hears it on the document or the window. An
+    // Escape meant for a layer open in or over the panel is that layer's.
     const key = (event: KeyboardEvent) => {
       if (event.key !== "Escape" || event.defaultPrevented) return;
+      if (inLayer(event.target, panel.current)) return;
       event.preventDefault();
       onOpenChange(false);
       anchor.current?.querySelector<HTMLElement>(".di-flyout-trigger button, .di-flyout-trigger a")?.focus();
@@ -83,6 +86,15 @@ export function Flyout({
       ) : null}
     </div>
   );
+}
+
+/** A menu, list, popup or dialog other than the panel holds the target,
+ * or the target is a control in the panel whose popup is open. */
+function inLayer(target: EventTarget | null, panel: HTMLElement | null) {
+  if (!(target instanceof Element)) return false;
+  const layer = target.closest('[role="menu"], [role="listbox"], [role="dialog"], [role="alertdialog"], dialog');
+  if (layer !== null && layer !== panel) return true;
+  return panel !== null && panel.contains(target) && target.getAttribute("aria-expanded") === "true";
 }
 
 /** The control that opens the panel; it keeps its own `onClick`. */
