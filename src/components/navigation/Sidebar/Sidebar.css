@@ -108,6 +108,59 @@
     color: var(--di-sidebar-muted);
   }
 
+  /* The heading row: the label, then the group's action at its end. */
+  .di-sb-group-head {
+    display: flex;
+    gap: var(--di-gap-4);
+    align-items: center;
+    min-width: 0;
+  }
+
+  .di-sb-group-head > .di-sb-group-label {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .di-sb-group-action {
+    display: flex;
+    flex: none;
+    padding-bottom: var(--di-space-6);
+  }
+
+  .di-sb-group-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  /* A collapsible group's label is its button: the label's look, a chevron before it. */
+  .di-sb-group-toggle {
+    display: flex;
+    gap: var(--di-gap-4);
+    align-items: center;
+    width: 100%;
+    text-align: start;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    border-radius: var(--di-radius-control);
+  }
+
+  .di-sb-group-toggle:hover {
+    color: var(--di-sidebar-fg);
+  }
+
+  /* Where a drag would land: the focus ring, drawn inside. */
+  .di-sb-group[data-drop="over"] {
+    border-radius: var(--di-radius-control);
+    outline: var(--di-focus-ring-width) solid var(--di-focus-ring-color);
+    outline-offset: var(--di-focus-ring-inset);
+  }
+
+  .di-sb[data-state="collapsed"] .di-sb-group-action {
+    display: none;
+  }
+
   .di-sb[data-state="collapsed"] .di-sb-group-label {
     position: absolute;
     width: 1px;

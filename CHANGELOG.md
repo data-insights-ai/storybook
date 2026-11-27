@@ -2,6 +2,13 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.45.0
+
+- `SidebarGroup` collapses: with `collapsed` and `onCollapsedChange` its `SidebarGroupLabel` is a button with `aria-expanded` that opens and collapses it; the caller renders what stays shown while it is collapsed.
+- New `SidebarGroupAction`: the group's action, a `Button` or a `Menu`, at the end of its heading; hidden in the collapsed rail.
+- `SidebarGroup` takes a drop: `dropTypes` names the drag data types it accepts, `onDrop` gets the drag's data, and the focus ring marks the group while a drag is over it. `SidebarGroupLabel`'s `dragType` and `dragValue` make the heading draggable. New story: `Navigation/Sidebar` → Arranged Groups.
+- Upgrade: nothing to change; a group without the new props renders as before.
+
 ## 0.44.4
 
 - `Sidebar` on a phone: an Escape that a `Menu`, `Dialog` or `Flyout` opened from the drawer used to close itself leaves the drawer open; the next Escape closes the drawer. Before, one Escape closed both and the focus went to the trigger.

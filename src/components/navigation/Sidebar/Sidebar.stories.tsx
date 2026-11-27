@@ -17,7 +17,14 @@ import { SidebarInset } from "./frame/SidebarInset";
 import { SidebarMenu, SidebarMenuItem } from "./menu/SidebarMenu";
 import { SidebarMenuButton } from "./menu/SidebarMenuButton";
 import { SidebarProvider } from "./state/SidebarProvider";
-import { SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader } from "./menu/SidebarSections";
+import {
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupLabel,
+  SidebarHeader,
+} from "./menu/SidebarSections";
 import { SidebarTrigger } from "./frame/SidebarTrigger";
 
 type SampleProps = {
@@ -691,5 +698,131 @@ export const FooterWrittenFirst: Story = {
     await expect(
       Math.abs(row.getBoundingClientRect().left + parseFloat(getComputedStyle(row).paddingLeft) - label),
     ).toBeLessThanOrEqual(0.5);
+  },
+};
+
+const itemType = "application/x-example-item";
+
+/* Groups a person arranges: each collapses by its heading, has its menu at the heading's end, and
+   takes an item dragged onto it; the menu moves the group from the keyboard. */
+function ArrangedSidebar({ label, closeLabel }: { label: string; closeLabel: string }) {
+  const [groups, setGroups] = useState([
+    { id: "Pinned", collapsed: false, items: ["alerts"] },
+    { id: "Monitor", collapsed: false, items: ["overview", "findings"] },
+    { id: "Records", collapsed: true, items: ["sources", "archive"] },
+  ]);
+  const [menu, setMenu] = useState<string | null>(null);
+  const all = [...sections, ...records];
+  const change = (id: string, next: (g: (typeof groups)[number]) => (typeof groups)[number]) =>
+    setGroups((gs) => gs.map((g) => (g.id === id ? next(g) : g)));
+  const moveUp = (id: string) =>
+    setGroups((gs) => {
+      const at = gs.findIndex((g) => g.id === id);
+      if (at < 1) return gs;
+      const out = [...gs];
+      [out[at - 1], out[at]] = [out[at]!, out[at - 1]!];
+      return out;
+    });
+  return (
+    <SidebarProvider skipLabel="Skip to content">
+      <Sidebar label={label} closeLabel={closeLabel}>
+        <SidebarContent>
+          {groups.map((group) => (
+            <SidebarGroup
+              key={group.id}
+              collapsed={group.collapsed}
+              onCollapsedChange={(collapsed) => change(group.id, (g) => ({ ...g, collapsed }))}
+              dropTypes={[itemType]}
+              onDrop={(data) => {
+                const item = data.getData(itemType);
+                setGroups((gs) =>
+                  gs.map((g) => ({
+                    ...g,
+                    items:
+                      g.id === group.id
+                        ? [...g.items.filter((i) => i !== item), item]
+                        : g.items.filter((i) => i !== item),
+                  })),
+                );
+              }}
+            >
+              <SidebarGroupLabel>{group.id}</SidebarGroupLabel>
+              <SidebarGroupAction>
+                <Menu
+                  open={menu === group.id}
+                  onOpenChange={(open) => setMenu(open ? group.id : null)}
+                  label={`Options for ${group.id}`}
+                  align="end"
+                  trigger={(props) => (
+                    <Button {...props} variant="ghost" size="sm" aria-label={`Options for ${group.id}`}>
+                      <Settings aria-hidden />
+                    </Button>
+                  )}
+                >
+                  <MenuItem onSelect={() => moveUp(group.id)}>Move up</MenuItem>
+                </Menu>
+              </SidebarGroupAction>
+              <SidebarMenu>
+                {group.collapsed
+                  ? null
+                  : group.items.map((id) => {
+                      const item = all.find((i) => i.id === id)!;
+                      return (
+                        <SidebarMenuItem key={id}>
+                          <SidebarMenuButton
+                            label={item.label}
+                            href={`#/${id}`}
+                            draggable
+                            onDragStart={(event) => event.dataTransfer.setData(itemType, id)}
+                          >
+                            {item.icon}
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      );
+                    })}
+              </SidebarMenu>
+            </SidebarGroup>
+          ))}
+        </SidebarContent>
+      </Sidebar>
+      <SidebarInset>
+        <AppShellContent>
+          <PageHeader eyebrow="Record" lede="Drag an entry onto a group, or arrange the groups from their menus.">
+            <PageHeaderTitle>Arranged groups</PageHeaderTitle>
+          </PageHeader>
+        </AppShellContent>
+      </SidebarInset>
+    </SidebarProvider>
+  );
+}
+
+export const ArrangedGroups: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  render: (args) => <ArrangedSidebar label={args.label} closeLabel={args.closeLabel} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const nav = canvas.getByRole("navigation", { name: "Sections" });
+    const group = within(nav).getByRole("group", { name: "Records" });
+    const heading = within(group).getByRole("button", { name: "Records" });
+    await expect(heading).toHaveAttribute("aria-expanded", "false");
+    await userEvent.click(heading);
+    await expect(heading).toHaveAttribute("aria-expanded", "true");
+    await expect(within(group).getByRole("link", { name: "Sources" })).toBeVisible();
+
+    const data = new DataTransfer();
+    within(group)
+      .getByRole("link", { name: "Sources" })
+      .dispatchEvent(new DragEvent("dragstart", { bubbles: true, dataTransfer: data }));
+    const pinned = within(nav).getByRole("group", { name: "Pinned" });
+    pinned.dispatchEvent(new DragEvent("dragover", { bubbles: true, cancelable: true, dataTransfer: data }));
+    await waitFor(() => expect(pinned).toHaveAttribute("data-drop", "over"));
+    pinned.dispatchEvent(new DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer: data }));
+    await waitFor(() => expect(within(pinned).getByRole("link", { name: "Sources" })).toBeVisible());
+    await expect(pinned).not.toHaveAttribute("data-drop");
+
+    await userEvent.click(within(nav).getByRole("button", { name: "Options for Records" }));
+    await userEvent.click(canvas.getByRole("menuitem", { name: "Move up" }));
+    const headings = [...nav.querySelectorAll(".di-sb-group-toggle")].map((h) => h.textContent);
+    await expect(headings).toEqual(["Pinned", "Records", "Monitor"]);
   },
 };

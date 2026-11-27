@@ -39,6 +39,8 @@ Build from the components in this system. **If something you need is missing, sa
 
 A screen's frame is `SidebarProvider` with the `Sidebar`, then `SidebarInset` holding **`AppShellBar`** (the `SidebarTrigger`, a `Breadcrumb`, then `AppShellBarEnd` with app-wide status, which folds into one overflow button on a narrow bar, and `AppShellBarKeep` for the notification bell, which never folds) and **`AppShellContent`**. Below 900px the `Sidebar` is a drawer from the inline start; do not build a second mobile nav.
 
+A `SidebarGroup` holds a `SidebarGroupLabel` and, at the heading's end, a **`SidebarGroupAction`** with the group's `Menu`. With `onCollapsedChange` the label is the button that collapses the group (render only the open item while it is collapsed); with `dropTypes` and `onDrop` the group takes an item dragged onto it, and `SidebarGroupLabel`'s `dragType` and `dragValue` let a person drag the group by its heading. A drag is never the only way: the menus do the same from the keyboard.
+
 ### Where a component sits
 
 The Storybook sidebar is grouped by the question a developer asks, one group per job:
