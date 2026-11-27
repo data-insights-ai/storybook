@@ -232,15 +232,18 @@ export const Keyboard: Story = {
     await userEvent.keyboard("{Enter}");
     const presets = await page.findByRole("listbox", { name: "Periods" });
     await waitFor(() => expect(presets).toBeVisible());
-    page.getByRole("option", { name: "Any time" }).focus();
+    const anyTime = page.getByRole("option", { name: "Any time" });
+    anyTime.focus();
+    await waitFor(() => expect(anyTime).toHaveFocus());
     await userEvent.keyboard("{ArrowDown}{ArrowDown}{Enter}");
-    await expect(args.onChange).toHaveBeenLastCalledWith({ preset: "7d" });
+    await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith({ preset: "7d" }));
     await waitFor(() => expect(page.queryByRole("listbox", { name: "Periods" })).toBeNull());
     await waitFor(() => expect(canvas.getByRole("button", { name: "Period: Last 7 days" })).toHaveFocus());
 
     await userEvent.keyboard("{Enter}");
     const custom = await page.findByRole("option", { name: "Custom range" });
     custom.focus();
+    await waitFor(() => expect(custom).toHaveFocus());
     await userEvent.keyboard("{Enter}");
     const grid = page.getAllByRole("grid")[0];
     await waitFor(() => expect(grid.contains(canvasElement.ownerDocument.activeElement)).toBe(true));
