@@ -93,8 +93,12 @@
     }
   }
 
-  /* The smallest hit area on a touch screen, in either density. */
+  /*
+   * The smallest hit area on a touch screen, in either density, and the
+   * smallest anywhere (WCAG 2.2 SC 2.5.8), compact included.
+   */
   :root {
     --di-target: 40px;
+    --di-target-min: 24px;
   }
 }

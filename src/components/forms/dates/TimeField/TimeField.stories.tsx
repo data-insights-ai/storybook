@@ -124,6 +124,37 @@ export const Window: Story = {
   },
 };
 
+/**
+ * Each segment is a target of at least 24×24px (WCAG 2.2 SC 2.5.8), in either density and in 12 hours, where
+ * AM or PM is the narrowest. Axe runs its `target-size` rule on this story.
+ */
+export const SegmentTargets: Story = {
+  args: { locale: "en-US", value: "18:30" },
+  parameters: { a11y: { config: { rules: [{ id: "target-size", enabled: true }] } } },
+  render: function Render(args) {
+    return (
+      <div style={{ display: "grid", gap: "var(--di-rhythm-field)", maxWidth: "240px" }}>
+        <TimeField {...args} id="comfortable-at" label="Comfortable" />
+        <div data-density="compact">
+          <TimeField {...args} id="compact-at" label="Compact" />
+        </div>
+        <div data-density="compact">
+          <TimeField {...args} id="compact-24-at" label="Compact, 24 hours" locale="en-GB" />
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const segments = within(canvasElement).getAllByRole("spinbutton");
+    await expect(segments).toHaveLength(8);
+    for (const segment of segments) {
+      const box = segment.getBoundingClientRect();
+      await expect(box.width).toBeGreaterThanOrEqual(24);
+      await expect(box.height).toBeGreaterThanOrEqual(24);
+    }
+  },
+};
+
 /** Keyboard only: Tab walks the hours and minutes, arrows wrap at the ends, digits type a time. */
 export const KeyboardSegments: Story = {
   args: { value: "00:59" },

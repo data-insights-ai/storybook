@@ -189,6 +189,31 @@ export const German: Story = {
   },
 };
 
+/** Each segment is a target of at least 24×24px (WCAG 2.2 SC 2.5.8), in either density. Axe runs `target-size` here. */
+export const SegmentTargets: Story = {
+  args: { locale: "en-US", weekStartsOn: 0, value: "2026-10-29" },
+  parameters: { a11y: { config: { rules: [{ id: "target-size", enabled: true }] } } },
+  render: function Render(args) {
+    return (
+      <div style={{ display: "grid", gap: "var(--di-rhythm-field)", maxWidth: "320px" }}>
+        <DateField {...args} id="comfortable-day" label="Comfortable" />
+        <div data-density="compact">
+          <DateField {...args} id="compact-day" label="Compact" />
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const segments = within(canvasElement).getAllByRole("spinbutton");
+    await expect(segments).toHaveLength(6);
+    for (const segment of segments) {
+      const box = segment.getBoundingClientRect();
+      await expect(box.width).toBeGreaterThanOrEqual(24);
+      await expect(box.height).toBeGreaterThanOrEqual(24);
+    }
+  },
+};
+
 /** US English writes the month first and starts the week on Sunday. */
 export const UsEnglish: Story = { args: { locale: "en-US", weekStartsOn: 0, value: "2026-10-29" } };
 

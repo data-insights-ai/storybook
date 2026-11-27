@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.44.3
+
+- `TimeField`, `DateField` and the typed days and times of `DateRangePicker`: each segment (hour, minute, AM/PM, day, month, year) is a target of at least 24×24px in either density, compact included, and passes axe's `target-size` (WCAG 2.2 SC 2.5.8). Before, a two-digit segment or AM/PM was about 21×21px, and the separator beside it left too little space for the spacing exception. The text stays centred in its segment. New token `--di-target-min` (24px), the smallest hit area anywhere. New stories: `Forms/Dates/TimeField` and `Forms/Dates/DateField` → Segment targets.
+- Upgrade: nothing to change. Each segment of two digits or AM/PM takes about 3px more width, so a field sized to its content (as the range picker's times are) grows by that much.
+
 ## 0.44.2
 
 - `ComboBox` and `MultiComboBox`: while the list is open the page around it stays in the accessibility tree. Before, Base UI hid everything beside the input, the list and each live region with `aria-hidden`, as for a modal, so a screen reader lost the field's toggle, its entries, the controls beside a live region (such as a `CopyValue`'s button) and the rest of the page, and axe reported `aria-hidden-focus` for each focusable control there. A combobox's list is a popup, not a modal; what a modal `Dialog` makes inert stays inert. New stories: `Forms/Select/ComboBox` and `Forms/Select/MultiComboBox` → Open list keeps page.
