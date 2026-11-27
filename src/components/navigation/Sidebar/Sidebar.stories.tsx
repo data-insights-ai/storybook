@@ -10,6 +10,7 @@ import { Breadcrumb } from "../Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Menu, MenuGroup, MenuItem } from "../../actions/Menu";
 import { Dialog } from "../../overlays/Dialog";
+import { Flyout, FlyoutItem, FlyoutItems, FlyoutTrigger } from "../../overlays/Flyout";
 import { Sidebar } from "./Sidebar";
 import { SidebarBrand } from "./frame/SidebarBrand";
 import { SidebarInset } from "./frame/SidebarInset";
@@ -527,10 +528,26 @@ function AccountDialog() {
   );
 }
 
+function PersonFlyout() {
+  const [open, setOpen] = useState(false);
+  return (
+    <Flyout id="person" title="Nora Feld" open={open} onOpenChange={setOpen}>
+      <FlyoutTrigger>
+        <Button variant="secondary" aria-expanded={open} aria-controls="person" onClick={() => setOpen(!open)}>
+          Nora Feld
+        </Button>
+      </FlyoutTrigger>
+      <FlyoutItems label="Recent" unreadLabel="unread">
+        <FlyoutItem title="Opened the March register" time="09:12" href="#register" />
+      </FlyoutItems>
+    </Flyout>
+  );
+}
+
 /**
- * On a phone one Escape closes one layer: a menu or a dialog opened from the
- * drawer closes on its own Escape and leaves the drawer open; the next
- * Escape closes the drawer.
+ * On a phone one Escape closes one layer: a menu, a dialog or a flyout
+ * opened from the drawer closes on its own Escape and leaves the drawer
+ * open; the next Escape closes the drawer.
  */
 export const DrawerLayers: Story = {
   globals: { viewport: { value: "phone", isRotated: false } },
@@ -545,6 +562,7 @@ export const DrawerLayers: Story = {
           </SidebarMenu>
         </SidebarHeader>
         <SidebarFooter>
+          <PersonFlyout />
           <AccountDialog />
         </SidebarFooter>
       </Sidebar>
@@ -584,6 +602,15 @@ export const DrawerLayers: Story = {
     await waitFor(() => expect(body.queryByRole("dialog", { name: "Account" })).toBeNull());
     await expect(drawer).toHaveAttribute("data-open");
     await waitFor(() => expect(account).toHaveFocus());
+
+    const person = within(drawer).getByRole("button", { name: "Nora Feld" });
+    await userEvent.click(person);
+    const card = await body.findByRole("dialog", { name: "Nora Feld" });
+    await waitFor(() => expect(card).toHaveFocus());
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(body.queryByRole("dialog", { name: "Nora Feld" })).toBeNull());
+    await expect(drawer).toHaveAttribute("data-open");
+    await expect(person).toHaveFocus();
 
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(body.queryByRole("dialog", { name: "Sections" })).toBeNull());

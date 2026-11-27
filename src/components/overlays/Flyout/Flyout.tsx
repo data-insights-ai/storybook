@@ -15,7 +15,8 @@ import "./Flyout.css";
  *
  * Not modal: the page stays usable. The panel is a labelled `dialog`
  * region that takes focus when it opens; Escape and a press outside close
- * it, and Escape returns focus to the trigger.
+ * it, and Escape returns focus to the trigger. That Escape closes only the
+ * panel, not also a layer below it such as the sidebar's drawer.
  */
 export function Flyout({
   id,
@@ -50,16 +51,20 @@ export function Flyout({
     const press = (event: PointerEvent) => {
       if (!anchor.current?.contains(event.target as Node)) onOpenChange(false);
     };
+    // The Escape that closes the panel is used up: it is prevented, and taken
+    // in the capture phase, before a layer below it (the drawer of a phone's
+    // sidebar, a docked dialog) hears it on the document or the window.
     const key = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
+      if (event.key !== "Escape" || event.defaultPrevented) return;
+      event.preventDefault();
       onOpenChange(false);
       anchor.current?.querySelector<HTMLElement>(".di-flyout-trigger button, .di-flyout-trigger a")?.focus();
     };
     document.addEventListener("pointerdown", press);
-    document.addEventListener("keydown", key);
+    document.addEventListener("keydown", key, true);
     return () => {
       document.removeEventListener("pointerdown", press);
-      document.removeEventListener("keydown", key);
+      document.removeEventListener("keydown", key, true);
     };
   }, [open, onOpenChange]);
 
