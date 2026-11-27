@@ -2,6 +2,11 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.44.2
+
+- `ComboBox` and `MultiComboBox`: while the list is open the page around it stays in the accessibility tree. Before, Base UI hid everything beside the input, the list and each live region with `aria-hidden`, as for a modal, so a screen reader lost the field's toggle, its entries, the controls beside a live region (such as a `CopyValue`'s button) and the rest of the page, and axe reported `aria-hidden-focus` for each focusable control there. A combobox's list is a popup, not a modal; what a modal `Dialog` makes inert stays inert. New stories: `Forms/Select/ComboBox` and `Forms/Select/MultiComboBox` → Open list keeps page.
+- Upgrade: nothing to change. A test that expected the page around an open list to be hidden expects it readable.
+
 ## 0.44.1
 
 - `DataTable layout="measured"` and `InfiniteTable`: a column locks to a whole pixel, rounded up; before, it locked to the fraction its head settled on, and where a platform draws text a fraction wider, the value that set the column (the widest status pill or name) showed an ellipsis though it fits. A grid that fits its frame takes the added pixels from its filling column, or else its widest, so it still fits; a grid that scrolls sideways grows by them.

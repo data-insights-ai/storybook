@@ -366,6 +366,21 @@ export const Error: Story = {
 };
 export const Night: Story = { globals: { theme: "dark" }, play: KeyboardSelection.play };
 
+/**
+ * The open list is a popup, not a modal: the page around it stays in the accessibility tree, so the
+ * next control is still read and reached. The story ends with the list open, so axe judges that state.
+ */
+export const OpenListKeepsPage: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    await userEvent.type(canvas.getByRole("combobox", { name: "Register code" }), "register");
+    await expect(page.getByRole("option", { name: /Southern register/ })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Save source" })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Show register suggestions" })).toBeVisible();
+  },
+};
+
 /** The popup remains inside a native modal, where the rest of the page is inert. */
 export const InDialog: Story = {
   render: function Render(args) {

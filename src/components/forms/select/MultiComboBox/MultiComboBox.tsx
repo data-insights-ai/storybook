@@ -8,6 +8,7 @@ import { FieldLabel } from "../../field/FieldLabel";
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { useListToggle } from "../../../../internal/useListToggle";
+import { useListKeepsPage } from "../../../../internal/useListKeepsPage";
 import { EntryList } from "./EntryList";
 import { StatusPill, type StatusTone } from "../../../status/StatusPill";
 import { useFreeEntry } from "./useFreeEntry";
@@ -151,6 +152,7 @@ export function MultiComboBox({
   const visible = listed && open && !disabled && (shown.length > 0 || waiting || nothing);
   const { host, update } = useOverlayHost(root, visible);
   const free = useFreeEntry({ values: chosen, onChange, draft: query, setDraft: setQuery });
+  useListKeepsPage(input, visible);
 
   const show = () => {
     if (disabled) return;
@@ -307,7 +309,7 @@ export function MultiComboBox({
           </>,
         )}
         {hintLine}
-        {/* Unmounted in the render that closes it, so the page behind is readable again at once. */}
+        {/* Unmounted in the render that closes it, so the marks Base UI puts on the page around it go at once. */}
         {visible ? (
           <Combobox.Portal container={host.container}>
             <Combobox.Positioner

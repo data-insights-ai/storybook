@@ -8,6 +8,7 @@ import { FieldConfidence, type FieldConfidenceReading } from "../../field/FieldC
 import { FieldHint, type HintTone } from "../../field/FieldHint";
 import { useOverlayHost } from "../../../../internal/useOverlayHost";
 import { useListToggle } from "../../../../internal/useListToggle";
+import { useListKeepsPage } from "../../../../internal/useListKeepsPage";
 import "../../field/Field/Field.css";
 import "./ComboBox.css";
 
@@ -100,6 +101,7 @@ export function ComboBox({
   const control = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   const arrowOpened = useRef<string | null>(null);
+  useListKeepsPage(input, visible);
   const close = () => {
     arrowOpened.current = null;
     setOpen(false);
@@ -183,7 +185,7 @@ export function ComboBox({
             {hint}
           </FieldHint>
         )}
-        {/* Unmounted in the render that closes it, so the page behind is readable again at once. */}
+        {/* Unmounted in the render that closes it, so the marks Base UI puts on the page around it go at once. */}
         {visible ? (
           <Autocomplete.Portal container={overlay.container}>
             <Autocomplete.Positioner

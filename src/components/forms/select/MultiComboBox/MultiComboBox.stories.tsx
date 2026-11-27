@@ -4,6 +4,7 @@ import { onPanel } from "../../../../../.storybook/onPanel";
 import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { MultiComboBox } from "./MultiComboBox";
 import { Button } from "../../../actions/Button";
+import { CopyValue } from "../../../actions/CopyValue";
 import { Dialog } from "../../../overlays/Dialog";
 
 const people = [
@@ -144,6 +145,40 @@ export const Keyboard: Story = {
     await userEvent.type(input, "Nora");
     await userEvent.keyboard("{ArrowDown}{Enter}");
     await waitFor(() => expect(args.onChange).toHaveBeenLastCalledWith([]));
+  },
+};
+
+/**
+ * The open list is a popup, not a modal: the page around it stays in the accessibility tree, so the
+ * chosen entries, the controls beside a live region and the next control are still read and reached. The story ends with the list open,
+ * so axe judges that state.
+ */
+export const OpenListKeepsPage: Story = {
+  args: { values: ["u-nora"] },
+  render: function Render(args) {
+    const [values, setValues] = useState<string[]>([...args.values]);
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--di-rhythm-field)", maxWidth: "480px" }}>
+        <MultiComboBox {...args} values={values} onChange={setValues} />
+        <div>
+          <CopyValue value="ops-alerts" copyLabel="Copy channel" copiedLabel="Copied" />
+        </div>
+        <div>
+          <Button>Send</Button>
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole("combobox", { name: "Members" }));
+    await expect(page.getByRole("option", { name: /Jonas Berger/ })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Send" })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Copy channel" })).toBeVisible();
+    await expect(canvas.getByRole("button", { name: "Remove Nora Feld" })).toBeVisible();
+    const hint = canvas.getByText("Each gets the mail at their verified address.");
+    await expect(hint.closest("[aria-hidden=true]")).toBeNull();
   },
 };
 
