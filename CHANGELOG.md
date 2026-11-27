@@ -2,6 +2,12 @@
 
 Each release, newest first: what changed and what a product has to do to take it. Releases before 0.24.0 are described by their tags' commits.
 
+## 0.44.4
+
+- `Sidebar` on a phone: an Escape that a `Menu`, `Dialog` or `Flyout` opened from the drawer used to close itself leaves the drawer open; the next Escape closes the drawer. Before, one Escape closed both and the focus went to the trigger.
+- `Flyout`: the Escape that closes it is prevented and taken before other listeners on the document or the window, so it closes only the flyout, also over a docked `Dialog`. A `Menu`, list or dialog open in or over the panel keeps its own Escape: the first Escape closes it, the next the flyout. New story: `Navigation/Sidebar` → Drawer Layers.
+- Upgrade: nothing to change. An app that stopped Escape around such a layer to keep the drawer open can remove that.
+
 ## 0.44.3
 
 - `TimeField`, `DateField` and the typed days and times of `DateRangePicker`: each segment (hour, minute, AM/PM, day, month, year) is a target of at least 24×24px in either density, compact included, and passes axe's `target-size` (WCAG 2.2 SC 2.5.8). Before, a two-digit segment or AM/PM was about 21×21px, and the separator beside it left too little space for the spacing exception. The text stays centred in its segment. New token `--di-target-min` (24px), the smallest hit area anywhere. New stories: `Forms/Dates/TimeField` and `Forms/Dates/DateField` → Segment targets.
