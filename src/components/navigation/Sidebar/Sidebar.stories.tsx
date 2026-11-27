@@ -705,7 +705,15 @@ const itemType = "application/x-example-item";
 
 /* Groups a person arranges: each collapses by its heading, has its menu at the heading's end, and
    takes an item dragged onto it; the menu moves the group from the keyboard. */
-function ArrangedSidebar({ label, closeLabel }: { label: string; closeLabel: string }) {
+function ArrangedSidebar({
+  label,
+  closeLabel,
+  defaultExpanded = true,
+}: {
+  label: string;
+  closeLabel: string;
+  defaultExpanded?: boolean;
+}) {
   const [groups, setGroups] = useState([
     { id: "Pinned", collapsed: false, items: ["alerts"] },
     { id: "Monitor", collapsed: false, items: ["overview", "findings"] },
@@ -724,7 +732,7 @@ function ArrangedSidebar({ label, closeLabel }: { label: string; closeLabel: str
       return out;
     });
   return (
-    <SidebarProvider skipLabel="Skip to content">
+    <SidebarProvider skipLabel="Skip to content" defaultExpanded={defaultExpanded}>
       <Sidebar label={label} closeLabel={closeLabel}>
         <SidebarContent>
           {groups.map((group) => (
@@ -816,6 +824,15 @@ export const ArrangedGroups: Story = {
     const pinned = within(nav).getByRole("group", { name: "Pinned" });
     pinned.dispatchEvent(new DragEvent("dragover", { bubbles: true, cancelable: true, dataTransfer: data }));
     await waitFor(() => expect(pinned).toHaveAttribute("data-drop", "over"));
+    // Passing onto an item of the group keeps the ring: no flicker.
+    pinned.dispatchEvent(
+      new DragEvent("dragleave", {
+        bubbles: true,
+        dataTransfer: data,
+        relatedTarget: within(pinned).getByRole("link", { name: "Alerts" }),
+      }),
+    );
+    await expect(pinned).toHaveAttribute("data-drop", "over");
     pinned.dispatchEvent(new DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer: data }));
     await waitFor(() => expect(within(pinned).getByRole("link", { name: "Sources" })).toBeVisible());
     await expect(pinned).not.toHaveAttribute("data-drop");
@@ -824,5 +841,29 @@ export const ArrangedGroups: Story = {
     await userEvent.click(canvas.getByRole("menuitem", { name: "Move up" }));
     const headings = [...nav.querySelectorAll(".di-sb-group-toggle")].map((h) => h.textContent);
     await expect(headings).toEqual(["Pinned", "Records", "Monitor"]);
+  },
+};
+
+export const ArrangedGroupsInTheRail: Story = {
+  globals: { viewport: { value: "desk", isRotated: false } },
+  render: (args) => <ArrangedSidebar label={args.label} closeLabel={args.closeLabel} defaultExpanded={false} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const nav = canvas.getByRole("navigation", { name: "Sections" });
+    // The rail keeps each group's name, not its heading button.
+    await expect(within(nav).getByRole("group", { name: "Records" })).toBeInTheDocument();
+    await expect(nav.querySelector(".di-sb-group-toggle")).toBeNull();
+    (document.activeElement as HTMLElement | null)?.blur();
+    const stops: Element[] = [];
+    for (let i = 0; i < 12; i++) {
+      await userEvent.tab();
+      if (document.activeElement) stops.push(document.activeElement);
+    }
+    await expect(stops.some((el) => nav.contains(el))).toBe(true);
+    await expect(
+      stops.filter(
+        (el) => el.closest(".di-sb-group-head") !== null && el.matches(".di-sb-group-label, .di-sb-group-label *"),
+      ),
+    ).toEqual([]);
   },
 };

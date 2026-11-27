@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { SidebarContext } from "../state/SidebarContext";
 import "../Sidebar.css";
 
 /**
@@ -83,8 +84,10 @@ export function SidebarGroup({
   const state: GroupState = onCollapsedChange
     ? { labelId, bodyId, collapsed, toggle: () => onCollapsedChange(!collapsed) }
     : { labelId, bodyId };
+  // A browser lists a drag's types in lower case.
+  const accepted = (dropTypes ?? []).map((type) => type.toLowerCase());
   const takes = (event: DragEvent) =>
-    onDrop !== undefined && (dropTypes ?? []).some((type) => event.dataTransfer.types.includes(type));
+    onDrop !== undefined && accepted.some((type) => event.dataTransfer.types.includes(type));
   return (
     <GroupContext.Provider value={state}>
       <div
@@ -97,7 +100,12 @@ export function SidebarGroup({
           event.preventDefault();
           setOver(true);
         }}
-        onDragLeave={() => setOver(false)}
+        onDragLeave={(event) => {
+          // Moving onto an item of the group leaves the group's own box only.
+          const to = event.relatedTarget;
+          if (to instanceof Node && event.currentTarget.contains(to)) return;
+          setOver(false);
+        }}
         onDrop={(event) => {
           if (!takes(event)) return;
           event.preventDefault();
@@ -121,8 +129,8 @@ export function SidebarGroup({
 
 /**
  * The heading of a `SidebarGroup`, which also names the group for assistive
- * technology. Hidden in the collapsed rail. In a collapsible group it is the
- * button that opens and collapses it. With `dragType` and `dragValue` it is
+ * technology. Hidden in the collapsed rail, where it is the name alone. In a
+ * collapsible group it is the button that opens and collapses it. With `dragType` and `dragValue` it is
  * dragged, carrying that value, so a person moves the group by its heading.
  */
 export function SidebarGroupLabel({
@@ -135,6 +143,10 @@ export function SidebarGroupLabel({
   dragValue?: string;
 }) {
   const group = useContext(GroupContext);
+  const sidebar = useContext(SidebarContext);
+  // The collapsed rail clips the label: only its name stays, never a
+  // button the keyboard would stop on unseen.
+  const rail = sidebar !== null && !sidebar.expanded && !sidebar.mobile;
   const drag =
     dragType !== undefined && dragValue !== undefined
       ? {
@@ -142,7 +154,7 @@ export function SidebarGroupLabel({
           onDragStart: (event: DragEvent) => event.dataTransfer.setData(dragType, dragValue),
         }
       : {};
-  if (group?.toggle)
+  if (group?.toggle && !rail)
     return (
       <button
         type="button"
