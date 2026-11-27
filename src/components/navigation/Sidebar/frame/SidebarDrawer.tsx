@@ -16,7 +16,20 @@ export default function SidebarDrawer({
   const { mobileOpen, setMobileOpen, sidebarId } = useSidebar();
   const rtl = getComputedStyle(document.documentElement).direction === "rtl";
   return (
-    <Drawer.Root open={mobileOpen} onOpenChange={setMobileOpen} swipeDirection={rtl ? "right" : "left"}>
+    <Drawer.Root
+      open={mobileOpen}
+      onOpenChange={(open, details) => {
+        // Base UI hears every Escape on the document; one that a layer above
+        // already used (a Menu or Dialog opened from the drawer prevents its
+        // default) closed that layer, so the drawer stays.
+        if (details.reason === "escape-key" && details.event.defaultPrevented) {
+          details.cancel();
+          return;
+        }
+        setMobileOpen(open);
+      }}
+      swipeDirection={rtl ? "right" : "left"}
+    >
       <Drawer.Portal>
         <Drawer.Backdrop className="di-sb-backdrop" />
         <Drawer.Viewport className="di-sb-viewport">

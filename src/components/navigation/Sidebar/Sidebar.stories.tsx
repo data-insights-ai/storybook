@@ -9,6 +9,7 @@ import { StatusPill } from "../../status/StatusPill";
 import { Breadcrumb } from "../Breadcrumb";
 import { PageHeader, PageHeaderTitle } from "../../layout/page/PageHeader";
 import { Menu, MenuGroup, MenuItem } from "../../actions/Menu";
+import { Dialog } from "../../overlays/Dialog";
 import { Sidebar } from "./Sidebar";
 import { SidebarBrand } from "./frame/SidebarBrand";
 import { SidebarInset } from "./frame/SidebarInset";
@@ -501,6 +502,91 @@ export const ContextSwitcher: Story = {
     const body = within(canvasElement.ownerDocument.body);
     await userEvent.click(body.getByRole("menuitemradio", { name: "Harbor Labs" }));
     await expect(canvas.getByRole("button", { name: "Harbor Labs" })).toBeVisible();
+  },
+};
+
+function AccountDialog() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      {/* A button, not an item: choosing an item closes the drawer on a phone. */}
+      <Button variant="secondary" onClick={() => setOpen(true)}>
+        Account
+      </Button>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Account"
+        closeLabel="Close"
+        placement="center"
+        size="sm"
+      >
+        <p>Nora Feld, nora.feld@data-insights.ai</p>
+      </Dialog>
+    </>
+  );
+}
+
+/**
+ * On a phone one Escape closes one layer: a menu or a dialog opened from the
+ * drawer closes on its own Escape and leaves the drawer open; the next
+ * Escape closes the drawer.
+ */
+export const DrawerLayers: Story = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  render: (args) => (
+    <SidebarProvider>
+      <Sidebar label={args.label} closeLabel={args.closeLabel}>
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <WorkspaceSwitcher />
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+        <SidebarFooter>
+          <AccountDialog />
+        </SidebarFooter>
+      </Sidebar>
+      <SidebarInset>
+        <AppShellBar>
+          <SidebarTrigger label="Toggle navigation" />
+          <Breadcrumb label="Breadcrumb" items={[{ label: "Overview" }]} />
+        </AppShellBar>
+        <AppShellContent>
+          <PageHeader>
+            <PageHeaderTitle>Overview</PageHeaderTitle>
+          </PageHeader>
+        </AppShellContent>
+      </SidebarInset>
+    </SidebarProvider>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const body = within(canvasElement.ownerDocument.body);
+    await userEvent.click(canvas.getByRole("button", { name: "Toggle navigation" }));
+    const drawer = await body.findByRole("dialog", { name: "Sections" }, { timeout: 5000 });
+
+    const switcher = within(drawer).getByRole("button", { name: "Northwind Security" });
+    await userEvent.click(switcher);
+    const menu = body.getByRole("menu", { name: "Switch workspace" });
+    await waitFor(() => expect(menu).toBeVisible());
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(body.queryByRole("menu")).toBeNull());
+    await expect(drawer).toHaveAttribute("data-open");
+    await expect(switcher).toHaveFocus();
+
+    const account = within(drawer).getByRole("button", { name: "Account" });
+    await userEvent.click(account);
+    const dialog = await body.findByRole("dialog", { name: "Account" });
+    await waitFor(() => expect(dialog).toBeVisible());
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(body.queryByRole("dialog", { name: "Account" })).toBeNull());
+    await expect(drawer).toHaveAttribute("data-open");
+    await waitFor(() => expect(account).toHaveFocus());
+
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(body.queryByRole("dialog", { name: "Sections" })).toBeNull());
   },
 };
 
