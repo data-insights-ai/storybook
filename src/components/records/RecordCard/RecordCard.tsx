@@ -27,8 +27,9 @@ import "./RecordCard.css";
  * press above the link.
  *
  * On a narrow record the name keeps its line: the state moves under it,
- * and so does a labelled action; a control that is only an icon (a play
- * button, a menu, the chevron) stays at the record's end, beside the name.
+ * and so do the labelled actions, which wrap there onto as many lines as
+ * they need; a control that is only an icon (a play button, a menu, the
+ * chevron) stays at the record's end, beside the name.
  */
 export function RecordCard(props: RecordCardProps) {
   const { title, lang, heading = 2, layout = "card", className, href, render, children } = props;
@@ -145,7 +146,7 @@ export function RecordStatus({ children }: { children: ReactNode }) {
   return <div className="di-record-status">{children}</div>;
 }
 
-/** The record's own controls at the end of the head: a menu, "End session". */
+/** The record's own controls at the end of the head: a menu, "End session". Under the name on a narrow record, they wrap. */
 export function RecordActions({ children }: { children: ReactNode }) {
   return <div className="di-record-actions">{children}</div>;
 }

@@ -7,7 +7,22 @@ Each release, newest first: what changed and what a product has to do to take it
 - `SidebarGroup` collapses: with `collapsed` and `onCollapsedChange` its `SidebarGroupLabel` is a button with `aria-expanded` that opens and collapses it; the caller renders what stays shown while it is collapsed. In the collapsed rail the label stays the group's name only, never a button the keyboard stops on.
 - New `SidebarGroupAction`: the group's action, a `Button` or a `Menu`, at the end of its heading; hidden in the collapsed rail.
 - `SidebarGroup` takes a drop: `dropTypes` names the drag data types it accepts, in any case, `onDrop` gets the drag's data, and the focus ring marks the group while a drag is over it, also while it passes over the group's items. `SidebarGroupLabel`'s `dragType` and `dragValue` make the heading draggable. New story: `Navigation/Sidebar` → Arranged Groups.
-- Upgrade: nothing to change; a group without the new props renders as before.
+- `RecordCard`: on a narrow record the labelled actions in `RecordActions`, under the name, wrap onto as many lines as they need; before, they stayed on one line and a second or third button ran past the record's edge at 390px. New story: `Records/RecordCard` → Actions On A Phone.
+- `InfiniteTable` and `CursorTable` with `maxRows`: the next page is asked for once the reader scrolls within a frame's height (`maxRows` rows) of the last row. Before, the frame watched the space after the rendered rows, which is always just past them, and asked for every page at once.
+- `Button`: the name holds the drawn count, so a count capped at "99+" is named "Notifications, 99+ unread", not "Notifications, 128 unread", which axe's `label-content-name-mismatch` (WCAG 2.5.3) rejects. `badgeLabel` (the count in words) → `badgeUnit` (the word after the drawn count). `FilterBar`: `countLabel` (a function of the count) → `countUnit`. The story tests now run axe's `label-content-name-mismatch`.
+- `ChainTimeline`: a marker's name starts with the ordinal it draws, "01 08:12 Sign-in from a public address", or "01–02 …" for a merged marker; before, the name left out the drawn number.
+- Upgrade: a group without the new `SidebarGroup` props renders as before. Pass the word, not the phrase, for a button's count:
+
+  ```tsx
+  // before
+  <Button iconOnly aria-label="Notifications" badge={unread} badgeLabel={`${unread} unread`}>
+  <FilterBar countLabel={(n) => `${n} set`} … />
+  // after
+  <Button iconOnly aria-label="Notifications" badge={unread} badgeUnit="unread">
+  <FilterBar countUnit="set" … />
+  ```
+
+  A record that put its labelled actions in a `Toolbar` inside `RecordActions` to make them wrap can drop the `Toolbar`. A framed `InfiniteTable` or `CursorTable` left without `maxRows` to keep it from loading every page can take `maxRows` again.
 
 ## 0.44.4
 

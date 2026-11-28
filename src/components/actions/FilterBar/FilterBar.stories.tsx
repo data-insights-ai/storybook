@@ -15,7 +15,7 @@ const meta = {
   args: {
     label: "Filter cases",
     filtersLabel: "Filters",
-    countLabel: (n: number) => `${n} set`,
+    countUnit: "set",
     closeLabel: "Close",
     doneLabel: "Done",
     clearLabel: "Clear all",
@@ -24,7 +24,7 @@ const meta = {
     sheet: "complete",
     children: null,
   },
-  argTypes: { children: { control: false }, countLabel: { control: false } },
+  argTypes: { children: { control: false } },
 } satisfies Meta<typeof FilterBar>;
 
 export default meta;

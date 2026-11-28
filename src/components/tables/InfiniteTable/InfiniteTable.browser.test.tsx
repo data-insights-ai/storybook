@@ -188,3 +188,51 @@ test("the empty body shows only once no row is loaded and none is left to load",
   expect(empty()).toBeNull();
   expect(foot()?.textContent).toBe("3 loaded");
 });
+
+test("in a frame, the next page is asked for only once the reader scrolls near the frame's end", async () => {
+  await page.viewport(1280, 720);
+  const host = document.createElement("div");
+  document.body.append(host);
+  root = createRoot(host);
+  let asked = 0;
+  function Framed() {
+    const [count, setCount] = useState(40);
+    return (
+      <InfiniteTable
+        caption="Assets"
+        count={count}
+        rowKey={(i) => `a-${i}`}
+        renderRow={(i, place) => (
+          <TableRow key={place.key} rowIndex={place.rowIndex} ref={place.ref}>
+            <TableCell>host-{i}</TableCell>
+          </TableRow>
+        )}
+        hasMore={count < 400}
+        loadingMore={false}
+        onLoadMore={() => {
+          asked++;
+          setCount((n) => n + 40);
+        }}
+        newEntriesLabel={() => ""}
+        footerLabel={(n) => `${n} loaded`}
+        loadingLabel="Loading"
+        retryLabel=""
+        order="sorted"
+        maxRows={8}
+      >
+        <TableHead>
+          <TableColumn width="fill">Name</TableColumn>
+        </TableHead>
+      </InfiniteTable>
+    );
+  }
+  flushSync(() => root!.render(<Framed />));
+  for (let i = 0; i < 6; i++) await frame();
+  expect(asked).toBe(0);
+
+  const scroller = document.querySelector<HTMLElement>(".di-table-scroll")!;
+  scroller.scrollTop = scroller.scrollHeight;
+  await expect.poll(() => asked).toBe(1);
+  for (let i = 0; i < 6; i++) await frame();
+  expect(asked).toBe(1);
+});

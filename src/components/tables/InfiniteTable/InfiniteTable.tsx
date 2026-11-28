@@ -77,7 +77,9 @@ export type InfiniteRowPlace = { key: string; rowIndex: number; ref: (row: HTMLT
  * sideways; with `groupOf`, the row of the group in view stays under it. When the register is one block among others (in
  * a `Panel`, beside a record, in a `Dialog`) give it `maxRows`: it then
  * scrolls in a frame about that many rows tall, its head held at the
- * frame's top and its count under it, so the page around it stays short.
+ * frame's top and its count under it, so the page around it stays short;
+ * it asks for the next page once the reader scrolls within a frame's
+ * height of the last row, never for every page at once.
  */
 export function InfiniteTable({
   caption,
@@ -131,7 +133,10 @@ export function InfiniteTable({
   narrow?: "scroll" | "stack";
   /** Column widths are measured once and kept while rows come and go; `auto` lets each render size them. */
   layout?: "auto" | "measured";
-  /** Scrolls in a frame about this many rows tall instead of with the page. Leave it out when the register is the page. */
+  /**
+   * Scrolls in a frame about this many rows tall instead of with the page; the next page is asked for once no more
+   * than this many rows are left below the view. Leave it out when the register is the page.
+   */
   maxRows?: number;
   /**
    * The label of the group the row at this index belongs to. A `TableGroupRow` heads each run of rows with one
@@ -183,7 +188,10 @@ export function InfiniteTable({
     },
     [memoryKey, virtualizer],
   );
-  const end = useNearEnd({ hasMore, loadingMore, loaded: count, onLoadMore, frame, memoryKey });
+  const items = virtualizer.getVirtualItems();
+  const nearInFrame =
+    maxRows !== undefined && frame !== null && rowsPastView(virtualizer.range, entries.length) <= maxRows;
+  const end = useNearEnd({ hasMore, loadingMore, loaded: count, onLoadMore, framed, nearInFrame, memoryKey });
   useHeldHead(host, !framed);
 
   const toolbar: ReactNode[] = [];
@@ -194,7 +202,6 @@ export function InfiniteTable({
     else if (isValidElement(child) && child.type === TableEmpty) empty.push(child);
     else head.push(child);
   });
-  const items = virtualizer.getVirtualItems();
   const pinned = detached(items);
   const { before, after } = gaps(pinned ? items.slice(1) : items, virtualizer.getTotalSize(), start);
   const nothing = empty.length > 0 && count === 0 && !hasMore && !loadingMore;
@@ -225,12 +232,11 @@ export function InfiniteTable({
               <TableGroupRow key={place.key} label={entry.group} rowIndex={place.rowIndex} ref={place.ref} />
             );
           })}
-          {/* A frame clips what is past its edge, so the end is watched inside it: the spacer after the rows. */}
-          <TableSpacer height={after} ref={framed ? end.target : undefined} />
+          <TableSpacer height={after} />
         </TableBody>
         {nothing ? null : (
           <TableFooter>
-            <span ref={framed ? undefined : end.target}>
+            <span ref={end.target}>
               {loadingMore ? <Loading shape="inline" label={loadingLabel} delay={0} /> : footerLabel(shown, hasMore)}
             </span>
             {end.stalled && !loadingMore ? (
@@ -347,39 +353,51 @@ function useListStart(top: RefObject<Element | null>, frame: HTMLElement | null)
   return start;
 }
 
-/* The next page is asked for while the end of the loaded rows is this far below the viewport. */
+/* On the page, the next page is asked for while the end of the loaded rows is this far below the viewport. */
 const ahead = "0px 0px 800px 0px";
+
+/*
+ * In a frame the footer stays in view under it and the spacer after the rendered rows is always just past them, so
+ * neither says how far the reader is from the end. The rows past the last one in view do: within one frame's rows of
+ * the end, the next page is asked for. Before the frame is measured nothing is in view and nothing is asked; with no
+ * row loaded the end is in view.
+ */
+function rowsPastView(range: { endIndex: number } | null, entries: number) {
+  if (entries === 0) return 0;
+  return range ? entries - 1 - range.endIndex : Infinity;
+}
 
 function useNearEnd({
   hasMore,
   loadingMore,
   loaded,
   onLoadMore,
-  frame,
+  framed,
+  nearInFrame,
   memoryKey,
 }: {
   hasMore: boolean;
   loadingMore: boolean;
   loaded: number;
   onLoadMore: () => void;
-  frame: HTMLElement | null;
+  framed: boolean;
+  /** A framed register's view is near its end (`rowsPastView`); on the page the footer is watched instead. */
+  nearInFrame: boolean;
   memoryKey: string | undefined;
 }) {
   const [target, setTarget] = useState<Element | null>(null);
-  const [near, setNear] = useState(false);
+  const [onPage, setNear] = useState(false);
+  const near = framed ? nearInFrame : onPage;
   const load = useRef(onLoadMore);
   useInsertionEffect(() => {
     load.current = onLoadMore;
   });
   useEffect(() => {
-    if (!target) return;
-    const observer = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), {
-      root: frame,
-      rootMargin: ahead,
-    });
+    if (!target || framed) return;
+    const observer = new IntersectionObserver(([entry]) => setNear(entry.isIntersecting), { rootMargin: ahead });
     observer.observe(target);
     return () => observer.disconnect();
-  }, [target, frame]);
+  }, [target, framed]);
   /* The register as it was when a page was asked for, and when one did not arrive: a stall holds while nothing changed. */
   const asked = useRef<number | null>(null);
   const [stall, setStall] = useState<Stall | null>(null);

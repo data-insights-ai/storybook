@@ -52,11 +52,16 @@ type Common = {
   /**
    * A count drawn after the icon, such as unread notifications: a number
    * (more than 99 draws "99+") or the text to draw. `0` draws nothing. The
-   * drawn count is hidden from screen readers; say it in `badgeLabel`.
+   * button's name says the drawn count, as it is drawn, after its label.
    */
   badge?: number | string;
-  /** The count in words, added to the button's name: "3 unread" makes "Notifications, 3 unread". */
-  badgeLabel?: string;
+  /**
+   * The word after the count in the button's name: `"unread"` makes
+   * "Notifications, 3 unread", and "Notifications, 99+ unread" for 128, so
+   * the name holds the text that is seen (WCAG 2.5.3). Pass the word for
+   * the real count where the language changes it ("1 new message").
+   */
+  badgeUnit?: string;
 };
 
 /**
@@ -108,10 +113,12 @@ const unpressed: Partial<ButtonHTMLAttributes<HTMLButtonElement>> = {
  *
  * The icon is the first child. An icon-only button needs `aria-label`.
  *
- * **Badge:** `badge={3}` with `badgeLabel="3 unread"` on an icon-only ghost
+ * **Badge:** `badge={3}` with `badgeUnit="unread"` on an icon-only ghost
  * button named "Notifications" draws the count after the icon, inside the
  * button, which widens for it, so the count never covers the glyph or
- * a neighbour. Its name is read as "Notifications, 3 unread".
+ * a neighbour. Its name is read as "Notifications, 3 unread"; past 99 it
+ * draws "99+" and is read as "Notifications, 99+ unread", so the name
+ * always holds the drawn count.
  *
  * **Links:** `href` renders an `<a>`; `render={<Link to="/cases" />}` hands
  * the same look, name and key to a router's link, so it navigates without
@@ -136,7 +143,7 @@ export function Button(props: ButtonProps | LinkProps | RenderProps) {
     disabled = false,
     shortcut,
     badge,
-    badgeLabel,
+    badgeUnit,
     className: extra,
     render,
     children,
@@ -147,7 +154,7 @@ export function Button(props: ButtonProps | LinkProps | RenderProps) {
   const link = variant === "link";
   const keyed = shortcut ? { "data-di-shortcut": shortcut, "aria-keyshortcuts": shortcut } : {};
   const count = link ? null : drawn(badge);
-  const counted = count !== null && badgeLabel ? badgeLabel : undefined;
+  const counted = count === null ? undefined : badgeUnit ? `${count} ${badgeUnit}` : count;
   const name = label && counted ? `${label}, ${counted}` : label;
   const hint =
     shortcut && !iconOnly && !link ? (

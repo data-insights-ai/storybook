@@ -37,7 +37,7 @@ function Notifications({ routed = false }: { routed?: boolean }) {
                   iconOnly
                   aria-label="Notifications"
                   badge={2}
-                  badgeLabel="2 unread"
+                  badgeUnit="unread"
                   aria-expanded={open}
                   aria-controls="latest"
                   onClick={() => setOpen(!open)}

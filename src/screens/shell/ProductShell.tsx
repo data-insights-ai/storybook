@@ -174,7 +174,7 @@ export function ProductShell({
                   iconOnly
                   aria-label={words.notifications}
                   badge={unread}
-                  badgeLabel={words.unread(unread)}
+                  badgeUnit={words.unread}
                 >
                   <Bell aria-hidden />
                 </Button>

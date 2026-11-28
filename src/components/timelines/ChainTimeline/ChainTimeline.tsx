@@ -17,7 +17,7 @@ export type ChainTimelineEvent = {
   lane: string;
   /** Where on the axis, 0 to 100. */
   at: number;
-  /** What happened there, for the marker's name and its tooltip. */
+  /** What happened there, for the marker's name (after its ordinal) and its tooltip. */
   label: string;
   /** `danger` marks a step that was withdrawn or failed; `muted` one that is only context. */
   tone?: "neutral" | "danger" | "muted";
@@ -59,7 +59,8 @@ const AXIS_GAP = 8;
  * ticks that fit — from `clock` through the shared timeline scale, or the
  * caller's relative `ticks`.
  *
- * Markers are buttons: `onSelect` opens the step, `selected` marks the one
+ * Markers are buttons named by their ordinal and their events ("01 08:12
+ * Sign-in"): `onSelect` opens the step, `selected` marks the one
  * that is open, `hovered` and `onHover` tie a marker to its row in the
  * list beside it. The caller orders `events` by time.
  */
@@ -193,7 +194,8 @@ export function ChainTimeline({
                     "--di-chain-row": rowOf(m.events[0]),
                   } as CSSProperties
                 }
-                aria-label={m.events.map((e) => e.label).join("; ")}
+                // The name starts with the drawn ordinal, so it holds the text that is seen (WCAG 2.5.3).
+                aria-label={`${m.ordinal} ${m.events.map((e) => e.label).join("; ")}`}
                 aria-pressed={onSelect ? active : undefined}
                 title={m.events.map((e) => e.label).join("\n")}
                 onClick={onSelect ? () => onSelect(m.events[0].id) : undefined}

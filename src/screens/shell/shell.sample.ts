@@ -79,7 +79,7 @@ export const chromeWords = {
     refresh: "Refresh",
     sealed: "Admin sealed",
     notifications: "Notifications",
-    unread: (n: number) => `${n} unread`,
+    unread: "unread",
   },
   de: {
     skip: "Zum Inhalt springen",
@@ -97,6 +97,6 @@ export const chromeWords = {
     refresh: "Aktualisieren",
     sealed: "Verwaltung versiegelt",
     notifications: "Benachrichtigungen",
-    unread: (n: number) => `${n} ungelesen`,
+    unread: "ungelesen",
   },
 } satisfies Record<Lang, Record<string, string | ((n: number) => string)>>;

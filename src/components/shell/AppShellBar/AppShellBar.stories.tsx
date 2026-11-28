@@ -34,7 +34,7 @@ const english = {
   sealed: "Admin sealed",
   refresh: "Refresh",
   notifications: "Notifications",
-  unread: "3 unread",
+  unread: "unread",
   lede: "Every host the workspace reads from.",
   nav: { overview: "Overview", findings: "Findings", sources: "Sources", settings: "Settings" },
 };
@@ -51,7 +51,7 @@ const german: Words = {
   sealed: "Verwaltung versiegelt",
   refresh: "Aktualisieren",
   notifications: "Benachrichtigungen",
-  unread: "3 ungelesen",
+  unread: "ungelesen",
   lede: "Jeder Host, von dem der Arbeitsbereich liest.",
   nav: { overview: "Übersicht", findings: "Befunde", sources: "Datenquellen", settings: "Einstellungen" },
 };
@@ -127,7 +127,7 @@ function Frame({
                 iconOnly
                 aria-label={words.notifications}
                 badge={3}
-                badgeLabel={words.unread}
+                badgeUnit={words.unread}
               >
                 <Bell aria-hidden />
               </Button>
@@ -175,7 +175,7 @@ async function oneRow(canvasElement: HTMLElement, words: Words) {
     await expect(own.right, part.className).toBeLessThanOrEqual(box.right);
   }
   await expect(doc.documentElement.scrollWidth).toBeLessThanOrEqual(doc.documentElement.clientWidth);
-  const bell = within(bar).getByRole("button", { name: `${words.notifications}, ${words.unread}` });
+  const bell = within(bar).getByRole("button", { name: `${words.notifications}, 3 ${words.unread}` });
   await expect(bell).toBeVisible();
   await expect(bell).toHaveTextContent("3");
 }
@@ -198,7 +198,7 @@ function at(width: number, words: Words, folds: boolean): Story {
         expect(loaded).toHaveAttribute("aria-expanded", "false");
         return loaded;
       });
-      const bell = canvas.getByRole("button", { name: `${words.notifications}, ${words.unread}` });
+      const bell = canvas.getByRole("button", { name: `${words.notifications}, 3 ${words.unread}` });
       await expect(bell.getBoundingClientRect().left).toBeGreaterThan(more.getBoundingClientRect().right);
       const body = within(canvasElement.ownerDocument.body);
       await userEvent.click(more);

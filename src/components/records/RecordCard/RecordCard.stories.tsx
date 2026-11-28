@@ -5,6 +5,7 @@ import { expect, within } from "storybook/test";
 import { Button } from "../../actions/Button";
 import { Menu, MenuItem } from "../../actions/Menu";
 import { Grid } from "../../layout/arrange/Grid";
+import { Stack } from "../../layout/arrange/Stack";
 import { Panel } from "../../layout/page/Panel";
 import { Icon } from "../../text/Icon";
 import { IconTile } from "../IconTile";
@@ -44,7 +45,7 @@ const meta = {
           "**When to use:** a few records side by side (sources, watched entities, channels), a measured value with what a model read into it, or a list of records as rows (sessions, devices). **When not to:** many rows to scan, sort or select are a `DataTable`; the facts of the one record a page is about are a `FactList` in a `Panel`; a proposal that asks for a decision is a `ProposalPanel`; a lone number is a `Figure`.",
           '**Anatomy:** the head (`RecordMark`, the title with `RecordBadge` beside it and `RecordCount` or `RecordDetail` under it, then `RecordStatus` and `RecordActions` at the end), the body in the order written (`RecordValue`, `RecordBody` with a `Figure` and a `Sparkline`, `RecordLines`, a `FactList layout="pairs"`, `RecordInsight` with `RecordBasis` and its actions), and `RecordFooter` last.',
           '**Variants:** `layout="card"` stands on its own surface; `layout="row"` is one line of a list inside a `Panel`, without a surface. `heading` sets the title\'s level (2, 3) or `false` when the record is not a section of the page (a row, a channel in a grid). A record that opens its own page takes `href` (or a router\'s link in `render`): the title is the link and the whole record the target, tinted on hover; a linked row without actions ends in a chevron.',
-          "**Narrow:** below 400px the name keeps its line. The state and a labelled action move under the name; a control that is only an icon (a play button, a menu, the chevron) stays at the record's end, beside the name.",
+          "**Narrow:** below 400px the name keeps its line. The state and the labelled actions move under the name, where the actions wrap onto as many lines as they need; a control that is only an icon (a play button, a menu, the chevron) stays at the record's end, beside the name.",
           "**States:** the state is a `StatusPill` in `RecordStatus` (running, paused, failed, this device). A label for the reader rather than the record's state (new, beta) is a `Badge` in `RecordBadge`, beside the name. A record without an insight has no `RecordInsight`; a claim waiting for review keeps it, with the asked-for action first.",
           '**Content rules:** the title names the record (a host, a person, a device), not its kind. Under it one count or one detail line; a detail string breaks only between its " · " items, so a timestamp never splits. An insight is one or two sentences; its basis names the sources and the confidence. One primary action, the one the insight asks for; the others are secondary.',
           "**Accessibility:** a card is an `article` named by its heading; a row is a `div` in the list it belongs to. The state is a word, never a colour alone. The sparkline names its shape in its label. A linked record is announced by its title as a link; the chevron is hidden from screen readers, and the record's own controls keep their own names and press.",
@@ -597,5 +598,69 @@ export const RowsOnAPhone: Story = {
     ).toBeLessThanOrEqual(1);
     // A labelled action goes under the name, so the name keeps its line.
     await expect(box(ended, ".di-btn").top).toBeGreaterThanOrEqual(box(ended, ".di-record-title").bottom);
+  },
+};
+
+/**
+ * Labelled actions on a phone: they go under the name and wrap there, so a
+ * second or third button starts a new line inside the record instead of
+ * running past its edge.
+ */
+export const ActionsOnAPhone: Story = {
+  globals: { viewport: { value: "phone", isRotated: false } },
+  render: () => (
+    <Stack gap={24}>
+      <RecordCard title="Weekly digest to the operations team" heading={2}>
+        {tile("Mail", <Mail aria-hidden />)}
+        <RecordDetail>Next run 2026-09-22 · 08:00</RecordDetail>
+        <RecordStatus>
+          <StatusPill tone="warn">failed</StatusPill>
+        </RecordStatus>
+        <RecordActions>
+          <Button variant="secondary" size="sm">
+            Reschedule
+          </Button>
+          <Button variant="ghost" size="sm">
+            Edit recipients
+          </Button>
+          <Button variant="ghost" size="sm">
+            Cancel delivery
+          </Button>
+        </RecordActions>
+      </RecordCard>
+      <Panel title="Scheduled" heading={2}>
+        <RecordCard title="Reminder to renew the certificate" layout="row" heading={false}>
+          <RecordDetail>2026-09-24 · 09:30</RecordDetail>
+          <RecordActions>
+            <Button variant="secondary" size="sm">
+              Edit
+            </Button>
+            <Button variant="ghost" size="sm">
+              Send now
+            </Button>
+            <Button variant="ghost" size="sm">
+              Cancel
+            </Button>
+          </RecordActions>
+        </RecordCard>
+      </Panel>
+    </Stack>
+  ),
+  play: async ({ canvasElement }) => {
+    await expect(window.innerWidth).toBe(390);
+    for (const record of canvasElement.querySelectorAll<HTMLElement>(".di-record")) {
+      const frame = record.getBoundingClientRect();
+      const title = record.querySelector(".di-record-title")!.getBoundingClientRect();
+      const buttons = [...record.querySelectorAll<HTMLElement>(".di-record-actions .di-btn")];
+      await expect(record.scrollWidth).toBeLessThanOrEqual(record.clientWidth + 1);
+      for (const button of buttons) {
+        const box = button.getBoundingClientRect();
+        // Every action is whole inside the record, under the name.
+        await expect(box.right).toBeLessThanOrEqual(frame.right + 1);
+        await expect(box.left).toBeGreaterThanOrEqual(frame.left - 1);
+        await expect(box.top).toBeGreaterThanOrEqual(title.bottom);
+        await expect(button.scrollWidth).toBeLessThanOrEqual(button.clientWidth + 1);
+      }
+    }
   },
 };

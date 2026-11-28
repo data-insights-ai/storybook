@@ -27,7 +27,7 @@ export function CaseFilterBar({
     <FilterBar
       label="Filter cases"
       filtersLabel="Filters"
-      countLabel={(n) => `${n} set`}
+      countUnit="set"
       closeLabel="Close"
       doneLabel="Done"
       clearLabel="Clear all"

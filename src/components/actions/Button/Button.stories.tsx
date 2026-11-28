@@ -129,24 +129,21 @@ export const LinkLookGerman: Story = {
 
 /**
  * A count after the icon: unread notifications in the app bar. The button
- * widens for the count, so "99+" covers neither the bell nor a neighbour;
- * `badgeLabel` adds the count in words to the name.
+ * widens for the count, so "99+" covers neither the bell nor a neighbour.
+ * The name says the drawn count with `badgeUnit` after it, "99+ unread"
+ * too, so the name holds what is seen (WCAG 2.5.3).
  */
 export const WithBadge: Story = {
   args: { children: "" },
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: "grid", gap: "var(--di-gap-16)" }}>
-      {[
-        { count: 0, words: "" },
-        { count: 3, words: "3 unread" },
-        { count: 128, words: "128 unread" },
-      ].map(({ count, words }) => (
+      {[{ count: 0 }, { count: 3 }, { count: 128 }].map(({ count }) => (
         <AppShellBar key={count}>
           <span>Signals</span>
           <AppShellBarEnd moreLabel="More">
             <AppShellBarKeep>
-              <Button variant="ghost" iconOnly aria-label="Notifications" badge={count} badgeLabel={words}>
+              <Button variant="ghost" iconOnly aria-label="Notifications" badge={count} badgeUnit="unread">
                 <Bell aria-hidden />
               </Button>
             </AppShellBarKeep>
@@ -159,7 +156,7 @@ export const WithBadge: Story = {
     const canvas = within(canvasElement);
     await expect(canvas.getByRole("button", { name: "Notifications" })).toBeVisible();
     await expect(canvas.getByRole("button", { name: "Notifications, 3 unread" })).toHaveTextContent("3");
-    const many = canvas.getByRole("button", { name: "Notifications, 128 unread" });
+    const many = canvas.getByRole("button", { name: "Notifications, 99+ unread" });
     await expect(many).toHaveTextContent("99+");
     const icon = many.querySelector("svg")!.getBoundingClientRect();
     const badge = many.querySelector(".di-badge")!.getBoundingClientRect();
@@ -179,7 +176,7 @@ export const WithBadgeGerman: Story = {
       <span>Benachrichtigungseinstellungen</span>
       <AppShellBarEnd moreLabel="Weitere">
         <AppShellBarKeep>
-          <Button variant="ghost" iconOnly aria-label="Benachrichtigungen" badge={12} badgeLabel="12 ungelesen">
+          <Button variant="ghost" iconOnly aria-label="Benachrichtigungen" badge={12} badgeUnit="ungelesen">
             <Bell aria-hidden />
           </Button>
         </AppShellBarKeep>

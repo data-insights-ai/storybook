@@ -49,19 +49,24 @@
     min-width: 0;
   }
 
+  /* Under the name on a narrow record, the state and the actions wrap within its width rather than run past it. */
   .di-record-end {
     grid-area: end;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-end;
     gap: var(--di-gap-8);
+    min-width: 0;
   }
 
   .di-record-status,
   .di-record-actions {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--di-gap-4);
+    min-width: 0;
   }
 
   /* The name and its badge share a line; a name that fills it sends the badge under it. */

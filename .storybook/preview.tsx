@@ -99,7 +99,11 @@ const preview: Preview = {
         return a.title.localeCompare(b.title, "en", { numeric: true, sensitivity: "base" });
       },
     },
-    a11y: { test: "error" },
+    /*
+     * axe's experimental label-content-name-mismatch is on: a control's name must hold the text it shows
+     * (WCAG 2.5.3), so a count capped at "99+" cannot be named "128 unread".
+     */
+    a11y: { test: "error", options: { rules: { "label-content-name-mismatch": { enabled: true } } } },
     controls: { exclude: /^on[A-Z].*/ },
     actions: { argTypesRegex: "^on[A-Z].*" },
     viewport: {

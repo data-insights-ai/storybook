@@ -48,8 +48,8 @@ export type FilterBarProps = {
   role?: "search" | "group";
   /** The trigger and the sheet's title: "Filters". */
   filtersLabel: string;
-  /** The count in words, added to the trigger's name: "2 set" makes "Filters, 2 set". */
-  countLabel: (count: number) => string;
+  /** The word after the count of set filters in the trigger's name: "set" makes "Filters, 2 set". */
+  countUnit: string;
   /** The sheet's close button. */
   closeLabel: string;
   /** The sheet's one action, which only closes it: "Done". */
@@ -137,7 +137,7 @@ export function FilterBar({
   label,
   role = "search",
   filtersLabel,
-  countLabel,
+  countUnit,
   closeLabel,
   doneLabel,
   clearLabel,
@@ -288,7 +288,7 @@ export function FilterBar({
               aria-label={filtersLabel}
               title={layout.phone ? filtersLabel : undefined}
               badge={total}
-              badgeLabel={total ? countLabel(total) : undefined}
+              badgeUnit={countUnit}
               aria-haspopup="dialog"
               aria-expanded={open}
               onClick={() => setOpen(true)}
