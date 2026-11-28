@@ -54,7 +54,8 @@ const always = () => true;
  * records searched on a server: `options` are taken as already matched,
  * `loading` says a search is under way, and a chosen value keeps its entry
  * when the next search no longer returns it. Debounce the search in the
- * caller; the field reports every keystroke.
+ * caller; the field reports every keystroke. `maxLength` bounds the typed
+ * text to what the search takes.
  */
 export function MultiComboBox({
   id,
@@ -120,7 +121,11 @@ export function MultiComboBox({
   disabled?: boolean;
   /** At least one entry is needed; marks the label. */
   required?: boolean;
-  /** With `freeEntry`: the longest one entry may be. */
+  /**
+   * The longest text the reader can type, in every mode, so a search stays
+   * within what the server takes; with `freeEntry` also the longest one entry
+   * may be. 320, the longest email address, by default.
+   */
   maxLength?: number;
   className?: string;
 }) {
@@ -204,7 +209,7 @@ export function MultiComboBox({
   const inputProps = {
     className: "di-token-input",
     placeholder: chosen.length === 0 ? placeholder : "",
-    maxLength: freeEntry ? maxLength : undefined,
+    maxLength,
     "aria-invalid": invalid || undefined,
     "aria-required": required || undefined,
     "aria-describedby": hint === "" ? undefined : `${id}-hint`,

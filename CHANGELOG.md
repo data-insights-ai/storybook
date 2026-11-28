@@ -11,6 +11,7 @@ Each release, newest first: what changed and what a product has to do to take it
 - `InfiniteTable` and `CursorTable` with `maxRows`: the next page is asked for once the reader scrolls within a frame's height (`maxRows` rows) of the last row. Before, the frame watched the space after the rendered rows, which is always just past them, and asked for every page at once.
 - `Button`: the name holds the drawn count, so a count capped at "99+" is named "Notifications, 99+ unread", not "Notifications, 128 unread", which axe's `label-content-name-mismatch` (WCAG 2.5.3) rejects. `badgeLabel` (the count in words) → `badgeUnit` (the word after the drawn count). `FilterBar`: `countLabel` (a function of the count) → `countUnit`. The story tests now run axe's `label-content-name-mismatch`.
 - `ChainTimeline`: a marker's name starts with the ordinal it draws, "01 08:12 Sign-in from a public address", or "01–02 …" for a merged marker; before, the name left out the drawn number.
+- `CommandBar`, `ComboBox` and `MultiComboBox` take `maxLength`: typing stops at the limit, as in `SearchField`, so a search stays within what the server takes. `MultiComboBox` applied its `maxLength` only with `freeEntry`; it now limits the typed text in every mode, 320 characters by default. New stories: `Navigation/CommandBar`, `Forms/Select/ComboBox` and `Forms/Select/MultiComboBox` → Length Limit.
 - Upgrade: a group without the new `SidebarGroup` props renders as before. Pass the word, not the phrase, for a button's count:
 
   ```tsx
@@ -22,7 +23,7 @@ Each release, newest first: what changed and what a product has to do to take it
   <FilterBar countUnit="set" … />
   ```
 
-  A record that put its labelled actions in a `Toolbar` inside `RecordActions` to make them wrap can drop the `Toolbar`. A framed `InfiniteTable` or `CursorTable` left without `maxRows` to keep it from loading every page can take `maxRows` again.
+  A record that put its labelled actions in a `Toolbar` inside `RecordActions` to make them wrap can drop the `Toolbar`. A framed `InfiniteTable` or `CursorTable` left without `maxRows` to keep it from loading every page can take `maxRows` again. A search that cut its typed text in the change handler to the length the server takes can pass `maxLength` instead.
 
 ## 0.44.4
 

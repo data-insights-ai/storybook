@@ -46,6 +46,7 @@ export function ComboBox({
   name,
   placeholder,
   autoComplete,
+  maxLength,
 }: {
   id: string;
   label: string;
@@ -74,6 +75,8 @@ export function ComboBox({
   readOnly?: boolean;
   required?: boolean;
   className?: string;
+  /** The longest text the reader can type, such as the most a search takes. */
+  maxLength?: number;
   /** Slot beside the label. */
   children?: ReactNode;
 } & Pick<InputHTMLAttributes<HTMLInputElement>, "name" | "placeholder" | "autoComplete">) {
@@ -158,6 +161,7 @@ export function ComboBox({
             className={cx("di-control", mono && "di-control-mono")}
             placeholder={placeholder}
             autoComplete={autoComplete ?? "off"}
+            maxLength={maxLength}
             aria-labelledby={`${id}-label`}
             aria-invalid={invalid || undefined}
             aria-describedby={describedBy}

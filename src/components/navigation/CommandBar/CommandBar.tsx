@@ -51,6 +51,7 @@ export function CommandBar({
   onValueChange,
   hints,
   privacyNote,
+  maxLength,
   children,
 }: {
   id?: string;
@@ -67,6 +68,8 @@ export function CommandBar({
   hints: Array<string | CommandHint>;
   /** Where the query is processed. Stated, not implied. */
   privacyNote: string;
+  /** The longest query the reader can type, such as the most a search takes. */
+  maxLength?: number;
   /** `CommandGroup`s of `CommandRow`s, or one `CommandEmpty`. */
   children: ReactNode;
 }) {
@@ -147,6 +150,7 @@ export function CommandBar({
           aria-autocomplete="list"
           autoComplete="off"
           placeholder={placeholder}
+          maxLength={maxLength}
           value={value}
           onChange={(event) => onValueChange(event.target.value)}
           onKeyDown={move}

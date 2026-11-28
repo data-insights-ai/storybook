@@ -481,3 +481,14 @@ export const EscapeInDialog: Story = {
     await expect(input).toHaveFocus();
   },
 };
+
+/** `maxLength` stops the typing at the limit, so the value never runs past what the caller takes. */
+export const LengthLimit: Story = {
+  args: { maxLength: 5 },
+  play: async ({ canvasElement, args }) => {
+    const input = within(canvasElement).getByRole("combobox", { name: "Register code" });
+    await userEvent.type(input, "SR-02-extra");
+    await expect(input).toHaveValue("SR-02");
+    await expect(args.onValueChange).toHaveBeenLastCalledWith("SR-02");
+  },
+};

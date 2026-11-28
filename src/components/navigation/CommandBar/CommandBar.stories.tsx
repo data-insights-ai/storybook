@@ -313,3 +313,14 @@ export const LongGermanLabels: Story = {
     ),
   },
 };
+
+/** `maxLength` stops the query at the limit, so it never runs past what the search takes. */
+export const LengthLimit: Story = {
+  args: { children: goTo, maxLength: 8 },
+  play: async ({ args, canvasElement }) => {
+    const input = within(canvasElement).getByRole("combobox", { name: "Navigate, search or ask" });
+    await userEvent.type(input, "watchlist alerts");
+    await expect(input).toHaveValue("watchlis");
+    await expect(args.onValueChange).toHaveBeenLastCalledWith("watchlis");
+  },
+};

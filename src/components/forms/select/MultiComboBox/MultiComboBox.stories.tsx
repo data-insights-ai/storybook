@@ -514,3 +514,14 @@ export const EnterWaitsForTheSearch: Story = {
     await expect(args.onChange).not.toHaveBeenCalled();
   },
 };
+
+/** `maxLength` stops the typing at the limit while picking too, so a search never runs past what the server takes. */
+export const LengthLimit: Story = {
+  args: { maxLength: 4, onQueryChange: fn() },
+  play: async ({ canvasElement, args }) => {
+    const input = within(canvasElement).getByRole("combobox", { name: "Members" });
+    await userEvent.type(input, "Nora Feld");
+    await expect(input).toHaveValue("Nora");
+    await expect(args.onQueryChange).toHaveBeenLastCalledWith("Nora");
+  },
+};
